@@ -40,3 +40,24 @@
   MoniTAal's external dependencies, but retry succeeded during this session.
 - Next: continue using `tool/MoniTAal` as the editable MoniTAal working tree and
   rebuild with `cmake --build . -j2` from `tool/MightyPPL/build`.
+
+## 2026-06-26 09:30 CST
+
+- Goal: publish the full TAFuzz source workspace, including handoff files, to
+  `PearBabe/TAFuzz` on `main`.
+- Work completed: created `/home/lqq/download/TAFuzz_publish_main` as a clean
+  clone of the remote, synced `AGENTS.md`, `.codex/`, `tool/MightyPPL/`, and
+  `tool/MoniTAal/`, excluded nested Git metadata and build artifacts, committed
+  the snapshot, and pushed it to GitHub.
+- Files changed: no source files were edited; `.codex/PROJECT_STATE.md` and
+  `.codex/SESSION_LOG.md` were updated after publishing to record the result.
+- Verification: the initial source snapshot commit was
+  `2b6594ceb41c9429a2327b7989f723067063943e`; the publish clone had no nested
+  `.git` paths and no `160000` gitlink entries; key paths such as `AGENTS.md`,
+  `.codex/PROJECT_STATE.md`, `tool/MightyPPL/CMakeLists.txt`, and
+  `tool/MoniTAal/CMakeLists.txt` existed in the published commit.
+- Blockers / skipped checks: HTTPS push could not prompt for credentials, so
+  the publish clone was switched to SSH remote `git@github.com:PearBabe/TAFuzz.git`;
+  no rebuild was run during publishing.
+- Next: for future publishes, use `/home/lqq/download/TAFuzz_publish_main` and
+  re-run the nested `.git` plus gitlink checks before pushing.

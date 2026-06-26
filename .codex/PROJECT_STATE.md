@@ -1,13 +1,12 @@
 # TAFuzz Project State
 
-Last updated: 2026-06-26 09:05 CST
+Last updated: 2026-06-26 09:30 CST
 
 ## Current Goal
 
 Maintain a lightweight Codex handoff system for `/home/lqq/download/TAFuzz`
-and keep the tool layout/build wiring recoverable: MightyPPL and MoniTAal now
-live under `tool/`, with MightyPPL building directly against the adjacent
-MoniTAal working tree.
+and keep the published GitHub snapshot recoverable: the full source workspace,
+including handoff files, has been published to `PearBabe/TAFuzz` on `main`.
 
 ## Current Workspace Shape
 
@@ -25,6 +24,10 @@ MoniTAal working tree.
 - Nested tool repositories:
   - `tool/MightyPPL`
   - `tool/MoniTAal`
+- Clean publish clone:
+  - `/home/lqq/download/TAFuzz_publish_main`
+  - remote: `git@github.com:PearBabe/TAFuzz.git`
+  - branch: `main`
 - Required relative layout for the current build wiring:
 
 ```text
@@ -84,10 +87,31 @@ Meaning:
   committing nested repositories as ordinary directories or gitlinks.
 - The handoff files are maintained deliberately by Codex during milestones; they
   are not an automatic full-session recorder.
+- Publishing the top-level workspace should continue through the clean publish
+  clone, with nested `.git` metadata excluded and `external/buddy` flattened as
+  ordinary source files.
 
 ## Verification Status
 
-Latest verification completed on 2026-06-26 09:05 CST:
+Latest verification completed on 2026-06-26 09:30 CST:
+
+- Published `/home/lqq/download/TAFuzz` to `PearBabe/TAFuzz` `main` via the
+  clean clone `/home/lqq/download/TAFuzz_publish_main`.
+- Commit `2b6594c` imported the local TAFuzz workspace, including `AGENTS.md`,
+  `.codex/`, `tool/MightyPPL/`, and `tool/MoniTAal/`.
+- The publish clone excluded nested `.git` metadata, the root
+  `.git.EMPTY_DIR_DO_NOT_USE_20260626`, `.agents/`, `tool/MightyPPL/build/`,
+  object/static library outputs, and CMake cache/generated files.
+- `find /home/lqq/download/TAFuzz_publish_main -mindepth 2 -name .git -print`
+  produced no nested Git metadata paths.
+- `git -C /home/lqq/download/TAFuzz_publish_main ls-files -s | awk
+  '$1 == 160000 {print}'` produced no gitlink/submodule entries.
+- The initial source snapshot commit was
+  `2b6594ceb41c9429a2327b7989f723067063943e`
+  (`Import local TAFuzz workspace`); later handoff-only commits may advance
+  remote `main`.
+
+Earlier build verification completed on 2026-06-26 09:05 CST:
 
 - `git -C tool/MightyPPL status --short` showed the MightyPPL changes listed
   above.
@@ -103,7 +127,8 @@ Latest verification completed on 2026-06-26 09:05 CST:
 
 ## Active Risks / Known Limits
 
-- The top-level workspace is not version-controlled yet.
+- The top-level workspace is still not a normal Git repository; publishing is
+  done from `/home/lqq/download/TAFuzz_publish_main`.
 - The nested tool repositories contain local changes. Future work must check
   and preserve those changes before editing.
 - MoniTAal still downloads `pugixml` and `PARDIBAAL` via GitHub during clean
@@ -123,10 +148,9 @@ cd /home/lqq/download/TAFuzz/tool/MightyPPL/build
 cmake --build . -j2
 ```
 
-3. Before committing or publishing, review the nested repository changes
-   separately with `git -C tool/MightyPPL diff` and
-   `git -C tool/MoniTAal diff`.
+3. Before publishing again, sync through `/home/lqq/download/TAFuzz_publish_main`
+   and verify there are no nested `.git` paths or `160000` gitlink entries.
 
 ## Recovery Prompt
 
-请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；不要重新从头探索，不要回滚用户改动。
+请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；完整源码和交接文件已通过 /home/lqq/download/TAFuzz_publish_main 发布到 PearBabe/TAFuzz 的 main 分支；不要重新从头探索，不要回滚用户改动。
