@@ -61,3 +61,25 @@
   no rebuild was run during publishing.
 - Next: for future publishes, use `/home/lqq/download/TAFuzz_publish_main` and
   re-run the nested `.git` plus gitlink checks before pushing.
+
+## 2026-06-26 09:45 CST
+
+- Goal: create a reusable Codex skill for one-command TAFuzz publishing after
+  source edits.
+- Work completed: created local skill `publish-tafuzz` under
+  `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz`; added
+  `scripts/publish_tafuzz.sh` to sync `/home/lqq/download/TAFuzz` into
+  `/home/lqq/download/TAFuzz_publish_main`, remove nested Git metadata, force-add
+  required ignored external dependency files, verify no gitlinks, commit, and
+  push to `git@github.com:PearBabe/TAFuzz.git`.
+- Files changed: skill files under `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz`;
+  this handoff entry in `.codex/SESSION_LOG.md`; matching state update in
+  `.codex/PROJECT_STATE.md`.
+- Verification: `bash -n` passed for the publish script; skill validation
+  reported `Skill is valid!`; a dry run from `/home/lqq/download/TAFuzz` updated
+  the publish clone and reported no changes when already in sync.
+- Blockers / skipped checks: no source rebuild was run because this change only
+  added publish automation and handoff notes.
+- Next: after editing TAFuzz, run
+  `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh -m
+  "Update TAFuzz workspace"` from anywhere under the source tree.

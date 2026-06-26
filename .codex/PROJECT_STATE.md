@@ -1,12 +1,13 @@
 # TAFuzz Project State
 
-Last updated: 2026-06-26 09:30 CST
+Last updated: 2026-06-26 09:45 CST
 
 ## Current Goal
 
 Maintain a lightweight Codex handoff system for `/home/lqq/download/TAFuzz`
 and keep the published GitHub snapshot recoverable: the full source workspace,
 including handoff files, has been published to `PearBabe/TAFuzz` on `main`.
+Future publishes should use the local Codex skill `publish-tafuzz`.
 
 ## Current Workspace Shape
 
@@ -28,6 +29,10 @@ including handoff files, has been published to `PearBabe/TAFuzz` on `main`.
   - `/home/lqq/download/TAFuzz_publish_main`
   - remote: `git@github.com:PearBabe/TAFuzz.git`
   - branch: `main`
+- Local publish skill:
+  - `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/SKILL.md`
+  - script:
+    `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh`
 - Required relative layout for the current build wiring:
 
 ```text
@@ -90,10 +95,22 @@ Meaning:
 - Publishing the top-level workspace should continue through the clean publish
   clone, with nested `.git` metadata excluded and `external/buddy` flattened as
   ordinary source files.
+- Prefer invoking the `publish-tafuzz` skill/script for future uploads instead
+  of retyping the rsync/git command sequence.
 
 ## Verification Status
 
-Latest verification completed on 2026-06-26 09:30 CST:
+Latest verification completed on 2026-06-26 09:45 CST:
+
+- Created and validated the local Codex skill `publish-tafuzz`.
+- `bash -n` passed for
+  `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh`.
+- `quick_validate.py /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz` reported
+  `Skill is valid!`.
+- A dry run from `/home/lqq/download/TAFuzz` completed and reported no changes
+  when the workspace already matched the publish clone.
+
+Earlier publish verification completed on 2026-06-26 09:30 CST:
 
 - Published `/home/lqq/download/TAFuzz` to `PearBabe/TAFuzz` `main` via the
   clean clone `/home/lqq/download/TAFuzz_publish_main`.
@@ -148,9 +165,12 @@ cd /home/lqq/download/TAFuzz/tool/MightyPPL/build
 cmake --build . -j2
 ```
 
-3. Before publishing again, sync through `/home/lqq/download/TAFuzz_publish_main`
-   and verify there are no nested `.git` paths or `160000` gitlink entries.
+3. To publish again, run:
+
+```bash
+/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh -m "Update TAFuzz workspace"
+```
 
 ## Recovery Prompt
 
-请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；完整源码和交接文件已通过 /home/lqq/download/TAFuzz_publish_main 发布到 PearBabe/TAFuzz 的 main 分支；不要重新从头探索，不要回滚用户改动。
+请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；完整源码和交接文件已通过 /home/lqq/download/TAFuzz_publish_main 发布到 PearBabe/TAFuzz 的 main 分支；后续上传优先使用本地 Codex skill /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz；不要重新从头探索，不要回滚用户改动。
