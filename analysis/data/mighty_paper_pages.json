@@ -1,0 +1,197 @@
+{
+  "path": "/mnt/c/Users/lqq27/Zotero/storage/E3UQKD7D/Ho 等 - 2025 - MightyPPL Verification of MITL with past and pnueli modalities.pdf",
+  "name": "Ho 等 - 2025 - MightyPPL Verification of MITL with past and pnueli modalities.pdf",
+  "page_count": 38,
+  "pages": [
+    {
+      "page": 1,
+      "char_count": 3881,
+      "preview": "MightyPPL: Verification ofMITLwith Past and Pnueli Modalities Hsi-Ming Ho (University of Sussex, Brighton, United Kingdom) Shankara Narayanan Krishna (Indian Institute of Technology Bombay, Mumbai, India) Khushraj Madnani (Indian Institute of Technology Guwahati, Guwahati, India) Rupak Majumdar (MPI-SWS, Kaiserslautern, Germany) Paritosh Pandya (Indian Institute of Technology Bombay, Mumbai, India) Abstract Metric Interval Temporal Logic( MITL) is a popular formalism for specifying properties of"
+    },
+    {
+      "page": 2,
+      "char_count": 3543,
+      "preview": "but not in MITL [Alur and Henzinger, 1993; Hirshfeld and Rabinovich, 2007; Bouyer et al ., 2010; Pandya and Shah, 2011]. Pnueli modalities.Research has shown that MITL can be extended with a more general form of counting while preserving decidability [Hirshfeld and Rabinovich, 1999]. This is achieved withPnueli modalities, P nI (φ1, . . . , φk), which specifies that a sequence of events in an interval I must satisfy φ1, . . . , φk in the given order. To highlight their practical utility, we now "
+    },
+    {
+      "page": 3,
+      "char_count": 5078,
+      "preview": "General time intervals.In MITL, modalities (temporal operators) decorated withunilateraltime intervals (i.e. time intervals of the form ⟨l,∞ ) or [0, u⟩) can be translated into tester automata without too much difficulty [Raskin and Schobbens, 1997; Geilen, 2003]. However, for practical applications, general time intervals such as ⟨l, u⟩are very handy (see e.g., [Bae and Lee, 2019]). The main challenge is that the automata constructions for general intervals are much more complicated and difficu"
+    },
+    {
+      "page": 4,
+      "char_count": 5339,
+      "preview": "Related work.The idea of adding timing constraints into temporal logics dates back to the early 1990s (MTL [Koymans, 1990] and TCTL [Alur et al ., 1993]). Early research mainly focusses ondiscrete-time settings, as the standard verification problems in more natural and generaldense-timesettings are mostly undecidable, due to the fact that ‘punctual’ constraints can be used to encode computations of Turing machines [Alur and Henzinger, 1993] (a notable exception is the decidability of finite-word"
+    },
+    {
+      "page": 5,
+      "char_count": 3082,
+      "preview": "The rest of this paper is organised as follows. Sect. 2 provides necessary background on the syntax and semantics of MITPPL. Sect. 3 explains the compositional construction with a focus on the tester automata construction for past modalities. Sect. 4 explains the construction for MITL modalities with general ⟨l, r⟩intervals and the gadgets used for sequentialisation. Sect. 5 presents experimental results over a wide range of benchmarks, including both existing ones from the literature and severa"
+    },
+    {
+      "page": 6,
+      "char_count": 3724,
+      "preview": "•ρ, j|=P nJ (φ1, . . . φk) iff∃i k>ik−1>. . .>i1>js.t.∀1≤n≤k, τ in −τj∈J,ρ, in|=φn; and •ρ, j|= ← P nJ (φ1, . . . φk) iff∃i k<ik−1<. . .<i1<js.t.∀1≤n≤k, τ j−τin ∈J, andρ, in|=φn. We define thetimed languageof φ as JφK = {ρ|ρ, 1 |= φ}. The usual derived operators I (eventually), I (globally), ← I (past), ← I (globally in the past), (next) and ← (previous) are defined in terms ofU andSas follows: I φ≡ ⊤UI φ,□ I φ≡ ¬ I ¬φ, ← I φ≡ ⊤SI φ, ← I φ≡ ¬ ← I ¬φ, φ≡ ⊥U[0,∞) φ, ← φ≡ ⊥S[0,∞) φ. We also define "
+    },
+    {
+      "page": 7,
+      "char_count": 4258,
+      "preview": "Astateof A is a pair ( s, ν) consisting of a location s∈S , and a valuation ν for X. Arun r of A on a timed word (σ 1, τ1)(σ2, τ2)· · · ∈TΣω is an alternating sequence of states and transitions r= (s 0, ν0) (s0,σ1,g1,λ1,s1) − − − − − − − − − − →(s1, ν1) (s1,σ2,g2,λ2,s2) − − − − − − − − − − → · · · where (i) ν0 =0, and (ii) for each i≥ 0, there is a transition ( si, σi+1, gi+1, λi+1, si+1) ∈ ∆ such that νi + (τi+1 −τ i) |= gi+1 (let τ0 = 0) and νi+1 = (νi + (τi+1 −τ i))[λi+1 ← 0] (note that since"
+    },
+    {
+      "page": 8,
+      "char_count": 4169,
+      "preview": "In our exampleφ ′ isp φ ∧ (pφ =⇒pU [0,2) (pκ ∧s))∧ (pκ =⇒qU [3,5] r). In general, φ′ := φ∧ ^ {ψ=▽I (ϕ1,...,ϕn)∈Ψ} (pψ =⇒▽ I (ϕ1, . . . ,ϕn)). For each (pψ =⇒▽ I (. . .)), we construct a correspondingtester TAC ψ that accepts exactly those behaviors satisfying the constraint. That is, JCψK=J (pψ =⇒▽ I (ϕ1, . . . ,ϕn))K. Intuitively, these are called tester automata becauseC ψ tests at every position wherep ψ holds, whether the subformula ▽I (. . .) is satisfied or not. 2 In addition, we construct"
+    },
+    {
+      "page": 9,
+      "char_count": 4354,
+      "preview": "s0 s1 s2 s3 p1∧x= 0, x:= 0 p2∧x∈(1,2) p3∧x= 4, x:= 0 p4∧x= 5 (s0,1000) (s1,0010) (s1,0110) (s2,0001) (s3,0000)p1∧xu3 ≤4∧xl3 ≥4 xu1 := 0, xl1 = 0p1∧xu2 <2∧xl2 >1∧xu3 ≤4∧xl3 ≥4 xu1 := 0, xl1 = 0 p2, xl2 := 0 p2 xu2 := 0, xl2 := 0 p3∧xu4 ≤5∧xl4 ≥5 xu3 := 0, xl3 := 0 p4, xu4 := 0, xl4 := 0 Figure 2: A TA with finite-word acceptance condition (above) and the corresponding ‘reverse’ TA (below). The TA above has a single clock x and four transitions (numbered 1 to 4 from left to right), thus we have th"
+    },
+    {
+      "page": 10,
+      "char_count": 3890,
+      "preview": "guards on xu 3 , xl 3. Notice the resets of xu 1 , xl 1 on both transitions entering ( s0, 1000) corresponding to the guard onxon the transition (numbered 1) froms 0 tos 1. We now prove that JAKR is the reverse finite-word timed language of JAK. Consider a finite timed wordρ= (σ 1, τ1)(σ2, τ2)· · ·(σn, τn)∈JAKand a finite accepting run r= (s 0, ν0) δ1=(s0,σ1,g1,λ1,s1) − − − − − − − − − − − − →(s1, ν1) ··· − → · · · ··· − →(sn−1, νn−1) δn=(sn−1,σn,gn,λn,sn) − − − − − − − − − − − − − − − →(sn, νn)"
+    },
+    {
+      "page": 11,
+      "char_count": 3971,
+      "preview": "s0 s1 pψ,x:= 0 ¬pψ ¬pψ∧ϕ2∧x≥l ¬pψ∧ϕ1 pψ∧ϕ1,x:= 0 pψ∧ϕ2∧x≥l,x:= 0 Figure 3: The finite-word testerTAforϕ 1 U≥l ϕ2. s0 s1 ¬pψ ¬pψ∧ϕ2,x:= 0 ¬pψ∧ϕ1 pψ∧ϕ1∧x≥l pψ∧ϕ2,x≥l,x:= 0 pψ,x≥l Figure 4: The testerTAforϕ 1 S≥l ϕ2. For a given TA, the lemma above yields a reverse TA with a larger number of locations and more clocks in general. For our purpose, however, with a bit more care we can construct tester TAs of roughly the same sizes as their future counterparts, sometimes even smaller due to the simpler"
+    },
+    {
+      "page": 12,
+      "char_count": 3101,
+      "preview": "uses an individual clock. Compared with the simpler testerTAs in the previous subsection, there is one additional variation: we split pψ into individual triggers, each handled by one of the component TAs. For example if n = 4, we introduce four triggers p1 ψ, . . . , p4 ψ, and, as an extra optimisation, we enforce thatexactly oneof p1 ψ, . . . , p4 ψ is triggered when ψ is required to hold. A component TA of the tester TA for P n<u(ϕ1, ϕ2, ϕ3, ϕ4) is depicted in Fig. 5. Component TAs are identic"
+    },
+    {
+      "page": 13,
+      "char_count": 3354,
+      "preview": "• For jk < jk+1 <· · ·< jk+n (where k >0) and ik < ik+1 <· · ·< ik+n (where ik+ℓ is the minimal position with End(ik+ℓ) = jk+ℓ for ℓ∈ {0, . . . , n}), we must have ik+n ≥j k. Suppose to the contrary thati k+n < jk. Then, since rik (1 +i k+n −i k), rik+1 (1 +i k+n −i k+1), . . . , rik+n (1) are not all distinct (by the pigeonhole principle), we again have a contradiction with the fact that eachi k, ik+1, . . . , ik+n starts a shortest accepting run. Like the case of MITL modalities, we can obtain"
+    },
+    {
+      "page": 14,
+      "char_count": 2874,
+      "preview": "s0 s′0 s1 s2 s3 ¬p1ψ ¬p1ψ∧ ¬ϕ2 ¬p1ψ∧ ¬ϕ3 ¬p1ψ∧ ¬ϕ4p1ψ∧ϕ4∧x1 < u,x1 := 0 p1ψ,x1 := 0 ¬p1ψ∧ϕ1 ¬p1ψ∧ϕ2 ¬p1ψ∧ϕ3 ¬p1ψ∧ϕ4∧x1 < u Figure 5: A componentTAof the finite-word testerTAforP n <u(ϕ1, ϕ2, ϕ3, ϕ4). s0 s′0 s1 s2 s3 ¬p1ψ x1 < u ¬p1ψ∧ ¬ϕ2,x1 < u ¬p1ψ∧ ¬ϕ3,x1 < u ¬p1ψ∧ ¬ϕ4,x1 < u p1ψ,x1 < u ¬p1ψ∧ϕ1,x1 < u ¬p1ψ∧ϕ2,x1 < u ¬p1ψ∧ϕ3,x1 < u p1ψ∧ϕ4,x1 < u,x1 := 0 ¬p1ψ∧ϕ4,x1 := 0 Figure 6: A componentTAof the testerTAfor ← P n<u(ϕ1, . . . , ϕn). 4 General Time Intervals and Sequentialisation In this secti"
+    },
+    {
+      "page": 15,
+      "char_count": 2691,
+      "preview": "MITPPL, without going through Q2MLO as in [Ho and Madnani, 2025]. Recall from Sect. 2 that ϕ is obtained fromϕby replacing its temporal subformulae by the corresponding triggers. Lemma 9.Let ϕ1 U(k,k+1) ϕ2 be a subformula of the MITPPL formula φ, andΨbe the set of all temporal subformulae of φ. For all timed words ρ overΣ AP∪APΨ , positions i≥ 1, and ϕ≥1 ≡ ϕ2 ∧ (¬ϕ2 U≥1 ϕ2), we have ρ, i|=ϕ1U(k,k+1)ϕ2 ⇔ρ, i|= ϕ1U>kϕ2∧ _ ℓ∈{0,...,k+1} \u0012 P n<k+1(ϕ≥1, . . . , ϕ≥1 | {z } ℓ , ϕ2) V ¬P n≤k(ϕ≥1, . . .|"
+    },
+    {
+      "page": 16,
+      "char_count": 3044,
+      "preview": "•¬P n <k+1(ϕ≥1, . . . , ϕ≥1 | {z } ℓ ,¬ ϕ2) implies the same formulae with larger ℓ’s. That is, for any ρ, i, if ρ, i|=¬P n<k+1(ϕ≥1, . . . , ϕ≥1 | {z } x ,¬ ϕ2), thenρ, i|=¬P n<k+1(ϕ≥1, . . . , ϕ≥1 | {z } y ,¬ ϕ2) for anyy > x; •Symmetrically,P n ≤k(ϕ≥1, . . .| {z } ℓ , ϕ≥1) implies the same formulae with smallerℓ’s. Also note that ¬P n<k+1(ϕ≥1, . . . , ϕ≥1 | {z } ℓ ,¬ ϕ2) and P n≤k(ϕ≥1, . . .| {z } ℓ , ϕ≥1) cannot hold simultaneously for the sameℓ. It is then easy to adjust the indices to obtai"
+    },
+    {
+      "page": 17,
+      "char_count": 3878,
+      "preview": "τi τi+k−1 τi+k τi+k+ 1 ≥1 Figure 7: Case (1). Blue boxes are ϕ2-events. τi τi+k−1 τi+k τi+k+ 1 <1 <1 <1 Figure 8: Case (2). Blue boxes are ϕ2-events. Simplifying individual component automata.The whole purpose of the large disjunction in Lemma 9 is to ‘locate’ the last event where ϕ≥1 holds in τi + [0, k] and ensure either of the following is true (a similar observation holds forϕ 1 R⟨l,u⟩ ϕ2 and Lemma 10): 1. The next ϕ2 (which is≥1 away) is just inτ i + (k, k+ 1) (see Fig. 7); 2. The next ϕ2 i"
+    },
+    {
+      "page": 18,
+      "char_count": 2504,
+      "preview": "s0 s′0 s1 s2 ¬p1ψ∧ ¬q1ψ,x:= 0, y:= 0p1ψ∧ ¬q1ψ,x:= 0, y:= 0 ¬p1ψ∧ ¬q1ψ,x < u, y≤l p1ψ∧ ¬q1ψ,x < u, y≤l,y:= 0 p1ψ∧q1ψ∧ϕ,x < u, y > l,x:= 0, y:= 0 ¬p1ψ∧q1ψ∧ϕ,x < u, y > l,x:= 0, y:= 0 ¬p1ψ∧q1ψ∧ϕ,x < u, y≤l,x:= 0 ¬p1ψ∧ ¬q1ψ∧ ¬ϕ,x <(u−l), y≤l ¬p1ψ∧q1ψ∧ϕ,x <(u−l), y≤l,x:= 0 ¬p1ψ∧q1ψ∧ϕ,x <(u−l), y≤l,x:= 0 ¬p1ψ∧ ¬q1ψ∧ ¬ϕ,x <(u−l), y≤l p1ψ∧q1ψ∧ϕ,x <(u−l), y > l,x:= 0, y:= 0 p1ψ∧q1ψ∧ϕ,x <(u−l), y > l,x:= 0, y:= 0 ¬p1ψ∧q1ψ∧ϕ,x <(u−l), y > l,x:= 0, y:= 0 ¬p1ψ∧q1ψ∧ϕ,x <(u−l), y > l,x:= 0, y:= 0 Figure 9: A s"
+    },
+    {
+      "page": 19,
+      "char_count": 935,
+      "preview": "h1 e1 h2 e2 h3 e3 h4 e4 (p1ψ∨innull)∧ ¬q1ψ innull∧q1ψ p2ψ innull∧(outnull∨q1ψ) p2ψ∧ ¬q2ψ (p2ψ∨innull)∧ ¬q2ψ innull∧q2ψ p3ψ innull ∧ outnull∨q2ψ p3ψ∧ ¬q3ψ (p3ψ∨innull)∧ ¬q3ψinnull∧q3ψ p4ψ innull∧(outnull∨q3ψ) p4ψ∧ ¬q4ψ (p4ψ∨innull)∧ ¬q4ψ innull∧q4ψ p1ψ innull ∧ (outnull∨q4ψ) p1ψ∧ ¬q1ψ Figure 10:A in forn= 4. t1 f1 t2 f2 t3 f3 t4 f4 (outnull∨q1ψ)∧ ¬p4ψ (outnull∨q1ψ)∧p4ψ q1ψ (outnull∨q1ψ)∧(innull∨p4ψ) q1ψ∧(innull∨p4ψ) q1ψ∧p1ψ (outnull∨q2ψ)∧ ¬p1ψ (outnull∨q2ψ)∧p1ψ q2ψ (outnull∨q2ψ) ∧(innull∨p1ψ) q2ψ"
+    },
+    {
+      "page": 20,
+      "char_count": 4519,
+      "preview": "Comparison with MightyL.The construction for ϕ1 U⟨l,u⟩ ϕ2 in [Brihaye et al ., 2013, 2014] merges obligations and uses clock values to represent them. It does not distinguish the types of obligations, but the number of clocks it uses is roughly 4 n (where n = ⌊ u u−l ⌋ + 2). MightyL [Brihaye et al., 2017] uses only roughly 2 n clocks for ϕ1 U⟨l,u⟩ ϕ2, but it distinguishes different types of obligations (based on how the original obligations overlap with each other) and stores this information in"
+    },
+    {
+      "page": 21,
+      "char_count": 2972,
+      "preview": "Parser and Templates Component TAs Reachability Checker Product TA UPPAALLTSminTCheckerFixpoint DBM Formula φ Model TA TChecker Model UPPAAL Model Figure 13: MightyPPL architecture. An arrow from one box to another implies that the output of the source can be used as input for the destination. ‘symbolic execution’ (rather than ‘exhaustive testing’ as in MightyL). Alternatively, MightyPPL uses BDDs to synchronise transitions of tester / componentTAs into joint transitions in monolithicTAs. F orwa"
+    },
+    {
+      "page": 22,
+      "char_count": 3368,
+      "preview": "6. A model checking example on a ‘timed lamp’TAmodel, adapted from [Bersani et al., 2016]. 7. A model checking example on Fischer’s mutual exclusion protocol [Behrmann et al., 2006]. 8. The pinwheel scheduling problem [Holte et al., 1989], formulated as model checking. All the experiments were conducted on a desktop machine with an Intel i9-13900K CPU and 64GB memory. To demonstrate the versatility of MightyPPL, we make use of various back-ends includingUppaal (v4.1.19 rev. 5648),LTSmin( v3.0.2-"
+    },
+    {
+      "page": 23,
+      "char_count": 1902,
+      "preview": "Table 1: Execution times on the MightyL benchmarks. MightyPPL is used with --noflatten. Times are in seconds. ‘TO’ indicates timeouts (300s) and ‘ERR’ means out-of-memory errors. MightyL opaalltsmin MightyL verifyta -b MightyL verifyta -d MightyPPL opaalltsmin MightyPPL verifyta -b MightyPPL verifyta -dFormula F\u00005,[0,∞)\u0001 2.058 0.057 0.043 1.428 0.004 0.004 F\u00005,[0,2]\u0001 1.847 0.053 0.043 1.438 0.005 0.004 F\u00005,[2,∞)\u0001 2.143 0.069 0.057 1.554 0.010 0.007 F\u00002,[1,2]\u0001 76.575 0.949 0.929 1.474 0.022 0.020"
+    },
+    {
+      "page": 24,
+      "char_count": 2578,
+      "preview": "Figure 14: MightyL benchmarks with opaal ltsmin as the back- end. Figure 15: MightyL benchmarks with verifyta -b as the back- end. Figure 16: MightyL benchmarks with verifyta -d as the back- end. φ1 . . . φ10 chosen from this suite and modified by adding time intervals: φ1 = (( [0,2]( p))∧( ( a)))∨(¬( [0,2]( p))∧ ¬( ( a))), φ2 = ((¬( (2,∞) p)∨( [0,2] q))∧( ( a)))∨(¬(¬( (2,∞) p)∨( [0,2] q))∧ ¬( ( a))), φ3 = ((( ( [1,2] p))∨( ( [1,2] q))∨( ( [1,2] r)))∧( ( (a))))∨ (¬(( ( [1,2] p))∨( ( [1,2] q))∨( "
+    },
+    {
+      "page": 25,
+      "char_count": 2510,
+      "preview": "Table 2: Execution times on the Acacia benchmarks. Times are in seconds. ‘TO’ indicates timeouts (300s). MightyPPL tck --inf comp MightyPPL tck --inf flat MightyPPL fp --infφSat? φ1 ✓0.013 0.035 0.027 φ2 ✓0.012 0.056 0.041 φ3 ✓0.507 TO 254.192 φ4 ✓0.369 TO TO φ5 ✗TO TO TO φ6 ✓0.016 0.146 0.122 φ7 ✓2.951 TO TO φ8 ✓0.203 TO TO φ9 ✓17.015 TO TO φ10 ✓16.614 TO TO the finite- and infinite-word satisfiability of the following formulae: φ′ 1 = [0,20] p1 ∧ ¬( [0,30] p1), φ′ 2 =¬ \u0000 (p1 =⇒p 1 ∧ [0,20] p1)"
+    },
+    {
+      "page": 26,
+      "char_count": 2415,
+      "preview": "Table 4: Execution times on the specification debugging benchmarks. Times are in seconds. ‘TO’ indicates timeouts (300s). MightyPPL tck --inf comp MightyPPL tck --inf flat MightyPPL fp --inf MightyPPL tck --fin comp MightyPPL tck --fin flat MightyPPL fp --finFormula φ′1 0.015 0.009 0.005 0.013 0.008 0.003 φ′2 0.012 0.012 0.008 0.008 0.008 0.004 φ′3 0.016 0.011 0.006 0.008 0.008 0.004 φ′4 0.043 0.023 0.015 0.010 0.013 0.006 φ′5 TO 15.833 15.249 0.301 0.461 0.350 φ′6 0.284 0.585 1.450 0.046 0.227 "
+    },
+    {
+      "page": 27,
+      "char_count": 3099,
+      "preview": "of order), we also require that the food must be fresh (delivery is within 10 minutes of pickup). These constraints are most naturally expressed in unilateral fragment of TPTL [Alur and Henzinger, 1994], known asUPTL[Krishna et al., 2023; Ho et al., 2025]: ϕ(K, L) =x. (K∧y. (L∧x <15∧y <10)). By [Ho et al ., 2025], there is an equivalent MITPPL formula for any UPTL formula. In this case ϕ(K, L) is equivalent to ϕ′(K, L) =P n[0,15](K∧ [0,10] L, L). We can now pose the planning problem—given a map "
+    },
+    {
+      "page": 28,
+      "char_count": 2553,
+      "preview": "Table 6: Execution times on the food delivery benchmarks. Times are in seconds. ‘TO’ indicates timeouts (300s). MightyPPL tck --fin comp MightyPPL tck --fin flat MightyPPL fp --finK L(l, u) Hold? P L1 (3,5)✗6.558 2.440 15.751 P L1 (8,10)✗1.489 2.244 147.426 P L1 (10,12)✗1.415 2.214 53.940 P L1 (15,20)✗1.096 2.166 102.728 P L2 (3,5)✓1.241 2.354 0.863 P L2 (8,10)✗1.812 2.384 43.537 P L2 (10,12)✓0.791 4.982 1.725 P L2 (15,20)✗1.127 2.312 70.684 B L1 (3,5)✗6.082 2.437 TO B L1 (8,10)✗1.634 2.152 173."
+    },
+    {
+      "page": 29,
+      "char_count": 2670,
+      "preview": "•α ′ 3 = V i \u0000 (csi =⇒ ¬P n[0,11](csi,cs i)) \u0001 : No process i can enter the critical section more than three times within any 11 time units window. This does not hold as a process can delay for 0 time units inℓ idle andℓ req, for exactly 5.1 time units inℓ wait, and repeat this pattern. •α ′ 4 = V i \u0000 (csi =⇒ ¬P n[0,10](csi,cs i)) \u0001 : Same as θ3 but with 10 time units windows. This holds as any process must take>5 time units fromℓ wait toℓ cs. •α ′ 5 = V i \u0000 (reqi =⇒ [0,10] csi) \u0001 : Every reques"
+    },
+    {
+      "page": 30,
+      "char_count": 3533,
+      "preview": "Table 9: Execution times on the pinwheel scheduling benchmarks. Times are in seconds. Numbers in the heading are numbers of parallel threads. ‘TO’ indicates timeouts (300s). Hold? MightyPPL tck --inf comp MightyPPL tck --inf flat MightyPPL fp --inf MightyPPL opaalltsmin flat φ 1 2 4 8 16 32 (3,4,5,7)✓1.400 0.112 0.821 0.048 0.033 0.040 0.066 0.152 0.407 (3,4,5,8)✗0.190 0.093 1.745 0.020 0.041 0.038 0.070 0.158 0.405 (2,7,9,9,16)✓TO 1.956 13.870 1.303 0.706 0.407 0.293 0.388 0.583 (2,7,9,10,16)✗5"
+    },
+    {
+      "page": 31,
+      "char_count": 3664,
+      "preview": "Rajeev Alur, Limor Fix, and Thomas A Henzinger. 1999. Event-clock automata: A determinizable class of timed automata.Theoretical Computer Science211, 1-2 (1999), 253–273. Rajeev Alur and Thomas A. Henzinger. 1992a. Back to the Future: Towards a Theory of Timed Regular Languages. In33rd Annual Symposium on Foundations of Computer Science, Pittsburgh, Pennsylvania, USA, 24-27 October 1992. IEEE Computer Society, 177–186. doi:10.1109/SFCS.1992.267774 Rajeev Alur and Thomas A. Henzinger. 1992b. Logi"
+    },
+    {
+      "page": 32,
+      "char_count": 3688,
+      "preview": "Thomas Brihaye, Gilles Geeraerts, Hsi-Ming Ho, and Benjamin Monmege. 2017. MightyL: A Compositional Translation from MITL to Timed Automata. InComputer Aided Verification - 29th International Conference, CA V 2017, Heidelberg, Germany, July 24-28, 2017, Proceedings, Part I (Lecture Notes in Computer Science, Vol. 10426), Rupak Majumdar and Viktor Kuncak (Eds.). Springer, 421–440. doi:10.1007/978-3-319-63387-9_21 Jerry R Burch, Edmund M Clarke, Kenneth L McMillan, David L Dill, and Lain-Jinn Hwan"
+    },
+    {
+      "page": 33,
+      "char_count": 3704,
+      "preview": "Paul Gastin and Denis Oddoux. 2003. LTL with Past and Two-Way Very-Weak Alternating Automata. InMathematical Foundations of Computer Science 2003, 28th International Symposium, MFCS 2003, Bratislava, Slovakia, August 25-29, 2003, Proceedings (Lecture Notes in Computer Science, Vol. 2747), Branislav Rovan and Peter Vojt´ as (Eds.). Springer, 439–448. doi:10.1007/978-3-540-45138-9_38 Marc Geilen. 2003. An improved on-the-fly tableau construction for a real-time temporal logic. In Computer Aided Ve"
+    },
+    {
+      "page": 34,
+      "char_count": 3524,
+      "preview": "Robert Holte, Aloysius Mok, Louis Rosier, Igor Tulchinsky, and Donald Varvel. 1989. The pinwheel: A real-time scheduling problem. InProceedings of the 22nd Hawaii International Conference of System Science. 693–702. Gerard J. Holzmann. 1997. The Model Checker SPIN.IEEE Trans. Software Eng.23, 5 (1997), 279–295. doi:10.1109/32.588521 Gerard J Holzmann, Patrice Godefroid, and Didier Pirottin. 1992. Coverage preserving reduction strategies for reachability analysis. InProtocol Specification, Testin"
+    },
+    {
+      "page": 35,
+      "char_count": 3686,
+      "preview": "Claudio Menghi, Christos Tsigkanos, Thorsten Berger, and Patrizio Pelliccione. 2019. PsALM: specification of dependable robotic missions. InProceedings of the 41st International Conference on Software Engineering: Companion Proceedings(Montreal, Quebec, Canada)(ICSE ’19). IEEE Press, 99–102. doi:10.1109/ICSE-Companion.2019.00048 Claudio Menghi, Christos Tsigkanos, Thorsten Berger, Patrizio Pelliccione, and Carlo Ghezzi. 2018. Poster: Property Specification Patterns for Robotic Missions. In2018 I"
+    },
+    {
+      "page": 36,
+      "char_count": 1072,
+      "preview": "Antti Valmari. 1993. On-the-fly verification with stubborn sets. InInternational Conference on Computer Aided Verification. Springer, 397–408. Moshe Y. Vardi. 1995. An Automata-Theoretic Approach to Linear Temporal Logic. InLogics for Concurrency - Structure versus Automata (8th Banff Higher Order Workshop, Banff, Canada, August 27 - September 3, 1995, Proceedings) (Lecture Notes in Computer Science, Vol. 1043), Faron Moller and Graham M. Birtwistle (Eds.). Springer, 238–266. doi:10.1007/3-540-6"
+    },
+    {
+      "page": 37,
+      "char_count": 720,
+      "preview": "A TesterTAforϕ 1 U≥l ϕ2 s0 s1 s2 pψ,x:= 0 ¬pψ,x:= 0 ¬pψ∧ϕ2∧x≥l,x:= 0 ¬pψ∧ϕ1∧ ¬ϕ2 ¬pψ∧ϕ1∧x < l pψ∧ϕ1∧ ¬ϕ2,x:= 0 pψ∧ϕ1∧x < l,x:= 0 ¬pψ∧ϕ1∧ϕ2 pψ∧ϕ1∧ϕ2,x:= 0 pψ∧ϕ2∧x≥l,x:= 0 ¬pψ∧ϕ2∧x≥l,x:= 0 ¬pψ∧ϕ1∧ ¬ϕ2 ¬pψ∧ϕ1∧x < l pψ∧ϕ1∧ ¬ϕ2,x:= 0 pψ∧ϕ1∧x < l,x:= 0 ¬pψ∧ϕ1∧ϕ2 pψ∧ϕ1∧ϕ2,x:= 0 pψ∧ϕ2∧x≥l,x:= 0 Figure 18: The testerTAforϕ 1 U[l,∞) ϕ2. B ComponentTAs for past modalities s0 s1 ¬pψ,x:= 0 ¬pψ∧ϕ2,x:= 0 ϕ1∧ ¬ϕ2,x < u pψ∧ϕ2,x < u,x:= 0 pψ x < u,x:= 0 Figure 19: The testerTAforϕ 1 S[0,u) ϕ2. s0 s1 s2 ¬pψ,x:= 0 "
+    },
+    {
+      "page": 38,
+      "char_count": 595,
+      "preview": "s0 s1 s2 ¬pψ,x:= 0 ¬pψ∧ϕ1∧ϕ2,x:= 0 ¬pψ∧ϕ1,x:= 0 ¬ϕ1∧ϕ2 pψ∧ϕ1∧ϕ2,x > l,x:= 0¬ϕ1,x:= 0 pψ∧ϕ1,x > l,x:= 0 ¬ϕ1,x≤l pψ∧ ∧ϕ1,x≤l,x:= 0 pψ,x≤l,x:= 0 pψ∧ϕ1∧ϕ2,x≤l,x:= 0pψ,x > l,x:= 0 Figure 21: The testerTAforϕ 1 T(l,∞) ϕ2. s0 s′0 s1 s2 s3 ¬p1ψ,x1:= 0 p1ψ,x1≥u,x1:= 0 ¬p1ψ∧χ1 p1ψ∧χ1,x1≥u ¬p1ψ∧χ2 p1ψ∧χ2,x1≥u ¬p1ψ∧χ3 p1ψ∧χ3,x1≥u ¬p1ψ∧χ4 p1ψ∧χ4,x1≥u ¬p1ψ∧ ¬χ1 p1ψ∧ ¬χ1,x1≥u ¬p1ψ∧ ¬χ2 p1ψ∧ ¬χ2,x1≥u ¬p1ψ∧ ¬χ3 p1ψ∧ ¬χ3,x1≥u ¬p1ψ,x1:= 0 ¬p1ψ,x1:= 0 ¬p1ψ,x1:= 0 ¬p1ψ,x1:= 0 p1ψ,x1≥u,x1:= 0 p1ψ,x1≥u,x1:= 0 p1ψ,x1≥u"
+    }
+  ]
+}

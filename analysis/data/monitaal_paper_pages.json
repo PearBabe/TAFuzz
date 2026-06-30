@@ -1,0 +1,102 @@
+{
+  "path": "/mnt/c/Users/lqq27/Zotero/storage/IKF2LXSD/Cimatti 等 - 2025 - Exploiting assumptions for effective monitoring of real-time properties under partial observability.pdf",
+  "name": "Cimatti 等 - 2025 - Exploiting assumptions for effective monitoring of real-time properties under partial observability.pdf",
+  "page_count": 19,
+  "pages": [
+    {
+      "page": 1,
+      "char_count": 2365,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties Under Partial Observability Alessandro Cimatti1 , Thomas M. Grosen2(B) , Kim G. Larsen2 , Stefano Tonetta1 , and Martin Zimmermann2 1 Fondazione Bruno Kessler, Trento, Italy {cimatti,tonettas}@fbk.eu 2 Aalborg University, Aalborg, Denmark {tmgr,kgl,mzi}@cs.aau.dk Abstract. Runtime veriﬁcation of temporal properties over timed sequences of observations is crucial in various applications within cyber- physical systems ranging f"
+    },
+    {
+      "page": 2,
+      "char_count": 3163,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 71 including autonomous vehicles and beyond. While diﬀerent solutions for run- time veriﬁcation of timed temporal properties have been presented [4–6,20,22], some challenges remain to be addressed, in particular extending these solutions with prognosis and diagnosis capabilities. More speciﬁcally, we are here inter- ested in eﬀectively predicting in advance the failure of properties and in handling partially observable system"
+    },
+    {
+      "page": 3,
+      "char_count": 3232,
+      "preview": "72 A. Cimatti et al. can output a ⊤ verdict even before time 20, for instance at time 10 when b is false in the interval [0, 10] and a is true at time 10. Further, it can even give the verdict ⊤ if b is not observable, e.g., when a is true at time 0 and 10. One of our main contributions is a rich deﬁnition of observations that take into account both data and time uncertainty. As in [ 15], the observations are represented by formulas that can capture the uncertainty on data. For example, ¬a means"
+    },
+    {
+      "page": 4,
+      "char_count": 2661,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 73 deﬁned iﬀ t ≥ τ (ρ1). Then, we deﬁne ρ1 ·t ρ2 =( σ1,τ 1)(σ2,τ 2)··· such that σi = { σ1 i if i ≤ n σ2 i−n else and τi = { τ 1 i if i ≤ n τ 2 i−n + t else. We lift this deﬁnition to sets L1 ⊆ TΣ ∗ and L2 ⊆ TΣ ∗ ∪ TΣ ω via L1 ·t L2 = {ρ1 ·t ρ2 | ρ1 ∈ L1 and ρ2 ∈ L2}, provided we have t ≥ τ (L1). Timed Automata. A timed Büchi automaton (TBA) B =( Q, Q0,Σ,C,Δ , F) consists of a ﬁnite alphabet Σ, a ﬁnite set Q of locations, a s"
+    },
+    {
+      "page": 5,
+      "char_count": 1879,
+      "preview": "74 A. Cimatti et al. true = p ∨¬ p, false = ¬true, ϕ ∧ ψ = ¬(¬ϕ ∨¬ ψ), ϕ → ψ = ¬ϕ ∨ ψ, FIϕ = true UIϕ,a n dGIϕ = ¬FI¬ϕ. The semantics of MITL is deﬁned over inﬁnite timed words. Given such a timed word ρ =( σ1,τ 1)(σ2,τ 2)··· ∈ TΣ ω, a position i ≥ 1,a n da nM I T L formula ϕ, we inductively deﬁne the satisfaction relation ρ, i|= ϕ as follows: – ρ, i|= p iﬀ p = σi. – ρ, i|= ¬ϕ iﬀ ρ, i̸|= ϕ. – ρ, i|= ϕ ∨ ψ if ρ, i|= ϕ or ρ, i|= ψ. – ρ, i|= XIϕ iﬀ ρ, (i +1 ) |= ϕ and τi+1 − τi ∈ I. – ρ, i|= ϕU Iψ "
+    },
+    {
+      "page": 6,
+      "char_count": 2375,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 75 assumption can be invalidated if we observe an execution preﬁx that is not consistent with our assumption. This requires a new verdict, denoted by ×.I n this case, the assumption needs to be reﬁned as it does not match our observation. Secondly, we allow inexact observations: In the classical setting, we observe a ﬁnite timed word (σ1,τ 1)··· (σn,τn) and reason about its possible extensions. Hence, we implicitly presume th"
+    },
+    {
+      "page": 7,
+      "char_count": 2387,
+      "preview": "76 A. Cimatti et al. – ρ2 is a (possibly empty) ﬁnite timed word (b, t2,1)··· (b, t2,n2 ) with t2,j ∈ [t1,t 2] for all 1 ≤ j ≤ n2,a n d – ρ3 is a (possibly empty) ﬁnite timed word (b, t3,1)··· (b, t3,n3 ) with t3,j ∈ [t2, 30] for all 1 ≤ j ≤ n3. Without assumptions we cannot have any conclusive verdict, because we do not know if a “ b” occurred before timepoint 20 or not. But with the assump- tion from the previous example, we can conclude at time 16 that the property is true: – ρ0 must be empty"
+    },
+    {
+      "page": 8,
+      "char_count": 2545,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 77 We begin by introducing the assumption and observations. The former is given by a TBA, which we typically denote by A to distinguish it from other TBA. Thus, letA =( Q, Q0,Σ,C,Δ , F) be a TBA, i.e., Q is the set of locations, Σ is the alphabet, and C is the set of clocks. Recall thatG(C) denotes the clock constraints over C, i.e., conjunctions of atomic constraints of the form c ∼ n, where c ∈ C is a clock,n ∈ N0,a n d∼∈{ "
+    },
+    {
+      "page": 9,
+      "char_count": 2505,
+      "preview": "78 A. Cimatti et al. we can deﬁne h as follows: h(1) = 1,h (2) = 3,h (3) = 5. For the run preﬁx r =( q0,y =0 ) (a,0) −→ (q1,y =0 ) (a,6) −→ (q1,y =0 ) (b,15) −→ (q2,y =9 ) (a,16) −→ (q2,y = 10) we can deﬁne the function h as follows: h(1) = 1 ,h (2) = 3 ,h (3) = 4 ,h (4) = 5 . Finally, the run preﬁx r =( q0,y =0 ) (a,0) −→ (q1,y =0 ) (a,6) −→ (q1,y =0 ) (a,15) −→ (q2,y =9 ) (a,16) −→ (q2,y = 10) is the preﬁx of a run of A but it is not compatible with the observation o.I n fact, any h satisfying"
+    },
+    {
+      "page": 10,
+      "char_count": 2511,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 79 Proposition 2 ( [20]). Sne B can be computed using a zone-based algorithm. We continue by capturing the set of states of a TBA that can be reached by processing a ﬁnite timed word. In the following deﬁnition, we write (q0,v 0) ρ −→B (qn,vn) for a ﬁnite timed word ρ =( σ, τ) ∈ TΣ ∗ to denote the existence of a ﬁnite sequence of states (q0,v 0) (σ1,τ1 ) −→ (q1,v 1) (σ2,τ2) − → ··· (σn,τn ) −→ (qn,vn) where for all1 ≤ i ≤ n t"
+    },
+    {
+      "page": 11,
+      "char_count": 2527,
+      "preview": "80 A. Cimatti et al. represents the assumption), we can compute the reach-set of the set CA(o) in the product B⊗A , for any given TBA B, i.e., we compute the words consistent with the observation o in the TBA A (the assumption), while the reach-set of that language is computed inB⊗A (this will later be the product of the property (or its negation) and the assumption). Lemma 1. Fix TBA A,B. There is a zone-based online algorithm computing TB⊗A(CA((φ1,I 1,m 1)··· (φn,In,mn)),t ) for every rational"
+    },
+    {
+      "page": 12,
+      "char_count": 2435,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 81 2. Compute TB¬ϕ⊗A(CA(o),t ). If it has an empty intersection with Sne B¬ϕ⊗A, then return ⊤: If there is a ﬁnite word consistent with the observation that can be extended to satisfy the assumption, but no such extension satisﬁes the complement of the property, then every such extension must satisfy the property. Hence, we can return ⊤. 3. Compute TBϕ⊗A(CA(o),t ). If it has an empty intersection with Sne Bϕ⊗A,t h e n return "
+    },
+    {
+      "page": 13,
+      "char_count": 2940,
+      "preview": "82 A. Cimatti et al. Task Sequence. We ﬁrst experiment with a system under monitoring that pro- duces a ﬁnite sequence of events a1,...,a k.E a c hai,w i t h1 ≤ i<k , is followed by ai+1 with a time within the interval [li,ui]. The assumption is formalized by t h eT B As h o w ni nF i g .3. The domain is parameterized on k,a n dt h eli and ui. Further, depending on the experiment, not all theai will be observable. We con- sider the bounded response propertyG(a1 → F[0,B]ak). Suppose that we obser"
+    },
+    {
+      "page": 14,
+      "char_count": 1731,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 83 Fig. 4. Response time of the moni- toring implementation, when mon- itoring the task sequence exam- ple with {ai | i ∈{ 21,..., 40}∪ {61,..., 80}} being unobservable. Ta b l e 1 .Verdict distribution for monitoring the task sequence example a thousand times withk = 10, B = 675, li =5 0 and ui = 100 for all i,w i t h and without assumption. Each row speciﬁes the number of times each verdict is given after an observation. Ob"
+    },
+    {
+      "page": 15,
+      "char_count": 2736,
+      "preview": "84 A. Cimatti et al. The ﬁrst stop happens at a time between 8 and 10, thus between 7 and 9 time units after the ﬁrst start. This is compatible with both a nominal (with stop occurring between times 9 and 10) and a faulty execution (with stop occurring between times 8 and 9): after the ﬁrst stop, we do not know if there was a fault. The second start happens in the time interval [10, 12] and has the same uncertainty: it is consistent with the nominal behavior ifstart actually occurred in [11, 12]"
+    },
+    {
+      "page": 16,
+      "char_count": 3322,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 85 algorithms for LTL and timed LTL. Their algorithm for timed LTL is based on clock regions [2], while we follow the approach of Grosen et al. [20] and use clock zones [8], whose performance is an order of magnitude faster. Also, they trans- lated timed LTL into event-clock automata, which are less expressive than the timed Büchi automata (TBA) used both by Grosen et al. [ 20] and here. This approach has also been applied to"
+    },
+    {
+      "page": 17,
+      "char_count": 3264,
+      "preview": "86 A. Cimatti et al. We provided an eﬀective zone-based algorithm to compute the states that can be reached with such an observation sequence considering a property speciﬁed in MITL and an assumption as a TBA. Thus, such a computation can be used for online monitoring of timed properties under assumptions. The algorithm was implemented on top of UPPAAL and experimented with a few examples to show the feasibility of the approach. For future work, further investigation is needed to check the scala"
+    },
+    {
+      "page": 18,
+      "char_count": 3450,
+      "preview": "Exploiting Assumptions for Eﬀective Monitoring of Real-Time Properties 87 14. Cimatti, A., Tian, C., Tonetta, S.: Assumption-based runtime veriﬁcation of inﬁnite-state systems. In: Feng, L., Fisman, D. (eds.) RV 2021. LNCS, vol. 12974, pp. 207–227. Springer, Cham (2021). https://doi.org/10.1007/978-3-030-88494- 9_11 15. Cimatti, A., Tian, C., Tonetta, S.: Assumption-based runtime veriﬁcation. Formal Methods Syst. Des. 60(2), 277–324 (2022) 16. Donzé, A., Ferrère, T., Maler, O.: Eﬃcient robust mo"
+    },
+    {
+      "page": 19,
+      "char_count": 895,
+      "preview": "88 A. Cimatti et al. 29. Ulus, D., Ferrère, T., Asarin, E., Maler, O.: Timed pattern matching. In: Legay, A., Bozga, M. (eds.) FORMATS 2014. LNCS, vol. 8711, pp. 222–236. Springer, Cham (2014). https://doi.org/10.1007/978-3-319-10512-3_16 30. Ulus, D., Ferrère, T., Asarin, E., Maler, O.: Online timed pattern matching using derivatives. In: Chechik, M., Raskin, J.-F. (eds.) TACAS 2016. LNCS, vol. 9636, pp. 736–751. Springer, Heidelberg (2016). https://doi.org/10.1007/978-3-662-49674- 9_47 31. Wag"
+    }
+  ]
+}

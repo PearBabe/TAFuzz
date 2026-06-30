@@ -1,6 +1,6 @@
 # TAFuzz Project State
 
-Last updated: 2026-06-26 09:45 CST
+Last updated: 2026-06-26 13:49 CST
 
 ## Current Goal
 
@@ -8,6 +8,9 @@ Maintain a lightweight Codex handoff system for `/home/lqq/download/TAFuzz`
 and keep the published GitHub snapshot recoverable: the full source workspace,
 including handoff files, has been published to `PearBabe/TAFuzz` on `main`.
 Future publishes should use the local Codex skill `publish-tafuzz`.
+
+The latest completed task added a static Chinese HTML analysis report mapping
+the MightyPPL and MoniTAal papers to the current code worktrees.
 
 ## Current Workspace Shape
 
@@ -33,6 +36,10 @@ Future publishes should use the local Codex skill `publish-tafuzz`.
   - `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/SKILL.md`
   - script:
     `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh`
+- Analysis artifacts:
+  - `/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html`
+  - `/home/lqq/download/TAFuzz/analysis/scripts/generate_paper_code_report.py`
+  - `/home/lqq/download/TAFuzz/analysis/data/`
 - Required relative layout for the current build wiring:
 
 ```text
@@ -100,7 +107,28 @@ Meaning:
 
 ## Verification Status
 
-Latest verification completed on 2026-06-26 09:45 CST:
+Latest verification completed on 2026-06-26 13:49 CST:
+
+- Generated
+  `/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html`
+  from the two local Zotero PDFs and the current `tool/MightyPPL` /
+  `tool/MoniTAal` worktrees.
+- Generated intermediate review data under `/home/lqq/download/TAFuzz/analysis/data/`:
+  compact PDF page previews, paper section page map, code inventory, mapping
+  summary, and status snapshot.
+- Verified all JSON files in `analysis/data/` parse successfully.
+- Verified the HTML contains required sections/keywords:
+  `MightyPPL 专章`, `MoniTAal 专章`, `整体工作流`, `pipeline`,
+  `monitor loop`, `覆盖矩阵`, `缺口、偏差`, `论文未覆盖但代码存在`,
+  and `未重新验证`.
+- Verified the HTML is self-contained for offline reading: 72 local TAFuzz
+  links, 0 external URLs, 0 `<script>` tags, and 3 inline SVG diagrams.
+- `/home/lqq/download/TAFuzz/tool/MightyPPL/build/mitppl --help` printed usage
+  and exited `1`, which is expected when no spec file is supplied.
+- Skipped full spec-based semantic tests and paper experiment reproduction;
+  the report explicitly records those as not re-run.
+
+Previous verification completed on 2026-06-26 09:45 CST:
 
 - Created and validated the local Codex skill `publish-tafuzz`.
 - `bash -n` passed for
@@ -158,14 +186,20 @@ Earlier build verification completed on 2026-06-26 09:05 CST:
 
 1. When starting a new non-trivial task, read `AGENTS.md`, this file, and
    `.codex/SESSION_LOG.md` first.
-2. To rebuild after MoniTAal edits, run:
+2. To review the paper-code mapping report, open:
+
+```text
+/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html
+```
+
+3. To rebuild after MoniTAal edits, run:
 
 ```bash
 cd /home/lqq/download/TAFuzz/tool/MightyPPL/build
 cmake --build . -j2
 ```
 
-3. To publish again, run:
+4. To publish again, run:
 
 ```bash
 /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh -m "Update TAFuzz workspace"
@@ -173,4 +207,4 @@ cmake --build . -j2
 
 ## Recovery Prompt
 
-请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；完整源码和交接文件已通过 /home/lqq/download/TAFuzz_publish_main 发布到 PearBabe/TAFuzz 的 main 分支；后续上传优先使用本地 Codex skill /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz；不要重新从头探索，不要回滚用户改动。
+请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；论文-代码映射报告在 /home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html，生成脚本在 /home/lqq/download/TAFuzz/analysis/scripts/generate_paper_code_report.py；完整源码和交接文件已通过 /home/lqq/download/TAFuzz_publish_main 发布到 PearBabe/TAFuzz 的 main 分支；后续上传优先使用本地 Codex skill /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz；不要重新从头探索，不要回滚用户改动。

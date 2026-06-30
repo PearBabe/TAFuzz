@@ -83,3 +83,30 @@
 - Next: after editing TAFuzz, run
   `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh -m
   "Update TAFuzz workspace"` from anywhere under the source tree.
+
+## 2026-06-26 13:49 CST
+
+- Goal: generate a Chinese static HTML report mapping the MightyPPL and
+  MoniTAal papers to the current code worktrees under `tool/`.
+- Work completed: added
+  `analysis/scripts/generate_paper_code_report.py`, generated
+  `analysis/mightyppl_monitaal_paper_code_report.html`, and wrote supporting
+  compact PDF/page, code inventory, mapping summary, and status JSON files under
+  `analysis/data/`.
+- Report coverage: includes project overview, MightyPPL paper-code chapter,
+  MoniTAal paper-code chapter, cross-repo reuse mapping, gaps/engineering
+  deviations, file inventory, verification notes, inline SVG diagrams, and
+  local code links with line anchors.
+- Verification: `python3 -m py_compile` passed for the generator; regenerating
+  the report succeeded; every JSON file in `analysis/data/` parsed
+  successfully; the final HTML contained the required section keywords; it had
+  72 local TAFuzz links, 0 external URLs, 0 `<script>` tags, and 3 inline SVGs;
+  `tool/MightyPPL/build/mitppl --help` printed usage and exited `1` as
+  expected without a spec file.
+- Blockers / skipped checks: no full spec-based semantic test and no full paper
+  experiment reproduction were run; the report marks these as not re-run.
+- Next: open
+  `/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html`
+  in a browser for reading, or rerun
+  `python3 /home/lqq/download/TAFuzz/analysis/scripts/generate_paper_code_report.py`
+  after code/PDF changes.

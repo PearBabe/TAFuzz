@@ -1,0 +1,224 @@
+{
+  "mighty_map": [
+    {
+      "paper": "摘要/第1节：工具目标是把 MITPPL 公式翻译到 TA，并服务 satisfiability/model checking。页 1, 1",
+      "status": "已实现",
+      "analysis": "命令行从公式文件读入，ANTLR 解析后构建 TA；无输出文件时直接调用 MoniTAal/PARDIBAAL 风格的 backward fixpoint。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L325\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:325</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L333\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:333</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L350\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:350</a>"
+      ]
+    },
+    {
+      "paper": "第2.1节：MITL with past and Pnueli modalities 的语法与语义。页 5",
+      "status": "已实现",
+      "analysis": "语法层覆盖 F/G/U/R、O/H/S/T、Fn/On/Gn/Hn 与计数风格变体；visitor 链负责类型检查、NNF 转换、编号和 BDD 标签提取。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/Mitl.g4#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/Mitl.g4:1</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MitlTypingVisitor.h#L16\">/home/lqq/download/TAFuzz/tool/MightyPPL/MitlTypingVisitor.h:16</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MitlToNNFVisitor.cpp#L250\">/home/lqq/download/TAFuzz/tool/MightyPPL/MitlToNNFVisitor.cpp:250</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MitlAtomNumberingVisitor.cpp#L68\">/home/lqq/download/TAFuzz/tool/MightyPPL/MitlAtomNumberingVisitor.cpp:68</a>"
+      ]
+    },
+    {
+      "paper": "第2.2节：Timed Automata 基础。页 6",
+      "status": "工程化替代",
+      "analysis": "MightyPPL 自身扩展 TA 为带 BDD 边标签的 TAwithBDDEdges；普通 TA/zone/fixpoint 由 MoniTAal 与 PARDIBAAL 承担。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.h#L62\">/home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.h:62</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.cpp#L8\">/home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.cpp:8</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/TA.h#L79\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/TA.h:79</a>"
+      ]
+    },
+    {
+      "paper": "第2.3节：compositional translation。页 7",
+      "status": "已实现",
+      "analysis": "每个 temporal atom 生成一个或多个 tester/component TA，随后根据 noflatten/compflatten/flatten 模式输出或做同步积。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL.cpp#L748\">/home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL.cpp:748</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL.cpp#L825\">/home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL.cpp:825</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.cpp#L43\">/home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.cpp:43</a>"
+      ]
+    },
+    {
+      "paper": "第3.1节：past MITL unilateral intervals 的 tester automata。页 8",
+      "status": "已实现",
+      "analysis": "past operators 用 Once/Historically/Since/Trigger 独立文件实现；future operators 用 Finally/Globally/Until/Release 形成对称结构。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/Once.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/Once.cpp:6</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/Historically.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/Historically.cpp:6</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/Since.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/Since.cpp:6</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/Trigger.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/Trigger.cpp:6</a>"
+      ]
+    },
+    {
+      "paper": "第3.2节：Pnueli modalities tester automata。页 11",
+      "status": "已实现",
+      "analysis": "Fn/On/Gn/Hn 分别有构造文件；实现使用 bit-vector/BDD 编码 obligations、in/out 状态，并生成顺序化辅助 automata。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliFn.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliFn.cpp:6</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliOn.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliOn.cpp:6</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliGn.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliGn.cpp:6</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliHn.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliHn.cpp:6</a>"
+      ]
+    },
+    {
+      "paper": "第4节：general intervals 与 sequentialisation。页 14",
+      "status": "部分实现",
+      "analysis": "代码中能看到 seq_in/seq_out、projection_bdd 和 product+projection 这一工程路径；但论文中的证明、构造规范和复杂度论证没有以独立算法文档形式落在代码里。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliHn.cpp#L440\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliHn.cpp:440</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliHn.cpp#L536\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliHn.cpp:536</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.cpp#L693\">/home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.cpp:693</a>"
+      ]
+    },
+    {
+      "paper": "第5.1节：implementation，支持 Uppaal/TChecker/LTSmin 风格输出与内置 fixpoint。页 20",
+      "status": "部分实现",
+      "analysis": "XML/TChecker 输出和内置 fixpoint 存在；LTSmin 不作为直接输出格式实现，而是 README/论文中的外部后端工作流。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L83\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:83</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L87\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:87</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L400\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:400</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L514\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:514</a>"
+      ]
+    },
+    {
+      "paper": "第5.2节：MightyL、Acacia、food/lamp/Fischer/pinwheel 等实验。页 21",
+      "status": "部分实现",
+      "analysis": "仓库包含 MightyL/newhoxha/acacia 输入、若干 patch 和 MightyPPL_new_* 案例快照；论文完整表格结果与自动复现实验脚本没有完整落库。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/testcases/MightyL/A-5-12.mitl#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/testcases/MightyL/A-5-12.mitl:1</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/testcases/acacia/3.mitl#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/testcases/acacia/3.mitl:1</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/food.patch#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/food.patch:1</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL_new_food.cpp#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL_new_food.cpp:1</a>"
+      ]
+    }
+  ],
+  "monitaal_map": [
+    {
+      "paper": "摘要/第1节：ABRV for timed properties under partial observability。页 1, 1",
+      "status": "部分实现",
+      "analysis": "代码实现 timed automata monitor、正/负 automata 双监控、interval/concrete/delay/testing 状态；但论文四值 verdict 的 OUT-OF-MODEL 在公开 API 中被压缩为 Single_monitor 内部 OUT，而 Monitor 对外只有三值。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h#L68\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h:68</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h#L64\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h:64</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp#L253\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp:253</a>"
+      ]
+    },
+    {
+      "paper": "第2节：MITL、timed words、TA preliminaries。页 3",
+      "status": "工程化替代",
+      "analysis": "代码不直接解析 MITL 公式，而是消费已构造/UPPAAL XML 风格的 positive/negative timed automata；MITL→TA 转换在论文中作为前置，实际由外部流程或 MightyPPL 提供。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Parser.cpp#L44\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Parser.cpp:44</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/TA.h#L79\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/TA.h:79</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/README.md#L32\">/home/lqq/download/TAFuzz/tool/MoniTAal/README.md:32</a>"
+      ]
+    },
+    {
+      "paper": "第3节：monitoring under assumptions，四类 verdict。页 5",
+      "status": "部分实现",
+      "analysis": "正 automaton 与负 automaton 的 state estimate 同步推进；positive/negative/out 逻辑存在，但 public verdict 为 INCONCLUSIVE/POSITIVE/NEGATIVE，未直接暴露论文的 unknown/out-of-model 四值接口。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp#L225\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp:225</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp#L225\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp:225</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp#L267\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp:267</a>"
+      ]
+    },
+    {
+      "paper": "第4节：zone-based monitoring algorithm。页 9",
+      "status": "已实现",
+      "analysis": "Single_monitor 在每个输入事件上做 delay、edge transition、guard/invariant 检查、与 accepting space 相交；Fixpoint 基于 backward transitions 计算接受状态可达空间。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp#L97\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.cpp:97</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/symbolic_state_base.cpp#L64\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/symbolic_state_base.cpp:64</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Fixpoint.cpp#L77\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Fixpoint.cpp:77</a>"
+      ]
+    },
+    {
+      "paper": "第4节：zone/DBM symbolic representation。页 9",
+      "status": "已实现",
+      "analysis": "状态封装 PARDIBAAL Federation/DBM；symbolic_state、delay_state、testing_state、concrete_state 分别覆盖区间时间、延迟/抖动、输入输出部分可观测和具体时间点。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/types.h#L47\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/types.h:47</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/state.h#L43\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/state.h:43</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/state.h#L63\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/state.h:63</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/state.h#L89\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/state.h:89</a>"
+      ]
+    },
+    {
+      "paper": "第5节：evaluation，assumptions 可提前 verdict/处理不可观测行为。页 12",
+      "status": "部分实现",
+      "analysis": "仓库有 presentation examples、DelayTest、Monitor_test 和 gear controller benchmark；论文表格级实验结果与 UPPAAL 集成脚本不完整，部分实验材料以 C++ benchmark/header 与 XML 形式存在。",
+      "links": [
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/test/DelayTest.cpp#L34\">/home/lqq/download/TAFuzz/tool/MoniTAal/test/DelayTest.cpp:34</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/test/Presentation_examples.cpp#L34\">/home/lqq/download/TAFuzz/tool/MoniTAal/test/Presentation_examples.cpp:34</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/benchmark/main.cpp#L712\">/home/lqq/download/TAFuzz/tool/MoniTAal/benchmark/main.cpp:712</a>",
+        "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/benchmark/gear-control-properties.xml#L1\">/home/lqq/download/TAFuzz/tool/MoniTAal/benchmark/gear-control-properties.xml:1</a>"
+      ]
+    },
+    {
+      "paper": "第6-7节：related work/conclusion。页 15, 16",
+      "status": "未发现实现",
+      "analysis": "相关工作和结论是论文论述，不对应可执行代码；报告中只保留它们对实现边界的启示。",
+      "links": []
+    }
+  ],
+  "cross_map": [
+    [
+      "构建依赖",
+      "MightyPPL 直接使用相邻 MoniTAal 工作树，构建时安装 MoniTAal headers/libs 到 MightyPPL external/monitaal。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/CMakeLists.txt#L55\">/home/lqq/download/TAFuzz/tool/MightyPPL/CMakeLists.txt:55</a>"
+    ],
+    [
+      "TA 数据结构",
+      "MightyPPL 生成 BDD-labelled TA；在投影/输出/内置检查时转换或复用 MoniTAal TA。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.h#L62\">/home/lqq/download/TAFuzz/tool/MightyPPL/TAwithBDDEdges.h:62</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/TA.h#L79\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/TA.h:79</a>"
+    ],
+    [
+      "Zone/Fixpoint",
+      "MightyPPL 无输出文件时把构造出的 automaton 交给 MoniTAal Fixpoint 做 satisfiability/backward analysis。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp#L357\">/home/lqq/download/TAFuzz/tool/MightyPPL/main.cpp:357</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Fixpoint.cpp#L30\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Fixpoint.cpp:30</a>"
+    ],
+    [
+      "实验/测试关系",
+      "MightyPPL testcases 对应论文 verification benchmarks；MoniTAal tests/benchmark 对应 runtime monitoring examples。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/testcases/MightyL/A-5-12.mitl#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/testcases/MightyL/A-5-12.mitl:1</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/test/Monitor_test.cpp#L34\">/home/lqq/download/TAFuzz/tool/MoniTAal/test/Monitor_test.cpp:34</a>"
+    ]
+  ],
+  "gaps": [
+    [
+      "<span class=\"badge partial\">部分实现</span>",
+      "MightyPPL 论文实验表格与所有外部后端命令没有完整自动复现脚本；仓库保留输入、patch 和案例快照。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/testcases/MightyL/A-5-12.mitl#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/testcases/MightyL/A-5-12.mitl:1</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL_new_food.cpp#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL_new_food.cpp:1</a>"
+    ],
+    [
+      "<span class=\"badge missing\">未发现实现</span>",
+      "MightyPPL 论文中的完整证明、复杂度论证、可读算法编号没有作为代码注释/文档实现；代码主要是构造器实现。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/PnueliFn.cpp#L6\">/home/lqq/download/TAFuzz/tool/MightyPPL/PnueliFn.cpp:6</a>"
+    ],
+    [
+      "<span class=\"badge partial\">部分实现</span>",
+      "MoniTAal 论文四值 verdict（含 unknown/out-of-model）在对外 Monitor API 中不是四值枚举；内部 Single_monitor 有 OUT，最终 Monitor 暴露三值。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h#L68\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h:68</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h#L64\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal/Monitor.h:64</a>"
+    ],
+    [
+      "<span class=\"badge partial\">工程化替代</span>",
+      "MoniTAal 不直接解析 MITL 公式，而是要求正/负 timed automata；这与论文方法链一致，但公式到 automata 的步骤在本仓库外部。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/README.md#L32\">/home/lqq/download/TAFuzz/tool/MoniTAal/README.md:32</a>"
+    ],
+    [
+      "<span class=\"badge extra\">论文未覆盖但代码存在</span>",
+      "MightyPPL 有多个 `MightyPPL_new_*` 和 `.patch` 文件，像是实验模型快照/调试材料，论文未逐文件解释。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL_new_lamp.cpp#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/MightyPPL_new_lamp.cpp:1</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MightyPPL/lamp.patch#L1\">/home/lqq/download/TAFuzz/tool/MightyPPL/lamp.patch:1</a>"
+    ],
+    [
+      "<span class=\"badge extra\">论文未覆盖但代码存在</span>",
+      "MoniTAal 包含 CLI 交互逻辑、输入 parser 单元测试、gear controller benchmark 转换辅助脚本；这些是工程化外围。",
+      "<a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal-bin/main.cpp#L59\">/home/lqq/download/TAFuzz/tool/MoniTAal/src/monitaal-bin/main.cpp:59</a><br><a class=\"code\" href=\"file:///home/lqq/download/TAFuzz/tool/MoniTAal/benchmark/uctr-to-monpoly.py#L1\">/home/lqq/download/TAFuzz/tool/MoniTAal/benchmark/uctr-to-monpoly.py:1</a>"
+    ]
+  ],
+  "note": "HTML fields contain already-rendered links/badges for the static report."
+}
