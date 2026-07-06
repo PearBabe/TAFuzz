@@ -3830,3 +3830,29 @@
 - Current status: TAMonitor v1 goal is complete. Do not continue code changes,
   XML proof/signoff expansion, BDD-native runtime, or compflatten runtime unless
   the user explicitly asks.
+
+## 2026-07-06 20:52 CST
+
+- User asked to upload the changed project to a GitHub branch.
+- Added a top-level `.gitignore` so Python caches, build directories, and
+  editor/temp files are not published by normal `git add -A`.
+- Removed generated nested `.git` metadata under `tool/MightyPPL/build` before
+  publishing. The first publish attempt failed during the existing
+  `tool/MightyPPL/build` CMake step when the external `antlr4_runtime` update
+  script tried to check out `master` from the wrong Git context; the automated
+  external update stashed the working tree, and the stash was reapplied without
+  dropping it.
+- Re-ran the publish script with `--skip-build` and pushed branch
+  `codex/tafuzz-20260706-204744` to `origin`.
+- Pushed commit:
+  `450ec460238bacb9f6e907805ad80a08ac3fd4d9`
+  (`Publish TAMonitor v1 workspace`).
+- Verification during publish: no nested `.git` directories, no gitlink entries,
+  and `git push --dry-run origin HEAD:refs/heads/codex/tafuzz-20260706-204744`
+  passed before the real push.
+- GitHub warned that
+  `test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full/candidate_prefix_observations.csv`
+  is 82.33 MB, above the recommended 50 MB size. Push still succeeded.
+- Draft PR creation through the GitHub connector failed with GitHub API 404; no
+  PR was created automatically. Manual compare URL:
+  `https://github.com/PearBabe/TAFuzz/compare/main...codex/tafuzz-20260706-204744?expand=1`.

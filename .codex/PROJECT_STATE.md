@@ -1,6 +1,6 @@
 # TAFuzz Project State
 
-Last updated: 2026-07-06 20:39 CST.
+Last updated: 2026-07-06 20:52 CST.
 
 This file is the active handoff source of truth. Read it before resuming work.
 
@@ -9,6 +9,24 @@ This file is the active handoff source of truth. Read it before resuming work.
 Goal: 完整实现并验证 TAMonitor 论文级运行时验证扩展，保留可人工审查的最终实验结果，并清理中间结果。
 
 Status: COMPLETE. Do not continue changing TAMonitor, benchmark experiments, XML-to-MITL review/signoff, BDD-native runtime, or compflatten runtime unless the user explicitly asks.
+
+## Latest GitHub Publish
+
+- Published branch: `codex/tafuzz-20260706-204744`.
+- Latest pushed commit: `450ec460238bacb9f6e907805ad80a08ac3fd4d9`
+  (`Publish TAMonitor v1 workspace`).
+- Compare URL:
+  `https://github.com/PearBabe/TAFuzz/compare/main...codex/tafuzz-20260706-204744?expand=1`.
+- Draft PR creation through the GitHub connector failed with GitHub API 404,
+  so the branch was pushed but no PR was created automatically.
+- Publish used `--skip-build` after an initial build attempt failed in
+  `tool/MightyPPL/build` because the external `antlr4_runtime` update step
+  tried to check out `master` from the wrong Git context after generated build
+  metadata cleanup. Existing final verification remains recorded below.
+- GitHub warned that
+  `test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full/candidate_prefix_observations.csv`
+  is 82.33 MB, above the recommended 50 MB threshold but below the hard push
+  limit.
 
 ## Completed v1 Runtime Scope
 
@@ -89,8 +107,11 @@ The manual documents accepted MITL syntax, trace formats, CLI parameters, output
 
 ## Workspace Boundaries
 
-- Top-level `/home/lqq/project/TAFuzz` is not a normal Git repository.
-- Nested repos: `tool/MightyPPL` and `tool/MoniTAal`.
+- Top-level `/home/lqq/project/TAFuzz` is currently a normal Git repository
+  with remote `git@github.com:PearBabe/TAFuzz.git`.
+- `tool/MightyPPL` and `tool/MoniTAal` are now ordinary tracked directories in
+  the top-level repository; older handoff/archive entries may still describe
+  them as nested repositories.
 - Handoff files live at the TAFuzz root.
 - Preserve unrelated user work; do not revert dirty changes.
 
