@@ -1,0 +1,34 @@
+metric,value
+build_mode,compflatten
+run_mode,build_only
+word_mode,infinite
+state_mode,symbolic
+bdd_nodes,1000000
+bdd_cache,100000
+bdd_max_increase,500000
+max_valuations,80000
+normalized_formula,"( G Fn[0, 2] (p, q, r) && (G (F (a))))
+
+&&
+
+( !(G Fn[0, 2] (p, q, r)) || !(G (F (a))) )
+"
+formula_satisfiable,NOT_CHECKED_COMPFLATTEN_BUILD_ONLY
+negative_formula_satisfiable,NOT_CHECKED_COMPFLATTEN_BUILD_ONLY
+final_verdict,NOT_RUN_BUILD_ONLY
+events,0
+processed_steps,0
+advanced_steps,0
+carry_forward_steps,0
+build_ms,23
+monitor_ms,0
+positive_components,11
+positive_locations,72
+positive_edges,260
+positive_clocks,14
+negative_components,11
+negative_locations,72
+negative_edges,260
+negative_clocks,14
+positive_projection_valuations,0
+negative_projection_valuations,0

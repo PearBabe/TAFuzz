@@ -6,6 +6,7 @@
 #include <cassert>
 #include <optional>
 #include <numeric>
+#include <utility>
 
 #include "types.h"
 #include "TA.h"
@@ -25,6 +26,7 @@ namespace mightypplcpp {
     extern bool out_fin;
     extern bool debug;
     extern bool back;
+    extern bool scale_product_bounds_by_gcd;
 
 }
 
@@ -84,6 +86,8 @@ namespace monitaal {
         static TAwithBDDEdges intersection(const std::vector<TAwithBDDEdges>& components);
 
         TA projection(const std::set<int>& props_to_keep);
+
+        std::pair<TA, size_t> projection_expanded(const std::set<int>& props_to_remove, size_t max_valuations);
 
         TAwithBDDEdges projection_bdd(const std::set<int>& props_to_keep);
 
