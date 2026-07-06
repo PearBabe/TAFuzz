@@ -58,7 +58,8 @@ ExternalProject_add(monitaal
     CMAKE_ARGS (
         -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
         -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-        -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}/monitaal -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
+        -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}/monitaal -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        -DMONITAAL_BUILD_BIN=ON -DMONITAAL_BUILD_BENCH=ON)
 )
 
 include_directories(${EXTERNAL_INSTALL_LOCATION}/monitaal/include/monitaal)
@@ -97,14 +98,59 @@ add_executable(mitppl main.cpp
                PnueliHn.cpp
                CountFn.cpp
                CountOn.cpp
-               CountGn.cpp
-               CountHn.cpp
-               MightyPPL.cpp
-               ${ANTLR_MitlGrammar_CXX_OUTPUTS})
+	               CountGn.cpp
+	               CountHn.cpp
+	               MightyPPL.cpp
+	               MightyPPLRuntimeOptions.cpp
+	               ${ANTLR_MitlGrammar_CXX_OUTPUTS})
 
 
 target_link_libraries(mitppl antlr4_static buddy MoniTAal pugixml pardibaal)
 add_dependencies(mitppl monitaal)
+
+set(TAMONITOR_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../src/TAMonitor)
+
+add_executable(TAMonitor
+               ${TAMONITOR_SOURCE_DIR}/TAMonitorMain.cpp
+               ${TAMONITOR_SOURCE_DIR}/TAMonitorOptions.cpp
+               ${TAMONITOR_SOURCE_DIR}/TAMonitorMightyAdapter.cpp
+               ${TAMONITOR_SOURCE_DIR}/TraceParser.cpp
+               ${TAMONITOR_SOURCE_DIR}/MonitorRunner.cpp
+               ${TAMONITOR_SOURCE_DIR}/ReportWriter.cpp
+               MitlFormulaVisitor.cpp
+               MitlTypingVisitor.cpp
+               MitlCheckNNFVisitor.cpp
+               MitlToNNFVisitor.cpp
+               MitlAtomNumberingVisitor.cpp
+               MitlCollectTemporalVisitor.cpp
+               MitlGetBDDVisitor.cpp
+               TAwithBDDEdges.cpp
+               Finally.cpp
+               Once.cpp
+               Globally.cpp
+               Historically.cpp
+               Until.cpp
+               Since.cpp
+               Release.cpp
+               Trigger.cpp
+               PnueliFn.cpp
+               PnueliOn.cpp
+               PnueliGn.cpp
+               PnueliHn.cpp
+               CountFn.cpp
+               CountOn.cpp
+               CountGn.cpp
+               CountHn.cpp
+               MightyPPL.cpp
+               MightyPPLRuntimeOptions.cpp
+               ${ANTLR_MitlGrammar_CXX_OUTPUTS})
+
+target_include_directories(TAMonitor PRIVATE ${TAMONITOR_SOURCE_DIR})
+target_compile_definitions(TAMonitor PRIVATE
+    TAMONITOR_REPO_ROOT="${CMAKE_CURRENT_SOURCE_DIR}/../.."
+    TAMONITOR_XLSX_SCRIPT="${TAMONITOR_SOURCE_DIR}/make_tamonitor_xlsx.py")
+target_link_libraries(TAMonitor antlr4_static buddy MoniTAal pugixml pardibaal)
+add_dependencies(TAMonitor monitaal)
 
 
 if (CMAKE_HOST_UNIX)
@@ -114,9 +160,14 @@ if (CMAKE_HOST_UNIX)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(Threads REQUIRED)
 
-  if (TARGET mitppl)
-    target_link_libraries(mitppl Threads::Threads)
-    message(STATUS "mitppl Linked with Threads!")
-  endif()
+	  if (TARGET mitppl)
+	    target_link_libraries(mitppl Threads::Threads)
+	    message(STATUS "mitppl Linked with Threads!")
+	  endif()
+
+	  if (TARGET TAMonitor)
+	    target_link_libraries(TAMonitor Threads::Threads)
+	    message(STATUS "TAMonitor Linked with Threads!")
+	  endif()
 
 endif()

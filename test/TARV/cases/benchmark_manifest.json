@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "notes": "TAMonitor v1 smoke cases and MoniTAal baselines. XML-to-MITL equivalence is not claimed unless explicitly marked proved.",
+  "tamonitor_cases": [
+    {
+      "id": "smoke_f_01",
+      "formula_file": "test/TARV/cases/smoke_f_01.mitl",
+      "trace_file": "test/TARV/cases/smoke_f_01.trace",
+      "word": "infinite",
+      "build_mode": "flatten",
+      "state": "symbolic",
+      "expected_source": "smoke",
+      "xml_mitl_equivalence": "not_applicable"
+    }
+  ],
+  "monitaal_baselines": [
+    {
+      "id": "monitaal_a_b_leadsto_b",
+      "xml_file": "tool/MoniTAal/test/models/a-b.xml",
+      "positive_template": "a_leadsto_b",
+      "negative_template": "not_a_leadsto_b",
+      "expected_source": "tool/MoniTAal/test/Monitor_test.cpp",
+      "xml_mitl_equivalence": "not_claimed"
+    },
+    {
+      "id": "monitaal_gear_control",
+      "xml_file": "tool/MoniTAal/benchmark/gear-control-properties.xml",
+      "input_file": "tool/MoniTAal/benchmark/gear-control-input.txt",
+      "expected_source": "tool/MoniTAal/benchmark/main.cpp",
+      "xml_mitl_equivalence": "not_claimed"
+    }
+  ]
+}

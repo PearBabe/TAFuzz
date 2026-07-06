@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <optional>
 #include <numeric>
+#include <map>
 
 #include "bdd.h"
 
@@ -60,6 +61,13 @@ namespace mightypplcpp {
     extern bool comp_flatten;
     extern bool out_fin;
     extern bool debug;
+
+    extern bool canonical_projection_enabled;
+    extern bool scale_product_bounds_by_gcd;
+    extern size_t canonical_projection_max_valuations;
+    extern size_t last_projection_valuation_count;
+    extern std::string last_nnf_formula;
+    extern std::map<std::string, int> last_props_by_name;
 
     extern monitaal::TAwithBDDEdges varphi;
 //    extern monitaal::TAwithBDDEdges varphi_;

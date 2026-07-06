@@ -1,0 +1,79 @@
+{
+  "summary": {
+    "output_dir": "/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full",
+    "timeout_rerun": "/home/lqq/project/TAFuzz/test/TARV/results/baseline_timeout_rerun_60s_formula_catalog_workbook_guard_full",
+    "row_count": 7,
+    "pass": 7,
+    "fail": 0,
+    "warn": 0,
+    "synthetic_only": true,
+    "expected_signoff_rows": 56,
+    "imported_nonblank_decisions": 56,
+    "human_signoff_claim": "not_claimed"
+  },
+  "rows": [
+    {
+      "check_id": "ROUNDTRIP_CSV_DRY_RUN",
+      "category": "import_roundtrip",
+      "status": "PASS",
+      "expected": "filled CSV dry-run imports reviewer-owned fields without applying",
+      "observed": "returncode=0; status=PASS; applied=False; imported_nonblank_decisions=56; expected_signoff_rows=56; errors=; stderr=",
+      "evidence": "synthetic_filled_review_signoff.csv; import_review_signoff.py",
+      "reviewer_boundary": "Synthetic decisions are not human approval."
+    },
+    {
+      "check_id": "ROUNDTRIP_XLSX_BLANK_EXTRACTION",
+      "category": "import_roundtrip",
+      "status": "PASS",
+      "expected": "blank Review Signoff workbook sheet can be extracted without applying",
+      "observed": "returncode=0; status=PASS; import_rows=56; expected_signoff_rows=56; imported_nonblank_decisions=0; errors=; stderr=",
+      "evidence": "paper_review_results.xlsx; import_review_signoff.py",
+      "reviewer_boundary": "Blank workbook extraction means ready for review, not signed off."
+    },
+    {
+      "check_id": "ROUNDTRIP_CSV_APPLY",
+      "category": "import_roundtrip",
+      "status": "PASS",
+      "expected": "filled CSV applies cleanly to the isolated packet copy",
+      "observed": "returncode=0; status=PASS; applied=True; imported_nonblank_decisions=56; expected_signoff_rows=56; errors=; stderr=",
+      "evidence": "synthetic_filled_review_signoff.csv; import_review_signoff.py",
+      "reviewer_boundary": "Apply happened only in a temporary packet copy."
+    },
+    {
+      "check_id": "ROUNDTRIP_COMPLETE_VALIDATION",
+      "category": "complete_mode",
+      "status": "PASS",
+      "expected": "complete-mode signoff validation passes after synthetic import",
+      "observed": "returncode=0; completion_state=HUMAN_SIGNOFF_COMPLETE; pass=16; fail=0; nonblank_decisions=56; expected_signoff_rows=56; stderr=",
+      "evidence": "validate_review_signoff.py --mode complete",
+      "reviewer_boundary": "Synthetic complete mode proves command behavior, not human math approval."
+    },
+    {
+      "check_id": "ROUNDTRIP_COMPLETE_WORKBOOK_REBUILD",
+      "category": "complete_mode",
+      "status": "PASS",
+      "expected": "temporary complete-review packet workbook rebuild succeeds before complete-mode packet verification",
+      "observed": "returncode=0; status=ok; workbook_path=/tmp/tamonitor_signoff_roundtrip_0y_gk0yv/packet/paper_review_results.xlsx; timeout_summary=True; timeout_details=True; stderr=",
+      "evidence": "rebuild_review_workbook.py",
+      "reviewer_boundary": "Workbook rebuild happened only in the temporary packet copy."
+    },
+    {
+      "check_id": "ROUNDTRIP_COMPLETE_PACKET_VERIFICATION",
+      "category": "complete_mode",
+      "status": "PASS",
+      "expected": "complete-mode packet verifier passes after synthetic import",
+      "observed": "returncode=0; pass=138; fail=0; check_rows=138; failed_checks=; stderr=",
+      "evidence": "verify_review_packet.py --signoff-mode complete",
+      "reviewer_boundary": "Synthetic complete packet is a regression fixture only."
+    },
+    {
+      "check_id": "ROUNDTRIP_STALE_GENERATED_FIELD_REJECTED",
+      "category": "negative_import",
+      "status": "PASS",
+      "expected": "stale generated source_id import fails and does not apply",
+      "observed": "returncode=1; status=FAIL; immutable_field_mismatches=1; applied=False; stderr=",
+      "evidence": "synthetic_stale_review_signoff.csv; import_review_signoff.py",
+      "reviewer_boundary": "Generated fields remain owned by the packet generator."
+    }
+  ]
+}

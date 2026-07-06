@@ -1,210 +1,116 @@
 # TAFuzz Project State
 
-Last updated: 2026-06-26 13:49 CST
+Last updated: 2026-07-06 20:39 CST.
+
+This file is the active handoff source of truth. Read it before resuming work.
 
 ## Current Goal
 
-Maintain a lightweight Codex handoff system for `/home/lqq/download/TAFuzz`
-and keep the published GitHub snapshot recoverable: the full source workspace,
-including handoff files, has been published to `PearBabe/TAFuzz` on `main`.
-Future publishes should use the local Codex skill `publish-tafuzz`.
+Goal: 完整实现并验证 TAMonitor 论文级运行时验证扩展，保留可人工审查的最终实验结果，并清理中间结果。
 
-The latest completed task added a static Chinese HTML analysis report mapping
-the MightyPPL and MoniTAal papers to the current code worktrees.
+Status: COMPLETE. Do not continue changing TAMonitor, benchmark experiments, XML-to-MITL review/signoff, BDD-native runtime, or compflatten runtime unless the user explicitly asks.
 
-## Current Workspace Shape
+## Completed v1 Runtime Scope
 
-- TAFuzz root: `/home/lqq/download/TAFuzz`
-- Top-level handoff files:
-  - `AGENTS.md`
-  - `.codex/PROJECT_STATE.md`
-  - `.codex/SESSION_LOG.md`
-  - `.codex/HANDOFF_TEMPLATE.md`
-  - `.codex/agents/README.md`
-- The top-level `.git/` directory was an empty, invalid Git directory. It has
-  been moved to `.git.EMPTY_DIR_DO_NOT_USE_20260626` to prevent accidental
-  root-level Git confusion.
-- No top-level Git repository has been initialized.
-- Nested tool repositories:
-  - `tool/MightyPPL`
-  - `tool/MoniTAal`
-- Clean publish clone:
-  - `/home/lqq/download/TAFuzz_publish_main`
-  - remote: `git@github.com:PearBabe/TAFuzz.git`
-  - branch: `main`
-- Local publish skill:
-  - `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/SKILL.md`
-  - script:
-    `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh`
-- Analysis artifacts:
-  - `/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html`
-  - `/home/lqq/download/TAFuzz/analysis/scripts/generate_paper_code_report.py`
-  - `/home/lqq/download/TAFuzz/analysis/data/`
-- Required relative layout for the current build wiring:
+- MightyPPL parses supported user MITL formulas and builds flatten timed automata.
+- TAMonitor builds positive/negative automata for `phi` and `!(phi)`.
+- BDD edge labels are projected into canonical MoniTAal labels such as `bits:10`.
+- MoniTAal positive/negative monitor produces three-valued runtime verdicts.
+- Formula satisfiability is recorded before reporting runtime results.
+- Outputs include `steps.csv`, `summary.csv`, `metadata.json`, and `results.xlsx`.
+- `--emit-bdd-interface` writes reserved metadata only.
+- `--build-mode compflatten --build-only` supports construction/statistics only.
 
-```text
-TAFuzz/
-  tool/
-    MightyPPL/
-    MoniTAal/
-```
+## Explicit v1 Deferred Scope
 
-## Known Local Changes To Preserve
+- BDD-native runtime is not implemented.
+- compflatten runtime verdicts are not implemented.
+- XML-to-MITL equivalence rows marked `REVIEW_REQUIRED` still need human mathematical review.
+- Human Review Signoff remains blank; no human approval is claimed.
 
-Treat these as active project work unless the user explicitly asks to change,
-commit, or revert them.
+## Final Result Entrypoints
 
-`tool/MightyPPL`:
+- Results root:
+  `/home/lqq/project/TAFuzz/test/TARV/results`
+- Final README:
+  `/home/lqq/project/TAFuzz/test/TARV/results/FINAL_RESULTS_README.md`
+- Final packet:
+  `/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full`
+- Main workbook:
+  `/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full/paper_review_results.xlsx`
+- Supporting timeout rerun packet:
+  `/home/lqq/project/TAFuzz/test/TARV/results/baseline_timeout_rerun_60s_formula_catalog_workbook_guard_full`
+- MITL catalog entrypoints:
+  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_latest_official.md`,
+  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_semantic_regression.csv`,
+  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_monitaal_xml_candidates.csv`,
+  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_runtime_runs.csv`.
 
-```text
- M CMakeLists.txt
- M TAwithBDDEdges.cpp
-A  external/buddy
- M main.cpp
-```
+## User Manual
 
-Meaning:
+- Manual directory:
+  `/home/lqq/project/TAFuzz/analysis/manual`
+- Entry README:
+  `/home/lqq/project/TAFuzz/analysis/manual/README.md`
+- Full manual:
+  `/home/lqq/project/TAFuzz/analysis/manual/TAMonitor_User_Manual.md`
 
-- `CMakeLists.txt` uses `SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../MoniTAal`
-  for the `monitaal` ExternalProject, with empty download/update steps.
-- `main.cpp` and `TAwithBDDEdges.cpp` are adapted to the current MoniTAal API:
-  `symbolic_state_t(location, clocks)`,
-  `symbolic_state_map_t<symbolic_state_t>`, and
-  `Fixpoint<symbolic_state_t>`.
-- `external/buddy` was already an added local state before this handoff update.
+The manual documents accepted MITL syntax, trace formats, CLI parameters, outputs, examples, final experiment result locations, and v1 boundaries.
 
-`tool/MoniTAal`:
+## Final Cleanup
 
-```text
- M CMakeLists.txt
- M src/monitaal/CMakeLists.txt
- M src/monitaal/state.h
-```
+- `test/TARV/results` was reduced from 276 top-level entries and about 14G to 7 top-level entries and about 130M.
+- Removed historical intermediate experiment outputs and stale rerun packets.
+- Kept only the final review packet, its supporting timeout rerun packet, MITL catalog entrypoints, and `FINAL_RESULTS_README.md`.
+- The paused XML-to-MITL / Review Signoff experiment-review track was not continued.
+- Two unverified paused-track script additions were removed:
+  `XML_EQUIVALENCE_SIGNOFF_COVERAGE_AUDIT` from `test/TARV/scripts/verify_review_packet.py`
+  and `EXPECTED_XML_EQUIVALENCE_SIGNOFF_COVERAGE_VERIFIER_DELTA` from
+  `test/TARV/scripts/compare_pipeline_results.py`.
 
-Meaning:
+## Final Verification
 
-- `CMakeLists.txt` uses HTTPS URLs for `pugixml` and `PARDIBAAL`.
-- `src/monitaal/CMakeLists.txt` adds `pugixml` as a dependency of `MoniTAal`.
-- `src/monitaal/state.h` adds required `typename` qualifiers for dependent
-  iterator types used by external includers such as MightyPPL.
+- `python3 -m py_compile test/TARV/scripts/verify_review_packet.py test/TARV/scripts/compare_pipeline_results.py` passed after removing paused-track edits.
+- Final kept entries under `test/TARV/results`:
+  `FINAL_RESULTS_README.md`,
+  `baseline_timeout_rerun_60s_formula_catalog_workbook_guard_full`,
+  `mitl_formula_catalog_latest_official.md`,
+  `mitl_formula_catalog_monitaal_xml_candidates.csv`,
+  `mitl_formula_catalog_runtime_runs.csv`,
+  `mitl_formula_catalog_semantic_regression.csv`,
+  `paper_pipeline_formula_catalog_workbook_guard_full`.
+- `unzip -t paper_review_results.xlsx` passed.
+- Final packet summary: pipeline `PASS`, failed steps `[]`.
+- Review packet verifier JSON: 151 PASS, 0 WARN, 0 FAIL.
+- Artifact manifest verifier JSON: 16 PASS, 0 WARN, 0 FAIL, 151 manifest rows.
+- TAMonitor final smoke test:
+  `tool/MightyPPL/build/TAMonitor --formula-inline 'F [0,2] p1' --trace /tmp/tamonitor_final_manual_trace.csv --word finite --state symbolic --build-mode flatten --out /tmp/tamonitor_final_manual_smoke`
+  returned `Formula satisfiable: SAT`, `Final verdict: POSITIVE`, 2 events, 2 processed steps.
 
-## Key Decisions
+## Workspace Boundaries
 
-- Keep the handoff system at the TAFuzz root.
-- Keep `MightyPPL` and `MoniTAal` under `tool/` as sibling nested repositories.
-- MightyPPL no longer clones a pinned MoniTAal commit. It builds the adjacent
-  MoniTAal working tree directly through a relative path.
-- Do not create a top-level Git repository yet. If versioning the entire
-  workspace becomes necessary, plan that separately to avoid accidentally
-  committing nested repositories as ordinary directories or gitlinks.
-- The handoff files are maintained deliberately by Codex during milestones; they
-  are not an automatic full-session recorder.
-- Publishing the top-level workspace should continue through the clean publish
-  clone, with nested `.git` metadata excluded and `external/buddy` flattened as
-  ordinary source files.
-- Prefer invoking the `publish-tafuzz` skill/script for future uploads instead
-  of retyping the rsync/git command sequence.
+- Top-level `/home/lqq/project/TAFuzz` is not a normal Git repository.
+- Nested repos: `tool/MightyPPL` and `tool/MoniTAal`.
+- Handoff files live at the TAFuzz root.
+- Preserve unrelated user work; do not revert dirty changes.
 
-## Verification Status
+## Known Limits / Risks
 
-Latest verification completed on 2026-06-26 13:49 CST:
-
-- Generated
-  `/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html`
-  from the two local Zotero PDFs and the current `tool/MightyPPL` /
-  `tool/MoniTAal` worktrees.
-- Generated intermediate review data under `/home/lqq/download/TAFuzz/analysis/data/`:
-  compact PDF page previews, paper section page map, code inventory, mapping
-  summary, and status snapshot.
-- Verified all JSON files in `analysis/data/` parse successfully.
-- Verified the HTML contains required sections/keywords:
-  `MightyPPL 专章`, `MoniTAal 专章`, `整体工作流`, `pipeline`,
-  `monitor loop`, `覆盖矩阵`, `缺口、偏差`, `论文未覆盖但代码存在`,
-  and `未重新验证`.
-- Verified the HTML is self-contained for offline reading: 72 local TAFuzz
-  links, 0 external URLs, 0 `<script>` tags, and 3 inline SVG diagrams.
-- `/home/lqq/download/TAFuzz/tool/MightyPPL/build/mitppl --help` printed usage
-  and exited `1`, which is expected when no spec file is supplied.
-- Skipped full spec-based semantic tests and paper experiment reproduction;
-  the report explicitly records those as not re-run.
-
-Previous verification completed on 2026-06-26 09:45 CST:
-
-- Created and validated the local Codex skill `publish-tafuzz`.
-- `bash -n` passed for
-  `/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh`.
-- `quick_validate.py /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz` reported
-  `Skill is valid!`.
-- A dry run from `/home/lqq/download/TAFuzz` completed and reported no changes
-  when the workspace already matched the publish clone.
-
-Earlier publish verification completed on 2026-06-26 09:30 CST:
-
-- Published `/home/lqq/download/TAFuzz` to `PearBabe/TAFuzz` `main` via the
-  clean clone `/home/lqq/download/TAFuzz_publish_main`.
-- Commit `2b6594c` imported the local TAFuzz workspace, including `AGENTS.md`,
-  `.codex/`, `tool/MightyPPL/`, and `tool/MoniTAal/`.
-- The publish clone excluded nested `.git` metadata, the root
-  `.git.EMPTY_DIR_DO_NOT_USE_20260626`, `.agents/`, `tool/MightyPPL/build/`,
-  object/static library outputs, and CMake cache/generated files.
-- `find /home/lqq/download/TAFuzz_publish_main -mindepth 2 -name .git -print`
-  produced no nested Git metadata paths.
-- `git -C /home/lqq/download/TAFuzz_publish_main ls-files -s | awk
-  '$1 == 160000 {print}'` produced no gitlink/submodule entries.
-- The initial source snapshot commit was
-  `2b6594ceb41c9429a2327b7989f723067063943e`
-  (`Import local TAFuzz workspace`); later handoff-only commits may advance
-  remote `main`.
-
-Earlier build verification completed on 2026-06-26 09:05 CST:
-
-- `git -C tool/MightyPPL status --short` showed the MightyPPL changes listed
-  above.
-- `git -C tool/MoniTAal status --short` showed the MoniTAal changes listed
-  above.
-- From `/home/lqq/download/TAFuzz/tool/MightyPPL/build`,
-  `cmake --build . -j2` completed successfully and generated `mitppl`.
-- `/home/lqq/download/TAFuzz/tool/MightyPPL/build/mitppl --help` printed usage
-  text and exited `1` because no spec file was supplied; this is expected.
-- Earlier full clean configure/build in the moved path also confirmed
-  `ExternalProject_add(monitaal)` reports `No download step`, `No update step`,
-  and `No patch step`, so MightyPPL is using the local MoniTAal working tree.
-
-## Active Risks / Known Limits
-
-- The top-level workspace is still not a normal Git repository; publishing is
-  done from `/home/lqq/download/TAFuzz_publish_main`.
-- The nested tool repositories contain local changes. Future work must check
-  and preserve those changes before editing.
-- MoniTAal still downloads `pugixml` and `PARDIBAAL` via GitHub during clean
-  external builds; transient HTTPS clone failures have occurred but succeeded
-  on retry.
-- This file can drift if future agents do not update it at meaningful
-  milestones.
+- BDD projection can grow exponentially; `--max-valuations` intentionally fails rather than silently approximating.
+- Numeric CLI options should be plain positive integers.
+- `--help` currently prints usage through the error path and exits nonzero.
+- The 8 original-trace benchmark gaps and XML equivalence `REVIEW_REQUIRED` rows remain manual-review topics, not completed algorithm claims.
 
 ## Next Steps
 
-1. When starting a new non-trivial task, read `AGENTS.md`, this file, and
-   `.codex/SESSION_LOG.md` first.
-2. To review the paper-code mapping report, open:
-
-```text
-/home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html
-```
-
-3. To rebuild after MoniTAal edits, run:
-
-```bash
-cd /home/lqq/download/TAFuzz/tool/MightyPPL/build
-cmake --build . -j2
-```
-
-4. To publish again, run:
-
-```bash
-/mnt/c/Users/lqq27/.codex/skills/publish-tafuzz/scripts/publish_tafuzz.sh -m "Update TAFuzz workspace"
-```
+1. No further action now; wait for a new explicit user request.
+2. If the user asks for bug fixes, start by reading this file and the manual, then inspect the relevant source files directly.
+3. Do not resume XML-to-MITL proof/signoff expansion, BDD-native runtime, or compflatten runtime unless explicitly requested.
 
 ## Recovery Prompt
 
-请先读 /home/lqq/download/TAFuzz/AGENTS.md、/home/lqq/download/TAFuzz/.codex/PROJECT_STATE.md 和 /home/lqq/download/TAFuzz/.codex/SESSION_LOG.md，然后从当前状态继续：MightyPPL 和 MoniTAal 已移动到 /home/lqq/download/TAFuzz/tool/ 下，MightyPPL 直接使用相邻 MoniTAal 工作树构建；论文-代码映射报告在 /home/lqq/download/TAFuzz/analysis/mightyppl_monitaal_paper_code_report.html，生成脚本在 /home/lqq/download/TAFuzz/analysis/scripts/generate_paper_code_report.py；完整源码和交接文件已通过 /home/lqq/download/TAFuzz_publish_main 发布到 PearBabe/TAFuzz 的 main 分支；后续上传优先使用本地 Codex skill /mnt/c/Users/lqq27/.codex/skills/publish-tafuzz；不要重新从头探索，不要回滚用户改动。
+请先读 `/home/lqq/project/TAFuzz/AGENTS.md`、
+`/home/lqq/project/TAFuzz/.codex/PROJECT_STATE.md` 和
+`/home/lqq/project/TAFuzz/.codex/SESSION_LOG.md`。当前 TAMonitor v1 目标已经完成；最终结果入口在
+`/home/lqq/project/TAFuzz/test/TARV/results/FINAL_RESULTS_README.md`，使用文档在
+`/home/lqq/project/TAFuzz/analysis/manual/TAMonitor_User_Manual.md`。不要继续改代码或实验，除非用户提出新的明确 bug 或功能请求。
