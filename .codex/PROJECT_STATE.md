@@ -1,137 +1,368 @@
 # TAFuzz Project State
 
-Last updated: 2026-07-06 20:52 CST.
-
-This file is the active handoff source of truth. Read it before resuming work.
+Last updated: 2026-07-11 22:35 CST.
 
 ## Current Goal
 
-Goal: 完整实现并验证 TAMonitor 论文级运行时验证扩展，保留可人工审查的最终实验结果，并清理中间结果。
+Implement a Roméo-style exact mixed forward/backward PTA analysis in
+`src/TAMonitor/PTA`: precompute the Goal-truncated reachable Zone Graph, then
+propagate Parrot--Lime priced pieces only along recorded reachable arcs.
 
-Status: COMPLETE. Do not continue changing TAMonitor, benchmark experiments, XML-to-MITL review/signoff, BDD-native runtime, or compflatten runtime unless the user explicitly asks.
+Status: COMPLETE.
 
-## Latest GitHub Publish
+The existing pure `--pta-analysis backward` solver, default-disabled online
+path, and repaired `tool/Romeo` tree are protected baselines.
 
-- Published branch: `codex/tafuzz-20260706-204744`.
-- Latest pushed commit: `450ec460238bacb9f6e907805ad80a08ac3fd4d9`
-  (`Publish TAMonitor v1 workspace`).
-- Compare URL:
-  `https://github.com/PearBabe/TAFuzz/compare/main...codex/tafuzz-20260706-204744?expand=1`.
-- Draft PR creation through the GitHub connector failed with GitHub API 404,
-  so the branch was pushed but no PR was created automatically.
-- Publish used `--skip-build` after an initial build attempt failed in
-  `tool/MightyPPL/build` because the external `antlr4_runtime` update step
-  tried to check out `master` from the wrong Git context after generated build
-  metadata cleanup. Existing final verification remains recorded below.
-- GitHub warned that
-  `test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full/candidate_prefix_observations.csv`
-  is 82.33 MB, above the recommended 50 MB threshold but below the hard push
-  limit.
+## Current Mixed-Analysis Decisions
 
-## Completed v1 Runtime Scope
+- Add an opt-in `--pta-analysis mixed`; do not change pure `backward`.
+- Use exact Pardibaal DBMs without extrapolation; stop expanding Goal nodes.
+- Persist stable graph nodes/arcs plus exact fire/entry/post domains.
+- Scope priced pieces, dominance, and witnesses by reachable graph node.
+- Do not start backward optimization after an incomplete forward phase.
+- Default MightyPPL cost model remains location rate 1 and edge cost 0.
+- Baseline command `cmake --build tool/MightyPPL/build --target
+  TAMonitorPTATests TAMonitor -j2 && ctest --test-dir tool/MightyPPL/build -R
+  '^TAMonitorPTA' --output-on-failure` passed 2/2 before mixed edits.
+- Milestone 1 is complete: `ReachableZoneGraph` implements exact initial/Post,
+  strict DBMs, stable FIFO/EdgeId traversal, one-way inclusion with retained
+  fire/entry/post arc domains, Goal cutoff, and explicit node/arc/timeout
+  incompleteness. Its standalone target and all existing PTA tests pass 3/3.
+- Milestone 2 is complete: `MixedPricedSolver` scopes finite/-infinity labels,
+  dominance, deltas, queries, and witnesses by reachable NodeId. Goal seeds use
+  reachable node zones; predecessor order is entry-domain, inverse reset,
+  edge cost, guard/source zone, then priced time predecessor. The snapshot is
+  structurally bound to the exact automaton that generated it.
+- Milestone 3 is complete: `--pta-analysis mixed`, schema-2 summary,
+  nodes/arcs/pieces JSONL, phased resource states, `first_hit_terminal` Goal
+  semantics, geometry oracle, and observer-clock oracle are integrated.
+- Actual runtime MightyPPL formula `!(F [5,10] p1)` is exact with initial cost
+  5; assigning cost 3 to every initial valuation-labelled edge yields 8.
+  Future/globally/until/once/historically/since mixed geometry checks pass.
 
-- MightyPPL parses supported user MITL formulas and builds flatten timed automata.
-- TAMonitor builds positive/negative automata for `phi` and `!(phi)`.
-- BDD edge labels are projected into canonical MoniTAal labels such as `bits:10`.
-- MoniTAal positive/negative monitor produces three-valued runtime verdicts.
-- Formula satisfiability is recorded before reporting runtime results.
-- Outputs include `steps.csv`, `summary.csv`, `metadata.json`, and `results.xlsx`.
-- `--emit-bdd-interface` writes reserved metadata only.
-- `--build-mode compflatten --build-only` supports construction/statistics only.
+## Protected Baseline
 
-## Explicit v1 Deferred Scope
+- TAMonitor provides the existing MITL-to-TA runtime verification workflow.
+- Formal verdicts remain `POSITIVE`, `NEGATIVE`, or `INCONCLUSIVE`.
+- Without `--pta-analysis`, no PTA solver runs and no PTA output is emitted.
+  The original four artifacts and three workbook sheets remain unchanged.
+- The pre-existing non-PTA changes are preserved:
+  - `--print-steps` terminal output;
+  - interval-valued CSV trace parsing;
+  - MightyPPL export of clocks actually referenced by guards, invariants, and
+    resets.
 
-- BDD-native runtime is not implemented.
-- compflatten runtime verdicts are not implemented.
-- XML-to-MITL equivalence rows marked `REVIEW_REQUIRED` still need human mathematical review.
-- Human Review Signoff remains blank; no human approval is claimed.
+## Active Implementation
 
-## Final Result Entrypoints
+- The approved implementation scope is the Parrot-Lime 2020 backward
+  cost-to-go algorithm. Bouyer-Colange-Markey 2016 is only a forward/theory
+  oracle and benchmark fallback.
+- The production representation follows the paper's sign convention
+  `W = -remaining_cost`; the public API exposes direct cost-to-go.
+- MightyPPL integration defaults to the negative automaton, accepting
+  locations as goals, location rate 1, and edge cost 0. PTA analysis is
+  finite-word only and disabled unless explicitly requested.
+- Signed weights require an explicit lower-boundedness contract. Resource
+  interruption and unverified assumptions must never be reported as optimal.
+- Pardibaal DBM operations are reused without changing MoniTAal or
+  Pardibaal. Ordinary Federation merging is not valid for priced pieces.
+- Exact affine dominance uses the installed Z3 QF_LRA library; floating
+  LP solvers are excluded from proof-critical pruning.
+- The pre-change baseline was reconfigured and rebuilt successfully. The
+  `smoke_f_01` run remained `POSITIVE`, produced only the four v1 artifacts,
+  and the workbook retained exactly `Steps`, `Summary`, and `Metadata`.
 
-- Results root:
-  `/home/lqq/project/TAFuzz/test/TARV/results`
-- Final README:
-  `/home/lqq/project/TAFuzz/test/TARV/results/FINAL_RESULTS_README.md`
-- Final packet:
-  `/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full`
-- Main workbook:
-  `/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full/paper_review_results.xlsx`
-- Supporting timeout rerun packet:
-  `/home/lqq/project/TAFuzz/test/TARV/results/baseline_timeout_rerun_60s_formula_catalog_workbook_guard_full`
-- MITL catalog entrypoints:
-  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_latest_official.md`,
-  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_semantic_regression.csv`,
-  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_monitaal_xml_candidates.csv`,
-  `/home/lqq/project/TAFuzz/test/TARV/results/mitl_formula_catalog_runtime_runs.csv`.
+## Prior Baseline Handoff
 
-## User Manual
+- The earlier PTA hybrid prototype was fully removed before this task; the
+  rollback and its verification remain recorded in `.codex/SESSION_LOG.md`.
+- Existing non-PTA user changes (`--print-steps`, interval CSV parsing, and
+  MightyPPL clock export fixes) must be preserved.
+- The worktree was already dirty when this task began; no reset/revert is
+  permitted.
 
-- Manual directory:
-  `/home/lqq/project/TAFuzz/analysis/manual`
-- Entry README:
-  `/home/lqq/project/TAFuzz/analysis/manual/README.md`
-- Full manual:
-  `/home/lqq/project/TAFuzz/analysis/manual/TAMonitor_User_Manual.md`
+## Active Changed Files
 
-The manual documents accepted MITL syntax, trace formats, CLI parameters, outputs, examples, final experiment result locations, and v1 boundaries.
+- Imported and repaired official Roméo 3.10.12 sources under `tool/Romeo/`;
+  provenance and the complete repair boundary are documented in
+  `tool/Romeo/UPSTREAM.md` and `tool/Romeo/REPAIR_NOTES.md`. No existing
+  TAMonitor, MightyPPL, or MoniTAal implementation file was changed.
+- New algorithm, proof, test, and experiment files under `src/TAMonitor/PTA/`.
+- `src/TAMonitor/TAMonitor.h`, `src/TAMonitor/TAMonitorOptions.cpp`, and
+  `src/TAMonitor/TAMonitorMain.cpp` for the optional, independent PTA path.
+- `tool/MightyPPL/CMakeLists.txt` for the independent PTA library/test target.
+- `.codex/PROJECT_STATE.md` and `.codex/SESSION_LOG.md` for continuity.
+- Mixed increment specifically adds `ReachableZoneGraph.{h,cpp}`,
+  `MixedPricedSolver.{h,cpp}`, their isolated C++ tests, and
+  `PTAMixedIntegrationTest.py`; extends `PTAAnalysis` for schema-2 mixed
+  output; adds outgoing/EdgeId lookup to `WeightedAutomatonView`; and updates
+  the PTA proof, README, experiment report, CLI, main dispatch, and CMake.
+- No MoniTAal, Pardibaal, or Roméo source was changed by the mixed increment.
 
-## Final Cleanup
+## Active Verification
 
-- `test/TARV/results` was reduced from 276 top-level entries and about 14G to 7 top-level entries and about 130M.
-- Removed historical intermediate experiment outputs and stale rerun packets.
-- Kept only the final review packet, its supporting timeout rerun packet, MITL catalog entrypoints, and `FINAL_RESULTS_README.md`.
-- The paused XML-to-MITL / Review Signoff experiment-review track was not continued.
-- Two unverified paused-track script additions were removed:
-  `XML_EQUIVALENCE_SIGNOFF_COVERAGE_AUDIT` from `test/TARV/scripts/verify_review_packet.py`
-  and `EXPECTED_XML_EQUIVALENCE_SIGNOFF_COVERAGE_VERIFIER_DELTA` from
-  `test/TARV/scripts/compare_pipeline_results.py`.
+- Final mixed completion audit found no remaining P0/P1/P2 issue. The public
+  graph snapshot is bound by exact structural comparison to its source TA,
+  closing the same-topology/different-guard misuse counterexample.
+- Final `ctest --test-dir tool/MightyPPL/build -R '^TAMonitorPTA'
+  --output-on-failure` passed 5/5: pure primitives, reachable graph, mixed
+  solver, pure integration, and mixed integration.
+- Exact forward tests cover reset/diagonal/strict Post, Goal cutoff, stable
+  EdgeId order, one-way inclusion with retained fire/entry/post domains,
+  initial Goal, node/arc limits, and final timeout completeness checks.
+- Mixed tests cover finite values, reachable `+infinity`, reachable and
+  unreachable `-infinity` regions, outside-domain queries, entry-domain arc
+  restriction, subsumption on/off, genuinely different FIFO/EdgeId orders,
+  structural graph binding, phased limits, and lower-bound contracts.
+- Independent numeric oracles pass: hand WTA cost 14 has Z3 `cost<14` UNSAT
+  and `cost=14` SAT; its strict version keeps infimum 14 with
+  `attained=false`; a MoniTAal observer model proves cost 3.
+- Actual MightyPPL runtime TA for `!(F [5,10] p1)` has mixed initial cost 5,
+  exact `Reach intersect Pre*(Goal)` support, `T<5` unreachable and `T<=5`
+  reachable. Cost 3 on every initial valuation-labelled edge yields 8.
+- Mixed future/globally/until/once/historically/since formula cases are exact
+  and pass the geometry oracle. Default, pure backward, and mixed preserve the
+  same online verdict; default outputs remain four files/three workbook
+  sheets, and pure backward remains schema 1 with two PTA files.
+- Latest core build passes `-Wall -Wextra -Wpedantic -Werror` and
+  ASan/UBSan. LeakSanitizer cannot run under the current ptrace environment,
+  so no new leak-free claim is made. `BUILD_TESTING=OFF` exposes only the
+  production TAMonitor/TAMonitorPTA targets.
+- Roméo FORMATS quick was rerun 4/4 with the fixed values; the preserved full
+  artifact result remains 9/9 with every forward/backward pair equal.
 
-## Final Verification
+- Roméo's optimized full CLI build and `make check` pass. The new suite covers
+  CostDBM slope/strictness/assignment/dimension cases, hash and pairing-heap
+  safety, type-safe BV/BCV dispatch, initial/zero/positive/negative costs,
+  overflow rejection, signed-cycle interruption, and the forward oracle.
+- `make check-sanitize` passes ASan/UBSan. A focused LSan comparison reduces
+  backward-only leaks from 2600 B/46 allocations to the pre-existing
+  parser/CTS baseline of 768 B/18 allocations; no priced graph/CostDBM stack
+  remains. LeakSanitizer is deliberately separate from the ASan/UBSan target.
+- The repaired optimized Roméo passes all four FORMATS 2020 quick numeric
+  oracles with equal forward/backward values: aircraft3 -1140, aircraft4
+  -4140, scheduling2 -1760, and scheduling3 -2560. Roméo 3.10.12 prints bare
+  numbers, so the older `= value` artifact parser mislabels these runs even
+  though independent exact parsing confirms 4/4.
 
-- `python3 -m py_compile test/TARV/scripts/verify_review_packet.py test/TARV/scripts/compare_pipeline_results.py` passed after removing paused-track edits.
-- Final kept entries under `test/TARV/results`:
-  `FINAL_RESULTS_README.md`,
-  `baseline_timeout_rerun_60s_formula_catalog_workbook_guard_full`,
-  `mitl_formula_catalog_latest_official.md`,
-  `mitl_formula_catalog_monitaal_xml_candidates.csv`,
-  `mitl_formula_catalog_runtime_runs.csv`,
-  `mitl_formula_catalog_semantic_regression.csv`,
-  `paper_pipeline_formula_catalog_workbook_guard_full`.
-- `unzip -t paper_review_results.xlsx` passed.
-- Final packet summary: pipeline `PASS`, failed steps `[]`.
-- Review packet verifier JSON: 151 PASS, 0 WARN, 0 FAIL.
-- Artifact manifest verifier JSON: 16 PASS, 0 WARN, 0 FAIL, 151 manifest rows.
-- TAMonitor final smoke test:
-  `tool/MightyPPL/build/TAMonitor --formula-inline 'F [0,2] p1' --trace /tmp/tamonitor_final_manual_trace.csv --word finite --state symbolic --build-mode flatten --out /tmp/tamonitor_final_manual_smoke`
-  returned `Formula satisfiable: SAT`, `Final verdict: POSITIVE`, 2 events, 2 processed steps.
+- Pre-change TAMonitor configure/build and `smoke_f_01` passed; final verdict
+  remained `POSITIVE`, only four v1 artifacts were emitted, and the workbook
+  retained the three v1 sheets.
+- `TAMonitorPTA` and `TAMonitorPTATests` configure and build successfully with
+  Pardibaal commit `1eb56e87829997d02a95e1fa80635693181245eb` and Z3 4.8.12.
+- `TAMonitorPTATests` passes weighted-zone rebase/reset, all time-predecessor
+  slope cases, strict-bound attainment, Fig. 2 splitting, exact dominance,
+  resource limits, domain-sensitive `-infinity`, shortest time, and Fig. 1
+  optimum 9.
+- The analysis adapter compiles a stable `source+ordinal` WTA snapshot from
+  the selected MightyPPL TA, loads exact integer XML costs, and serializes
+  exact `pta_analysis.json` plus `pta_pieces.jsonl` with witness/completeness
+  metadata.
+- `TAMonitorPTAIntegration` passes default-off artifact/workbook regression,
+  explicit finite negative-TA analysis, exact JSON parsing, signed-weight
+  `ASSUMPTION_REQUIRED`, resource limits, stable cost overrides, malformed
+  config rejection, and infinite-word rejection.
+- The expanded C++ suite passes exact Federation past equivalence, multi-reset
+  diagonal weights, strict epsilon optima, crossing affine dominance,
+  subsumption/order invariance, replayable `-infinity` regions, an independent
+  Z3 path oracle, and a MoniTAal observer-clock shortest-time oracle.
+- Five additional future/past/binary MITL formulas plus `smoke_f_01` all have
+  exact snapshots; priced support equals MoniTAal `Pre*(Goal)` at every
+  location when `--pta-verify-geometry` is enabled.
+- ASan/UBSan and warning-as-error builds pass. `BUILD_TESTING=OFF` excludes
+  both PTA test targets without requiring Python test discovery.
+- Romeo FORMATS 2020 full artifact run passed 9/9; every model's original
+  forward/backward cost agrees. Results are recorded in
+  `src/TAMonitor/PTA/ExperimentReport.md`.
+- Final default online smoke remained `POSITIVE`, emitted only the four v1
+  files and retained exactly `Steps`, `Summary`, and `Metadata`; explicit
+  analysis emitted only the two additional PTA files.
 
-## Workspace Boundaries
+## Research Note: Bouyer-Colange-Markey 2016
 
-- Top-level `/home/lqq/project/TAFuzz` is currently a normal Git repository
-  with remote `git@github.com:PearBabe/TAFuzz.git`.
-- `tool/MightyPPL` and `tool/MoniTAal` are now ordinary tracked directories in
-  the top-level repository; older handoff/archive entries may still describe
-  them as nested repositories.
-- Handoff files live at the TAFuzz root.
-- Preserve unrelated user work; do not revert dirty changes.
+- Read the Zotero copy of *Symbolic optimal reachability in weighted timed
+  automata* (item `9ATR45NY`, attachment `FTXCYREL`) and the authors' arXiv
+  appendix.
+- The paper's new step is a cost-aware implicit-abstraction subsumption
+  `sqsubseteq_M` over exact priced zones; it does not explicitly apply the
+  classical DBM `Extra_M` operator.
+- The inclusion test partitions valuations by the clocks still at or below
+  their maximal constants, eliminates the other clocks through minimizing
+  facets, and compares finitely many affine objectives.
+- The result removes the global bounded-clock assumption. Termination still
+  needs a uniform lower bound for generated bounded-below cost functions;
+  indefinitely descending negative-cost cycles are not covered by an
+  unconditional termination theorem.
+- This was a read-only research task. No TAMonitor/PTA source was restored or
+  changed; only these handoff notes were updated.
+- Follow-up design conclusion: paper states `(location, zone, affine prefix
+  cost)` can be generated offline for fuzzing, but the paper's affine cost is
+  cost-from-initial, not cost-to-violation. A useful offline guide therefore
+  needs a persisted priced-zone graph plus a separate backward/Bellman `h` or
+  action-`Q` analysis. Runtime lookup must match the full positive/negative
+  MoniTAal state sets by location and Federation/DBM intersection; current
+  TAMonitor reports only their counts, so a read-only state snapshot API would
+  be required. No implementation was authorized or added.
+- Refined target architecture: offline analysis should compile each timed edge
+  into piecewise source domains carrying feasible delay intervals, optimal
+  delay witnesses, local step-cost expressions, successor pieces, and
+  cost-to-go/action-Q functions. Exact table hits need only evaluate these
+  functions online; misses can run a bounded A*/best-first search using
+  certified offline lower bounds. A single scalar cost per edge is
+  insufficient because feasibility and downstream value depend on the current
+  clock valuation.
 
-## Known Limits / Risks
+## Research Note: MightyPPL 2025 Reverse TA
 
-- BDD projection can grow exponentially; `--max-valuations` intentionally fails rather than silently approximating.
-- Numeric CLI options should be plain positive integers.
-- `--help` currently prints usage through the error path and exits nonzero.
-- The 8 original-trace benchmark gaps and XML equivalence `REVIEW_REQUIRED` rows remain manual-review topics, not completed algorithm claims.
+- Read the Zotero PDF *MightyPPL: Verification of MITL with Past and Pnueli
+  Modalities* and checked its reverse-language construction, implementation
+  section, decidability argument, and the current MightyPPL/MoniTAal sources.
+- Lemma 1 constructs a generic finite-word language reversal `A -> A^R` using
+  locations `(s,b)`, a bit for each `(clock, original edge)`, and upper/lower
+  auxiliary clocks. This is a new TA accepting reversed timed words, not a DBM
+  predecessor computation on the original TA.
+- The current source does not implement that generic transformer. It directly
+  builds optimized past tester templates in `Once.cpp`, `Historically.cpp`,
+  `Since.cpp`, `Trigger.cpp`, `PnueliOn.cpp`, `PnueliHn.cpp`, `CountOn.cpp`, and
+  `CountHn.cpp`, which is consistent with the paper's decision to avoid the
+  generic reversal blow-up.
+- The distinct backward-reachability implementation is present: MightyPPL
+  calls MoniTAal's finite/Buchi fixpoints, which traverse original TA incoming
+  edges and compute Federation/DBM predecessors via `past`, inverse reset,
+  guard restriction, and another `past`.
+- Theorem 1 explicitly proves unilateral MITPPL satisfiability and model
+  checking PSPACE-complete. Full MITPPL decidability follows from Lemmas 9-16
+  and the effective translation to finite standard TAs plus decidable TA
+  emptiness; the paper does not state a separate tight complexity theorem for
+  full MITPPL.
+
+## Research Note: Backward Priced-DBM Design
+
+- Read and visually checked Parrot and Lime (FORMATS 2020), *Backward
+  Symbolic Optimal Reachability in Weighted Timed Automata*, against the
+  current MoniTAal DBM predecessor implementation.
+- The correct extension is a min-plus Bellman predecessor over overlapping
+  priced pieces `(location, DBM zone, affine cost-to-go)`, not a scalar cost
+  attached to an ordinary Federation.  The represented value is the pointwise
+  lower envelope of all pieces covering a valuation.
+- A discrete predecessor intersects the target invariant, applies the exact
+  inverse reset `free_R(Z intersect R=0)`, substitutes reset clocks by zero in
+  the affine cost, intersects the guard/source invariant, and adds the edge
+  cost.
+- A time predecessor computes
+  `inf_d(rate(location)*d + h(v+d))`.  Its objective has delay slope
+  `lambda = rate + sum(affine coefficients)`: positive lambda selects lower
+  facets, negative lambda selects upper facets, and zero lambda preserves the
+  affine form over the ordinary past zone.  Facet substitution yields finitely
+  many DBM-affine pieces.
+- The clean solver invariant stores already-computed suffix values and applies
+  exactly one priced source-time predecessor after each discrete predecessor.
+  MoniTAal's existing leading target `past()` is only an idempotent geometric
+  convenience for unpriced reachability and should not be copied blindly into
+  the new value solver.
+- Cost-aware pruning requires both zone inclusion and pointwise affine-cost
+  dominance.  Current same-location Federation merging is unsound for priced
+  pieces because it discards geometrically included DBMs without considering
+  their costs.
+- Bellman iteration is exact by induction on the maximum number of discrete
+  edges in a goal-reaching suffix.  Exactness alone does not imply termination;
+  a first implementation should use nonnegative rates/edge costs, with general
+  negative weights requiring explicit negative-cycle and `-infinity` handling.
+- This was a read-only design task. No MoniTAal, MightyPPL, or TAMonitor source
+  was changed.
+
+## Research Note: Parrot-Lime 2020 Source Availability
+
+- The paper's Section 4 and footnote 3 identify Roméo as the implementation
+  and link `http://romeo.rts-software.org/releases/FORMATS2020.tgz`.
+- The original URL now returns 404, but the 2022-02-14 Wayback snapshot is
+  downloadable. Its README explicitly says that it provides only Linux and
+  Windows 64-bit computation-engine binaries. The archive contains those two
+  binaries, nine `.cts` benchmark models, and the README; it has no source.
+- The Linux artifact embeds
+  `version FORMATS20, 2020-03-27 -- f634bf9d05625e04019e5056080c7eb243091060`.
+  Searches of Software Heritage, GitHub, Sourcegraph, GitLab, Zenodo, HAL,
+  author pages, and general web indexes found no public repository or source
+  snapshot for that exact revision.
+- Roméo's current official site publishes full CeCILL-licensed sources. The
+  still-online 3.9.1 and current 3.10.12 source tarballs contain
+  `backward_mincost.{cc,hh}`, `bvzone.{cc,hh}`, `cost_dbm.{cc,hh}`, `parser.y`,
+  and the build files. These implement the paper's mixed forward-state-space /
+  backward-cost propagation, weighted action predecessor, facet-based time
+  predecessor, and cost-aware reduction, but are later evolved releases and
+  cannot be claimed as byte-identical to the 2020 revision.
+- Practical conclusion: use the Wayback artifact for exact Table 1 binary
+  reproduction, or the official 3.9.1/3.10.12 sources for study and porting.
+  Obtaining the exact 2020 source requires asking Rémi Parrot or Didier Lime
+  for a `git archive` of revision `f634bf9d...`.
+- At the availability-search stage, verification was read-only and no binary
+  was executed. The later 3.10.12 audit below executed the archived Linux
+  artifact and a supplied 3.10.12 CLI binary; no project source was modified.
+
+## Research Note: Roméo 3.10.12 Backward-Cost Audit
+
+- Audited the official 3.10.12 source archive against Parrot-Lime Definitions
+  3-10, Theorems 1-2, Algorithm 1, and the Section 4 mixed implementation.
+  `CostDBM` correctly represents a DBM plus affine paper-sign value `W=-V`;
+  restriction/rebase, inverse mapping, edge-cost subtraction, facet slopes,
+  pointwise max-dominance, delta propagation, and final sign conversion map
+  directly to the paper for closed zones.
+- Roméo uses enabled-transition ages as DBM dimensions and first constructs a
+  reachable marking/zone graph, then propagates priced pieces backward along
+  recorded edges. Goal graph nodes are seeded with their actual reachable DBM
+  at `W=0`, rather than the pure paper algorithm's universal goal zone.
+- Confirmed a 3.10.12 CLI routing regression. `BackwardMincost` does not
+  override `has_cost()`, so an ordinary `check[zones] mincost(goal)` creates a
+  `VZone`; `BVZone::init` has no dispatcher call, while the evaluator performs
+  invalid `BVZone*` downcasts. A minimal model returned forward mincost `5`,
+  zones backward mincost `true`, and cost-control `5`. The official 2020 Linux
+  artifact still returned matching forward/backward `-1760` on scheduling2.
+- Direct execution of the original 3.10.12 `CostDBM` kernel confirmed a core
+  Theorem-2 omission: for `p > sum(r)`, `past_max` adds lower-facet pasts but
+  omits the original zero-delay zone. For `Z=[2,5], r=0, p=1`, it produced
+  `[0,2]` and incorrectly excluded `x=3`. The `p == sum(r)` rebase path was
+  separately checked and was correct.
+- Strict-zone tests found two additional exactness failures in the same
+  kernel: topological closure in the non-equal-slope facet path can leak an
+  unreachable strict diagonal boundary, and `time_bound` strictness can remain
+  in `coffset` after restriction to an attained point (`W(2)=0` represented as
+  `0-epsilon`). These can affect dominance/results. `past_min` also has a
+  separate equal-slope offset error, but that is in the control/game path, not
+  the paper's `past_max` reachability path.
+- The source audit and tests were read-only with respect to TAFuzz, TAMonitor,
+  MightyPPL, and MoniTAal. Only these handoff notes were updated; temporary
+  source, PDF render, binary, and harness files were removed after analysis.
+
+## Research Note: PGFUZZ Paper-Code Audit
+
+- Read and visually checked Kim et al. (NDSS 2021), *PGFUZZ: Policy-Guided
+  Fuzzing for Robotic Vehicles*, and audited `purseclab/PGFuzz` main commit
+  `7eaebf21116087249b8329d4ba7337a24a34ecb9` through the GitHub connector and
+  a disposable shallow clone.
+- The released ArduPilot/PX4 code implements the paper's distinctive online
+  core: policy-specific input pools, MAVLink/SITL execution, reference-state
+  averaging, hand-coded propositional/global distances, negative-distance
+  oracle, and reuse of input values that improve a proposition.
+- It is not the complete paper artifact: there is no generic MTL parser or
+  expression-tree generator, no deletion/replay Bug Post-Processing, no
+  1,000-input/2-hour policy scheduler, no Paparazzi implementation, and the
+  static analysis stage is an external unpinned dependency.
+- Exact A.CHUTE1 distance code matches the paper's example, but the release has
+  material execution hazards: PX4's default policy label/length mismatch makes
+  guidance inert, combined-policy names use `_` in directories and `-` in
+  callbacks, and the required `policy_violations/` directories are absent.
+- Paper-level reproduction was not attempted: it requires Python 2, GUI tools,
+  external target checkouts/simulators, and missing experiment orchestration.
+  No project implementation source was changed; only these handoff notes were
+  updated. Temporary PDF/source inspection data stayed outside the workspace.
+
+## Blockers
+
+None.
 
 ## Next Steps
 
-1. No further action now; wait for a new explicit user request.
-2. If the user asks for bug fixes, start by reading this file and the manual, then inspect the relevant source files directly.
-3. Do not resume XML-to-MITL proof/signoff expansion, BDD-native runtime, or compflatten runtime unless explicitly requested.
-
-## Recovery Prompt
-
-请先读 `/home/lqq/project/TAFuzz/AGENTS.md`、
-`/home/lqq/project/TAFuzz/.codex/PROJECT_STATE.md` 和
-`/home/lqq/project/TAFuzz/.codex/SESSION_LOG.md`。当前 TAMonitor v1 目标已经完成；最终结果入口在
-`/home/lqq/project/TAFuzz/test/TARV/results/FINAL_RESULTS_README.md`，使用文档在
-`/home/lqq/project/TAFuzz/analysis/manual/TAMonitor_User_Manual.md`。不要继续改代码或实验，除非用户提出新的明确 bug 或功能请求。
+1. Future fuzzing may consume immutable graph nodes/arcs, cost pieces, and
+   witnesses; an online ranking policy remains intentionally out of scope.
+2. Automatic proof of lower-boundedness for general signed discrete cycles is
+   still a separate algorithm; the explicit user contract remains in force.

@@ -55,6 +55,7 @@ cmake --build /home/lqq/project/TAFuzz/tool/MightyPPL/build --target TAMonitor -
   [--bdd-cache n] \
   [--bdd-max-increase n] \
   [--emit-bdd-interface] \
+  [--print-steps] \
   [--build-only]
 ```
 
@@ -74,6 +75,7 @@ cmake --build /home/lqq/project/TAFuzz/tool/MightyPPL/build --target TAMonitor -
 | `--bdd-cache <n>` | `100000` | BuDDy BDD cache 大小。 |
 | `--bdd-max-increase <n>` | `500000` | BuDDy 自动扩容上限。 |
 | `--emit-bdd-interface` | false | 输出 `bdd_interface.json`，状态为保留接口，不表示 BDD-native runtime 已实现。 |
+| `--print-steps` | false | 在终端打印每个 timed word prefix 的逐步 verdict。文件输出中的 `steps.csv` 始终生成；此参数只控制终端是否同步显示。 |
 | `--build-only` | false | 只构造自动机和报告统计，不运行 trace monitor。主要用于 `compflatten`。 |
 
 所有数值参数应使用纯数字正整数。
@@ -325,6 +327,29 @@ time,bits
 | `bdd_interface.json` | 仅在 `--emit-bdd-interface` 时生成，状态固定为 `interface_reserved_not_implemented`。 |
 | `results.xlsx.error.txt` | 仅在 Excel 生成失败时出现。CSV/JSON 仍是权威输出。 |
 
+默认终端输出会显示工具完成状态、公式可满足性、最终 verdict 和输出目录。若希望在终端同步看到每一步 prefix 的判定，加 `--print-steps`：
+
+```bash
+/home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor \
+  --formula-inline 'F [0,2] p1' \
+  --trace /tmp/tamonitor_trace.csv \
+  --word finite \
+  --state symbolic \
+  --build-mode flatten \
+  --print-steps \
+  --out /tmp/tamonitor_example
+```
+
+终端逐步输出格式：
+
+```text
+Step verdicts:
+  step 1: time=0, label=bits:0, human_label={}, verdict=INCONCLUSIVE, positive_states=1, negative_states=1, advanced=true
+  step 2: time=1, label=bits:1, human_label={p1}, verdict=POSITIVE, positive_states=1, negative_states=0, advanced=true
+```
+
+字段含义和 `steps.csv` 对应。`advanced=false` 表示之前已经得到确定 verdict，后续事件只在报告中 carry forward，不再继续推进 monitor。
+
 `steps.csv` 字段：
 
 | 字段 | 说明 |
@@ -373,12 +398,14 @@ EOF
   --word finite \
   --state symbolic \
   --build-mode flatten \
+  --print-steps \
   --out /tmp/tamonitor_example
 ```
 
 期望：
 
 - `Formula satisfiable: SAT`
+- 终端出现 `Step verdicts:`，并逐步显示每个 prefix 的 verdict。
 - `Final verdict: POSITIVE`
 - `/tmp/tamonitor_example/results.xlsx` 可打开。
 

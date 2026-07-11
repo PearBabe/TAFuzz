@@ -3856,3 +3856,2414 @@
 - Draft PR creation through the GitHub connector failed with GitHub API 404; no
   PR was created automatically. Manual compare URL:
   `https://github.com/PearBabe/TAFuzz/compare/main...codex/tafuzz-20260706-204744?expand=1`.
+
+## 2026-07-06 21:15 CST
+
+- User reported TAMonitor error
+  `Invalid interval time: [20` for trace line `[20,41],{b}` under formula
+  `G (a -> F [0,30] b)`.
+- Root cause: `src/TAMonitor/TraceParser.cpp` split CSV-style trace lines at
+  the first comma, which is wrong for interval timestamps because the timestamp
+  itself contains a comma.
+- Fix: added `find_csv_separator(...)`; for lines starting with `[`, it finds
+  the closing `]` and uses the following comma as the `time,props` separator.
+- Build verification: restored the generated `antlr4_runtime` external build
+  cache by recloning the missing external `.git` source and rebuilding
+  `antlr4_runtime-build_static`; then
+  `cmake --build tool/MightyPPL/build --target TAMonitor -j2` passed.
+- Runtime verification: the user's command now completes with
+  `Formula satisfiable: SAT`, final verdict `INCONCLUSIVE`, output
+  `/tmp/tamonitor_example`, 3 events, and 3 processed steps. The third row in
+  `steps.csv` preserves time `"[20,41]"`.
+- Additional regression: `/tmp/tamonitor_interval_regression.csv` with
+  `[1,3],{a}` under formula `F [0,5] (a || b)` completed with final
+  `POSITIVE`. Both generated `results.xlsx` files passed `unzip -t`.
+- Hygiene: `git diff --check` passed. Current source diff is limited to
+  `src/TAMonitor/TraceParser.cpp`.
+
+## 2026-07-06 21:43 CST
+
+- User asked whether local `.git` bloat from `refs/codex/turn-diffs/...` and
+  stash backups could be safely cleaned without affecting the visible chat
+  history or handoff files.
+- Confirmed cleanup scope: only local Git recovery metadata, not working-tree
+  files, `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`, or the pushed
+  GitHub branch.
+- Before cleanup: `.git` was about 797M, with 18 `refs/codex` refs and two
+  stashes. The stashes contained a duplicate current `TraceParser.cpp` backup
+  and the previously restored publish snapshot.
+- Cleanup commands completed: `git stash clear`, deleted all refs under
+  `refs/codex`, `git reflog expire --expire=now --all`, and
+  `git gc --prune=now --aggressive`.
+- After cleanup: `.git` is 8.1M; `git stash list` is empty; `refs/codex` count
+  is 0. Working-tree edits remain present in
+  `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`, and
+  `src/TAMonitor/TraceParser.cpp`.
+
+## 2026-07-06 21:51 CST
+
+- User asked for a detailed, example-heavy branch/project analysis covering
+  repository branch state, end-to-end workflows, MITL-to-TA conversion, BDD
+  purpose and implementation, BDD projection to MoniTAal propositions,
+  MoniTAal runtime verification, reachable-set computation, DBM meaning and
+  usage, and fuzzing-preparation implications.
+- Reviewed the current branch and local state, including top-level Git status,
+  branch list/log/remotes, the handoff files, TAMonitor manual/final result
+  entrypoints, and core implementation files in `src/TAMonitor`,
+  `tool/MightyPPL`, and `tool/MoniTAal`.
+- Ran a representative smoke command:
+  `tool/MightyPPL/build/TAMonitor --formula test/TARV/cases/smoke_f_01.mitl --trace test/TARV/cases/smoke_f_01.trace --word finite --state symbolic --build-mode flatten --out /tmp/tamonitor_branch_analysis_smoke`.
+  It completed with `Formula satisfiable: SAT` and final verdict `POSITIVE`;
+  `steps.csv` showed `{}` as `bits:0` then `{p1}` as `bits:1`.
+- Created
+  `/home/lqq/project/TAFuzz/analysis/branch_project_deep_dive_20260706.md`.
+  The report is 1879 lines and includes Mermaid diagrams, code-entry maps,
+  concrete formula/trace examples, DBM/reachability explanations, and
+  fuzzing oracle suggestions.
+- Verification: `wc -l` returned 1879 for the report; `rg` confirmed coverage
+  of `MITL`, `BDD`, `DBM`, `MoniTAal`, `可达集合`,
+  `projection_expanded`, and `fuzzing`; `git diff --check` passed.
+
+## 2026-07-06 23:16 CST
+
+- User reported UPPAAL output `pure virtual method called` followed by
+  `terminate called without an active exception`.
+- Reproduced that message with `/usr/local/bin/uppaal --version` and
+  `/usr/local/bin/uppaal --help`; UPPAAL still printed normal usage afterward,
+  so that exact symptom is GUI-launcher noise for those invocations.
+- Checked the intended MightyPPL backend path and found local headless
+  `verifyta` at `/home/lqq/download/docs/uppaal/bin-Linux/verifyta`.
+- Found an independent export bug: flattened `mitppl --xml --fin` output used
+  `x_0` in guards/resets but omitted `clock x_0;`, causing `verifyta` to reject
+  the generated XML with `Unknown identifier: x_0`.
+- Fixed `tool/MightyPPL/main.cpp` so flattened XML/TChecker export declares
+  actual nonzero clocks referenced by invariants, guards, and resets instead
+  of relying on a stale `number_of_clocks() - 1` convention.
+- Verification: `cmake --build tool/MightyPPL/build --target mitppl -j2`
+  passed; regenerated `/tmp/tafuzz_uppaal_smoke.xml` for
+  `test/TARV/cases/smoke_f_01.mitl`; `verifyta` reported
+  `-- Formula is satisfied.`; generated TChecker output includes
+  `clock:1:x_0`; `git diff --check` passed.
+
+## 2026-07-07 02:46 CST
+
+- User reported that clicking the UPPAAL taskbar/icon entry still did not open
+  a usable tool page.
+- Diagnosis: `java -version` now works, but the installed desktop file
+  `/opt/uppaal/lib/uppaal-uppaal-5.0.0.desktop` invokes
+  `/opt/uppaal/bin/uppaal-5.0.0`, the native launcher that previously emitted
+  `pure virtual method called`.
+- Added a user-local wrapper `/home/lqq/.local/bin/uppaal-gui` that runs
+  `/opt/uppaal/lib/app/uppaal --no-antialias` with
+  `_JAVA_AWT_WM_NONREPARENTING=1`.
+- Added user-local desktop override
+  `/home/lqq/.local/share/applications/uppaal-uppaal-5.0.0.desktop` with
+  `Exec=/home/lqq/.local/bin/uppaal-gui`, so the launcher no longer uses the
+  broken native executable.
+- Verification: wrapper `--help` prints normal UPPAAL usage; detached launch
+  starts `java -jar /opt/uppaal/lib/app/uppaal.jar --no-antialias` plus the
+  UPPAAL engine server; `xwininfo -root -tree` lists the `UPPAAL` main window
+  and `Preferences...` window.
+
+## 2026-07-07 02:52 CST
+
+- User reported UPPAAL still did not visually appear; attached screenshot could
+  not be read because the Windows temp file path no longer existed.
+- Rechecked `xwininfo`: Java/UPPAAL process was alive and X11 windows existed,
+  including `License installation`, `UPPAAL`, and `Preferences...`.
+- Found likely visibility cause: `License installation` had been placed at
+  `+525+722` and the main window was oversized (`2324x1703`), so dialogs could
+  sit outside the visible desktop area.
+- Added `/home/lqq/.local/bin/uppaal-raise-windows`, which discovers UPPAAL
+  windows by title and uses X11 calls to move/raise them into visible positions.
+- Updated `/home/lqq/.local/bin/uppaal-gui` to run the raise helper repeatedly
+  during startup, while preserving `--help` behavior.
+- Verification: `python3 -m py_compile /home/lqq/.local/bin/uppaal-raise-windows`
+  passed; manual helper run moved `License installation` to `+66+147`,
+  `UPPAAL` to `+26+67`, and `Preferences...` to `+6+27` per `xwininfo`.
+
+## 2026-07-07 17:01 CST
+
+- User asked for TAMonitor to show every per-step verdict in the terminal, not
+  only the final verdict, and to add the feature to the user manual.
+- Added a new `--print-steps` CLI flag. `Options` now carries `print_steps`;
+  `TAMonitorOptions.cpp` parses the flag and includes it in usage text; and
+  `TAMonitorMain.cpp` prints one `Step verdicts:` line per `RunResult.steps`
+  entry when the flag is enabled.
+- Terminal step lines include time, canonical `bits:` label, original human
+  label, per-prefix verdict, positive/negative monitor state counts, and the
+  `advanced` carry-forward flag.
+- Updated `analysis/manual/TAMonitor_User_Manual.md` with the option,
+  terminal-output example, and finite smoke command using `--print-steps`.
+  Updated `analysis/manual/README.md` to mention the flag.
+- Verification: `cmake --build tool/MightyPPL/build --target TAMonitor -j2`
+  passed. Smoke command
+  `tool/MightyPPL/build/TAMonitor --formula test/TARV/cases/smoke_f_01.mitl --trace test/TARV/cases/smoke_f_01.trace --word finite --state symbolic --build-mode flatten --print-steps --out /tmp/tamonitor_print_steps_smoke`
+  printed two terminal step verdicts (`INCONCLUSIVE`, then `POSITIVE`) and
+  final verdict `POSITIVE`; `/tmp/tamonitor_print_steps_smoke/steps.csv`
+  matched those values. `git diff --check` passed.
+
+## 2026-07-07 21:42 CST
+
+- User asked to implement the PTA-guided TAFuzz Chinese tutorial and research
+  proposal plan, explicitly without code implementation.
+- Added
+  `analysis/priced_timed_automata_guided_fuzzing.md`, a 1006-line Chinese
+  tutorial covering TA, PTA/LPTA, priced zones, branch-and-bound, task-graph
+  scheduling, aircraft landing, CoPTA-Fuzz, GuidanceScorer design,
+  timed-trace fuzzing workflow, experiments, related-work positioning, and
+  page-by-page notes for all 24/13/66 pages of the three supplied PDFs.
+- Rendered 11 representative PDF page images into
+  `analysis/assets/pta_guided_fuzzing/` for the Markdown tutorial.
+- Verification: Markdown image-link check found 8 refs with 0 missing files;
+  page-table row counts matched 24, 13, and 66; `rg` confirmed required
+  keywords including `priced zone`, `branch-and-bound`, `MITL`, `TAMonitor`,
+  `fuzzing`, `CoPTA-Fuzz`, `GuidanceScorer`, `guidance.csv`, and `CCF-A`;
+  `git diff --check` passed for the new document and handoff files.
+
+## 2026-07-08 16:06 CST
+
+- User asked for a detailed Chinese analysis of Tollund et al. 2024,
+  `Optimal Infinite Temporal Planning: Cyclic Plans for Priced Timed
+  Automata`, including the algorithm, derivation, plain-language explanation,
+  and match/implementability for TAFuzz.
+- Used the local Zotero PDF and rendered/inspected algorithm pages 4-6 during
+  analysis; temporary PDF extraction/render files under `tmp/pdfs` were removed
+  after use.
+- Added
+  `analysis/optimal_infinite_temporal_planning_tafuzz_analysis.md`, a 1240-line
+  Chinese report covering CRTA, infinite ratio objectives, lambda-deduction,
+  S-lambda-D, priced zones, symbolic cycle extraction, domination pruning,
+  experiments, TAFuzz integration points, mismatch risks, and staged
+  implementation advice.
+- Project fit conclusion: the paper is highly relevant as CoPTA-Fuzz v2/v3
+  theory, but should not be treated as a direct TAMonitor v1 patch; current
+  code lacks CRTA cost/reward annotations, priced zones, linear-fractional
+  programming, and BDD-native/lazy priced search.
+- Verification: `wc -l` returned 1240; `rg` confirmed required algorithm and
+  project-integration keywords; `git diff --check` passed for the new analysis
+  document.
+
+## 2026-07-08 16:45 CST
+
+- User indicated that the detailed reading/analysis result for
+  `Monte Carlo Tree Search for Priced Timed Automata` is located under
+  `analysis/paper`, specifically
+  `analysis/paper/note_Monte Carlo Tree Search for Priced Timed Automata.md`.
+- Updated `.codex/PROJECT_STATE.md` with that paper-reading location and
+  verified the note exists with 436 lines.
+- Because `.codex/PROJECT_STATE.md` had grown to 331 lines, copied the prior
+  full active state to
+  `.codex/archive/PROJECT_STATE_20260708_pre_mcts_paper_location_compact.md`
+  and compacted older long handoff sections out of the active file.
+
+## 2026-07-09 CST
+
+- Goal: implement the TAMonitor PTA hybrid extension plan while preserving
+  existing v1 verdict semantics and unrelated local changes.
+- Progress milestone: added PTA CLI fields/parsing in `src/TAMonitor` and
+  began isolated `src/TAMonitor/PTA/` implementation with model/cost parsing,
+  priced-zone point records, corner-based dominance fallback, finite-horizon
+  offline search skeleton, MCTS skeleton, and PTA CSV report writer skeleton.
+- Verification: not yet run because implementation is mid-edit and not yet
+  wired through CMake/main/workbook/docs.
+- Next: wire PTA runner/reporting into TAMonitor, add workbook/manual/experiment
+  support, then build and run v1 plus PTA smoke tests.
+
+## 2026-07-09 CST
+
+- Completed the TAMonitor PTA hybrid MVP implementation. Added isolated
+  `src/TAMonitor/PTA/` module files for PTA model/cost parsing, bounded
+  integer finite-horizon offline lower-bound analysis, priced-zone point
+  records, corner-based dominance fallback, UCT-style MCTS guidance, and PTA
+  CSV/JSON reporting.
+- Wired CLI options (`--pta`, `--pta-target`, cost config, horizon, delay
+  policy, MCTS budget/iterations/Cp/seed, `--pta-print`) through
+  `src/TAMonitor`, added CMake sources, and updated workbook generation to add
+  PTA sheets only when PTA outputs exist. `--pta off` remains default and old
+  summary/metadata outputs stay clean.
+- Added docs:
+  `analysis/manual/TAMonitor_User_Manual.md`,
+  `analysis/manual/README.md`, and
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`. Added experiment harness
+  `test/TARV/scripts/run_pta_hybrid_experiments.py`.
+- Verification: `cmake --build /home/lqq/project/TAFuzz/tool/MightyPPL/build --target TAMonitor -j2`
+  passed; v1 regression smoke with `--pta off` returned final `POSITIVE` and
+  no PTA fields/files; PTA hybrid smoke generated all expected `pta/*.csv` and
+  `pta_metadata.json`, with PTA sheets in `results.xlsx`; `python3 -m
+  py_compile src/TAMonitor/make_tamonitor_xlsx.py
+  test/TARV/scripts/run_pta_hybrid_experiments.py` passed; reduced harness
+  smoke ran 3/3 successful cases with expected verdicts matched;
+  `git diff --check` on touched source/docs/script paths passed.
+
+## 2026-07-09 CST
+
+- User clarified not to stop at the MVP. Continued the PTA plan and added
+  hardening around exact-subset reporting, cost semantics, self-tests, and
+  benchmark scaffolding.
+- Added `test/TARV/pta/PTAUnitTests.cpp` plus CMake target
+  `TAMonitorPTATests`. Tests cover hand-computed delay/rate/edge/target-bonus
+  cost, reset, offline lower bound, dominance true/false/UNKNOWN, MCTS fixed
+  seed determinism, cost JSON parsing, mutation costs, and label preservation.
+- Hardened PTA reporting: `CostModel` now supports `mutation_costs`;
+  `PTAModel` preserves labels; unmatched observable replay marks
+  `trace_replay_degraded`; offline status now says
+  `bounded_integer_exact_point_zone_subset;point_zone_records_no_dense_split;degraded_dense_time_split_unavailable`;
+  `pta_metadata.json` records label and cost override counts. Updated manuals
+  to document positive `target_bonus` as a cost-reducing reward.
+- Added `test/TARV/cases/pta_benchmark_manifest_template.json` covering
+  JSPLIB, Standard Task Graph/Kasahara, Jensen 2022 artifact family, Tollund
+  2024 domains, and internal TAMonitor MITL cases. Extended
+  `run_pta_hybrid_experiments.py` with latency percentiles and status/mode/
+  policy/verdict-match counts.
+- Verification: CMake reconfigure passed; `TAMonitor` and
+  `TAMonitorPTATests` builds passed; `TAMonitorPTATests` printed PASSED; v1
+  `--pta off` smoke still returned final `POSITIVE` with no PTA files/fields;
+  PTA/manifest smoke passed and confirmed `degraded_dense_time_split_unavailable`
+  in guidance/offline statuses; `python3 -m py_compile` for the experiment
+  harness passed; `git diff --check` on touched source/docs/test paths passed.
+
+## 2026-07-09 CST
+
+- User requested rollback of all PTA code implementation and return to the
+  pre-plan version with a passing build.
+- Removed PTA implementation/wiring: deleted `src/TAMonitor/PTA/`, removed PTA
+  CLI/options/main/report/workbook/CMake hooks, deleted `TAMonitorPTATests`,
+  deleted the PTA experiment harness and benchmark manifest, and removed PTA
+  sections/manual entries. Preserved non-PTA changes such as `--print-steps`.
+- Verification: residual search for `--pta|PTA|pta_|TAMonitorPTATests|src/TAMonitor/PTA|run_pta_hybrid|pta_benchmark`
+  across source/CMake/manual/scripts/cases returned no matches;
+  `cmake --build /home/lqq/project/TAFuzz/tool/MightyPPL/build --target TAMonitor -j2`
+  passed; `python3 -m py_compile src/TAMonitor/make_tamonitor_xlsx.py` passed;
+  v1 smoke on `smoke_f_01` returned final `POSITIVE`, generated only
+  `metadata.json`, `results.xlsx`, `steps.csv`, `summary.csv`, and workbook
+  sheets were only `Steps`, `Summary`, `Metadata`; `TAMonitor --help` showed
+  no PTA options; `git diff --check` on touched paths passed.
+
+## 2026-07-09 CST
+
+- Began reimplementation of the approved TAMonitor PTA Hybrid Extension plan.
+  Milestone 1 completed: read `.codex/PROJECT_STATE.md` and
+  `.codex/SESSION_LOG.md`, confirmed the active baseline is the post-rollback
+  no-PTA implementation, inspected current TAMonitor/MoniTAal entrypoints, and
+  preserved unrelated local changes.
+- Verification: `cmake --build /home/lqq/project/TAFuzz/tool/MightyPPL/build --target TAMonitor -j2`
+  passed; `TAMonitor --help` showed no PTA options in the baseline; v1 smoke
+  with `smoke_f_01.mitl` and `smoke_f_01.trace` returned final `POSITIVE`.
+- Next: add PTA CLI/options, isolated `src/TAMonitor/PTA/` module skeleton,
+  cost config parsing, and auditable PTA report outputs.
+
+## 2026-07-09 CST
+
+- Completed core PTA reimplementation milestones. Added PTA CLI/options,
+  isolated `src/TAMonitor/PTA/` sources, bounded finite-horizon point-zone
+  lower-bound guidance, explicit rate/delay/edge/action/label/mutation cost
+  accumulation, Jensen-style UCT MCTS subset, `guidance.jsonl` fuzzing
+  interface, PTA CSV/JSON reports, dynamic PTA workbook sheets, and
+  `TAMonitorPTATests`.
+- Verification: `cmake --build ... --target TAMonitor -j2` passed;
+  `python3 -m py_compile src/TAMonitor/make_tamonitor_xlsx.py` passed;
+  v1 `--pta off` smoke returned final `POSITIVE` with only old output files
+  and sheets; PTA hybrid MITL->MightyPPL TA->PTA smoke printed per-prefix PTA
+  summaries and generated expected PTA artifacts; `TAMonitorPTATests` built
+  and printed `TAMonitorPTATests PASSED`.
+- Next: add experiment harness/benchmark manifest including the MITL-to-TA-to-PTA
+  closed-loop experiment, update manuals, and run final verification.
+
+## 2026-07-09 CST
+
+- Completed the PTA Hybrid Extension implementation. Added experiment harness,
+  benchmark manifest template, TAMonitor manual updates, and
+  `TAMonitor_PTA_User_Manual.md`. Harness default cases now include the
+  required MITL -> MightyPPL-generated TA -> PTA guidance closed-loop run.
+- Final verification: `TAMonitor` and `TAMonitorPTATests` builds passed;
+  `TAMonitorPTATests` printed PASSED; Python py_compile passed for workbook
+  and experiment harness; v1 `--pta off` smoke returned `POSITIVE` with no PTA
+  outputs/sheets; PTA hybrid smoke generated all required `pta/` artifacts and
+  PTA workbook sheets; harness smoke completed 2/2 successful; manifest smoke
+  completed 1/1 successful; `git diff --check` on touched paths passed.
+- Remaining work is research expansion only: dense-time priced-zone split,
+  LP-backed dominance, external benchmark adapters, and full Tollund
+  S-lambda-D/CRTA cyclic planning.
+
+## 2026-07-09 CST
+
+- Implemented the dense-time priced-zone split milestone for the exact
+  single-clock, non-diagonal DBM, affine lower-envelope subset. Added
+  `src/TAMonitor/PTA/PricedZone.cpp`, API declarations, CMake wiring, per-prefix
+  split audit in offline results, `pta/dense_split_audit.csv` plus workbook
+  sheet, status/metadata/manual updates, and C++ tests for delay split,
+  fixed-delay affine transform, reset projection, minCost, and priced-zone
+  dominance.
+- Verification: `TAMonitorPTATests` and `TAMonitor` builds passed;
+  `TAMonitorPTATests` printed PASSED; PTA hybrid smoke returned final
+  `POSITIVE`, `offline_bounds.csv` contained `dense_time_split_audit_exact`
+  with `split_count=1`, `dense_split_audit.csv` listed the split pieces, and
+  `results.xlsx` contained `PTA Dense Split`; `--pta off` smoke returned final
+  `POSITIVE` with no PTA outputs; Python py_compile passed; minimal experiment
+  harness completed 2/2; `git diff --check` passed on touched source/docs/test
+  paths.
+- Extended minCost/dominance beyond one clock with bounded small-dimension DBM
+  corner enumeration. A unit test caught an unsafe unbounded-zone dominance
+  proof; fixed by requiring finite bounds in every nonzero objective direction
+  before accepting the corner proof. Rebuilt `TAMonitor`/`TAMonitorPTATests`,
+  reran `TAMonitorPTATests`, PTA hybrid smoke, `--pta off` smoke, py_compile,
+  minimal harness, and `git diff --check`; all passed.
+- Integrated the exact priced-zone subset into offline symbolic frontier search
+  instead of leaving it as audit-only. `run_offline_search` now records
+  `pta/dense_frontier.csv`, updates lower bounds only from exact minCost proof,
+  and stops UNKNOWN nodes before expansion. Added workbook sheet
+  `PTA Dense Frontier` and unit coverage for exact dense target discovery.
+  Verification: `TAMonitor`/`TAMonitorPTATests` builds passed;
+  `TAMonitorPTATests` passed; PTA hybrid smoke generated `dense_frontier.csv`
+  and workbook sheet; `--pta off` smoke passed with no PTA outputs; py_compile,
+  minimal harness 2/2, and `git diff --check` passed.
+- Extended MCTS with Jensen-style engineering subsets: RP incumbent pruning for
+  nonnegative path costs, SP exact duplicate successor pruning, BR rollout
+  prefix tree building to depth 5, and offline best-action selection bias.
+  Updated tests/manual status labels. Verification: `TAMonitor` and
+  `TAMonitorPTATests` built; `TAMonitorPTATests` passed; PTA hybrid smoke and
+  harness summary showed the new RP/SP/BR/offline-bias statuses; `--pta off`
+  smoke, py_compile, harness 2/2, and `git diff --check` passed.
+
+## 2026-07-09 CST
+
+- Aligned the priced-zone DBM implementation with the user’s DBM-library
+  requirement. Confirmed MoniTAal exposes PARDIBAAL zones/federations and that
+  PTA reuses PARDIBAAL/MoniTAal DBM operations for future/delay, restrict,
+  assign, close, equality, emptiness, and superset checks; only priced affine
+  envelope split and corner min/max proof remain local PTA code.
+- Extended status/docs beyond the previous single-clock wording to the current
+  exact subset: single-clock intervals plus finite multi-clock non-diagonal DBM
+  boxes. Renamed the unsafe old UNKNOWN label to
+  `dense_time_split_unknown_diagonal_or_nonbox_zone` so multi-clock box support
+  is not misreported.
+- Verification: `TAMonitorPTATests` and `TAMonitor` builds passed;
+  `TAMonitorPTATests` passed; PTA hybrid smoke showed the updated exact subset
+  in `offline_bounds.csv` and `pta_metadata.json`; corrected `--pta off` smoke
+  using `--formula` returned final `POSITIVE` with only legacy outputs;
+  py_compile passed; harness smoke completed 2/2.
+
+## 2026-07-09 CST
+
+- Extended dense-time priced-zone split with two additional exact no-split DBM
+  subsets: arbitrary DBM when `rate - sum(affine coefficients) == 0`, and
+  future-closed DBM when all affine delay coefficients make zero delay
+  provably optimal. This keeps diagonal/non-box general split UNKNOWN unless a
+  real proof obligation is discharged.
+- Added unit coverage for diagonal zero-gamma exact no-split and future-closed
+  DBM zero-delay exact no-split; updated algorithm status, metadata, manuals,
+  and handoff notes with `dense_time_dbm_no_split_exact_subset_available`.
+- Verification: `TAMonitor`/`TAMonitorPTATests` builds passed;
+  `TAMonitorPTATests` passed; PTA hybrid smoke showed the new status in
+  metadata/offline bounds; `--pta off` smoke returned `POSITIVE` with only
+  legacy outputs; py_compile passed; harness smoke completed 2/2; diff check
+  passed.
+
+## 2026-07-09 CST
+
+- Extended priced-zone reset projection with exact subsets instead of leaving
+  all multi-clock affine reset elimination UNKNOWN: finite non-diagonal DBM box
+  partial resets select reset-clock corners independently, and all-real-clock
+  resets use exact DBM minCost/corner reasoning to project to a constant lower
+  envelope. General multi-clock affine elimination remains UNKNOWN.
+- Added unit tests for multi-clock box partial reset and all-clock reset by
+  minCost; updated metadata/manual notes to expose the exact reset subset.
+- Verification: `TAMonitorPTATests` and `TAMonitor` builds passed;
+  `TAMonitorPTATests` passed; PTA hybrid smoke returned final `POSITIVE`;
+  diff check passed.
+
+## 2026-07-09 CST
+
+- Clarified Jensen delay-policy engineering subsets and made MCTS statuses
+  report the active policy: integer natural bounded PTS, critical
+  guard/invariant boundary neighborhood, sampled bounded random candidates,
+  non-lazy earliest enabled candidate, and enabled-transition filtering.
+- Added unit tests for policy candidate semantics and updated the PTA manual
+  policy table to avoid implying full Jensen experiment parity.
+- Verification: `TAMonitorPTATests` and `TAMonitor` builds passed;
+  `TAMonitorPTATests` passed; experiment harness across all five delay
+  policies completed 10/10 successful runs and reported each policy status;
+  `--pta off` smoke returned `POSITIVE` with only legacy outputs; diff check
+  passed.
+
+## 2026-07-09 CST
+
+- Expanded the PTA experiment harness summary so each run records CCF-A-style
+  engineering metrics parsed from PTA artifacts: offline reachability,
+  expanded/generated states, splits, dominance stats, corner/LP calls, MCTS
+  found prefixes, iterations, max nodes, rollouts, pruning, best cost,
+  candidate count, and risk.
+- Updated the PTA manual to document the new `pta_experiment_summary.csv`
+  metrics while keeping per-run `pta/*.csv` as the audit source of truth.
+- Verification: py_compile passed; harness smoke across integer/critical
+  policies completed 4/4 successful runs and emitted the new fields; diff
+  check passed.
+
+## 2026-07-09 CST
+
+- Checked LP backend availability. `libglpk.so.40` exists, but
+  `/usr/include/glpk.h` is missing, so GLPK is not wired into the C++ build.
+  The implementation remains honest: exact optimization uses DBM corner
+  reasoning where proved, otherwise returns UNKNOWN with `lp_calls=0`.
+
+## 2026-07-09 CST
+
+- Final validation for this pass completed. `TAMonitorPTATests` and
+  `TAMonitor` builds passed; `TAMonitorPTATests` passed; PTA hybrid smoke
+  returned `POSITIVE` and metadata/offline bounds reported DBM reuse,
+  interval/box/no-split exact dense-time subsets, reset exact subsets, and
+  `not_s_lambda_d`; `--pta off` smoke returned `POSITIVE` with only legacy
+  outputs; py_compile passed; all-policy harness completed 10/10 successful;
+  diff check passed.
+
+## 2026-07-09 CST
+
+- Extended priced-zone piecewise affine lower-envelope support. Dominance now
+  uses a sound sufficient proof rule: every rhs affine component must have an
+  lhs affine witness proven no larger over the dominated zone; otherwise the
+  result remains UNKNOWN, except exact single-affine lhs counterexamples can
+  prove DoesNotDominate. Dense split audit now uses exact piecewise minCost
+  when all affine component minCosts are proven.
+- Updated status strings, metadata, and PTA manual to label this as
+  `piecewise_affine_envelope_dominance_proof_subset`, not complete piecewise/LP
+  dominance.
+- Verification: `TAMonitorPTATests` and `TAMonitor` builds passed;
+  `TAMonitorPTATests` passed with new piecewise dominance tests; PTA hybrid
+  smoke returned `POSITIVE` and reported the piecewise subset; `--pta off`
+  smoke returned `POSITIVE` with only legacy outputs; minimal harness completed
+  2/2; py_compile and diff check passed.
+
+## 2026-07-09 CST
+
+- Tightened offline cost/admissibility semantics. `admissible_lower_bound` now
+  defaults false; bounded PTS target cost is labelled
+  `bounded_pts_candidate_best_cost_not_dense_lower_bound`; dense symbolic
+  frontier reports `dense_symbolic_frontier_exact_subset_best_cost` instead of
+  claiming an admissible dense-time lower bound.
+- MCTS still uses offline best action as heuristic bias, but now reports
+  `offline_bound_unavailable_or_not_admissible` separately from
+  `offline_best_action_selection_bias_heuristic`. Terminal `--pta-print`
+  shows `offline_cost` plus `offline_admissible`.
+- Added `offline_admissible_prefixes` to the experiment summary. Verification:
+  `TAMonitorPTATests` and `TAMonitor` builds passed; `TAMonitorPTATests`
+  passed; PTA hybrid smoke showed `offline_admissible=false`; `--pta off`
+  smoke passed with only legacy outputs; py_compile and minimal harness passed.
+
+## 2026-07-09 CST
+
+- Finalized the offline cost/admissibility correction. Full validation passed:
+  `TAMonitorPTATests` build/run, `TAMonitor` build, PTA hybrid smoke,
+  `--pta off` smoke, py_compile, all-policy harness 10/10, and diff check.
+  Harness summary reported `offline_admissible_prefixes` total 0, matching the
+  current honest boundary that no arbitrary dense-time admissible lower-bound
+  proof is implemented.
+
+## 2026-07-09 CST
+
+- Extended dense-time priced-zone delay split to a bounded general DBM candidate subset: exact pieces are generated when Dmin/Dmax is determined by finite per-clock lower/upper bounds, with diagonal constraints preserved by PARDIBAAL future/restrict. Unsupported affine/large/unbounded cases still return UNKNOWN.
+- Updated algorithm status strings, metadata paper-alignment text, PTA manuals, and handoff recovery prompt to report `dense_time_priced_zone_split_exact_single_clock_box_and_general_dbm_candidate_subset` without claiming full LP-backed split or Tollund S-lambda-D.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed; PTA hybrid smoke returned `POSITIVE` with terminal PTA prefix summaries; `--pta off` smoke returned `POSITIVE` with only legacy outputs; py_compile passed; experiment harness over integer/critical policies completed 4/4; artifact/status rg checks and diff check passed.
+
+## 2026-07-09 CST
+
+- Added exact DBM diagonal-difference optimization for affine objectives of the
+  form `a*(x-y)`, using DBM bounds directly for minCost and dominance
+  max-difference checks even without per-clock upper bounds. General affine LP
+  optimization remains UNKNOWN unless corner/difference reasoning proves it.
+- Added PTA tests for `-2 <= x-y <= 1`: exact minCost, exact max difference,
+  dominance true against constant 2, and dominance false against constant 0.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build
+  passed; PTA hybrid smoke returned `POSITIVE` and reported
+  `dbm_diagonal_difference_mincost_dominance_subset`; `--pta off` smoke kept
+  only legacy outputs; py_compile passed; harness over integer/critical
+  policies completed 4/4; artifact rg checks and diff check passed.
+
+## 2026-07-09 CST
+
+- Rechecked LP backend availability after the DBM diagonal-difference work:
+  runtime `libglpk.so.40` exists, but no `glpk.h`, `Highs.h`, or
+  `ClpSimplex.hpp` headers are available under `/usr/include` or
+  `/usr/local/include`, so no C++ LP backend was wired in.
+- Ran the PTA experiment harness across `integer`, `critical`, `sampled`,
+  `non-lazy`, and `enabled-transition` policies with two seeds; all `20/20`
+  runs completed successfully.
+
+## 2026-07-09 CST
+
+- Extended `run_pta_hybrid_experiments.py` manifest parsing so existing
+  TAMonitor `benchmark_manifest.json` `tamonitor_cases` can drive PTA
+  experiments directly. The script maps `formula_file`, `trace_file`,
+  `build_mode`, `state`, and `word`, resolves relative paths, and preserves the
+  MITL -> MightyPPL-generated TA -> PTA guidance closed loop.
+- Verification: py_compile passed; `--skip-builtins --manifest
+  test/TARV/cases/benchmark_manifest.json` completed `1/1` successful; diff
+  check passed for the harness and manual updates.
+
+## 2026-07-09 CST
+
+- Improved PTA experiment artifact auditability. The harness now writes
+  `pta_experiment_runs.jsonl`, and `pta_experiment_manifest.json` records git
+  commit/branch/status, CPU, Python/platform, case list, mode/policy/budget/seed
+  grid, output list, and aggregate PTA/MCTS metrics.
+- Verification: py_compile passed; manifest smoke generated
+  summary/JSONL/manifest with git and CPU fields; all-policy harness smoke
+  completed `20/20` successful; diff check passed.
+
+## 2026-07-09 CST
+
+- Replaced the narrow DBM diagonal-difference optimizer with an internal exact
+  DBM difference-constraints min-cost-flow proof subset for affine minCost and
+  dominance max-difference. It covers `a*(x-y)` and broader affine cases such
+  as `min(-x-y+2z)` under `x-z<=1, y-z<=2`, while external LP-backed
+  optimization remains unimplemented with UNKNOWN fallback.
+- Updated status strings, metadata, and manuals to report
+  `dbm_difference_constraints_min_cost_flow_mincost_dominance_subset`.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build
+  passed; PTA hybrid smoke returned `POSITIVE` and printed the new status;
+  `--pta off` smoke kept only legacy outputs; py_compile passed; all-policy
+  harness completed `20/20`; artifact rg checks and diff check passed.
+
+## 2026-07-09 CST
+
+- Added Jensen-style MCTS anytime audit metrics. `MCTSResult`,
+  `mcts_steps.csv`, and `mcts_tree_summary.csv` now record
+  `time_to_first_solution_ms`, `first_solution_iteration`, and `best_updates`;
+  experiment summaries expose the corresponding aggregate fields.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build
+  passed; PTA hybrid smoke produced the new MCTS CSV headers and
+  `time_to_first_solution_recorded` status; `--pta off` smoke kept legacy
+  outputs only; py_compile passed; all-policy harness completed `20/20` with
+  nonzero `mcts_best_updates_total`.
+
+## 2026-07-09 CST
+
+- Separated offline candidate cost from safe admissible lower bound. Added
+  `admissible_bound` to offline/guidance outputs; formal nonnegative costs now
+  expose a proven trivial `0` bound, while `lower_bound` remains compatibility
+  candidate/exact-subset cost and is not used for safe MCTS pruning.
+- MCTS `root_lower_bound` now reads only `admissible_bound` when
+  `admissible_lower_bound=true`; negative-cost unit coverage verifies the
+  trivial bound is not exposed when formal costs are negative.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  PTA hybrid smoke showed `admissible_bound=0` and `root_lower_bound=0`;
+  `--pta off` smoke kept legacy outputs only; py_compile passed; all-policy
+  harness completed `20/20`; diff check passed.
+
+## 2026-07-09 CST
+
+- Added MCTS root-action audit output for Jensen-style UCT inspection. `MCTSResult`
+  now records per-root-candidate visits, mean reward, policy bias, UCT score,
+  expanded flag, and best-action flag; reports write `pta/mcts_root_actions.csv`,
+  workbook generation adds `PTA MCTS Root Actions`, and the experiment harness
+  summarizes root-action metrics.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; PTA hybrid smoke generated `mcts_root_actions.csv` and the
+  workbook sheet; `--pta off` smoke kept legacy outputs only; all-policy harness
+  completed `20/20`; diff check passed.
+
+## 2026-07-09 CST
+
+- Added stable fuzzing-facing MCTS root top-k fields to guidance outputs:
+  `mcts_root_actions`, `mcts_root_actions_visited`, and
+  `mcts_root_top_actions`. The fields are derived from root-action audit stats,
+  leave existing `top_candidates` semantics unchanged, and do not alter MCTS
+  search or verdict behavior.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; PTA hybrid smoke confirmed the new CSV/JSONL fields and
+  matching root-action totals; `--pta off` smoke kept legacy outputs only;
+  all-policy harness completed `20/20`; diff check passed.
+
+## 2026-07-09 CST
+
+- Added case-insensitive Jensen-style delay-policy aliases
+  `udp/dsp/nlp/etp`. They map to existing bounded subsets and report explicit
+  `not_full_jensen_*` status markers: UDP=sampled bounded subset,
+  DSP=integer bounded PTS subset, NLP=non-lazy earliest enabled transition,
+  ETP=enabled-transition filter.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  uppercase `--pta-delay-policy NLP` smoke returned `POSITIVE` with the alias
+  status; harness over `udp/dsp/nlp/etp` completed `16/16`; `--pta off` smoke
+  kept legacy outputs only; py_compile and diff check passed.
+
+## 2026-07-09 CST
+
+- Added PTA experiment harness presets. `--preset smoke`, `jensen-smoke`, and
+  `jensen-ablation` fill missing modes/policies/budgets/iterations/seeds while
+  preserving explicit user overrides; manifests now record the resolved preset
+  grid.
+- Verification: py_compile passed; `--preset smoke` completed `2/2`;
+  `--preset jensen-smoke` completed `16/16`; `TAMonitor` build passed; diff
+  check passed.
+
+## 2026-07-09 CST
+
+- Added fail-closed external benchmark manifest scaffolding. `external_benchmarks`
+  are recorded in `pta_experiment_manifest.json`; pending statuses are skipped
+  with diagnostics, while `enabled` external benchmarks fail if the path is
+  missing or no converter exists. The PTA benchmark template now declares
+  pending JSPLIB, Kasahara/STG, Jensen Figshare, and Tollund CRTA adapters.
+- Verification: py_compile passed; template manifest smoke completed `1/1`
+  and recorded four skipped external entries; an enabled missing-path manifest
+  failed nonzero with a concise error; default smoke completed `2/2`;
+  `TAMonitor` build and diff check passed.
+
+## 2026-07-09 CST
+
+- Added `pta_experiment_aggregate.csv` generation. The harness now groups
+  per-run summaries by `case/mode/policy/budget_ms` and records success counts,
+  verdict matches, latency p50/p95/p99, best cost, MCTS iterations/pruning/
+  updates, and guidance risk/root-action fields. Manifest outputs include the
+  aggregate CSV.
+- Verification: py_compile passed; `--preset jensen-smoke` completed `16/16`
+  with 8 aggregate rows and manifest output entry; `--preset smoke` completed
+  `2/2`; `TAMonitor` build and diff check passed.
+
+## 2026-07-09 CST
+
+- Added optional peak-memory measurement to the PTA experiment harness via
+  `/usr/bin/time`. Per-run `resource_usage.txt`, summary `max_rss_kb`,
+  aggregate `max_rss_kb_max`, and manifest `max_rss_kb_max` are now emitted
+  when the tool is available.
+- Verification: py_compile passed; `--preset smoke` completed `2/2` with
+  nonzero RSS and two resource files; `--preset jensen-smoke` completed
+  `16/16` with nonzero RSS for every row; `TAMonitor` build and diff check
+  passed.
+
+## 2026-07-09 CST
+
+- Added structured strict/open-bound attainment semantics for priced-zone
+  minCost. `LinearOptimizationResult` now records `optimum_attained`, dense
+  split/frontier audit CSVs add `min_cost_attained`, and strict-bound exact
+  infimum/supremum proofs are no longer indistinguishable from closed attained
+  optima.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; PTA hybrid smoke produced `min_cost_attained` columns;
+  `--pta off` smoke kept legacy outputs; `jensen-smoke` completed `16/16`;
+  diff check passed.
+
+## 2026-07-09 CST
+
+- Added an exact general-DBM partial reset subset for cost-independent reset
+  clocks. `priced_zone_reset` now reports
+  `exact_general_dbm_reset_projection_cost_independent` when affine costs have
+  zero coefficients on reset clocks; nonzero reset-clock coefficients outside
+  the existing single-clock/box/all-clock-minCost subsets remain UNKNOWN with
+  `requires_split_or_lp`.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; PTA hybrid smoke metadata reported the new reset subset;
+  `--pta off` smoke kept legacy outputs; `jensen-smoke` completed `16/16`;
+  diff check passed.
+
+## 2026-07-09 CST
+
+- Refined one-clock minCost/dominance `optimum_attained` semantics. Flat
+  objectives are now marked attained on nonempty strict zones, and strict
+  bounds only make a proof unattained when that strict bound is the selected
+  optimum boundary.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; PTA hybrid smoke and `--pta off` smoke passed;
+  `jensen-smoke` completed `16/16`; diff check passed.
+
+## 2026-07-09 CST
+
+- Refined multi-clock DBM min-cost-flow `optimum_attained` semantics. The
+  minCost/dominance proof now tracks final flow on strict DBM constraint edges,
+  so unrelated strict bounds no longer make a closed-bound optimum look
+  unattained; strict bounds used by the proof still report strict infimum/
+  supremum semantics.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2` with strict-tracking metadata; `jensen-smoke` completed
+  `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Extended the strict/open min-cost-flow regression coverage to the dominance/
+  max direction. Tests now cover both unrelated strict bounds that should remain
+  attained and selected strict bounds that should remain unattained for min and
+  max affine objectives.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Fixed dense delay/reset strict-bound lower-envelope attainability audit.
+  `PricedZone` now carries `lower_envelope_attained`; delay split and reset
+  projection mark values derived from selected strict predecessor bounds as
+  exact but unattained infima, and dense minCost audit combines this with DBM
+  optimizer `optimum_attained`.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2` with delay/reset strict-infimum metadata; `jensen-smoke`
+  completed `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Exposed dense priced-zone minCost attainability through the fuzzing guidance
+  interface. `PTAGuidanceEntry`, `pta/guidance.csv`, and `pta/guidance.jsonl`
+  now include `dense_audit_min_cost`, `dense_audit_min_cost_exact`, and
+  `dense_audit_min_cost_attained`.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2` and JSONL parsed with the new fields; `jensen-smoke`
+  completed `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added dense guidance minCost metrics to the PTA experiment harness. Per-run
+  summary, aggregate CSV, and manifest now report dense audit min cost plus
+  exact/attained prefix counts derived from `guidance.csv`.
+- Verification: py_compile passed; `TAMonitor` build passed; PTA preset smoke
+  completed `2/2` and produced the new summary/aggregate/manifest fields;
+  `jensen-smoke` completed `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added an exact general-DBM single-reset affine-elimination subset. When DBM
+  entailment proves one lower/upper affine reset bound is globally selected,
+  `priced_zone_reset` substitutes it exactly; cases needing multiple candidate
+  regions still return UNKNOWN and keep the `requires_split_or_lp` status.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2` with global-bound metadata; `jensen-smoke` completed
+  `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added exact single-reset general-DBM multi-piece affine reset split. New
+  `priced_zone_reset_split` partitions by maximal lower or minimal upper reset
+  bound candidates, substitutes the selected affine bound, assigns the reset
+  clock, and dense frontier now expands exact reset pieces. Old
+  `priced_zone_reset` still reports UNKNOWN for cases requiring split.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2` with reset-split metadata and parseable guidance JSONL;
+  `jensen-smoke` completed `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added dense frontier integration coverage for reset split. A toy
+  `monitaal::TA` now creates a `max(0, y-1)` reset-projection case through
+  actual edge expansion; `run_offline_search` records both reset split pieces
+  and reaches the target.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2`; `jensen-smoke` completed `16/16`; diff/whitespace checks
+  passed.
+
+## 2026-07-09 CST
+
+- Added exact finite single-clock piecewise affine dominance. The dominance
+  checker now evaluates lower-envelope differences at interval endpoints and
+  affine crossing points, proving cases like `min(x, 10-x) <= 6` and finding
+  real counterexamples like `min(x, 10-x) > 4`; multi-clock piecewise cases
+  still fall back to sufficient proof / UNKNOWN.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2` with piecewise-crossing metadata; `jensen-smoke` completed
+  `16/16`; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added a small bounded-DBM vertex-LP exact subset for piecewise affine
+  dominance. `dominates_priced_zone` now proves or refutes multi-clock cases
+  like `min(x+y, 10-x-y) <= c` by maximizing the lower-envelope difference with
+  an auxiliary `t` variable over DBM constraints; unsupported large/unbounded
+  cases still fall back to sufficient proof / UNKNOWN. Archived the oversized
+  active PROJECT_STATE to `.codex/archive/PROJECT_STATE_2026-07-09_before_piecewise_vertex_lp.md`.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2`; `jensen-smoke` completed `16/16`; diff/whitespace checks
+  passed.
+
+## 2026-07-09 CST
+
+- Added dense priced-zone dominance proof-reason audit counters. New
+  `DominanceAnalysis` preserves the old `dominates_priced_zone` API while dense
+  frontier records affine exact, single-clock piecewise, DBM vertex-LP,
+  sufficient witness, refutation, and unknown counts. `offline_bounds.csv`,
+  experiment summary, aggregate CSV, and manifest now expose these fields.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `--pta off` smoke kept legacy outputs; PTA preset smoke
+  completed `2/2`; `jensen-smoke` completed `16/16`; output field check found
+  the new counters in offline bounds, summary, and manifest; diff/whitespace
+  checks passed.
+
+## 2026-07-09 CST
+
+- Strengthened the MITL -> MightyPPL-generated TA -> PTA experiment loop. Added
+  `--preset closed-loop`; per-run summary now records PTA metadata presence,
+  source automaton, locations/edges/clocks, guidance rows, dense frontier/split
+  rows, and `closed_loop_artifact_valid`. Aggregate and manifest summarize valid
+  closed-loop runs and dense row totals.
+- Verification: `closed-loop` preset completed `2/2` with both rows
+  `closed_loop_artifact_valid=true` and nonzero generated TA edges; full
+  `TAMonitorPTATests`, `TAMonitor`, `--pta off` smoke, `smoke`, and
+  `jensen-smoke` regressions passed; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added richer builtin closed-loop case `mitl_dense_frontier_closed_loop` using
+  `G ((a -> F [0,10] b) && (c -> F [0,12] d))`. The case runs through normal
+  TAMonitor MITL parsing and MightyPPL-generated negative TA before PTA guidance;
+  it gives a stable `NEGATIVE` verdict, 304 generated TA edges, and 228 dense
+  frontier rows in the smoke run. A tried two-eventuality candidate hit the BDD
+  projection valuation limit and was not added.
+- Verification: `closed-loop` completed `3/3`; `smoke` completed `3/3`;
+  `jensen-smoke` completed `24/24`; `--pta off` smoke kept legacy outputs;
+  py_compile and diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added dominance/pruning derived experiment metrics. Per-run summary now
+  includes dominance hit rate, hits/ms, dense exact/known/unknown totals,
+  dense unknown rate, and dense exact proofs/ms; aggregate CSV and manifest
+  expose corresponding totals/means for CCF-A-style tables.
+- Verification: py_compile passed; `closed-loop` completed `3/3` and field
+  checks found the new per-run/aggregate/manifest metrics; `smoke` completed
+  `3/3`; `jensen-smoke` completed `24/24`; `--pta off` smoke kept legacy
+  outputs; diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Extended single-clock piecewise affine dominance from finite intervals to
+  lower-bounded rays. The proof now checks the lower endpoint, affine crossings,
+  and tail slope/value, proving ray cases like `min(x, 10-x) <= 6`, refuting
+  `<= 4`, and handling flat-tail envelopes without claiming arbitrary
+  multi-clock unbounded DBM support.
+- Verification: `TAMonitorPTATests` build/run passed; `TAMonitor` build passed;
+  py_compile passed; `closed-loop` completed `3/3`; `smoke` completed `3/3`;
+  `jensen-smoke` completed `24/24`; `--pta off` smoke kept legacy outputs;
+  diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Downloaded and integrated optional GLPK LP backend without system install.
+  `libglpk-dev_5.0-1_amd64.deb` is cached under `.codex/deps/glpk/`; CMake
+  detects the local `glpk.h` plus system `libglpk.so.40`, defines
+  `TAMONITOR_PTA_HAS_GLPK`, and links `TAMonitor`/`TAMonitorPTATests` when
+  present. `PricedZone` now has a GLPK numeric LP fallback for piecewise
+  dominance cases beyond the internal vertex cap, with near-zero optima kept
+  UNKNOWN. Reports add `dense_dominance_piecewise_glpk_lp`.
+- Verification: GLPK probe solved a toy LP; `TAMonitorPTATests` passed with
+  CMake logging GLPK enabled; `TAMonitor` build passed and `ldd` shows
+  `libglpk.so.40`; py_compile passed; `closed-loop` completed `3/3`; `smoke`
+  completed `3/3`; `jensen-smoke` completed `24/24`; `--pta off` smoke kept
+  legacy outputs; output fields and diff/whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Extended optional GLPK backend from piecewise dominance to single affine
+  minCost/max-difference. `affine_optimize_on_bounded_dbm_corners` now tries
+  internal DBM min-cost-flow/diagonal proofs first, then GLPK LP, then old
+  corner/UNKNOWN fallback. Dense audit rows include `mincost_status=...`, and
+  experiment summaries add `pta_dense_glpk_mincost_rows`.
+- Verification: `TAMonitorPTATests` passed with nine-clock GLPK min/max tests
+  and five-clock piecewise GLPK tests; `TAMonitor` build passed; `ldd` shows
+  `libglpk.so.40`; py_compile passed; `closed-loop` completed `3/3`; `smoke`
+  completed `3/3`; `jensen-smoke` completed `24/24`; `--pta off` smoke kept
+  legacy outputs; field, diff, and whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Strengthened the MITL-generated TA closed-loop experiment path. Added
+  closed-loop-only `mitl_three_trigger_dense_closed_loop` and
+  `mitl_multiclock_nested_closed_loop`, plus per-case BDD/valuation resource
+  passthrough and preset filtering so heavy cases do not enter default
+  smoke/Jensen grids. Added a Jensen 2022 Figshare metadata downloader that
+  records artifact status as adapter-pending; metadata-only download found one
+  payload, `mcts.ova` (~4.3 GB), but did not download it.
+- Verification: `TAMonitorPTATests` and `TAMonitor` builds passed; py_compile
+  passed; manifest JSON checks passed; metadata downloader succeeded;
+  `closed-loop` completed `5/5` with the new 4-clock generated-TA case;
+  `smoke` completed `3/3`; `jensen-smoke` completed `24/24`; `--pta off`
+  project smoke stayed `POSITIVE` with no `pta/` dir; diff/whitespace checks
+  passed.
+
+## 2026-07-09 CST
+
+- Fixed PTA audit metadata after reviewing priced-zone/MCTS paths. Dense
+  frontier record creation now increments `lp_calls` when minCost status uses
+  `glpk_lp`, matching split-audit accounting. `PTAAction.status` now reflects
+  the active delay policy/subset (`integer`, `nlp_non_lazy`, `etp_enabled_transition`,
+  etc.) instead of always reporting `bounded_integer_action`; unit tests cover
+  representative statuses.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; `smoke`
+  completed `3/3`; `closed-loop` completed `5/5`; `jensen-smoke` completed
+  `24/24`; `--pta off` project smoke stayed `POSITIVE` with no `pta/` dir;
+  py_compile, JSON checks, `git -C tool/MightyPPL diff --check`, and trailing
+  whitespace checks passed.
+
+## 2026-07-09 CST
+
+- Added experiment coverage gates to close the MITL -> MightyPPL-generated TA
+  -> PTA loop. Cases may now declare `min_pta_clocks`, `min_pta_edges`,
+  `min_pta_dense_frontier_rows`, `min_pta_dense_split_audit_rows`,
+  `min_offline_split_count`, and related thresholds. Summary, aggregate, and
+  manifest outputs record metric expectation matches/failures, and failed
+  expectations now make the harness exit nonzero. Builtin dense/rich closed-loop
+  cases have minimum edge/clock/dense/split thresholds.
+- Verification: py_compile and manifest JSON checks passed; `smoke` completed
+  `3/3` with metric matches `3/3`; `closed-loop` completed `5/5` with metric
+  matches `5/5`; `jensen-smoke` completed `24/24` with metric matches `24/24`;
+  `--pta off` project smoke stayed `POSITIVE`; diff and trailing whitespace
+  checks passed.
+
+## 2026-07-09 CST
+
+- Audited priced-zone dominance safety conditions. `analyze_priced_zone_dominance`
+  already requires matching location/dimension, exact priced zones, and
+  `lhs.zone` superset of `rhs.zone` before cost comparison. Added affine and
+  piecewise regression tests proving lower-cost lhs zones cannot dominate when
+  the zone-superset precondition is missing. Manual and metadata paper-alignment
+  text now state this precondition explicitly.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; `smoke`
+  completed `3/3`; `closed-loop` completed `5/5`; `jensen-smoke` completed
+  `24/24`; `--pta off` project smoke stayed `POSITIVE`; py_compile, manifest
+  JSON check, `git -C tool/MightyPPL diff --check`, and touched-file whitespace
+  checks passed.
+
+## 2026-07-09 20:57 CST
+
+- Goal: continue closing PTA priced-zone proof-safety gaps without changing
+  TAMonitor v1 verdict semantics.
+- Work completed: added GLPK regression tests for high-dimensional strict
+  affine minCost (`optimum_attained=false` on open-bound infimum) and
+  zero-margin piecewise dominance (`UNKNOWN`, not safe pruning). Cleaned
+  trailing whitespace in `tool/MightyPPL/main.cpp`.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `test/TARV/pta/PTAUnitTests.cpp`, `tool/MightyPPL/main.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  `py_compile` for PTA scripts/XLSX helper passed; manifest JSON validation
+  passed; smoke `3/3`, closed-loop `5/5`, Jensen-smoke `24/24`; `--pta off`
+  smoke stayed `POSITIVE` with no `pta/`; metric expectation check had 0
+  failures; `git -C tool/MightyPPL diff --check` and touched-file whitespace
+  scan passed.
+- Blockers / skipped checks: no new blocker; full Tollund S-lambda-D,
+  ratio-optimal cycles, arbitrary priced-zone split/projection, and Jensen OVA
+  converter remain pending.
+- Next: add explicit external benchmark download/converter flow where semantics
+  are verifiable, then continue broader dense-time reset/projection and
+  piecewise envelope comparison support with UNKNOWN on unsupported cases.
+
+## 2026-07-09 21:03 CST
+
+- Goal: make missing external benchmark artifacts retrievable without
+  weakening the rule that adapter-pending data cannot produce paper benchmark
+  claims.
+- Work completed: enhanced `download_pta_external_benchmarks.py` with `.part`
+  resume, size/max-bytes guards, Figshare MD5 verification, existing-file reuse,
+  and `--no-resume`; added manifest-driven `auto_download` support to
+  `run_pta_hybrid_experiments.py`; updated Jensen manifest template and PTA
+  manual to default to metadata-if-missing while leaving 4.3GB payload downloads
+  explicit.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `.codex/deps/benchmarks/jensen_2022_figshare_19772926/artifact_download_manifest.json`,
+  `.codex/deps/benchmarks/jensen_2022_figshare_19772926/figshare_article_metadata.json`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `test/TARV/cases/pta_benchmark_manifest_template.json`,
+  `test/TARV/scripts/download_pta_external_benchmarks.py`,
+  `test/TARV/scripts/run_pta_hybrid_experiments.py`.
+- Verification: py_compile passed; metadata-only downloader temp run passed;
+  payload run with `--max-bytes 1` correctly skipped `mcts.ova`; manifest JSON
+  and cached Jensen artifact manifest JSON validated; manifest-driven experiment
+  completed `1/1` and recorded Jensen `download_present`; smoke completed
+  `3/3`; cached manifest records `resume_enabled=true`; diff/whitespace checks
+  passed.
+- Blockers / skipped checks: the 4.3GB OVA payload was not downloaded by
+  default, and no Jensen converter exists yet; status remains
+  `retrieval_and_adapter_pending`.
+- Next: continue broader dense-time priced-zone reset/projection and piecewise
+  comparison implementation, keeping unsupported regions UNKNOWN.
+
+## 2026-07-09 21:07 CST
+
+- Goal: broaden dense-time priced-zone reset/projection support while staying
+  inside a proved exact subset.
+- Work completed: raised single-reset general DBM multi-piece affine reset-split
+  support from the old small dimension cap to 32 real clocks; added a 9-clock
+  non-box DBM regression proving exact lower-bound candidate split pieces are
+  produced; updated PTA manual and metadata paper-alignment text with the new
+  support boundary.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile passed; smoke completed `3/3`; `--pta off` smoke stayed
+  `POSITIVE` with no `pta/`; manifest JSON checks passed; diff and focused
+  whitespace checks passed.
+- Blockers / skipped checks: arbitrary multi-reset affine projection and
+  full arbitrary priced-zone split/projection remain unsupported and must stay
+  UNKNOWN.
+- Next: continue with piecewise envelope comparison or multi-reset projection
+  only where an exact proof can be implemented and tested.
+
+## 2026-07-09 21:13 CST
+
+- Goal: broaden dense-time delay split only where exact semantics can be
+  validated.
+- Work completed: added a 32-real-clock cap for finite multi-clock box
+  dense-delay split and a 9-clock regression for the `d_min = x_i - U_i`
+  branch; attempted high-dimensional general DBM delay split validation did
+  not pass, so that broader claim was not kept. Offline status, PTA manual, and
+  metadata text now distinguish 32-clock finite-box delay split from the small
+  general-DBM candidate subset.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile passed; smoke completed `3/3`; closed-loop completed `5/5`;
+  Jensen-smoke completed `24/24`; `--pta off` smoke stayed `POSITIVE` with no
+  `pta/`; manifest JSON, diff, and focused whitespace checks passed.
+- Blockers / skipped checks: high-dimensional general DBM delay split remains
+  unsupported after validation failed; it must remain UNKNOWN until a correct
+  proof/implementation is added.
+- Next: continue with piecewise envelope comparison or multi-reset projection
+  only where an exact proof can be implemented and tested.
+
+## 2026-07-09 21:20 CST
+
+- Goal: align Jensen-style MCTS pruning semantics with formal PTA cost
+  assumptions.
+- Work completed: added a runtime formal-cost nonnegativity audit inside
+  `MCTSEngine`; RP incumbent pruning is enabled only when all modeled
+  location rates and edge/action/label costs are nonnegative. Negative or
+  unproven formal cost disables RP and reports
+  `rp_incumbent_pruning_disabled_negative_or_unproven_cost`. Added a
+  negative-rate regression test and updated PTA manual/metadata text.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/MCTSEngine.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile passed; smoke completed `3/3`; closed-loop completed `5/5`;
+  Jensen-smoke completed `24/24`; `--pta off` smoke stayed `POSITIVE` with no
+  `pta/`; manifest JSON checks passed; metric expectation checks had 0
+  failures; diff and focused whitespace checks passed.
+- Blockers / skipped checks: no new blocker; full Jensen experimental
+  reproduction still depends on external converter work.
+- Next: continue with piecewise envelope comparison, multi-reset projection, or
+  external benchmark adapters where exact semantics can be verified.
+
+## 2026-07-09 21:25 CST
+
+- Goal: broaden reset projection toward multi-reset behavior without claiming
+  complete arbitrary projection.
+- Work completed: `priced_zone_reset_split` now composes exact singleton reset
+  splitters sequentially for multi-reset inputs and returns exact pieces only
+  when every singleton step remains exact. Added a three-clock non-box DBM test
+  for resetting `{x,y}` that preserves both zero-cost and diagonal-candidate
+  branches. Updated PTA manual and metadata text to document the subset.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile passed; smoke completed `3/3`; closed-loop completed `5/5`;
+  Jensen-smoke completed `24/24`; `--pta off` smoke stayed `POSITIVE` with no
+  `pta/`; manifest JSON checks passed; metric expectation checks had 0
+  failures; diff and focused whitespace checks passed.
+- Blockers / skipped checks: arbitrary simultaneous multi-reset projection is
+  still not implemented; any sequential step that becomes UNKNOWN still falls
+  back to the existing degraded path.
+- Next: continue piecewise envelope comparison expansion or external benchmark
+  adapters where exact semantics can be verified.
+
+## 2026-07-09 21:34 CST
+
+- Goal: preserve strict/open piecewise dominance audit semantics and make
+  missing external benchmark payload retrieval automatic but honest.
+- Work completed: `DominanceAnalysis.reason` now preserves strict-closure
+  provenance for bounded DBM vertex-LP and GLPK piecewise dominance paths.
+  Added strict single-clock and strict small-DBM tests covering safe zero
+  closure-supremum dominance and positive-margin refutation. Extended the
+  Jensen downloader with `--method auto|urllib|curl`, retry controls, curl
+  fallback, cleaner manifest errors, and experiment-harness passthrough for
+  method/retry fields. Updated the PTA manual and benchmark template.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`,
+  `test/TARV/scripts/download_pta_external_benchmarks.py`,
+  `test/TARV/scripts/run_pta_hybrid_experiments.py`,
+  `test/TARV/cases/pta_benchmark_manifest_template.json`,
+  `.codex/deps/benchmarks/jensen_2022_figshare_19772926/artifact_download_manifest.json`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile passed; manifest JSON checks passed; smoke completed `3/3`;
+  closed-loop completed `5/5`; Jensen-smoke completed `24/24`; manifest-only
+  run completed `1/1`; `--pta off` smoke stayed `POSITIVE` with no `pta/`;
+  metric expectation checks had 0 failures; diff and focused whitespace checks
+  passed.
+- Blockers / skipped checks: Jensen payload download was attempted with
+  urllib/curl and metadata is cached, but the 4.3GB S3 payload fails in the
+  current network with TLS EOF via proxy and timeout without proxy. Converter
+  remains `adapter_pending`, so no Jensen benchmark reproduction is claimed.
+- Next: continue arbitrary priced-zone split/projection and external converters
+  only where exact semantics can be verified.
+
+## 2026-07-09 21:42 CST
+
+- Goal: expand dense-time priced-zone delay split only where the DBM
+  Dmin/Dmax candidate proof remains exact.
+- Work completed: raised bounded general DBM dense-delay split support from the
+  old small cap to 32 real clocks (`DBM dimension <= 33`). Added a
+  9-real-clock non-box DBM regression proving the general branch emits exact
+  upper-bound candidate pieces and encodes `d_min = x1 - Ux1`. Updated
+  algorithm status strings, PTA metadata, PTAModel notes, and the PTA manual to
+  document the 32-clock general DBM candidate subset and the new over-cap /
+  unbounded / missing-bound UNKNOWN status.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile and manifest JSON checks passed; smoke completed `3/3`;
+  closed-loop completed `5/5`; Jensen-smoke completed `24/24`; `--pta off`
+  smoke stayed `POSITIVE` with no `pta/`; metric expectation checks had 0
+  failures; generated metadata contains the 32-clock general DBM text; diff and
+  focused whitespace checks passed.
+- Blockers / skipped checks: no new blocker; arbitrary over-cap/unbounded
+  general DBM split and full Tollund S-lambda-D remain unsupported and marked
+  UNKNOWN/future.
+- Next: continue arbitrary priced-zone projection/split or external converters
+  only where exact semantics can be verified.
+
+## 2026-07-09 21:45 CST
+
+- Goal: add symmetric coverage for the expanded high-dimensional general DBM
+  delay split.
+- Work completed: added a 9-real-clock non-box DBM regression for the
+  `gamma < 0` max-delay branch, proving the general branch emits exact
+  lower-bound candidate pieces and encodes `d_max = x1 - Lx1`.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; smoke
+  completed `3/3`; `--pta off` smoke stayed `POSITIVE` with no `pta/`;
+  `git -C tool/MightyPPL diff --check` passed.
+- Blockers / skipped checks: no new blocker.
+- Next: continue arbitrary priced-zone projection/split or external converters
+  only where exact semantics can be verified.
+
+## 2026-07-09 21:49 CST
+
+- Goal: make missing benchmark data retrievable without claiming unimplemented
+  converters.
+- Work completed: extended the external downloader with `--artifact jsplib`
+  support for `tamy0612/JSPLIB` metadata and selected instance payloads. Updated
+  benchmark manifest template and PTA manual. Downloaded JSPLIB `ft06`, `la01`,
+  and `abz5` into `.codex/deps/benchmarks/jsplib_github/`; manifest records
+  jobs/machines/optimum and `adapter_pending`.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `test/TARV/cases/pta_benchmark_manifest_template.json`,
+  `test/TARV/scripts/download_pta_external_benchmarks.py`,
+  `.codex/deps/benchmarks/jsplib_github/`.
+- Verification: py_compile passed for downloader/harness; manifest template
+  JSON passed; JSPLIB downloader fetched `3/3` selected instances; manifest-only
+  harness completed `1/1` and records JSPLIB/Jensen as
+  `download_present`/`adapter_pending`; diff and focused whitespace checks
+  passed.
+- Blockers / skipped checks: JSPLIB converter to MITL/PTA/cost semantics is not
+  implemented, so no JSPLIB benchmark result is claimed.
+- Next: implement external converters only where semantics can be preserved and
+  verified, or continue priced-zone split/projection exact subsets.
+
+## 2026-07-09 22:00 CST
+
+- Goal: broaden affine minCost/dominance DBM reasoning without relying on
+  unsafe LP shortcuts.
+- Work completed: raised the internal DBM difference-constraints min-cost-flow
+  proof cap to 32 real clocks. Added 32-clock minCost, max-difference,
+  dominance, and dominance-refutation tests that prove the internal
+  min-cost-flow path is used. Moved GLPK affine fallback tests to 40 real clocks
+  so over-cap fallback remains covered. Updated PTAModel notes, offline/hybrid
+  status strings, PTA metadata, and manual wording.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `src/TAMonitor/PTA/PTAHybridRunner.cpp`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile and manifest JSON checks passed; smoke passed `3/3` after rerun
+  serially; closed-loop passed `5/5`; Jensen-smoke passed `24/24`; `--pta off`
+  stayed `POSITIVE` with no `pta/`; metric expectation checks had 0 failures;
+  smoke metadata contains the 32-clock min-cost-flow status; diff and focused
+  whitespace checks passed.
+- Blockers / skipped checks: no new blocker. One parallel build/smoke
+  verification attempt failed because `TAMonitor` was being relinked; serial
+  rerun passed.
+- Next: continue arbitrary priced-zone projection/split or external converters
+  only where exact semantics can be verified.
+
+## 2026-07-09 22:02 CST
+
+- Goal: broaden piecewise affine dominance beyond single-clock/ray cases while
+  keeping pruning proofs explicit.
+- Work completed: raised the internal bounded DBM vertex-LP piecewise dominance
+  subset to 4 real clocks. Added 4-clock prove/refute tests for
+  `min(sum xi, 4 - sum xi)` against constants and asserted the internal
+  vertex-LP path is used instead of GLPK. Updated PTAModel notes, PTA metadata,
+  and the PTA manual wording.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile and manifest JSON checks passed; smoke passed `3/3`; closed-loop
+  passed `5/5`; Jensen-smoke passed `24/24`; `--pta off` stayed `POSITIVE`
+  with no `pta/`; metric expectation checks had 0 failures; smoke metadata
+  contains the 4-clock vertex-LP wording; diff and focused whitespace checks
+  passed.
+- Blockers / skipped checks: arbitrary large-dimensional piecewise envelope
+  comparison is still not complete; over-cap/complex cases remain UNKNOWN or
+  explicit GLPK fallback.
+- Next: continue exact dense-time priced-zone split/projection or benchmark
+  converters only where semantics can be verified.
+
+## 2026-07-09 22:16 CST
+
+- Goal: expand internal piecewise DBM vertex-LP dominance without unsafe
+  large-dimensional enumeration.
+- Work completed: added proof-based compaction for DBM linear constraints used
+  by the internal piecewise vertex-LP path, skipping only diagonal bounds
+  implied by finite single-clock lower/upper bounds. Added a vertex-combination
+  budget before enumeration, raised the documented compacted subset to 9 real
+  clocks, propagated `constraint_compacted` provenance through dominance
+  reasons, and moved GLPK piecewise fallback tests to 10 real clocks so they
+  still cover real over-cap behavior.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile and manifest JSON checks passed; smoke completed `3/3`;
+  closed-loop completed `5/5`; Jensen-smoke completed `24/24`; off-mode smoke
+  had all three verdicts match expected and created no `pta/` dirs; metric
+  expectation checks had 0 failures for smoke/closed-loop/Jensen; smoke
+  metadata contains the 9-clock compacted vertex-LP notes; diff and focused
+  whitespace checks passed.
+- Blockers / skipped checks: full arbitrary piecewise envelope comparison and
+  complete Tollund S-lambda-D remain unsupported and marked UNKNOWN/future.
+- Next: continue exact dense-time priced-zone split/projection or converter
+  work only where the mapping and proofs can be validated.
+
+## 2026-07-09 22:20 CST
+
+- Goal: align online MCTS with the hybrid offline-bound plan without unsafe
+  child-state pruning.
+- Work completed: added a safe MCTS global optimality stop that triggers only
+  when an incumbent target cost reaches the admissible offline root lower
+  bound, recording `offline_root_lower_bound_global_optimality_stop`. Added a
+  zero-cost immediate-target regression that proves early termination before
+  the iteration cap. Updated PTA metadata/manual wording to state that this is
+  root-scoped and not arbitrary child-state lower-bound pruning.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/MCTSEngine.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  py_compile and manifest JSON checks passed; smoke completed `3/3`;
+  closed-loop completed `5/5`; Jensen-smoke completed `24/24`; off-mode smoke
+  had all three verdicts match expected and created no `pta/` dirs; metric
+  expectation checks had 0 failures for smoke/closed-loop/Jensen; smoke
+  metadata contains both root-bound stop and 9-clock compacted vertex-LP
+  wording; diff and focused whitespace checks passed.
+- Blockers / skipped checks: state-indexed offline lower bounds for arbitrary
+  child-state pruning are not implemented; full Tollund S-lambda-D remains
+  future work.
+- Next: continue exact dense-time priced-zone split/projection or add
+  state-indexed offline bounds only when they can be proven admissible.
+
+## 2026-07-09 22:32 CST
+
+- Goal: add state-indexed finite bounded PTS residual bounds and use them in
+  MCTS only where admissibility is proved.
+- Work completed: added `OfflineStateBound`, offline integer/DSP residual
+  lower-bound export, MCTS state-bound lookup/pruning, state-bound CSV/XLSX
+  output, experiment metrics, metadata/manual wording, and deterministic unit
+  coverage. The implementation explicitly limits this pruning to the same
+  finite bounded integer/DSP candidate graph; it is not reported as arbitrary
+  dense-time child-state pruning.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/make_tamonitor_xlsx.py`, `src/TAMonitor/PTA/PTA.h`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `src/TAMonitor/PTA/MCTSEngine.cpp`, `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`,
+  `test/TARV/scripts/run_pta_hybrid_experiments.py`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  `py_compile` and manifest JSON checks passed; smoke passed `3/3`;
+  closed-loop passed `5/5`; Jensen-smoke passed `24/24`; off-mode smoke had
+  all verdicts match and no `pta/` dirs; metric checks had 0 failures and
+  smoke artifacts contained 552 state-bound rows, 38 MCTS state-bound hits,
+  manifest state-bound metrics, and a `PTA State Bounds` XLSX sheet; diff and
+  focused whitespace checks passed.
+- Blockers / skipped checks: this is finite bounded integer/DSP PTS residual
+  pruning only. Full dense-time arbitrary child-state lower bounds, complete
+  Tollund S-lambda-D, and ratio-optimal infinite cyclic planning remain
+  unsupported/future.
+- Next: continue dense-time priced-zone split/projection and piecewise
+  envelope proof coverage where exactness can be validated.
+
+## 2026-07-09 23:05 CST
+
+- Goal: repair dense priced-zone LP auditability without changing PTA verdict
+  semantics.
+- Work completed: removed the erroneous `result.lp_calls = 0` at the end of
+  `run_offline_search`; all-clock reset projection now records
+  `reset_mincost_status=...`; dense frontier counts newly introduced GLPK reset
+  minCost proofs in `lp_calls`; PTA metadata/manual wording now documents this
+  provenance. Added a GLPK-gated 40-real-clock all-clock reset regression for
+  `reset_mincost_status=numeric_glpk_lp_affine_min`.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  smoke preset passed `3/3`; closed-loop preset passed `5/5`; off-mode smoke
+  had all verdicts match and no `pta/` directories, with the known `2/3`
+  harness artifact-valid result because PTA artifacts are intentionally absent;
+  regenerated smoke metadata contains the reset minCost provenance phrase; diff
+  and focused whitespace checks passed.
+- Blockers / skipped checks: built-in smoke/closed-loop cases currently use
+  internal DBM proofs and do not trigger nonzero GLPK `lp_calls`; the direct
+  GLPK reset regression covers the over-cap reset minCost path. Full arbitrary
+  Tollund S-lambda-D and ratio-optimal cycles remain future work.
+- Next: continue dense-time priced-zone split/projection or piecewise envelope
+  proof expansion where exactness can be validated.
+
+## 2026-07-09 23:20 CST
+
+- Goal: connect finite-PTS offline state residual lower bounds to online MCTS
+  selection guidance without weakening pruning safety.
+- Work completed: added state-residual lower-bound `policy_bias` for UCT
+  selection, while keeping it explicitly heuristic; root action stats and
+  rollout-prefix tree nodes now receive the bias. MCTS status records
+  `finite_pts_state_residual_lower_bound_selection_bias_heuristic`; PTAModel
+  notes, PTA metadata, and the PTA manual distinguish heuristic selection bias
+  from admissible same-candidate-graph pruning. Unit tests now assert the
+  status and positive root-action bias on a branching model.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/MCTSEngine.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; smoke
+  preset passed `3/3` and generated 10 MCTS steps with the new selection-bias
+  status plus 2912 positive-bias root action rows; closed-loop preset passed
+  `5/5`; off-mode smoke had all verdicts match and no `pta/` directories, with
+  the known artifact-valid `2/3`; diff and focused whitespace checks passed.
+- Blockers / skipped checks: this is heuristic UCT selection guidance, not a
+  full dense-time arbitrary child-state lower-bound algorithm. Complete
+  Tollund S-lambda-D and ratio-optimal cycle support remain unsupported/future.
+- Next: continue exact dense-time priced-zone split/projection or broaden
+  piecewise envelope proof coverage only where correctness can be validated.
+
+## 2026-07-09 23:35 CST
+
+- Goal: use finite-PTS root residual bounds for online MCTS global optimality
+  stop inside the same bounded candidate graph.
+- Work completed: MCTS now lifts `root_lower_bound` with the finite-PTS root
+  state residual lower bound when formal costs are nonnegative; status records
+  `finite_pts_root_state_residual_lower_bound_admissible`; the existing
+  `offline_root_lower_bound_global_optimality_stop` can now fire for positive
+  finite-PTS optima, not only trivial zero bounds. Metadata and manual wording
+  clarify that this is same-candidate-graph finite-PTS support, not arbitrary
+  dense-time lower-bound pruning.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/MCTSEngine.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed and asserts a positive root
+  residual lower bound triggers early MCTS stop; `TAMonitor` build passed;
+  smoke preset passed `3/3` with 10 root-residual status rows, one global stop,
+  and updated metadata notes; closed-loop preset passed `5/5`; off-mode smoke
+  had all verdicts match and no `pta/` dirs, with the known artifact-valid
+  `2/3`; diff and focused whitespace checks passed.
+- Blockers / skipped checks: this remains finite bounded integer/DSP candidate
+  graph support. Dense-time arbitrary root/child state lower bounds, complete
+  Tollund S-lambda-D, and ratio-optimal cycle support remain unsupported/future.
+- Next: continue exact dense-time priced-zone split/projection or larger
+  piecewise envelope proof coverage where correctness can be validated.
+
+## 2026-07-09 23:50 CST
+
+- Goal: make finite-PTS state residual bounds auditable when dense symbolic
+  priced-zone analysis later reports a different lower bound.
+- Work completed: added `OfflineStateBound.source_root_cost`, wrote it to
+  `pta/offline_state_bounds.csv`, and added status
+  `finite_pts_state_residual_bounds_source_cost_separate_from_dense_lower_bound`
+  when dense symbolic analysis lowers `OfflineSearchResult.lower_bound` below
+  the finite-PTS source optimum. Added a strict-guard regression proving the
+  finite integer/DSP source optimum is 1 while dense-time priced-zone analysis
+  reports the strict zero-delay infimum 0. Updated PTAModel notes, metadata,
+  and the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PTA.h`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; smoke
+  preset passed `3/3` and produced 552 state-bound rows, all with
+  `source_root_cost`; smoke metadata contains the new source-root-cost wording;
+  closed-loop preset passed `5/5`; off-mode smoke had all verdicts match and no
+  `pta/` dirs, with the known artifact-valid `2/3`; diff and focused
+  whitespace checks passed.
+- Blockers / skipped checks: this clarifies finite-PTS residual-bound
+  provenance; it is not arbitrary dense-time state lower-bound support. Full
+  Tollund S-lambda-D and ratio-optimal cycle support remain future work.
+- Next: continue exact dense-time priced-zone split/projection or broaden
+  piecewise envelope proof coverage where correctness can be validated.
+
+## 2026-07-10 00:20 CST
+
+- Goal: reduce the gap between current reset split support and true priced-zone
+  piecewise lower-envelope semantics.
+- Work completed: added an exact same-sign piecewise lower-envelope branch for
+  single-reset general DBM reset split. When all nonzero reset-clock
+  coefficients share one sign, each lower/upper candidate region now preserves
+  all transformed affine envelope components instead of representing them only
+  as separate single-affine zones. Mixed-sign piecewise reset partitioning
+  remains unsupported/UNKNOWN. Updated PTAModel notes, PTA metadata wording, and
+  the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with a hand-computed
+  `min(x, x + 2 - y)` reset regression; `TAMonitor` build passed; Python
+  compile and manifest JSON checks passed; smoke preset passed `3/3`;
+  closed-loop preset passed `5/5`; smoke metadata contained the same-sign
+  piecewise reset wording and algorithm note; off-mode smoke had all verdicts
+  match and no `pta/` directories despite the known artifact-valid `2/3`;
+  `git -C tool/MightyPPL diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: this is not full arbitrary reset projection. Full
+  mixed-sign piecewise reset cross-product partitioning, Tollund S-lambda-D,
+  and ratio-optimal infinite-cycle support remain future work.
+- Next: continue dense-time priced-zone split/projection toward exact
+  mixed-sign reset partitioning or broader piecewise envelope proof coverage.
+
+## 2026-07-10 00:45 CST
+
+- Goal: extend single-reset general DBM reset split from same-sign piecewise
+  envelopes to a proved mixed-sign candidate cross-product subset.
+- Work completed: added exact mixed-sign piecewise lower-envelope reset split.
+  Positive reset-clock envelope components select lower-bound candidates,
+  negative components select upper-bound candidates, and each lower/upper
+  candidate cross-product region keeps all projected affine envelope components.
+  Arbitrary piecewise reset partitioning beyond this proved subset remains
+  UNKNOWN, not approximated. Updated PTAModel notes, PTA metadata wording, and
+  the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with a hand-computed
+  `min(x, 6 - x)` mixed-sign reset regression preserving `y-1` and `5-y`;
+  `TAMonitor` build passed; Python compile and manifest JSON checks passed;
+  smoke preset passed `3/3`; closed-loop preset passed `5/5`; Jensen-smoke
+  passed `24/24`; smoke metadata contained the mixed-sign cross-product wording
+  and algorithm note; off-mode smoke had all verdicts match and no `pta/`
+  directories despite the known artifact-valid `2/3`; `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: this is still not full arbitrary reset projection.
+  Complete arbitrary piecewise reset partitioning, Tollund S-lambda-D, and
+  ratio-optimal infinite-cycle support remain future work.
+- Next: continue dense-time priced-zone split/projection or broaden piecewise
+  envelope proof coverage where exactness can be validated.
+
+## 2026-07-10 01:05 CST
+
+- Goal: prevent reset projection from falsely claiming exactness when affine
+  costs reference clocks outside the current DBM dimension.
+- Work completed: added a reset-projection exactness guard shared by the reset
+  branches. If any envelope component uses a non-zone clock, the DBM shape is
+  still reset but the priced zone is marked
+  `reset_projection_unknown_affine_uses_unknown_clock`; the single-reset split
+  path also refuses to manufacture exact candidate pieces in that case. Updated
+  PTAModel notes, PTA metadata wording, and the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with direct reset and reset-split
+  unknown-clock regressions; `TAMonitor` build passed; Python compile and
+  manifest JSON checks passed; smoke preset passed `3/3`; closed-loop preset
+  passed `5/5`; Jensen-smoke passed `24/24`; smoke metadata contained the
+  unknown-clock reset guard wording and algorithm note; off-mode smoke had all
+  verdicts match and no `pta/` directories despite the known artifact-valid
+  `2/3`; `git -C tool/MightyPPL diff --check` and focused whitespace checks
+  passed.
+- Blockers / skipped checks: this is a safety/audit correction, not arbitrary
+  reset projection. Complete arbitrary piecewise reset partitioning, Tollund
+  S-lambda-D, and ratio-optimal infinite-cycle support remain future work.
+- Next: continue dense-time priced-zone split/projection or broaden piecewise
+  envelope proof coverage where exactness can be validated.
+
+## 2026-07-10 01:25 CST
+
+- Goal: align concrete-delay exactness with the reset projection unknown-clock
+  safety rule.
+- Work completed: `priced_zone_delay_exact` now checks every lower-envelope
+  component before claiming `exact_concrete_delay`. If any affine cost uses a
+  non-zone clock, the DBM shape is delayed and the in-zone affine part is
+  transformed, but the priced zone is marked
+  `concrete_delay_unknown_affine_uses_unknown_clock`. Updated PTAModel notes,
+  PTA metadata wording, and the PTA manual so concrete delay and reset
+  projection share the same non-zone-clock boundary.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with a concrete-delay
+  unknown-clock regression; `TAMonitor` build passed; Python compile and
+  manifest JSON checks passed; smoke preset passed `3/3`; closed-loop preset
+  passed `5/5`; Jensen-smoke passed `24/24`; smoke metadata contained the
+  shared delay/reset unknown-clock guard wording and algorithm note; off-mode
+  smoke had all verdicts match and no `pta/` directories despite the known
+  artifact-valid `2/3`; `git -C tool/MightyPPL diff --check` and focused
+  whitespace checks passed.
+- Blockers / skipped checks: this is an exactness/audit correction, not
+  arbitrary dense-time split. Complete arbitrary piecewise projection,
+  Tollund S-lambda-D, and ratio-optimal infinite-cycle support remain future
+  work.
+- Next: continue dense-time priced-zone split/projection or broaden piecewise
+  envelope proof coverage where exactness can be validated.
+
+## 2026-07-10 02:05 CST
+
+- Goal: move dense-time delay split closer to true priced-zone lower-envelope
+  semantics without claiming complete Larsen-style facets+LP reachability.
+- Work completed: added exact same-direction piecewise lower-envelope delay
+  facets for single-clock intervals, finite multi-clock boxes, and bounded
+  general DBMs inside the existing caps. Each Dmin/Dmax candidate region now
+  keeps all transformed affine envelope components. Mixed-slope/gamma
+  envelopes that require a full facet overlay now return explicit UNKNOWN
+  instead of component-wise pseudo-exact splits. Updated PTAModel notes,
+  PTA metadata wording, and the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with new single-clock, box,
+  general-DBM piecewise delay facet tests and mixed-gamma UNKNOWN tests;
+  `TAMonitor` build passed; Python compile and manifest JSON checks passed;
+  smoke passed `3/3`; closed-loop passed `5/5`; Jensen-smoke passed `24/24`;
+  smoke metadata contained the new same-direction/mixed-gamma wording;
+  off-mode smoke had all three verdicts match and created no `pta/`
+  directories despite the known artifact-valid `2/3`; `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: complete arbitrary mixed-gamma facet overlay,
+  full Larsen facets+LP symbolic reachability, Tollund S-lambda-D, and
+  ratio-optimal infinite cycles remain unimplemented and must continue to be
+  reported as UNKNOWN/future work.
+- Next: continue dense-time priced-zone facet/projection coverage where exact
+  LP/corner proofs can be validated; do not generalize the same-direction
+  subset beyond its proof boundary.
+
+## 2026-07-10 02:35 CST
+
+- Goal: implement a real next step toward facets by making single-clock
+  mixed-slope piecewise delay envelopes exact, while keeping multi-clock
+  mixed-gamma envelopes conservative.
+- Work completed: extended the single-clock delay splitter with an exact
+  interval/after-upper facet overlay. Components that prefer maximum delay use
+  the lower-bound predecessor; components that prefer minimum delay use zero
+  delay inside the source interval and the upper-bound predecessor after the
+  source upper bound. Multi-clock mixed-gamma envelopes still return UNKNOWN
+  until full facet overlay plus LP proof support exists. Updated PTAModel
+  notes, PTA metadata wording, and the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with exact single-clock
+  mixed-slope facet checks and multi-clock mixed-gamma UNKNOWN checks;
+  `TAMonitor` build passed; Python compile and manifest JSON checks passed;
+  smoke passed `3/3`; closed-loop passed `5/5`; Jensen-smoke passed `24/24`;
+  smoke metadata contained the new single-clock exact / multi-clock UNKNOWN
+  wording; off-mode smoke had all three verdicts match and created no `pta/`
+  directories despite the known artifact-valid `2/3`; `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: complete multi-clock mixed-gamma facet overlay,
+  full Larsen facets+LP symbolic reachability, Tollund S-lambda-D, and
+  ratio-optimal infinite cycles remain unimplemented.
+- Next: continue toward multi-clock facet overlay only where DBM facet
+  construction and LP/corner validation can be made exact.
+
+## 2026-07-10 03:00 CST
+
+- Goal: extend mixed-gamma dense-delay facets beyond single-clock without
+  claiming arbitrary general-DBM facet support.
+- Work completed: added exact finite multi-clock non-diagonal box
+  mixed-gamma Dmin/Dmax candidate cross-products. Positive-gamma envelope
+  components use zero/upper-bound Dmin candidates, negative-gamma components
+  use lower-bound Dmax candidates, and every cross-product region preserves
+  the full transformed envelope. General/diagonal DBM mixed-gamma remains
+  UNKNOWN. Updated PTAModel notes, PTA metadata wording, and the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with exact finite-box
+  mixed-gamma cross-product checks and general-DBM UNKNOWN checks; `TAMonitor`
+  build passed; Python compile and manifest JSON checks passed; smoke passed
+  `3/3`; closed-loop passed `5/5`; Jensen-smoke passed `24/24`; smoke
+  metadata contained finite-box mixed-gamma exact and general-DBM UNKNOWN
+  wording; off-mode smoke had all three verdicts match and created no `pta/`
+  directories despite the known artifact-valid `2/3`; `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: general DBM mixed-gamma facet overlay, complete
+  Larsen facets+LP symbolic reachability, Tollund S-lambda-D, and
+  ratio-optimal infinite cycles remain unimplemented.
+- Next: continue exact general-DBM facet/projection work only with proved
+  DBM/LP validation; keep unsupported mixed cases UNKNOWN.
+
+## 2026-07-10 03:25 CST
+
+- Goal: extend mixed-gamma delay facets to a proved bounded general DBM
+  subset instead of leaving all diagonal/non-box DBMs UNKNOWN.
+- Work completed: added exact bounded general DBM mixed-gamma Dmin/Dmax
+  candidate cross-products when required finite upper/lower candidate bounds
+  exist. DBM `future()` plus candidate-region restrictions preserves diagonal
+  constraints, and non-empty cross-products keep the full transformed affine
+  lower envelope. Missing-candidate general DBM mixed-gamma cases still return
+  UNKNOWN. Updated PTAModel notes, offline analyzer status strings, PTA
+  metadata wording, and the PTA manual.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`,
+  `analysis/manual/TAMonitor_PTA_User_Manual.md`,
+  `src/TAMonitor/PTA/PricedZone.cpp`,
+  `src/TAMonitor/PTA/PricedZoneAnalyzer.cpp`,
+  `src/TAMonitor/PTA/PTAModel.cpp`,
+  `src/TAMonitor/PTA/PTAReportWriter.cpp`,
+  `test/TARV/pta/PTAUnitTests.cpp`.
+- Verification: `TAMonitorPTATests` passed with exact diagonal/non-box DBM
+  mixed-gamma facet checks and missing-bound UNKNOWN checks; `TAMonitor` build
+  passed; Python compile and manifest JSON checks passed; smoke passed `3/3`;
+  closed-loop passed `5/5`; Jensen-smoke passed `24/24`; smoke metadata
+  contained bounded general DBM mixed-gamma exact and missing-candidate UNKNOWN
+  wording; off-mode smoke had all three verdicts match and created no `pta/`
+  directories despite the known artifact-valid `2/3`; `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed. After adding the offline
+  status string, `TAMonitor` build, `TAMonitorPTATests`, smoke `3/3`, and
+  focused checks passed again; all 10 smoke `offline_bounds.csv` rows contained
+  the new piecewise facet status.
+- Blockers / skipped checks: complete arbitrary Larsen facets+LP symbolic
+  reachability, Tollund S-lambda-D, and ratio-optimal infinite cycles remain
+  unimplemented; over-cap or missing-bound mixed-gamma DBMs remain UNKNOWN.
+- Next: continue exact priced-zone projection/facet coverage or strengthen
+  minCost/dominance proofs where validation can be made structural.
+
+## 2026-07-09 23:54 CST
+
+- Goal: fix dense priced-zone dominance audit accounting for GLPK/LP
+  counterexample paths without changing pruning semantics.
+- Work completed: `record_dense_dominance_analysis` now counts
+  `piecewise_glpk_lp` usage before checking whether the proof result is
+  dominance, refutation, or unknown. GLPK refutations now increment both the
+  refutation counter and `lp_calls`/GLPK dominance usage counters.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  Python compile and manifest JSON checks passed; PTA smoke `3/3`,
+  closed-loop `5/5`, and Jensen-smoke `24/24` passed. Off-mode smoke kept all
+  verdicts matching and generated no `pta/` directories, with the known
+  artifact metric `2/3`. `git -C tool/MightyPPL diff --check` and focused
+  whitespace checks passed.
+- Blockers / skipped checks: full arbitrary Larsen facets+LP,
+  Tollund S-lambda-D, and ratio-optimal cycles remain unimplemented.
+
+## 2026-07-10 00:08 CST
+
+- Goal: tighten reset-split strict/open-bound attainment semantics without
+  merging region-specific priced-zone pieces unsafely.
+- Work completed: reset candidate-region helpers now report whether selected
+  or competing lower/upper candidates include strict boundaries. Single-affine,
+  same-sign piecewise, and mixed-sign piecewise reset split branches mark
+  `lower_envelope_attained=false` with `cost_infimum_unattained_strict_candidate_*`
+  provenance when open candidate boundaries may affect pointwise witnesses.
+  Added a regression for `x > y-1` where both the zero branch and the `y-1`
+  branch must report strict-candidate infimum provenance. Updated PTAModel
+  notes, PTA metadata wording, and the PTA user manual.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  Python compile and manifest JSON checks passed; smoke `3/3`, closed-loop
+  `5/5`, and Jensen-smoke `24/24` passed. Off-mode smoke kept all verdicts
+  matching and generated no `pta/` directories, with the known artifact metric
+  `2/3`. Regenerated smoke metadata contains the competing-candidate wording.
+  `git -C tool/MightyPPL diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: full arbitrary Larsen facets+LP,
+  Tollund S-lambda-D, and ratio-optimal cycles remain unimplemented.
+
+## 2026-07-10 01:14 CST
+
+- Goal: carry the same strict competing-candidate attainment audit into
+  dense-time delay split Dmin/Dmax facets.
+- Work completed: multi-clock box and bounded general DBM delay split branches
+  now mark `cost_infimum_unattained_strict_competing_*delay_*candidate` when a
+  non-selected finite Dmin/Dmax candidate has a strict bound that can make the
+  candidate-equality boundary open. Existing selected-bound status strings are
+  preserved. Added a regression with strict `x < 5` where the selected `y`
+  Dmin piece must record strict competing-candidate provenance. Updated the PTA
+  manual wording from reset-only to delay/reset split competing-candidate
+  provenance.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  Python compile and manifest JSON checks passed; smoke `3/3`, closed-loop
+  `5/5`, and Jensen-smoke `24/24` passed. Off-mode smoke kept all verdicts
+  matching and generated no `pta/` directories, with the known artifact metric
+  `2/3`. Smoke metadata contains the selected/competing candidate wording.
+  `git -C tool/MightyPPL diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: full arbitrary Larsen facets+LP,
+  Tollund S-lambda-D, and ratio-optimal cycles remain unimplemented.
+
+## 2026-07-10 00:41 CST
+
+- Goal: remove an overly conservative UNKNOWN boundary for bounded general DBM
+  positive-gamma delay split when zero-Dmin is complete.
+- Work completed: general DBM mixed-gamma delay no longer requires a finite
+  upper-bound candidate for positive-gamma components; zero-Dmin is used when
+  no upper bound constrains Dmin. The same fix applies to single-affine
+  positive-gamma general DBM delay, where the existing future-closed
+  zero-delay proof path may discharge the case. Updated the former
+  missing-upper UNKNOWN regression into an exact zero-Dmin/lower-Dmax facet
+  check and added a single-affine lower-bounded general DBM regression.
+  Updated PTAModel notes, PTA metadata wording, and the PTA manual.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  Python compile and manifest JSON checks passed; smoke `3/3`, closed-loop
+  `5/5`, and Jensen-smoke `24/24` passed. Off-mode smoke kept all verdicts
+  matching and generated no `pta/` directories, with the known artifact metric
+  `2/3`. Smoke metadata contains `zero-Dmin`, `zero_dmin`, and required
+  Dmin/Dmax wording. After the offline status wording update, serial smoke
+  `3/3` confirmed `mixed_gamma_zero_dmin_or_required_candidate_subset_available`
+  appears in guidance/offline CSV and JSONL artifacts. `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: full arbitrary Larsen facets+LP,
+  Tollund S-lambda-D, and ratio-optimal cycles remain unimplemented.
+
+## 2026-07-10 01:04 CST
+
+- Goal: prevent formal PTA cost loss when a direct priced-zone operation sees
+  an empty lower envelope.
+- Work completed: added zero-affine lower-envelope materialization before
+  concrete delay and edge/action cost accumulation. This preserves the existing
+  internal convention that an empty envelope means zero cost, while ensuring
+  `location_rate * delay` and edge/action costs are still accumulated and
+  auditable. Added regressions for empty-envelope concrete delay and
+  edge/action cost. Updated PTAModel notes, PTA metadata formal-cost wording,
+  and the PTA user manual.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; Python
+  compile and manifest JSON checks passed; serial smoke `3/3` passed and all
+  3 generated `pta_metadata.json` files contained the empty-envelope
+  formal-cost wording; closed-loop `5/5` and Jensen-smoke `24/24` passed.
+  Off-mode smoke kept all verdicts matching and generated no `pta/`
+  directories, with the known artifact metric `2/3`. `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+- Blockers / skipped checks: full arbitrary priced-zone split/projection and
+  arbitrary piecewise dominance remain incomplete; external Jensen/JSPLIB
+  converters remain adapter-pending.
+
+## 2026-07-10 01:08 CST
+
+- Scope update from user: complete Tollund S-lambda-D and ratio-optimal
+  infinite-cycle are no longer current goals. They remain documented as
+  unsupported boundaries only, not blockers. Current work should focus on
+  finite-horizon PTA guidance, dense-time priced-zone split/minCost/dominance,
+  online MCTS guidance, and experiment/benchmark closure.
+
+## 2026-07-10 01:14 CST
+
+- Goal: make dense priced-zone minCost audit consistent with the empty
+  lower-envelope zero-cost convention.
+- Work completed: added public `priced_zone_min_cost`, made
+  `PricedZoneAnalyzer` delegate dense frontier minCost proofs to it, and added
+  a regression proving exact empty lower envelopes return minCost `0` with
+  `exact_zero_cost_lower_envelope_materialized` provenance. Also added
+  dominance regressions proving empty envelopes behave as implicit zero cost on
+  both lhs/rhs under the existing zone-superset precondition. Non-exact zones
+  still return UNKNOWN.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed;
+  Python compile and JSON checks passed; smoke `3/3`, closed-loop `5/5`, and
+  Jensen-smoke `24/24` passed. Off-mode smoke had the known artifact metric
+  `2/3`, but all verdicts matched and no `pta/` directories were generated.
+  `git -C tool/MightyPPL diff --check` and focused whitespace checks passed.
+
+## 2026-07-10 01:23 CST
+
+- Goal: remove duplicated all-clock reset minCost logic and keep reset audit
+  semantics aligned with dense frontier minCost.
+- Work completed: changed all-clock reset projection to call
+  `priced_zone_min_cost`; added a regression proving an empty lower envelope
+  resets to constant zero and preserves
+  `exact_zero_cost_lower_envelope_materialized` in `reset_mincost_status`.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; Python
+  compile passed; smoke `3/3`, closed-loop `5/5`, and Jensen-smoke `24/24`
+  passed. Off-mode smoke kept all verdicts matching and generated no PTA
+  metadata or `pta/` directories, with the known artifact metric `2/3`.
+  `git -C tool/MightyPPL diff --check` and focused whitespace checks passed.
+
+## 2026-07-10 01:34 CST
+
+- Goal: tighten minCost/dominance exactness when affine objectives mention
+  clocks outside the current DBM.
+- Work completed: `affine_min_on_zone` now returns UNKNOWN for non-zone clock
+  coefficients; `affine_difference_max_on_zone` builds the lhs-rhs difference
+  first, allowing cancelled non-zone coefficients but rejecting uncancelled
+  ones. Added zero-clock DBM regressions for minCost, priced-zone minCost, and
+  affine max-difference.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; Python
+  compile passed; smoke `3/3`, closed-loop `5/5`, and Jensen-smoke `24/24`
+  passed. Off-mode smoke kept all verdicts matching and produced no PTA
+  metadata or `pta/` directories, with the known artifact metric `2/3`.
+  `git -C tool/MightyPPL diff --check` and focused whitespace checks passed.
+
+## 2026-07-10 01:39 CST
+
+- Goal: align user-facing PTA metadata/manual text with the new non-zone-clock
+  minCost/dominance guard.
+- Work completed: updated PTAModel algorithm notes, `pta_metadata.json`
+  `paper_alignment`, and the PTA user manual to state that delay/reset,
+  affine minCost, and affine dominance/max-difference return UNKNOWN when
+  non-cancelled affine coefficients reference clocks outside the DBM.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; smoke
+  `3/3` passed; all 3 generated metadata files contained the new wording and
+  algorithm note. `git -C tool/MightyPPL diff --check` and focused whitespace
+  checks passed.
+
+## 2026-07-10 01:51 CST
+
+- Goal: extend the non-zone-clock guard to piecewise dominance without losing
+  exact proofs when lhs/rhs coefficients cancel in the actual difference.
+- Work completed: added an affine-difference helper and changed piecewise
+  interval, internal vertex-LP, and GLPK fallback guards to check each
+  `lhs-rhs` objective. Added regressions for zero-clock non-cancelled UNKNOWN,
+  zero-clock cancelled exact witness dominance, and single-clock interval
+  dominance with cancelled non-zone coefficients. A first test run exposed a
+  self-recursive helper stub; it was fixed with explicit difference
+  construction.
+- Verification: `TAMonitorPTATests` passed after the fix; `TAMonitor` build
+  passed; Python compile passed; smoke `3/3`, closed-loop `5/5`, and
+  Jensen-smoke `24/24` passed. Off-mode smoke kept all verdicts matching and
+  generated no PTA metadata or `pta/` directories, with the known artifact
+  metric `2/3`. `git -C tool/MightyPPL diff --check` and focused whitespace
+  checks passed.
+
+## 2026-07-10 01:58 CST
+
+- Goal: make generated artifacts and the manual reflect the piecewise
+  `lhs-rhs` difference guard.
+- Work completed: updated PTAModel notes, `pta_metadata.json`
+  `paper_alignment`, and the PTA user manual to state that piecewise interval,
+  internal vertex-LP, and GLPK proofs guard each actual `lhs-rhs` objective,
+  allowing cancelled non-zone coefficients but returning UNKNOWN otherwise.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; smoke
+  `3/3` passed; all 3 generated metadata files contained the new wording and
+  algorithm note. `git -C tool/MightyPPL diff --check` and focused whitespace
+  checks passed.
+
+## 2026-07-10 02:05 CST
+
+- Goal: preserve strict/open closure provenance for single-clock piecewise
+  interval dominance proofs.
+- Work completed: single-clock piecewise interval dominance and counterexample
+  reason strings now include `strict_closure` when the proof evaluates closure
+  endpoints of a strict/open interval. Strengthened strict interval dominance
+  tests to require this provenance. No dominance or verdict semantics changed.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; Python
+  compile passed; smoke `3/3` passed. Off-mode smoke kept all verdicts
+  matching and produced no PTA metadata or `pta/` directories, with the known
+  artifact metric `2/3`. `git -C tool/MightyPPL diff --check` and focused
+  whitespace checks passed.
+
+## 2026-07-10 02:19 CST
+
+- Goal: tighten internal affine LP/backend proof paths so they cannot bypass
+  the non-zone-clock UNKNOWN rule.
+- Work completed: moved the `affine_uses_only_zone_clocks` guard before
+  zero-clock constant shortcuts in DBM min-cost-flow, bounded-corner, and GLPK
+  affine LP helper paths. Added a direct GLPK-helper regression proving a
+  zero-clock DBM with a non-zone clock coefficient returns UNKNOWN provenance
+  instead of an exact constant.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; Python
+  compile passed for the XLSX helper and PTA scripts; PTA smoke completed
+  `3/3`; `git -C tool/MightyPPL diff --check` and focused whitespace checks
+  passed.
+
+## 2026-07-10 02:34 CST
+
+- Goal: make piecewise priced-zone dominance provenance explicit when rhs is
+  also a lower envelope.
+- Work completed: single-clock interval/ray, bounded DBM vertex-LP, and GLPK
+  piecewise dominance reason strings now append
+  `rhs_envelope_componentwise` when every rhs affine component is checked
+  independently. Added regressions for true single-clock piecewise-vs-piecewise
+  dominance and for a bad rhs component counterexample. Updated PTAModel notes,
+  generated metadata wording, and the PTA manual.
+- Verification: `TAMonitorPTATests` passed; `TAMonitor` build passed; Python
+  compile passed for the XLSX helper and PTA scripts; PTA smoke completed
+  `3/3`; smoke metadata contained the new componentwise wording; `git -C
+  tool/MightyPPL diff --check` and focused whitespace checks passed.
+
+## 2026-07-10 02:52 CST
+
+- Goal: reuse the existing TAMonitor MITL semantic regression catalog as a PTA
+  hybrid/split regression gate.
+- Work completed: added `--formula-catalog` and `--preset catalog-smoke` to
+  `run_pta_hybrid_experiments.py`. The preset imports only
+  `correctness_status=VERIFIED` catalog rows and runs each formula/trace
+  through the real TAMonitor MITL -> MightyPPL-generated TA -> PTA hybrid path.
+  Updated the PTA user manual with the catalog-smoke command and boundaries.
+- Verification: catalog sample run completed `8/8` including 5 imported cases;
+  full catalog-only run completed `70/70` verified MITL cases with all verdicts
+  and metric expectations matching, 70 metadata/guidance outputs, 216 guidance
+  rows, 1773 dense frontier rows, and 412 dense split audit rows. Six
+  past/Pnueli cases generated trivial 1-location/0-edge PTA views, so they
+  validate verdict/PTA output but not split coverage. Python compile,
+  `git -C tool/MightyPPL diff --check`, and focused whitespace checks passed.
+
+## 2026-07-10 03:05 CST
+
+- Goal: make experiment oracle scope explicit so catalog verdict checks are not
+  confused with priced-zone optimal-cost oracles.
+- Work completed: added `oracle_kind`, `oracle_source`, `oracle_scope`,
+  `oracle_case_id`, `oracle_status`, and `pta_split_oracle_scope` to
+  `pta_experiment_summary.csv` rows; added an `oracle_policy` block to
+  `pta_experiment_manifest.json`; updated the PTA manual. Catalog-smoke rows
+  now state that `expected_final` is a TAMonitor final-verdict oracle only.
+- Verification: catalog oracle sample run completed `6/6`; output summary
+  contained the new oracle fields and catalog rows reported
+  `oracle_status=VERIFIED` with source
+  `mitl_formula_catalog_semantic_regression.csv:expected_final`; manifest
+  contained the `oracle_policy` warning. Python compile,
+  `git -C tool/MightyPPL diff --check`, and focused whitespace checks passed.
+
+## 2026-07-10 04:09 CST
+
+- Goal: strengthen PTA tests so they check optimal formal cost and priced-zone
+  process oracles, not only TAMonitor verdict regression.
+- Work completed: added hand-computed assertions in `PTAUnitTests.cpp` for the
+  toy optimal cost `2 + 3 = 5`, dense frontier target `minCost=5`, root delay
+  split `minCost=0`, strict/open split attainment, reset split zero/`y-1`
+  minCost, piecewise reset-envelope minCost, and dense frontier reset-split
+  provenance.
+- Verification: `TAMonitorPTATests` build and run passed; `TAMonitor` build
+  passed; PTA Python scripts compiled; full `catalog-smoke` MITL -> MightyPPL
+  TA -> PTA run completed `70/70`; `git -C tool/MightyPPL diff --check` and
+  focused trailing-whitespace check passed.
+
+## 2026-07-10 04:13 CST
+
+- Goal: carry the oracle-scope distinction into the experiment harness without
+  pretending catalog verdicts prove priced-zone optimality.
+- Work completed: added exact `expected_*` PTA process metric checks to
+  `run_pta_hybrid_experiments.py` for dense-audit minCost/exact/attained prefix
+  metrics. Built-in smoke cases now declare
+  `oracle_kind=verdict+pta_process_metrics`; catalog cases remain
+  `oracle_kind=verdict`. Updated the PTA manual with the new exact-metric
+  expectation rule and boundary.
+- Verification: Python compile passed; smoke completed `3/3` with all exact
+  PTA process metric expectations matching; catalog-only completed `70/70`
+  and stayed verdict-only; `git -C tool/MightyPPL diff --check` and focused
+  whitespace checks passed.
+
+## 2026-07-10 04:17 CST
+
+- Goal: make offline finite-horizon lower-bound cost visible in experiment
+  summaries so future hand-computed optimal-cost cases can assert it directly.
+- Work completed: added `offline_lower_bound_min/max`, best-delay/label summary
+  fields, aggregate/manifest lower-bound min, and exact
+  `expected_offline_lower_bound_min` checks to the PTA experiment harness.
+  Updated built-in smoke cases and the PTA manual; catalog rows remain
+  verdict-only unless they explicitly declare PTA process expectations.
+- Verification: Python compile passed; smoke completed `3/3` with exact
+  offline lower-bound and dense-audit expectations matching; catalog-only
+  completed `70/70` with `oracle_kind=verdict`; `git -C tool/MightyPPL
+  diff --check` and focused whitespace checks passed.
+
+## 2026-07-10 04:21 CST
+
+- Goal: move a nonzero PTA time-cost oracle into the real MITL ->
+  MightyPPL-generated TA -> PTA experiment path.
+- Work completed: added `mitl_cost_oracle_closed_loop` to built-in PTA
+  experiments and then corrected it after review to use the proper time-cost
+  model: `!(F [5,10] p1)`, negative target, `default_location_rate=1`,
+  `default_edge_cost=0`, `default_action_cost=0`, and
+  `expected_offline_lower_bound_prefix0=5`. The summary now distinguishes
+  prefix-0/root lower bound from cross-prefix min. Updated the PTA manual to
+  document the corrected nonzero time-cost oracle and its verdict boundary.
+- Verification: Python compile passed; smoke completed `4/4`, with the new
+  case reporting `offline_lower_bound_prefix0=5.0`,
+  `offline_lower_bound_min=5.0`, and final verdict `POSITIVE`;
+  `TAMonitorPTATests` passed; catalog-only completed `70/70` and stayed
+  `oracle_kind=verdict`; the generated cost config used rate 1 / edge 0 /
+  action 0; `git -C tool/MightyPPL diff --check` and focused whitespace
+  checks passed.
+
+## 2026-07-10 22:10 CST
+
+- Goal: honor the user's cancellation of the PTA Hybrid Extension and restore
+  the implementation baseline from before that plan.
+- Work completed: removed `src/TAMonitor/PTA/`, PTA CLI/runtime/report/CMake
+  wiring, `TAMonitorPTATests`, PTA experiment/download scripts and manifest,
+  PTA manuals, agent-created PTA tutorial/assets, downloaded GLPK/benchmark
+  dependencies, extracted-paper temporary files, stale build objects, and PTA
+  test output directories. Preserved non-PTA `--print-steps`, interval trace
+  parsing, MightyPPL clock export fixes, and user-provided research sources.
+- Verification: CMake configure passed; `cmake --build
+  /home/lqq/project/TAFuzz/tool/MightyPPL/build --target TAMonitor -j2` passed
+  with `100% Built target TAMonitor`; residual PTA hook search returned no
+  matches; `TAMonitor --help` has no PTA options and `--pta off` is rejected;
+  `smoke_f_01` returned `POSITIVE` with only four v1 output files and three v1
+  workbook sheets; Python compile and `git diff --check` passed.
+
+## 2026-07-10 22:20 CST
+
+- Goal: deeply read Bouyer, Colange, and Markey (2016), *Symbolic optimal
+  reachability in weighted timed automata*, from the user's Zotero library and
+  explain its unbounded-clock symbolic algorithm.
+- Work completed: enabled the Zotero local API, located item `9ATR45NY` and
+  attachment `FTXCYREL`, read the 18-page CAV paper and the official arXiv TeX
+  appendix, visually checked the algorithm/effectiveness/termination pages,
+  and reconstructed the formal `Post`, `sqsubseteq_M`, partition/facet
+  decision procedure, soundness argument, wqo termination argument, and a
+  hand-derived example.
+- Main finding: the contribution is exact priced-zone forward exploration
+  with a cost-aware implicit-abstraction inclusion test, not an explicit
+  `Extra_M`; clocks may remain unbounded, while unconditional termination does
+  not extend to indefinitely descending negative-cost cycles without a
+  uniform cost lower bound.
+- Verification: Zotero reported 18 indexed pages; PDF rendering confirmed
+  Algorithm 1 and Theorems 3, 8, and 15/Corollary 16; the BibTeX export key is
+  `bouyer_symbolic_2016`; the arXiv source was read from
+  `https://export.arxiv.org/e-print/1602.00481`.
+- Files changed: `.codex/PROJECT_STATE.md` and this session log only. No
+  TAMonitor, MightyPPL, or MoniTAal source was modified.
+
+## 2026-07-10 22:35 CST
+
+- Goal: explain the exact internal state produced by the 2016 priced-zone
+  algorithm and assess offline generation for runtime fuzzing guidance.
+- Work completed: formalized a state as `(location, canonical DBM zone,
+  affine prefix-cost function)`, derived a two-clock DBM/cost example, and
+  mapped it to the current MoniTAal runtime representation of positive and
+  negative sets of `location + Federation` states.
+- Main finding: an offline guide is feasible, but must add target-directed
+  piecewise cost-to-go/action-Q data; the paper's `zeta` is historical prefix
+  cost and cannot be used directly as distance-to-violation. Runtime matching
+  must handle overlapping nodes and complete belief-state/Federation sets.
+- Current integration boundary: `TimedEvent` already provides interval time
+  and canonical label, while `MonitorRunner` currently exports only state
+  counts. A future implementation would need a read-only state snapshot and
+  an external guidance lookup layer without changing verdict semantics.
+- Files changed: `.codex/PROJECT_STATE.md` and this session log only. No source
+  code or PTA module was added.
+
+## 2026-07-10 22:50 CST
+
+- Goal: assess a hybrid design that precomputes transition/delay cost spaces
+  offline and answers current-state-to-Goal minimum-cost queries online.
+- Conclusion: this is feasible when offline records are piecewise functions of
+  clock valuations, not scalar edge weights. Each record should bind a source
+  DBM domain to a feasible delay relation, optimal-delay endpoint/facet,
+  local cost, successor piece, and exact/lower-bound action-Q value.
+- Recommended online modes: direct lookup/evaluation on an exact policy-table
+  hit; otherwise bounded A*/best-first expansion using admissible offline
+  lower bounds and critical-delay candidates. Runtime actual prefix cost stays
+  separate and is only added when a total-from-start objective is needed.
+- Source cross-check: Parrot and Lime, FORMATS 2020, explicitly study backward
+  symbolic optimal reachability and accumulated weight to the goal using
+  weighted action/time predecessor operations.
+- Files changed: `.codex/PROJECT_STATE.md` and this session log only. No source
+  implementation was added.
+
+## 2026-07-11 01:11 CST
+
+- Goal: determine whether the generic reverse timed-automaton construction in
+  Ho et al. (2025) is implemented and locate the paper's algorithm and
+  decidability proof.
+- Paper result: Lemma 1 (PDF pages 8-10) gives a constructive finite-word
+  reversal using `(state, clock/edge bit-array)` locations and paired
+  upper/lower auxiliary clocks. Theorem 1 (page 13) proves unilateral MITPPL
+  satisfiability/model checking PSPACE-complete; Lemmas 9-16 give an effective
+  reduction/direct tester construction for full MITPPL, hence decidability,
+  without a separate full-fragment tight complexity theorem.
+- Code result: no generic `reverse(TA)` or Lemma-1 bit-array construction is
+  present. MightyPPL implements specialized past tester builders, while its
+  separate backward reachability and emptiness checks call MoniTAal's DBM/
+  Federation predecessor fixpoints.
+- Verification: extracted and visually inspected PDF pages 8-10, 13, 20-21;
+  searched active MightyPPL sources for reversal machinery; traced past-builder
+  dispatch, product pruning, final emptiness calls, and MoniTAal's
+  `edges_to`/`do_transition_backward`/nested-fixpoint implementation.
+- Files changed: `.codex/PROJECT_STATE.md` and this session log only. No
+  MightyPPL, MoniTAal, or TAMonitor source was modified.
+
+## 2026-07-11 02:53 CST
+
+- Goal: derive a provably correct extension of MoniTAal's DBM backward
+  predecessor that propagates weighted timed-automaton cost-to-go functions.
+- Result: formalized the min-plus Bellman semantics, inverse-reset cost
+  substitution, priced time predecessor and its lower/upper-facet split,
+  cost-aware dominance, bounded-edge induction proof, and an implementation
+  architecture based on overlapping `(DBM, affine cost)` pieces.
+- Key integration finding: reuse Pardibaal's DBM restriction/free/past
+  primitives, but do not reuse ordinary Federation union/inclusion as the
+  priced-state container; introduce a separate priced antichain solver and
+  apply one source-time predecessor per traversed incoming edge.
+- Verification: checked Parrot and Lime's definitions and Theorems 1-2 plus
+  Algorithm 1 in the author PDF, visually rendered pages 6-15, and traced
+  MoniTAal's `edges_to`, double-`past`, inverse-reset, and Federation-merging
+  paths.  Also hand-checked a one-clock reset example end to end.
+- Files changed: `.codex/PROJECT_STATE.md` and this session log only. No
+  runtime source or build artifact was modified.
+
+## 2026-07-11 05:08 CST
+
+- Goal: start the approved Parrot-Lime 2020 backward priced-DBM implementation
+  while preserving the existing TAMonitor behavior and dirty worktree.
+- Baseline verification: `cmake -S tool/MightyPPL -B tool/MightyPPL/build` and
+  `cmake --build tool/MightyPPL/build --target TAMonitor -j2` passed;
+  `smoke_f_01` returned `POSITIVE`; the output contained only the four v1
+  artifacts and workbook XML listed only `Steps`, `Summary`, and `Metadata`.
+- Decisions locked: negative-TA finite reachability, location rate 1, edge cost
+  0, paper sign `W=-V`, exact Z3 dominance, explicit lower-bound contract for
+  signed weights, and no MoniTAal/Pardibaal source changes.
+- Files changed so far: `.codex/PROJECT_STATE.md` and this session log only.
+
+## 2026-07-11 05:28 CST
+
+- Milestone: completed the proof-oriented weighted-zone/DBM primitives and
+  first global solver build before TAMonitor runtime integration.
+- Implemented paper-sign `W=-V`, exact offset/rebase, facets, inverse reset,
+  action/time predecessors, strict-bound attainment, Z3 Definition-10
+  dominance, FIFO Algorithm 1, immutable queries, resource/assumption states,
+  and domain-sensitive `-infinity` marker propagation.
+- Verification: CMake found Z3 4.8.12; `TAMonitorPTA` and
+  `TAMonitorPTATests` built; the test executable passed all local/global
+  checks including paper Fig. 1 cost 9 and Fig. 2 three-piece split.
+- Also added the mathematical proof and Romeo benchmark harness; runtime CLI
+  integration and full experiment execution remain next.
+
+## 2026-07-11 05:10 CST
+
+- Goal: determine whether the exact source for Parrot and Lime's FORMATS 2020
+  backward symbolic optimal-reachability implementation is publicly available.
+- Found the paper-linked `FORMATS2020.tgz` in the Internet Archive. It contains
+  two `romeo-cli` binaries, nine `.cts` benchmarks, and a README explicitly
+  stating that only binaries were supplied; no source is present.
+- Recovered the artifact build identifier and Git revision
+  `FORMATS20, 2020-03-27 -- f634bf9d05625e04019e5056080c7eb243091060`.
+  Exact-revision searches across Software Heritage, GitHub, Sourcegraph,
+  GitLab, Zenodo, HAL, and author/publication pages found no public source tree.
+- Found official Roméo 3.9.1 and 3.10.12 source tarballs containing
+  `backward_mincost`, `BVZone`, and `CostDBM` implementation files. They are
+  usable later versions of the paper's implementation, not verified exact
+  copies of the 2020 revision.
+- Verification: visually checked PDF page 54/Section 4, inspected archive
+  contents and README, checked binary strings and SHA-256 hashes, and compared
+  relevant later source files. No downloaded binary was executed; only the two
+  handoff files were changed.
+
+## 2026-07-11 05:42 CST
+
+- Milestone: completed the global backward solver and the default-disabled
+  finite-word TAMonitor integration for Parrot-Lime 2020 analysis.
+- Implemented exact Z3 Definition-10 dominance, FIFO Algorithm 1, immutable
+  cost-to-go queries, domain-sensitive `-infinity`, stable edge IDs, exact XML
+  cost overrides, and independent `pta_analysis.json`/`pta_pieces.jsonl`
+  outputs. Default remains negative TA with rate 1 and edge cost 0.
+- Tightened numeric CLI parsing after audit: negative/trailing-garbage sizes
+  and PTA resource options without `--pta-analysis backward` are rejected.
+- Verification: configured and built `TAMonitorPTA`, `TAMonitorPTATests`, and
+  `TAMonitor`; `ctest -R '^TAMonitorPTA'` passed 2/2. The explicit smoke was
+  `complete` with exact JSON/JSONL; the default smoke still emitted only
+  `metadata.json`, `results.xlsx`, `steps.csv`, and `summary.csv`, and the
+  workbook still contained only `Steps`, `Summary`, and `Metadata`.
+
+## 2026-07-11 06:18 CST
+
+- Final milestone: completed the Parrot-Lime 2020 backward priced-DBM solver,
+  proof, immutable/offline interfaces, finite negative-TA integration, exact
+  cost XML/JSON contracts, and all planned experiments.
+- Audit fixes incorporated: replayable successor-region witnesses for
+  propagated `-infinity`, global timeout checks plus per-Z3 remaining budget,
+  duplicate facet removal, inverse-reset proof/code alignment, strict numeric
+  CLI parsing, explicit lower-bound state in queries, and a complete offline
+  location/edge/guard/reset/rate/cost catalog.
+- Verification: `cmake --build ... --target TAMonitorPTATests TAMonitor -j2`
+  passed; `ctest -R '^TAMonitorPTA'` passed 2/2; ASan/UBSan with
+  `-Wall -Wextra -Wpedantic -Werror` passed; standalone integration sources
+  compiled warning-free; `git diff --check` passed.
+- Independent oracles passed: Fig. 1 cost 9 via QF_LRA path encoding, Fig. 2
+  three-piece pointwise checks, exact priced-time/Federation past equality,
+  MoniTAal observer-clock minimum time, and priced-support equality with
+  MoniTAal `Pre*(Goal)` on six MightyPPL future/past/binary formulas.
+- Original FORMATS 2020 artifact full command completed 9/9 with fixed SHA
+  `6045841...d9a29`; every forward/backward cost agreed, including
+  scheduling5 `-2540/-2540`. Compact results are in
+  `src/TAMonitor/PTA/ExperimentReport.md`; binaries/raw logs remain outside
+  the repository.
+- Final regression: default online `smoke_f_01` stayed `POSITIVE`, emitted only
+  the four original files and three workbook sheets. Explicit analysis was
+  `complete`, geometry oracle `equal=true`, and added only PTA JSON/JSONL.
+
+## 2026-07-11 19:19 CST
+
+- Goal: analyze Roméo 3.10.12's latest backward symbolic min-cost source in
+  detail against Parrot and Lime's FORMATS 2020 algorithm.
+- Result: mapped the weighted DBM representation, action/time predecessors,
+  max-envelope subsumption, mixed reachable-graph construction, incremental
+  backward deltas, and final sign conversion to the paper. Confirmed that the
+  intended `BVZone` implementation is a reachable-graph-restricted version of
+  Algorithm 1 using enabled-transition clocks.
+- Runtime finding: reproduced a 3.10.12 dispatcher regression on a one-edge
+  model: forward `mincost` returned `5`, `check[zones] mincost` returned boolean
+  `true`, and all-controllable cost-control returned `5`. The 2020 artifact's
+  scheduling2 forward/backward checks both returned `-1760`.
+- Kernel findings: a direct `CostDBM` harness proved that `past_max` omits the
+  zero-delay zone for `p > sum(r)`; strict diagonal closure can add unreachable
+  valuations; and offset strictness can survive at an attained point. The
+  equal-slope `past_max` offset was verified correct. A separate `past_min`
+  offset error affects the control/game path.
+- Verification used the official 3.10.12 source archive, the archived 2020
+  artifact, a minimal CLI model, and minimal original-source DBM harnesses.
+  No project implementation files changed; temporary analysis files were
+  removed after completion.
+
+## 2026-07-11 19:27 CST
+
+- Goal: repair the complete Roméo 3.10.12 backward-cost subsystem identified
+  in the preceding source audit, without touching the completed TAFuzz PTA
+  implementation or existing dirty work.
+- Imported the official CeCILL source into `tool/Romeo` from the fixed archive
+  SHA `8f04ecdc...e0050`; added provenance and build-output ignore files.
+- Established a clean upstream build in `/tmp` using locally extracted Ubuntu
+  PPL/GMP development packages. The unmodified CLI reproduced the one-edge
+  baseline exactly: forward mincost `5`, zones backward mincost `true`, and
+  cost-control `5`.
+- Repair work is now split into type-safe dispatch, CostDBM mathematics, and a
+  separate read-only audit. Tests and full build verification remain pending.
+
+## 2026-07-11 20:06 CST
+
+- Goal: compare the NDSS 2021 PGFUZZ paper algorithm with the current public
+  `purseclab/PGFuzz` source.
+- Audited fixed commit `7eaebf21116087249b8329d4ba7337a24a34ecb9` and mapped
+  preprocessing artifacts, MAVLink/SITL execution, noise filtering,
+  propositional/global distances, guidance-value reuse, oracle, and restart
+  behavior to Sections V-A through V-C and Algorithm 1.
+- Conclusion: the distance-guided ArduPilot/PX4 core is present, but generic
+  MTL generation, Paparazzi, deletion/replay post-processing, policy budgets,
+  and a self-contained static-analysis/experiment pipeline are absent.
+- Static inspection also found an inert default PX4 guidance configuration,
+  combined-policy naming mismatches, and missing violation-output directories.
+- Verification was read-only apart from these handoff notes; no SITL/build was
+  run because Python 2, GUI tooling, external target trees, and missing paper
+  artifacts are required.
+
+## 2026-07-11 20:35 CST
+
+- Completed the official Roméo 3.10.12 backward-cost repair under
+  `tool/Romeo` without modifying the protected TAMonitor/MightyPPL/MoniTAal
+  implementations. Added provenance, repair notes, focused C++ tests, CLI
+  models, and repeatable `make check` / `make check-sanitize` targets.
+- Fixed BVZone dispatch, CostDBM time-predecessor zero-delay/strictness/offset
+  semantics, additive goal propagation, priced inclusion safety, arithmetic
+  narrowing/UB, BCV cache invariants, interrupt handling, graph ownership,
+  unsafe hashing, and a sanitizer-discovered `CVSClassSp` projection overflow.
+- Verification: optimized build and all regressions pass; ASan/UBSan pass;
+  backward-only graph leaks fell from 2600 B/46 allocations to the existing
+  parser/CTS baseline 768 B/18 with no graph/CostDBM stack. FORMATS 2020 quick
+  models independently matched forward/backward oracles 4/4 (-1140, -4140,
+  -1760, -2560). Build artifacts were removed with `make distclean`, and the
+  source diff has no whitespace errors.
+
+## 2026-07-11 21:50 CST
+
+- Started the new Roméo-style exact mixed PTA goal: exact Goal-truncated
+  forward Zone Graph followed by Node-scoped backward priced propagation;
+  pure `backward`, online verdicts, MoniTAal/Pardibaal, and Roméo remain
+  protected.
+- Baseline verification passed before edits: `cmake --build
+  tool/MightyPPL/build --target TAMonitorPTATests TAMonitor -j2 && ctest
+  --test-dir tool/MightyPPL/build -R '^TAMonitorPTA' --output-on-failure`
+  completed 2/2 tests successfully.
+
+## 2026-07-11 22:05 CST
+
+- Milestone 1 complete: added exact Goal-truncated `ReachableZoneGraph` with
+  canonical nodes, stable arcs, fire/entry/post DBMs, strict reset/diagonal
+  semantics, one-way inclusion, Goal cutoff, and explicit resource states.
+- Verification: reconfigured/built `TAMonitorPTAReachabilityTests`,
+  `TAMonitorPTATests`, and `TAMonitor`; `ctest --test-dir
+  tool/MightyPPL/build -R '^TAMonitorPTA' --output-on-failure` passed 3/3,
+  including the unchanged pure-backward integration suite.
+
+## 2026-07-11 22:25 CST
+
+- Milestones 2/3 complete: implemented Node-scoped mixed priced propagation,
+  exact reachable/outside/unknown query semantics, graph arc/node witnesses,
+  phased forward/backward resource states, structural graph-to-automaton
+  binding, and the full mixed proof in `AlgorithmProof.md`.
+- Added opt-in `--pta-analysis mixed`, schema-2 summary plus reachable
+  nodes/arcs JSONL, `first_hit_terminal` Goal metadata, and exact
+  `Reach intersect Pre*`/observer oracles. Existing `backward` stays schema 1.
+- Verification: formal PTA ctest is 5/5; hand model cost 14 matches an
+  independent Z3 path oracle, strict infimum preserves `attained=false`, and
+  ASan/UBSan plus warning-as-error runs pass (LSan unavailable under ptrace).
+- Actual MightyPPL runtime TA for `!(F [5,10] p1)` returns cost 5 with
+  `T<5` unreachable and `T<=5` reachable; adding cost 3 to all initial edges
+  returns 8. Six future/past/binary mixed geometry cases and online verdict
+  equality pass. Roméo FORMATS quick rerun passes 4/4.
+
+## 2026-07-11 22:35 CST
+
+- Final milestone complete: exact Goal-truncated forward graph, Node-scoped
+  priced backward fixed point, schema-2 mixed CLI/output, immutable fuzzing
+  interfaces, formal proof, and all planned oracles are implemented.
+- Audit-driven fixes added final deadline rechecks, exact graph/automaton
+  structural binding, explicit backward phase metadata, terminal-Goal schema,
+  true queue-order tests, reachable `+infinity`, entry-domain convergence,
+  six MightyPPL formula cases, signed CLI contract, and JSON reference checks.
+- Final verification: PTA CTest 5/5; default/pure/mixed verdict and artifact
+  compatibility pass; mixed cost 5 observer and edge-cost result 8 pass;
+  Werror and ASan/UBSan pass; whitespace/Python AST checks pass; Roméo quick
+  4/4 and preserved full artifact 9/9 pass. LSan is unavailable under ptrace
+  and is explicitly not claimed.

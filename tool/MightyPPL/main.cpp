@@ -45,6 +45,45 @@ namespace mightypplcpp {
 
 } // namespace mightypplcpp
 
+namespace {
+
+    std::string exported_clock_name(monitaal::clock_index_t clock) {
+        return "x_" + std::to_string(clock - 1);
+    }
+
+    std::set<monitaal::clock_index_t> referenced_nonzero_clocks(const monitaal::TA& ta) {
+        std::set<monitaal::clock_index_t> clocks;
+
+        auto add_constraint_clocks = [&clocks](const monitaal::constraint_t& constraint) {
+            if (constraint._i != 0) {
+                clocks.insert(constraint._i);
+            }
+            if (constraint._j != 0) {
+                clocks.insert(constraint._j);
+            }
+        };
+
+        for (const auto& [location_id, location] : ta.locations()) {
+            for (const auto& invariant : location.invariant()) {
+                add_constraint_clocks(invariant);
+            }
+            for (const auto& edge : ta.edges_from(location_id)) {
+                for (const auto& guard : edge.guard()) {
+                    add_constraint_clocks(guard);
+                }
+                for (const auto reset : edge.reset()) {
+                    if (reset != 0) {
+                        clocks.insert(reset);
+                    }
+                }
+            }
+        }
+
+        return clocks;
+    }
+
+} // namespace
+
 int main(int argc, const char ** argv) {
 
 
@@ -52,7 +91,7 @@ int main(int argc, const char ** argv) {
 
         if (argc < 3) {
 
-            throw std::invalid_argument("No spec file / acceptance type specified"); 
+            throw std::invalid_argument("No spec file / acceptance type specified");
 
         } else {
 
@@ -68,7 +107,7 @@ int main(int argc, const char ** argv) {
 
             } else {
 
-                throw std::invalid_argument("Wrong acceptance type specified"); 
+                throw std::invalid_argument("Wrong acceptance type specified");
 
             }
 
@@ -77,8 +116,8 @@ int main(int argc, const char ** argv) {
                 if (argc >= 5) {
 
                     if (argc > 5) {
-                    
-                        out_file = argv[3]; 
+
+                        out_file = argv[3];
 
                         if (std::string_view(argv[4]) == "--tck") {
 
@@ -90,7 +129,7 @@ int main(int argc, const char ** argv) {
 
                         } else {
 
-                            throw std::invalid_argument("Wrong output format specified (--tck or --xml?)"); 
+                            throw std::invalid_argument("Wrong output format specified (--tck or --xml?)");
 
                         }
 
@@ -174,7 +213,7 @@ int main(int argc, const char ** argv) {
                                     throw std::invalid_argument("Last argument was wrong");
 
                                 }
-                                
+
 
                             } else {
 
@@ -229,7 +268,7 @@ int main(int argc, const char ** argv) {
                         }
 
                     } else {    // argc == 5
-                            
+
 
                         if (std::string_view(argv[3]) == "--debug") {
 
@@ -247,7 +286,7 @@ int main(int argc, const char ** argv) {
 
                         } else {
 
-                            out_file = argv[3]; 
+                            out_file = argv[3];
 
                             if (std::string_view(argv[4]) == "--tck") {
 
@@ -259,7 +298,7 @@ int main(int argc, const char ** argv) {
 
                             } else {
 
-                                throw std::invalid_argument("Wrong output format specified (--tck or --xml?)"); 
+                                throw std::invalid_argument("Wrong output format specified (--tck or --xml?)");
 
                             }
 
@@ -279,14 +318,14 @@ int main(int argc, const char ** argv) {
 
                     } else {
 
-                        throw std::invalid_argument("No output format specified (--tck or --xml?)"); 
+                        throw std::invalid_argument("No output format specified (--tck or --xml?)");
 
                     }
 
                 }
 
             }
-                    
+
         }
 
     } catch (const std::invalid_argument& e) {
@@ -333,7 +372,7 @@ int main(int argc, const char ** argv) {
     auto [pos, out_str] = build_ta_from_main(original_formula);
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
-   
+
     if (out_flatten) {
         std::cout << "Constructing flattened product TA took = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
     }
@@ -402,13 +441,9 @@ int main(int argc, const char ** argv) {
 
                 tck << "event:a" << std::endl << std::endl << std::endl;
 
-                for (auto i = 1; i < pos.number_of_clocks() - 1; ++i) {
+                for (const auto clock : referenced_nonzero_clocks(pos)) {
 
-                    // In MoniTAal there is always x0 (meant to be 0 at all times)
-                    // And there is an extra "global" clock for monitoring in newer versions MoniTAal
-                    // So if number_of_clocks() returns 5, only 3 clocks are useful for tck
-
-                    tck << "clock:1:x_" << i - 1 << std::endl;
+                    tck << "clock:1:" << exported_clock_name(clock) << std::endl;
 
                 }
                 tck << std::endl << std::endl;
@@ -466,7 +501,7 @@ int main(int argc, const char ** argv) {
 
                         std::string do_str;
                         for (const auto& r : e.reset()) {
-                    
+
                             if (!do_str.empty()) {
                                 do_str += "; ";
                             }
@@ -519,13 +554,9 @@ int main(int argc, const char ** argv) {
                 xml << "\t<declaration>" << std::endl;
 
 
-                for (auto i = 1; i < pos.number_of_clocks() - 1; ++i) {
+                for (const auto clock : referenced_nonzero_clocks(pos)) {
 
-                    // In MoniTAal there is always x0 (meant to be 0 at all times)
-                    // And there is an extra "global" clock for monitoring in newer versions MoniTAal
-                    // So if number_of_clocks() returns 5, only 3 clocks are useful
-
-                    xml << "\t\tclock x_" << i - 1 << ";" << std::endl;
+                    xml << "\t\tclock " << exported_clock_name(clock) << ";" << std::endl;
 
                 }
 
@@ -612,7 +643,7 @@ int main(int argc, const char ** argv) {
                         do_str += "loc = " + std::to_string(e.to());
                         do_str += ", acc = " + std::to_string(acc_set.count(e.to()) ? 1 : 0);
                         for (const auto& r : e.reset()) {
-                    
+
                             if (!do_str.empty()) {
                                 do_str += ", ";
                             }
@@ -744,7 +775,7 @@ int main(int argc, const char ** argv) {
 
                     query_out << "E<>(";
 
-                    query_out << "turn == 0 && "; 
+                    query_out << "turn == 0 && ";
 
                     for (const auto& a : temporal_components) {
 

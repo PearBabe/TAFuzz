@@ -1,3 +1,5 @@
+// 本文件解析并校验 TAMonitor CLI，包括 finite-word PTA 分析资源契约。
+
 #include "TAMonitor.h"
 
 #include <chrono>
@@ -22,12 +24,37 @@ std::string require_value(int& i, int argc, const char** argv, const std::string
     return argv[++i];
 }
 
-size_t parse_positive_size(const std::string& value, const std::string& option) {
-    const auto parsed = std::stoull(value);
-    if (parsed == 0) {
+size_t parse_size(
+    const std::string& value,
+    const std::string& option,
+    bool allow_zero) {
+    if (value.empty() || value.front() == '-') {
+        throw std::invalid_argument(
+            option + (allow_zero ? " must be non-negative" : " must be positive"));
+    }
+
+    std::size_t consumed = 0;
+    unsigned long long parsed = 0;
+    try {
+        parsed = std::stoull(value, &consumed);
+    } catch (const std::exception&) {
+        throw std::invalid_argument(option + " has an invalid integer value: " + value);
+    }
+    if (consumed != value.size() || parsed > std::numeric_limits<size_t>::max()) {
+        throw std::invalid_argument(option + " has an invalid integer value: " + value);
+    }
+    if (!allow_zero && parsed == 0) {
         throw std::invalid_argument(option + " must be positive");
     }
     return static_cast<size_t>(parsed);
+}
+
+size_t parse_positive_size(const std::string& value, const std::string& option) {
+    return parse_size(value, option, false);
+}
+
+size_t parse_nonnegative_size(const std::string& value, const std::string& option) {
+    return parse_size(value, option, true);
 }
 
 size_t parse_buddy_int_size(const std::string& value, const std::string& option) {
@@ -54,6 +81,10 @@ std::filesystem::path default_output_dir() {
 Options parse_options(int argc, const char** argv) {
     Options options;
     options.output_dir = default_output_dir();
+    bool pta_max_pieces_explicit = false;
+    bool pta_max_reach_nodes_explicit = false;
+    bool pta_max_reach_arcs_explicit = false;
+    bool pta_timeout_explicit = false;
 
     for (int i = 1; i < argc; ++i) {
         const std::string arg = argv[i];
@@ -63,9 +94,15 @@ Options parse_options(int argc, const char** argv) {
                 "[--build-mode flatten|compflatten] [--word finite|infinite] "
                 "[--state symbolic|concrete] [--out path] [--max-valuations n] "
                 "[--bdd-nodes n] [--bdd-cache n] [--bdd-max-increase n] "
-                "[--emit-bdd-interface] [--build-only]\n"
+                "[--emit-bdd-interface] [--print-steps] [--build-only] "
+                "[--pta-analysis backward|mixed] [--pta-cost-model path] "
+                "[--pta-assume-lower-bounded] [--pta-verify-geometry] "
+                "[--pta-max-pieces n] "
+                "[--pta-max-reach-nodes n] [--pta-max-reach-arcs n] "
+                "[--pta-timeout-ms n]\n"
                 "Note: compflatten is construction/statistics-only in TAMonitor v1; "
-                "runtime monitoring requires --build-mode flatten.");
+                "runtime monitoring requires --build-mode flatten. "
+                "PTA analysis is optional and supports finite words only.");
         } else if (arg == "--trace") {
             options.trace_path = require_value(i, argc, argv, arg);
         } else if (arg == "--formula") {
@@ -111,6 +148,37 @@ Options parse_options(int argc, const char** argv) {
             options.bdd_max_increase = parse_buddy_int_size(require_value(i, argc, argv, arg), arg);
         } else if (arg == "--emit-bdd-interface") {
             options.emit_bdd_interface = true;
+        } else if (arg == "--print-steps") {
+            options.print_steps = true;
+        } else if (arg == "--pta-analysis") {
+            const std::string value = require_value(i, argc, argv, arg);
+            if (value == "backward") {
+                options.pta_analysis = PTAAnalysisMode::Backward;
+            } else if (value == "mixed") {
+                options.pta_analysis = PTAAnalysisMode::Mixed;
+            } else {
+                throw std::invalid_argument("Invalid --pta-analysis: " + value);
+            }
+        } else if (arg == "--pta-cost-model") {
+            options.pta_cost_model = require_value(i, argc, argv, arg);
+        } else if (arg == "--pta-assume-lower-bounded") {
+            options.pta_assume_lower_bounded = true;
+        } else if (arg == "--pta-verify-geometry") {
+            options.pta_verify_geometry = true;
+        } else if (arg == "--pta-max-pieces") {
+            options.pta_max_pieces = parse_positive_size(require_value(i, argc, argv, arg), arg);
+            pta_max_pieces_explicit = true;
+        } else if (arg == "--pta-max-reach-nodes") {
+            options.pta_max_reach_nodes =
+                parse_positive_size(require_value(i, argc, argv, arg), arg);
+            pta_max_reach_nodes_explicit = true;
+        } else if (arg == "--pta-max-reach-arcs") {
+            options.pta_max_reach_arcs =
+                parse_positive_size(require_value(i, argc, argv, arg), arg);
+            pta_max_reach_arcs_explicit = true;
+        } else if (arg == "--pta-timeout-ms") {
+            options.pta_timeout_ms = parse_nonnegative_size(require_value(i, argc, argv, arg), arg);
+            pta_timeout_explicit = true;
         } else if (arg == "--build-only") {
             options.build_only = true;
         } else {
@@ -120,6 +188,29 @@ Options parse_options(int argc, const char** argv) {
 
     if (options.formula_path.has_value() && options.formula_inline.has_value()) {
         throw std::invalid_argument("Provide at most one of --formula or --formula-inline");
+    }
+    if (options.pta_analysis != PTAAnalysisMode::Off) {
+        const std::string mode = options.pta_analysis == PTAAnalysisMode::Mixed
+            ? "mixed" : "backward";
+        if (options.word_mode != WordMode::Finite) {
+            throw std::invalid_argument(
+                "--pta-analysis " + mode + " requires --word finite");
+        }
+        if (options.build_mode != BuildMode::Flatten) {
+            throw std::invalid_argument(
+                "--pta-analysis " + mode + " requires --build-mode flatten");
+        }
+    } else if (options.pta_cost_model.has_value() || options.pta_assume_lower_bounded ||
+               options.pta_verify_geometry ||
+               pta_max_pieces_explicit || pta_max_reach_nodes_explicit ||
+               pta_max_reach_arcs_explicit || pta_timeout_explicit) {
+        throw std::invalid_argument(
+            "PTA cost options require --pta-analysis backward or mixed");
+    }
+    if (options.pta_analysis != PTAAnalysisMode::Mixed &&
+        (pta_max_reach_nodes_explicit || pta_max_reach_arcs_explicit)) {
+        throw std::invalid_argument(
+            "PTA reachability limits require --pta-analysis mixed");
     }
     return options;
 }

@@ -145,6 +145,30 @@ std::string props_to_bits(const std::string& text, const std::vector<std::string
     return "bits:" + bits;
 }
 
+size_t find_csv_separator(const std::string& clean) {
+    if (!clean.empty() && clean.front() == '[') {
+        const size_t close = clean.find(']');
+        if (close == std::string::npos) {
+            throw std::runtime_error("Trace interval time is missing closing ']': " + clean);
+        }
+
+        size_t separator = close + 1;
+        while (separator < clean.size() && std::isspace(static_cast<unsigned char>(clean[separator]))) {
+            ++separator;
+        }
+        if (separator >= clean.size() || clean[separator] != ',') {
+            throw std::runtime_error("Trace line must separate interval time and props with a comma after ']': " + clean);
+        }
+        return separator;
+    }
+
+    const size_t comma = clean.find(',');
+    if (comma == std::string::npos) {
+        throw std::runtime_error("Trace line must be '@time label' or 'time,props': " + clean);
+    }
+    return comma;
+}
+
 TimedEvent parse_line(const std::string& line, const std::vector<std::string>& proposition_order) {
     const std::string clean = trim(line);
     if (clean.empty() || clean.front() == '#') {
@@ -158,10 +182,7 @@ TimedEvent parse_line(const std::string& line, const std::vector<std::string>& p
         stream >> time_text;
         std::getline(stream, label_text);
     } else {
-        const size_t comma = clean.find(',');
-        if (comma == std::string::npos) {
-            throw std::runtime_error("Trace line must be '@time label' or 'time,props': " + clean);
-        }
+        const size_t comma = find_csv_separator(clean);
         time_text = clean.substr(0, comma);
         label_text = clean.substr(comma + 1);
     }

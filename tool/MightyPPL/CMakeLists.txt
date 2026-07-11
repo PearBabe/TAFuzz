@@ -2,6 +2,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10 FATAL_ERROR)
 project(MightyPPL)
 
+include(CTest)
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be 17
@@ -109,6 +111,71 @@ target_link_libraries(mitppl antlr4_static buddy MoniTAal pugixml pardibaal)
 add_dependencies(mitppl monitaal)
 
 set(TAMONITOR_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../src/TAMonitor)
+set(TAMONITOR_PTA_SOURCE_DIR ${TAMONITOR_SOURCE_DIR}/PTA)
+
+# 仅用于分析报告中的依赖可追溯性；若是首次干净配置、外部仓库尚未
+# checkout，则明确记录 unknown，不把分支名冒充实际构建 commit。
+set(TAMONITOR_PARDIBAAL_SOURCE_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/monitaal-prefix/src/monitaal-build/pardibaal-prefix/src/pardibaal)
+execute_process(
+    COMMAND git -C ${TAMONITOR_PARDIBAAL_SOURCE_DIR} rev-parse HEAD
+    RESULT_VARIABLE TAMONITOR_PARDIBAAL_GIT_RESULT
+    OUTPUT_VARIABLE TAMONITOR_PARDIBAAL_COMMIT
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET)
+if(NOT TAMONITOR_PARDIBAAL_GIT_RESULT EQUAL 0)
+    set(TAMONITOR_PARDIBAAL_COMMIT unknown)
+endif()
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(Z3 REQUIRED IMPORTED_TARGET z3)
+
+add_library(TAMonitorPTA STATIC
+            ${TAMONITOR_PTA_SOURCE_DIR}/PTATypes.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/PricedDBMOps.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/ExactDominance.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/BackwardPricedSolver.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/ReachableZoneGraph.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/MixedPricedSolver.cpp)
+target_include_directories(TAMonitorPTA PUBLIC
+                           ${TAMONITOR_SOURCE_DIR}
+                           ${TAMONITOR_PTA_SOURCE_DIR})
+target_compile_features(TAMonitorPTA PUBLIC cxx_std_17)
+target_compile_options(TAMonitorPTA PRIVATE -Wall -Wextra -Wpedantic)
+target_link_libraries(TAMonitorPTA PUBLIC pardibaal PkgConfig::Z3)
+add_dependencies(TAMonitorPTA monitaal)
+
+if(BUILD_TESTING)
+    add_executable(TAMonitorPTATests
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/PTATests.cpp)
+    target_compile_features(TAMonitorPTATests PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTATests PRIVATE -Wall -Wextra -Wpedantic)
+    target_link_libraries(TAMonitorPTATests PRIVATE
+                          TAMonitorPTA MoniTAal pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTATests monitaal)
+    add_test(NAME TAMonitorPTATests COMMAND TAMonitorPTATests)
+
+    add_executable(TAMonitorPTAReachabilityTests
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/ReachableZoneGraphTests.cpp)
+    target_compile_features(TAMonitorPTAReachabilityTests PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTAReachabilityTests PRIVATE
+                           -Wall -Wextra -Wpedantic)
+    target_link_libraries(TAMonitorPTAReachabilityTests PRIVATE
+                          TAMonitorPTA MoniTAal pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTAReachabilityTests monitaal)
+    add_test(NAME TAMonitorPTAReachabilityTests
+             COMMAND TAMonitorPTAReachabilityTests)
+
+    add_executable(TAMonitorPTAMixedTests
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/MixedPricedSolverTests.cpp)
+    target_compile_features(TAMonitorPTAMixedTests PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTAMixedTests PRIVATE
+                           -Wall -Wextra -Wpedantic)
+    target_link_libraries(TAMonitorPTAMixedTests PRIVATE
+                          TAMonitorPTA MoniTAal pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTAMixedTests monitaal)
+    add_test(NAME TAMonitorPTAMixedTests COMMAND TAMonitorPTAMixedTests)
+endif()
 
 add_executable(TAMonitor
                ${TAMONITOR_SOURCE_DIR}/TAMonitorMain.cpp
@@ -117,6 +184,7 @@ add_executable(TAMonitor
                ${TAMONITOR_SOURCE_DIR}/TraceParser.cpp
                ${TAMONITOR_SOURCE_DIR}/MonitorRunner.cpp
                ${TAMONITOR_SOURCE_DIR}/ReportWriter.cpp
+               ${TAMONITOR_PTA_SOURCE_DIR}/PTAAnalysis.cpp
                MitlFormulaVisitor.cpp
                MitlTypingVisitor.cpp
                MitlCheckNNFVisitor.cpp
@@ -148,9 +216,29 @@ add_executable(TAMonitor
 target_include_directories(TAMonitor PRIVATE ${TAMONITOR_SOURCE_DIR})
 target_compile_definitions(TAMonitor PRIVATE
     TAMONITOR_REPO_ROOT="${CMAKE_CURRENT_SOURCE_DIR}/../.."
-    TAMONITOR_XLSX_SCRIPT="${TAMONITOR_SOURCE_DIR}/make_tamonitor_xlsx.py")
-target_link_libraries(TAMonitor antlr4_static buddy MoniTAal pugixml pardibaal)
+    TAMONITOR_XLSX_SCRIPT="${TAMONITOR_SOURCE_DIR}/make_tamonitor_xlsx.py"
+    TAMONITOR_PARDIBAAL_COMMIT="${TAMONITOR_PARDIBAAL_COMMIT}")
+target_link_libraries(TAMonitor antlr4_static buddy MoniTAal pugixml pardibaal TAMonitorPTA)
 add_dependencies(TAMonitor monitaal)
+
+if(BUILD_TESTING)
+    find_package(PythonInterp 3 REQUIRED)
+    add_test(
+        NAME TAMonitorPTAIntegration
+        COMMAND ${PYTHON_EXECUTABLE}
+                ${TAMONITOR_PTA_SOURCE_DIR}/tests/PTAIntegrationTest.py
+                --tamonitor $<TARGET_FILE:TAMonitor>
+                --repo-root ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+    set_tests_properties(TAMonitorPTAIntegration PROPERTIES TIMEOUT 180)
+
+    add_test(
+        NAME TAMonitorPTAMixedIntegration
+        COMMAND ${PYTHON_EXECUTABLE}
+                ${TAMONITOR_PTA_SOURCE_DIR}/tests/PTAMixedIntegrationTest.py
+                --tamonitor $<TARGET_FILE:TAMonitor>
+                --repo-root ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+    set_tests_properties(TAMonitorPTAMixedIntegration PROPERTIES TIMEOUT 180)
+endif()
 
 
 if (CMAKE_HOST_UNIX)

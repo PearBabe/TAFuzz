@@ -1,3 +1,5 @@
+// 本文件声明 TAMonitor 的公共 CLI、构建、监测与可选 PTA 分析数据接口。
+
 #pragma once
 
 #include "Monitor.h"
@@ -14,6 +16,7 @@ namespace tamonitor {
 enum class BuildMode { Flatten, Compflatten };
 enum class WordMode { Finite, Infinite };
 enum class StateMode { Symbolic, Concrete };
+enum class PTAAnalysisMode { Off, Backward, Mixed };
 
 struct Options {
     std::optional<std::filesystem::path> trace_path;
@@ -29,6 +32,15 @@ struct Options {
     size_t bdd_max_increase = 500000;
     bool emit_bdd_interface = false;
     bool build_only = false;
+    bool print_steps = false;
+    PTAAnalysisMode pta_analysis = PTAAnalysisMode::Off;
+    std::optional<std::filesystem::path> pta_cost_model;
+    bool pta_assume_lower_bounded = false;
+    bool pta_verify_geometry = false;
+    size_t pta_max_pieces = 1000000;
+    size_t pta_max_reach_nodes = 100000;
+    size_t pta_max_reach_arcs = 1000000;
+    size_t pta_timeout_ms = 300000;
 };
 
 struct TimedEvent {

@@ -1,7 +1,42 @@
+// 本文件实现 TAMonitor 主流程，并把 PTA 作为默认关闭的独立分析旁路接入。
+
 #include "TAMonitor.h"
+#include "PTA/PTAAnalysis.h"
 
 #include <exception>
 #include <iostream>
+#include <optional>
+
+namespace {
+
+std::string interval_to_string(monitaal::interval_t interval) {
+    if (interval.first == interval.second) {
+        return std::to_string(interval.first);
+    }
+    return "[" + std::to_string(interval.first) + "," + std::to_string(interval.second) + "]";
+}
+
+void print_step_verdicts(const tamonitor::RunResult& run) {
+    std::cout << "Step verdicts:\n";
+    if (run.steps.empty()) {
+        std::cout << "  (no trace events processed)\n";
+        return;
+    }
+
+    for (const auto& step : run.steps) {
+        std::cout << "  step " << step.index
+                  << ": time=" << interval_to_string(step.time)
+                  << ", label=" << step.canonical_label
+                  << ", human_label=" << step.human_label
+                  << ", verdict=" << step.verdict
+                  << ", positive_states=" << step.positive_states
+                  << ", negative_states=" << step.negative_states
+                  << ", advanced=" << (step.monitor_advanced ? "true" : "false")
+                  << '\n';
+    }
+}
+
+}
 
 int main(int argc, const char** argv) {
     try {
@@ -24,11 +59,42 @@ int main(int argc, const char** argv) {
         }
         tamonitor::write_report(options, formula, build, trace, run);
 
+        bool pta_success = true;
+        std::optional<tamonitor::pta::PTAExecutionResult> pta_result;
+        std::optional<tamonitor::pta::PTAMixedExecutionResult> mixed_pta_result;
+        if (options.pta_analysis == tamonitor::PTAAnalysisMode::Backward) {
+            pta_result.emplace(tamonitor::pta::run_pta_analysis(build, options));
+            tamonitor::pta::write_pta_outputs(options.output_dir, *pta_result);
+            pta_success = tamonitor::pta::is_successful(*pta_result);
+        } else if (options.pta_analysis == tamonitor::PTAAnalysisMode::Mixed) {
+            mixed_pta_result.emplace(
+                tamonitor::pta::run_mixed_pta_analysis(build, options));
+            tamonitor::pta::write_mixed_pta_outputs(
+                options.output_dir, *mixed_pta_result);
+            pta_success = tamonitor::pta::is_successful(*mixed_pta_result);
+        }
+
         std::cout << "TAMonitor completed\n";
         std::cout << "Formula satisfiable: " << build.positive.satisfiability << '\n';
+        if (options.print_steps) {
+            print_step_verdicts(run);
+        }
         std::cout << "Final verdict: " << run.final_verdict << '\n';
         std::cout << "Output: " << options.output_dir << '\n';
-        return 0;
+        if (pta_result.has_value()) {
+            std::cout << "PTA analysis status: "
+                      << tamonitor::pta::to_string(pta_result->snapshot.status())
+                      << '\n';
+            std::cout << "PTA output: "
+                      << (options.output_dir / "pta_analysis.json") << '\n';
+        } else if (mixed_pta_result.has_value()) {
+            std::cout << "PTA analysis status: "
+                      << tamonitor::pta::to_string(mixed_pta_result->snapshot.status())
+                      << '\n';
+            std::cout << "PTA output: "
+                      << (options.output_dir / "pta_analysis.json") << '\n';
+        }
+        return pta_success ? 0 : 2;
     } catch (const std::exception& e) {
         std::cerr << "TAMonitor error: " << e.what() << '\n';
         return 1;
