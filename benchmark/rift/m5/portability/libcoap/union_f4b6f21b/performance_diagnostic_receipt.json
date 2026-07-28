@@ -1,0 +1,24 @@
+{
+  "schema_version": "rift.portability.performance_diagnostic.v1",
+  "status": "TERMINATED_AFTER_DEFINITIVE_RESOURCE_GATE_FAILURE",
+  "claim_label": "PERFORMANCE_DIAGNOSTIC_ONLY_SCHEMA_PRESEAL",
+  "analyzer_sha256": "f4b6f21b4795474e6c981787d4f34bd5bdcb21fcb1814925383a24e7aadb7dd5",
+  "run": {
+    "translation_units": 38,
+    "termination": "EXTERNAL_SIGTERM",
+    "wall_seconds": 132.95,
+    "user_seconds": 122.53,
+    "system_seconds": 10.30,
+    "peak_rss_kib": 4318288,
+    "last_completed_phase": "cones-staged",
+    "next_phase_reached": "frontier-computation-before-frontier-staged"
+  },
+  "registered_gate": {
+    "wall_seconds_max": 60,
+    "peak_rss_kib_max": 2097152,
+    "verdict": "FAIL"
+  },
+  "seal_eligible": false,
+  "seal_ineligibility_reason": "The union-witness output shape required frontier schema 2.0.0 and fuzzable-frontier schema 1.1.0; this pre-seal binary retained the old schema identifiers.",
+  "accuracy_assessed": false
+}

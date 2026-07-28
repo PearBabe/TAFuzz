@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/contextual-influence-graph/2.0.0",
+  "title": "RIFT contextual influence graph",
+  "description": "Version 2 makes semantic-node provenance and replayable condition-node identities mandatory. The conditions array remains a compatibility projection; condition_node_ids is canonical.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "semantic_index_sha256", "context_policy",
+    "nodes", "edges", "status", "diagnostics", "unsupported_constructs"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "semantic_index_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "context_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["call_string_limit", "object_sensitivity", "field_sensitivity", "unknowns_are_explicit"],
+      "properties": {
+        "call_string_limit": {"type": "integer", "minimum": 0},
+        "object_sensitivity": {"enum": ["none", "allocation_site", "receiver", "hybrid"]},
+        "field_sensitivity": {"enum": ["none", "top_level", "full"]},
+        "unknowns_are_explicit": {"const": true}
+      }
+    },
+    "nodes": {"type": "array", "items": {"$ref": "#/definitions/contextual_node"}},
+    "edges": {"type": "array", "items": {"$ref": "#/definitions/influence_edge"}},
+    "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+    "diagnostics": {"type": "array", "items": {"type": "string"}},
+    "unsupported_constructs": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/semantic-index/2.0.0#/definitions/logical_unsupported_construct"}}
+  },
+  "definitions": {
+    "abstract_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["object_id", "abstraction", "allocation_site", "certainty"],
+      "properties": {
+        "object_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "abstraction": {"enum": ["value", "global", "stack", "heap", "receiver", "summary", "unknown"]},
+        "allocation_site": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/semantic-index/2.0.0#/definitions/logical_source_location"},
+            {"type": "null"}
+          ]
+        },
+        "certainty": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/certainty"}
+      }
+    },
+    "call_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "callsite_ids", "truncated"],
+      "properties": {
+        "policy": {"enum": ["root", "call_string", "receiver", "summary", "unknown"]},
+        "callsite_ids": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}},
+        "truncated": {"type": "boolean"}
+      }
+    },
+    "task_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "context_id", "certainty"],
+      "properties": {
+        "kind": {"enum": ["thread", "task", "interrupt", "callback", "scheduler", "process", "unknown"]},
+        "context_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nullable_nonempty_string"},
+        "certainty": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/certainty"}
+      }
+    },
+    "scope_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope_id", "key_node_ids", "status"],
+      "properties": {
+        "scope_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "key_node_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}},
+        "status": {"enum": ["exact", "summary", "unknown"]}
+      }
+    },
+    "generation_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "identity", "reuse_possible"],
+      "properties": {
+        "kind": {"enum": ["exact", "symbolic", "summary", "unknown"]},
+        "identity": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nullable_nonempty_string"},
+        "reuse_possible": {"type": "boolean"}
+      }
+    },
+    "contextual_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id", "semantic_node_ref", "node_kind", "semantic_node_kind", "entity", "abstract_object", "field_path",
+        "call_context", "lifecycle_phase", "task_context", "scope", "generation",
+        "location", "value_type", "evidence"
+      ],
+      "properties": {
+        "node_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_node_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "node_kind": {"enum": ["value", "memory", "predicate", "event", "time", "lifecycle", "external_summary", "unknown"]},
+        "semantic_node_kind": {"enum": ["declaration", "definition", "expression", "value", "memory", "callsite", "returnsite", "control", "synthetic", "unknown"]},
+        "entity": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/entity_ref"},
+        "abstract_object": {"$ref": "#/definitions/abstract_object"},
+        "field_path": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}},
+        "call_context": {"$ref": "#/definitions/call_context"},
+        "lifecycle_phase": {"enum": ["constructed", "initialized", "active", "committed", "cancelled", "destroyed", "reused", "unknown"]},
+        "task_context": {"$ref": "#/definitions/task_context"},
+        "scope": {"$ref": "#/definitions/scope_context"},
+        "generation": {"$ref": "#/definitions/generation_context"},
+        "location": {"$ref": "https://tafuzz.dev/rift/schema/semantic-index/2.0.0#/definitions/logical_source_location"},
+        "value_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"},
+        "evidence": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/semantic-index/2.0.0#/definitions/logical_evidence"}}
+      }
+    },
+    "influence_edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edge_id", "source_node_id", "target_node_id", "kind", "relation_kind", "certainty", "evidence", "condition_node_ids", "conditions", "uncertainty_reasons"],
+      "properties": {
+        "edge_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "source_node_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "target_node_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "kind": {"enum": ["value_flow", "memory_flow", "control", "call", "return", "alias", "timer", "callback", "queue", "lifecycle", "scheduler", "persistence", "scope", "generation", "event_order", "unknown"]},
+        "relation_kind": {"enum": ["defines", "uses", "loads", "stores", "data", "controls", "calls", "returns", "object", "field", "aliases", "contains", "maps_to", "unknown"]},
+        "certainty": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/certainty"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "https://tafuzz.dev/rift/schema/semantic-index/2.0.0#/definitions/logical_evidence"}},
+        "condition_node_ids": {
+          "description": "Canonical contextual-node references required to replay edge guards.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "conditions": {
+          "description": "Legacy structural projection retained for readers of the pre-M4 draft. It is non-canonical; consumers must use condition_node_ids for graph replay.",
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/expression_structure"}
+        },
+        "uncertainty_reasons": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"certainty": {"const": "modelled"}}},
+          "then": {
+            "properties": {
+              "evidence": {
+                "contains": {
+                  "type": "object",
+                  "required": ["kind"],
+                  "properties": {"kind": {"const": "model_rule"}}
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"certainty": {"const": "unknown"}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    }
+  }
+}

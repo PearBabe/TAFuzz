@@ -1,0 +1,258 @@
+{
+  "schema_version": "rift.acceptance.property-ir/0.1.0",
+  "schema_status": "BENCHMARK_DRAFT_NOT_PRODUCTION_CORE_SCHEMA",
+  "property_id": "COAP-TX-01",
+  "title": "Initial Confirmable retransmission deadline is between the configured ACK timeout bounds",
+  "provenance": {
+    "normative_property_source": "analysis/protocol_fuzzing_study/protocols/coap/mitl_property_catalog.json",
+    "normative_property_source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+    "acceptance_subject_commit": "94bacc8939dd6711169cd2332a002a361ec62531",
+    "commit_transfer_status": "PROVISIONAL_SOURCE_REBIND_PENDING_TWO_HUMAN_REVIEWS",
+    "formula_validation": "analysis/protocol_fuzzing_study/protocols/coap/validation/COAP-TX-01/validation_result.json"
+  },
+  "logic": {
+    "kind": "MITL",
+    "mathematical_formula": "G (coap_con_wait_started -> (G [0,2000) (!coap_first_retransmit_deadline_reached) && F [0,3000] (coap_first_retransmit_deadline_reached || coap_matching_ack_or_reset_received || coap_attempt_cancelled)))",
+    "finite_word_formula": "G* (coap_con_wait_started -> (G [0,2000) (!coap_first_retransmit_deadline_reached) && F [0,3000] (coap_first_retransmit_deadline_reached || coap_matching_ack_or_reset_received || coap_attempt_cancelled)))",
+    "time_unit": "millisecond",
+    "clock_domain": "monotonic",
+    "interval_class": "NON_PUNCTUAL",
+    "finite_end_semantics": "one correlated queue-node generation per finite word; append a terminal position after 3000 ms"
+  },
+  "profile": {
+    "instantiation": "RFC7252_DEFAULT_TRANSMISSION_PARAMETERS",
+    "lower_bound_ms": 2000,
+    "upper_bound_ms": 3000,
+    "required_runtime_values": {
+      "ack_timeout": {
+        "type": "coap_fixed_point_t",
+        "integer_part": 2,
+        "fractional_part": 0
+      },
+      "ack_random_factor": {
+        "type": "coap_fixed_point_t",
+        "integer_part": 1,
+        "fractional_part": 500
+      }
+    },
+    "override_policy": "If either runtime value is changed, the concrete 2000/3000 formula is no longer the applicable instance; re-instantiate the bounds instead of reporting a violation against the default profile."
+  },
+  "roles": {
+    "trigger": [
+      "coap_con_wait_started"
+    ],
+    "response": [
+      "coap_first_retransmit_deadline_reached"
+    ],
+    "cancel": [
+      "coap_matching_ack_or_reset_received",
+      "coap_attempt_cancelled"
+    ],
+    "guard": [
+      "outbound_is_confirmable",
+      "transport_is_unreliable",
+      "initial_write_succeeded",
+      "queue_node_allocation_succeeded",
+      "same_exchange_generation"
+    ],
+    "bound": [
+      "ack_timeout_lower",
+      "ack_timeout_randomized_upper",
+      "scheduled_initial_delay"
+    ],
+    "clock": [
+      "monotonic_now_ticks"
+    ],
+    "scope": [
+      "local_endpoint",
+      "remote_endpoint",
+      "transport_protocol",
+      "message_id",
+      "queue_node_generation"
+    ]
+  },
+  "atomic_propositions": [
+    {
+      "id": "coap_con_wait_started",
+      "value_type": "boolean_event",
+      "role": "trigger",
+      "phase": "POST_SEND_POST_QUEUE_COMMIT",
+      "predicate": "The initial CON PDU has been written successfully and its newly allocated retransmission node has been inserted into the context send queue with the initial timeout committed.",
+      "typed_fields": [
+        {
+          "name": "session",
+          "type": "coap_session_t *",
+          "purpose": "scope"
+        },
+        {
+          "name": "message_id",
+          "type": "coap_mid_t",
+          "purpose": "scope"
+        },
+        {
+          "name": "queue_node_generation",
+          "type": "coap_queue_t *",
+          "purpose": "generation_identity"
+        },
+        {
+          "name": "initial_delay_ticks",
+          "type": "unsigned int",
+          "purpose": "bound_value"
+        }
+      ]
+    },
+    {
+      "id": "coap_first_retransmit_deadline_reached",
+      "value_type": "boolean_synthetic_time_event",
+      "role": "response",
+      "phase": "LOGICAL_DEADLINE_CROSSING",
+      "predicate": "Monotonic time reaches the logical absolute deadline represented by the correlated delta-queue node, regardless of later event-loop dispatch latency.",
+      "typed_fields": [
+        {
+          "name": "queue_node_generation",
+          "type": "coap_queue_t *",
+          "purpose": "generation_identity"
+        },
+        {
+          "name": "sendqueue_basetime",
+          "type": "coap_tick_t",
+          "purpose": "deadline_representation"
+        },
+        {
+          "name": "relative_queue_delay",
+          "type": "coap_tick_t",
+          "purpose": "deadline_representation"
+        },
+        {
+          "name": "now",
+          "type": "coap_tick_t",
+          "purpose": "clock"
+        }
+      ]
+    },
+    {
+      "id": "coap_matching_ack_or_reset_received",
+      "value_type": "boolean_event",
+      "role": "cancel",
+      "phase": "POST_EXACT_QUEUE_NODE_REMOVAL",
+      "predicate": "An inbound ACK or RST for the same session and Message ID removes the correlated queue node; current non-empty ACK paths may additionally require the actual token to match.",
+      "typed_fields": [
+        {
+          "name": "incoming_type",
+          "type": "coap_pdu_type_t",
+          "purpose": "guard"
+        },
+        {
+          "name": "incoming_message_id",
+          "type": "coap_mid_t",
+          "purpose": "scope_and_match"
+        },
+        {
+          "name": "incoming_actual_token",
+          "type": "coap_bin_const_t",
+          "purpose": "conditional_implementation_match_guard"
+        },
+        {
+          "name": "removed_node",
+          "type": "coap_queue_t *",
+          "purpose": "generation_identity"
+        }
+      ]
+    },
+    {
+      "id": "coap_attempt_cancelled",
+      "value_type": "boolean_event",
+      "role": "cancel",
+      "phase": "POST_LOCAL_QUEUE_NODE_REMOVAL",
+      "predicate": "An explicit local session- or token-scoped cancellation removes the correlated queue-node generation before its logical deadline.",
+      "typed_fields": [
+        {
+          "name": "session",
+          "type": "coap_session_t *",
+          "purpose": "scope_and_match"
+        },
+        {
+          "name": "token",
+          "type": "coap_bin_const_t *",
+          "purpose": "optional_match_guard"
+        },
+        {
+          "name": "removed_node",
+          "type": "coap_queue_t *",
+          "purpose": "generation_identity"
+        }
+      ]
+    }
+  ],
+  "bounds": [
+    {
+      "id": "ack_timeout_lower",
+      "value_type": "duration_ms",
+      "source_value_type": "coap_fixed_point_t",
+      "semantic_expression": "session.ack_timeout",
+      "default_value_ms": 2000
+    },
+    {
+      "id": "ack_timeout_randomized_upper",
+      "value_type": "duration_ms",
+      "source_value_type": "coap_fixed_point_t * coap_fixed_point_t",
+      "semantic_expression": "session.ack_timeout * session.ack_random_factor",
+      "default_value_ms": 3000
+    },
+    {
+      "id": "scheduled_initial_delay",
+      "value_type": "duration_ticks",
+      "source_value_type": "unsigned int",
+      "semantic_expression": "coap_calc_timeout(session, prng_byte)",
+      "range_under_default_profile_ms": [
+        2000,
+        3000
+      ],
+      "rounding_contract": "Use the implementation's Q6 fixed-point computation and COAP_TICKS_PER_SECOND; do not replace it with an unchecked real-arithmetic formula."
+    }
+  ],
+  "scope": {
+    "correlation_key": [
+      {
+        "id": "local_endpoint",
+        "type": "coap_address_t",
+        "source_expression": "session.addr_info.local"
+      },
+      {
+        "id": "remote_endpoint",
+        "type": "coap_address_t",
+        "source_expression": "session.addr_info.remote"
+      },
+      {
+        "id": "transport_protocol",
+        "type": "coap_proto_t",
+        "source_expression": "session.proto"
+      },
+      {
+        "id": "message_id",
+        "type": "coap_mid_t",
+        "source_expression": "queue_node.id / pdu.mid"
+      },
+      {
+        "id": "queue_node_generation",
+        "type": "allocation_identity<coap_queue_t>",
+        "source_expression": "the coap_new_node allocation instance inserted into context.sendqueue"
+      }
+    ],
+    "implementation_refinement": "The 94bacc89 ACK path may use actual_token as an additional queue-removal guard. Token is deliberately not added to the inherited monitor correlation key until independent human review resolves the commit-port change."
+  },
+  "binding_policy": {
+    "joint_binding_required": true,
+    "name_similarity_can_confirm": false,
+    "required_roles": [
+      "trigger",
+      "response",
+      "cancel",
+      "guard",
+      "bound",
+      "clock",
+      "scope"
+    ],
+    "deadline_binding": "A schedule site alone is insufficient: bind the delta-queue deadline representation together with the monotonic crossing semantics. A callback-dispatch timestamp is not an exact binding for this AP."
+  }
+}

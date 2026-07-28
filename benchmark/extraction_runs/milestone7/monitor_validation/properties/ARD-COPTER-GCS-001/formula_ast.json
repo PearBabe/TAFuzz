@@ -1,0 +1,86 @@
+{
+  "ast": {
+    "args": [
+      {
+        "args": [
+          {
+            "args": [
+              {
+                "args": [
+                  {
+                    "name": "gcs_heartbeat_gap_start",
+                    "op": "ATOM"
+                  },
+                  {
+                    "name": "gcs_heartbeat_seen_before",
+                    "op": "ATOM"
+                  }
+                ],
+                "op": "AND"
+              },
+              {
+                "name": "gcs_fs_enabled",
+                "op": "ATOM"
+              }
+            ],
+            "op": "AND"
+          },
+          {
+            "args": [
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "name": "gcs_failsafe_event",
+                        "op": "ATOM"
+                      }
+                    ],
+                    "op": "NOT"
+                  }
+                ],
+                "interval": {
+                  "lower": 0,
+                  "lower_closed": true,
+                  "unit": "ms",
+                  "upper": 5000,
+                  "upper_closed": false
+                },
+                "op": "G"
+              },
+              {
+                "args": [
+                  {
+                    "name": "gcs_failsafe_event",
+                    "op": "ATOM"
+                  }
+                ],
+                "interval": {
+                  "lower": 5000,
+                  "lower_closed": true,
+                  "unit": "ms",
+                  "upper": null,
+                  "upper_closed": false
+                },
+                "op": "F"
+              }
+            ],
+            "op": "AND"
+          }
+        ],
+        "op": "IMPLIES"
+      }
+    ],
+    "interval": {
+      "lower": 0,
+      "lower_closed": true,
+      "unit": "ms",
+      "upper": null,
+      "upper_closed": false
+    },
+    "op": "G"
+  },
+  "oracle_identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+  "semantics": "pointwise finite timed word; intervals use their recorded open/closed endpoints; the word is complete",
+  "time_unit": "ms"
+}

@@ -1,0 +1,38 @@
+{
+  "conditional_read_set": [
+    "vm_area_struct.vm_flags"
+  ],
+  "cross_project_general": [
+    "conditional-read/write-set intersection",
+    "interprocedural summary closure before set intersection",
+    "retain upstream call order when materializing dependencies"
+  ],
+  "dependency_edge": "mlockall -> msync",
+  "intersection": [
+    "vm_area_struct.vm_flags"
+  ],
+  "negative_control": {
+    "intersection": [],
+    "write_set": [],
+    "writer": "unrelated_call"
+  },
+  "official_precomputed_map_confirms_edge": true,
+  "official_reader_dependency_count": 13,
+  "project_specific": [
+    "Linux syscall entry points and call graph",
+    "vm_area_struct.vm_flags and VM_LOCKED semantics",
+    "Smatch hook implementation and the shipped Linux dependency table"
+  ],
+  "reader": "msync",
+  "reproduction_kind": "FAITHFUL_CLANG_MICRO_REPRODUCTION_NOT_ORIGINAL_SMATCH_EXTRACTOR",
+  "rule": "W(upstream_call) \u2229 R_cond(target_call) != \u2205",
+  "schema_version": "rift.literature.moonshine-rw-micro.v1",
+  "status": "PASS",
+  "write_set": [
+    "vm_area_struct.vm_flags"
+  ],
+  "writer": "mlockall",
+  "writer_transitive_calls": [
+    "mlock_fixup_lock"
+  ]
+}

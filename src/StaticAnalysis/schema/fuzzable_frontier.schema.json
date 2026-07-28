@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/fuzzable-frontier/2.0.0",
+  "title": "RIFT actionable-only temporal-action frontier projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "frontier_candidates_sha256",
+    "actionable_projection_only", "ranking_never_prunes", "status",
+    "actions", "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "frontier_candidates_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "actionable_projection_only": {"const": true},
+    "ranking_never_prunes": {"const": true},
+    "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+    "actions": {"type": "array", "items": {"$ref": "#/definitions/fuzzable_action"}},
+    "diagnostics": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}}
+  },
+  "definitions": {
+    "fuzzable_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id", "action", "cone_id", "ap_id", "evidence",
+        "witness_ids", "rank_tier", "rank_reasons"
+      ],
+      "properties": {
+        "candidate_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "action": {"$ref": "https://tafuzz.dev/rift/schema/frontier-candidates/3.0.0#/definitions/action"},
+        "cone_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "evidence": {
+          "allOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/frontier-candidates/3.0.0#/definitions/evidence_axes"},
+            {
+              "properties": {
+                "reachability": {"enum": ["STATIC_WITNESS", "MODELLED_WITNESS"]},
+                "controllability": {"enum": ["DIRECT", "SEQUENCE", "TIMING", "ENVIRONMENT"]}
+              }
+            }
+          ]
+        },
+        "witness_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}},
+        "rank_tier": {"type": "integer", "minimum": 0},
+        "rank_reasons": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}}
+      }
+    }
+  }
+}

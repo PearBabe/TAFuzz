@@ -1,0 +1,119 @@
+{
+  "schema_version": "rift.portability.svf.traversal-fix-summary.v1",
+  "run_label": "TRAVERSAL_FIX_VALIDATION_NOT_FINAL_SEAL",
+  "status": "SINGLE_TU_PASS_FULL_BUDGET_TIME_FAIL",
+  "analyzer": {
+    "snapshot_path": "/tmp/tafuzz-sa-svf-portability-final-dbef650aa250713c7f58bf743e95c891cc85046d3be78d8e69f5fd1fa3370d97",
+    "binary_sha256": "dbef650aa250713c7f58bf743e95c891cc85046d3be78d8e69f5fd1fa3370d97",
+    "production_core_sha256": "3f92ab9ac9200cd3f34e1d7e6500be95f4f609a5f6fe164a496cb0cb4442b1f4",
+    "schema_bundle_sha256": "096368c0b0b795dbae6c8000dd0ce60f67c2f3e6021a51c122c3c5f0700a4167",
+    "build_manifest_sha256": "dcd539b63f347853e2dce2546909652f0cd8dd82e96e590f2cd0d8702afe7ed0"
+  },
+  "single_tu_index": {
+    "exit_code": 0,
+    "status": "CONSERVATIVE_INCOMPLETE",
+    "wall_seconds": 14.51,
+    "user_seconds": 10.05,
+    "system_seconds": 4.69,
+    "peak_rss_kib": 1366948,
+    "entities": 22989,
+    "semantic_nodes": 22417,
+    "function_summaries": 3432,
+    "callsites": 7430,
+    "semantic_relations": 10819,
+    "unsupported_constructs": 7288,
+    "empty_caller_function_id": 0,
+    "global_initializer_owners": {
+      "owners": 0,
+      "summaries": 0,
+      "callsites": 0,
+      "nodes": 0,
+      "relations": 0,
+      "interpretation": "the AE translation unit contains no classifiable global-initializer call"
+    },
+    "fallback_translation_unit_nonfunction": {
+      "owners": 12,
+      "summaries": 12,
+      "callsites": 18,
+      "nodes": 21,
+      "relations": 0,
+      "source_files": {
+        "riftpath://v1/source/svf/include/Util/iterator.h": {"owners": 5, "callsites": 8, "nodes": 8},
+        "riftpath://v1/source/svf/include/Graphs/GenericGraph.h": {"owners": 5, "callsites": 6, "nodes": 9},
+        "riftpath://v1/source/svf/include/Util/SVFUtil.h": {"owners": 2, "callsites": 4, "nodes": 4}
+      }
+    },
+    "comparison_to_bc926729": {
+      "fallback_owners_before": 5137,
+      "fallback_owners_after": 12,
+      "fallback_owner_callsites_before": 6619,
+      "fallback_owner_callsites_after": 18,
+      "fallback_owner_nodes_before": 12757,
+      "fallback_owner_nodes_after": 21,
+      "conclusion": "the generic FunctionDecl traversal repair removes the header-amplified fallback-owner explosion on this TU"
+    }
+  },
+  "single_tu_recipes": {
+    "exit_code": 0,
+    "status": "CONSERVATIVE_INCOMPLETE",
+    "wall_seconds": 32.78,
+    "user_seconds": 21.15,
+    "system_seconds": 11.16,
+    "peak_rss_kib": 1365660,
+    "contextual_graph_nodes": 38603,
+    "contextual_graph_edges": 46424,
+    "cones": 2,
+    "predicate_occurrences": 6,
+    "predicate_occurrences_exact": 4,
+    "predicate_occurrences_unknown": 2,
+    "frontier_candidates": 4,
+    "frontier_actionable": 2,
+    "frontier_pending": 2,
+    "recipes": 2,
+    "recipes_unknown": 2,
+    "solver_queries": 0,
+    "solver_timeouts": 0,
+    "solver_unsupported": 2
+  },
+  "detached_certificate_replay_against_later_workspace_schema": {
+    "exit_code": 1,
+    "checks": 65,
+    "failures": 5,
+    "verdict": "FAIL",
+    "reasons": {
+      "frontier_schema_generation_mismatch": 1,
+      "arg_value_occurrence_semantic_closure_mismatch": 4
+    },
+    "interpretation": "historical dbef artifacts predate the union-witness schema and occurrence-closure changes; this is not a final certificate seal"
+  },
+  "full_111_tu_index": {
+    "exit_code": 124,
+    "timeout_reached": true,
+    "address_space_limit_bytes": 12884901888,
+    "wall_seconds": 614.49,
+    "user_seconds": 393.88,
+    "system_seconds": 220.29,
+    "peak_rss_kib": 1679452,
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "output_artifact_created": false,
+    "structural_empty_caller_count": null,
+    "conclusion": "the prior 12 GiB allocation failure is absent, but full indexing does not meet the 600 second budget"
+  },
+  "artifact_digests": {
+    "single_semantic_index": {"size": 77048986, "sha256": "eb9685d52ae85f75eb81e97bb18336bfdea41ab02c51bf4b1ad75998f912257d"},
+    "contextual_influence_graph": {"size": 158565503, "sha256": "df5f446ec7b01633ba60b5cfcc2e7f651dd6f5eb847afb9b7ca19b3a78417bf9"},
+    "frontier_candidates": {"size": 12014319, "sha256": "6837e9b7583c673fb79e140e873f0edaa3cdd40e291f149b303b4e7d02862338"},
+    "mutation_recipes": {"size": 8165686, "sha256": "7c2a81fca408cbde4b62a3b60fa180b2bc7d78a32bcbcc73ed7b3656852095db"},
+    "m5_analysis_certificate": {"size": 12665, "sha256": "b0d4128c0f8fe61384958e548838f8ede439b5d760da22705663754e2b4cd488"}
+  },
+  "claim_boundary": {
+    "traversal_fix_validated_on_single_tu": true,
+    "full_memory_failure_reproduced": false,
+    "full_time_budget_passed": false,
+    "final_exact_binary_portability_seal": false,
+    "gold_accuracy_claim": false,
+    "runtime_recipe_claim": false,
+    "fuzz_gain_claim": false
+  }
+}

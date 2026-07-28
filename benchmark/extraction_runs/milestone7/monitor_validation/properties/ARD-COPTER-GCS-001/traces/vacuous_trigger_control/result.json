@@ -1,0 +1,85 @@
+{
+  "boundary_region": "vacuous",
+  "case_kind": "vacuous_trigger_control",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 7000,
+    "response_delta_ticks": 4999,
+    "threshold_ticks": 5000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Control trace disables the trigger while retaining the early response; it is paired with the non-vacuous counterexample.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 226,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/monitor_trace.csv",
+    "sha256": "a1c4160ed40a4721a0aec7c2e7021eb750023fd57d36cc72f03911b6de4f08f3"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 0,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-COPTER-GCS-001:trace:vacuous_trigger_control",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1531,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor/metadata.json",
+      "sha256": "7b8fbf3595fd8a37180d42d357fb0003ca95c8dbb5120ecaca2058deb40aec6f"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1065,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor.stdout.txt",
+      "sha256": "89ee711518a263769e6dc60dc9b9b0bb0fe9a22d4bc77fdbe305d4082e6aa3a7"
+    },
+    "steps": {
+      "bytes": 480,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor/steps.csv",
+      "sha256": "c48fdf510a429ca53172caa9e07cd5fb1d8cb72f22653c72d1374d07ac80cefd"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 7000,
+      "monitor_advanced": true,
+      "negative_states": 1,
+      "positive_states": 1,
+      "step": 5,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 2990,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/trace.json",
+    "sha256": "bd7e6e27b3ec45c73484b0a5a95b67013e8e06923bf83fc49c6a897c3008f9b5"
+  },
+  "trace_id": "ARD-COPTER-GCS-001--vacuous_trigger_control"
+}

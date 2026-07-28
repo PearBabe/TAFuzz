@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/model-pack/2.0.0",
+  "title": "RIFT finite property-independent model VM pack",
+  "description": "Executable model-pack/2.0.0. Version 1 remains a non-executable M4 boundary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "model_pack_id", "model_pack_version", "layer",
+    "property_independent", "target", "resource_limits", "selectors", "rules"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "model_pack_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "model_pack_version": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/semver"},
+    "layer": {"enum": ["platform", "framework", "project_adapter"]},
+    "property_independent": {"const": true},
+    "target": {"$ref": "#/definitions/target"},
+    "resource_limits": {"$ref": "#/definitions/resource_limits"},
+    "selectors": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/definitions/selector"}
+    },
+    "rules": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/definitions/rule"}
+    }
+  },
+  "definitions": {
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_version", "target_abi", "evidence_id", "digest_policy"],
+      "properties": {
+        "target_version": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "target_abi": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "evidence_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "digest_policy": {"const": "freeze_before_property"}
+      }
+    },
+    "resource_limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_selector_matches", "max_capture_values", "max_join_assignments", "max_emitted_facts"],
+      "properties": {
+        "max_selector_matches": {"type": "integer", "minimum": 1},
+        "max_capture_values": {"type": "integer", "minimum": 1},
+        "max_join_assignments": {"type": "integer", "minimum": 1},
+        "max_emitted_facts": {"type": "integer", "minimum": 1}
+      }
+    },
+    "selector": {
+      "type": "object", "additionalProperties": false,
+      "required": ["selector_id", "kind"],
+      "properties": {
+        "selector_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "kind": {"enum": ["exact_qualified_signature", "exact_usr", "typed_field"]},
+        "exact_value": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "owner_selector_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "field_path": {
+          "type": "array", "minItems": 1,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        },
+        "canonical_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "application_private": {"type": "boolean", "default": false}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"enum": ["exact_qualified_signature", "exact_usr"]}}},
+          "then": {"required": ["exact_value"], "not": {"anyOf": [{"required": ["owner_selector_ref"]}, {"required": ["field_path"]}]}}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "typed_field"}}},
+          "then": {"required": ["owner_selector_ref", "field_path"], "not": {"required": ["exact_value"]}}
+        }
+      ]
+    },
+    "match": {
+      "type": "object", "additionalProperties": false,
+      "required": ["match_id", "selector_ref"],
+      "properties": {
+        "match_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "selector_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+      }
+    },
+    "capture": {
+      "type": "object", "additionalProperties": false,
+      "required": ["capture_id", "match_ref", "projection"],
+      "properties": {
+        "capture_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "match_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "projection": {"enum": ["matched_node", "formal_parameter", "call_argument", "call_result", "receiver"]},
+        "index": {"type": "integer", "minimum": 0}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"projection": {"enum": ["formal_parameter", "call_argument"]}}},
+          "then": {"required": ["index"]}
+        },
+        {
+          "if": {"properties": {"projection": {"enum": ["matched_node", "call_result", "receiver"]}}},
+          "then": {"not": {"required": ["index"]}}
+        }
+      ]
+    },
+    "join": {
+      "type": "object", "additionalProperties": false,
+      "required": ["join_id", "kind", "left_capture_ref", "right_capture_ref"],
+      "properties": {
+        "join_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "kind": {"enum": ["same_object", "same_scope", "same_generation", "same_handle", "same_callsite", "same_task"]},
+        "left_capture_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "right_capture_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+      }
+    },
+    "external_action": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "action_schema_id", "action_class", "channel", "operation",
+        "payload_type", "payload_slot", "scope_schema", "generation_schema",
+        "timing_capability", "required_capability"
+      ],
+      "properties": {
+        "action_schema_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "action_class": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "channel": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "operation": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "payload_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"},
+        "payload_slot": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "scope_schema": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "generation_schema": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "timing_capability": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "required_capability": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+      }
+    },
+    "clock_relation": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "clock_source", "unit", "epoch", "quantum", "jitter", "wrap",
+        "start_event", "end_event", "endpoint", "scope_schema",
+        "generation_schema"
+      ],
+      "properties": {
+        "clock_source": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "unit": {"enum": ["ns", "us", "ms", "s", "ticks"]},
+        "epoch": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "quantum": {"type": "number", "exclusiveMinimum": 0},
+        "jitter": {"type": "number", "minimum": 0},
+        "wrap": {"enum": ["none", "modulo", "saturating", "unknown"]},
+        "wrap_value": {"type": "integer", "minimum": 1},
+        "start_event": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "end_event": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "endpoint": {"enum": ["open", "closed", "mixed", "unknown"]},
+        "scope_schema": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "generation_schema": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"wrap": {"enum": ["modulo", "saturating"]}}},
+          "then": {"required": ["wrap_value"]}
+        },
+        {
+          "if": {"properties": {"wrap": {"enum": ["none", "unknown"]}}},
+          "then": {"not": {"required": ["wrap_value"]}}
+        }
+      ]
+    },
+    "joint_action_relation": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "group_schema_id", "combination", "participant_set_complete",
+        "participant_capture_refs", "scope_schema", "generation_schema"
+      ],
+      "properties": {
+        "group_schema_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "combination": {"enum": ["all_required", "any_sufficient", "unknown"]},
+        "participant_set_complete": {"type": "boolean"},
+        "participant_capture_refs": {
+          "type": "array", "minItems": 2, "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "scope_schema": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "generation_schema": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+      }
+    },
+    "value_transfer": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "kind", "precondition", "executor_enforces_precondition",
+        "failure_branch_unknown"
+      ],
+      "properties": {
+        "kind": {"enum": ["identity", "affine", "parse_identity_with_precondition", "unknown"]},
+        "affine_scale": {"type": "integer"},
+        "affine_offset": {"type": "integer"},
+        "precondition": {"enum": ["none", "canonical_decimal_integer_in_range", "unknown"]},
+        "executor_enforces_precondition": {"type": "boolean"},
+        "failure_branch_unknown": {"type": "boolean"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "affine"}}},
+          "then": {"required": ["affine_scale", "affine_offset"]}
+        },
+        {
+          "if": {"properties": {"kind": {"enum": ["identity", "parse_identity_with_precondition", "unknown"]}}},
+          "then": {"not": {"anyOf": [{"required": ["affine_scale"]}, {"required": ["affine_offset"]}]}}
+        }
+      ]
+    },
+    "emit": {
+      "type": "object", "additionalProperties": false,
+      "required": ["emit_id", "fact_kind", "source_capture_ref", "certainty", "transfer_relation"],
+      "properties": {
+        "emit_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "fact_kind": {"enum": ["external_boundary", "semantic_transfer", "event_link", "timer_transition", "queue_transition", "lifecycle_transition", "scope_key", "clock_relation", "persistence_transition", "joint_action_relation"]},
+        "source_capture_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "target_capture_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "certainty": {"enum": ["modelled", "unknown"]},
+        "transfer_relation": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "external_action": {"$ref": "#/definitions/external_action"},
+        "clock_relation": {"$ref": "#/definitions/clock_relation"},
+        "joint_action_relation": {"$ref": "#/definitions/joint_action_relation"},
+        "value_transfer": {"$ref": "#/definitions/value_transfer"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"fact_kind": {"const": "external_boundary"}}},
+          "then": {"required": ["external_action"], "not": {"required": ["target_capture_ref"]}}
+        },
+        {
+          "if": {"properties": {"fact_kind": {"enum": ["semantic_transfer", "event_link", "timer_transition", "queue_transition", "lifecycle_transition", "scope_key", "clock_relation", "persistence_transition"]}}},
+          "then": {"required": ["target_capture_ref"], "not": {"anyOf": [{"required": ["external_action"]}, {"required": ["joint_action_relation"]}]}}
+        },
+        {
+          "if": {"properties": {"fact_kind": {"const": "clock_relation"}}},
+          "then": {"required": ["clock_relation"]}
+        },
+        {
+          "if": {"properties": {"fact_kind": {"not": {"const": "clock_relation"}}}},
+          "then": {"not": {"required": ["clock_relation"]}}
+        },
+        {
+          "if": {"properties": {"fact_kind": {"const": "joint_action_relation"}}},
+          "then": {
+            "required": ["joint_action_relation"],
+            "not": {"anyOf": [{"required": ["target_capture_ref"]}, {"required": ["external_action"]}, {"required": ["clock_relation"]}]}
+          }
+        },
+        {
+          "if": {"properties": {"fact_kind": {"not": {"const": "joint_action_relation"}}}},
+          "then": {"not": {"required": ["joint_action_relation"]}}
+        }
+      ]
+    },
+    "rule": {
+      "type": "object", "additionalProperties": false,
+      "required": ["rule_id", "matches", "captures", "joins", "emits", "evidence_note"],
+      "properties": {
+        "rule_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "matches": {"type": "array", "minItems": 1, "items": {"$ref": "#/definitions/match"}},
+        "captures": {"type": "array", "minItems": 1, "items": {"$ref": "#/definitions/capture"}},
+        "joins": {"type": "array", "items": {"$ref": "#/definitions/join"}},
+        "emits": {"type": "array", "minItems": 1, "items": {"$ref": "#/definitions/emit"}},
+        "evidence_note": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+      }
+    }
+  }
+}

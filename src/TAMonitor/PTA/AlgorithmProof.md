@@ -1084,6 +1084,157 @@ timeout 或 piece limit 命中得到 `incomplete_backward_resource_limit`；已�
 exact；顶层 status 另按初始零估值区分有限 `complete`、`unreachable`
 和 `unbounded_below`。
 
+## 11. 在线前缀 Federation 查询与 witness 正确性
+
+设运行时状态集合为
+
+\[
+S=\bigcup_k\{l_k\}\times F_k,
+\]
+
+其中每个 Federation 是有限个 DBM 的并。对 mixed snapshot 中 node \(n\) 的
+finite piece \(P=(Z_P,W_P)\)，定义候选域
+
+\[
+D_{k,j,n,P}=D_{k,j}\cap Z_n\cap Z_P. \tag{11.1}
+\]
+
+实现逐项保存所有非空 (11.1)，不把重叠候选错误合并。完整 snapshot 上的
+symbolic 剩余代价为
+
+\[
+\boxed{
+V_\exists(S)=-\max_{k,j,n,P}\sup_{v\in D_{k,j,n,P}}W_P(v)
+}. \tag{11.2}
+\]
+
+若某个 `MixedUnboundedRegion` 与运行时域相交，(11.2) 立即为
+\(-\infty\)。若某个 finite affine piece 只是在无界运行时域上具有
+\(\sup W=+\infty\)，聚合结果同样为 \(-\infty\)，但实现用独立原因码区分它与
+“单个 valuation 的 suffix 已经无界下降”。
+
+### 11.1 闭包优化与严格域达到性
+
+DBM 定义的是凸 difference-constraint polyhedron，仿射函数连续。因此对任意
+非空候选域 \(D\)，
+
+\[
+\sup_{v\in D}W(v)=\max_{v\in\overline D}W(v), \tag{11.3}
+\]
+
+其中右侧在有界目标时存在；无界时两边都是 \(+\infty\)。Z3 reference backend
+只在拓扑闭包上执行 Optimize，并用普通 QF_LRA 再证明
+\(\overline D\land W>b\) 不可满足。随后分别检查
+\(\overline D\land W=b\) 和 \(D\land W=b\)：前者给出 optimizer limit，后者
+决定 `optimizer_is_actual`。故严格边界只改变“是否取得”，不会改变 (11.3) 的
+上确界值。最终 suffix cost 可取得当且仅当
+
+\[
+optimizer\_is\_actual\land P.attained. \tag{11.4}
+\]
+
+任一步 solver 返回 unknown、超时或上界复核失败，整个查询返回
+`IncompleteQuery/Unknown`，不得输出有限最优 witness。
+
+### 11.2 域分类
+
+每个 runtime DBM 必须完全包含于同 location 的 exact forward support。无交时
+返回 `OutsideReachableDomain`；有交但不是子集时返回 `DomainMismatch`。这是
+必要条件，因为 mixed pieces 只证明首次到达 Goal 截断图内的状态。域完整但不与
+任何 backward piece 相交时，由 (10.24) 精确得到 \(+\infty\)。空 live-state 集
+则按监控器语义返回 `NoLiveState` 和 \(+\infty\)。forward/backward snapshot
+不完整时，除已经覆盖查询域的 \(-\infty\) certificate 外均返回 Unknown。
+
+### 11.3 Delay 与 Bellman witness 回放
+
+对选中的 source valuation \(v\)、图弧 \(a=(n,e,m)\) 和 successor piece
+\(P_t\)，witness 必须找到 \(d\ge0\) 满足
+
+\[
+v+d\in Fire_a,\qquad reset_R(v+d)\in Entry_a\cap Dom(P_t), \tag{11.5}
+\]
+
+以及论文权重约定下的 Bellman 等式
+
+\[
+W_s(v)=W_t(reset_R(v+d))-cost(e)-rate(l_n)d. \tag{11.6}
+\]
+
+facet 给出的闭式 delay 先按 (11.5)--(11.6) 精确回放；若平坦斜率、reset 或严格
+边界使该代表值不可用，则以单变量 QF_LRA 联立 (11.5)--(11.6) 求实际 delay。
+只在 closure 中可满足时保存 limit、`delay_attained=false` 和
+`epsilon_optimal=true`。因此 `next_edge/next_arc/successor` 不只是导出标签，
+而是有具体 TA 步和 priced Bellman 等式共同认证的 witness。
+
+### 11.4 总正确性
+
+由 10.7 节，任意 forward-reachable 点 \((l,v)\) 上所有覆盖它的 mixed pieces
+的最大 weight 等于 \(-V(l,v)\)。Federation 是有限并，故
+
+\[
+\inf_{(l,v)\in S}V(l,v)
+=-\sup_{(l,v)\in S}(-V(l,v))
+=-\max_{k,j,n,P}\sup_{v\in D_{k,j,n,P}}W_P(v),
+\]
+
+即 (11.2)。11.1 保证每个局部 supremum 的数值和 attained 精确，11.3 保证
+选中 witness 可回放；所以 `PrefixCostAnalyzer` 的 aggregate、完整候选下包络、
+attained/infimum 与 next witness 均符合在线前缀的剩余代价语义。已经读取的前缀
+成本不出现在 (11.2)，因此不会被重复计入。
+
+## 12. Roméo-derived DBM 仿射优化器
+
+把闭包候选 piece 的 weight 展开为
+
+\[
+W(x)=\kappa+\sum_{i=1}^{n}c_ix_i,\qquad
+\kappa=w-\sum_{i=1}^{n}c_i\Delta_i. \tag{12.1}
+\]
+
+canonical DBM 给出所有有限约束 \(x_i-x_j\le b_{ij}\)。令
+\(c_0=-\sum_{i>0}c_i\)，因为 \(x_0=0\)，加入 \(c_0x_0\) 不改变目标。
+线性规划对偶是
+
+\[
+\begin{aligned}
+\min_y\quad &\sum_{ij}b_{ij}y_{ij}\\
+\text{s.t.}\quad
+&\sum_jy_{ij}-\sum_jy_{ji}=c_i &&(0\le i\le n),\\
+&y_{ij}\ge0.
+\end{aligned} \tag{12.2}
+\]
+
+等式约束由每个 primal 变量的系数比较得到；总供需为零。DBM 非空闭包没有
+负费用环，否则相应 difference constraints 会推出负对角。故 (12.2) 是一个
+无负环的最小费用转运问题。
+
+实现把 \(c_i>0\) 接到超级源、\(c_i<0\) 接到超级汇，每条有限 DBM bound
+作为容量等于总供给的费用弧。每轮在 residual graph 上按 reduced cost
+
+\[
+\bar b_{ij}=b_{ij}+\pi_i-\pi_j \tag{12.3}
+\]
+
+运行 Bellman--Ford，按最短路增广，并令 \(\pi_v\leftarrow\pi_v+d(v)\)。反向残量
+弧费用为 \(-b_{ij}\)，因此后续增广可以撤销先前流。最短增广路定理保证每个流量
+层次均为最小费用；有限个整数供需完成后得到 (12.2) 的精确 BigInt 最优值。
+
+若仍有供给但超级汇不可达，则 (12.2) 不可行。primal DBM 已知非空，线性规划
+对偶定理因此推出 primal 目标无上界，返回 `PositiveInfinity`。若全部供需送达，
+强对偶给出
+
+\[
+\sup W=\kappa+cost(y^*). \tag{12.4}
+\]
+
+转运后端不使用 Z3 Optimize 求 (12.4)。共享 QF_LRA 只对已知值检查原严格域
+\(W=\sup W\) 和 closure \(W=\sup W\)，从而提取 actual/limit valuation 并判断
+attained。这保持了 11.1 节的严格边界语义。
+
+`crosscheck` 分别执行 Z3 reference 与 (12.2)，只比较 kind、精确 value 和
+attained；非唯一 optimizer 不要求模型字面相同。任何不一致都返回 Unknown，
+不得把某一后端结果继续作为 fuzzing guidance。
+
 ## 参考资料
 
 - Rémi Parrot, Didier Lime. *Backward Symbolic Optimal Reachability in

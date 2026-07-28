@@ -1,0 +1,190 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 24
+      },
+      "token": "ap_primary"
+    },
+    "ap_secondary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 26
+      },
+      "token": "ap_secondary"
+    },
+    "node_shared": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 22
+      },
+      "token": "node_shared"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "shared affine value crosses threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 24
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    },
+    {
+      "expression": "shared affine value satisfies parity/presence guard",
+      "id": "ap_secondary",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 26
+      },
+      "role": "GUARD",
+      "symbol": "ap_secondary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-101",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "one_input_multi_ap",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "One shared derived node feeds two independently declared APs; negative variants preserve the fan-out shape but root it at a constant.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "one_input_multi_ap",
+    "variant": 0
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "mutate one source against both AP boundaries",
+        "kind": "multi_ap_shared_input",
+        "relative_time_window": null,
+        "suggested_values": [
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "data",
+            "to": "node_shared"
+          },
+          {
+            "certainty": "must",
+            "from": "node_shared",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_shared",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_secondary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "mutate one source against both AP boundaries",
+        "kind": "multi_ap_shared_input",
+        "relative_time_window": null,
+        "suggested_values": [
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "data",
+            "to": "node_shared"
+          },
+          {
+            "certainty": "must",
+            "from": "node_shared",
+            "kind": "data",
+            "to": "ap_secondary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_shared",
+          "ap_secondary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/101_one_input_multi_ap_must_v0.c",
+  "source_sha256": "641a5a47457731f911e11406fbf2f3faa938f33aec2c6f29373cdfd0db260d75",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/101_one_input_multi_ap_must_v0.c",
+        "line": 20
+      },
+      "scope": "SESSION",
+      "symbol": "source_primary"
+    }
+  ]
+}

@@ -338,12 +338,12 @@ namespace monitaal {
 
         while (!fringe.empty()) {
 
-            auto lid = fringe.begin();
-            fringe.erase(lid);
+            const location_id_t lid = *fringe.begin();
+            fringe.erase(fringe.begin());
 
-            location_ids = id_location_ids_map.at(*lid);
-            curr_i = id_i_map.at(*lid);
-            new_location_ids_expanded.insert(*lid);
+            location_ids = id_location_ids_map.at(lid);
+            curr_i = id_i_map.at(lid);
+            new_location_ids_expanded.insert(lid);
 
             bool stucked = false;
             for (size_t i = 0; i < components.size(); ++i) {

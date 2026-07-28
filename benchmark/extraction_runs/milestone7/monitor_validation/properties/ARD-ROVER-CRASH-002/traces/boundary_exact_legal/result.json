@@ -1,0 +1,85 @@
+{
+  "boundary_region": "exact",
+  "case_kind": "boundary_exact_legal",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 4000,
+    "response_delta_ticks": 2000,
+    "threshold_ticks": 2000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Closed eventual lower bound and open pre-threshold prohibition make the exact threshold legal.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 158,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/monitor_trace.csv",
+    "sha256": "676e5ec214a40913ca8d666b6fab754061e45ca399ad00173ac0edccb5f6f189"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-ROVER-CRASH-002:trace:boundary_exact_legal",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1342,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor/metadata.json",
+      "sha256": "b3ec0319abd4b65629836c6d8975772d990efe9bdaed7169fc050fa2283236b7"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 990,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor.stdout.txt",
+      "sha256": "c6c66714972a5d55bf742f44b30f6d316cb6d819bf9e445e4d7966c367ff4892"
+    },
+    "steps": {
+      "bytes": 407,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor/steps.csv",
+      "sha256": "3dc2e81a99277710427c21297b543588c4be1554660381f60bf0d666ba9e51c8"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 4000,
+      "monitor_advanced": true,
+      "negative_states": 3,
+      "positive_states": 2,
+      "step": 5,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 2726,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/trace.json",
+    "sha256": "cb2efffc720d4a1ac7143e5a5cff28996e14ad2aa5c94b061f314cc3ffd8a799"
+  },
+  "trace_id": "ARD-ROVER-CRASH-002--boundary_exact_legal"
+}

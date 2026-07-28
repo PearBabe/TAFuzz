@@ -1,0 +1,29 @@
+digraph TA {
+  graph [rankdir=LR, bgcolor="white", splines=true, overlap=false, nodesep=0.65, ranksep=1.15];
+  node [shape=circle, fontname="DejaVu Sans", fontsize=10, style=filled, fillcolor="#f8fafc"];
+  edge [fontname="DejaVu Sans", fontsize=8, color="#64748b"];
+  init [shape=point, width=0.15, fillcolor="#111827"];
+  init -> L0 [color="#111827", penwidth=2];
+  L0 [shape=circle, fillcolor="#dbeafe", label="L0\\nrate=1\\ns0_ell_0*_s0*_s0*_0*_s0*_0"];
+  L1 [shape=circle, fillcolor="#f8fafc", label="L1\\nrate=1\\ns1*_ell_1*_s1_s0*_0_s0*_0"];
+  L2 [shape=doublecircle, fillcolor="#dcfce7", label="L2  GOAL\\nrate=1\\ns1*_ell_1*_s0*_s0*_0*_s0*_0"];
+  L3 [shape=circle, fillcolor="#f8fafc", label="L3\\nrate=1\\ns1*_ell_0*_s1_s0*_0_s0*_0"];
+  L4 [shape=doublecircle, fillcolor="#dcfce7", label="L4  GOAL\\nrate=1\\ns1*_ell_0*_s0*_s0*_0*_s0*_0"];
+  L0 -> L1 [label="e(0,0)  bits:0 (¬p1)\\nguard: x >= 0; reset: x:=0; cost=0", color="#2563eb", penwidth=3];
+  L0 -> L1 [label="e(0,1)  bits:1 (p1)\\nguard: x >= 0; reset: x:=0; cost=0"];
+  L1 -> L1 [label="e(1,0)  bits:0 (¬p1)\\nguard: x >= 0, x < 5; reset: -; cost=0", color="#16a34a", style=dashed, penwidth=2];
+  L1 -> L1 [label="e(1,1)  bits:1 (p1)\\nguard: x >= 0, x < 5; reset: -; cost=0", color="#16a34a", style=dashed, penwidth=2];
+  L1 -> L2 [label="e(1,2)  bits:1 (p1)\\nguard: x >= 0, x < 5; reset: x:=0; cost=0"];
+  L1 -> L3 [label="e(1,3)  bits:0 (¬p1)\\nguard: x >= 5, x <= 10; reset: -; cost=0"];
+  L1 -> L3 [label="e(1,4)  bits:1 (p1)\\nguard: x >= 5, x <= 10; reset: -; cost=0"];
+  L1 -> L4 [label="e(1,5)  bits:1 (p1)\\nguard: x >= 5, x <= 10; reset: x:=0; cost=0", color="#dc2626", penwidth=3];
+  L2 -> L2 [label="e(2,0)  bits:0 (¬p1)\\nguard: x >= 0, x < 5; reset: x:=0; cost=0"];
+  L2 -> L2 [label="e(2,1)  bits:1 (p1)\\nguard: x >= 0, x < 5; reset: x:=0; cost=0"];
+  L2 -> L4 [label="e(2,2)  bits:0 (¬p1)\\nguard: x >= 5; reset: x:=0; cost=0"];
+  L2 -> L4 [label="e(2,3)  bits:1 (p1)\\nguard: x >= 5; reset: x:=0; cost=0"];
+  L3 -> L1 [label="e(3,0)  bits:0 (¬p1)\\nguard: x >= 0, x <= 10; reset: x:=0; cost=0"];
+  L3 -> L1 [label="e(3,1)  bits:1 (p1)\\nguard: x >= 0, x <= 10; reset: x:=0; cost=0"];
+  L3 -> L2 [label="e(3,2)  bits:1 (p1)\\nguard: x >= 5, x <= 10; reset: x:=0; cost=0"];
+  L4 -> L2 [label="e(4,0)  bits:0 (¬p1)\\nguard: x >= 0; reset: x:=0; cost=0"];
+  L4 -> L2 [label="e(4,1)  bits:1 (p1)\\nguard: x >= 0; reset: x:=0; cost=0"];
+}

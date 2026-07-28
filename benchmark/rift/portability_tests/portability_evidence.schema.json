@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schema/rift-portability-evidence-v3.json",
+  "title": "RIFT sealed, artifact-backed portability evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_kind", "contract_id",
+    "actual_core_root_path", "projects"
+  ],
+  "properties": {
+    "schema_version": {"const": "3.0.0"},
+    "evidence_kind": {"const": "rift.portability-evaluation"},
+    "contract_id": {"const": "RIFT-PORTABILITY-1"},
+    "actual_core_root_path": {"type": "string", "minLength": 1},
+    "projects": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sealed_run_manifest_path", "sealed_run_manifest_sha256"],
+        "properties": {
+          "sealed_run_manifest_path": {"type": "string", "minLength": 1},
+          "sealed_run_manifest_sha256": {"$ref": "#/$defs/sha256"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "sealed_run_required_sections": {
+      "description": "Each referenced manifest is independently loaded and validated by validate_portability_contract.py as rift.sealed-portability-run/3.0.0. It must contain project, execution, artifacts, toolchain, and embedded_identities sections."
+    }
+  }
+}

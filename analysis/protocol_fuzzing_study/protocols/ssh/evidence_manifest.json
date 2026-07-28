@@ -1,0 +1,111 @@
+{
+  "protocol": "SSH",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/transport_security_protocols/ssh/evidence.json",
+      "record": {
+        "protocol": "SSH",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_CAVEAT",
+        "standards": [
+          {
+            "id": "RFC4253",
+            "title": "The Secure Shell (SSH) Transport Layer Protocol",
+            "url": "https://www.rfc-editor.org/rfc/rfc4253.html",
+            "sections": [
+              "9"
+            ],
+            "source_type": "IETF Standards Track"
+          }
+        ],
+        "sources": [
+          {
+            "repository": "vegard/openssh-portable",
+            "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+            "url": "https://github.com/vegard/openssh-portable/tree/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+            "role": "ProFuzzBench-pinned OpenSSH implementation"
+          },
+          {
+            "repository": "ProFuzzBench/ProFuzzBench",
+            "commit": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+            "url": "https://github.com/ProFuzzBench/ProFuzzBench/blob/8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074/subjects/SSH/OpenSSH/Dockerfile#L89-L111",
+            "role": "benchmark pin evidence"
+          }
+        ],
+        "profile_caveat": "RFC 4253 recommends one hour, but the pinned OpenSSH default rekey_interval is zero. The experiment must explicitly configure the one-hour profile.",
+        "method": "Screened transport KEX/rekey, identification, liveness and authentication timers; independent audit retained only a controlled local-KEXINIT proxy for the one-hour recommendation.",
+        "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md"
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "SSH-REKEY-01",
+      "protocol": "SSH",
+      "standard": "RFC 4253",
+      "standard_version": "RFC 4253",
+      "section": "9",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc4253.html#section-9",
+      "source_repository": "vegard/openssh-portable",
+      "source_commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+      "source_path": "packet.c",
+      "source_lines": "1043-1085",
+      "source_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1043-L1085",
+      "auxiliary_source_mappings": [
+        {
+          "role": "successful local KEXINIT start/send path",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "packet.c",
+          "symbol": "ssh_packet_send2",
+          "lines": "1313-1360",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1360",
+          "legacy_exact_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1351",
+          "atomic_propositions": [
+            "ssh_local_kexinit_started"
+          ]
+        },
+        {
+          "role": "one-hour profile installation into packet state",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "packet.c",
+          "symbol": "ssh_packet_set_rekey_limits",
+          "lines": "2429-2435",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2429-L2435",
+          "legacy_exact_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2428-L2445",
+          "atomic_propositions": [
+            "ssh_rekey_eligible_one_hour_profile"
+          ]
+        },
+        {
+          "role": "server default disables time rekey unless the benchmark installs the declared profile",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "servconf.c",
+          "symbol": "fill_default_server_options",
+          "lines": "284-289",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/servconf.c#L284-L289",
+          "atomic_propositions": [
+            "ssh_rekey_eligible_one_hour_profile"
+          ]
+        },
+        {
+          "role": "correlated transport close action",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "packet.c",
+          "symbol": "ssh_packet_close",
+          "lines": "574-588",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L574-L588",
+          "atomic_propositions": [
+            "ssh_connection_closed"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

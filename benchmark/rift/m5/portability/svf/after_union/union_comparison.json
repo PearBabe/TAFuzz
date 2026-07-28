@@ -1,0 +1,78 @@
+{
+  "schema_version": "rift.portability.svf.union-witness-comparison.v1",
+  "run_label": "PERFORMANCE_AND_SHAPE_DIAGNOSTIC_NOT_CERTIFICATE_SEAL",
+  "analyzer": {
+    "binary_sha256": "f4b6f21b4795474e6c981787d4f34bd5bdcb21fcb1814925383a24e7aadb7dd5",
+    "production_core_sha256": "6a319b73f734c93254a69ca7d07fa3af99dadcfe744d50cfb509d6987dd2849e",
+    "schema_bundle_sha256": "ebe34a363b120c3db3c963e64ee1d7270ed7a10c1f21587deeaae7f31167a529",
+    "build_manifest_sha256": "48429e79a1dc2d19938daf501104bf4d0589aad5a3b43f608a6babc1a8ed9321"
+  },
+  "code_audit": {
+    "one_witness_per_attachment_boundary_cone": true,
+    "meet_accounts_sorted_and_complete": true,
+    "forward_nodes_and_edges_are_set_union": true,
+    "cone_edges_are_set_union": true,
+    "model_fact_ids_are_set_union": true,
+    "recipe_iterates_each_compatible_meet": true,
+    "witness_identity_material_is_deterministically_sorted": true,
+    "files_reviewed": [
+      "src/StaticAnalysis/core/production/frontier.cpp",
+      "src/StaticAnalysis/core/production/recipe.cpp",
+      "src/StaticAnalysis/schema/frontier_candidates.schema.json"
+    ]
+  },
+  "ae_single_tu": {
+    "exit_code": 0,
+    "status": "CONSERVATIVE_INCOMPLETE",
+    "wall_seconds": 32.56,
+    "user_seconds": 21.32,
+    "system_seconds": 11.17,
+    "peak_rss_kib": 1365964,
+    "frontier_candidates": 4,
+    "actionable_candidates": 2,
+    "recipes": 2,
+    "recipes_unknown": 2
+  },
+  "old_to_union_shape": {
+    "candidate_group_keys_equal": true,
+    "candidate_groups": 2,
+    "witnesses_before": 5,
+    "witnesses_after": 2,
+    "meets_before": 5,
+    "meets_after": 5,
+    "forward_node_references_before": 9,
+    "forward_node_references_after": 5,
+    "forward_edge_references_before": 10,
+    "forward_edge_references_after": 7,
+    "cone_edge_references_before": 3,
+    "cone_edge_references_after": 3,
+    "per_group_meet_sets_equal": true,
+    "per_group_forward_node_unions_equal": true,
+    "per_group_forward_edge_unions_equal": true,
+    "per_group_cone_edge_unions_equal": true,
+    "per_group_model_fact_unions_equal": true
+  },
+  "resource_and_size_comparison": {
+    "frontier_candidates_bytes_before": 12014319,
+    "frontier_candidates_bytes_after": 12012765,
+    "frontier_candidates_bytes_delta": -1554,
+    "frontier_candidates_percent_delta": -0.0129345658,
+    "wall_seconds_before": 32.78,
+    "wall_seconds_after": 32.56,
+    "peak_rss_kib_before": 1365660,
+    "peak_rss_kib_after": 1365964,
+    "interpretation": "witness duplication is removed, but one run on this small two-group target shows no material end-to-end time or RSS change; the artifact is dominated by non-witness ledgers"
+  },
+  "artifact_digests": {
+    "frontier_candidates": {"size": 12012765, "sha256": "926cf24db4e2c347c2e89cc91340d132cedf0c75c1a6fa76e9a4f5662cb13738"},
+    "fuzzable_frontier": {"size": 4510, "sha256": "ca3c26770cd01054860142ca03aea65e99ac4ea595fa6dc45c92778d7a5b9d87"},
+    "mutation_recipes": {"size": 8165686, "sha256": "e763d00767dc0ba8d682e301e011c1f7951abf59d013f5c25b41aa431befe8c5"},
+    "m5_analysis_certificate": {"size": 12639, "sha256": "a1581b7556dbb07c9d64930bbdfa972f0dc8ea9fda870831c7490798b9aa71d6"}
+  },
+  "limitations": [
+    "The f4b6 snapshot predates the normative frontier 2.0.0 and fuzzable-frontier 1.1.0 schema-version bump.",
+    "No detached certificate seal is claimed for this diagnostic snapshot.",
+    "One before/after run cannot establish a statistically meaningful performance improvement.",
+    "All recipes remain UNKNOWN, so this comparison makes no mutation-direction or runtime-effectiveness claim."
+  ]
+}

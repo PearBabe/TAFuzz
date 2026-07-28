@@ -1,0 +1,701 @@
+{
+  "schema_version": "1.0",
+  "policies": [
+    {
+      "paper_order": 31,
+      "system": "PX4",
+      "policy_id": "PX.RTL1",
+      "artifact_policy_directory": "PX.RTL1",
+      "template": "T3",
+      "description_en": "If the current altitude is less than RTL_RETURN_ALT, then altitude must be increased until the altitude is greater or equal to RTL_RETURN_ALT.",
+      "description_zh": "当前高度低于 RTL_RETURN_ALT 时持续爬升，直到达到该高度。",
+      "paper_formula_transcription": "G(((ALT_t < RTL_RETURN_ALT) & (Mode_t = RTL)) -> (ALT_t-1 < ALT_t))",
+      "binding_formula_interpretation": "G(((ALT_t < RTL_RETURN_ALT) & (Mode_t = RTL)) -> (ALT_t-1 < ALT_t))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "ALT_t < RTL_RETURN_ALT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Mode_t = RTL",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t-1 < ALT_t",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 32,
+      "system": "PX4",
+      "policy_id": "PX.RTL2",
+      "artifact_policy_directory": "PX.RTL2",
+      "template": "T3",
+      "description_en": "If the current altitude is greater or equal to RTL_RETURN_ALT, current flight mode is RTL, and the current vehicle is not home position, then the vehicle must move to the home position while maintaining the current altitude.",
+      "description_zh": "达到 PX4 返航高度且尚未到家时保持高度并移动到家。",
+      "paper_formula_transcription": "G(((Mode_t = RTL) & (ALT_t >= RTL_RETURN_ALT) & (Pos_t != home_position)) -> ((Pos_t-1 != Pos_t) & (ALT_t-1 = ALT_t)))",
+      "binding_formula_interpretation": "G(((Mode_t = RTL) & (ALT_t >= RTL_RETURN_ALT) & (Pos_t != home_position)) -> ((Pos_t-1 != Pos_t) & (ALT_t-1 = ALT_t)))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = RTL",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t >= RTL_RETURN_ALT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Pos_t != home_position",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Pos_t-1 != Pos_t",
+          "role": "consequent"
+        },
+        {
+          "expression": "ALT_t-1 = ALT_t",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 33,
+      "system": "PX4",
+      "policy_id": "PX.RTL3",
+      "artifact_policy_directory": "PX.RTL3",
+      "template": "T3",
+      "description_en": "If current altitude is greater or equal to RTL_RETURN_ALT and current position is the same as home position, then flight mode must be LAND.",
+      "description_zh": "达到返航高度并到家后进入着陆模式。",
+      "paper_formula_transcription": "G(((Mode_t = RTL) & (ALT_t >= RTL_RETURN_ALT) & (Pos_t = home_position)) -> (Mode_t = LAND))",
+      "binding_formula_interpretation": "G(((Mode_t = RTL) & (ALT_t >= RTL_RETURN_ALT) & (Pos_t = home_position)) -> (Mode_t = LAND))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = RTL",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t >= RTL_RETURN_ALT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Pos_t = home_position",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Mode_t = LAND",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "SAME_SAMPLE_MODE_CONTRADICTION"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 34,
+      "system": "PX4",
+      "policy_id": "PX.RTL4",
+      "artifact_policy_directory": "PX.RTL4",
+      "template": "T3",
+      "description_en": "If RTL_LAND_DELAY parameter has -1, the vehicle must hover at RTL_DESCEND_ALT.",
+      "description_zh": "RTL_LAND_DELAY 为负一时在 RTL_DESCEND_ALT 高度盘旋。",
+      "paper_formula_transcription": "G(((Mode_t = RTL) & (RTL_DESCEND_ALT = -1)) -> ((Pos_t = Pos_t-1) & (ALT_t = ALT_t-1)))",
+      "binding_formula_interpretation": "G(((Mode_t = RTL) & (RTL_LAND_DELAY = -1)) -> ((Pos_t = Pos_t-1) & (ALT_t = ALT_t-1)))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = RTL",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RTL_DESCEND_ALT = -1",
+          "role": "antecedent_as_printed"
+        },
+        {
+          "expression": "RTL_LAND_DELAY = -1",
+          "role": "antecedent_from_description"
+        },
+        {
+          "expression": "Pos_t = Pos_t-1",
+          "role": "consequent"
+        },
+        {
+          "expression": "ALT_t-1 = ALT_t",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "WRONG_PARAMETER_IN_FORMULA",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 35,
+      "system": "PX4",
+      "policy_id": "PX.RTL5",
+      "artifact_policy_directory": "PX.RTL5",
+      "template": "T3",
+      "description_en": "It is the same as A.RTL4.",
+      "description_zh": "与 A.RTL4 相同：着陆触地后锁定电机。",
+      "paper_formula_transcription": "It is the same as A.RTL4.",
+      "binding_formula_interpretation": "G(((Mode_t = LAND) & (ALT_t = GroundALT)) -> (Disarm = on))",
+      "inherits_from": "A.RTL4",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = LAND",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t = GroundALT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Disarm = on",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "IMMEDIACY_UNBOUNDED",
+        "EXACT_PHYSICAL_EQUALITY"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 36,
+      "system": "PX4",
+      "policy_id": "PX.ORBIT1",
+      "artifact_policy_directory": "PX.ORBIT1",
+      "template": "T3",
+      "description_en": "It is the same as A.CIRCLE1.",
+      "description_zh": "继承 A.CIRCLE1，并把绕圈模式解释为 PX4 ORBIT。",
+      "paper_formula_transcription": "It is the same as A.CIRCLE1.",
+      "binding_formula_interpretation": "G(((Mode_t = ORBIT) & (RC_pitch < 1500) & (Circle_radius_t > 0)) -> (Circle_radius_t < Circle_radius_t-1))",
+      "inherits_from": "A.CIRCLE1",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ORBIT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RC_pitch < 1500",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_radius_t > 0",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_radius_t < Circle_radius_t-1",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 37,
+      "system": "PX4",
+      "policy_id": "PX.ORBIT2",
+      "artifact_policy_directory": "PX.ORBIT2",
+      "template": "T3",
+      "description_en": "It is the same as A.CIRCLE2.",
+      "description_zh": "继承 A.CIRCLE2，并把绕圈模式解释为 PX4 ORBIT。",
+      "paper_formula_transcription": "It is the same as A.CIRCLE2.",
+      "binding_formula_interpretation": "G(((Mode_t = ORBIT) & (RC_pitch > 1500)) -> (Circle_radius_t > Circle_radius_t-1))",
+      "inherits_from": "A.CIRCLE2",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ORBIT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RC_pitch > 1500",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_radius_t > Circle_radius_t-1",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 38,
+      "system": "PX4",
+      "policy_id": "PX.ORBIT3",
+      "artifact_policy_directory": "PX.ORBIT3",
+      "template": "T3",
+      "description_en": "It is the same as A.CIRCLE3.",
+      "description_zh": "继承 A.CIRCLE3，并把绕圈模式解释为 PX4 ORBIT。",
+      "paper_formula_transcription": "It is the same as A.CIRCLE3.",
+      "binding_formula_interpretation": "G(((Mode_t = ORBIT) & (RC_roll > 1500) & (Circle_direction_t = clockwise)) -> (Circle_speed_t > Circle_speed_t-1))",
+      "inherits_from": "A.CIRCLE3",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ORBIT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RC_roll > 1500",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_direction_t = clockwise",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_speed_t > Circle_speed_t-1",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 39,
+      "system": "PX4",
+      "policy_id": "PX.ORBIT4",
+      "artifact_policy_directory": "PX.ORBIT4_5",
+      "template": "T3",
+      "description_en": "It is the same as A.CIRCLE4.",
+      "description_zh": "继承 A.CIRCLE4，并把绕圈模式解释为 PX4 ORBIT。",
+      "paper_formula_transcription": "It is the same as A.CIRCLE4.",
+      "binding_formula_interpretation": "G(((Mode_t = ORBIT) & (RC_roll > 1500) & (Circle_direction_t = counterclockwise)) -> (Circle_speed_t < Circle_speed_t-1))",
+      "inherits_from": "A.CIRCLE4",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ORBIT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RC_roll > 1500",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_direction_t = counterclockwise",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_speed_t < Circle_speed_t-1",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 40,
+      "system": "PX4",
+      "policy_id": "PX.ORBIT5",
+      "artifact_policy_directory": "PX.ORBIT4_5",
+      "template": "T3",
+      "description_en": "The maximum radius must be 100 meters.",
+      "description_zh": "绕点飞行最大半径为 100 米。",
+      "paper_formula_transcription": "G((Mode_t = ORBIT) -> (Circle_radius_t < 100))",
+      "binding_formula_interpretation": "G((Mode_t = ORBIT) -> (Circle_radius_t < 100))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ORBIT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_radius_t < 100m",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "STRICT_MAX_BOUND"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 41,
+      "system": "PX4",
+      "policy_id": "PX.ORBIT6",
+      "artifact_policy_directory": "PX.ORBIT6",
+      "template": "T3",
+      "description_en": "The maximum acceleration must be limited to 2m/s^2.",
+      "description_zh": "绕点飞行最大加速度限制为每平方秒 2 米。",
+      "paper_formula_transcription": "G((Mode_t = ORBIT) -> (Circle_speed_t < 2m/s^2))",
+      "binding_formula_interpretation": "G((Mode_t = ORBIT) -> (Circle_speed_t < 2m/s^2))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ORBIT",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Circle_speed_t < 2m/s^2",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "TYPE_UNIT_MISMATCH",
+        "STRICT_MAX_BOUND"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 42,
+      "system": "PX4",
+      "policy_id": "PX.LAND1",
+      "artifact_policy_directory": "PX.LAND1",
+      "template": "T3",
+      "description_en": "Descending speed must be the same as MPC_LAND_SPEED parameter.",
+      "description_zh": "下降速度等于 MPC_LAND_SPEED 参数。",
+      "paper_formula_transcription": "G((Mode_t = LAND) -> (Speed_vertical_t = MPC_LAND_SPEED))",
+      "binding_formula_interpretation": "G((Mode_t = LAND) -> (Speed_vertical_t = MPC_LAND_SPEED))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = LAND",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Speed_vertical_t = MPC_LAND_SPEED",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "EXACT_PHYSICAL_EQUALITY",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 43,
+      "system": "PX4",
+      "policy_id": "PX.ALTITUDE1",
+      "artifact_policy_directory": "PX.ALTITUDE1",
+      "template": "T3",
+      "description_en": "It is the same as A.ALT_HOLD2.",
+      "description_zh": "继承 A.ALT_HOLD2，并把模式解释为 PX4 ALTITUDE。",
+      "paper_formula_transcription": "It is the same as A.ALT_HOLD2.",
+      "binding_formula_interpretation": "G(((Mode_t = ALTITUDE) & (Throttle_t = 1500)) -> (ALT_t = ALT_t-1))",
+      "inherits_from": "A.ALT_HOLD2",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = ALTITUDE",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Throttle_t = 1500",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t-1 = ALT_t",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 44,
+      "system": "PX4",
+      "policy_id": "PX.POSITION1",
+      "artifact_policy_directory": "PX.POSITION1",
+      "template": "T3",
+      "description_en": "The vehicle must maintain a constant position.",
+      "description_zh": "位置控制模式保持位置不变。",
+      "paper_formula_transcription": "G((Mode_t = POSITION) -> (Pos_t = Pos_t-1))",
+      "binding_formula_interpretation": "G((Mode_t = POSITION) -> (Pos_t = Pos_t-1))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = POSITION",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Pos_t = Pos_t-1",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 45,
+      "system": "PX4",
+      "policy_id": "PX.HOLD1",
+      "artifact_policy_directory": "PX.HOLD1",
+      "template": "T3",
+      "description_en": "It is the same as A.LOITER1.",
+      "description_zh": "继承 A.LOITER1，并把模式解释为 PX4 HOLD。",
+      "paper_formula_transcription": "It is the same as A.LOITER1.",
+      "binding_formula_interpretation": "G((Mode_t = HOLD) -> ((Pos_t = Pos_t-1) & (Yaw_t = Yaw_t-1) & (ALT_t = ALT_t-1)))",
+      "inherits_from": "A.LOITER1",
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = HOLD",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Pos_t = Pos_t-1",
+          "role": "consequent"
+        },
+        {
+          "expression": "Yaw_t = Yaw_t-1",
+          "role": "consequent"
+        },
+        {
+          "expression": "ALT_t-1 = ALT_t",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 46,
+      "system": "PX4",
+      "policy_id": "PX.HOLD2",
+      "artifact_policy_directory": "PX.HOLD2",
+      "template": "T3",
+      "description_en": "If MIS_LTRMIN_ALT is not -1 and current altitude is less than the parameter value, then the vehicle must ascend to this altitude.",
+      "description_zh": "最小盘旋高度启用且当前高度低于它时爬升到该高度。",
+      "paper_formula_transcription": "G(((Mode_t = HOLD) & (MIS_LTRMIN_ALT != -1)) -> (ALT_t > ALT_t-1))",
+      "binding_formula_interpretation": "G(((Mode_t = HOLD) & (MIS_LTRMIN_ALT != -1)) -> (ALT_t > ALT_t-1))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Mode_t = HOLD",
+          "role": "antecedent"
+        },
+        {
+          "expression": "MIS_LTRMIN_ALT != -1",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t < MIS_LTRMIN_ALT",
+          "role": "antecedent_from_description"
+        },
+        {
+          "expression": "ALT_t-1 < ALT_t",
+          "role": "consequent"
+        },
+        {
+          "expression": "Target_ALT = MIS_LTRMIN_ALT",
+          "role": "target_from_description"
+        }
+      ],
+      "issues": [
+        "ANTECEDENT_MISSING_ALTITUDE_BOUND",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 47,
+      "system": "PX4",
+      "policy_id": "PX.TAKEOFF1",
+      "artifact_policy_directory": "PX.TAKEOFF1",
+      "template": "T3",
+      "description_en": "When the vehicle conducts a taking off command, the target altitude must be the MIS_TAKEOFF_ALT parameter value.",
+      "description_zh": "执行起飞命令时目标高度应等于 MIS_TAKEOFF_ALT。",
+      "paper_formula_transcription": "G((Command_t = takeoff) -> (ALT_t <= MIS_TAKEOFF_ALT))",
+      "binding_formula_interpretation": "G((Command_t = takeoff) -> (ALT_t <= MIS_TAKEOFF_ALT))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Command_t = takeoff",
+          "role": "antecedent"
+        },
+        {
+          "expression": "ALT_t <= MIS_TAKEOFF_ALT",
+          "role": "consequent_as_printed"
+        },
+        {
+          "expression": "Target_ALT = MIS_TAKEOFF_ALT",
+          "role": "target_from_description"
+        }
+      ],
+      "issues": [
+        "TARGET_EQUALITY_WEAKENED"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 48,
+      "system": "PX4",
+      "policy_id": "PX.TAKEOFF2",
+      "artifact_policy_directory": "PX.TAKEOFF2",
+      "template": "T3",
+      "description_en": "When the vehicle conducts a taking off command, the speed of ascent must be the MPC_TKO_SPEED parameter value.",
+      "description_zh": "执行起飞命令时上升速度应等于 MPC_TKO_SPEED。",
+      "paper_formula_transcription": "G((Command_t = takeoff) -> (Speed_vertical_t = MPC_TKO_SPEED))",
+      "binding_formula_interpretation": "G((Command_t = takeoff) -> (Speed_vertical_t = MPC_TKO_SPEED))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "Command_t = takeoff",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Speed_vertical_t = MPC_TKO_SPEED",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "EXACT_PHYSICAL_EQUALITY",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 49,
+      "system": "PX4",
+      "policy_id": "PX.GPS.FS1",
+      "artifact_policy_directory": "PX.GPS.FS1",
+      "template": "T1",
+      "description_en": "If time exceeds COM_POS_FS_DELAY seconds after GPS loss is detected, the GPS fail-safe must be triggered.",
+      "description_zh": "检测到 GPS 丢失后，在 COM_POS_FS_DELAY 加调度余量内触发故障保护。",
+      "paper_formula_transcription": "G((GPS_loss = on) -> F_[0,COM_POS_FS_DELAY+k](GPS_fail = on))",
+      "binding_formula_interpretation": "G((GPS_loss = on) -> F_[0,COM_POS_FS_DELAY+k](GPS_fail = on))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "GPS_loss = on",
+          "role": "antecedent"
+        },
+        {
+          "expression": "F_[0,COM_POS_FS_DELAY+k](GPS_fail = on)",
+          "role": "consequent"
+        }
+      ],
+      "issues": [
+        "SCHEDULE_MARGIN_UNPUBLISHED"
+      ],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 50,
+      "system": "PX4",
+      "policy_id": "PX.GPS.FS2",
+      "artifact_policy_directory": "PX.GPS.FS2",
+      "template": "T3",
+      "description_en": "If the GPS fail-safe is triggered and a remote controller is available, the flight mode must be changed to ALTITUDE mode.",
+      "description_zh": "GPS 故障保护触发且遥控可用时进入高度模式。",
+      "paper_formula_transcription": "G(((GPS_fail = on) & (RC_t = on)) -> (Mode_t = ALTITUDE))",
+      "binding_formula_interpretation": "G(((GPS_fail = on) & (RC_t = on)) -> (Mode_t = ALTITUDE))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "GPS_fail = on",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RC_t = on",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Mode_t = ALTITUDE",
+          "role": "consequent"
+        }
+      ],
+      "issues": [],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "paper_order": 51,
+      "system": "PX4",
+      "policy_id": "PX.GPS.FS3",
+      "artifact_policy_directory": "PX.GPS.FS3",
+      "template": "T3",
+      "description_en": "If the GPS fail-safe is triggered and a remote controller is not available, the flight mode must be changed to LAND mode.",
+      "description_zh": "GPS 故障保护触发且遥控不可用时进入着陆模式。",
+      "paper_formula_transcription": "G(((GPS_fail = on) & (RC_t = off)) -> (Mode_t = LAND))",
+      "binding_formula_interpretation": "G(((GPS_fail = on) & (RC_t = off)) -> (Mode_t = LAND))",
+      "inherits_from": null,
+      "atomic_propositions": [
+        {
+          "expression": "GPS_fail = on",
+          "role": "antecedent"
+        },
+        {
+          "expression": "RC_t = off",
+          "role": "antecedent"
+        },
+        {
+          "expression": "Mode_t = LAND",
+          "role": "consequent"
+        }
+      ],
+      "issues": [],
+      "dataset_role": "HISTORICAL_PROPERTY_SEED",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    }
+  ]
+}

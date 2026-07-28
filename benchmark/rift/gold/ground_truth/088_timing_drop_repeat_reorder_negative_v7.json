@@ -1,0 +1,109 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+        "line": 31
+      },
+      "token": "ap_primary"
+    },
+    "node_event_value": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+        "line": 29
+      },
+      "token": "node_event_value"
+    },
+    "node_timeline": {
+      "kind": "NODE",
+      "location": {
+        "column": 32,
+        "file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+        "line": 26
+      },
+      "token": "node_timeline"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+        "line": 22
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_event_value == 0",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+        "line": 31
+      },
+      "role": "TIMING",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-088",
+  "case_relation": "NO_INFLUENCE",
+  "category": "timing_drop_repeat_reorder",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "The reorder variant maps one explicit event-sequence operation to one timeline field and AP; negative variants overwrite that field independently.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "timing_drop_repeat_reorder",
+    "variant": 7
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The reorder input is read but the timeline field is assigned a generated constant.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+  "source_sha256": "3ed63685c09bdc14ec71c4188b43b3c10c0c230c4b5512318b65b61131c766fe",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "event_operation",
+      "location": {
+        "column": 13,
+        "file": "cases/088_timing_drop_repeat_reorder_negative_v7.cpp",
+        "line": 22
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_primary"
+    }
+  ]
+}

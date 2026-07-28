@@ -1,0 +1,52 @@
+{
+  "cmake_options": {
+    "build_shared_libs": false,
+    "build_type": "RelWithDebInfo",
+    "enable_docs": false,
+    "enable_dtls": false,
+    "enable_examples": false,
+    "enable_tests": false
+  },
+  "deterministic": true,
+  "initial_default_configuration_failure": "ext/tinydtls lacks CMakeLists.txt; resolved by declaring ENABLE_DTLS=OFF without modifying the frozen source tree",
+  "runs": [
+    {
+      "compile_database_sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+      "linked_bitcode_bytes": 2743756,
+      "linked_bitcode_sha256": "08ead6a83ce230fab63eb028c9eec21fb0b2e23e79dd6270c8ee78e43b12c61d",
+      "run": 1,
+      "static_archive_sha256": "efc44ed2ab109029494a2c56fb99cb5f6374cf05a3a8e7b4c5e5c52dbfe676c2",
+      "translation_units": 38,
+      "wall_seconds": 8.484
+    },
+    {
+      "compile_database_sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+      "linked_bitcode_bytes": 2743756,
+      "linked_bitcode_sha256": "08ead6a83ce230fab63eb028c9eec21fb0b2e23e79dd6270c8ee78e43b12c61d",
+      "run": 2,
+      "static_archive_sha256": "efc44ed2ab109029494a2c56fb99cb5f6374cf05a3a8e7b4c5e5c52dbfe676c2",
+      "translation_units": 38,
+      "wall_seconds": 8.663
+    },
+    {
+      "compile_database_sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+      "linked_bitcode_bytes": 2743756,
+      "linked_bitcode_sha256": "08ead6a83ce230fab63eb028c9eec21fb0b2e23e79dd6270c8ee78e43b12c61d",
+      "run": 3,
+      "static_archive_sha256": "efc44ed2ab109029494a2c56fb99cb5f6374cf05a3a8e7b4c5e5c52dbfe676c2",
+      "translation_units": 38,
+      "wall_seconds": 9.01
+    }
+  ],
+  "schema_version": 1,
+  "source": "/home/lqq/project/TAFuzz/benchmark/coap/libcoap",
+  "source_commit": "94bacc8939dd6711169cd2332a002a361ec62531",
+  "toolchain": {
+    "clang": "Ubuntu clang version 18.1.8 (++20240731024944+3b5b5c1ec4a3-1~exp1~20240731145000.144)",
+    "llvm": "18.1.8"
+  },
+  "verification": {
+    "memoryssa": "PASS",
+    "memoryssa_printed_lines": 117955
+  }
+}

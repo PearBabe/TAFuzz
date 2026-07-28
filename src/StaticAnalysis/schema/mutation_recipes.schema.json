@@ -1,0 +1,409 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/mutation-recipes/1.0.0",
+  "title": "RIFT total-semantics mutation recipes",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "property_ir_sha256",
+    "ap_bindings_sha256", "graph_sha256", "cones_sha256",
+    "frontier_candidates_sha256", "model_fact_overlay_sha256",
+    "predicate_occurrence_bindings_sha256",
+    "analyzer_core_sha256", "solver_contract",
+    "candidate_accounting_complete", "total_semantics", "status",
+    "recipes", "unsupported_constructs"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "property_ir_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "ap_bindings_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "graph_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "cones_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "frontier_candidates_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "model_fact_overlay_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "predicate_occurrence_bindings_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "analyzer_core_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "solver_contract": {"$ref": "#/definitions/solver_contract"},
+    "candidate_accounting_complete": {"const": true},
+    "total_semantics": {"const": true},
+    "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+    "recipes": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/recipe"}
+    },
+    "unsupported_constructs": {
+      "type": "array",
+      "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}
+    }
+  },
+  "definitions": {
+    "solver_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["solver", "solver_version", "encoding_version", "timeout_ms", "max_queries"],
+      "properties": {
+        "solver": {"const": "Z3"},
+        "solver_version": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "encoding_version": {"const": "rift-local-truth-change/1.0.0"},
+        "timeout_ms": {"type": "integer", "minimum": 1},
+        "max_queries": {"type": "integer", "minimum": 0}
+      }
+    },
+    "evidence_axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "evidence_ids", "reasons"],
+      "properties": {
+        "state": {
+          "enum": [
+            "MUST", "MAY", "MODELLED", "STATIC_WITNESS",
+            "MODELLED_WITNESS", "NO_STATIC_WITNESS", "DIRECT", "SEQUENCE",
+            "TIMING", "ENVIRONMENT", "UNAVAILABLE", "UNKNOWN", "NOT_RUN",
+            "NOT_EVALUATED", "SAT", "SAT_PAIR", "UNSAT", "SUPPORTED",
+            "HEURISTIC", "CONFIRMED", "REFUTED", "REPLAY_CONFIRMED",
+            "REPLAY_REFUTED"
+          ]
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"state": {"enum": ["UNKNOWN", "UNAVAILABLE"]}}},
+          "then": {"properties": {"reasons": {"minItems": 1}}}
+        }
+      ]
+    },
+    "evidence_axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reachability", "controllability", "path_feasibility",
+        "mutation_semantics", "runtime_evidence", "model_provenance",
+        "completeness_ledger"
+      ],
+      "properties": {
+        "reachability": {"$ref": "#/definitions/evidence_axis"},
+        "controllability": {"$ref": "#/definitions/evidence_axis"},
+        "path_feasibility": {"$ref": "#/definitions/evidence_axis"},
+        "mutation_semantics": {"$ref": "#/definitions/evidence_axis"},
+        "runtime_evidence": {"$ref": "#/definitions/evidence_axis"},
+        "model_provenance": {"$ref": "#/definitions/evidence_axis"},
+        "completeness_ledger": {"$ref": "#/definitions/evidence_axis"}
+      }
+    },
+    "mutation_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical", "value_type", "purpose"],
+      "properties": {
+        "canonical": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "value_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"},
+        "purpose": {
+          "enum": [
+            "TYPE_MIN", "BELOW_BOUNDARY", "AT_BOUNDARY", "ABOVE_BOUNDARY",
+            "TYPE_MAX", "FALSE_VALUE", "TRUE_VALUE", "MASK_CLEARED",
+            "MASK_SET", "SAT_LEFT", "SAT_RIGHT", "ENUM_ALTERNATIVE"
+          ]
+        }
+      }
+    },
+    "action_mutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id", "mutation_kind", "direction", "suggested_values",
+        "unknown_reasons"
+      ],
+      "properties": {
+        "action_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "mutation_kind": {
+          "enum": [
+            "BOUNDARY_SET", "BOOLEAN_TOGGLE", "ENUM_ALTERNATIVE",
+            "BITMASK_BOUNDARY", "THRESHOLD_CROSSING", "PRESENCE",
+            "ABSENCE", "COUNT", "DROP", "REPEAT", "REORDER",
+            "TIMEOUT", "DEADLINE", "UNKNOWN"
+          ]
+        },
+        "direction": {
+          "enum": ["MONOTONE_UP", "MONOTONE_DOWN", "BOUNDARY_SET", "TOGGLE", "UNKNOWN"]
+        },
+        "suggested_values": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/mutation_value"}
+        },
+        "unknown_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"mutation_kind": {"const": "UNKNOWN"}}},
+          "then": {
+            "properties": {
+              "direction": {"const": "UNKNOWN"},
+              "suggested_values": {"maxItems": 0},
+              "unknown_reasons": {"minItems": 1}
+            }
+          }
+        }
+      ]
+    },
+    "action_hyperedge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hyperedge_id", "action_ids", "indivisible", "claim"],
+      "properties": {
+        "hyperedge_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "action_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "indivisible": {"const": true},
+        "claim": {"enum": ["SINGLE_ACTION", "JOINT_REQUIRED", "JOINT_UNKNOWN"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"claim": {"enum": ["JOINT_REQUIRED", "JOINT_UNKNOWN"]}}},
+          "then": {"properties": {"action_ids": {"minItems": 2}}}
+        },
+        {
+          "if": {"properties": {"claim": {"const": "SINGLE_ACTION"}}},
+          "then": {"properties": {"action_ids": {"minItems": 1, "maxItems": 1}}}
+        }
+      ]
+    },
+    "solver_query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query_id", "query_sha256", "encoding_version", "solver",
+        "solver_version", "timeout_ms", "outcome", "flip_class",
+        "assumption_literals", "model", "unsat_core", "unknown_reason"
+      ],
+      "properties": {
+        "query_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "query_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "encoding_version": {"const": "rift-local-truth-change/1.0.0"},
+        "solver": {"const": "Z3"},
+        "solver_version": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "timeout_ms": {"type": "integer", "minimum": 1},
+        "outcome": {"enum": ["SAT", "UNSAT", "UNKNOWN", "TIMEOUT", "UNSUPPORTED", "NOT_RUN"]},
+        "flip_class": {"enum": ["LOCAL_SUMMARY_SAT_PAIR", "SAME_PATH_FLIP", "CROSS_PATH_FLIP", "UNKNOWN"]},
+        "assumption_literals": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        },
+        "model": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        },
+        "unsat_core": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        },
+        "unknown_reason": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+            {"type": "null"}
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"outcome": {"const": "SAT"}}},
+          "then": {
+            "properties": {
+              "flip_class": {"enum": ["LOCAL_SUMMARY_SAT_PAIR", "SAME_PATH_FLIP", "CROSS_PATH_FLIP"]},
+              "model": {"minItems": 2},
+              "unknown_reason": {"type": "null"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"outcome": {"enum": ["UNKNOWN", "TIMEOUT", "UNSUPPORTED", "NOT_RUN"]}}},
+          "then": {
+            "properties": {
+              "flip_class": {"const": "UNKNOWN"},
+              "unknown_reason": {"type": "string"}
+            }
+          }
+        }
+      ]
+    },
+    "prerequisite_step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step_id", "action_id", "operation", "predecessor_step_ids"],
+      "properties": {
+        "step_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "action_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "operation": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "predecessor_step_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        }
+      }
+    },
+    "prerequisite_dag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dag_id", "status", "steps", "uncertainty_reasons"],
+      "properties": {
+        "dag_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "status": {"enum": ["COMPLETE", "PARTIAL_ORDER_UNKNOWN"]},
+        "steps": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/prerequisite_step"}
+        },
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "PARTIAL_ORDER_UNKNOWN"}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    },
+    "prerequisite_choice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["choice_id", "alternatives"],
+      "properties": {
+        "choice_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "alternatives": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/definitions/prerequisite_dag"}
+        }
+      }
+    },
+    "timing_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "clock_source", "unit", "epoch", "quantum", "jitter",
+        "wrap", "comparison_endpoint", "start_event", "end_event",
+        "scope_schema", "generation_schema", "lower", "upper",
+        "lower_closed", "upper_closed", "mutation_actions",
+        "uncertainty_reasons"
+      ],
+      "properties": {
+        "status": {"enum": ["EXACT", "WIDENED_UNKNOWN", "UNKNOWN"]},
+        "clock_source": {"type": ["string", "null"], "minLength": 1},
+        "unit": {"type": ["string", "null"], "minLength": 1},
+        "epoch": {"type": ["string", "null"], "minLength": 1},
+        "quantum": {"type": ["number", "null"], "exclusiveMinimum": 0},
+        "jitter": {"type": ["number", "null"], "minimum": 0},
+        "wrap": {"type": ["string", "null"], "minLength": 1},
+        "comparison_endpoint": {"enum": ["OPEN", "CLOSED", "MIXED", "UNKNOWN", null]},
+        "start_event": {"type": ["string", "null"], "minLength": 1},
+        "end_event": {"type": ["string", "null"], "minLength": 1},
+        "scope_schema": {"type": ["string", "null"], "minLength": 1},
+        "generation_schema": {"type": ["string", "null"], "minLength": 1},
+        "lower": {"type": ["number", "null"]},
+        "upper": {"type": ["number", "null"]},
+        "lower_closed": {"type": ["boolean", "null"]},
+        "upper_closed": {"type": ["boolean", "null"]},
+        "mutation_actions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["DELAY", "PAUSE", "DROP", "REPEAT", "REORDER", "CHANGE_INTERVAL"]}
+        },
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "EXACT"}}},
+          "then": {
+            "properties": {
+              "clock_source": {"type": "string"}, "unit": {"type": "string"},
+              "epoch": {"type": "string"}, "quantum": {"type": "number"},
+              "jitter": {"type": "number"}, "wrap": {"type": "string"},
+              "comparison_endpoint": {"enum": ["OPEN", "CLOSED", "MIXED"]},
+              "start_event": {"type": "string"}, "end_event": {"type": "string"},
+              "scope_schema": {"type": "string"}, "generation_schema": {"type": "string"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"enum": ["WIDENED_UNKNOWN", "UNKNOWN"]}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "recipe_id", "frontier_candidate_id", "cone_id", "ap_id",
+        "target_predicate_selector_id",
+        "status", "action_hyperedge", "action_mutations",
+        "prerequisite_choices", "timing", "solver_query", "direction_query",
+        "evidence", "uncertainty_reasons"
+      ],
+      "properties": {
+        "recipe_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "frontier_candidate_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "cone_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "target_predicate_selector_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+            {"type": "null"}
+          ]
+        },
+        "status": {"enum": ["SUPPORTED", "HEURISTIC", "UNKNOWN"]},
+        "action_hyperedge": {"$ref": "#/definitions/action_hyperedge"},
+        "action_mutations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/definitions/action_mutation"}
+        },
+        "prerequisite_choices": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/prerequisite_choice"}
+        },
+        "timing": {"$ref": "#/definitions/timing_contract"},
+        "solver_query": {"$ref": "#/definitions/solver_query"},
+        "direction_query": {
+          "oneOf": [
+            {"$ref": "#/definitions/solver_query"},
+            {"type": "null"}
+          ]
+        },
+        "evidence": {"$ref": "#/definitions/evidence_axes"},
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "UNKNOWN"}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    }
+  }
+}

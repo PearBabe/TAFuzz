@@ -1,0 +1,937 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   https://www"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "The Constrained Application Protocol (CoAP) [RFC7252] is a web\n   transfer protocol designed for constrained nodes and networks\n   [RFC7228]; CoAP may be mapped from HTTP [RFC8075]"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "OSCORE protects neither the CoAP messaging\n   layer nor the CoAP Token, which may change between the endpoints;\n   therefore, those are processed as defined in [RFC7252]"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "OSCORE may be used over any underlying\n   layer, such as UDP or TCP, and with non-IP transports (e"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "OSCORE may also be used in different ways with\n   HTTP"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "OSCORE messages may be transported in HTTP, and OSCORE may\n   also be used to protect CoAP-mappable HTTP messages, as described\n   below"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "OSCORE may be used together with TLS or DTLS over one or\n   more hops in the end-to-end path, e"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "OSCORE uses pre-shared keys that may have been established out-of-\n   band or with a key establishment protocol (see Section 3"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": ",                 |\n             |        Payload: COSE ciphertext              |\n             |                                              |\n\n                   Figure 2: Sketch of CoAP with OSCORE\n\n   An implementation supporting this specification MAY implement only\n   the client part, MAY implement only the server part, or MAY implement\n   only one of the proxy parts"
+  },
+  {
+    "section": "3.1.  Security Context Definition",
+    "keyword": "MAY",
+    "text": "Alternatively, an endpoint\n   may free up memory by not storing the Master Secret and Master Salt\n   after the other parameters have been derived"
+  },
+  {
+    "section": "3.1.  Security Context Definition",
+    "keyword": "MAY",
+    "text": "Endpoints MAY operate as both client and server and use the same\n   security context for those roles"
+  },
+  {
+    "section": "3.1.  Security Context Definition",
+    "keyword": "MUST",
+    "text": "The endpoints MUST NOT change the Sender/Recipient ID when changing\n   roles"
+  },
+  {
+    "section": "3.2.  Establishment of Security Context Parameters",
+    "keyword": "MAY",
+    "text": "The following input parameters SHALL\n   be preestablished:\n\n   o  Master Secret\n\n   o  Sender ID\n\n   o  Recipient ID\n\n   The following input parameters MAY be preestablished"
+  },
+  {
+    "section": "3.2.  Establishment of Security Context Parameters",
+    "keyword": "MAY",
+    "text": "6 of [RFC6347] with a window size of 32\n\n   All input parameters need to be known and agreed on by both\n   endpoints, but the Replay Window may be different in the two\n   endpoints"
+  },
+  {
+    "section": "3.2.1.  Derivation of Sender Key, Recipient Key, and Common IV",
+    "keyword": "MUST",
+    "text": "The HKDF MUST be one of the HMAC-based HKDF [RFC5869] algorithms\n   defined for COSE [RFC8152]"
+  },
+  {
+    "section": "3.3.  Requirements on the Security Context Parameters",
+    "keyword": "MUST",
+    "text": "To ensure unique Sender Keys, the quartet (Master Secret, Master\n   Salt, ID Context, Sender ID) MUST be unique, i"
+  },
+  {
+    "section": "3.3.  Requirements on the Security Context Parameters",
+    "keyword": "SHOULD",
+    "text": "To simplify retrieval of the right Recipient Context, the Recipient\n   ID SHOULD be unique in the sets of all Recipient Contexts used by an\n   endpoint"
+  },
+  {
+    "section": "3.3.  Requirements on the Security Context Parameters",
+    "keyword": "MAY",
+    "text": ", the Recipient Contexts are derived from\n   different Common Contexts, then the endpoint may need to try multiple\n   times before verifying the right security context associated to the\n   Recipient ID"
+  },
+  {
+    "section": "4.  Protected Message Fields",
+    "keyword": "MAY",
+    "text": "OSCORE transforms a CoAP message (which may have been generated from\n   an HTTP message) into an OSCORE message, and vice versa"
+  },
+  {
+    "section": "4.  Protected Message Fields",
+    "keyword": "MAY",
+    "text": "Message fields of the CoAP message may be protected end-to-end\n   between CoAP client and CoAP server in different ways:\n\n   o  Class E: encrypted and integrity protected,\n\n   o  Class I: integrity protected only, or\n\n   o  Class U: unprotected"
+  },
+  {
+    "section": "4.  Protected Message Fields",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 15]\n\n\nRFC 8613                         OSCORE                        July 2019\n\n\n   An OSCORE message may contain both an Inner and an Outer instance of\n   a certain CoAP message field"
+  },
+  {
+    "section": "4.1.  CoAP Options",
+    "keyword": "MAY",
+    "text": "Note\n   that some options may have both Inner and Outer message fields, which\n   are protected accordingly"
+  },
+  {
+    "section": "4.1.  CoAP Options",
+    "keyword": "SHOULD",
+    "text": "Specifications of new CoAP options SHOULD define how they are\n   processed with OSCORE"
+  },
+  {
+    "section": "4.1.  CoAP Options",
+    "keyword": "SHOULD",
+    "text": "A new COAP option SHOULD be of Class E unless\n   it requires proxy processing"
+  },
+  {
+    "section": "4.1.  CoAP Options",
+    "keyword": "SHOULD",
+    "text": "If a new CoAP option is of class U,\n   the potential issues with the option being unprotected SHOULD be\n   documented (see Appendix D"
+  },
+  {
+    "section": "4.1.2.  Outer Options",
+    "keyword": "MUST",
+    "text": "Specifications that introduce\n   repeatable Class I options MUST specify that proxies MUST NOT change\n   the order of the instances of such an option in the CoAP message"
+  },
+  {
+    "section": "4.1.3.1.  Max-Age",
+    "keyword": "MAY",
+    "text": "An Inner Max-Age message field is used to indicate the maximum time a\n   response may be cached by the client (as defined in [RFC7252]), end-\n   to-end from the server to the client, taking into account that the\n   option is not accessible to proxies"
+  },
+  {
+    "section": "4.1.3.1.  Max-Age",
+    "keyword": "MAY",
+    "text": "A server MAY set a Class U Max-Age message field\n   with value zero to such error responses, described in Sections 7"
+  },
+  {
+    "section": "4.1.3.1.  Max-Age",
+    "keyword": "MAY",
+    "text": "For\n   Observe responses, which are cacheable, an Outer Max-Age option with\n   value 0 may be used to avoid unnecessary proxy caching"
+  },
+  {
+    "section": "4.1.3.2.  Uri-Host and Uri-Port",
+    "keyword": "MUST",
+    "text": "Standards Track                   [Page 18]\n\n\nRFC 8613                         OSCORE                        July 2019\n\n\n   Manipulation of unprotected message fields (including Uri-Host, Uri-\n   Port, destination IP/port or request scheme) MUST NOT lead to an\n   OSCORE message becoming verified by an unintended server"
+  },
+  {
+    "section": "4.1.3.3.  Proxy-Uri",
+    "keyword": "SHOULD",
+    "text": "OSCORE-aware HTTP servers should not use the userinfo\n   component of the HTTP URI (as defined in Section 3"
+  },
+  {
+    "section": "4.1.3.4.  The Block Options",
+    "keyword": "MAY",
+    "text": "Inner and Outer block processing may have\n   different performance properties depending on the underlying\n   transport"
+  },
+  {
+    "section": "4.1.3.4.1.  Inner Block Options",
+    "keyword": "MAY",
+    "text": "The sending CoAP endpoint MAY fragment a CoAP message as defined in\n   [RFC7959] before the message is processed by OSCORE"
+  },
+  {
+    "section": "4.1.3.4.2.  Outer Block Options",
+    "keyword": "MAY",
+    "text": "Proxies MAY fragment an OSCORE message using [RFC7959] by introducing\n   Block option message fields that are Outer (Section 4"
+  },
+  {
+    "section": "4.1.3.4.2.  Outer Block Options",
+    "keyword": "MUST",
+    "text": "Therefore, applications supporting\n   OSCORE and [RFC7959] MUST specify a security policy defining a\n\n\n\nSelander, et al"
+  },
+  {
+    "section": "4.1.3.4.2.  Outer Block Options",
+    "keyword": "SHOULD",
+    "text": "Messages exceeding this size SHOULD be fragmented by the sending\n   endpoint using Inner Block options (Section 4"
+  },
+  {
+    "section": "4.1.3.4.2.  Outer Block Options",
+    "keyword": "SHOULD",
+    "text": "A proxy SHOULD mitigate a potential mix-up\n   of blocks from concurrent requests to the same server, for example,\n   using the Request-Tag processing specified in Section 3"
+  },
+  {
+    "section": "4.1.3.5.  Observe",
+    "keyword": "MAY",
+    "text": "The server SHALL include a new Partial IV (see Section 5) in\n   responses (with or without the Observe option) to Observe\n   registrations, except for the first response where Partial IV MAY be\n   omitted"
+  },
+  {
+    "section": "4.1.3.5.  Observe",
+    "keyword": "MUST",
+    "text": "6 of [RFC7641] specifies that all\n   options MUST be identical to those in the registration request except\n   for the Observe option and the set of ETag options"
+  },
+  {
+    "section": "4.1.3.5.  Observe",
+    "keyword": "SHOULD",
+    "text": "Standards Track                   [Page 21]\n\n\nRFC 8613                         OSCORE                        July 2019\n\n\n   [RFC7252] does not specify how the server should act upon receiving\n   the same Token in different requests"
+  },
+  {
+    "section": "4.1.3.5.  Observe",
+    "keyword": "SHOULD",
+    "text": "When using OSCORE, the server\n   SHOULD NOT remove an active observation just because it receives a\n   request with the same Token"
+  },
+  {
+    "section": "4.1.3.5.  Observe",
+    "keyword": "MUST",
+    "text": "Since POST with the Observe option is not defined, for messages with\n   the Observe option, the Outer Code MUST be set to 0"
+  },
+  {
+    "section": "4.1.3.5.1.  Registrations and Cancellations",
+    "keyword": "MUST",
+    "text": "The Inner and Outer Observe options in the request MUST contain the\n   Observe value of the original CoAP request; 0 (registration) or 1\n   (cancellation)"
+  },
+  {
+    "section": "4.1.3.5.1.  Registrations and Cancellations",
+    "keyword": "MUST",
+    "text": "Every time a client issues a new request with the Observe option, a\n   new Partial IV MUST be used (see Section 5), and so the payload and\n   OSCORE option are changed"
+  },
+  {
+    "section": "4.1.3.5.1.  Registrations and Cancellations",
+    "keyword": "MAY",
+    "text": "Instead other means for\n      cancellation may be used as described in Section 3"
+  },
+  {
+    "section": "4.1.3.5.1.  Registrations and Cancellations",
+    "keyword": "MAY",
+    "text": "To prevent this from resulting in the OSCORE-unaware\n      proxy canceling the registration, a server MAY respond to a\n      replayed registration request with a replay of a cached\n      notification"
+  },
+  {
+    "section": "4.1.3.5.1.  Registrations and Cancellations",
+    "keyword": "MAY",
+    "text": "Alternatively, the server MAY send a new\n      notification"
+  },
+  {
+    "section": "4.1.3.5.1.  Registrations and Cancellations",
+    "keyword": "MAY",
+    "text": "An application MAY decide to allow\n      intermediaries to cancel Observe registrations, e"
+  },
+  {
+    "section": "4.1.3.5.2.  Notifications",
+    "keyword": "MUST",
+    "text": "If the server accepts an Observe registration, a Partial IV MUST be\n   included in all notifications (both successful and error), except for\n   the first one where the Partial IV MAY be omitted"
+  },
+  {
+    "section": "4.1.3.5.2.  Notifications",
+    "keyword": "MUST",
+    "text": "For notifications, the Inner Observe option value MUST be empty (see\n   Section 3"
+  },
+  {
+    "section": "4.1.3.5.2.  Notifications",
+    "keyword": "MAY",
+    "text": "The Outer Observe option in a\n   notification is needed for intermediary nodes to allow multiple\n   responses to one request, and it MAY be set to the value of the\n   Observe option in the original CoAP message"
+  },
+  {
+    "section": "4.1.3.5.2.  Notifications",
+    "keyword": "MUST",
+    "text": "A client MUST consider the notification with the highest Partial IV\n   as the freshest, regardless of the order of arrival"
+  },
+  {
+    "section": "4.1.3.5.2.  Notifications",
+    "keyword": "MAY",
+    "text": "In order to\n   support existing Observe implementations, the OSCORE client\n   implementation MAY set the Observe option value to the three least\n   significant bytes of the Partial IV"
+  },
+  {
+    "section": "4.1.3.6.  No-Response",
+    "keyword": "MAY",
+    "text": "An implementation MAY support [RFC7252] and the\n   OSCORE option without supporting [RFC7967]"
+  },
+  {
+    "section": "4.1.3.6.  No-Response",
+    "keyword": "MUST",
+    "text": "If used, No-Response MUST be Inner"
+  },
+  {
+    "section": "4.1.3.6.  No-Response",
+    "keyword": "SHOULD",
+    "text": "The Outer option\n   SHOULD NOT be present"
+  },
+  {
+    "section": "4.1.3.6.  No-Response",
+    "keyword": "MAY",
+    "text": "The client MAY set the Outer No-Response value to 26\n   (suppress all known codes) if the Inner value is set to 26"
+  },
+  {
+    "section": "4.1.3.6.  No-Response",
+    "keyword": "MUST",
+    "text": "The\n   client MUST be prepared to receive and discard 5"
+  },
+  {
+    "section": "4.3.  Signaling Messages",
+    "keyword": "MAY",
+    "text": "OSCORE MAY be used to protect signaling if the endpoints for OSCORE\n   coincide with the endpoints for the signaling message"
+  },
+  {
+    "section": "5.  The COSE Object",
+    "keyword": "MUST",
+    "text": "This\n         parameter MAY be present in requests and, if so, MUST contain\n         an ID Context (see Section 3"
+  },
+  {
+    "section": "5.  The COSE Object",
+    "keyword": "SHOULD",
+    "text": "This parameter SHOULD NOT be\n         present in responses: an example of how 'kid context' can be\n         used in responses is given in Appendix B"
+  },
+  {
+    "section": "5.1.  ID Context and 'kid context'",
+    "keyword": "MAY",
+    "text": "o  The ID Context may be used to add randomness into new Sender and\n      Recipient Contexts, see Appendix B"
+  },
+  {
+    "section": "5.1.  ID Context and 'kid context'",
+    "keyword": "MAY",
+    "text": "Note that\n   since the error is unprotected, it may have been spoofed and the real\n   response blocked by an on-path attacker"
+  },
+  {
+    "section": "5.2.  AEAD Nonce",
+    "keyword": "SHOULD",
+    "text": ",\n   when there is a single response to a request), the request and the\n   response should typically use the same nonce to reduce message\n   overhead"
+  },
+  {
+    "section": "5.4.  Additional Authenticated Data",
+    "keyword": "MUST",
+    "text": "Implementations of this specification MUST set this field to 1"
+  },
+  {
+    "section": "6.1.  Encoding of the OSCORE Option Value",
+    "keyword": "MUST",
+    "text": "Note that the 'kid' MUST be the last field of the OSCORE option\n   value, even in the case in which reserved bits are used and\n   additional fields are added to it"
+  },
+  {
+    "section": "7.2.  Sequence Numbers",
+    "keyword": "MUST",
+    "text": "An AEAD nonce MUST NOT be used more than once per AEAD key"
+  },
+  {
+    "section": "7.2.  Sequence Numbers",
+    "keyword": "MUST",
+    "text": "If messages are\n   processed concurrently, the operation of reading and increasing the\n   Sender Sequence Number MUST be atomic"
+  },
+  {
+    "section": "7.2.1.  Maximum Sequence Number",
+    "keyword": "MUST",
+    "text": "If the Sender Sequence\n   Number exceeds the maximum, the endpoint MUST NOT process any more\n   messages with the given Sender Context"
+  },
+  {
+    "section": "7.2.1.  Maximum Sequence Number",
+    "keyword": "SHOULD",
+    "text": "If necessary, the endpoint\n   SHOULD acquire a new security context before this happens"
+  },
+  {
+    "section": "7.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "If this\n   verification fails, the server SHALL stop processing the message, and\n   it MAY optionally respond with a 4"
+  },
+  {
+    "section": "7.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "Also, the server MAY set an Outer Max-Age option with value zero to\n   inform any intermediary that the response is not to be cached"
+  },
+  {
+    "section": "7.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "The\n   diagnostic payload MAY contain the string \"Replay detected\""
+  },
+  {
+    "section": "7.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": ", TCP,\n   the server MAY just store the last received Partial IV and require\n   that newly received Partial IVs equal the last received Partial IV +\n   1"
+  },
+  {
+    "section": "7.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "However, in the case of mixed reliable and unreliable transports\n   and where messages may be lost, such a replay mechanism may be too\n   restrictive and the default replay window may be more suitable (see\n   Section 3"
+  },
+  {
+    "section": "7.4.  Replay Protection",
+    "keyword": "MUST",
+    "text": "The operation of validating the Partial IV and updating the replay\n   protection MUST be atomic"
+  },
+  {
+    "section": "7.4.1.  Replay Protection of Notifications",
+    "keyword": "MUST",
+    "text": "A client MUST only accept at\n   most one Observe notification without Partial IV, and treat it as the\n   oldest notification received"
+  },
+  {
+    "section": "7.4.1.  Replay Protection of Notifications",
+    "keyword": "MUST",
+    "text": "The\n   client MUST stop processing notifications with a Partial IV that has\n\n\n\n\n\nSelander, et al"
+  },
+  {
+    "section": "7.4.1.  Replay Protection of Notifications",
+    "keyword": "MAY",
+    "text": "Applications MAY decide that a client only\n   processes notifications that have a greater Partial IV than the\n   Notification Number"
+  },
+  {
+    "section": "7.5.  Losing Part of the Context State",
+    "keyword": "MUST",
+    "text": "If an endpoint makes use of a partial security\n       context stored in nonvolatile memory, it MUST NOT reuse a\n       previous Sender Sequence Number and MUST NOT accept previously\n       received messages"
+  },
+  {
+    "section": "7.5.  Losing Part of the Context State",
+    "keyword": "MAY",
+    "text": "This requires\n       the execution of a three-party protocol and may require a good\n       source of randomness"
+  },
+  {
+    "section": "7.5.  Losing Part of the Context State",
+    "keyword": "MAY",
+    "text": "This requires a good\n       source of randomness, and additionally, the transmission and\n       processing of the protocol may have a non-negligible cost, e"
+  },
+  {
+    "section": "7.5.  Losing Part of the Context State",
+    "keyword": "MAY",
+    "text": "The choice of method may depend on capabilities of\n   the devices deployed and the solution architecture"
+  },
+  {
+    "section": "8.  Processing",
+    "keyword": "MUST",
+    "text": "Note that, analogously to [RFC7252] where the Token and source/\n   destination pair are used to match a response with a request, both\n   endpoints MUST keep the association (Token, {Security Context,\n   Partial IV of the request}), in order to be able to find the Security\n   Context and compute the AAD to protect or verify the response"
+  },
+  {
+    "section": "8.  Processing",
+    "keyword": "MUST",
+    "text": "The\n   association MAY be forgotten after it has been used to successfully\n   protect or verify the response, with the exception of Observe\n   processing, where the association MUST be kept as long as the\n   Observation is active"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "Note that the\n       Recipient Context MAY be retrieved by deriving a new security\n       context, e"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "*  If either the decompression or the COSE message fails to\n          decode, the server MAY respond with a 4"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "The server MAY set an Outer Max-Age option with\n          value zero"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "The diagnostic payload MAY contain the string\n          \"Failed to decode COSE\""
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "*  If the server fails to retrieve a Recipient Context with\n          Recipient ID corresponding to the 'kid' parameter received,\n          the server MAY respond with a 4"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "The server MAY set an Outer Max-Age option with\n          value zero"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "The diagnostic payload MAY contain the string\n          \"Security context not found\""
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MUST",
+    "text": ")\n\n       *  If decryption fails, the server MUST stop processing the\n          request and MAY respond with a 4"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "The server MAY set an Outer Max-Age option with\n          value zero"
+  },
+  {
+    "section": "8.2.  Verifying the Request",
+    "keyword": "MAY",
+    "text": "The diagnostic payload MAY contain the string\n          \"Decryption failed\""
+  },
+  {
+    "section": "8.3.  Protecting the Response",
+    "keyword": "MUST",
+    "text": "If the AEAD nonce was\n       constructed from a new Partial IV, this Partial IV MUST be\n       included in the message"
+  },
+  {
+    "section": "8.3.  Protecting the Response",
+    "keyword": "MUST",
+    "text": "If the AEAD nonce from the request was\n       used, the Partial IV MUST NOT be included in the message"
+  },
+  {
+    "section": "8.4.2.  Supporting Observe",
+    "keyword": "MUST",
+    "text": "A client MUST NOT react to failure by\n   re-registering the observation immediately"
+  },
+  {
+    "section": "9.  Web Linking",
+    "keyword": "MAY",
+    "text": "The use of OSCORE MAY be indicated by a target \"osc\" attribute in a\n   web link [RFC8288] to a resource, e"
+  },
+  {
+    "section": "9.  Web Linking",
+    "keyword": "MUST",
+    "text": "A value MUST NOT be given for the \"osc\" attribute; any present value\n   MUST be ignored by parsers"
+  },
+  {
+    "section": "9.  Web Linking",
+    "keyword": "MUST",
+    "text": "The \"osc\" attribute MUST NOT appear more\n   than once in a given link-value; occurrences after the first MUST be\n   ignored by parsers"
+  },
+  {
+    "section": "10.  CoAP-to-CoAP Forwarding Proxy",
+    "keyword": "MAY",
+    "text": "Optionally, a CoAP proxy MAY detect OSCORE and act accordingly"
+  },
+  {
+    "section": "10.  CoAP-to-CoAP Forwarding Proxy",
+    "keyword": "SHOULD",
+    "text": "o  SHOULD avoid caching responses to requests with an OSCORE option"
+  },
+  {
+    "section": "10.  CoAP-to-CoAP Forwarding Proxy",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 45]\n\n\nRFC 8613                         OSCORE                        July 2019\n\n\n   o  MAY verify the order of notifications using Partial IV rather than\n      the Observe option"
+  },
+  {
+    "section": "11.  HTTP Operations",
+    "keyword": "MAY",
+    "text": "The CoAP request/response model may be mapped to HTTP and vice versa\n   as described in Section 10 of [RFC7252]"
+  },
+  {
+    "section": "11.  HTTP Operations",
+    "keyword": "MAY",
+    "text": "By\n   mapping between HTTP and CoAP and by using cross-protocol proxies,\n   OSCORE may be used end-to-end between, e"
+  },
+  {
+    "section": "11.1.  The HTTP OSCORE Header Field",
+    "keyword": "SHOULD",
+    "text": "For the case of HTTP-client-to-CoAP-server redirects, although\n   redirect is not defined for CoAP servers [RFC7252], an HTTP client\n   receiving a redirect should generate a new OSCORE request for the\n   server it was redirected to"
+  },
+  {
+    "section": "11.3.  HTTP-to-CoAP Mapping",
+    "keyword": "MUST",
+    "text": "6) MUST NOT be used"
+  },
+  {
+    "section": "12.1.  End-to-end Protection",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 51]\n\n\nRFC 8613                         OSCORE                        July 2019\n\n\n   Applications need to consider that certain message fields and\n   messages types are not protected end-to-end and may be spoofed or\n   manipulated"
+  },
+  {
+    "section": "12.2.  Security Context Establishment",
+    "keyword": "MAY",
+    "text": "The necessary input\n   parameters may be preestablished or obtained using a key\n   establishment protocol augmented with establishment of Sender/\n   Recipient ID, such as a key exchange protocol or the OSCORE profile\n   of the Authentication and Authorization for Constrained Environments\n   (ACE) framework [OSCORE-PROFILE]"
+  },
+  {
+    "section": "12.2.  Security Context Establishment",
+    "keyword": "MUST",
+    "text": "Such a procedure must ensure that\n   the requirements of the security context parameters for the intended\n   use are complied with (see Section 3"
+  },
+  {
+    "section": "12.2.  Security Context Establishment",
+    "keyword": "MAY",
+    "text": "3), this may cause a server to\n   process multiple verifications before finding the right security\n   context or rejecting a message"
+  },
+  {
+    "section": "12.3.  Master Secret",
+    "keyword": "MUST",
+    "text": "The selected key establishment schemes must ensure that\n   the necessary properties for the Master Secret are fulfilled"
+  },
+  {
+    "section": "12.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "With reliable transport,\n   it may be defined that only messages with sequence numbers that are\n   equal to the previous sequence number + 1 are accepted"
+  },
+  {
+    "section": "12.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "An adversary\n   may try to induce a device reboot for the purpose of replaying a\n   message (see Section 7"
+  },
+  {
+    "section": "12.4.  Replay Protection",
+    "keyword": "MAY",
+    "text": "Note that sharing a security context between servers may open up for\n   replay attacks, for example, if the Replay Windows are not\n   synchronized"
+  },
+  {
+    "section": "12.5.  Client Aliveness",
+    "keyword": "MAY",
+    "text": "However, it does not verify\n   that the client is currently involved in the communication, since the\n   message may be a delayed delivery of a previously generated request,\n   which now reaches the server"
+  },
+  {
+    "section": "12.5.  Client Aliveness",
+    "keyword": "MAY",
+    "text": "To verify the aliveness of the client\n   the server may use the Echo option in the response to a request from\n   the client (see [CoAP-ECHO-REQ-TAG])"
+  },
+  {
+    "section": "12.6.  Cryptographic Considerations",
+    "keyword": "MUST",
+    "text": "The maximum Sender Sequence Number is 2^40 - 1, or any\n   algorithm-specific lower limit, after which a new security context\n   must be generated"
+  },
+  {
+    "section": "12.6.  Cryptographic Considerations",
+    "keyword": "MUST",
+    "text": "The Master Secret,\n   Sender Key, Recipient Key, and Common IV must be secret, the rest of\n   the parameters may be public"
+  },
+  {
+    "section": "12.6.  Cryptographic Considerations",
+    "keyword": "MUST",
+    "text": "The Master Secret must have a good\n   amount of randomness (see Section 12"
+  },
+  {
+    "section": "12.7.  Message Segmentation",
+    "keyword": "MAY",
+    "text": "A maximum message size (above\n   which the sending endpoint fragments the message and the receiving\n   endpoint discards the message, if complying to the policy) may be\n   obtained as part of normal resource discovery"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": "End-to-end integrity protection and\n   encryption of the message payload and all options that are not used\n   for proxy operations provide mitigation against attacks on sensor and\n   actuator communication, which may have a direct impact on the\n   personal sphere"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": "The unprotected options (Figure 5) may reveal privacy-sensitive\n   information, see Appendix D"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": ", the OSCORE option, may reveal information\n   about the communicating endpoints"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": "For example, 'kid' and 'kid\n   context', which are intended to help the server find the right\n   context, may reveal information about the client"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": "Tracking 'kid' and\n   'kid context' to one server may be used for correlating requests from\n   one client"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": "5 may reveal when a device goes through a reboot"
+  },
+  {
+    "section": "12.8.  Privacy Considerations",
+    "keyword": "MAY",
+    "text": "Applications may use a padding scheme to protect against\n   traffic analysis"
+  },
+  {
+    "section": "13.7.  OSCORE Flag Bits Registry",
+    "keyword": "MUST",
+    "text": "The\n      bit position must be an integer or a range of integers, in the\n      range 0 to 63"
+  },
+  {
+    "section": "13.8.  Expert Review Instructions",
+    "keyword": "SHOULD",
+    "text": "Experts should take into account the expected usage of\n   entries when approving point assignment, and the length of the\n   encoded value should be weighed against the number of code points\n   left that encode to that size and the size of device it will be used\n\n\n\n\n\nSelander, et al"
+  },
+  {
+    "section": "13.8.  Expert Review Instructions",
+    "keyword": "SHOULD",
+    "text": "Experts should block registration for entries 8-63 until these\n   points are defined (i"
+  },
+  {
+    "section": "14.1.  Normative References",
+    "keyword": "MAY",
+    "text": "17487/RFC8174,\n              May 2017, <https://www"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "17487/RFC5869, May 2010,\n              <https://www"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "17487/RFC7228, May 2014,\n              <https://www"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "For\n   example, flash drives may have a limited number of erase operations\n   during its lifetime"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Also, the time for a write operation to\n   nonvolatile memory to be completed may be unpredictable, e"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "However, many devices have predictable limits for writing to\n   nonvolatile memory, are physically limited to only send a small\n   amount of messages per minute, and may have no good source of\n   randomness"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "To prevent reuse of Sender Sequence Number, an endpoint may perform\n   the following procedure during normal operations:\n\n   o  Before using a Sender Sequence Number that is evenly divisible by\n      K, where K is a positive integer, store the Sender Sequence Number\n      (SSN1) in nonvolatile memory"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MUST",
+    "text": "*  Writing to nonvolatile memory may be subject to delays, or\n         failure; F MUST be set so that the last Sender Sequence Number\n         used before reboot is never larger than SSN2"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MUST",
+    "text": "If F cannot be set so SSN2 is always larger than the last Sender\n   Sequence Number used before reboot, the method described in this\n   section MUST NOT be used"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MUST",
+    "text": "The server\n      MUST use its Partial IV when generating the AEAD nonce and MUST\n      include the Partial IV in the response (see Section 5)"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Notifications\n\n   To prevent the acceptance of replay of previously received\n   notifications, the client may perform the following procedure after\n   booting:\n\n   o  The client forgets about earlier registrations and removes all\n      Notification Numbers"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Security Context Derived Multiple Times\n\n   An application that does not require forward secrecy may allow\n   multiple security contexts to be derived from one Master Secret"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MUST",
+    "text": "The\n   requirements on the security context parameters MUST be fulfilled\n   (Section 3"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MUST",
+    "text": "This\n   protocol MUST NOT be used unless both endpoints have good sources of\n   randomness"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "During normal requests, the ID Context of an established security\n   context may be sent in the 'kid context', which, together with 'kid',\n   facilitates for the server to locate a security context"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Alternatively, the 'kid context' may be omitted since the ID Context\n   is expected to be known to both client and server; see Section 5"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "The protocol described in this section may only be needed when the\n   mutable part of security context is lost in the client or server,\n   e"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "The protocol may additionally\n   be used whenever the client and server need to derive a new security\n   context"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "The\n   client or the server may initiate the protocol, in the latter case\n   step 1 is omitted"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "The request may target a\n       special resource used for updating security contexts"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MUST",
+    "text": "R2 MUST NOT be reused as that may\n       lead to reuse of key and nonce in response #1"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Note that the\n       server may receive several requests #1 associated with one\n       security context, leading to multiple parallel protocol runs"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Multiple instances of R2 may need to be cached until one of the\n       protocol runs is completed, see Appendix B"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MUST",
+    "text": "The server MUST NOT accept replayed\n       request #2 messages"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Since R2 may be generated as the result of a\n   replayed request #1, the probability for collision of R2s is impacted\n   by the birthday paradox"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "SHOULD",
+    "text": "For example, setting the length of R2 to 8\n   bytes results in an average collision after 2^32 response #1\n   messages, which should not be an issue for a constrained server\n   handling on the order of one request per second"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "The server may only have space for a few security contexts or only be\n   able to handle a few protocol runs in parallel"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "The server may clear up state from protocol runs that never complete,\n   e"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MUST",
+    "text": "Such a procedure\n   MUST NOT lead to the server accepting replayed request #2 messages"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "K_HMAC may have an expiration time, after\n      which it is erased"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "SHOULD",
+    "text": "For example,\n   setting the length of S2 to 8 bytes results in an average collision\n   after 2^32 response #1 messages, which should not be an issue for a\n   constrained server handling on the order of one request per second"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Two endpoints sharing a security context may accidentally initiate\n   two instances of the protocol at the same time, each in the role of\n   client, e"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Attack Considerations\n\n   An on-path attacker may inject a message causing the endpoint to\n   process verification of the message"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "This may still result in a denial-of-service attack\n   against the server, e"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": ", because of not being able to manage the\n   state associated with many parallel protocol runs, and it may prevent\n   legitimate client requests"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MUST",
+    "text": ", CoAP to CoAP-mappable protocols\n   such as HTTP) must be able to change certain Class U options (by\n   instruction from the Client), resulting in the CoAP request being\n   redirected to the server"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Changes caused by the proxy may result in\n   the request not reaching the server or reaching the wrong server"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Manipulation of these options may thus impact whether the protected\n   message reaches or does not reach the destination endpoint"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "SHOULD",
+    "text": "1, OSCORE should provide the following guarantees:\n\n   o  Confidentiality: An attacker should not be able to determine the\n      plaintext contents of a given OSCORE message or determine that\n      different plaintexts are related (Section 5"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "SHOULD",
+    "text": "o  Integrity: An attacker should not be able to craft a new OSCORE\n      message with protected message fields different from an existing\n      OSCORE message that will be accepted by the receiver"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "SHOULD",
+    "text": "o  Request-response binding: An attacker should not be able to make a\n      client match a response to the wrong request"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "SHOULD",
+    "text": "o  Non-replayability: An attacker should not be able to cause the\n      receiver to accept a message that it has previously received and\n      accepted"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "OSCORE does\n   not provide any specific defenses against this form of attack, but\n   the application may use a padding mechanism to prevent an attacker\n   from directly determining the length of the padding"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "However,\n   information about padding may still be revealed by side-channel\n   attacks observing differences in timing"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "An endpoint may alternate between client and\n   server roles, but each endpoint always encrypts with the Sender Key\n   of its Sender Context"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Modifications of Token and\n      Token Length by an on-path attacker may become a denial-of-service\n      attack, since it may prevent the client to identify to which\n      request the response belongs or to find the correct information to\n      verify integrity of the response"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "By sending a RST, an attacker may be able to cancel an\n      observation"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "This field contains the length of the message [RFC8323],\n      which may be used for traffic analysis"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "In forward proxy deployments, the Uri-Host/\n      Uri-Port may be changed by an adversary, and the application needs\n      to handle the consequences of that (see Section 4"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "The\n      Uri-Host may either be omitted, reveal information equivalent to\n      that of the IP address, or reveal more privacy-sensitive\n      information, which is discouraged"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "The size and distributions of\n      notifications over time may reveal information about the content\n      or nature of the notifications"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Changing this field may cause OSCORE\n      verification to fail"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Servers MAY want to omit the diagnostic payload of\n   error messages, use the same error code for all errors, or avoid\n   responding altogether in case of OSCORE processing errors, if that is\n   a security concern for the application"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MUST",
+    "text": "Moreover, clients MUST NOT\n   rely on the error code or the diagnostic payload to trigger specific\n   actions, as these errors are unprotected and can be spoofed or\n   manipulated"
+  },
+  {
+    "section": "5. Verify with          |<---------------------|    ID Context = R2||R3",
+    "keyword": "MAY",
+    "text": "Any unprotected HTTP message fields may reveal information about the\n   transport of the OSCORE message and enable various denial-of-service\n   attacks"
+  }
+]

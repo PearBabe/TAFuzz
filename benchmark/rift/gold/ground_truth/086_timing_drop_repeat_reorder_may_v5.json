@@ -1,0 +1,218 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 34
+      },
+      "token": "ap_primary"
+    },
+    "node_event_value": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 32
+      },
+      "token": "node_event_value"
+    },
+    "node_timeline": {
+      "kind": "NODE",
+      "location": {
+        "column": 32,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 29
+      },
+      "token": "node_timeline"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 22
+      },
+      "token": "source_primary"
+    },
+    "source_sequence_gate": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 17,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 25
+      },
+      "token": "source_sequence_gate"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_event_value != 0",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 34
+      },
+      "role": "TIMING",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-086",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "timing_drop_repeat_reorder",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "The drop variant maps one explicit event-sequence operation to one timeline field and AP; negative variants overwrite that field independently.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "timing_drop_repeat_reorder",
+    "variant": 5
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "event_order",
+        "field"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "drop or deliver event",
+        "kind": "drop",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "event_order",
+            "to": "node_timeline"
+          },
+          {
+            "certainty": "may",
+            "from": "node_timeline",
+            "kind": "field",
+            "to": "node_event_value"
+          },
+          {
+            "certainty": "may",
+            "from": "node_event_value",
+            "kind": "event_order",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_timeline",
+          "node_event_value",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_sequence_gate != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control",
+        "field",
+        "event_order"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "enable temporal operation",
+        "kind": "sequence_enable",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_sequence_gate",
+            "kind": "control",
+            "to": "node_timeline"
+          },
+          {
+            "certainty": "may",
+            "from": "node_timeline",
+            "kind": "field",
+            "to": "node_event_value"
+          },
+          {
+            "certainty": "may",
+            "from": "node_event_value",
+            "kind": "event_order",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_sequence_gate",
+          "node_timeline",
+          "node_event_value",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_sequence_gate"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+  "source_sha256": "4b3e532ea6eb85f04781239a7dea4e5c1d454a800b4dd7373af2af9b83605ca6",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "event_operation",
+      "location": {
+        "column": 13,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 22
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_sequence_gate",
+      "kind": "event_operation",
+      "location": {
+        "column": 17,
+        "file": "cases/086_timing_drop_repeat_reorder_may_v5.cpp",
+        "line": 25
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_sequence_gate"
+    }
+  ]
+}

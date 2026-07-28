@@ -1,0 +1,212 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   https://www"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": ")\n\n   Section 4 of this document extends the considerations for clients to\n   intermediaries, which may want to avoid keeping state for not only\n   the requests they send to servers but also the requests they receive\n   from clients"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "Some\n   implementations may be able to fit their state in just 8 bytes; some\n   implementations may have other use cases for extended token lengths"
+  },
+  {
+    "section": "2.1.  Extended Token Length (TKL) Field",
+    "keyword": "MUST",
+    "text": "This value MUST NOT be sent and MUST be processed\n            as a message-format error"
+  },
+  {
+    "section": "2.1.  Extended Token Length (TKL) Field",
+    "keyword": "MAY",
+    "text": "However,\n   the maximum token length that sender and recipient implementations\n   support may be shorter"
+  },
+  {
+    "section": "2.1.  Extended Token Length (TKL) Field",
+    "keyword": "MAY",
+    "text": "The maximum practical token length\n   may therefore also be influenced by the Path MTU (PMTU)"
+  },
+  {
+    "section": "2.2.1.  Extended-Token-Length Capability Option",
+    "keyword": "MUST",
+    "text": "The option value MUST NOT be less than 8 or greater than 65804"
+  },
+  {
+    "section": "2.2.1.  Extended-Token-Length Capability Option",
+    "keyword": "MUST",
+    "text": "If\n   an option value less than 8 is received, the option MUST be ignored"
+  },
+  {
+    "section": "2.2.1.  Extended-Token-Length Capability Option",
+    "keyword": "MUST",
+    "text": "If an option value greater than 65804 is received, the option value\n   MUST be set to 65804"
+  },
+  {
+    "section": "2.2.1.  Extended-Token-Length Capability Option",
+    "keyword": "MUST",
+    "text": "If a server receives a request with a token of a length greater than\n   what it indicated in its Extended-Token-Length Option, it MUST handle\n   the request as a message-format error"
+  },
+  {
+    "section": "2.2.1.  Extended-Token-Length Capability Option",
+    "keyword": "MUST",
+    "text": "If a server receives a request with a token of a length less than, or\n   equal to, what it indicated in its Extended-Token-Length Option but\n   is unwilling or unable to handle the token at that time, it MUST NOT\n   handle the request as a message-format error"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "SHOULD",
+    "text": "Since network addresses may change, a client SHOULD NOT assume that\n   extended token lengths are supported by a server for an unlimited\n   duration"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "SHOULD",
+    "text": "Unless additional information is available, the client\n   should assume that addresses (and therefore extended token lengths)\n   are valid for a minimum of 1800 s and a maximum of 86400 s (1 day)"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "MAY",
+    "text": "A client may use additional forms of input into this determination"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "MAY",
+    "text": "For instance, a client may assume a server that is in the same subnet\n   as the client has a similar address lifetime as the client"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "MAY",
+    "text": "The\n   client may use DHCP lease times or Router Advertisements to set the\n   limits"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "SHOULD",
+    "text": "For servers that are not local, if the server was looked up\n   using DNS, then the DNS resource record will have a Time To Live\n   (TTL), and the extended token length should be kept for only that\n   amount of time"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "SHOULD",
+    "text": "Instead, if the server cannot\n   handle the request at the time, it SHOULD return a 5"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "SHOULD",
+    "text": ", because the token is too large), it SHOULD return a\n   4"
+  },
+  {
+    "section": "2.2.2.  Trial and Error",
+    "keyword": "SHOULD",
+    "text": "A client implementation\n      |  would probably already choose the shortest token possible for\n      |  the task (such as being stateless, as described in Section 3),\n      |  so it would probably not be able to reduce the length any\n      |  further anyway should a server indicate a lower limit"
+  },
+  {
+    "section": "3.1.  Serializing Client State",
+    "keyword": "SHOULD",
+    "text": "The serialization format therefore needs\n   to include security measures such as the following:\n\n   *  A client SHOULD protect the integrity of the state information\n      serialized in a token"
+  },
+  {
+    "section": "3.1.  Serializing Client State",
+    "keyword": "MAY",
+    "text": "*  Even when the integrity of the serialized state is protected, an\n      attacker may still replay a response, making the client believe it\n      sent the same request twice"
+  },
+  {
+    "section": "3.1.  Serializing Client State",
+    "keyword": "SHOULD",
+    "text": "*  If processing a response without keeping request state is\n      sensitive to the time elapsed since sending the request, then the\n      client SHOULD include freshness information (e"
+  },
+  {
+    "section": "3.1.  Serializing Client State",
+    "keyword": "MAY",
+    "text": "*  Information in the serialized state may be privacy sensitive"
+  },
+  {
+    "section": "3.1.  Serializing Client State",
+    "keyword": "SHOULD",
+    "text": "A\n      client SHOULD encrypt the serialized state if it contains privacy-\n      sensitive information that an attacker would not get otherwise"
+  },
+  {
+    "section": "3.1.  Serializing Client State",
+    "keyword": "SHOULD",
+    "text": "*  When a client changes the format of the serialized state, it\n      SHOULD prevent false interoperability with the previous format\n      (e"
+  },
+  {
+    "section": "3.2.  Using Extended Tokens",
+    "keyword": "MUST",
+    "text": "This discovery MUST be performed in a stateful way, i"
+  },
+  {
+    "section": "3.3.  Transmitting Messages",
+    "keyword": "MUST",
+    "text": "2 of [RFC7252], a client must be prepared to receive\n   a response as a piggybacked response, a separate response, or a Non-\n   confirmable response, regardless of the message type used for the\n   request"
+  },
+  {
+    "section": "3.3.  Transmitting Messages",
+    "keyword": "MUST",
+    "text": "A stateless client MUST handle these response types as\n   follows:\n\n   *  If a piggybacked response passes the checks for token integrity\n      and freshness (Section 3"
+  },
+  {
+    "section": "4.1.  Observing Resources",
+    "keyword": "MUST",
+    "text": "Therefore, an intermediary MUST NOT include an Observe Option in\n   requests it sends without keeping both the request state for the\n   requests it sends and the client information for the requests it\n   receives"
+  },
+  {
+    "section": "4.4.  Extended Tokens",
+    "keyword": "MAY",
+    "text": "A client may make use of extended token lengths in a request to an\n   intermediary that wants to be \"stateless\""
+  },
+  {
+    "section": "4.4.  Extended Tokens",
+    "keyword": "MAY",
+    "text": "This means that such an\n   intermediary may have to serialize potentially very large client\n   information into its token towards the origin server"
+  },
+  {
+    "section": "4.4.  Extended Tokens",
+    "keyword": "SHOULD",
+    "text": "Intermediaries SHOULD limit the size of client information they are\n   serializing into their own tokens"
+  },
+  {
+    "section": "5.1.  Extended Tokens",
+    "keyword": "MAY",
+    "text": "A node in the server role\n   supporting extended token lengths may be vulnerable to a denial of\n   service when an attacker (either on-path or a malicious client) sends\n   large tokens to fill up the memory of the node"
+  },
+  {
+    "section": "5.2.  Stateless Clients and Intermediaries",
+    "keyword": "MAY",
+    "text": "It may be that in some very specific cases, as a result of a careful\n   and detailed analysis of any potential attacks, it is decided that\n   such cryptographic protections do not add value"
+  },
+  {
+    "section": "5.2.  Stateless Clients and Intermediaries",
+    "keyword": "SHOULD",
+    "text": "It should further be emphasized that the encrypted state is created\n   by the sending node and decrypted by the same node when receiving a\n   response"
+  },
+  {
+    "section": "5.2.  Stateless Clients and Intermediaries",
+    "keyword": "SHOULD",
+    "text": "If a different algorithm is\n   available accelerated on the sender, with similar or stronger\n   strength, then it SHOULD be preferred"
+  },
+  {
+    "section": "5.2.  Stateless Clients and Intermediaries",
+    "keyword": "MAY",
+    "text": "Where privacy of the state is\n   not required, and encryption is not needed, HMAC-SHA-256 [RFC6234],\n   combined with a sequence number and a replay window, may be used"
+  },
+  {
+    "section": "5.2.  Stateless Clients and Intermediaries",
+    "keyword": "MAY",
+    "text": "For use cases where requests are being relayed from another node, the\n   request rate may be estimated by the total link capacity allocated\n   for that kind of traffic"
+  },
+  {
+    "section": "7.1.  Normative References",
+    "keyword": "MAY",
+    "text": "17487/RFC8174,\n              May 2017, <https://www"
+  },
+  {
+    "section": "7.2.  Informative References",
+    "keyword": "MAY",
+    "text": "17487/RFC6234, May 2011,\n              <https://www"
+  },
+  {
+    "section": "7.2.  Informative References",
+    "keyword": "MAY",
+    "text": "17487/RFC7228, May 2014,\n              <https://www"
+  }
+]

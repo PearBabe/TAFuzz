@@ -1,0 +1,85 @@
+{
+  "boundary_region": "after",
+  "case_kind": "positive_after_threshold",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 4500,
+    "response_delta_ticks": 2500,
+    "threshold_ticks": 1500,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Response occurs strictly after the lower threshold and no response occurs before it.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 276,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/monitor_trace.csv",
+    "sha256": "89ce3efb450a77906bd1982f6cc2ab0800bc0bce5e31738f33aa9573f108e54f"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-ROVER-RCFS-001:trace:positive_after_threshold",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1554,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor/metadata.json",
+      "sha256": "bcdbf04d06a1234c0a51610d931ceb6fbea3821c97278b3b54bcc1984ac8aad8"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1236,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor.stdout.txt",
+      "sha256": "c3fbef97f453e6f5f1d897326b3a0fb5b855859040b777cf17911ba2e0079eff"
+    },
+    "steps": {
+      "bytes": 564,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor/steps.csv",
+      "sha256": "cd457e64eba25ab82bb8eec4caea285f4c7fbd305bae79cc4a54c9aae4c84539"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 4500,
+      "monitor_advanced": true,
+      "negative_states": 3,
+      "positive_states": 2,
+      "step": 6,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 3419,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/trace.json",
+    "sha256": "3ca11e5dd4b54182c200fbb2d5395a7f45a0516cbc97c7d4c0aa617c499a77d0"
+  },
+  "trace_id": "ARD-ROVER-RCFS-001--positive_after_threshold"
+}

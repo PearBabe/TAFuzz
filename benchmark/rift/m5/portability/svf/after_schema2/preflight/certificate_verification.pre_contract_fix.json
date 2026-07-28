@@ -1,0 +1,336 @@
+{
+  "certificate_path": "/tmp/rift-svf-portability-schema2-union-single-recipes-13ad31be/m5_analysis_certificate.json",
+  "certificate_sha256": "04d59472c06de0847262bcfec440d36cad5278a8be19f5e66010c277e8aa9194",
+  "checks": 65,
+  "failures": 4,
+  "findings": [
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 certificate satisfies m5_analysis_certificate.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "certificate.identity",
+      "detail": "certificate ID binds every non-time contract field",
+      "status": "PASS"
+    },
+    {
+      "check_id": "certificate.time",
+      "detail": "certificate timestamps are ordered timezone-aware instants",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 analysis certificate: exact bytes match cb4699dbdc11dbab640509c03adccc0b649f1c81d3b3983591d851595c8ee08a",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M4 analysis certificate satisfies analysis_certificate.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.version",
+      "detail": "M4 certificate/2.0.0 is referenced",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.commitment",
+      "detail": "typed_property_ir descriptor exactly matches M4 certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 typed_property_ir: exact bytes match ad2fb72e8e1118984d4b1e2295af2b6cf370d842dc099d64d0f07217feede306",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M4 typed_property_ir satisfies typed_property_ir.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.commitment",
+      "detail": "semantic_index descriptor exactly matches M4 certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 semantic_index: exact bytes match ed5627b950295e4d7a96a50f9c2d6c2b4d2ec0b002cc82171568af9ce8f757e0",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M4 semantic_index satisfies semantic_index.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.commitment",
+      "detail": "ap_bindings descriptor exactly matches M4 certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 ap_bindings: exact bytes match ac11901c0e6e9df7dddcd4c02034936181fc4f496ed48ffa2167d148027aa575",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M4 ap_bindings satisfies ap_bindings.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.commitment",
+      "detail": "contextual_influence_graph descriptor exactly matches M4 certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 contextual_influence_graph: exact bytes match 72bbd355b9d37884be0fdf446faa673399f0367a6b8b4f313ca41cdcfa1f6a9b",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M4 contextual_influence_graph satisfies contextual_influence_graph.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.commitment",
+      "detail": "ap_influence_cones descriptor exactly matches M4 certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 ap_influence_cones: exact bytes match 202a8e341c48b4d97a42cdab1762f8a83cfd5c6ab6980ee98655b940ebdd67ba",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M4 ap_influence_cones satisfies ap_influence_cones.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 input typed_property_ir: exact bytes match ad2fb72e8e1118984d4b1e2295af2b6cf370d842dc099d64d0f07217feede306",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 input compile_commands: exact bytes match 538d66c53d8132a95e3335c25adfe491881e6e5cbbce347595941519154edea2",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 output semantic_index: exact bytes match ed5627b950295e4d7a96a50f9c2d6c2b4d2ec0b002cc82171568af9ce8f757e0",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 output ap_bindings: exact bytes match ac11901c0e6e9df7dddcd4c02034936181fc4f496ed48ffa2167d148027aa575",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 output contextual_influence_graph: exact bytes match 72bbd355b9d37884be0fdf446faa673399f0367a6b8b4f313ca41cdcfa1f6a9b",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M4 output ap_influence_cones: exact bytes match 202a8e341c48b4d97a42cdab1762f8a83cfd5c6ab6980ee98655b940ebdd67ba",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.source_provenance",
+      "detail": "M4 source manifest is independently recomputed",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m4.stages",
+      "detail": "M4 fixed stage DAG closes over physical artifact digests",
+      "status": "PASS"
+    },
+    {
+      "check_id": "model_packs.order",
+      "detail": "model packs use VM canonical identity order",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "model pack[0]: exact bytes match c532d54ab0e3e2cb62d82393164aa5497be8e6a39cc9c1e60c516a8a39266da0",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "model pack[0] satisfies model_pack_v2.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "model_packs.semantic_digest",
+      "detail": "model pack[0] semantic SHA independently recomputes to d042fbbfeec0d2a50eb5f447a0ca7b684b31fb305447ff858dc8c09e159e132d",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "executor capability manifest: exact bytes match ddb94a748b31e1e56083ac2344c677ac2bc37108eae9c49d0223a965086a4a9f",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "executor capability manifest satisfies executor_capabilities.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "runtime component[0] tafuzz-sa executable: exact bytes match 13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "runtime component[1] libz3.so.4: exact bytes match 110399eb5b056236772889505fce7a9e862a81653f941e20da2d213d2a02d8a5",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime.analyzer",
+      "detail": "analyzer bytes are bound by one executable runtime component",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime.solver",
+      "detail": "Z3 actual version and exact component bytes are runtime-bound",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime.solver_budget",
+      "detail": "solver timeout=1000ms and max_queries=100 are digest-bound",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M5 model_fact_overlay: exact bytes match 055626a4de1c04ea77feafa397825499a288eb0891d6700d6ddfa66e2c3bb919",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 model_fact_overlay satisfies model_fact_overlay.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M5 predicate_occurrence_bindings: exact bytes match 1108831735e50fd26210f3c241f6f811d4447ca7ca5f7a555a1a59e61d4ab1e2",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 predicate_occurrence_bindings satisfies predicate_occurrence_bindings.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M5 frontier_candidates: exact bytes match 62b4ce4fe71225d1156b66113ab7631616d23969171e2df481cbb39065aee240",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 frontier_candidates satisfies frontier_candidates.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M5 fuzzable_frontier: exact bytes match 8e590a6ecb03d99d6ce4dd6d048662b7b749ceebf326b3c1c3f3969d60f81181",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 fuzzable_frontier satisfies fuzzable_frontier.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M5 mutation_recipes: exact bytes match 1fc141787ab4e2718e906b2ef57a6831f77cdd29ea5418fe04f3a7bcf3a197c3",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 mutation_recipes satisfies mutation_recipes.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.digest",
+      "detail": "M5 recipe_replay_obligations: exact bytes match e01020642b18e24ae9a39bbe67f64137ed163a6df0e48005293c87c0b98adfce",
+      "status": "PASS"
+    },
+    {
+      "check_id": "schema.validation",
+      "detail": "M5 recipe_replay_obligations satisfies recipe_replay_obligations.schema.json",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m5.stages",
+      "detail": "model→occurrence→contextualize→frontier→recipe→certificate digest DAG is exact",
+      "status": "PASS"
+    },
+    {
+      "check_id": "m5.status",
+      "detail": "stage status aggregates to CONSERVATIVE_INCOMPLETE",
+      "status": "PASS"
+    },
+    {
+      "check_id": "occurrence.m4_links",
+      "detail": "predicate occurrence sidecar binds the physical immutable M4 property/index identities",
+      "status": "PASS"
+    },
+    {
+      "check_id": "occurrence.type_closure",
+      "detail": "Property/selector/Clang type closure holds for 6 predicate references",
+      "status": "PASS"
+    },
+    {
+      "check_id": "occurrence.semantic_closure",
+      "detail": "occurrence predicate-occurrence:8e6d69bdb780406bfabd3e7d8e5e0450e322f6c5251c646db208a126a7ce6fd4 type differs from semantic node node:74b4e71cd3d9b41eff78ff8f1a3edb2cfdddd107fa7cc75eba9dd821e834ed6e",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "occurrence.semantic_closure",
+      "detail": "occurrence predicate-occurrence:8e6d69bdb780406bfabd3e7d8e5e0450e322f6c5251c646db208a126a7ce6fd4 type differs from semantic node node:767e0c4b8df122578bd2a6c22d60bc578062dc634052fcc3ad47e2c3e7a680db",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "occurrence.semantic_closure",
+      "detail": "occurrence predicate-occurrence:8e6d69bdb780406bfabd3e7d8e5e0450e322f6c5251c646db208a126a7ce6fd4 type differs from semantic node node:ad0610fdd75fd32ab375327a04960b34d499a1f2a501649dcc3b082313f2fc9a",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "occurrence.semantic_closure",
+      "detail": "occurrence predicate-occurrence:8e6d69bdb780406bfabd3e7d8e5e0450e322f6c5251c646db208a126a7ce6fd4 type differs from semantic node node:d3a38ea2f699bdd60c24aa6c2469e2bf4650eea2cfd0889a9e42b3fe93a48fdc",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "artifacts.chain",
+      "detail": "all M4/model/frontier/recipe physical digest links close",
+      "status": "PASS"
+    },
+    {
+      "check_id": "unknown.totality",
+      "detail": "every ACTIONABLE candidate has one recipe even when its mutation semantics remain UNKNOWN",
+      "status": "PASS"
+    },
+    {
+      "check_id": "runtime.solver_accounting",
+      "detail": "solver accounting closes: queries=0, timeouts=0, unsupported=2",
+      "status": "PASS"
+    },
+    {
+      "check_id": "replay.reconstruction",
+      "detail": "all 2 replay obligations reconstruct exactly (0 READY)",
+      "status": "PASS"
+    },
+    {
+      "check_id": "physical.final_stability",
+      "detail": "all 665 rehashed paths remained byte-source stable",
+      "status": "PASS"
+    }
+  ],
+  "physical_files_rehashed": 665,
+  "schema_version": "rift-m5-detached-verifier/1.0.0",
+  "verdict": "FAIL"
+}

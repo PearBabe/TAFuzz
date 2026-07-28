@@ -1,0 +1,38 @@
+{
+  "id": "DDS-WRITE-01",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {
+    "immediate_out_of_resources": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    }
+  },
+  "additional_negative_results": {
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "reliable_write_resource_wait_started_default",
+    "write_returned_from_blocking"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 7,
+  "positive_edges": 40,
+  "positive_clocks": 2,
+  "negative_locations": 7,
+  "negative_edges": 54,
+  "negative_clocks": 2,
+  "build_ms": 16,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

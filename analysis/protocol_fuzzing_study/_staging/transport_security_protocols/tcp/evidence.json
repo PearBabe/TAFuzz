@@ -1,0 +1,48 @@
+{
+  "protocol": "TCP",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+  "standards": [
+    {
+      "id": "RFC6298",
+      "title": "Computing TCP's Retransmission Timer",
+      "url": "https://www.rfc-editor.org/rfc/rfc6298.html",
+      "sections": [
+        "2.1",
+        "5"
+      ],
+      "source_type": "IETF Standards Track"
+    },
+    {
+      "id": "RFC9293",
+      "title": "Transmission Control Protocol",
+      "url": "https://www.rfc-editor.org/rfc/rfc9293.html",
+      "sections": [
+        "3.6.1",
+        "3.8.3",
+        "3.8.4",
+        "3.8.6.1",
+        "3.8.6.3"
+      ],
+      "source_type": "IETF Internet Standard"
+    }
+  ],
+  "sources": [
+    {
+      "repository": "torvalds/linux",
+      "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "url": "https://github.com/torvalds/linux/tree/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "role": "fixed implementation source"
+    }
+  ],
+  "method": "Exhaustive keyword/section screening plus independent standard/formula/source audit of RTO, retransmission, delayed ACK, zero-window, keep-alive and TIME-WAIT timers; rejected cards remain in the exclusion ledger.",
+  "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md",
+  "atomic_proposition_source_mapping": {
+    "schema": "primary_source_atomic_propositions + auxiliary_source_mappings[]",
+    "status": "COMPLETE_FOR_ALL_ADMITTED_CANDIDATES",
+    "property_count": 9,
+    "atomic_proposition_count": 23,
+    "policy": "Every declared AP has at least one fixed-commit executable source mapping; dynamic identifiers remain correlation fields.",
+    "root_verification": "generate_multi_protocol_catalog.py candidate_gate_errors + verify_source + verify_auxiliary_sources"
+  }
+}

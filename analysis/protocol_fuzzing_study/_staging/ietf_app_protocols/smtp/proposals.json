@@ -1,0 +1,1023 @@
+[
+  {
+    "id": "SMTP-TIMEOUT-01",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 client timeout recommendations",
+    "title": "Initial 220 timeout is not shorter than five minutes",
+    "category": "initial greeting timeout",
+    "natural_language": "TCP 连接建立后等待初始 220 greeting 时，SMTP 客户端不应在 300000 ms 前因该阶段超时而放弃。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.1",
+    "standard_excerpt": "Initial 220 Message: 5 Minutes",
+    "time_value_ms": "300000",
+    "time_parameter": "minimum initial-220 timeout",
+    "time_source": "RFC 5321 recommended minimum; Exim command_timeout default is 5*60 seconds",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM_AND_IMPLEMENTATION_DEFAULT",
+    "sut_role": "SMTP_CLIENT",
+    "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+    "benchmark_reachability_note": "ProFuzzBench starts Exim with -bd as an inbound TCP/25 server; this outbound smtp_setup_conn path requires a separate queue-runner/client harness and a withholding peer server.",
+    "property_scope": "Classic outbound SMTP initial greeting after a successful TCP connection; implicit SMTPS is excluded from this source profile.",
+    "mathematical_mitl": "G* (smtp_waiting_initial_220 -> G [0,300000) (!smtp_initial_220_timeout))",
+    "mightyppl_formula": "G* (smtp_waiting_initial_220 -> G [0,300000) (!smtp_initial_220_timeout))",
+    "atomic_propositions": [
+      "smtp_waiting_initial_220",
+      "smtp_initial_220_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_waiting_initial_220": "smtp_connect returns a valid socket in smtp_setup_conn, opening one correlated initial-220 obligation before the later smtp_read_response call",
+      "smtp_initial_220_timeout": "the initial-greeting smtp_read_response returns false with errno==ETIMEDOUT for that same connection before a valid initial 220 response"
+    },
+    "correlation_key": "outbound SMTP connection identity + remote host/address + delivery attempt",
+    "projection_rule": "one successful-connect/initial-greeting obligation per timed word; a greeting, peer close, non-timeout I/O error, or delivery-attempt teardown closes only that generation; identifiers remain fields",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; correlate the successful connect to its initial smtp_read_response outcome before projection",
+    "event_contract": {
+      "trigger": "emit once immediately after smtp_connect returns a nonnegative socket at smtp.c:1544-1549",
+      "timeout": "emit only when the correlated initial smtp_read_response at smtp.c:1638-1643 returns false with errno==ETIMEDOUT, before RESPONSE_FAILED",
+      "non_timeout_outcomes": "valid 220, EOF, protocol error, peer close, and other errno values close/cancel the generation without emitting smtp_initial_220_timeout",
+      "clock_basis": "absolute integer milliseconds from the successful-connect event; no RFC constant scaling"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/transports/smtp.c",
+    "source_symbol": "smtp_setup_conn",
+    "source_lines": "1544-1643;2095-2099",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L1544-L1643",
+    "auxiliary_source_mappings": [
+      {
+        "role": "response reader and errno propagation",
+        "path": "src/src/smtp_out.c",
+        "symbol": "read_response_line/smtp_read_response",
+        "lines": "457-520;548-608",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+        "atomic_propositions": [
+          "smtp_initial_220_timeout"
+        ]
+      },
+      {
+        "role": "absolute read deadline and ETIMEDOUT",
+        "path": "src/src/ip.c",
+        "symbol": "fd_ready/ip_recv",
+        "lines": "478-524;548-570",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+        "atomic_propositions": [
+          "smtp_initial_220_timeout"
+        ]
+      },
+      {
+        "role": "SMTP timeout classification",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "check_response",
+        "lines": "508-525",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+        "atomic_propositions": [
+          "smtp_initial_220_timeout"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_transport_option_defaults",
+        "lines": "189-225",
+        "atomic_propositions": [
+          "smtp_waiting_initial_220"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225"
+      }
+    ],
+    "instrumentation_timing": "emit start once after successful smtp_connect; after the initial smtp_read_response returns false, inspect errno and emit timeout only for ETIMEDOUT before the RESPONSE_FAILED jump; use smtp_transport_option_defaults:222 as profile evidence",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_waiting_initial_220"
+        ]
+      },
+      {
+        "time": 300000,
+        "props": [
+          "smtp_initial_220_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_waiting_initial_220"
+        ]
+      },
+      {
+        "time": 299999,
+        "props": [
+          "smtp_initial_220_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The original card started the event at smtp_read_response rather than successful TCP connect, omitted common ETIMEDOUT source anchors, and did not disclose that the ProFuzzBench server harness cannot reach this client path.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above; role, reachability, connect-time trigger, timeout source chain, and one-generation event contract are now explicit. Lower-bound semantics still does not require timeout at five minutes.",
+    "review_question": "确认是否新增 outbound-client/queue-runner harness；若只运行 ProFuzzBench server campaign，本卡应留在 client-role 附录。",
+    "limitations": "RFC 5321 uses SHOULD for the recommended minimum. This fixed Exim client path is absent from the inbound ProFuzzBench campaign, and a real 300-second wait has LOW wall-clock fuzzing triggerability without a validated virtual clock.",
+    "primary_source_atomic_propositions": [
+      "smtp_waiting_initial_220"
+    ]
+  },
+  {
+    "id": "SMTP-TIMEOUT-02",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 client timeout recommendations",
+    "title": "MAIL response timeout is not shorter than five minutes",
+    "category": "MAIL command timeout",
+    "natural_language": "客户端发出 MAIL FROM 后等待响应时，不应在 300000 ms 前因 MAIL 阶段超时而放弃。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.2",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.2",
+    "standard_excerpt": "MAIL Command: 5 Minutes",
+    "time_value_ms": "300000",
+    "time_parameter": "minimum MAIL response timeout",
+    "time_source": "RFC 5321 recommended minimum; Exim command_timeout default is 300 seconds",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM_AND_IMPLEMENTATION_DEFAULT",
+    "sut_role": "SMTP_CLIENT",
+    "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+    "benchmark_reachability_note": "Requires Exim outbound delivery plus a controlled peer SMTP server; the benchmark's inbound daemon path does not execute smtp_write_mail_and_rcpt_cmds.",
+    "property_scope": "Outbound SMTP MAIL response, covering both direct and PIPELINING paths after the MAIL command is actually flushed.",
+    "mathematical_mitl": "G* (smtp_mail_response_wait_started -> G [0,300000) (!smtp_mail_response_timeout))",
+    "mightyppl_formula": "G* (smtp_mail_response_wait_started -> G [0,300000) (!smtp_mail_response_timeout))",
+    "atomic_propositions": [
+      "smtp_mail_response_wait_started",
+      "smtp_mail_response_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_mail_response_wait_started": "flush_buffer successfully transmits a buffer containing the correlated MAIL FROM command; the adapter assigns that command a transaction-generation ordinal before response projection",
+      "smtp_mail_response_timeout": "the response read associated with that pending MAIL generation returns false with errno==ETIMEDOUT"
+    },
+    "correlation_key": "outbound connection + SMTP transaction generation + MAIL command sequence",
+    "projection_rule": "decode each successfully flushed command buffer, correlate the pending MAIL response slot, then project exactly one MAIL generation per timed word; command ordinals remain fields",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; one flushed MAIL command and its response outcome constitute one monitor instance",
+    "event_contract": {
+      "trigger": "emit once after flush_buffer successfully sends the buffer containing this MAIL command, not when the command is merely queued and not when its response read later begins",
+      "timeout": "emit only for the pending-MAIL smtp_read_response outcome with errno==ETIMEDOUT in either sync_responses or the direct path",
+      "non_timeout_outcomes": "2xx, 4xx/5xx, malformed response, EOF, peer close, and other I/O errors close the generation without smtp_mail_response_timeout",
+      "clock_basis": "absolute integer milliseconds from successful wire flush; no timeout scaling"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/smtp_out.c",
+    "source_symbol": "flush_buffer",
+    "source_lines": "326-349",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L326-L349",
+    "auxiliary_source_mappings": [
+      {
+        "role": "pipelined MAIL response slot",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "sync_responses",
+        "lines": "742-782",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L742-L782",
+        "atomic_propositions": [
+          "smtp_mail_response_wait_started",
+          "smtp_mail_response_timeout"
+        ]
+      },
+      {
+        "role": "MAIL command and direct response path",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_write_mail_and_rcpt_cmds",
+        "lines": "2340-2406",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2340-L2406",
+        "atomic_propositions": [
+          "smtp_mail_response_wait_started"
+        ]
+      },
+      {
+        "role": "response reader and errno propagation",
+        "path": "src/src/smtp_out.c",
+        "symbol": "read_response_line/smtp_read_response",
+        "lines": "457-520;548-608",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+        "atomic_propositions": [
+          "smtp_mail_response_timeout"
+        ]
+      },
+      {
+        "role": "absolute read deadline and ETIMEDOUT",
+        "path": "src/src/ip.c",
+        "symbol": "fd_ready/ip_recv",
+        "lines": "478-524;548-570",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+        "atomic_propositions": [
+          "smtp_mail_response_timeout"
+        ]
+      },
+      {
+        "role": "SMTP timeout classification",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "check_response",
+        "lines": "508-525",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+        "atomic_propositions": [
+          "smtp_mail_response_timeout"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_transport_option_defaults",
+        "lines": "189-225",
+        "atomic_propositions": [
+          "smtp_mail_response_wait_started"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225"
+      }
+    ],
+    "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_mail_response_wait_started"
+        ]
+      },
+      {
+        "time": 300000,
+        "props": [
+          "smtp_mail_response_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_mail_response_wait_started"
+        ]
+      },
+      {
+        "time": 299999,
+        "props": [
+          "smtp_mail_response_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The original event conflated successful MAIL flush with the later sync_responses read, used a composite non-symbol, omitted the common timeout chain, and did not disclose server-benchmark unreachability.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above; successful flush is now the trigger, direct and pipelined response paths are separate auxiliary mappings, and role/reachability are explicit.",
+    "review_question": "确认 outbound adapter 能从一次 flush 中恢复 MAIL/RCPT/DATA ordinal；若无 client harness，本卡不进入 server 主实验。",
+    "limitations": "SHOULD-level minimum. Response arrival, connection close, and other I/O errors are not timeout APs. The current ProFuzzBench Exim server campaign cannot reach this path, and a 300-second real wait has LOW fuzzing triggerability.",
+    "primary_source_atomic_propositions": [
+      "smtp_mail_response_wait_started"
+    ]
+  },
+  {
+    "id": "SMTP-TIMEOUT-03",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 client timeout recommendations",
+    "title": "RCPT response timeout is not shorter than five minutes",
+    "category": "RCPT command timeout",
+    "natural_language": "客户端发出每个 RCPT TO 后等待相应响应时，不应在 300000 ms 前因该 RCPT 阶段超时而放弃。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.3",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.3",
+    "standard_excerpt": "RCPT Command: 5 Minutes",
+    "time_value_ms": "300000",
+    "time_parameter": "minimum per-RCPT response timeout",
+    "time_source": "RFC 5321 recommended minimum; Exim command_timeout default is 300 seconds",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM_AND_IMPLEMENTATION_DEFAULT",
+    "sut_role": "SMTP_CLIENT",
+    "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+    "benchmark_reachability_note": "Requires Exim outbound delivery and a controlled peer server; the inbound daemon benchmark does not execute this RCPT client path.",
+    "property_scope": "One outbound SMTP RCPT response generation after that RCPT command is actually flushed, including PIPELINING correlation by recipient ordinal.",
+    "mathematical_mitl": "G* (smtp_rcpt_response_wait_started -> G [0,300000) (!smtp_rcpt_response_timeout))",
+    "mightyppl_formula": "G* (smtp_rcpt_response_wait_started -> G [0,300000) (!smtp_rcpt_response_timeout))",
+    "atomic_propositions": [
+      "smtp_rcpt_response_wait_started",
+      "smtp_rcpt_response_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_rcpt_response_wait_started": "flush_buffer successfully transmits a buffer containing the correlated RCPT command and assigns it a transaction-local RCPT ordinal",
+      "smtp_rcpt_response_timeout": "sync_responses maps the pending response slot to that RCPT ordinal and its smtp_read_response returns false with errno==ETIMEDOUT"
+    },
+    "correlation_key": "outbound connection + SMTP transaction generation + RCPT ordinal/address field",
+    "projection_rule": "decode each successful flush, assign RCPT ordinals, correlate sync_responses slots in order, then spawn one obligation projection per RCPT ordinal; address remains an event field",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each flushed RCPT ordinal and its single response outcome are monitored separately",
+    "event_contract": {
+      "trigger": "emit once after the command buffer containing this RCPT is successfully flushed, not at the later response-read call",
+      "timeout": "emit only from sync_responses when the slot correlated to this RCPT ordinal takes the errno==ETIMEDOUT branch",
+      "non_timeout_outcomes": "accepted/rejected response, malformed response, peer close, EOF, and other I/O errors close the generation without the timeout AP",
+      "clock_basis": "absolute integer milliseconds from successful wire flush"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/transports/smtp.c",
+    "source_symbol": "sync_responses",
+    "source_lines": "786-825",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L786-L825",
+    "auxiliary_source_mappings": [
+      {
+        "role": "RCPT command enqueue/flush and sync invocation",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_write_mail_and_rcpt_cmds",
+        "lines": "2440-2480",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2440-L2480",
+        "atomic_propositions": [
+          "smtp_rcpt_response_wait_started"
+        ]
+      },
+      {
+        "role": "actual pipelined command-buffer flush",
+        "path": "src/src/smtp_out.c",
+        "symbol": "flush_buffer",
+        "lines": "326-349",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L326-L349",
+        "atomic_propositions": [
+          "smtp_rcpt_response_wait_started"
+        ]
+      },
+      {
+        "role": "response reader and errno propagation",
+        "path": "src/src/smtp_out.c",
+        "symbol": "read_response_line/smtp_read_response",
+        "lines": "457-520;548-608",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+        "atomic_propositions": [
+          "smtp_rcpt_response_timeout"
+        ]
+      },
+      {
+        "role": "absolute read deadline and ETIMEDOUT",
+        "path": "src/src/ip.c",
+        "symbol": "fd_ready/ip_recv",
+        "lines": "478-524;548-570",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+        "atomic_propositions": [
+          "smtp_rcpt_response_timeout"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_transport_option_defaults",
+        "lines": "189-225",
+        "atomic_propositions": [
+          "smtp_rcpt_response_wait_started"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225"
+      }
+    ],
+    "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_rcpt_response_wait_started"
+        ]
+      },
+      {
+        "time": 300000,
+        "props": [
+          "smtp_rcpt_response_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_rcpt_response_wait_started"
+        ]
+      },
+      {
+        "time": 299999,
+        "props": [
+          "smtp_rcpt_response_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The original RCPT response mapping was sound, but the trigger was the later read rather than actual flush, the timeout branch range ended early, and role/benchmark reachability were missing.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above; full ETIMEDOUT branch, successful-flush trigger, separate source mappings, and one-monitor-per-RCPT contract are now explicit.",
+    "review_question": "确认 adapter 从 flush 顺序和 PENDING_DEFER 扫描得到相同 RCPT ordinal；若只 fuzz inbound server，本卡留在 client 附录。",
+    "limitations": "The RFC notes that list/alias processing can need longer; this card asserts only the recommended minimum. The path is unreachable in the current server harness and a real 300-second delay is LOW-triggerability.",
+    "primary_source_atomic_propositions": [
+      "smtp_rcpt_response_wait_started",
+      "smtp_rcpt_response_timeout"
+    ]
+  },
+  {
+    "id": "SMTP-TIMEOUT-04",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 client timeout recommendations",
+    "title": "DATA initiation timeout is not shorter than two minutes",
+    "category": "DATA initiation timeout",
+    "natural_language": "客户端发出 DATA 后等待 354 Start Input 时，不应在 120000 ms 前因 DATA-initiation 阶段超时。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.4",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.4",
+    "standard_excerpt": "DATA Initiation: 2 Minutes",
+    "time_value_ms": "120000",
+    "time_parameter": "minimum wait for 354 reply",
+    "time_source": "RFC 5321 recommended minimum; Exim uses the longer 300-second command_timeout default",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM",
+    "sut_role": "SMTP_CLIENT",
+    "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+    "benchmark_reachability_note": "Requires Exim outbound classic-DATA delivery and a peer that withholds 354; the benchmark only drives Exim's inbound server.",
+    "property_scope": "Outbound classic SMTP DATA command awaiting its 354 response; CHUNKING/BDAT is excluded because that path does not send DATA.",
+    "mathematical_mitl": "G* (smtp_data_354_wait_started -> G [0,120000) (!smtp_data_354_timeout))",
+    "mightyppl_formula": "G* (smtp_data_354_wait_started -> G [0,120000) (!smtp_data_354_timeout))",
+    "atomic_propositions": [
+      "smtp_data_354_wait_started",
+      "smtp_data_354_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_data_354_wait_started": "smtp_write_command(..., FALSE, DATA) successfully flushes the correlated classic-DATA command and opens one 354-wait generation",
+      "smtp_data_354_timeout": "the pending-DATA response slot correlated by sync_responses returns false with errno==ETIMEDOUT before a 354 reply"
+    },
+    "correlation_key": "outbound connection + SMTP transaction generation + DATA command ordinal",
+    "projection_rule": "after successful DATA flush, correlate the pending_DATA slot after any preceding pipelined MAIL/RCPT slots, then project one DATA-initiation generation per transaction",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; one successfully flushed DATA command and its pending_DATA response outcome form one monitor instance",
+    "event_contract": {
+      "trigger": "emit once after smtp_write_command(..., FALSE, DATA) returns a successful flush at smtp.c:2659-2665",
+      "timeout": "emit only when the subsequently correlated pending_DATA smtp_read_response expecting 3xx returns false with errno==ETIMEDOUT",
+      "non_timeout_outcomes": "354, other SMTP reply, malformed response, EOF, peer close, or other I/O error closes the generation without smtp_data_354_timeout",
+      "clock_basis": "absolute integer milliseconds from successful DATA wire flush"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/transports/smtp.c",
+    "source_symbol": "smtp_deliver",
+    "source_lines": "2659-2665",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2659-L2665",
+    "auxiliary_source_mappings": [
+      {
+        "role": "pending DATA response slot",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "sync_responses",
+        "lines": "911-930",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L911-L930",
+        "atomic_propositions": [
+          "smtp_data_354_wait_started",
+          "smtp_data_354_timeout"
+        ]
+      },
+      {
+        "role": "actual command-buffer flush",
+        "path": "src/src/smtp_out.c",
+        "symbol": "smtp_write_command/flush_buffer",
+        "lines": "326-349;373-430",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L326-L349",
+        "atomic_propositions": [
+          "smtp_data_354_wait_started"
+        ]
+      },
+      {
+        "role": "response reader and errno propagation",
+        "path": "src/src/smtp_out.c",
+        "symbol": "read_response_line/smtp_read_response",
+        "lines": "457-520;548-608",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+        "atomic_propositions": [
+          "smtp_data_354_timeout"
+        ]
+      },
+      {
+        "role": "absolute read deadline and ETIMEDOUT",
+        "path": "src/src/ip.c",
+        "symbol": "fd_ready/ip_recv",
+        "lines": "478-524;548-570",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+        "atomic_propositions": [
+          "smtp_data_354_timeout"
+        ]
+      },
+      {
+        "role": "SMTP timeout classification",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "check_response",
+        "lines": "508-525",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+        "atomic_propositions": [
+          "smtp_data_354_timeout"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_transport_option_defaults",
+        "lines": "189-225",
+        "atomic_propositions": [
+          "smtp_data_354_wait_started"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225"
+      }
+    ],
+    "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_data_354_wait_started"
+        ]
+      },
+      {
+        "time": 120000,
+        "props": [
+          "smtp_data_354_timeout"
+        ]
+      },
+      {
+        "time": 120001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_data_354_wait_started"
+        ]
+      },
+      {
+        "time": 119999,
+        "props": [
+          "smtp_data_354_timeout"
+        ]
+      },
+      {
+        "time": 120001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The original card conflated successful DATA flush with the later pending_DATA response read, used a composite symbol, omitted the timeout chain, and lacked client/server reachability scope.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above; the wire-flush trigger, pending_DATA response correlation, classic-DATA scope, common timeout sources, and role are now explicit.",
+    "review_question": "确认 adapter 把 354 wait 与 message-body block 和 final-250 generations 分离；server-only campaign 不收录本卡为可达主性质。",
+    "limitations": "This lower bound does not claim timeout at two minutes. Exim's default is longer, the current inbound server harness cannot reach the path, and a real 120-second stall remains LOW-triggerability.",
+    "primary_source_atomic_propositions": [
+      "smtp_data_354_wait_started"
+    ]
+  },
+  {
+    "id": "SMTP-TIMEOUT-05",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 client timeout recommendations",
+    "title": "Each DATA block send timeout is not shorter than three minutes",
+    "category": "DATA block transmit timeout",
+    "natural_language": "传输一个 DATA 数据块并等待该 TCP SEND 完成时，不应在 180000 ms 前因 data-block send timeout 放弃。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.5",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.5",
+    "standard_excerpt": "Data Block: 3 Minutes",
+    "time_value_ms": "180000",
+    "time_parameter": "minimum timeout per TCP SEND data block",
+    "time_source": "RFC 5321 recommended minimum; Exim data_timeout default is 300 seconds",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM",
+    "sut_role": "SMTP_CLIENT",
+    "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+    "benchmark_reachability_note": "The main hook is shared code, but this property requires the outbound smtp_deliver data context; inbound TCP/25 server fuzzing does not create it.",
+    "property_scope": "One timed transport_write_block invocation carrying classic outbound SMTP DATA; non-SMTP transports and extension-specific BDAT claims are excluded.",
+    "mathematical_mitl": "G* (smtp_data_block_send_wait_started -> G [0,180000) (!smtp_data_block_send_timeout))",
+    "mightyppl_formula": "G* (smtp_data_block_send_wait_started -> G [0,180000) (!smtp_data_block_send_timeout))",
+    "atomic_propositions": [
+      "smtp_data_block_send_wait_started",
+      "smtp_data_block_send_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_data_block_send_wait_started": "one SMTP-guarded transport_write_block invocation starts with transport_write_timeout copied from smtp_deliver's data_timeout; the event does not assert that the first write is already known to block",
+      "smtp_data_block_send_timeout": "that same invocation returns false with errno==ETIMEDOUT through sigalrm_seen or exhausted local_timeout"
+    },
+    "correlation_key": "outbound connection + SMTP transaction generation + monotonically increasing DATA block ordinal",
+    "projection_rule": "guard the generic function by outbound SMTP data context, allocate one block ordinal on function entry, emit exactly one trigger for that invocation, then project it independently; loop retries do not open new generations",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; one SMTP DATA transport_write_block invocation, including all of its partial-write retries, is one monitor instance",
+    "event_contract": {
+      "trigger": "emit once per guarded transport_write_block invocation before its first timed write/alarm; never emit again for loop retries",
+      "timeout": "emit only on the sigalrm_seen ETIMEDOUT return at transport.c:257-260 or exhausted-local_timeout return at 302-306",
+      "guard": "outbound SMTP delivery context + target SMTP socket fd + smtp_command equivalent to sending data block + transport_write_timeout sourced from smtp data_timeout",
+      "non_timeout_outcomes": "successful full/partial completion, EPIPE, EAGAIN recovery, ERRNO_WRITEINCOMPLETE, and non-timeout errno values close without smtp_data_block_send_timeout",
+      "clock_basis": "one absolute remaining-time budget per transport_write_block invocation"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/transport.c",
+    "source_symbol": "transport_write_block",
+    "source_lines": "216-306",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transport.c#L216-L306",
+    "auxiliary_source_mappings": [
+      {
+        "role": "SMTP data-timeout selection and outbound message write",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_deliver",
+        "lines": "2682-2750",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2682-L2750",
+        "atomic_propositions": [
+          "smtp_data_block_send_wait_started"
+        ]
+      },
+      {
+        "role": "buffer flushes that invoke the primary hook",
+        "path": "src/src/transport.c",
+        "symbol": "write_chunk",
+        "lines": "425-447",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transport.c#L425-L447",
+        "atomic_propositions": [
+          "smtp_data_block_send_wait_started"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_transport_option_defaults",
+        "lines": "189-225",
+        "atomic_propositions": [
+          "smtp_data_block_send_wait_started"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225"
+      }
+    ],
+    "instrumentation_timing": "after verifying the SMTP outbound data guard, emit one start per transport_write_block invocation before its first timed write; do not re-emit inside the retry loop; emit timeout only at the two ETIMEDOUT returns; smtp_deliver:2736-2738 proves the selected data_timeout profile",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_data_block_send_wait_started"
+        ]
+      },
+      {
+        "time": 180000,
+        "props": [
+          "smtp_data_block_send_timeout"
+        ]
+      },
+      {
+        "time": 180001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_data_block_send_wait_started"
+        ]
+      },
+      {
+        "time": 179999,
+        "props": [
+          "smtp_data_block_send_timeout"
+        ]
+      },
+      {
+        "time": 180001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The transport.c primary hook was correct, but the original contract could emit a trigger for every alarm retry, described a write as already blocked before calling it, and did not guard the generic transport function or disclose role reachability.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above. The primary hook remains transport_write_block:216-306; SMTP guard, exactly-once invocation trigger, two timeout exits, role, and reachability are now explicit.",
+    "review_question": "确认 instrumentation 能取得显式 SMTP context/fd/block ordinal，而不是依赖易冲突的全局字符串；若不能，保留为未实现 hook。",
+    "limitations": "RFC 5321 applies a separate minimum timer to each classic DATA buffer; total message duration is unbounded. The generic source hook must exclude every non-SMTP caller, and the real 180-second threshold is LOW-triggerability without validated virtual time.",
+    "primary_source_atomic_propositions": [
+      "smtp_data_block_send_wait_started",
+      "smtp_data_block_send_timeout"
+    ]
+  },
+  {
+    "id": "SMTP-TIMEOUT-06",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 classic DATA client timeout recommendation",
+    "title": "Classic DATA termination timeout is not shorter than ten minutes",
+    "category": "DATA final response timeout",
+    "natural_language": "客户端通过 classic DATA 发送 final period 后等待 250 OK 时，不应在 600000 ms 前因 final-response timeout 放弃。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.6",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.6",
+    "standard_excerpt": "DATA Termination: 10 Minutes",
+    "time_value_ms": "600000",
+    "time_parameter": "minimum wait for final 250 response",
+    "time_source": "RFC 5321 recommended minimum; Exim final_timeout default is 10*60 seconds",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM_AND_IMPLEMENTATION_DEFAULT",
+    "sut_role": "SMTP_CLIENT",
+    "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+    "benchmark_reachability_note": "Requires an outbound classic-DATA delivery and peer server that withholds the final reply; the benchmark's inbound daemon path does not execute it.",
+    "property_scope": "Classic RFC 5321 DATA final period and the single non-LMTP final response; CHUNKING/BDAT, PRDR, LMTP, and implicit extensions are excluded.",
+    "mathematical_mitl": "G* (smtp_final_250_wait_started -> G [0,600000) (!smtp_final_250_timeout))",
+    "mightyppl_formula": "G* (smtp_final_250_wait_started -> G [0,600000) (!smtp_final_250_timeout))",
+    "atomic_propositions": [
+      "smtp_final_250_wait_started",
+      "smtp_final_250_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_final_250_wait_started": "non-CHUNKING smtp_deliver successfully transmits the final data buffer containing the terminating period and enters the non-LMTP final-response phase",
+      "smtp_final_250_timeout": "the corresponding non-PRDR, non-LMTP smtp_read_response expecting 2xx returns false with errno==ETIMEDOUT before a 250 response"
+    },
+    "correlation_key": "outbound connection + SMTP transaction generation + end-of-data marker",
+    "projection_rule": "require classic DATA/non-LMTP/non-PRDR context, correlate the successfully sent terminating-period buffer to the following final response, and project one generation per transaction",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; one classic DATA end marker and its single final-response outcome form one monitor instance",
+    "event_contract": {
+      "trigger": "emit once after transport_write_message succeeds for non-CHUNKING DATA and smtp_command changes to end of data at smtp.c:2766-2772",
+      "timeout": "emit only when the correlated non-LMTP final smtp_read_response at 2815-2827 returns false with errno==ETIMEDOUT",
+      "non_timeout_outcomes": "250, 4xx/5xx, malformed response, EOF, peer close, and other I/O errors close the generation without smtp_final_250_timeout",
+      "excluded_paths": "CHUNKING/BDAT, PRDR preliminary/partial responses, and LMTP per-recipient responses",
+      "clock_basis": "absolute integer milliseconds from successful classic end-of-data transmission"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/transports/smtp.c",
+    "source_symbol": "smtp_deliver",
+    "source_lines": "2736-2750;2766-2772;2815-2827",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2736-L2827",
+    "auxiliary_source_mappings": [
+      {
+        "role": "response reader and errno propagation",
+        "path": "src/src/smtp_out.c",
+        "symbol": "read_response_line/smtp_read_response",
+        "lines": "457-520;548-608",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+        "atomic_propositions": [
+          "smtp_final_250_timeout"
+        ]
+      },
+      {
+        "role": "absolute read deadline and ETIMEDOUT",
+        "path": "src/src/ip.c",
+        "symbol": "fd_ready/ip_recv",
+        "lines": "478-524;548-570",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+        "atomic_propositions": [
+          "smtp_final_250_timeout"
+        ]
+      },
+      {
+        "role": "SMTP timeout classification",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "check_response",
+        "lines": "508-525",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+        "atomic_propositions": [
+          "smtp_final_250_timeout"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/transports/smtp.c",
+        "symbol": "smtp_transport_option_defaults",
+        "lines": "189-225",
+        "atomic_propositions": [
+          "smtp_final_250_wait_started"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225"
+      }
+    ],
+    "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_final_250_wait_started"
+        ]
+      },
+      {
+        "time": 600000,
+        "props": [
+          "smtp_final_250_timeout"
+        ]
+      },
+      {
+        "time": 600001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_final_250_wait_started"
+        ]
+      },
+      {
+        "time": 599999,
+        "props": [
+          "smtp_final_250_timeout"
+        ]
+      },
+      {
+        "time": 600001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The original card extended RFC 5321's classic final-period evidence to last BDAT/PRDR/LMTP, omitted the common timeout chain, and lacked client-role reachability disclosure.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above; the property is now restricted to classic DATA and its single non-LMTP final response, with role and timeout source chain explicit.",
+    "review_question": "确认实验是否只启用 classic DATA；若要覆盖 BDAT/PRDR/LMTP，必须分别提取扩展规范性质，不能复用本卡主张。",
+    "limitations": "A 4xx/5xx response, peer close, or other I/O error is not a timeout. Extension paths are excluded. The client path is absent from the current server harness, and a real 600-second wait is LOW-triggerability.",
+    "primary_source_atomic_propositions": [
+      "smtp_final_250_wait_started",
+      "smtp_final_250_timeout"
+    ]
+  },
+  {
+    "id": "SMTP-TIMEOUT-07",
+    "protocol": "SMTP",
+    "protocol_extension": "RFC 5321 server timeout recommendation; Exim plaintext profile",
+    "title": "Plaintext server command-read timeout is not shorter than five minutes",
+    "category": "server idle timeout",
+    "natural_language": "plaintext SMTP server 的输入 buffer 为空并等待发送方下一段命令输入时，不应在 300000 ms 前因 command-phase receive timeout 关闭连接。",
+    "normative_strength": "SHOULD minimum",
+    "standard": "RFC 5321",
+    "standard_version": "RFC 5321",
+    "standard_section": "4.5.3.2.7",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc5321.html#section-4.5.3.2.7",
+    "standard_excerpt": "An SMTP server SHOULD have a timeout of at least 5 minutes",
+    "time_value_ms": "300000",
+    "time_parameter": "minimum server wait for next command",
+    "time_source": "RFC 5321 recommended minimum; Exim smtp_receive_timeout default is 5*60 seconds",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_MINIMUM_AND_IMPLEMENTATION_DEFAULT",
+    "sut_role": "SMTP_SERVER",
+    "benchmark_reachability": "ROLE_REACHED_BUT_DEADLINE_IMPRACTICAL_PER_TESTCASE",
+    "benchmark_reachability_note": "ProFuzzBench drives this plaintext inbound daemon role, but a normal AFLNet testcase is far shorter than the real 300-second deadline; a long trace or validated virtual clock is required for timeout feedback.",
+    "property_scope": "Exim plaintext SMTP command phase only; DATA-phase receive timeout, STARTTLS tls_getc paths, batched input, and implicit TLS are excluded.",
+    "mathematical_mitl": "G* (smtp_server_command_wait_started -> G [0,300000) (!smtp_server_command_idle_timeout))",
+    "mightyppl_formula": "G* (smtp_server_command_wait_started -> G [0,300000) (!smtp_server_command_idle_timeout))",
+    "atomic_propositions": [
+      "smtp_server_command_wait_started",
+      "smtp_server_command_idle_timeout"
+    ],
+    "ap_definitions": {
+      "smtp_server_command_wait_started": "while smtp_read_command has command_timeout_handler installed, plaintext smtp_getc finds its input buffer empty and arms smtp_receive_timeout immediately before read",
+      "smtp_server_command_idle_timeout": "that same command-read generation reaches command_timeout_handler because the armed receive alarm expires and closes the correlated connection"
+    },
+    "correlation_key": "accepted server connection + command-read generation",
+    "projection_rule": "spawn one plaintext command-read generation each time smtp_getc arms a receive alarm under smtp_read_command; bytes/read completion, command completion, phase change, or connection close ends that generation before the next one",
+    "monitor_instantiation": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each plaintext smtp_getc alarm arm in command phase is a separate monitor instance",
+    "event_contract": {
+      "trigger": "emit once at smtp_in.c:424 when smtp_read_command's command_timeout_handler is active and plaintext smtp_getc arms smtp_receive_timeout for an empty buffer",
+      "timeout": "emit only on entry to command_timeout_handler for the same connection/generation",
+      "non_timeout_outcomes": "read data, complete command, EOF, non-timeout read error, DATA-phase transition, STARTTLS transition, or connection teardown closes/cancels without the timeout AP",
+      "excluded_paths": "tls-openssl tls_getc, tls-gnu tls_getc, DATA receive handler, and batched input",
+      "clock_basis": "absolute integer milliseconds from the individual plaintext command-read alarm arm"
+    },
+    "source_repository": "Exim/exim",
+    "source_commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "source_path": "src/src/smtp_in.c",
+    "source_symbol": "smtp_getc",
+    "source_lines": "416-430",
+    "source_url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_in.c#L416-L430",
+    "auxiliary_source_mappings": [
+      {
+        "role": "command-phase signal-handler installation and read loop",
+        "path": "src/src/smtp_in.c",
+        "symbol": "smtp_read_command",
+        "lines": "1424-1450",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_in.c#L1424-L1450",
+        "atomic_propositions": [
+          "smtp_server_command_wait_started"
+        ]
+      },
+      {
+        "role": "command timeout outcome and connection close",
+        "path": "src/src/smtp_in.c",
+        "symbol": "command_timeout_handler",
+        "lines": "838-850",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_in.c#L838-L850",
+        "atomic_propositions": [
+          "smtp_server_command_idle_timeout"
+        ]
+      },
+      {
+        "role": "default timeout profile",
+        "path": "src/src/globals.c",
+        "symbol": "smtp_receive_timeout",
+        "lines": "1325-1326",
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/globals.c#L1325-L1326",
+        "atomic_propositions": [
+          "smtp_server_command_wait_started"
+        ]
+      },
+      {
+        "role": "fixed timeout profile",
+        "path": "src/src/globals.c",
+        "symbol": "smtp_receive_timeout",
+        "lines": "1325",
+        "atomic_propositions": [
+          "smtp_server_command_wait_started"
+        ],
+        "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/globals.c#L1325"
+      }
+    ],
+    "instrumentation_timing": "emit start only when plaintext smtp_getc arms the receive alarm while smtp_read_command has installed command_timeout_handler; emit timeout only inside that handler and correlate by accepted connection/read generation",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_server_command_wait_started"
+        ]
+      },
+      {
+        "time": 300000,
+        "props": [
+          "smtp_server_command_idle_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "smtp_server_command_wait_started"
+        ]
+      },
+      {
+        "time": 299999,
+        "props": [
+          "smtp_server_command_idle_timeout"
+        ]
+      },
+      {
+        "time": 300001,
+        "props": []
+      }
+    ],
+    "audit_disposition": "FIX",
+    "audit_disposition_note": "The original card made a generic server/STARTTLS claim while only mapping plaintext smtp_getc, omitted smtp_read_command's handler context, and rated a real five-minute wait HIGH-triggerability.",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Original disposition FIX retained above; the card is now explicitly plaintext command-phase, maps handler installation and timeout outcome, and distinguishes role reachability from practical deadline triggerability.",
+    "review_question": "确认主实验保持 plaintext；若启用 STARTTLS，另建固定 TLS backend 卡片并锚定 tls-openssl.c 或 tls-gnu.c 的 tls_getc。",
+    "limitations": "This card covers each plaintext command-read alarm generation, not an absolute whole-line deadline and not DATA/TLS reads. Although the server role is benchmark-reachable, the real 300-second deadline has LOW per-testcase triggerability without validated virtual time.",
+    "primary_source_atomic_propositions": [
+      "smtp_server_command_wait_started"
+    ]
+  }
+]

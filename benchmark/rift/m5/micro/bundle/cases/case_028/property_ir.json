@@ -1,0 +1,127 @@
+{
+  "artifact_id": "artifact.property.case_028.m5.typed_predicate",
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_primary",
+      "description": "public source declaration: ap_primary = result",
+      "predicate": {
+        "node_kind": "cast",
+        "operands": [
+          {
+            "node_kind": "reference",
+            "operands": [],
+            "operator": "decl_ref",
+            "referenced_selector_id": "sel.case_028.ap_primary.ref000.DeclRefExpr",
+            "value_type": {
+              "bit_width": 32,
+              "canonical": "int",
+              "kind": "integer",
+              "signed": true
+            }
+          }
+        ],
+        "operator": "LValueToRValue",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "role_selector_groups": [
+        {
+          "all_of": [
+            "sel.case_028.ap_primary.location"
+          ],
+          "group_id": "grp.case_028.ap_primary.state.ap_site",
+          "role": "state"
+        },
+        {
+          "all_of": [
+            "sel.case_028.ap_primary.ref000.DeclRefExpr"
+          ],
+          "group_id": "grp.case_028.ap_primary.state.ref000",
+          "role": "state"
+        }
+      ],
+      "roles": [
+        "state"
+      ],
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "formula": {
+    "ap_ref": "ap_primary",
+    "node_id": "formula.case_028.ap_primary",
+    "operands": [],
+    "operator": "atom"
+  },
+  "formula_text": "ap_primary := (result)",
+  "logic": "MITL",
+  "property_id": "property.case_028",
+  "schema_version": "2.0.0",
+  "selectors": [
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 9,
+        "file": "sources/case_028.cpp",
+        "line": 24,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_028.ap_primary.location"
+    },
+    {
+      "expression_structure": {
+        "node_kind": "cast",
+        "operands": [
+          {
+            "node_kind": "reference",
+            "operands": [],
+            "operator": "decl_ref",
+            "referenced_selector_id": "sel.case_028.ap_primary.ref000.DeclRefExpr",
+            "value_type": {
+              "bit_width": 32,
+              "canonical": "int",
+              "kind": "integer",
+              "signed": true
+            }
+          }
+        ],
+        "operator": "LValueToRValue",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "kind": "expression_structure",
+      "selector_id": "sel.case_028.ap_primary.expression"
+    },
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 22,
+        "end_column": 27,
+        "end_line": 24,
+        "file": "sources/case_028.cpp",
+        "line": 24,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_028.ap_primary.ref000.DeclRefExpr",
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "time_domain": "dense"
+}

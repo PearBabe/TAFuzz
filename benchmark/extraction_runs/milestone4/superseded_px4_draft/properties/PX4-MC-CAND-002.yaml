@@ -1,0 +1,39 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-002
+title: Manual-control loss after selected-source silence
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 112-134
+    original_text: "Time after last setpoint received from the selected manual control source after which manual control is considered lost."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 125-139
+    original_text: "The time in seconds without a new setpoint from RC or Joystick, after which the connection is considered lost."
+normalized_requirement:
+  context: manual-control-loss is applicable and the current mode is not selected by COM_RCL_EXCEPT
+  trigger: no accepted setpoint from the selected manual-control source for T_rc
+  obligation: classify manual control as lost; NAV_RCL_ACT and candidate PX4-MC-CAND-001 determine the follow-on action
+  source_cardinality: many possible inputs converge on one selected manual_control_setpoint; wire injection alone does not prove selection
+time_constraint:
+  expression: T_rc = runtime(COM_RC_LOSS_T) seconds
+  compiled_default_instance: 0.5 seconds
+  allowed_metadata_range: 0 to 35 seconds
+  epoch: timestamp of the last accepted setpoint from the source selected by PX4
+  clock: PX4 HRT for internal timestamp; host monotonic only if selection is independently observable
+  boundary: documentation says after; equality and scheduling tolerance remain unresolved
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G((manual_gap_expired & rc_loss_applicable) -> F_[0,EPS_OBS] manual_control_lost)"
+atomic_propositions:
+  - AP-PX4-SELECTED-MANUAL-SAMPLE
+  - AP-PX4-MANUAL-GAP-EXPIRED
+  - AP-PX4-MANUAL-CONTROL-LOST
+  - AP-PX4-RC-LOSS-APPLICABLE
+mavlink_observation_refs: [OBS-PX4-MANUAL-INPUT, OBS-PX4-PARAM, OBS-PX4-EVENT, OBS-PX4-MODE]
+blockers: [NEEDS_SELECTED_SOURCE_OBSERVATION, NEEDS_LOSS_FLAG_OBSERVATION, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

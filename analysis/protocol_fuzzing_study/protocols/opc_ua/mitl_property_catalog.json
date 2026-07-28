@@ -1,0 +1,2252 @@
+[
+  {
+    "id": "OPCUA-PUB-01",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA Publish timeoutHint, open62541 5000 ms client-default profile",
+    "title": "Publish request is not cancelled before timeoutHint",
+    "category": "Publish request timeout",
+    "natural_language": "timeoutHint=5000 ms 的 Publish 请求排队后，服务器在前 5000 ms 内不得以 Bad_Timeout 取消它；规范不要求到点必须取消。",
+    "normative_strength": "SHOULD / SHALL check",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "7.32",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/7.32",
+    "standard_excerpt": "The Server should wait at minimum the timeout after he received the request before cancelling",
+    "time_value_ms": "5000",
+    "time_parameter": "RequestHeader.timeoutHint",
+    "time_source": "open62541 client timeout default 5000 ms used as the locked Publish request profile",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (publish_request_queued_timeout_hint_5000 -> G [0,5000) (!publish_bad_timeout))",
+    "mightyppl_formula": "G* (publish_request_queued_timeout_hint_5000 -> G [0,5000) (!publish_bad_timeout))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "publish_request_queued_timeout_hint_5000",
+      "publish_bad_timeout"
+    ],
+    "ap_definitions": {
+      "publish_request_queued_timeout_hint_5000": "Service_Publish queues a request whose RequestHeader.timeoutHint equals 5000 ms.",
+      "publish_bad_timeout": "The server sends a PublishResponse with serviceResult Bad_Timeout for that requestId."
+    },
+    "correlation_key": "Session + Publish requestId; requestId remains an event field",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one queued Publish request; normal response, Session close, or request cancellation ends that request generation without creating another trigger in the same word.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [],
+    "timer_observation_semantics": "The timed word uses actual request queue time and actual Bad_Timeout send time; maxTime is stored for boundary audit. This safety property does not observe or require a deadline callback.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/server/ua_subscription.c",
+    "source_symbol": "UA_Subscription_publish",
+    "source_lines": "427-452",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L452",
+    "instrumentation_timing": "Record queue time/maxTime at the fixed Service_Publish producer; emit Bad_Timeout immediately before sendResponse at lines 441-447 using actual monotonic time.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "publish_request_queued_timeout_hint_5000"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "publish_request_queued_timeout_hint_5000"
+        ]
+      },
+      {
+        "time": 4999,
+        "props": [
+          "publish_bad_timeout"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "PRIMARY_ORACLE",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "independent_audit_status": "APPROVE",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Approved: the formula is safety-only and does not invent an exact timeout action; a fixed queue/maxTime producer hook was added.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "This is only a no-early-cancellation safety property. timeoutHint is a hint, so no eventual Bad_Timeout at exactly 5000 ms is claimed; cancellation at the endpoint is allowed.",
+    "primary_source_atomic_propositions": [
+      "publish_bad_timeout"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "Publish timeoutHint deadline and queue",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_Publish",
+        "lines": "304-315",
+        "atomic_propositions": [
+          "publish_request_queued_timeout_hint_5000"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L304-L315"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "Publish timeoutHint deadline and queue",
+        "atomic_propositions": [
+          "publish_request_queued_timeout_hint_5000"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_Publish",
+        "lines": "304-315",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L304-L315",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_Publish']; failed_symbols=[]; cited_ranges=[(304, 315)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_publish']; failed_symbols=[]; cited_ranges=[(427, 452)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "publish_request_queued_timeout_hint_5000",
+      "publish_bad_timeout"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 41,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SC-01",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA SecureChannel client, open62541 default profile",
+    "title": "SecureChannel token renewal occurs after 75% and before expiry",
+    "category": "security-token renewal",
+    "natural_language": "锁定 open62541 默认 600000 ms token lifetime 后，客户端在 450000 ms 前不得续期，并应在 [450000,600000) ms 内续期；channel 关闭或该 generation 被取消可解除窗口。",
+    "normative_strength": "SHOULD",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.6.2.1",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.6.2.1",
+    "standard_excerpt": "Clients should request a new SecurityToken after 75 % of its lifetime has elapsed",
+    "time_value_ms": "450000",
+    "time_parameter": "0.75 * revisedLifetime",
+    "time_source": "OPC 10000-4 75% rule applied to open62541 secureChannelLifeTime default 600000 ms",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE_DERIVED",
+    "mathematical_mitl": "G (security_token_issued_default_lifetime -> (G [0,450000) (!secure_channel_renew_requested) && F [0,600000) (secure_channel_renew_requested || secure_channel_closed || security_token_generation_cancelled)))",
+    "mightyppl_formula": "G* (security_token_issued_default_lifetime -> (G [0,450000) (!secure_channel_renew_requested) && F [0,600000) (secure_channel_renew_requested || secure_channel_closed || security_token_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "security_token_issued_default_lifetime",
+      "secure_channel_renew_requested",
+      "secure_channel_closed",
+      "security_token_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "security_token_issued_default_lifetime": "OpenSecureChannel response installs a token whose revisedLifetime is 600000 ms.",
+      "secure_channel_renew_requested": "An OpenSecureChannelRequest with requestType=RENEW is handed to the channel send path.",
+      "secure_channel_closed": "The correlated SecureChannel closes before renewal and discharges this window.",
+      "security_token_generation_cancelled": "A later successful processOPNResponse replaces the correlated current token with a new token before this generation's renewal-request observation; the adapter closes the old token generation at that replacement."
+    },
+    "correlation_key": "client connection + SecureChannelId + current tokenId; tokenId is an event field, never an AP suffix",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Correlate by channel/token; only revisedLifetime=600000 enters this property. Close on successful renewal, channel close, explicit cancellation, or expiry.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "secure_channel_closed",
+      "security_token_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/client/ua_client_connect.c",
+    "source_symbol": "processOPNResponse",
+    "source_lines": "495-589",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589",
+    "instrumentation_timing": "Record token installation and nextChannelRenewal at lines 560-565; record RENEW only after UA_SecureChannel_sendAsymmetricOPNMessage succeeds at lines 625-640. Store logical threshold/expiry and actual send time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "security_token_issued_default_lifetime"
+        ]
+      },
+      {
+        "time": 450000,
+        "props": [
+          "secure_channel_renew_requested"
+        ]
+      },
+      {
+        "time": 450001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "security_token_issued_default_lifetime"
+        ]
+      },
+      {
+        "time": 449999,
+        "props": [
+          "secure_channel_renew_requested"
+        ]
+      },
+      {
+        "time": 450001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "security_token_issued_default_lifetime"
+          ]
+        },
+        {
+          "time": 600000,
+          "props": [
+            "secure_channel_renew_requested"
+          ]
+        },
+        {
+          "time": 600001,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "security_token_issued_default_lifetime"
+          ]
+        },
+        {
+          "time": 600001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: after-75% interval replaces the incorrect exact-75% deadline; early and late/missing oracles and explicit cancellation were added.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "The 75% rule is SHOULD-level guidance. 600000 ms is the locked open62541 default, not an OPC UA universal lifetime; the formula no longer invents an exact action at 75%.",
+    "primary_source_atomic_propositions": [
+      "security_token_issued_default_lifetime",
+      "security_token_generation_cancelled"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "RENEW OpenSecureChannelRequest send",
+        "path": "src/client/ua_client_connect.c",
+        "symbol": "sendOPNAsync",
+        "lines": "593-646",
+        "atomic_propositions": [
+          "secure_channel_renew_requested"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L593-L646"
+      },
+      {
+        "role": "SecureChannel close lifecycle",
+        "path": "src/client/ua_client_connect.c",
+        "symbol": "closeSecureChannel",
+        "lines": "2198-2236",
+        "atomic_propositions": [
+          "secure_channel_closed"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L2198-L2236"
+      },
+      {
+        "role": "600000 ms client lifetime profile",
+        "path": "plugins/ua_config_default.c",
+        "symbol": "UA_ClientConfig_setDefault",
+        "lines": "1115-1118",
+        "atomic_propositions": [
+          "security_token_issued_default_lifetime"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "RENEW OpenSecureChannelRequest send",
+        "atomic_propositions": [
+          "secure_channel_renew_requested"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/client/ua_client_connect.c",
+        "symbol": "sendOPNAsync",
+        "lines": "593-646",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L593-L646",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c; verified_symbols=['sendOPNAsync']; failed_symbols=[]; cited_ranges=[(593, 646)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "SecureChannel close lifecycle",
+        "atomic_propositions": [
+          "secure_channel_closed"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/client/ua_client_connect.c",
+        "symbol": "closeSecureChannel",
+        "lines": "2198-2236",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L2198-L2236",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c; verified_symbols=['closeSecureChannel']; failed_symbols=[]; cited_ranges=[(2198, 2236)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "600000 ms client lifetime profile",
+        "atomic_propositions": [
+          "security_token_issued_default_lifetime"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "plugins/ua_config_default.c",
+        "symbol": "UA_ClientConfig_setDefault",
+        "lines": "1115-1118",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c; verified_symbols=['UA_ClientConfig_setDefault']; failed_symbols=[]; cited_ranges=[(1115, 1118)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c; verified_symbols=['processOPNResponse']; failed_symbols=[]; cited_ranges=[(495, 589)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "security_token_issued_default_lifetime",
+      "secure_channel_renew_requested",
+      "secure_channel_closed",
+      "security_token_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 17,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 1,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SC-02",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA SecureChannel client, open62541 default profile",
+    "title": "Expired old-token messages remain acceptable for 25% lifetime",
+    "category": "security-token overlap",
+    "natural_language": "旧 token 到期后的 150000 ms 重叠窗口内，使用该旧 token 且密码学校验成功的消息应被客户端接受。",
+    "normative_strength": "SHOULD",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.6.2.1",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.6.2.1",
+    "standard_excerpt": "Clients should accept Messages secured by an expired SecurityToken for up to 25 % of the token lifetime",
+    "time_value_ms": "150000",
+    "time_parameter": "0.25 * revisedLifetime",
+    "time_source": "OPC 10000-4 25% overlap applied to open62541 600000 ms default token lifetime",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE_DERIVED",
+    "mathematical_mitl": "G (old_security_token_expired_default_lifetime -> G [0,150000] (old_token_message_received -> old_token_message_accepted))",
+    "mightyppl_formula": "G* (old_security_token_expired_default_lifetime -> G [0,150000] (old_token_message_received -> old_token_message_accepted))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "old_security_token_expired_default_lifetime",
+      "old_token_message_received",
+      "old_token_message_accepted"
+    ],
+    "ap_definitions": {
+      "old_security_token_expired_default_lifetime": "The old token reaches createdAt+600000 ms while it remains the alternate token after renewal.",
+      "old_token_message_received": "A message with the correlated old tokenId reaches checkSymHeader and passes framing/cryptographic preconditions.",
+      "old_token_message_accepted": "checkSymHeader returns GOOD for that old-token message in the same merged callback valuation."
+    },
+    "correlation_key": "SecureChannelId + old tokenId + message requestId; identifiers remain fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one SecureChannel and one expired old token; retain only messages carrying that tokenId during the 25% window and end on explicit close/rollover.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [],
+    "timer_observation_semantics": "Token expiry and the 25% logical overlap are derived from createdAt/revisedLifetime; message acceptance is merged with the actual checkSymHeader return callback.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/ua_securechannel_crypto.c",
+    "source_symbol": "checkSymHeader",
+    "source_lines": "506-569",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/ua_securechannel_crypto.c#L506-L569",
+    "instrumentation_timing": "Emit received on entry with tokenId matching altSecurityToken; merge accepted into the same timestamp only if checkSymHeader returns GOOD. End the token projection on explicit channel close or old-token rollover.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "old_security_token_expired_default_lifetime"
+        ]
+      },
+      {
+        "time": 100000,
+        "props": [
+          "old_token_message_received",
+          "old_token_message_accepted"
+        ]
+      },
+      {
+        "time": 150001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "old_security_token_expired_default_lifetime"
+        ]
+      },
+      {
+        "time": 100000,
+        "props": [
+          "old_token_message_received"
+        ]
+      },
+      {
+        "time": 150001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "PRIMARY_ORACLE",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "independent_audit_status": "APPROVE",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Approved with caveat: explicit close/rollover terminates the single-token projection, and the 150000 ms closed endpoint requires human sign-off.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "The locked checkSymHeader code appears not to implement the 25% grace period; this is intentionally a conformance oracle. Human review must retain the declared closed 150000 ms integer endpoint convention.",
+    "primary_source_atomic_propositions": [
+      "old_token_message_received",
+      "old_token_message_accepted"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "old-token installation and expiry-field snapshot",
+        "path": "src/client/ua_client_connect.c",
+        "symbol": "processOPNResponse",
+        "lines": "495-589",
+        "atomic_propositions": [
+          "old_security_token_expired_default_lifetime"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589"
+      },
+      {
+        "role": "600000 ms client lifetime profile",
+        "path": "plugins/ua_config_default.c",
+        "symbol": "UA_ClientConfig_setDefault",
+        "lines": "1115-1118",
+        "atomic_propositions": [
+          "old_security_token_expired_default_lifetime"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "old-token installation and expiry-field snapshot",
+        "atomic_propositions": [
+          "old_security_token_expired_default_lifetime"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/client/ua_client_connect.c",
+        "symbol": "processOPNResponse",
+        "lines": "495-589",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c; verified_symbols=['processOPNResponse']; failed_symbols=[]; cited_ranges=[(495, 589)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "600000 ms client lifetime profile",
+        "atomic_propositions": [
+          "old_security_token_expired_default_lifetime"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "plugins/ua_config_default.c",
+        "symbol": "UA_ClientConfig_setDefault",
+        "lines": "1115-1118",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c; verified_symbols=['UA_ClientConfig_setDefault']; failed_symbols=[]; cited_ranges=[(1115, 1118)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/ua_securechannel_crypto.c; verified_symbols=['checkSymHeader']; failed_symbols=[]; cited_ranges=[(506, 569)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "old_security_token_expired_default_lifetime",
+      "old_token_message_received",
+      "old_token_message_accepted"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 74,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 96,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 33,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SESS-01",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA Session server, open62541 client-default requested timeout",
+    "title": "Inactive Session terminates at revised 1200000 ms timeout",
+    "category": "session inactivity",
+    "natural_language": "revisedSessionTimeout 为 1200000 ms 的会话从最后一次服务活动后开始空闲；此前不得超时终止，到期时必须终止或已有新活动重置窗口。",
+    "normative_strength": "SHALL",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.7.2.2",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.7.2.2",
+    "standard_excerpt": "the Server shall automatically terminate the Client Session",
+    "time_value_ms": "1200000",
+    "time_parameter": "revisedSessionTimeout",
+    "time_source": "open62541 requestedSessionTimeout default 1200000 ms, accepted when below the server maximum",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (session_idle_window_started_1200000 -> (G [0,1200000) (!session_timeout_terminated) && F [0,1200000] (session_timeout_terminated || session_service_activity || session_idle_generation_cancelled)))",
+    "mightyppl_formula": "G* (session_idle_window_started_1200000 -> (G [0,1200000) (!session_timeout_terminated) && F [0,1200000] (session_timeout_terminated || session_service_activity || session_idle_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "session_idle_window_started_1200000",
+      "session_timeout_terminated",
+      "session_service_activity",
+      "session_idle_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "session_idle_window_started_1200000": "After UA_Session_updateLifetime for a Session whose revised timeout is 1200000 ms, the adapter opens a fresh idle window.",
+      "session_timeout_terminated": "UA_Server_cleanupSessions removes that Session with shutdown reason TIMEOUT.",
+      "session_service_activity": "A valid correlated Service request updates the Session lifetime before expiry.",
+      "session_idle_generation_cancelled": "Service_CloseSession removes the correlated Session with CLOSE rather than TIMEOUT, or an equivalent server purge/removal lifecycle ends it before the idle deadline."
+    },
+    "correlation_key": "server instance + authenticationToken/sessionId; dynamic NodeIds remain fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Correlate one Session generation; each valid Service activity satisfies the old generation and starts a new projected word; explicit close/shutdown cancels it.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "session_service_activity",
+      "session_idle_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/server/ua_services_session.c",
+    "source_symbol": "UA_Server_cleanupSessions",
+    "source_lines": "115-126",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L115-L126",
+    "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "session_idle_window_started_1200000"
+        ]
+      },
+      {
+        "time": 1200000,
+        "props": [
+          "session_timeout_terminated"
+        ]
+      },
+      {
+        "time": 1200001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "session_idle_window_started_1200000"
+        ]
+      },
+      {
+        "time": 1199999,
+        "props": [
+          "session_timeout_terminated"
+        ]
+      },
+      {
+        "time": 1200001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "session_idle_window_started_1200000"
+          ]
+        },
+        {
+          "time": 1200001,
+          "props": [
+            "session_timeout_terminated"
+          ]
+        },
+        {
+          "time": 1200002,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "session_idle_window_started_1200000"
+          ]
+        },
+        {
+          "time": 1200001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: explicit normal cancellation, fixed trigger/activity hooks, logical deadline versus cleanup callback, and late/missing oracle were added.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "1200000 ms is an open62541 client request default; trigger only when the server-returned revisedSessionTimeout is exactly 1200000. The strict validTill < now cleanup may expose a real one-tick/source scheduling discrepancy; no epsilon is added.",
+    "primary_source_atomic_propositions": [
+      "session_timeout_terminated"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "Session logical idle deadline",
+        "path": "src/server/ua_session.c",
+        "symbol": "UA_Session_updateLifetime",
+        "lines": "125-131",
+        "atomic_propositions": [
+          "session_idle_window_started_1200000",
+          "session_service_activity"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_session.c#L125-L131"
+      },
+      {
+        "role": "valid Service activity refresh",
+        "path": "src/server/ua_server_binary.c",
+        "symbol": "processMSGDecoded",
+        "lines": "716-865",
+        "atomic_propositions": [
+          "session_service_activity"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_server_binary.c#L716-L865"
+      },
+      {
+        "role": "revised Session timeout creation",
+        "path": "src/server/ua_services_session.c",
+        "symbol": "UA_Server_createSession / Service_CreateSession",
+        "lines": "224-260;263-393",
+        "atomic_propositions": [
+          "session_idle_window_started_1200000"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L224-L260"
+      },
+      {
+        "role": "explicit CloseSession and removal",
+        "path": "src/server/ua_services_session.c",
+        "symbol": "Service_CloseSession / UA_Server_removeSession",
+        "lines": "29-98;918-960",
+        "atomic_propositions": [
+          "session_idle_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L29-L98"
+      },
+      {
+        "role": "1200000 ms requested client profile",
+        "path": "plugins/ua_config_default.c",
+        "symbol": "UA_ClientConfig_setDefault",
+        "lines": "1173-1174",
+        "atomic_propositions": [
+          "session_idle_window_started_1200000"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1173-L1174"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "Session logical idle deadline",
+        "atomic_propositions": [
+          "session_idle_window_started_1200000",
+          "session_service_activity"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_session.c",
+        "symbol": "UA_Session_updateLifetime",
+        "lines": "125-131",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_session.c#L125-L131",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_session.c; verified_symbols=['UA_Session_updateLifetime']; failed_symbols=[]; cited_ranges=[(125, 131)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "valid Service activity refresh",
+        "atomic_propositions": [
+          "session_service_activity"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_server_binary.c",
+        "symbol": "processMSGDecoded",
+        "lines": "716-865",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_server_binary.c#L716-L865",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_server_binary.c; verified_symbols=['processMSGDecoded']; failed_symbols=[]; cited_ranges=[(716, 865)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "revised Session timeout creation",
+        "atomic_propositions": [
+          "session_idle_window_started_1200000"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_session.c",
+        "symbol": "UA_Server_createSession / Service_CreateSession",
+        "lines": "224-260;263-393",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L224-L260",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c; verified_symbols=['UA_Server_createSession', 'Service_CreateSession']; failed_symbols=[]; cited_ranges=[(224, 260), (263, 393)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "explicit CloseSession and removal",
+        "atomic_propositions": [
+          "session_idle_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_session.c",
+        "symbol": "Service_CloseSession / UA_Server_removeSession",
+        "lines": "29-98;918-960",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L29-L98",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c; verified_symbols=['Service_CloseSession', 'UA_Server_removeSession']; failed_symbols=[]; cited_ranges=[(29, 98), (918, 960)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "1200000 ms requested client profile",
+        "atomic_propositions": [
+          "session_idle_window_started_1200000"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "plugins/ua_config_default.c",
+        "symbol": "UA_ClientConfig_setDefault",
+        "lines": "1173-1174",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1173-L1174",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c; verified_symbols=['UA_ClientConfig_setDefault']; failed_symbols=[]; cited_ranges=[(1173, 1174)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c; verified_symbols=['UA_Server_cleanupSessions']; failed_symbols=[]; cited_ranges=[(115, 126)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "session_idle_window_started_1200000",
+      "session_timeout_terminated",
+      "session_service_activity",
+      "session_idle_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 21,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SUB-01",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA Subscription, open62541 default CreateSubscription profile",
+    "title": "First Publish response occurs after the first 500 ms cycle",
+    "category": "subscription first cycle",
+    "natural_language": "默认 publishingInterval=500 ms 且已有 Publish 请求时，Subscription 创建后的首个消息不得早于首周期结束，并应在 500 ms 返回通知或 keep-alive。",
+    "normative_strength": "NORMATIVE BEHAVIOR",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.14.1.1",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.1.1",
+    "standard_excerpt": "the first Message is sent at the end of the first publishing cycle",
+    "time_value_ms": "500",
+    "time_parameter": "revisedPublishingInterval",
+    "time_source": "open62541 UA_CreateSubscriptionRequest_default requestedPublishingInterval=500 ms",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (default_subscription_first_cycle_started -> (G [0,500) (!first_publish_response) && F [0,500] (first_publish_response || first_cycle_generation_cancelled)))",
+    "mightyppl_formula": "G* (default_subscription_first_cycle_started -> (G [0,500) (!first_publish_response) && F [0,500] (first_publish_response || first_cycle_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "default_subscription_first_cycle_started",
+      "first_publish_response",
+      "first_cycle_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "default_subscription_first_cycle_started": "CreateSubscription succeeds with revisedPublishingInterval=500 ms and at least one Publish request is queued before the first cycle.",
+      "first_publish_response": "The first correlated PublishResponse is sent, containing either notifications or an empty keep-alive message.",
+      "first_cycle_generation_cancelled": "The correlated Subscription is deleted, its revised interval is changed by ModifySubscription, or its Session-close path deletes the Subscription before the first-cycle response."
+    },
+    "correlation_key": "Session authenticationToken + subscriptionId + Publish requestId; IDs remain event fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one Subscription first-cycle generation; close, deletion, or revised-setting change emits first_cycle_generation_cancelled and ends it.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "first_cycle_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/server/ua_subscription.c",
+    "source_symbol": "Subscription_setState",
+    "source_lines": "730-759",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L730-L759",
+    "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "default_subscription_first_cycle_started"
+        ]
+      },
+      {
+        "time": 500,
+        "props": [
+          "first_publish_response"
+        ]
+      },
+      {
+        "time": 501,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "default_subscription_first_cycle_started"
+        ]
+      },
+      {
+        "time": 499,
+        "props": [
+          "first_publish_response"
+        ]
+      },
+      {
+        "time": 501,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "default_subscription_first_cycle_started"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "default_subscription_first_cycle_started"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: queue/Session/setting cancellation is explicit, revised-value and response hooks are fixed, and a late/missing oracle was added.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "The 500 ms request default is not enough: this property triggers only when the CreateSubscription response reports revisedPublishingInterval=500 and a Publish request remains available or is explicitly cancelled.",
+    "primary_source_atomic_propositions": [
+      "default_subscription_first_cycle_started"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "CreateSubscription revised values",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_CreateSubscription",
+        "lines": "55-127",
+        "atomic_propositions": [
+          "default_subscription_first_cycle_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L55-L127"
+      },
+      {
+        "role": "Publish request queue prerequisite",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_Publish",
+        "lines": "236-355",
+        "atomic_propositions": [
+          "default_subscription_first_cycle_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L236-L355"
+      },
+      {
+        "role": "first notification or keep-alive response",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_publish",
+        "lines": "427-648",
+        "atomic_propositions": [
+          "first_publish_response"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L648"
+      },
+      {
+        "role": "Subscription deletion or setting change",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "atomic_propositions": [
+          "first_cycle_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+      },
+      {
+        "role": "revised interval change",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription",
+        "lines": "130-193",
+        "atomic_propositions": [
+          "first_cycle_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+      },
+      {
+        "role": "500 ms client request profile",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "atomic_propositions": [
+          "default_subscription_first_cycle_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "CreateSubscription revised values",
+        "atomic_propositions": [
+          "default_subscription_first_cycle_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_CreateSubscription",
+        "lines": "55-127",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L55-L127",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_CreateSubscription']; failed_symbols=[]; cited_ranges=[(55, 127)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "Publish request queue prerequisite",
+        "atomic_propositions": [
+          "default_subscription_first_cycle_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_Publish",
+        "lines": "236-355",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L236-L355",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_Publish']; failed_symbols=[]; cited_ranges=[(236, 355)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "first notification or keep-alive response",
+        "atomic_propositions": [
+          "first_publish_response"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_publish",
+        "lines": "427-648",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L648",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_publish']; failed_symbols=[]; cited_ranges=[(427, 648)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "Subscription deletion or setting change",
+        "atomic_propositions": [
+          "first_cycle_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_delete']; failed_symbols=[]; cited_ranges=[(53, 115)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "revised interval change",
+        "atomic_propositions": [
+          "first_cycle_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription",
+        "lines": "130-193",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_ModifySubscription']; failed_symbols=[]; cited_ranges=[(130, 193)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 6,
+        "role": "500 ms client request profile",
+        "atomic_propositions": [
+          "default_subscription_first_cycle_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h; verified_symbols=['UA_CreateSubscriptionRequest_default']; failed_symbols=[]; cited_ranges=[(43, 63)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['Subscription_setState']; failed_symbols=[]; cited_ranges=[(730, 759)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "default_subscription_first_cycle_started",
+      "first_publish_response",
+      "first_cycle_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 16,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SUB-02",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA Subscription, open62541 default keep-alive profile",
+    "title": "No-notification keep-alive is due after ten 500 ms cycles",
+    "category": "subscription keep-alive",
+    "natural_language": "首个消息之后，在无通知且 Publish 请求持续可用的默认 profile 中，不得在 5000 ms 前发 keep-alive；到十个周期时应发 keep-alive，若中途有通知则结束该窗口。",
+    "normative_strength": "NORMATIVE BEHAVIOR",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.14.1.1; 5.14.2.2",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.1.1",
+    "standard_excerpt": "When the maximum keep-alive count is reached, a Publish request is de-queued",
+    "time_value_ms": "5000",
+    "time_parameter": "revisedMaxKeepAliveCount * revisedPublishingInterval",
+    "time_source": "open62541 defaults: 10 cycles * 500 ms",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE_DERIVED",
+    "mathematical_mitl": "G (default_keepalive_window_started -> (G [0,5000) (!keepalive_response) && F [0,5000] (keepalive_response || notification_response || keepalive_generation_cancelled)))",
+    "mightyppl_formula": "G* (default_keepalive_window_started -> (G [0,5000) (!keepalive_response) && F [0,5000] (keepalive_response || notification_response || keepalive_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "default_keepalive_window_started",
+      "keepalive_response",
+      "notification_response",
+      "keepalive_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "default_keepalive_window_started": "After a prior message/reset, the adapter observes revised interval=500, maxKeepAliveCount=10, no queued notifications, and a Publish request remains available.",
+      "keepalive_response": "A correlated PublishResponse with zero notifications is sent as keep-alive.",
+      "notification_response": "A correlated PublishResponse containing at least one notification ends this no-notification window.",
+      "keepalive_generation_cancelled": "The correlated Subscription is deleted, ModifySubscription changes its revised interval/count, or its Session-close path deletes the Subscription before this keep-alive generation completes."
+    },
+    "correlation_key": "Session + subscriptionId + Publish request queue; sequence numbers/requestIds are fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one keep-alive counter generation; notification satisfies it, while deletion, setting modification, or Session close emits keepalive_generation_cancelled.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "notification_response",
+      "keepalive_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/server/ua_subscription.c",
+    "source_symbol": "UA_Subscription_publish",
+    "source_lines": "477-610",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+    "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "default_keepalive_window_started"
+        ]
+      },
+      {
+        "time": 5000,
+        "props": [
+          "keepalive_response"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "default_keepalive_window_started"
+        ]
+      },
+      {
+        "time": 4999,
+        "props": [
+          "keepalive_response"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "default_keepalive_window_started"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "default_keepalive_window_started"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: all cancellation paths are represented by an AP, one counter generation is monitored per word, deadline/callback timestamps are separated, and late/missing is tested.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "Both inputs must be server-revised values (500 ms and 10), not merely client requests. The logical tenth-cycle deadline and actual callback/send times are separate; no scheduler epsilon is invented.",
+    "primary_source_atomic_propositions": [
+      "default_keepalive_window_started",
+      "keepalive_response",
+      "notification_response"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "revised keep-alive settings",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+        "lines": "26-52;55-127",
+        "atomic_propositions": [
+          "default_keepalive_window_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52"
+      },
+      {
+        "role": "Subscription deletion",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "atomic_propositions": [
+          "keepalive_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+      },
+      {
+        "role": "revised interval/count change",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription",
+        "lines": "130-193",
+        "atomic_propositions": [
+          "keepalive_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+      },
+      {
+        "role": "default 500 ms by 10 client profile",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "atomic_propositions": [
+          "default_keepalive_window_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "revised keep-alive settings",
+        "atomic_propositions": [
+          "default_keepalive_window_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+        "lines": "26-52;55-127",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['setSubscriptionSettings', 'Service_CreateSubscription']; failed_symbols=[]; cited_ranges=[(26, 52), (55, 127)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "Subscription deletion",
+        "atomic_propositions": [
+          "keepalive_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_delete']; failed_symbols=[]; cited_ranges=[(53, 115)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "revised interval/count change",
+        "atomic_propositions": [
+          "keepalive_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription",
+        "lines": "130-193",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_ModifySubscription']; failed_symbols=[]; cited_ranges=[(130, 193)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "default 500 ms by 10 client profile",
+        "atomic_propositions": [
+          "default_keepalive_window_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h; verified_symbols=['UA_CreateSubscriptionRequest_default']; failed_symbols=[]; cited_ranges=[(43, 63)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_publish']; failed_symbols=[]; cited_ranges=[(477, 610)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "default_keepalive_window_started",
+      "keepalive_response",
+      "notification_response",
+      "keepalive_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 18,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SUB-03",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA Subscription, open62541 default lifetime profile",
+    "title": "Subscription without Publish requests closes after 10000 cycles",
+    "category": "subscription lifetime",
+    "natural_language": "默认 500 ms publishing interval、lifetimeCount=10000 时，从无 Publish 请求窗口开始到 5000000 ms 前不得因 lifetime 超时关闭；到期时应关闭或已被服务活动重置。",
+    "normative_strength": "SHALL",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.14.1.1; 5.14.2.2",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.2.2",
+    "standard_excerpt": "then the Subscription shall be deleted by the Server",
+    "time_value_ms": "5000000",
+    "time_parameter": "revisedLifetimeCount * revisedPublishingInterval",
+    "time_source": "open62541 defaults: 10000 cycles * 500 ms",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE_DERIVED",
+    "mathematical_mitl": "G (default_subscription_no_publish_window_started -> (G [0,5000000) (!subscription_timeout_closed) && F [0,5000000] (subscription_timeout_closed || subscription_lifetime_reset || subscription_lifetime_generation_cancelled)))",
+    "mightyppl_formula": "G* (default_subscription_no_publish_window_started -> (G [0,5000000) (!subscription_timeout_closed) && F [0,5000000] (subscription_timeout_closed || subscription_lifetime_reset || subscription_lifetime_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "default_subscription_no_publish_window_started",
+      "subscription_timeout_closed",
+      "subscription_lifetime_reset",
+      "subscription_lifetime_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "default_subscription_no_publish_window_started": "No Publish request is available immediately after a lifetime reset for a subscription with revised 500 ms and lifetimeCount 10000.",
+      "subscription_timeout_closed": "The server marks Bad_Timeout and executes the timeout-close/delete path for the correlated subscription.",
+      "subscription_lifetime_reset": "A qualifying Subscription service or processed Publish response resets the lifetime counter.",
+      "subscription_lifetime_generation_cancelled": "Manual UA_Subscription_delete or a ModifySubscription revised-setting change ends the correlated lifetime generation without the Bad_Timeout cause."
+    },
+    "correlation_key": "Session + subscriptionId; Publish requestIds and sequence numbers remain fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one lifetime-counter generation; reset satisfies and starts a separate generation, while manual deletion/transfer/setting change emits cancellation.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "subscription_lifetime_reset",
+      "subscription_lifetime_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/server/ua_subscription.c",
+    "source_symbol": "UA_Subscription_publish",
+    "source_lines": "455-474",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L455-L474",
+    "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "default_subscription_no_publish_window_started"
+        ]
+      },
+      {
+        "time": 5000000,
+        "props": [
+          "subscription_timeout_closed"
+        ]
+      },
+      {
+        "time": 5000001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "default_subscription_no_publish_window_started"
+        ]
+      },
+      {
+        "time": 4999999,
+        "props": [
+          "subscription_timeout_closed"
+        ]
+      },
+      {
+        "time": 5000001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "default_subscription_no_publish_window_started"
+          ]
+        },
+        {
+          "time": 5000001,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "default_subscription_no_publish_window_started"
+          ]
+        },
+        {
+          "time": 5000001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: early and late/missing oracles now cover both halves, cancellation/reset is explicit, hooks are fixed, and the source off-by-one remains a deliberate conformance target.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "open62541 v1.4.14 checks currentLifetimeCount > lifeTimeCount while the standard closes when the counter reaches the value. The 5000000 ms oracle intentionally exposes that possible one-cycle discrepancy; it is not relaxed to match source.",
+    "primary_source_atomic_propositions": [
+      "default_subscription_no_publish_window_started",
+      "subscription_timeout_closed"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "Subscription lifetime reset",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "Subscription_resetLifetime",
+        "lines": "118-120",
+        "atomic_propositions": [
+          "subscription_lifetime_reset"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L118-L120"
+      },
+      {
+        "role": "manual Subscription deletion",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "atomic_propositions": [
+          "subscription_lifetime_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+      },
+      {
+        "role": "service reset or revised-setting change",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription / Service_Republish",
+        "lines": "130-193;393-433",
+        "atomic_propositions": [
+          "subscription_lifetime_reset",
+          "subscription_lifetime_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+      },
+      {
+        "role": "default revised-value source",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+        "lines": "26-52;55-127",
+        "atomic_propositions": [
+          "default_subscription_no_publish_window_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52"
+      },
+      {
+        "role": "500 ms and 10000-count client profile",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "atomic_propositions": [
+          "default_subscription_no_publish_window_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "Subscription lifetime reset",
+        "atomic_propositions": [
+          "subscription_lifetime_reset"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "Subscription_resetLifetime",
+        "lines": "118-120",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L118-L120",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['Subscription_resetLifetime']; failed_symbols=[]; cited_ranges=[(118, 120)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "manual Subscription deletion",
+        "atomic_propositions": [
+          "subscription_lifetime_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_delete']; failed_symbols=[]; cited_ranges=[(53, 115)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "service reset or revised-setting change",
+        "atomic_propositions": [
+          "subscription_lifetime_reset",
+          "subscription_lifetime_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription / Service_Republish",
+        "lines": "130-193;393-433",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_ModifySubscription', 'Service_Republish']; failed_symbols=[]; cited_ranges=[(130, 193), (393, 433)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "default revised-value source",
+        "atomic_propositions": [
+          "default_subscription_no_publish_window_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+        "lines": "26-52;55-127",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['setSubscriptionSettings', 'Service_CreateSubscription']; failed_symbols=[]; cited_ranges=[(26, 52), (55, 127)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "500 ms and 10000-count client profile",
+        "atomic_propositions": [
+          "default_subscription_no_publish_window_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h; verified_symbols=['UA_CreateSubscriptionRequest_default']; failed_symbols=[]; cited_ranges=[(43, 63)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_publish']; failed_symbols=[]; cited_ranges=[(455, 474)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "default_subscription_no_publish_window_started",
+      "subscription_timeout_closed",
+      "subscription_lifetime_reset",
+      "subscription_lifetime_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 18,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "OPCUA-SUB-04",
+    "protocol": "OPC UA",
+    "protocol_extension": "OPC UA disabled Subscription, open62541 default profile",
+    "title": "Disabled publishing suppresses notifications but retains keep-alives",
+    "category": "disabled-subscription keep-alive",
+    "natural_language": "publishing 被禁用且 revised interval/count=500/10 的单个 generation 内不得发送通知或提前 keep-alive，并应在 5000 ms 发送 keep-alive；re-enable、删除、参数变化或 Publish 队列消失会显式取消。",
+    "normative_strength": "NORMATIVE BEHAVIOR",
+    "standard": "OPC 10000-4: Services",
+    "standard_version": "1.05.07",
+    "standard_section": "5.14.1.1",
+    "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.1.1",
+    "standard_excerpt": "the Subscription continues to execute cyclically and continues to send keep-alive Messages",
+    "time_value_ms": "5000",
+    "time_parameter": "disabled maxKeepAliveCount * publishingInterval",
+    "time_source": "open62541 defaults: 10 * 500 ms after a disabled keep-alive window boundary",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE_DERIVED",
+    "mathematical_mitl": "G (disabled_keepalive_window_started -> (G [0,5000] (!notification_response_while_disabled) && G [0,5000) (!keepalive_response_while_disabled) && F [0,5000] (keepalive_response_while_disabled || disabled_keepalive_generation_cancelled)))",
+    "mightyppl_formula": "G* (disabled_keepalive_window_started -> (G [0,5000] (!notification_response_while_disabled) && G [0,5000) (!keepalive_response_while_disabled) && F [0,5000] (keepalive_response_while_disabled || disabled_keepalive_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "disabled_keepalive_window_started",
+      "notification_response_while_disabled",
+      "keepalive_response_while_disabled",
+      "disabled_keepalive_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "disabled_keepalive_window_started": "Adapter observes publishing disabled at a keep-alive counter reset/boundary, revised interval=500, count=10, and queued Publish availability.",
+      "notification_response_while_disabled": "A PublishResponse for this disabled subscription contains any notification.",
+      "keepalive_response_while_disabled": "A zero-notification keep-alive PublishResponse is sent while publishing remains disabled.",
+      "disabled_keepalive_generation_cancelled": "Operation_SetPublishingMode re-enables the Subscription, it is deleted, or ModifySubscription changes the revised interval/count before the disabled keep-alive generation completes."
+    },
+    "correlation_key": "Session + subscriptionId + publishing mode epoch",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one disabled-mode keep-alive generation; cancellation is emitted on re-enable, deletion, revised-setting change, Session close, or Publish-queue loss.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "disabled_keepalive_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "open62541/open62541",
+    "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+    "source_path": "src/server/ua_subscription.c",
+    "source_symbol": "UA_Subscription_publish",
+    "source_lines": "477-610",
+    "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+    "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "disabled_keepalive_window_started"
+        ]
+      },
+      {
+        "time": 5000,
+        "props": [
+          "keepalive_response_while_disabled"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "disabled_keepalive_window_started"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": [
+          "notification_response_while_disabled"
+        ]
+      },
+      {
+        "time": 5000,
+        "props": [
+          "keepalive_response_while_disabled"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "NOTIFICATION_WHILE_DISABLED",
+    "additional_negative_traces": {
+      "early_keepalive": [
+        {
+          "time": 0,
+          "props": [
+            "disabled_keepalive_window_started"
+          ]
+        },
+        {
+          "time": 4999,
+          "props": [
+            "keepalive_response_while_disabled"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "disabled_keepalive_window_started"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "disabled_keepalive_window_started"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: re-enable/delete/settings/queue cancellation is explicit, early keep-alive and late/missing are separately tested, and mode/reset hooks are fixed.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "The trigger remains a counter-boundary event, not raw SetPublishingMode reception, because the current-cycle phase is otherwise unknown. The distinct claim is disabled-mode notification suppression; the keep-alive timer reuses the same revised counter semantics as OPCUA-SUB-02.",
+    "primary_source_atomic_propositions": [
+      "notification_response_while_disabled",
+      "keepalive_response_while_disabled"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "disable/re-enable and lifetime reset",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Operation_SetPublishingMode",
+        "lines": "196-214",
+        "atomic_propositions": [
+          "disabled_keepalive_window_started",
+          "disabled_keepalive_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L196-L214"
+      },
+      {
+        "role": "Subscription deletion",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "atomic_propositions": [
+          "disabled_keepalive_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+      },
+      {
+        "role": "revised interval/count change",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription",
+        "lines": "130-193",
+        "atomic_propositions": [
+          "disabled_keepalive_generation_cancelled"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+      },
+      {
+        "role": "default revised-value source",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+        "lines": "26-52;55-127",
+        "atomic_propositions": [
+          "disabled_keepalive_window_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52"
+      },
+      {
+        "role": "500 ms by 10 client profile",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "atomic_propositions": [
+          "disabled_keepalive_window_started"
+        ],
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+      }
+    ],
+    "protocol_slug": "opc_ua",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "disable/re-enable and lifetime reset",
+        "atomic_propositions": [
+          "disabled_keepalive_window_started",
+          "disabled_keepalive_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Operation_SetPublishingMode",
+        "lines": "196-214",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L196-L214",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Operation_SetPublishingMode']; failed_symbols=[]; cited_ranges=[(196, 214)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "Subscription deletion",
+        "atomic_propositions": [
+          "disabled_keepalive_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_subscription.c",
+        "symbol": "UA_Subscription_delete",
+        "lines": "53-115",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_delete']; failed_symbols=[]; cited_ranges=[(53, 115)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "revised interval/count change",
+        "atomic_propositions": [
+          "disabled_keepalive_generation_cancelled"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "Service_ModifySubscription",
+        "lines": "130-193",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['Service_ModifySubscription']; failed_symbols=[]; cited_ranges=[(130, 193)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "default revised-value source",
+        "atomic_propositions": [
+          "disabled_keepalive_window_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "src/server/ua_services_subscription.c",
+        "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+        "lines": "26-52;55-127",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c; verified_symbols=['setSubscriptionSettings', 'Service_CreateSubscription']; failed_symbols=[]; cited_ranges=[(26, 52), (55, 127)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "500 ms by 10 client profile",
+        "atomic_propositions": [
+          "disabled_keepalive_window_started"
+        ],
+        "repository": "open62541/open62541",
+        "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+        "path": "include/open62541/client_subscriptions.h",
+        "symbol": "UA_CreateSubscriptionRequest_default",
+        "lines": "43-63",
+        "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h; verified_symbols=['UA_CreateSubscriptionRequest_default']; failed_symbols=[]; cited_ranges=[(43, 63)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/open62541/open62541/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c; verified_symbols=['UA_Subscription_publish']; failed_symbols=[]; cited_ranges=[(477, 610)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "early_keepalive": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "disabled_keepalive_window_started",
+      "notification_response_while_disabled",
+      "keepalive_response_while_disabled",
+      "disabled_keepalive_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 19,
+    "validation_positive_edges": 724,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 11,
+    "validation_negative_edges": 364,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 21,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 1,
+    "validation_status": "PASS"
+  }
+]

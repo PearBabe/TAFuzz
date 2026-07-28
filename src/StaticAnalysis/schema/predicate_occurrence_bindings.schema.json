@@ -1,0 +1,251 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/predicate-occurrence-bindings/1.0.0",
+  "title": "RIFT additive predicate occurrence bindings",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "property_ir_sha256",
+    "semantic_index_sha256", "canonical_compilation_database_sha256",
+    "path_map_sha256", "m4_index_immutable",
+    "candidate_accounting_complete", "options",
+    "eligible_translation_units", "parsed_translation_units",
+    "skipped_translation_units", "observed_occurrences", "status",
+    "selector_accounts", "occurrences", "coverage_gaps", "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "property_ir_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "semantic_index_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "canonical_compilation_database_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "path_map_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "m4_index_immutable": {"const": true},
+    "candidate_accounting_complete": {"type": "boolean"},
+    "options": {"$ref": "#/definitions/options"},
+    "eligible_translation_units": {"type": "integer", "minimum": 0},
+    "parsed_translation_units": {"type": "integer", "minimum": 0},
+    "skipped_translation_units": {"type": "integer", "minimum": 0},
+    "observed_occurrences": {"type": "integer", "minimum": 0},
+    "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+    "selector_accounts": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/selector_account"}
+    },
+    "occurrences": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/occurrence"}
+    },
+    "coverage_gaps": {
+      "type": "array",
+      "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+    }
+  },
+  "definitions": {
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_translation_units", "maximum_occurrences",
+        "retain_macro_stack"
+      ],
+      "properties": {
+        "maximum_translation_units": {"type": "integer", "minimum": 1},
+        "maximum_occurrences": {"type": "integer", "minimum": 1},
+        "retain_macro_stack": {"type": "boolean"}
+      }
+    },
+    "resolution": {
+      "enum": ["EXACT", "AMBIGUOUS", "UNKNOWN"]
+    },
+    "access_path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "root_entity_id", "dereference_depth", "fields", "unknown_suffix"
+      ],
+      "properties": {
+        "root_entity_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "dereference_depth": {"type": "integer", "minimum": 0},
+        "fields": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "unknown_suffix": {"type": "boolean"}
+      }
+    },
+    "selector_account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ap_id", "selector_id", "roles", "predicate_paths",
+        "expected_value_type", "requested_location", "eligible_translation_unit_ids",
+        "parsed_translation_unit_ids", "occurrence_ids", "resolution",
+        "uncertainty_reasons"
+      ],
+      "properties": {
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "selector_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "roles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/ap_role"}
+        },
+        "predicate_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        },
+        "expected_value_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"},
+        "requested_location": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/source_location"},
+        "eligible_translation_unit_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "parsed_translation_unit_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "occurrence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "resolution": {"$ref": "#/definitions/resolution"},
+        "uncertainty_reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"resolution": {"const": "EXACT"}}},
+          "then": {
+            "properties": {
+              "occurrence_ids": {"minItems": 1, "maxItems": 1},
+              "uncertainty_reasons": {"maxItems": 0}
+            }
+          },
+          "else": {
+            "properties": {"uncertainty_reasons": {"minItems": 1}}
+          }
+        }
+      ]
+    },
+    "occurrence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "occurrence_id", "ap_id", "selector_id", "roles",
+        "predicate_paths", "translation_unit_id", "kind",
+        "spelling_location", "expansion_location", "referenced_usr",
+        "referenced_entity_id", "semantic_node_ids", "value_type",
+        "access_path", "member_base_entity_id",
+        "member_abstract_object_id", "certainty", "resolution",
+        "uncertainty_reasons"
+      ],
+      "properties": {
+        "occurrence_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "selector_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "roles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/ap_role"}
+        },
+        "predicate_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        },
+        "translation_unit_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "kind": {"enum": ["decl_ref", "member_expr", "unknown"]},
+        "spelling_location": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/source_location"},
+        "expansion_location": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/source_location"},
+        "referenced_usr": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nullable_nonempty_string"},
+        "referenced_entity_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "semantic_node_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "value_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"},
+        "access_path": {
+          "oneOf": [
+            {"$ref": "#/definitions/access_path"},
+            {"type": "null"}
+          ]
+        },
+        "member_base_entity_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "member_abstract_object_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "certainty": {"enum": ["must", "unknown"]},
+        "resolution": {"$ref": "#/definitions/resolution"},
+        "uncertainty_reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"resolution": {"const": "EXACT"}}},
+          "then": {
+            "properties": {
+              "certainty": {"const": "must"},
+              "referenced_usr": {"type": "string", "minLength": 1},
+              "referenced_entity_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+              "semantic_node_ids": {"minItems": 1, "maxItems": 1},
+              "uncertainty_reasons": {"maxItems": 0}
+            }
+          },
+          "else": {
+            "properties": {
+              "certainty": {"const": "unknown"},
+              "uncertainty_reasons": {"minItems": 1}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {"const": "member_expr"},
+              "resolution": {"const": "EXACT"}
+            },
+            "required": ["kind", "resolution"]
+          },
+          "then": {
+            "properties": {
+              "access_path": {"$ref": "#/definitions/access_path"},
+              "member_base_entity_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+              "member_abstract_object_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

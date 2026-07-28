@@ -1,0 +1,14 @@
+digraph OPT {
+ graph [rankdir=LR, bgcolor="white", nodesep=0.8, ranksep=1.0];
+ node [fontname="DejaVu Sans", fontsize=11, style="rounded,filled", shape=box];
+ edge [fontname="DejaVu Sans", fontsize=10];
+ N0 [fillcolor="#dbeafe", label="N0 / L0 / piece 6\nx=0, V=5"];
+ N1 [fillcolor="#f8fafc", label="N1 / L1 / piece 4\n0 <= x <= 5\nV(x)=5-x"];
+ B5 [shape=diamond, fillcolor="#fef3c7", label="x=5\nV=0"];
+ G [shape=doublecircle, fillcolor="#dcfce7", label="N3 / L4 GOAL\npiece 1, V=0"];
+ N0 -> N1 [color="#2563eb", penwidth=3, label="arc 0 / e(0,0)\nbits:0, reset x, d=0"];
+ N1 -> B5 [color="#f59e0b", penwidth=3, label="delay d=5-x\ncost=d (rate=1)"];
+ B5 -> G [color="#dc2626", penwidth=3, label="arc 6 / e(1,5)\nbits:1, 5<=x<=10, reset x"];
+ P0 [shape=note, fillcolor="#ffffff", label="prefix1: x=0, d=5, V=5\nprefix2: x=1, d=4, V=4\nprefix3: x=3, d=2, V=2"];
+ P0 -> N1 [style=dotted, arrowhead=none];
+}

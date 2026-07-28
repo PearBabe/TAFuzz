@@ -1,0 +1,1335 @@
+[
+  {
+    "id": "DDS-WRITE-01",
+    "protocol": "DDS/RTPS",
+    "protocol_extension": "DDS 1.4 reliable DataWriter default QoS",
+    "title": "Blocked reliable write returns within 100 ms",
+    "category": "DataWriter blocking bound",
+    "natural_language": "使用 DDS 默认 max_blocking_time=100 ms 的 RELIABLE DataWriter 在资源压力下进入阻塞后，write 应在 100 ms 内以成功、TIMEOUT 或规范允许的 OUT_OF_RESOURCES 返回。",
+    "normative_strength": "NORMATIVE MAXIMUM",
+    "standard": "OMG Data Distribution Service",
+    "standard_version": "DDS 1.4 formal/2015-04-10",
+    "standard_section": "2.2.2.4.2.11; 2.2.3.14",
+    "standard_url": "https://www.omg.org/spec/DDS/1.4/PDF",
+    "standard_excerpt": "The default max_blocking_time=100ms",
+    "time_value_ms": "100",
+    "time_parameter": "ReliabilityQosPolicy.max_blocking_time",
+    "time_source": "DDS 1.4 default Reliability QoS max_blocking_time",
+    "instantiation_basis": "NORMATIVE_DEFAULT",
+    "mathematical_mitl": "G (reliable_write_resource_wait_started_default -> F [0,100] (write_returned_from_blocking))",
+    "mightyppl_formula": "G* (reliable_write_resource_wait_started_default -> F [0,100] (write_returned_from_blocking))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "reliable_write_resource_wait_started_default",
+      "write_returned_from_blocking"
+    ],
+    "ap_definitions": {
+      "reliable_write_resource_wait_started_default": "A RELIABLE DataWriter with max_blocking_time=100 ms reaches DataWriterHistory::prepare_change and is about to wait_for_acknowledgement because resource/history space is unavailable.",
+      "write_returned_from_blocking": "The correlated write returns OK, TIMEOUT, or the explicitly permitted OUT_OF_RESOURCES result."
+    },
+    "correlation_key": "DataWriter entity GUID + calling thread operation sequence + instance handle as a field",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one synchronous write operation and exactly one actual resource-wait episode; precondition/serialization work before waiting is excluded, and the API return ends it.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [],
+    "timer_observation_semantics": "The trigger is the actual resource-wait entry. The timed word uses actual wait-entry and API-return times; the earlier absolute deadline computed at write entry is retained to show the implementation is at least as strict as the 100 ms wait bound.",
+    "source_repository": "eProsima/Fast-DDS",
+    "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+    "source_path": "src/cpp/fastdds/publisher/DataWriterHistory.cpp",
+    "source_symbol": "DataWriterHistory::prepare_change",
+    "source_lines": "148-234",
+    "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.cpp#L148-L234",
+    "instrumentation_timing": "Emit trigger immediately before wait_for_acknowledgement at lines 230-234 after confirming the 100 ms QoS/deadline snapshot. Emit the correlated API return at DataWriterImpl; serialization/precondition time before the resource wait is not mislabeled as waiting time.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "reliable_write_resource_wait_started_default"
+        ]
+      },
+      {
+        "time": 100,
+        "props": [
+          "write_returned_from_blocking"
+        ]
+      },
+      {
+        "time": 101,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "reliable_write_resource_wait_started_default"
+        ]
+      },
+      {
+        "time": 101,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "LATE_OR_MISSING_RETURN",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "reliable_write_resource_wait_started_default"
+          ]
+        },
+        {
+          "time": 101,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {
+      "immediate_out_of_resources": [
+        {
+          "time": 0,
+          "props": [
+            "reliable_write_resource_wait_started_default"
+          ]
+        },
+        {
+          "time": 1,
+          "props": [
+            "write_returned_from_blocking"
+          ]
+        },
+        {
+          "time": 2,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: the primary source now proves the real wait predicate; total write execution is no longer conflated with resource waiting, and caller/deadline/return hooks plus immediate OUT_OF_RESOURCES coverage were added.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "The standard permits immediate OUT_OF_RESOURCES in hopeless-resource cases. The formula constrains only an observed resource wait and does not treat total serialization/function execution as max_blocking_time.",
+    "primary_source_atomic_propositions": [
+      "reliable_write_resource_wait_started_default"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "absolute max-blocking deadline and API return",
+        "path": "src/cpp/fastdds/publisher/DataWriterImpl.cpp",
+        "symbol": "DataWriterImpl::perform_create_new_change",
+        "lines": "1003-1107",
+        "atomic_propositions": [
+          "reliable_write_resource_wait_started_default",
+          "write_returned_from_blocking"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterImpl.cpp#L1003-L1107"
+      },
+      {
+        "role": "templated history caller return",
+        "path": "src/cpp/fastdds/publisher/DataWriterHistory.hpp",
+        "symbol": "add_pub_change_with_commit_hook",
+        "lines": "142-170",
+        "atomic_propositions": [
+          "write_returned_from_blocking"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.hpp#L142-L170"
+      }
+    ],
+    "protocol_slug": "dds_rtps",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "absolute max-blocking deadline and API return",
+        "atomic_propositions": [
+          "reliable_write_resource_wait_started_default",
+          "write_returned_from_blocking"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/fastdds/publisher/DataWriterImpl.cpp",
+        "symbol": "DataWriterImpl::perform_create_new_change",
+        "lines": "1003-1107",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterImpl.cpp#L1003-L1107",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterImpl.cpp; verified_symbols=['DataWriterImpl::perform_create_new_change']; failed_symbols=[]; cited_ranges=[(1003, 1107)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "templated history caller return",
+        "atomic_propositions": [
+          "write_returned_from_blocking"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/fastdds/publisher/DataWriterHistory.hpp",
+        "symbol": "add_pub_change_with_commit_hook",
+        "lines": "142-170",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.hpp#L142-L170",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.hpp; verified_symbols=['add_pub_change_with_commit_hook']; failed_symbols=[]; cited_ranges=[(142, 170)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.cpp; verified_symbols=['DataWriterHistory::prepare_change']; failed_symbols=[]; cited_ranges=[(148, 234)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 206",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {
+      "immediate_out_of_resources": {
+        "symbolic": "POSITIVE",
+        "concrete": "POSITIVE"
+      }
+    },
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "reliable_write_resource_wait_started_default",
+      "write_returned_from_blocking"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 40,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 54,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 16,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "RTPS-DISC-01",
+    "protocol": "DDS/RTPS",
+    "protocol_extension": "DDSI-RTPS SPDP reference-default profile",
+    "title": "Periodic SPDP announcement interval is 30 seconds",
+    "category": "participant discovery announcement",
+    "natural_language": "完成启动期 directed announcements 后，在 SPDP reference-default profile 中，相邻周期性 multicast announcement 不得早于 30000 ms，且下一次应在 30000 ms 发送。",
+    "normative_strength": "SPECIFIED DEFAULT",
+    "standard": "OMG DDSI-RTPS",
+    "standard_version": "2.5 formal/2022-04-01",
+    "standard_section": "9.6.2.4",
+    "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+    "standard_excerpt": "The default rate by which SPDP periodic announcements are sent equals 30 seconds",
+    "time_value_ms": "30000",
+    "time_parameter": "SPDPbuiltinParticipantWriter.resendPeriod",
+    "time_source": "DDSI-RTPS 2.5 SPDP default announcement rate",
+    "instantiation_basis": "NORMATIVE_DEFAULT",
+    "mathematical_mitl": "G (periodic_spdp_generation_started_30000 -> (G [0,30000) (!next_periodic_spdp_announcement_sent) && F [0,30000] (next_periodic_spdp_announcement_sent || spdp_period_generation_superseded || local_participant_stopped)))",
+    "mightyppl_formula": "G* (periodic_spdp_generation_started_30000 -> (G [0,30000) (!next_periodic_spdp_announcement_sent) && F [0,30000] (next_periodic_spdp_announcement_sent || spdp_period_generation_superseded || local_participant_stopped)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "periodic_spdp_generation_started_30000",
+      "next_periodic_spdp_announcement_sent",
+      "spdp_period_generation_superseded",
+      "local_participant_stopped"
+    ],
+    "ap_definitions": {
+      "periodic_spdp_generation_started_30000": "A steady-state non-directed SPDP announcement is sent and the next periodic generation is armed with resendPeriod=30 s.",
+      "next_periodic_spdp_announcement_sent": "The next steady-state non-directed periodic SPDP announcement is actually handed to announceParticipantState(false); logical deadline and callback/send time are retained.",
+      "spdp_period_generation_superseded": "A configuration/reset operation replaces the scheduled periodic generation before its deadline.",
+      "local_participant_stopped": "The local DomainParticipant is disabled/deleted before the next period."
+    },
+    "correlation_key": "domainId + local participant GUID prefix; directed destination GUIDs remain fields and are filtered out",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one steady-state periodic generation for one local participant; exclude startup bursts/directed sends and explicitly close on reconfiguration or participant stop.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "spdp_period_generation_superseded",
+      "local_participant_stopped"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "eProsima/Fast-DDS",
+    "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+    "source_path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+    "source_symbol": "PDP::set_next_announcement_interval",
+    "source_lines": "1534-1546",
+    "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L1534-L1546",
+    "instrumentation_timing": "After startup announcements are exhausted and resendPeriod=30 s is verified, each observed announceParticipantState(false) closes the old generation and arms a new one. Stamp an observed next send with the stored logical deadline; retain actual callback time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "periodic_spdp_generation_started_30000"
+        ]
+      },
+      {
+        "time": 30000,
+        "props": [
+          "next_periodic_spdp_announcement_sent"
+        ]
+      },
+      {
+        "time": 30001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "periodic_spdp_generation_started_30000"
+        ]
+      },
+      {
+        "time": 29999,
+        "props": [
+          "next_periodic_spdp_announcement_sent"
+        ]
+      },
+      {
+        "time": 30001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "periodic_spdp_generation_started_30000"
+          ]
+        },
+        {
+          "time": 30001,
+          "props": [
+            "next_periodic_spdp_announcement_sent"
+          ]
+        },
+        {
+          "time": 30002,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "periodic_spdp_generation_started_30000"
+          ]
+        },
+        {
+          "time": 30001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: the main hook now covers the actual periodic send callback, interval configuration is a second fixed hook, and early/late plus supersession are explicit.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "Fast-DDS v3.3.0 stock announcement period is 3 s. The benchmark explicitly selects the RTPS 30 s reference profile; actual callback delay remains diagnostic rather than an undocumented tolerance.",
+    "primary_source_atomic_propositions": [
+      "periodic_spdp_generation_started_30000"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "periodic SPDP announcement action",
+        "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+        "symbol": "PDP::announceParticipantState",
+        "lines": "576-692",
+        "atomic_propositions": [
+          "next_periodic_spdp_announcement_sent"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L576-L692"
+      },
+      {
+        "role": "periodic announcement generation reset",
+        "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+        "symbol": "PDP::resetParticipantAnnouncement",
+        "lines": "702-708",
+        "atomic_propositions": [
+          "spdp_period_generation_superseded"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L702-L708"
+      },
+      {
+        "role": "participant stop and timer cancellation",
+        "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+        "symbol": "PDP::stopParticipantAnnouncement / PDP::disable",
+        "lines": "558-574;694-700",
+        "atomic_propositions": [
+          "local_participant_stopped"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L558-L574"
+      }
+    ],
+    "protocol_slug": "dds_rtps",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "periodic SPDP announcement action",
+        "atomic_propositions": [
+          "next_periodic_spdp_announcement_sent"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+        "symbol": "PDP::announceParticipantState",
+        "lines": "576-692",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L576-L692",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp; verified_symbols=['PDP::announceParticipantState']; failed_symbols=[]; cited_ranges=[(576, 692)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "periodic announcement generation reset",
+        "atomic_propositions": [
+          "spdp_period_generation_superseded"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+        "symbol": "PDP::resetParticipantAnnouncement",
+        "lines": "702-708",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L702-L708",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp; verified_symbols=['PDP::resetParticipantAnnouncement']; failed_symbols=[]; cited_ranges=[(702, 708)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "participant stop and timer cancellation",
+        "atomic_propositions": [
+          "local_participant_stopped"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+        "symbol": "PDP::stopParticipantAnnouncement / PDP::disable",
+        "lines": "558-574;694-700",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L558-L574",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp; verified_symbols=['PDP::stopParticipantAnnouncement', 'PDP::disable']; failed_symbols=[]; cited_ranges=[(558, 574), (694, 700)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp; verified_symbols=['PDP::set_next_announcement_interval']; failed_symbols=[]; cited_ranges=[(1534, 1546)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 206",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "periodic_spdp_generation_started_30000",
+      "next_periodic_spdp_announcement_sent",
+      "spdp_period_generation_superseded",
+      "local_participant_stopped"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 19,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "RTPS-DISC-02",
+    "protocol": "DDS/RTPS",
+    "protocol_extension": "DDSI-RTPS remote participant with omitted lease PID",
+    "title": "Remote participant is not lease-removed before the 100-second default lease",
+    "category": "participant lease safety",
+    "natural_language": "远端 SPDP 未携带 lease-duration PID、使用独立 participant 100000 ms 默认租约时，在该 lease generation 到期前不得仅因 lease expiry 删除；规范不要求恰在 100000 ms 完成物理删除。",
+    "normative_strength": "DEFAULT LEASE / NO-EARLY SAFETY",
+    "standard": "OMG DDSI-RTPS",
+    "standard_version": "2.5 formal/2022-04-01",
+    "standard_section": "8.5.5.2; 9.6.3 Table 9.18",
+    "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+    "standard_excerpt": "SPDPdiscoveredParticipantData::leaseDuration {100, 0}",
+    "time_value_ms": "100000",
+    "time_parameter": "ParticipantProxy::leaseDuration default when PID omitted",
+    "time_source": "DDSI-RTPS 2.5 PID_PARTICIPANT_LEASE_DURATION default {100,0}",
+    "instantiation_basis": "NORMATIVE_DEFAULT",
+    "mathematical_mitl": "G (remote_participant_default_lease_started -> G [0,100000) (!remote_participant_removed_due_to_lease || remote_spdp_refresh_supersedes_lease || remote_lease_generation_cancelled))",
+    "mightyppl_formula": "G* (remote_participant_default_lease_started -> G [0,100000) (!remote_participant_removed_due_to_lease || remote_spdp_refresh_supersedes_lease || remote_lease_generation_cancelled))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "remote_participant_default_lease_started",
+      "remote_participant_removed_due_to_lease",
+      "remote_spdp_refresh_supersedes_lease",
+      "remote_lease_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "remote_participant_default_lease_started": "A valid SPDP sample without PID_PARTICIPANT_LEASE_DURATION creates/renews an independent, non-privileged-dependent remote participant using 100 s.",
+      "remote_participant_removed_due_to_lease": "Lease expiration, rather than explicit disposal or another cause, invokes deletion/reconfiguration for that proxy participant.",
+      "remote_spdp_refresh_supersedes_lease": "A newer valid SPDP sample closes this lease generation and starts a separately projected 100 s generation.",
+      "remote_lease_generation_cancelled": "A correlated SPDP dispose/unregister reaches handle_spdp_dead and deletes the proxy participant before lease expiry; domain shutdown is recorded only through its corresponding proxy-deletion lifecycle."
+    },
+    "correlation_key": "domain + remote participant GUID prefix + SPDP sequence number; GUID is a field",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one lease generation for one independent remote participant; SPDP refresh emits supersession and opens another word, while explicit disposal emits cancellation.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "remote_spdp_refresh_supersedes_lease",
+      "remote_lease_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The formula observes only cause-specific early removal against the stored 100 s lease deadline. Callback/removal after the deadline is recorded but is not a protocol liveness verdict.",
+    "source_repository": "eclipse-cyclonedds/cyclonedds",
+    "source_commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+    "source_path": "src/core/ddsi/src/q_lease.c",
+    "source_symbol": "check_and_handle_lease_expiration",
+    "source_lines": "218-292",
+    "source_url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L218-L292",
+    "instrumentation_timing": "Emit start only after the omitted PID is defaulted to 100 s and privileged/dependency postponement is excluded. A refresh/cancel closes this word. Emit lease-removal cause immediately before ddsi_delete_proxy_participant_by_guid; do not require a callback at exactly 100 s.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "remote_participant_default_lease_started"
+        ]
+      },
+      {
+        "time": 100000,
+        "props": []
+      },
+      {
+        "time": 100001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "remote_participant_default_lease_started"
+        ]
+      },
+      {
+        "time": 99999,
+        "props": [
+          "remote_participant_removed_due_to_lease"
+        ]
+      },
+      {
+        "time": 100001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "PRIMARY_ORACLE",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: unsupported exact-removal liveness was removed; the card is now a cause-specific no-early safety property with refresh/cancel generation boundaries and fixed default/exception hooks.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "This is deliberately safety-only: RTPS permits considering the participant gone after the lease but does not impose exact physical removal at 100 s. CycloneDDS privileged/dependency postponement cases are trigger-false and excluded.",
+    "primary_source_atomic_propositions": [
+      "remote_participant_removed_due_to_lease"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "default lease creation and SPDP refresh",
+        "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+        "symbol": "handle_spdp_alive",
+        "lines": "723-981",
+        "atomic_propositions": [
+          "remote_participant_default_lease_started",
+          "remote_spdp_refresh_supersedes_lease"
+        ],
+        "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L723-L981"
+      },
+      {
+        "role": "explicit SPDP dispose cancellation",
+        "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+        "symbol": "handle_spdp_dead",
+        "lines": "638-671",
+        "atomic_propositions": [
+          "remote_lease_generation_cancelled"
+        ],
+        "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L638-L671"
+      },
+      {
+        "role": "privileged participant lease exception",
+        "path": "src/core/ddsi/src/q_lease.c",
+        "symbol": "check_and_handle_lease_expiration",
+        "lines": "247-281",
+        "atomic_propositions": [
+          "remote_participant_default_lease_started"
+        ],
+        "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L247-L281"
+      }
+    ],
+    "protocol_slug": "dds_rtps",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "default lease creation and SPDP refresh",
+        "atomic_propositions": [
+          "remote_participant_default_lease_started",
+          "remote_spdp_refresh_supersedes_lease"
+        ],
+        "repository": "eclipse-cyclonedds/cyclonedds",
+        "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+        "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+        "symbol": "handle_spdp_alive",
+        "lines": "723-981",
+        "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L723-L981",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c; verified_symbols=['handle_spdp_alive']; failed_symbols=[]; cited_ranges=[(723, 981)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "explicit SPDP dispose cancellation",
+        "atomic_propositions": [
+          "remote_lease_generation_cancelled"
+        ],
+        "repository": "eclipse-cyclonedds/cyclonedds",
+        "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+        "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+        "symbol": "handle_spdp_dead",
+        "lines": "638-671",
+        "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L638-L671",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c; verified_symbols=['handle_spdp_dead']; failed_symbols=[]; cited_ranges=[(638, 671)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "privileged participant lease exception",
+        "atomic_propositions": [
+          "remote_participant_default_lease_started"
+        ],
+        "repository": "eclipse-cyclonedds/cyclonedds",
+        "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+        "path": "src/core/ddsi/src/q_lease.c",
+        "symbol": "check_and_handle_lease_expiration",
+        "lines": "247-281",
+        "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L247-L281",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c; verified_symbols=['check_and_handle_lease_expiration']; failed_symbols=[]; cited_ranges=[(247, 281)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c; verified_symbols=['check_and_handle_lease_expiration']; failed_symbols=[]; cited_ranges=[(218, 292)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 206",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "remote_participant_default_lease_started",
+      "remote_participant_removed_due_to_lease",
+      "remote_spdp_refresh_supersedes_lease",
+      "remote_lease_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 154,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 192,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 17,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "RTPS-REL-01",
+    "protocol": "DDS/RTPS",
+    "protocol_extension": "DDSI-RTPS reliable StatefulWriter reference-default profile",
+    "title": "Writer-wide ACKNACK response timer generation is due at 200 ms",
+    "category": "reliability repair delay",
+    "natural_language": "可靠 StatefulWriter 在显式 200 ms reference-default profile 中为 pending-reader set 启动一个 writer-wide nack-response timer generation；不得提前执行，并应在逻辑 deadline 执行，或由新 generation、unmatch/empty-set、writer stop 显式解除。",
+    "normative_strength": "SPECIFIED DEFAULT",
+    "standard": "OMG DDSI-RTPS",
+    "standard_version": "2.5 formal/2022-04-01",
+    "standard_section": "8.4.7.1; 8.4.9.2.11",
+    "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+    "standard_excerpt": "nackResponseDelay.nanosec = 200 * 1000 * 1000; //200 milliseconds",
+    "time_value_ms": "200",
+    "time_parameter": "Writer::nackResponseDelay",
+    "time_source": "DDSI-RTPS 2.5 RTPS Writer default timing-related value",
+    "instantiation_basis": "NORMATIVE_DEFAULT",
+    "mathematical_mitl": "G (writer_nack_timer_generation_started_200 -> (G [0,200) (!nack_response_action_observed) && F [0,200] (nack_response_action_observed || nack_response_generation_superseded || rtps_pending_reader_set_empty || rtps_writer_stopped)))",
+    "mightyppl_formula": "G* (writer_nack_timer_generation_started_200 -> (G [0,200) (!nack_response_action_observed) && F [0,200] (nack_response_action_observed || nack_response_generation_superseded || rtps_pending_reader_set_empty || rtps_writer_stopped)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "writer_nack_timer_generation_started_200",
+      "nack_response_action_observed",
+      "nack_response_generation_superseded",
+      "rtps_pending_reader_set_empty",
+      "rtps_writer_stopped"
+    ],
+    "ap_definitions": {
+      "writer_nack_timer_generation_started_200": "A fresh ACKNACK makes the writer-wide pending-reader set non-empty and restart_timer arms nackResponseDelay=200 ms.",
+      "nack_response_action_observed": "The corresponding TimedEvent callback is observed and perform_nack_response begins; the event is stamped with the stored logical deadline and also records actual callback time.",
+      "nack_response_generation_superseded": "A newer qualifying ACKNACK restarts the same writer-wide timer; it closes this generation and starts a separately projected generation.",
+      "rtps_pending_reader_set_empty": "All requested repairs disappear or relevant readers are unmatched before the deadline.",
+      "rtps_writer_stopped": "The writer is disabled/deleted before the deadline."
+    },
+    "correlation_key": "writer GUID + timer generation + pending reader GUID/count set; ACKNACK counts and sequence numbers remain fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one writer-wide timer generation, not one ReaderProxy. A newer restart atomically supersedes the old generation before opening the next word.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "nack_response_generation_superseded",
+      "rtps_pending_reader_set_empty",
+      "rtps_writer_stopped"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "eProsima/Fast-DDS",
+    "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+    "source_path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+    "source_symbol": "StatefulWriter::process_acknack",
+    "source_lines": "1921-1960",
+    "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1921-L1960",
+    "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "writer_nack_timer_generation_started_200"
+        ]
+      },
+      {
+        "time": 200,
+        "props": [
+          "nack_response_action_observed"
+        ]
+      },
+      {
+        "time": 201,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "writer_nack_timer_generation_started_200"
+        ]
+      },
+      {
+        "time": 199,
+        "props": [
+          "nack_response_action_observed"
+        ]
+      },
+      {
+        "time": 201,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "writer_nack_timer_generation_started_200"
+          ]
+        },
+        {
+          "time": 201,
+          "props": [
+            "nack_response_action_observed"
+          ]
+        },
+        {
+          "time": 202,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "writer_nack_timer_generation_started_200"
+          ]
+        },
+        {
+          "time": 201,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: correlation is writer-wide, restart/unmatch/stop are explicit, one timer generation is projected per word, and early plus late/missing callback oracles are present.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "Fast-DDS v3.3.0 stock WriterTimes is 5 ms, not 200 ms. The benchmark explicitly configures 200 ms. The reference state transition and Fast-DDS restart-on-new-ACKNACK behavior are distinguished by timer-generation events.",
+    "primary_source_atomic_propositions": [
+      "writer_nack_timer_generation_started_200",
+      "nack_response_generation_superseded",
+      "rtps_pending_reader_set_empty"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "writer nack-response callback action",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::perform_nack_response",
+        "lines": "1880-1900",
+        "atomic_propositions": [
+          "nack_response_action_observed"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1880-L1900"
+      },
+      {
+        "role": "TimedEvent callback binding",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::init",
+        "lines": "225-232",
+        "atomic_propositions": [
+          "nack_response_action_observed"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L225-L232"
+      },
+      {
+        "role": "reader unmatch can empty pending-reader set",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::matched_reader_remove",
+        "lines": "1211-1302",
+        "atomic_propositions": [
+          "rtps_pending_reader_set_empty"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1211-L1302"
+      },
+      {
+        "role": "writer removal stops timer and reader proxies",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::local_actions_on_writer_removed",
+        "lines": "256-315",
+        "atomic_propositions": [
+          "rtps_writer_stopped"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L256-L315"
+      }
+    ],
+    "protocol_slug": "dds_rtps",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "writer nack-response callback action",
+        "atomic_propositions": [
+          "nack_response_action_observed"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::perform_nack_response",
+        "lines": "1880-1900",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1880-L1900",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp; verified_symbols=['StatefulWriter::perform_nack_response']; failed_symbols=[]; cited_ranges=[(1880, 1900)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "TimedEvent callback binding",
+        "atomic_propositions": [
+          "nack_response_action_observed"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::init",
+        "lines": "225-232",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L225-L232",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp; verified_symbols=['StatefulWriter::init']; failed_symbols=[]; cited_ranges=[(225, 232)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "reader unmatch can empty pending-reader set",
+        "atomic_propositions": [
+          "rtps_pending_reader_set_empty"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::matched_reader_remove",
+        "lines": "1211-1302",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1211-L1302",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp; verified_symbols=['StatefulWriter::matched_reader_remove']; failed_symbols=[]; cited_ranges=[(1211, 1302)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "writer removal stops timer and reader proxies",
+        "atomic_propositions": [
+          "rtps_writer_stopped"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+        "symbol": "StatefulWriter::local_actions_on_writer_removed",
+        "lines": "256-315",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L256-L315",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp; verified_symbols=['StatefulWriter::local_actions_on_writer_removed']; failed_symbols=[]; cited_ranges=[(256, 315)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp; verified_symbols=['StatefulWriter::process_acknack']; failed_symbols=[]; cited_ranges=[(1921, 1960)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 206",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "writer_nack_timer_generation_started_200",
+      "nack_response_action_observed",
+      "nack_response_generation_superseded",
+      "rtps_pending_reader_set_empty",
+      "rtps_writer_stopped"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 656,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 550,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 21,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 1,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "RTPS-REL-02",
+    "protocol": "DDS/RTPS",
+    "protocol_extension": "DDSI-RTPS reliable StatefulReader reference-default profile",
+    "title": "HEARTBEAT response ACKNACK is sent after 500 ms",
+    "category": "reliability acknowledgment delay",
+    "natural_language": "可靠 StatefulReader 收到表明有缺失数据的 HEARTBEAT 后，在 reference-default profile 中不得于 500 ms 前发送 ACKNACK，并应在 500 ms 发送或匹配已解除。",
+    "normative_strength": "SPECIFIED DEFAULT",
+    "standard": "OMG DDSI-RTPS",
+    "standard_version": "2.5 formal/2022-04-01",
+    "standard_section": "8.4.10.1; 8.4.12.2.5",
+    "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+    "standard_excerpt": "heartbeatResponseDelay.nanosec = 500 * 1000 * 1000; // 500 milliseconds",
+    "time_value_ms": "500",
+    "time_parameter": "Reader::heartbeatResponseDelay",
+    "time_source": "DDSI-RTPS 2.5 RTPS Reader default timing-related value",
+    "instantiation_basis": "NORMATIVE_DEFAULT",
+    "mathematical_mitl": "G (heartbeat_response_generation_started_500 -> (G [0,500) (!heartbeat_acknack_sent) && F [0,500] (heartbeat_acknack_sent || heartbeat_response_generation_superseded || rtps_writer_unmatched || rtps_reader_stopped)))",
+    "mightyppl_formula": "G* (heartbeat_response_generation_started_500 -> (G [0,500) (!heartbeat_acknack_sent) && F [0,500] (heartbeat_acknack_sent || heartbeat_response_generation_superseded || rtps_writer_unmatched || rtps_reader_stopped)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "heartbeat_response_generation_started_500",
+      "heartbeat_acknack_sent",
+      "heartbeat_response_generation_superseded",
+      "rtps_writer_unmatched",
+      "rtps_reader_stopped"
+    ],
+    "ap_definitions": {
+      "heartbeat_response_generation_started_500": "A fresh HEARTBEAT enters must_send_ack and restart_timer arms this WriterProxy generation with heartbeatResponseDelay=500 ms.",
+      "heartbeat_acknack_sent": "The heartbeat-response callback is observed handing the correlated ACKNACK to the RTPS send path; logical deadline and actual callback/send time are both retained.",
+      "heartbeat_response_generation_superseded": "A newer qualifying HEARTBEAT restarts/coalesces the WriterProxy timer and closes this generation before starting another projected word.",
+      "rtps_writer_unmatched": "The WriterProxy is removed before response and discharges the window.",
+      "rtps_reader_stopped": "The local reader is disabled/deleted before response."
+    },
+    "correlation_key": "reader GUID + writer GUID + HEARTBEAT count; sequence-number set is a field",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project exactly one WriterProxy heartbeat timer generation; newer HEARTBEAT restart, unmatch, or reader stop closes it explicitly.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "heartbeat_response_generation_superseded",
+      "rtps_writer_unmatched",
+      "rtps_reader_stopped"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "eProsima/Fast-DDS",
+    "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+    "source_path": "src/cpp/rtps/reader/WriterProxy.cpp",
+    "source_symbol": "WriterProxy::process_heartbeat",
+    "source_lines": "550-615",
+    "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L550-L615",
+    "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "heartbeat_response_generation_started_500"
+        ]
+      },
+      {
+        "time": 500,
+        "props": [
+          "heartbeat_acknack_sent"
+        ]
+      },
+      {
+        "time": 501,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "heartbeat_response_generation_started_500"
+        ]
+      },
+      {
+        "time": 499,
+        "props": [
+          "heartbeat_acknack_sent"
+        ]
+      },
+      {
+        "time": 501,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "heartbeat_response_generation_started_500"
+          ]
+        },
+        {
+          "time": 501,
+          "props": [
+            "heartbeat_acknack_sent"
+          ]
+        },
+        {
+          "time": 502,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "heartbeat_response_generation_started_500"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: restart/coalescing is an explicit generation supersession, reader stop is covered, and both early and late/missing response traces are present.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "Fast-DDS v3.3.0 stock ReaderTimes is 5 ms. The harness explicitly selects 500 ms; actual scheduler delay is recorded separately and never hidden as epsilon.",
+    "primary_source_atomic_propositions": [
+      "heartbeat_response_generation_started_500",
+      "heartbeat_response_generation_superseded"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "heartbeat-response ACKNACK handoff",
+        "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+        "symbol": "WriterProxy::perform_heartbeat_response",
+        "lines": "535-548",
+        "atomic_propositions": [
+          "heartbeat_acknack_sent"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L535-L548"
+      },
+      {
+        "role": "remote writer unmatch",
+        "path": "src/cpp/rtps/reader/StatefulReader.cpp",
+        "symbol": "StatefulReader::matched_writer_remove",
+        "lines": "381-482",
+        "atomic_propositions": [
+          "rtps_writer_unmatched"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/StatefulReader.cpp#L381-L482"
+      },
+      {
+        "role": "WriterProxy timer cancellation",
+        "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+        "symbol": "WriterProxy::stop",
+        "lines": "170-187",
+        "atomic_propositions": [
+          "rtps_writer_unmatched",
+          "rtps_reader_stopped"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L170-L187"
+      },
+      {
+        "role": "local reader removal lifecycle",
+        "path": "src/cpp/rtps/reader/BaseReader.cpp",
+        "symbol": "BaseReader::local_actions_on_reader_removed",
+        "lines": "109-112",
+        "atomic_propositions": [
+          "rtps_reader_stopped"
+        ],
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/BaseReader.cpp#L109-L112"
+      }
+    ],
+    "protocol_slug": "dds_rtps",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "heartbeat-response ACKNACK handoff",
+        "atomic_propositions": [
+          "heartbeat_acknack_sent"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+        "symbol": "WriterProxy::perform_heartbeat_response",
+        "lines": "535-548",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L535-L548",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp; verified_symbols=['WriterProxy::perform_heartbeat_response']; failed_symbols=[]; cited_ranges=[(535, 548)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "remote writer unmatch",
+        "atomic_propositions": [
+          "rtps_writer_unmatched"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/reader/StatefulReader.cpp",
+        "symbol": "StatefulReader::matched_writer_remove",
+        "lines": "381-482",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/StatefulReader.cpp#L381-L482",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/StatefulReader.cpp; verified_symbols=['StatefulReader::matched_writer_remove']; failed_symbols=[]; cited_ranges=[(381, 482)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "WriterProxy timer cancellation",
+        "atomic_propositions": [
+          "rtps_writer_unmatched",
+          "rtps_reader_stopped"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+        "symbol": "WriterProxy::stop",
+        "lines": "170-187",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L170-L187",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp; verified_symbols=['WriterProxy::stop']; failed_symbols=[]; cited_ranges=[(170, 187)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "local reader removal lifecycle",
+        "atomic_propositions": [
+          "rtps_reader_stopped"
+        ],
+        "repository": "eProsima/Fast-DDS",
+        "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+        "path": "src/cpp/rtps/reader/BaseReader.cpp",
+        "symbol": "BaseReader::local_actions_on_reader_removed",
+        "lines": "109-112",
+        "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/BaseReader.cpp#L109-L112",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/BaseReader.cpp; verified_symbols=['BaseReader::local_actions_on_reader_removed']; failed_symbols=[]; cited_ranges=[(109, 112)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eProsima/Fast-DDS/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp; verified_symbols=['WriterProxy::process_heartbeat']; failed_symbols=[]; cited_ranges=[(550, 615)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 206",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "heartbeat_response_generation_started_500",
+      "heartbeat_acknack_sent",
+      "heartbeat_response_generation_superseded",
+      "rtps_writer_unmatched",
+      "rtps_reader_stopped"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 656,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 550,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 19,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 1,
+    "validation_status": "PASS"
+  }
+]

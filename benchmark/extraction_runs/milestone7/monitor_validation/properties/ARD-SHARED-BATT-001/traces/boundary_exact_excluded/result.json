@@ -1,0 +1,85 @@
+{
+  "boundary_region": "exact",
+  "case_kind": "boundary_exact_excluded",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 12000,
+    "response_delta_ticks": 10000,
+    "threshold_ticks": 10000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_DECISIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "The response is prohibited through the closed threshold and the eventual interval is open at that threshold.",
+    "tamonitor_infinite_prefix_verdict": "NEGATIVE",
+    "tamonitor_prefix_reason": "The prefix contains an irreversible pre-threshold/open-boundary safety violation."
+  },
+  "monitor_trace": {
+    "bytes": 191,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/monitor_trace.csv",
+    "sha256": "874a9109dca4491e862ce8fefdc3945214380d5549fd4ab11aec5f202a901e00"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-SHARED-BATT-001:trace:boundary_exact_excluded",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1446,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor/metadata.json",
+      "sha256": "7ca0cc486fcfd582627ba78f8d85b7ae91fa85b144d6309dccc5b67528453cad"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1015,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor.stdout.txt",
+      "sha256": "4a2698d013f9ad4f9e5eb55046f8cb8de02aaa69b468fb4eb9dcdf23bc05ee0f"
+    },
+    "steps": {
+      "bytes": 433,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor/steps.csv",
+      "sha256": "a5021d4124d15e211525d50aae4f638e8105bc3b76c8c0999bf18fb2087b6ecd"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 12000,
+      "monitor_advanced": false,
+      "negative_states": 3,
+      "positive_states": 0,
+      "step": 5,
+      "verdict": "NEGATIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "NEGATIVE"
+  },
+  "trace": {
+    "bytes": 2821,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/trace.json",
+    "sha256": "ded3cfcbbe7c0ae9349ae5ff3afe11f4a76a9020493e312233d67f49b819356e"
+  },
+  "trace_id": "ARD-SHARED-BATT-001--boundary_exact_excluded"
+}

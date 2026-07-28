@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProtocolEvent",
+  "type": "object",
+  "required": [
+    "time_tick",
+    "session_id",
+    "transaction_id",
+    "direction",
+    "event_type"
+  ],
+  "properties": {
+    "time_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "transaction_id": {
+      "type": "string"
+    },
+    "direction": {
+      "enum": [
+        "in",
+        "out",
+        "internal"
+      ]
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "object"
+    },
+    "source_hook": {
+      "type": "string"
+    },
+    "microstep": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "additionalProperties": false
+}

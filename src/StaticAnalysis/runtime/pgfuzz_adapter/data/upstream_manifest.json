@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "upstream": {
+    "repository": "https://github.com/purseclab/PGFuzz",
+    "commit": "7eaebf21116087249b8329d4ba7337a24a34ecb9",
+    "directory": "ArduPilot/Dynamic analysis",
+    "files": [
+      {
+        "path": "README.md",
+        "git_blob_sha1": "ccf24cbb48599586675b73862fe8997f88f4c627"
+      },
+      {
+        "path": "cmds.txt",
+        "git_blob_sha1": "e106b7a89c3aace018994155dfcfc0aec2eb966e"
+      },
+      {
+        "path": "envs.txt",
+        "git_blob_sha1": "f31969682c024c5be22db92234763a48b5d41304"
+      },
+      {
+        "path": "preconditions.txt",
+        "git_blob_sha1": "5a9fd964043e31d585f567997a69ed4ac2013245"
+      },
+      {
+        "path": "profiling_cmd_env.py",
+        "git_blob_sha1": "750865ca057d3bf018f3c02f3f44b63552f078f2"
+      }
+    ],
+    "compatibility_shape": {
+      "command_rows": 60,
+      "duplicate_command_rows": 1,
+      "environment_rows": 167,
+      "precondition_rows": 5,
+      "raw_state_count": 34,
+      "result_group_count": 15,
+      "minimum_standard_deviation": 0.00001,
+      "result_line_format": "one unprefixed input identifier per line"
+    }
+  },
+  "target": {
+    "system": "ArduPilot",
+    "vehicle": "ArduCopter",
+    "profile": "quad",
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472",
+    "firmware_binary": "baseline/ardupilot/build/sitl/bin/arducopter",
+    "firmware_binary_sha256": "cc678abb89675a7c53343f25725da38eae0bbc76345fd44c5c3ffe01c0787715"
+  }
+}

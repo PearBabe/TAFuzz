@@ -1,0 +1,124 @@
+-- The C compiler identification is Clang 18.1.8
+-- The CXX compiler identification is Clang 18.1.8
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/clang-18 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/clang++-18 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Using SVF build configuration:
+  Project:                                          SVF
+  SVF version:                                      3.2
+  SVF root directory:                               /home/lqq/project/TAFuzz/benchmark/rift/external/svf
+  SVF binary directory:                             /home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build
+  Project root directory:                           /home/lqq/project/TAFuzz/benchmark/rift/external/svf
+  Project binary directory:                         /home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build
+
+  Installing executables to:                        bin
+  Installing libraries to:                          lib
+  Installing headers to:                            include
+  Installing extapi.bc to:                          lib
+  Installing pkgconfig to:                          lib/pkgconfig
+  Installing CMake package to:                      lib/cmake/SVF
+
+  SVF option - Build type:                          Release
+  SVF option - Building shared libs:                ON
+  SVF option - Enabled exception handling:          ON
+  SVF option - Enabled runtime type information:    ON
+  SVF option - Enabling position-independent code:  ON
+  SVF option - Enabling link-time optimisations:    OFF
+  SVF option - Using ld.lld as default linker:      OFF
+  SVF option - Enabling coverage build:             OFF
+  SVF option - Treating warnings as errors:         OFF
+  SVF option - Generating debug information:        ON
+  SVF option - Exporting all dynamic symbols:       OFF
+  SVF option - Forcefully enabling assertions:      ON
+
+  CMake root directory:                             /home/lqq/project/TAFuzz/benchmark/rift/external/svf
+  CMake binary directory:                           /home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build
+  Current CMake root directory:                     /home/lqq/project/TAFuzz/benchmark/rift/external/svf
+  Current CMake binary directory:                   /home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build
+
+  CMake generator:                                  Ninja
+  CMake C compiler:                                 Clang
+  CMake C++ compiler:                               Clang
+  Using CMake C standard:                           11
+  Using CMake C++ standard:                         17
+  Current CMake install prefix:                     /usr/local
+-- Failed to find upstream/system Z3 package; reverting to manual search
+-- Extracted Z3 version information from /usr/include/z3_version.h
+-- Parsed Z3 version: 4.8.12.0
+-- Found Z3: /usr/include (found version "4.8.12.0") 
+-- Manually found Z3 (libs: /usr/lib/x86_64-linux-gnu/libz3.so; public headers: /usr/include)
+-- Using Z3 package:
+  Z3 major version:     4
+  Z3 minor version:     8
+  Z3 patch version:     12
+  Z3 tweak version:     0
+  Z3 version string:    4.8.12.0
+  Z3 link libraries:    z3::libz3
+  Z3 C include dirs:    /usr/include
+  Z3 C++ include dirs:  /usr/include
+-- Performing Test HAVE_FFI_CALL
+-- Performing Test HAVE_FFI_CALL - Success
+-- Found FFI: /usr/lib/x86_64-linux-gnu/libffi.so  
+-- Could NOT find LibEdit (missing: LibEdit_INCLUDE_DIRS LibEdit_LIBRARIES) 
+-- Performing Test Terminfo_LINKABLE
+-- Performing Test Terminfo_LINKABLE - Success
+-- Found Terminfo: /usr/lib/x86_64-linux-gnu/libtinfo.so  
+-- Found ZLIB: /usr/lib/x86_64-linux-gnu/libz.so (found version "1.2.11")  
+-- Could NOT find zstd (missing: zstd_LIBRARY zstd_INCLUDE_DIR) 
+-- Found LibXml2: /usr/lib/x86_64-linux-gnu/libxml2.so (found version "2.9.13") 
+-- Could NOT find CURL (missing: CURL_LIBRARY CURL_INCLUDE_DIR) 
+-- Linker detection: GNU ld
+-- Using LLVM package:
+  LLVM major version:         18
+  LLVM minor version:         1
+  LLVM patch version:         8
+  LLVM version string:        18.1.8
+  LLVM host triple:           x86_64-pc-linux-gnu
+  LLVM target triple:         x86_64-pc-linux-gnu
+  LLVM build type:            RelWithDebInfo
+  LLVM link dynamic lib:      ON
+  LLVM enable RTTI:           ON
+  LLVM enable exceptions:     OFF
+  LLVM compiler definitions:  -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+  LLVM libraries:             LLVM
+  LLVM includes dir:          /usr/lib/llvm-18/include
+  LLVM libraries dir:         /usr/lib/llvm-18/lib
+  LLVM executables dir:       /usr/lib/llvm-18
+  LLVM executable tools dir:  /usr/lib/llvm-18/bin
+-- Found extapi.c input file at: /home/lqq/project/TAFuzz/benchmark/rift/external/svf/svf-llvm/lib/extapi.c
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done (6.3s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build
+	Command being timed: "/tmp/rift-svf-cmake-3.28.6/cmake-3.28.6-linux-x86_64/bin/cmake -G Ninja -S benchmark/rift/external/svf -B benchmark/rift/reproduction/svf/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/bin/clang-18 -DCMAKE_CXX_COMPILER=/usr/bin/clang++-18 -DLLVM_DIR=/usr/lib/llvm-18/lib/cmake/llvm -DSVF_ENABLE_ASSERTIONS=ON -DBUILD_SHARED_LIBS=ON -DSVF_WARN_AS_ERROR=ON"
+	User time (seconds): 0.74
+	System time (seconds): 1.03
+	Percent of CPU this job got: 27%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:06.40
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 89652
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 8
+	Minor (reclaiming a frame) page faults: 134540
+	Voluntary context switches: 29573
+	Involuntary context switches: 26
+	Swaps: 0
+	File system inputs: 11201
+	File system outputs: 2528
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

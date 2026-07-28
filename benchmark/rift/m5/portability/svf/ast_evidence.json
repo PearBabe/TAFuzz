@@ -1,0 +1,374 @@
+{
+  "clang_command": [
+    "/usr/bin/clang++-18",
+    "-DSVF_INSTALL_EXTAPI_BC=\"/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build/lib/extapi.bc\"",
+    "-D_GNU_SOURCE",
+    "-D__STDC_CONSTANT_MACROS",
+    "-D__STDC_FORMAT_MACROS",
+    "-D__STDC_LIMIT_MACROS",
+    "-I/home/lqq/project/TAFuzz/benchmark/rift/external/svf/svf/include",
+    "-I/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build",
+    "-I/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build/include",
+    "-I/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build/include/SVF",
+    "-I/home/lqq/project/TAFuzz/benchmark/rift/external/svf/svf-llvm/include",
+    "-isystem",
+    "/usr/lib/llvm-18/include",
+    "-O3",
+    "-DNDEBUG",
+    "-std=gnu++17",
+    "-fPIE",
+    "-fno-exceptions",
+    "-funwind-tables",
+    "-Wall",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-UNDEBUG",
+    "-fsyntax-only",
+    "-Xclang",
+    "-ast-dump=json",
+    "-Xclang",
+    "-ast-dump-filter=main",
+    "/home/lqq/project/TAFuzz/benchmark/rift/external/svf/svf-llvm/tools/AE/ae.cpp"
+  ],
+  "clang_exit_code": 0,
+  "clang_stderr": "",
+  "compile_database": "/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build/compile_commands.json",
+  "compile_database_sha256": "aa2dc4b5db8ee227eb6c4bad0ad6cc32cb8da0e4f52cf18a1081f2a0364b3555",
+  "main_signature": "int (int, char **)",
+  "nodes": [
+    {
+      "begin": {
+        "column": 5,
+        "line": 848
+      },
+      "canonical_type": null,
+      "end": {
+        "column": 5,
+        "line": 851
+      },
+      "kind": "ForStmt",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": null
+    },
+    {
+      "begin": {
+        "column": 12,
+        "line": 848
+      },
+      "canonical_type": "bool",
+      "end": {
+        "column": 25,
+        "line": 848
+      },
+      "kind": "BinaryOperator",
+      "opcode": "<",
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 12,
+        "line": 848
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 18,
+        "line": 848
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 12,
+        "line": 848
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 18,
+        "line": 848
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "int",
+        "kind": "VarDecl",
+        "name": "arg_num"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 22,
+        "line": 848
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 25,
+        "line": 848
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 22,
+        "line": 848
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 25,
+        "line": 848
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "int",
+        "kind": "ParmVarDecl",
+        "name": "argc"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 28,
+        "line": 848
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 36,
+        "line": 848
+      },
+      "kind": "UnaryOperator",
+      "opcode": "++",
+      "referenced_decl": null,
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 30,
+        "line": 848
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 36,
+        "line": 848
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "int",
+        "kind": "VarDecl",
+        "name": "arg_num"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 9,
+        "line": 850
+      },
+      "canonical_type": "char *",
+      "end": {
+        "column": 42,
+        "line": 850
+      },
+      "kind": "BinaryOperator",
+      "opcode": "=",
+      "referenced_decl": null,
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 9,
+        "line": 850
+      },
+      "canonical_type": "char *",
+      "end": {
+        "column": 26,
+        "line": 850
+      },
+      "kind": "ArraySubscriptExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 9,
+        "line": 850
+      },
+      "canonical_type": "char **",
+      "end": {
+        "column": 17,
+        "line": 850
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 9,
+        "line": 850
+      },
+      "canonical_type": "char **",
+      "end": {
+        "column": 17,
+        "line": 850
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "char **",
+        "kind": "VarDecl",
+        "name": "arg_value"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 19,
+        "line": 850
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 25,
+        "line": 850
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 19,
+        "line": 850
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 25,
+        "line": 850
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "int",
+        "kind": "VarDecl",
+        "name": "arg_num"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 30,
+        "line": 850
+      },
+      "canonical_type": "char *",
+      "end": {
+        "column": 42,
+        "line": 850
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 30,
+        "line": 850
+      },
+      "canonical_type": "char *",
+      "end": {
+        "column": 42,
+        "line": 850
+      },
+      "kind": "ArraySubscriptExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 30,
+        "line": 850
+      },
+      "canonical_type": "char **",
+      "end": {
+        "column": 33,
+        "line": 850
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 30,
+        "line": 850
+      },
+      "canonical_type": "char **",
+      "end": {
+        "column": 33,
+        "line": 850
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "char **",
+        "kind": "ParmVarDecl",
+        "name": "argv"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {
+        "column": 35,
+        "line": 850
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 41,
+        "line": 850
+      },
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {
+        "column": 35,
+        "line": 850
+      },
+      "canonical_type": "int",
+      "end": {
+        "column": 41,
+        "line": 850
+      },
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "int",
+        "kind": "VarDecl",
+        "name": "arg_num"
+      },
+      "value_category": "lvalue"
+    }
+  ],
+  "schema_version": "rift.portability.svf.ast-evidence.v1",
+  "source": "/home/lqq/project/TAFuzz/benchmark/rift/external/svf/svf-llvm/tools/AE/ae.cpp",
+  "source_sha256": "3e5f4d43401ef600a0915522f84a0395017484258af44e13025e1ebc1e35a905",
+  "status": "PORTABILITY_PROBE_NOT_REQUIREMENT",
+  "translation_unit_entry_sha256": "3650095f35e80e3d5599af19d829a394179a16e1286f0949c05b3cd34a32f294",
+  "wall_seconds": 4.548618
+}

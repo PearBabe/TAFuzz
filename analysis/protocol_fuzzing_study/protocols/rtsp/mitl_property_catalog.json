@@ -1,0 +1,297 @@
+[
+  {
+    "id": "RTSP-SESSION-01",
+    "protocol": "RTSP",
+    "protocol_extension": "RFC 2326 RTSP/1.0 server Session timeout profile",
+    "title": "LIVE555 65-second session-liveness generation is not reclaimed early",
+    "category": "session inactivity timeout consistency",
+    "natural_language": "在锁定 LIVE555 的默认 profile 中，一个 client-session liveness task generation 以 65 秒重新 arm 后，与该 task-token generation 相关的 inactivity reclamation callback 在 65000 ms 前不得进入。RFC 2326 只允许服务端在声明的无活动间隔后选择回收，本性质不要求届时必须回收。",
+    "normative_strength": "CONDITIONAL MAY instantiated as IMPLEMENTATION_PROFILE no-early consistency",
+    "standard": "RFC 2326",
+    "standard_version": "RFC 2326 (April 1998, RTSP/1.0)",
+    "standard_section": "12.37; Appendix A.2",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc2326.html#section-12.37",
+    "standard_excerpt": "The server uses it to indicate to the client how long the server is prepared to wait",
+    "time_value_ms": "65000",
+    "time_parameter": "Session timeout=65 / reclamationSeconds=65",
+    "time_source": "RFC 2326 permits a server-declared Session timeout; the locked LIVE555 default is 65 seconds and the same value is emitted in the Session header and passed to the liveness task",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (rtsp_liveness_generation_armed_65 -> G [0,65000) (!rtsp_inactivity_reclaim_callback_entered))",
+    "mightyppl_formula": "G* (rtsp_liveness_generation_armed_65 -> G [0,65000) (!rtsp_inactivity_reclaim_callback_entered))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "rtsp_liveness_generation_armed_65",
+      "rtsp_inactivity_reclaim_callback_entered"
+    ],
+    "ap_definitions": {
+      "rtsp_liveness_generation_armed_65": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+      "rtsp_inactivity_reclaim_callback_entered": "GenericMediaServer::ClientSession::livenessTimeoutTask is entered for the exact captured fLivenessCheckTask generation, immediately before deletion of that ClientSession."
+    },
+    "correlation_key": "GenericMediaServer::ClientSession pointer + fOurSessionId + captured fLivenessCheckTask token generation; pointer, session ID, and token remain event fields and never enter AP names",
+    "projection_rule": "after a successful SETUP response has established the Session and declared timeout=65, spawn one projection after each later liveness-task reschedule; project only a callback carrying the same task-token generation, and finalize the old projection when reschedule or destruction supersedes that token",
+    "source_repository": "rgaufman/live555",
+    "source_commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+    "source_path": "liveMedia/GenericMediaServer.cpp",
+    "source_symbol": "GenericMediaServer::ClientSession::noteLiveness / GenericMediaServer::ClientSession::livenessTimeoutTask",
+    "source_lines": "283-297;303-312",
+    "source_url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/GenericMediaServer.cpp#L283-L297",
+    "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "rtsp_liveness_generation_armed_65"
+        ]
+      },
+      {
+        "time": 65000,
+        "props": [
+          "rtsp_inactivity_reclaim_callback_entered"
+        ]
+      },
+      {
+        "time": 65001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "rtsp_liveness_generation_armed_65"
+        ]
+      },
+      {
+        "time": 64999,
+        "props": [
+          "rtsp_inactivity_reclaim_callback_entered"
+        ]
+      },
+      {
+        "time": 65001,
+        "props": []
+      }
+    ],
+    "additional_negative_traces": {},
+    "monitor_instantiation": "one correlated ClientSession task-token generation per finite timed word; the trigger occurs exactly once, every reschedule creates a new monitor instance, and a callback is projected only to its matching generation",
+    "independent_audit_status": "ROOT_REVIEWED_WITH_CAVEAT",
+    "independent_audit_note": "Root review admits only the no-early implementation-profile invariant. RFC 2326 makes inactivity teardown optional, and scheduler callback dispatch is not treated as a must-fire deadline.",
+    "human_review_status": "PENDING",
+    "review_question": "确认该条只作为 LIVE555 timeout=65 profile 的 no-early consistency oracle，不提升 RFC 2326 的 MAY，也不增加 callback 必须在 65000 ms 到达的上界。",
+    "limitations": "This is not a universal RTSP 65-second constant and not an eventual-reclamation property. The constructor's pre-SETUP-response arm and non-inactivity teardown paths are outside the property. LIVE555 DelayQueue uses gettimeofday; adapter timestamps must use a compatible nondecreasing basis or explicitly flag forward wall-clock jumps that can appear early relative to an independent monotonic clock.",
+    "primary_source_atomic_propositions": [
+      "rtsp_liveness_generation_armed_65",
+      "rtsp_inactivity_reclaim_callback_entered"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "65-second server profile declaration",
+        "path": "liveMedia/include/RTSPServer.hh",
+        "symbol": "reclamationSeconds",
+        "lines": "31-41",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/include/RTSPServer.hh#L31-L41"
+      },
+      {
+        "role": "Session timeout advertisement",
+        "path": "liveMedia/RTSPServer.cpp",
+        "symbol": "RTSPServer::RTSPClientSession::handleCmd_SETUP",
+        "lines": "1416-1499",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L1416-L1499"
+      },
+      {
+        "role": "valid Session request liveness refresh",
+        "path": "liveMedia/RTSPServer.cpp",
+        "symbol": "RTSPServer::RTSPClientConnection::handleRequestBytes",
+        "lines": "726-733",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L726-L733"
+      },
+      {
+        "role": "task reschedule",
+        "path": "UsageEnvironment/UsageEnvironment.cpp",
+        "symbol": "TaskScheduler::rescheduleDelayedTask",
+        "lines": "52-57",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/UsageEnvironment/UsageEnvironment.cpp#L52-L57"
+      },
+      {
+        "role": "delayed-task queue insertion",
+        "path": "BasicUsageEnvironment/BasicTaskScheduler0.cpp",
+        "symbol": "BasicTaskScheduler0::scheduleDelayedTask",
+        "lines": "59-68",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/BasicTaskScheduler0.cpp#L59-L68"
+      },
+      {
+        "role": "due delayed-task dispatch",
+        "path": "BasicUsageEnvironment/DelayQueue.cpp",
+        "symbol": "DelayQueue::handleAlarm",
+        "lines": "179-189",
+        "atomic_propositions": [
+          "rtsp_inactivity_reclaim_callback_entered"
+        ],
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/DelayQueue.cpp#L179-L189"
+      }
+    ],
+    "protocol_slug": "rtsp",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "65-second server profile declaration",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "repository": "rgaufman/live555",
+        "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+        "path": "liveMedia/include/RTSPServer.hh",
+        "symbol": "reclamationSeconds",
+        "lines": "31-41",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/include/RTSPServer.hh#L31-L41",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/include/RTSPServer.hh; verified_symbols=['reclamationSeconds']; failed_symbols=[]; cited_ranges=[(31, 41)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "Session timeout advertisement",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "repository": "rgaufman/live555",
+        "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+        "path": "liveMedia/RTSPServer.cpp",
+        "symbol": "RTSPServer::RTSPClientSession::handleCmd_SETUP",
+        "lines": "1416-1499",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L1416-L1499",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp; verified_symbols=['RTSPServer::RTSPClientSession::handleCmd_SETUP']; failed_symbols=[]; cited_ranges=[(1416, 1499)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "valid Session request liveness refresh",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "repository": "rgaufman/live555",
+        "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+        "path": "liveMedia/RTSPServer.cpp",
+        "symbol": "RTSPServer::RTSPClientConnection::handleRequestBytes",
+        "lines": "726-733",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L726-L733",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp; verified_symbols=['RTSPServer::RTSPClientConnection::handleRequestBytes']; failed_symbols=[]; cited_ranges=[(726, 733)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "task reschedule",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "repository": "rgaufman/live555",
+        "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+        "path": "UsageEnvironment/UsageEnvironment.cpp",
+        "symbol": "TaskScheduler::rescheduleDelayedTask",
+        "lines": "52-57",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/UsageEnvironment/UsageEnvironment.cpp#L52-L57",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/UsageEnvironment/UsageEnvironment.cpp; verified_symbols=['TaskScheduler::rescheduleDelayedTask']; failed_symbols=[]; cited_ranges=[(52, 57)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "delayed-task queue insertion",
+        "atomic_propositions": [
+          "rtsp_liveness_generation_armed_65"
+        ],
+        "repository": "rgaufman/live555",
+        "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+        "path": "BasicUsageEnvironment/BasicTaskScheduler0.cpp",
+        "symbol": "BasicTaskScheduler0::scheduleDelayedTask",
+        "lines": "59-68",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/BasicTaskScheduler0.cpp#L59-L68",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/BasicTaskScheduler0.cpp; verified_symbols=['BasicTaskScheduler0::scheduleDelayedTask']; failed_symbols=[]; cited_ranges=[(59, 68)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 6,
+        "role": "due delayed-task dispatch",
+        "atomic_propositions": [
+          "rtsp_inactivity_reclaim_callback_entered"
+        ],
+        "repository": "rgaufman/live555",
+        "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+        "path": "BasicUsageEnvironment/DelayQueue.cpp",
+        "symbol": "DelayQueue::handleAlarm",
+        "lines": "179-189",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/DelayQueue.cpp#L179-L189",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/DelayQueue.cpp; verified_symbols=['DelayQueue::handleAlarm']; failed_symbols=[]; cited_ranges=[(179, 189)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/rgaufman/live555/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/GenericMediaServer.cpp; verified_symbols=['GenericMediaServer::ClientSession::noteLiveness', 'GenericMediaServer::ClientSession::livenessTimeoutTask']; failed_symbols=[]; cited_ranges=[(283, 297), (303, 312)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "rtsp_liveness_generation_armed_65",
+      "rtsp_inactivity_reclaim_callback_entered"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 15,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  }
+]

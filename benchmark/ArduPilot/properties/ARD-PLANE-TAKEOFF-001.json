@@ -1,0 +1,882 @@
+{
+  "schema_version": "1.0",
+  "property_id": "ARD-PLANE-TAKEOFF-001",
+  "title_zh": "Plane 自动起飞超时",
+  "title_en": "Plane automatic-takeoff timeout",
+  "system_scope": {
+    "system": "ArduPilot",
+    "vehicles": [
+      "Plane"
+    ],
+    "firmware_release": null,
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "SITL Plane；automatic TAKEOFF attempt、GPS speed validity 和运行时 TKOFF_TIMEOUT 已归档。"
+  },
+  "status": "CANDIDATE",
+  "classification": "PARAM_METADATA_CANDIDATE",
+  "sources": [
+    {
+      "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "ArduPlane TKOFF_TIMEOUT metadata",
+      "version": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "path_or_url": "baseline/ardupilot/ArduPlane/Parameters.cpp",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "03942ea920ff5dc25381d7b79d8c1e28de3750746cdf3872a7ad6f43cdb6eb64",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 1113,
+        "line_end": 1120,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+      "context_summary_zh": "参数元数据给出自动起飞、4m/s 阈值、超时、abort/disarm 和 0 禁用语义。",
+      "language": "en",
+      "document_status": "CURRENT"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "ARD-PLANE-TAKEOFF-001-S1"
+    ],
+    "edges": [],
+    "unresolved_references": [
+      "唯一规范来源是冻结参数元数据，权威等级低。",
+      "标准 MAVLink 没有精确 automatic-takeoff start 时间。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "ArduPlane automatic takeoff",
+      "evidence": [
+        {
+          "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+          "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "启用 TKOFF_TIMEOUT 的自动起飞开始。",
+      "evidence": [
+        {
+          "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+          "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "TKOFF_TIMEOUT > 0。",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "从内部 automatic-takeoff start 起，地速在整个窗口内从未达到 4m/s。",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "超时后中止 takeoff 并 disarm。",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "若在窗口内达到至少 4m/s，则不能仅由该 timeout 分支判为违规。",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "TKOFF_TIMEOUT=0 禁用。",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "非 automatic-takeoff 不在范围。",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "内部 automatic-takeoff start",
+      "evidence": [
+        {
+          "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+          "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "达到 4m/s、takeoff abort/disarm、离开 takeoff 或 run 结束",
+      "evidence": [
+        {
+          "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+          "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "takeoff_start",
+        "relation": "BEFORE",
+        "right": "takeoff_abort",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "speed_reaches_4mps",
+        "relation": "CANCELS",
+        "right": "takeoff_timeout_obligation",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "唯一规范来源是冻结参数元数据，权威等级低。",
+      "标准 MAVLink 没有精确 automatic-takeoff start 时间。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_takeoff",
+      "semantic_start_event": "automatic_takeoff_start",
+      "semantic_end_event": "takeoff_abort",
+      "cancel_event": "speed_reaches_4mps_or_leave_takeoff",
+      "reset_event": null,
+      "raw_expression": "runtime(TKOFF_TIMEOUT)",
+      "lower": "runtime(TKOFF_TIMEOUT)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+      "source_span": {
+        "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+        "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "TKOFF_TIMEOUT",
+      "formula": "T_takeoff = runtime(TKOFF_TIMEOUT)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 0,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/ARD-PLANE-TAKEOFF-001"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 0,
+          "unit": "s",
+          "source_id": "ARD-PLANE-TAKEOFF-001-S1"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "internal takeoff start millis",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((automatic_takeoff_start & timeout_enabled) -> (G_[0,T_takeoff] speed_below_4mps -> F_[T_takeoff,infty) (takeoff_aborted & F disarmed)))",
+    "concrete": null,
+    "concrete_instances": [
+      {
+        "profile": "ArduPilot/ArduPlane — plane",
+        "capture_id": "ardupilot-plane-m6",
+        "parameter_id": "TKOFF_TIMEOUT",
+        "raw_value": 0,
+        "raw_unit": "s",
+        "normalized_value": 0.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 0 s = 0 s",
+        "formula": null,
+        "status": "DISABLED_BY_RUNTIME_CONFIGURATION",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.json",
+        "source_sha256": "0767f3f3019f5399679118cbcf0931e552bdb6ee40cc67303a8b476a6e61c4dd",
+        "source_param_index": 1217,
+        "source_param_count": 1440,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "运行时参数值落在官方定义的禁用域；保留数值与来源，但不构造零/负区间公式，当前 profile 没有激活该时间义务。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((automatic_takeoff_start & timeout_enabled) -> (G_[0,T_takeoff] speed_below_4mps -> F_[T_takeoff,infty) (takeoff_aborted & F disarmed)))",
+        "evidence": [
+          {
+            "source_id": "ARD-PLANE-TAKEOFF-001-S1",
+            "quote": "// @Param: TKOFF_TIMEOUT\n    // @DisplayName: Takeoff timeout\n    // @Description: This is the timeout for an automatic takeoff. If this is non-zero and the aircraft does not reach a ground speed of at least 4 m/s within this number of seconds then the takeoff is aborted and the vehicle disarmed. If the value is zero then no timeout applies.\n    // @Range: 0 120\n    // @Increment: 1\n    // @Units: s\n    // @User: Standard\n    AP_GROUPINFO(\"TKOFF_TIMEOUT\", 19, ParametersG2, takeoff_timeout, 0),",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "SYMBOLIC_ONLY"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-01",
+      "name": "automatic_takeoff_start",
+      "controlled_natural_language": "自动起飞计时起点发生。",
+      "truth_condition": "当前 takeoff attempt 的内部 start epoch 从 unset 变为有效。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-01-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/Plane.h",
+          "line": 447,
+          "column": null,
+          "symbol": "Plane::takeoff_state.start_time_ms",
+          "semantic_identity": "Per-attempt autopilot monotonic-boot start epoch used by TKOFF_TIMEOUT.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Plane.h:439-452 defines takeoff_state and its timers. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/Plane.h#L447"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-01-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 130,
+          "column": null,
+          "symbol": "takeoff_state.start_time_ms = now",
+          "semantic_identity": "AUTO takeoff start after launch acceleration/delay/speed/attitude checks trigger.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Plane::auto_takeoff_check",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 124-134 accept the launch and initialize start, level-off, and throttle-max timers. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L130"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-01-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/mode_takeoff.cpp",
+          "line": 132,
+          "column": null,
+          "symbol": "plane.takeoff_state.start_time_ms = millis()",
+          "semantic_identity": "TAKEOFF-mode start after position/home setup, throttle unsuppressed, and sufficient groundspeed.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "ModeTakeoff::update",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 128-136 initialize the takeoff attempt timers and course. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/mode_takeoff.cpp#L132"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Can confirm coarse TAKEOFF/AUTO mode, without the start epoch. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-02",
+      "name": "timeout_enabled",
+      "controlled_natural_language": "运行时 TKOFF_TIMEOUT 大于零。",
+      "truth_condition": "PARAM_VALUE(TKOFF_TIMEOUT)>0。",
+      "kind": "VALUE_COMPARISON",
+      "value_type": "float",
+      "unit": "s",
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-02-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/Parameters.cpp",
+          "line": 1120,
+          "column": null,
+          "symbol": "TKOFF_TIMEOUT / ParametersG2::takeoff_timeout",
+          "semantic_identity": "Runtime automatic-takeoff timeout in seconds; zero disables.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Int8",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:152",
+          "macro_expansion_location": "baseline/ardupilot/ArduPlane/Parameters.cpp:1120",
+          "confidence": "EXACT",
+          "evidence": "AP_GROUPINFO binds TKOFF_TIMEOUT; field type is at Parameters.h:522. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/Parameters.cpp#L1120"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-02-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 393,
+          "column": null,
+          "symbol": "g2.takeoff_timeout > 0",
+          "semantic_identity": "Direct runtime enable predicate combined with a valid start epoch.",
+          "entity_kind": "OTHER",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "GUARD",
+          "type": "bool over AP_Int8",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The function enters timeout logic only when start_time_ms is nonzero and TKOFF_TIMEOUT is positive. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L393"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-02-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 401,
+          "column": null,
+          "symbol": "1000U * g2.takeoff_timeout",
+          "semantic_identity": "Seconds-to-milliseconds conversion for the runtime timeout.",
+          "entity_kind": "OTHER",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "DERIVATION",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The strict greater-than elapsed-time comparison performs the conversion inline. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L401"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects TKOFF_TIMEOUT; truth is param_value > 0; PARAM_VALUE has no timestamp",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-03",
+      "name": "speed_below_4mps",
+      "controlled_natural_language": "地速低于 4m/s。",
+      "truth_condition": "AP::gps ground speed < 4.0 m/s 且 GPS speed 有效/新鲜。",
+      "kind": "VALUE_COMPARISON",
+      "value_type": "float",
+      "unit": "m/s",
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-03-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_GPS/AP_GPS.h",
+          "line": 197,
+          "column": null,
+          "symbol": "AP_GPS::GPS_State::ground_speed",
+          "semantic_identity": "Backend-populated primary GPS ground speed in metres per second.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "float m/s",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "GPS_State is filled by the selected backend; inline accessor is at AP_GPS.h:369-373. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_GPS/AP_GPS.h#L197"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-03-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 394,
+          "column": null,
+          "symbol": "ground_speed = AP::gps().ground_speed()",
+          "semantic_identity": "Reads the primary GPS ground-speed sample used by the timeout check.",
+          "entity_kind": "VARIABLE",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "READ",
+          "type": "const float m/s",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 394-396 bind the GPS value, literal 4 m/s threshold, and comparison. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L394"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-03-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 396,
+          "column": null,
+          "symbol": "ground_speed >= takeoff_min_ground_speed",
+          "semantic_identity": "Clears the timeout epoch at 4 m/s or above; the else path is the source identity for below 4 m/s.",
+          "entity_kind": "OTHER",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Threshold is const float 4 at line 395; lines 396-399 clear the timer on reaching it. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L396"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-03-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_GPS/AP_GPS.h",
+          "line": 448,
+          "column": null,
+          "symbol": "AP_GPS::last_message_time_ms",
+          "semantic_identity": "Candidate freshness carrier for the primary GPS instance, separate from ground_speed.",
+          "entity_kind": "FUNCTION",
+          "function": "AP_GPS::last_message_time_ms",
+          "role": "OBSERVATION_SITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MAY",
+          "evidence": "AP_GPS.h:446-452 exposes last processed GPS-message time; check_takeoff_timeout does not read it. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_GPS/AP_GPS.h#L448"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "GPS_RAW_INT",
+          "message_id": 24,
+          "field": "vel",
+          "direction": "OUTGOING",
+          "derivation": "Ground speed in cm/s; predicate is vel < 400 with valid fresh fix. time_usec may be UNIX epoch or system boot per XML.",
+          "time_field": "time_usec (ambiguous UNIX epoch or system boot; GPS fix time)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-04",
+      "name": "takeoff_aborted",
+      "controlled_natural_language": "本次自动起飞被 timeout 原因中止。",
+      "truth_condition": "takeoff-abort event 与当前 attempt correlation key 匹配。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-04-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 401,
+          "column": null,
+          "symbol": "takeoff timeout branch",
+          "semantic_identity": "Elapsed time above runtime TKOFF_TIMEOUT while ground speed remains below 4 m/s.",
+          "entity_kind": "EVENT",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "PRODUCER",
+          "type": "bool edge",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 401-405 emit text, disarm with TAKEOFFTIMEOUT, clear the epoch, and return true. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L401"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-04-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 402,
+          "column": null,
+          "symbol": "Takeoff timeout STATUSTEXT",
+          "semantic_identity": "Human-readable timeout consequence including measured ground speed.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "PRODUCER",
+          "type": "STATUSTEXT text",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MAY",
+          "evidence": "send_text queues a text message; it is not a typed attempt identifier or exact clock carrier. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L402"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-04-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/takeoff.cpp",
+          "line": 403,
+          "column": null,
+          "symbol": "arming.disarm(AP_Arming::Method::TAKEOFFTIMEOUT)",
+          "semantic_identity": "Cause-specific disarm request for this timeout event.",
+          "entity_kind": "FUNCTION",
+          "function": "Plane::check_takeoff_timeout",
+          "role": "PRODUCER",
+          "type": "AP_Arming::Method::TAKEOFFTIMEOUT",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Method value 27 is declared at AP_Arming.h:80. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/takeoff.cpp#L403"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-04-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/mode_takeoff.cpp",
+          "line": 141,
+          "column": null,
+          "symbol": "plane.check_takeoff_timeout()",
+          "semantic_identity": "On true, leaves TAKEOFF flight stage and clears takeoff_mode_setup.",
+          "entity_kind": "RETURN",
+          "function": "ModeTakeoff::update",
+          "role": "CONSUMER",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 140-144 consume check_takeoff_timeout(). Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/mode_takeoff.cpp#L141"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-04-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/commands_logic.cpp",
+          "line": 601,
+          "column": null,
+          "symbol": "AUTO mission takeoff timeout consumer",
+          "semantic_identity": "On true, resets the current mission after the timeout event.",
+          "entity_kind": "RETURN",
+          "function": "Plane::verify_takeoff",
+          "role": "CONSUMER",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 600-603 consume the timeout return and call mission.reset(). Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/commands_logic.cpp#L601"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May contain Takeoff timeout text; no timestamp and delivery may be delayed/lost.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-05",
+      "name": "disarmed",
+      "controlled_natural_language": "飞控处于 disarmed。",
+      "truth_condition": "armed state 为 false。",
+      "kind": "STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-05-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_Arming/AP_Arming.cpp",
+          "line": 1970,
+          "column": null,
+          "symbol": "AP_Arming::armed = false",
+          "semantic_identity": "Canonical raw armed-state transition to false after disarm checks pass.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "AP_Arming::disarm",
+          "role": "WRITE",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 1954-1974 reject already-disarmed/invalid rudder requests, then write armed=false and record the method. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_Arming/AP_Arming.cpp#L1970"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-05-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduPlane/AP_Arming_Plane.cpp",
+          "line": 336,
+          "column": null,
+          "symbol": "AP_Arming::disarm(method, do_disarm_checks)",
+          "semantic_identity": "Plane-specific disarm path delegates the raw state transition, then changes throttle/mode-related state.",
+          "entity_kind": "FUNCTION",
+          "function": "AP_Arming_Plane::disarm",
+          "role": "CONSUMER",
+          "type": "bool(AP_Arming::Method,bool)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 325-371 implement the Plane override; line 370 emits Throttle disarmed text after success. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduPlane/AP_Arming_Plane.cpp#L336"
+        },
+        {
+          "binding_id": "ARD-PLANE-TAKEOFF-001-AP-05-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_Arming/AP_Arming.cpp",
+          "line": 308,
+          "column": null,
+          "symbol": "AP_Arming::is_armed",
+          "semantic_identity": "Public armed-state accessor used throughout vehicle logic.",
+          "entity_kind": "FUNCTION",
+          "function": "AP_Arming::is_armed",
+          "role": "READ",
+          "type": "bool() const",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Line 310 returns raw armed OR arming_required()==Required::NO. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_Arming/AP_Arming.cpp#L308"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "base_mode",
+          "direction": "OUTGOING",
+          "derivation": "MAV_MODE_FLAG_SAFETY_ARMED clear means disarmed for the target autopilot.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone7-monitor-and-independent-audit-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "benchmark/extraction_runs/milestone7/independent_review.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction. Milestone 7 recorded a non-human independent rollback recommendation and synthetic monitor evidence; neither was used as a firmware-conformance or human-acceptance decision."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "satisfiable": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_tautology": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_vacuity": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "independent_review": {
+      "status": "INCONCLUSIVE",
+      "command": null,
+      "evidence": "Automated non-human audit completed 9 gates and recommends CANDIDATE; blockers=sole LOW implementation metadata source; current runtime disables property; internal start/abort APs; no concrete monitor formula. No human reviewer or arbitration was claimed."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Automated independent evidence audit recommends CANDIDATE and records unresolved gates in benchmark/extraction_runs/milestone7/independent_review.json (SHA-256 5241806569500e593552cf50667d6de9e7e409961bd6ea131ff255571c98ec5c). It is not a human review or arbitration; decision remains PENDING.",
+    "conflicts": [
+      "0 是源码默认且表示 disabled；不得生成默认 concrete 公式。",
+      "abort 到 disarm 没有独立数值上界，公式只保留定性 eventually。",
+      "M7 automated independent audit: sole LOW implementation metadata source",
+      "M7 automated independent audit: current runtime disables property",
+      "M7 automated independent audit: internal start/abort APs",
+      "M7 automated independent audit: no concrete monitor formula"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

@@ -1,0 +1,73 @@
+property_id: RFC7252-MITL-004
+title: CON 传输尝试必须在 MAX_TRANSMIT_WAIT 内终止
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.2"
+    - "4.8.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1183
+      end: 1189
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1575
+      end: 1582
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: counter 达到 MAX_RETRANSMIT 或收到 RST 时取消传输尝试；MAX_TRANSMIT_WAIT 是等待 ACK/RST 的最大时间。
+  normative_keyword: MUST / derived time value
+mitl: |
+  G( CON_INITIAL_TRANSMISSION ->
+     F[0, MAX_TRANSMIT_WAIT]
+       (ACK_MATCHED || RST_MATCHED || MAX_RETRANSMIT_REACHED || CON_ATTEMPT_CANCELED || TRANSMISSION_SUCCESS) )
+informal_semantics: >
+  一个 CON 传输尝试从首次发送起，必须在 MAX_TRANSMIT_WAIT 内达到成功、RST、
+  最大重传耗尽或取消等终止状态。
+role: client/server/both
+temporal_pattern: timed_terminal
+events:
+  start_event: CON_INITIAL_TRANSMISSION
+  terminal_events:
+    - ACK_MATCHED
+    - RST_MATCHED
+    - MAX_RETRANSMIT_REACHED
+    - CON_ATTEMPT_CANCELED
+    - TRANSMISSION_SUCCESS
+atomic_propositions:
+  - name: MAX_RETRANSMIT_REACHED
+    semantic: timeout 触发时 retransmission counter 已达到 MAX_RETRANSMIT。
+    fields: [session, peer, message.id, retransmission_counter, MAX_RETRANSMIT]
+    future_source_mapping: [timer, internal state]
+  - name: TRANSMISSION_SUCCESS
+    semantic: 在等待窗口内收到匹配 ACK，传输被视为成功。
+    fields: [session, peer, message.id]
+    future_source_mapping: [message field, internal state]
+  - name: CON_ATTEMPT_CANCELED
+    semantic: 该 CON 尝试由应用或协议状态终止。
+    fields: [session, peer, message.id, cancel_reason]
+    future_source_mapping: [internal state, function event]
+  - name: ACK_MATCHED
+    semantic: 匹配 ACK 到达。
+    fields: [session, peer, message.id]
+    future_source_mapping: [message field, internal state]
+  - name: RST_MATCHED
+    semantic: 匹配 RST 到达。
+    fields: [session, peer, message.id]
+    future_source_mapping: [message field, internal state]
+correlation_key:
+  key: [session, peer, message_id]
+  reason: 所有终止事件都属于同一 CON message-layer exchange。
+time_parameters:
+  bound_kind: nonzero_bounded
+  start: CON_INITIAL_TRANSMISSION
+  end: terminal event for the CON attempt
+  rfc_parameters:
+    - MAX_TRANSMIT_WAIT
+  default_values:
+    MAX_TRANSMIT_WAIT: 93 seconds
+  derived_formula:
+    MAX_TRANSMIT_WAIT: ACK_TIMEOUT * ((2 ** (MAX_RETRANSMIT + 1)) - 1) * ACK_RANDOM_FACTOR
+confidence: medium
+verification_notes:
+  - RFC 允许应用或实现更早放弃，早终止不是违规。
+  - 需要后续实现明确定义 cancel/failure/success 事件。

@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/ap-influence-cones/1.0.0",
+  "title": "RIFT conservative AP influence cones",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "ap_bindings_sha256", "graph_sha256",
+    "candidate_accounting_complete", "ranking_never_prunes", "cones",
+    "unsupported_constructs"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "ap_bindings_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "graph_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "candidate_accounting_complete": {"const": true},
+    "ranking_never_prunes": {"const": true},
+    "cones": {"type": "array", "items": {"$ref": "#/definitions/cone"}},
+    "unsupported_constructs": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}}
+  },
+  "definitions": {
+    "candidate_account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_id", "disposition", "root_node_ids", "uncertainty_reasons"],
+      "properties": {
+        "binding_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "disposition": {"enum": ["INCLUDED", "UNREACHABLE", "UNRESOLVED", "REJECTED"]},
+        "root_node_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}},
+        "uncertainty_reasons": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"disposition": {"enum": ["UNREACHABLE", "UNRESOLVED"]}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "membership", "witness_edge_ids", "uncertainty_reasons"],
+      "properties": {
+        "node_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "membership": {"enum": ["MUST_INFLUENCE", "MAY_INFLUENCE", "MODELLED_INFLUENCE", "UNKNOWN_INFLUENCE"]},
+        "witness_edge_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}},
+        "uncertainty_reasons": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"membership": {"const": "UNKNOWN_INFLUENCE"}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    },
+    "cone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cone_id", "ap_id", "roles", "candidate_accounting", "members", "edge_ids", "status", "uncertainty_reasons"],
+      "properties": {
+        "cone_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "roles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/ap_role"}},
+        "candidate_accounting": {"type": "array", "items": {"$ref": "#/definitions/candidate_account"}},
+        "members": {"type": "array", "items": {"$ref": "#/definitions/member"}},
+        "edge_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}},
+        "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+        "uncertainty_reasons": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["CONSERVATIVE_INCOMPLETE", "FAILED"]}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    }
+  }
+}

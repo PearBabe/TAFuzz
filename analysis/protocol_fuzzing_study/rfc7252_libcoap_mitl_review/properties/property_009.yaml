@@ -1,0 +1,54 @@
+property_id: RFC7252-MITL-009
+title: NSTART outstanding interaction 上限
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.7"
+    - "4.8"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1438
+      end: 1446
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1479
+      end: 1492
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: clients/proxies 必须把到给定 server 的 simultaneous outstanding interactions 严格限制到 NSTART，默认值为 1。
+  normative_keyword: MUST
+mitl: |
+  G( OUTSTANDING_INTERACTION_STATE_CHANGED ->
+     F[0,0] OUTSTANDING_INTERACTIONS_LE_NSTART )
+informal_semantics: >
+  任意导致 outstanding interaction 集合变化的步骤后，到同一 server 的 outstanding interaction
+  数量必须小于等于 NSTART。
+role: client
+temporal_pattern: immediate_state_invariant
+events:
+  start_event: OUTSTANDING_INTERACTION_STATE_CHANGED
+  required_event: OUTSTANDING_INTERACTIONS_LE_NSTART
+atomic_propositions:
+  - name: OUTSTANDING_INTERACTION_STATE_CHANGED
+    semantic: 对某 server 的 CON/request outstanding set 增加或减少。
+    fields: [session, server_endpoint, interaction_id, state_change_kind]
+    future_source_mapping: [internal state, data structure, function event]
+  - name: OUTSTANDING_INTERACTIONS_LE_NSTART
+    semantic: 当前到该 server 的 outstanding interaction 数量不超过 NSTART。
+    fields: [session, server_endpoint, outstanding_count, NSTART]
+    future_source_mapping: [internal state, data structure]
+correlation_key:
+  key: [session, server_endpoint]
+  reason: RFC7252 将 NSTART 限定为到给定 server 的 simultaneous outstanding interactions。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: outstanding state update
+  end: invariant check
+  interval: "[0,0]"
+  rfc_parameters:
+    - NSTART
+  default_values:
+    NSTART: 1
+confidence: high
+verification_notes:
+  - 这是计数型状态性质，使用 `[0,0]` 在状态变更点检查。
+  - 若应用环境配置 NSTART，后续实例化必须使用配置值。

@@ -1,0 +1,296 @@
+Exploiting Assumptions for Effective
+Monitoring of Real-Time Properties Under
+Partial Observability
+Alessandro Cimatti1 , Thomas M. Grosen2(B) , Kim G. Larsen2 , Stefano Tonetta1 , and Martin Zimmermann2
+1 Fondazione Bruno Kessler, Trento, Italy {cimatti,tonettas}@fbk.eu
+2 Aalborg University, Aalborg, Denmark {tmgr,kgl,mzi}@cs.aau.dk
+Abstract. Runtime verification of temporal properties over timed sequences of observations is crucial in various applications within cyberphysical systems ranging from autonomous vehicles over smart grids to medical devices. In this paper, we are addressing the challenge of effectively predicting the failure or success of properties in a continuous realtime setting. Our approach allows predictions to exploit assumptions on the system being monitored and supports predictions of non-observable system behaviour (e.g. internal faults). More concretely, in our approach properties are expressed in Metric Interval Temporal Logic (MITL), assumptions on the monitored system are specified in terms of Timed Automata, and observations are to be provided in terms of sequences of timed constraints. We present an assumption-based runtime verification algorithm and its implementation on top of the real-time verification tool UPPAAL. We show experimentally that assumptions can be effective in anticipating the satisfaction/violation of timed properties and in handling monitoring properties that predicate over unobservable events.
+Keywords: Assumption-based runtime verification · Real-Time ·
+MITL · Timed Automata
+1 Introduction
+The problem of monitoring timed properties has gained significant attention due to its crucial role in ensuring the correctness and reliability of real-time systems. The runtime verification of temporal properties over timed sequences of observations is crucial in various applications ranging from cyber-physical systems
+T.M. Grosen, K.G. Larsen, and M. Zimmermann have been supported by DIREC Digital Research Centre Denmark. A. Cimatti and S. Tonetta have been supported by the PNRR project FAIR - Future AI Research (PE00000013), under the Italian NRRP MUR program funded by the NextGenerationEU.
+c© The Author(s), under exclusive license to Springer Nature Switzerland AG 2025 A. Madeira and A. Knapp (Eds.): SEFM 2024, LNCS 15280, pp. 70–88, 2025. https://doi.org/10.1007/978-3-031-77382-2_5
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 71
+including autonomous vehicles and beyond. While different solutions for runtime verification of timed temporal properties have been presented [4–6,20,22], some challenges remain to be addressed, in particular extending these solutions with prognosis and diagnosis capabilities. More specifically, we are here interested in effectively predicting in advance the failure of properties and in handling partially observable systems. In the discrete-time setting, these challenges have been addressed with Assumption-Based Runtime Verification (ABRV) [12–15]. ABRV uses assumptions about the behavior of the system to predict the future behavior of the system and to relate observable and non-observable variables. These assumptions can be derived, for example, from models produced during the system design, or from the data collected from the system in operation. Exploiting assumptions, the monitor can anticipate the detection of property failures. Moreover, the specification is no more limited to the interface of black box systems as in traditional runtime verification, but can be extended to constrain also the internal non-observable parts (such as, for example, internal faults). In ABRV, the output of the monitor has four possible values:
+– (Satisfied): given the sequence of observations, the system satisfies the specified temporal properties under the given assumption. – ⊥ (Violated): this value indicates that the observed behavior of the system violates the specified temporal property, under the given assumption. – × (Out-of-model): the observed behavior violates the assumptions, i.e., there is no run of the assumption compatible with the observations. – ? (Unknown): given the current observations and assumption, it is not possible to determine definitively whether the property is satisfied or violated.
+Here, we enhance the monitoring of timed systems with assumptions. We define and solve the problem of ABRV for timed properties for the following setting:
+– The properties to be monitored are specified in Metric Interval Temporal Logic (MITL), which allows for the expression of temporal properties over timed words, making it suitable for real-time systems. – The assumptions about the system are specified in terms of Timed Automata which relate observable events with non-observable events, locations, and clocks. – The observations are specified in terms of sequences of timed constraints which predicate over the assumption automaton defining the set of its runs that are compatible with the observations.
+Like in the discrete-time case, the assumption allows the monitor to give a or ⊥ verdict even if the property contains future operators and non-observable events. For example, suppose we monitor the MITL property φ = F[0,10]a ∧ G[0,20]¬b (expressing that there is an a in the first ten units of time, but no b in the first 20 units of time) and we assume that the system satisfies the property ψ = G[0,1]¬b ∧ G(a → G[0,10]¬b) (expressing that there is no b in the first unit of time and no a is followed by a b within ten units of time). Then, the monitor
+
+
+72 A. Cimatti et al.
+can output a verdict even before time 20, for instance at time 10 when b is false in the interval [0, 10] and a is true at time 10. Further, it can even give the verdict if b is not observable, e.g., when a is true at time 0 and 10. One of our main contributions is a rich definition of observations that take into account both data and time uncertainty. As in [15], the observations are represented by formulas that can capture the uncertainty on data. For example, ¬a means that a is not seen but b can be true or false. The approach is further extended to have uncertainty on time, taking into account potential errors in the timestamps with which the monitor receives data from the system. This is represented in the observations with time intervals that are associated to observation formulas. Thus, for example, we can say that a is seen in an interval [6, 7] but we do not know exactly when. Finally, we concatenate these pairs of formulas and time intervals to form complex observation patterns. For example, the sequence o = (a, [0, 0], !)(¬a, [0, 7], ∗)(a, [6, 7], !)(¬a, [6, 16], ∗)(a, [15, 16], !) says that we see three a’s, one at time 0, another in the interval [6, 7], and a final one in the interval [15, 16] and that we do not know anything about b (intuitively, an observation with an ! (∗) indicates exactly one occurrence (zero or more occurrences)). If the system satisfies the assumption ψ from above, we can conclude at time 16 that the property φ is true despite the uncertainty about time and b. We propose a zone-based online algorithm that at any time provides a monitoring verdict saying if the property is satisfied or violated given the assumption and a sequence of observations. We implemented the algorithm on top of UPPAAL and show the feasibility of the approach. Especially, we demonstrate how the assumptions can be effective in anticipating the satisfaction/violation of timed properties and in handling properties that predicate over unobservable events. We also report on the influence of unobservable events on the responsetime, the time it takes to compute a verdict when given a new observation.
+2 Preliminaries
+The set of natural numbers (excluding zero) is N, we define N0 = N ∪ {0}, the set of non-negative rational numbers is Q≥0, and the set of non-negative real numbers is R≥0. The powerset of a set S is denoted by 2S.
+Timed Words. A timed word over a finite alphabet Σ is a pair ρ = (σ, τ ) where σ is a nonempty word over Σ and τ is a sequence of non-decreasing non-negative real numbers of the same length as σ. Timed words may be finite or infinite. In the latter case, we require lim sup τ = ∞, i.e., time diverges. The set of finite timed words is denoted by T Σ∗ and the set of infinite timed words by T Σω. We also represent a timed word as a sequence of pairs (σ1, τ1)(σ2, τ2) . . .. If ρ = (σ1, τ1)(σ2, τ2) · · · (σn, τn) is a finite timed word, we denote by τ (ρ) the total
+time duration of ρ, i.e., τn. We lift this to languages L ⊆ T Σ∗ by defining τ (L) = supρ∈L τ (ρ), which can be infinite.
+If ρ1 = (σ11, τ11) . . . (σ1n, τn1) is a finite timed word, ρ2 = (σ12, τ12)(σ22, τ22) . . . a finite or infinite timed word, and t ∈ R≥0 then the concatenation ρ1 ·t ρ2 is
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 73
+defined iff t ≥ τ (ρ1). Then, we define ρ1 ·t ρ2 = (σ1, τ1)(σ2, τ2) · · · such that
+σi =
+{
+σi1 if i ≤ n
+σi2−n else and τi =
+{
+τi1 if i ≤ n
+τi2−n + t else.
+We lift this definition to sets L1 ⊆ T Σ∗ and L2 ⊆ T Σ∗ ∪ T Σω via
+L1 ·t L2 = {ρ1 ·t ρ2 | ρ1 ∈ L1 and ρ2 ∈ L2},
+provided we have t ≥ τ (L1).
+Timed Automata. A timed Büchi automaton (TBA) B = (Q, Q0, Σ, C, Δ, F ) consists of a finite alphabet Σ, a finite set Q of locations, a set Q0 ⊆ Q of initial locations, a finite set C of clocks, a finite set Δ ⊆ Q × Q × Σ × 2C × G(C) of transitions with G(C) being the set of clock constraints over C, and a set F ⊆ Q of accepting locations. A transition (q, q′, a, λ, g) is an edge from q to q′ on input symbol a, where λ is the set of clocks to reset and g is a clock constraint over C. A clock constraint is a conjunction of atomic constraints of the form c ∼ n, where c is a clock, n ∈ N0, and ∼ ∈ {<, ≤, =, ≥, >}. A state of B is a pair (q, v) where q is a location in Q and v : C → R≥0 is a valuation mapping clocks to their values. For any d ∈ R≥0, v+d is the valuation x → v(x) + d. A run of B from a state (q0, v0) over a timed word (σ1, τ1)(σ2, τ2) · · ·
+is a sequence of steps (q0, v0) (σ1,τ1)
+−→ (q1, v1) (σ2,τ2)
+−→ (q2, v2) (σ3,τ3)
+−→ · · · where for all i ≥ 1 there is a transition (qi−1, qi, σi, λi, gi) such that vi(c) = 0 for all c in λi and vi(c) = vi−1(c) + (τi − τi−1) otherwise, and gi is satisfied by the valuation vi−1 + (τi − τi−1). Here, we use τ0 = 0. Given a run r, we denote the set of locations visited infinitely many times by r as Inf(r). A run r of B is accepting if Inf(r) ∩ F = ∅. The language of B from a starting state (q, v), denoted L(B, (q, v)), is the set of all timed words with an accepting run in A starting
+from (q, v). We define the language of B, written L(B), to be ⋃
+q L(B, (q, v0)),
+where q ranges over all locations in Q0 and where v0(c) = 0 for all c ∈ C.
+Proposition 1 ([2]). For all TBA B, B′ there is a TBA B ⊗B′ with L(B ⊗B′) = L(B) ∩ L(B′). The set of states of B ⊗ B′ is Q × Q′ × {0, 1}, where Q and Q′ are the sets of states of B and B′, respectively.
+Logic. We use Metric Temporal Interval Logic (MITL) to formally express properties to be monitored; these are subsequently translated into equivalent TBA which we use in our monitoring algorithm. The syntax of MITL formulas over a finite alphabet Σ is defined as
+φ ::= p | ¬φ | φ ∨ φ | XI φ | φ UI φ
+where p ∈ Σ and I ranges over non-singular intervals over R≥0 with endpoints in N0 ∪ {∞}. Note that we often write ∼ n for I = {d ∈ R | d ∼ n} where ∼ ∈ {<, ≤, ≥, >}, and n ∈ N. We also define the standard syntactic sugar
+
+
+74 A. Cimatti et al.
+true = p ∨ ¬p, false = ¬true, φ ∧ ψ = ¬(¬φ ∨ ¬ψ), φ → ψ = ¬φ ∨ ψ, FI φ = true UI φ, and GI φ = ¬FI ¬φ.
+The semantics of MITL is defined over infinite timed words. Given such a timed word ρ = (σ1, τ1)(σ2, τ2) · · · ∈ T Σω, a position i ≥ 1, and an MITL formula φ, we inductively define the satisfaction relation ρ, i |= φ as follows:
+– ρ, i |= p iff p = σi. – ρ, i |= ¬φ iff ρ, i |= φ. – ρ, i |= φ ∨ ψ if ρ, i |= φ or ρ, i |= ψ. – ρ, i |= XI φ iff ρ, (i + 1) |= φ and τi+1 − τi ∈ I.
+– ρ, i |= φ UI ψ iff there exists k ≥ i s.t. ρ, k |= ψ, τk − τi ∈ I, and ρ, j |= φ for all i ≤ j < k.
+We write ρ |= φ whenever ρ, 1 |= φ. The language L(φ) of an MITL formula φ is the set of all infinite timed words that satisfy φ.
+Theorem 1 ([3,9]). For each MITL formula φ there exists a TBA B such that L(φ) = L(B).
+Example 1. Figure 1 illustrates the above theorem providing a TBA for the formula F[0,10]a ∧ G[0,20]¬b and its negation.
+Fig. 1. A TBA for the language of the formula φ = F[0,10]a∧G[0,20]¬b and its negation: If location φ (¬φ) is accepting then it accepts L(φ) (L(¬φ)).
+3 Monitoring Under Assumptions
+Monitoring timed properties [6,20] requires to determine whether every extension of a finite observation (a finite timed word) satisfies a given property (yielding the verdict ), whether every extension violates the property (yielding the verdict ⊥), or neither is true (yielding the verdict ? ). Monitoring under assumptions involves two changes over the classical monitoring framework. Firstly, the assumption itself: In its most general form, it is a set A ⊆ T Σω of infinite timed words. Intuitively, A contains the executions we assume to be possibly generatable by the system we are monitoring. Hence, every execution that is not in A does not need to be taken into account when determining a verdict, i.e., the assumption refines verdicts. However, this also means that our
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 75
+assumption can be invalidated if we observe an execution prefix that is not consistent with our assumption. This requires a new verdict, denoted by ×. In this case, the assumption needs to be refined as it does not match our observation. Secondly, we allow inexact observations: In the classical setting, we observe a finite timed word (σ1, τ1) · · · (σn, τn) and reason about its possible extensions. Hence, we implicitly presume that no other events occurred between time 0 and τn and that the timepoints are exact. In the following, we allow for some imperfect information about the observation. In the most general form, an observation is then a set O ⊆ T Σ∗ of finite timed words. Intuitively, O contains those words that are consistent with our (imperfect) observation.
+Example 2. Consider the property “F[0,10]a∧G[0,20]¬b” of Example 1. Monitoring this property on a timed word, a conclusive verdict is given in the following cases:
+– The property is false at any time in the interval [0, 20] a “b” is observed; – The property is false after time 10 if “a” was not previously observed; – The property is true after time 20 if “b” was not previously observed and “a” was observed in the interval [0, 10].
+Consider now the assumption “G[0,1]¬b ∧ G(a → G[0,10]¬b)” which corresponds to the TBA in Fig. 2. Then, if “a” was observed in the interval [0, 10], as soon as we see another “a” within the interval [10, 20] and no b was observed before, we can conclude that the property is true. On the other hand, if a “b” is observed at time 0, then the observation violates the assumption.
+Fig. 2. A TBA for the language of the formula G[0,1]¬b ∧ G(a → G[0,10]¬b) with accepting locations q0 and q1.
+Example 3. Let us consider again the property “F[0,10]a ∧ G[0,20]¬b” but now we observe “a” with uncertainty on the timestamps and “b” is unobservable. For example, we observe “a” at time 0, another time in the interval [6, 7] and a final time in the interval [15, 16], and now is time 30. The words that are consistent with these observations have the form ρ0(a, 0)ρ1(a, t1)ρ2(a, t2)ρ3 where
+– t1 ∈ [6, 7] and t2 ∈ [15, 16],
+– ρ0 is a (possibly empty) finite timed word (b, 0) · · · (b, 0), – ρ1 is a (possibly empty) finite timed word (b, t1,1) · · · (b, t1,n1 ) with t1,j ∈ [0, t1] for all 1 ≤ j ≤ n1,
+
+
+76 A. Cimatti et al.
+– ρ2 is a (possibly empty) finite timed word (b, t2,1) · · · (b, t2,n2 ) with t2,j ∈ [t1, t2] for all 1 ≤ j ≤ n2, and – ρ3 is a (possibly empty) finite timed word (b, t3,1) · · · (b, t3,n3 ) with t3,j ∈ [t2, 30] for all 1 ≤ j ≤ n3.
+Without assumptions we cannot have any conclusive verdict, because we do not know if a “b” occurred before timepoint 20 or not. But with the assumption from the previous example, we can conclude at time 16 that the property is true:
+– ρ0 must be empty, as there cannot be a b within the first unit of time. – ρ1 must be empty, as there cannot be a b for ten units of time after the a at timepoint 0 and t1 ≤ 7 ≤ 10. – ρ2 must be empty, as there cannot be a b for ten units of time after the a at timepoint t1 and t2 ≤ 16 ≤ t1 + 10. – ρ3 cannot contain a b with timestamp t3,j ≤ 20, as this would imply that a b has occurred less than ten units of time after the a at t2.
+Thus, under the assumption, we can make a definitive verdict, which we could not without the assumption.
+In the following, we formalize this intuition. To develop the theory as general as possible, we allow real timepoints in the observations. Later, when we are concerned with algorithms, we will restrict ourselves to rational inputs. In the same spirit, we begin with a very abstract definition of monitoring under assumptions. Later, we will explain how to represent the property, the assumption, and the observation finitely.
+Definition 1. Let B4 = { , ⊥, ?, ×}. Given a property φ ⊆ T Σω of infinite
+timed words, an assumption A ⊆ T Σω, a nonempty observation O ⊆ T Σ∗, and a
+current time instant t ≥ τ (O), the function V : (2T Σω ×2T Σω ) → (2T Σ∗ ×R≥0) → B4 evaluates to a verdict with the following definition:
+V(φ, A)(O, t) =
+⎧⎪⎪⎪⎨
+⎪⎪⎪⎩
+× if O ·t T Σω ∩ A = ∅,
+if O ·t T Σω ∩ A = ∅ and O ·t T Σω ∩ A ⊆ φ,
+⊥ if O ·t T Σω ∩ A = ∅ and O ·t T Σω ∩ A ⊆ T Σω \ φ,
+? otherwise.
+V(φ, A)(O, t) is undefined when t < τ (O).
+In the following, we present an algorithm computing V in the setting where
+– the property φ and its complement is accepted by a TBA (this covers in particular the case of φ being given in MITL due to Theorem 1), – the assumption A is given by a TBA, and – the observation O is given by a sequence of pairs of time-intervals and propositional formulas over the locations, the clock constraints, and the alphabet of the assumption automaton.
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 77
+We begin by introducing the assumption and observations. The former is given by a TBA, which we typically denote by A to distinguish it from other TBA. Thus, let A = (Q, Q0, Σ, C, Δ, F) be a TBA, i.e., Q is the set of locations, Σ is the alphabet, and C is the set of clocks. Recall that G(C) denotes the clock constraints over C, i.e., conjunctions of atomic constraints of the form c ∼ n, where c ∈ C is a clock, n ∈ N0, and ∼ ∈ {<, ≤, =, ≥, >}. Let φ be a propositional formula over the set Σ ∪ Q ∪ G(C) of propositions (which is infinite!), let σ ∈ Σ, and let (q, v) be a state of A. We define σ, (q, v) |= φ as follows:
+– For σ′ ∈ Σ, σ, (q, v) |= σ′ iff σ′ = σ. – For q′ ∈ Q, σ, (q, v) |= q′ iff q′ = q.
+– For g ∈ G(C), σ, (q, v) |= g iff g is satisfied by v. – The semantics of Boolean connectives is defined as usual.
+An A-observation is a finite sequence o = (φ1, I1, m1) · · · (φn, In, mn) where the φj are propositional formulas over Σ ∪Q∪G(C), the Ij are bounded intervals of R≥0 (which may overlap), and the multiplicities mj are in {!, ∗}. It defines
+the language CA(o) ⊆ T Σ∗ of (consistent) finite timed words (σ1, τ1) · · · (σn′ , τn′ ) such that there is a prefix
+r = (q0, v0) (σ1,τ1)
+−→ (q1, v1) (σ2,τ2)
+−→ · · · (σn′−1,τn′−1)
+−→ (qn′−1, vn′−1) (σn′ ,τn′ )
+−→ (qn′ , vn′ )
+of a run of A with q0 ∈ Q0, v0(c) = 0 for all c ∈ C, and there is a func
+tion h : {1, 2, . . . , n′} → {1, 2, . . . , n} such that
+1. h(1) ≤ h(2) ≤ · · · ≤ h(n′),
+2. for every j ∈ {1, 2, . . . , n} with mj =!, there is a unique j′ ∈ {1, 2, . . . , n′}
+such that h(j′) = j (i.e., observations with an ! must appear exactly once, observations with an ∗ may appear zero or more times), 3. τj ∈ Ih(j) for all j ∈ {1, 2, . . . , n′}, and
+4. σj, (qj, vj) |= φh(j) for all j ∈ {1, 2, . . . , n′}.
+Thus, a finite sequence of such formulas and intervals yields a language of finite timed words, those that are consistent with the formulas and intervals.
+Example 4. Let us continue Example 3 and let A be the assumption automaton shown in Fig. 2. Consider the A-observation
+o = (a, [0, 0], !)(¬a, [0, 7], ∗)(a, [6, 7], !)(¬a, [6, 16], ∗)(a, [15, 16], !)(¬a, [0, 30], ∗).
+Then, as argued in Example 3, CA(o) is the language
+{(a, 0)(a, t1)(a, t2)(b, t3,1) · · · (b, t3,n3 ) |
+t1 ∈ [6, 7], t2 ∈ [15, 16], and t2 + 10 < t3,1 ≤ · · · ≤ t3,n3 ≤ 30}.
+For example, given the run prefix (we ignore the clock x as it is never reset and thus is always equal to the timestamp on the transition leading to a state)
+r = (q0, y = 0) (a,0)
+−→ (q1, y = 0) (a,6)
+−→ (q1, y = 0) (a,15)
+−→ (q1, y = 0)
+
+
+78 A. Cimatti et al.
+we can define h as follows: h(1) = 1, h(2) = 3, h(3) = 5. For the run prefix
+r = (q0, y = 0) (a,0)
+−→ (q1, y = 0) (a,6)
+−→ (q1, y = 0) (b,15)
+−→ (q2, y = 9) (a,16)
+−→ (q2, y = 10)
+we can define the function h as follows: h(1) = 1, h(2) = 3, h(3) = 4, h(4) = 5. Finally, the run prefix
+r = (q0, y = 0) (a,0)
+−→ (q1, y = 0) (a,6)
+−→ (q1, y = 0) (a,15)
+−→ (q2, y = 9) (a,16)
+−→ (q2, y = 10)
+is the prefix of a run of A but it is not compatible with the observation o. In fact, any h satisfying the conditions 1), 3), and 4) should assign h(3) = 5 and h(4) = 5 violating condition 2).
+Remark 1. We have τ (CA((φ1, I1, m1) · · · (φn, In, mn))) ≤ sup In by definition.
+4 A Zone-Based Monitoring Algorithm
+In this section, we present an algorithm computing the monitoring function V. To this end, we first need to introduce some notation for TBA and zones to represent subsets of states of TBA, which may be uncountable. Recall that we have defined the theory of monitoring under assumptions with respect to arbitrary, i.e., real, timepoints. However, as we are now dealing with algorithms, we have to restrict ourselves to rational inputs (which are finitely representable). Thus, we say that an A-observation (φ1, I1, m1) · · · (φn, In, mn) is rational, if each Ij is an interval over R≥0 with rational endpoints. For the monitoring algorithm, we use – as is standard in analysing timed automata models – symbolic states being pairs (q, Z) of locations and zones. A zone is a finite conjunction of constraints of the form x ∼ t and x − x′ ∼ t for clocks x, x′, constants t ∈ Q≥0, and ∼ ∈ {<, ≤, =, ≥, >}. Given two zones
+Z and Z′ over a set C of clocks, and a set λ ⊆ C of clocks, we define the following operations on zones (which can be efficiently implemented using the DBM data-structure [8]):
+– Z[λ] = {v | ∃v′ |= Z s.t. v(x) = 0 if x ∈ λ, otherwise v(x) = v′(x)} – Z↗ = {v | ∃v′ |= Z s.t. v = v′ + d for some d ∈ R≥0}
+– Z ∧ Z′ = {v | v |= Z and v |= Z′}.
+To describe our algorithm, we first define the set of states of a TBA from where it is possible to reach an accepting location infinitely many times in the future, i.e., those states from which an accepting run is possible. This is useful, because if processing a finite timed word leads to such a state, then the timed word can be extended to an infinite one in the language of the automaton, a notion that underlies Definition 1. Given a TBA B = (Q, Q0, Σ, C, Δ, F ), the set of states with nonempty language is:
+SBne = {(q, v) | q ∈ Q, v ∈ C → R≥0 s.t. L(B, (q, v)) = ∅}.
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 79
+Proposition 2 ([20]). SBne can be computed using a zone-based algorithm.
+We continue by capturing the set of states of a TBA that can be reached by processing a finite timed word. In the following definition, we write (q0, v0) −ρ→B
+(qn, vn) for a finite timed word ρ = (σ, τ ) ∈ T Σ∗ to denote the existence of a finite sequence of states
+(q0, v0) (σ1,τ1)
+−→ (q1, v1) (σ2,τ2)
+−→ · · · (σn,τn)
+−→ (qn, vn)
+where for all 1 ≤ i ≤ n there is a transition (qi−1, qi, σi, λi, gi) such that vi(c) = 0 for all c in λi and vi−1(c)+(τi−τi−1) otherwise, and g is satisfied by the valuation vi−1 + (τi − τi−1), where we use τ0 = 0. Given a TBA B, a finite timed word
+ρ ∈ T Σ∗, and a time-point t ∈ R≥0 with t ≥ τ (ρ), the set of possible states a run over ρ starting from initial states of B can end in after time t has passed is
+TB(ρ, t) = ⋃
+q0 ∈Q0
+{(q, v + (t − τ (ρ))) | (q0, v0) −ρ→B (q, v)},
+where v0 is the clock valuation mapping every clock to 0. We call TB(ρ, t) the reach-set of B over (ρ, t). The above definition is adapted from [20] to take into account the time that has passed since the last observation, i.e., the input t. Next, we lift this definition to sets L ⊆ T Σ∗ of finite words via
+TB(L, t) = ⋃
+ρ∈L TB(ρ, t),
+assuming t ≥ τ (L). Otherwise, TB(L, t) = ∅ by convention. We now show how to compute reach-sets using zones. First, we use the zone operations introduced above to compute the successor states of an input letter with a given target location. Fix a TBA (Q, Q0, Σ, C, Δ, F ). For a symbolic
+state (q, Z), a letter σ ∈ Σ and target location q′ ∈ Q, we define
+Post((q, Z), σ, q′) = {(q′, Z′) | (q, q′, σ, λ, g) ∈ Δ, Z′ = (Z↗ ∧ g)[λ]},
+being the set of states one can reach by taking a σ-transition at some point in the future from (q, Z) with q′ as target-location. Using Post we can compute the successor states of a time-uncertain letter/target location (σ, q′, I), where σ ∈ Σ, q′ ∈ Q and I ⊆ R≥0 is a time interval with rational endpoints. For this, we extend zones with an additional clock time just recording time since system start. The successors of a symbolic state (q, Z) are
+Succ((q, Z), (σ, q′, I)) = {(q′, Z′) | (q′, Z′′) ∈ Post((q, Z), σ, q′), Z′= Z′′ ∧time ∈ I}
+and the successors of a set of symbolic states S are
+Succ(S, (σ, q′, I)) = ⋃
+(q,Z)∈S Succ((q, Z), (σ, q′, I)).
+Now, our main technical lemma below exploits the above to effectively compute reach-sets. More precisely, given a rational A-observation o (i.e., the TBA A
+
+
+80 A. Cimatti et al.
+represents the assumption), we can compute the reach-set of the set CA(o) in the product B ⊗ A, for any given TBA B, i.e., we compute the words consistent with the observation o in the TBA A (the assumption), while the reach-set of that language is computed in B⊗A (this will later be the product of the property (or its negation) and the assumption).
+Lemma 1. Fix TBA A, B. There is a zone-based online algorithm computing
+TB⊗A(CA((φ1, I1, m1) · · · (φn, In, mn)), t)
+for every rational observation (φ1, I1, m1) · · · (φn, In, mn), and every t ∈ Q≥0 with t ≥ sup In.
+Proof. Let oi = (φ1, I1, m1) · · · (φi, Ii, mi), and let us denote by SiB⊗A the set
+TB⊗A(CA(oi)) of successors of oi in B ⊗ A. We will show inductively in i, that SiB⊗A can be obtained effectively using zone operations. For the base case i = 0,
+we note that CA(o0) = {ε}, thus TB⊗A(CA(o0)) is the set of initial states of B ⊗ A, which is clearly effectively representable using zones.
+For the inductive case, let us assume that Si−1
+B⊗A is effectively computable
+using zone operations. Now consider consider (φi, Ii, mi). Given that Σ, QA and QB are finite, φi is equivalent to a finite disjunction of simple formulas of the form ψi,j = σi,j ∧ qia,j ∧ gi,j , where σi,j ∈ Σ, qia,j ∈ QA, and gi,j ∈ G(CA). Now in the case mi = !, the set of successors of ψi,j is simply
+SiB⊗A = ⋃
+j
+⋃
+q b ∈QB
+⋃
+k∈{0,1} Succ(Si−1
+B⊗A, (σi,j , (qb, qa
+i,j , k), Ii)) ∧ gi,j .
+In the case mi = ∗, SiB⊗A is the least fixed-point X, satisfying the equality
+X = Si−1
+B⊗A ∪ ⋃
+j
+⋃
+q b ∈QB
+⋃
+k∈{0,1}
+[Succ(X, (σi,j , (qb, qa
+i,j , k), Ii)) ∧ gi,j .]
+Given the upper bounds of the interval Ii, the least fixed-point will be found in a finite number of iterations of the right-hand-side of the above equation (starting from the empty set). The above inductive proof provides in an obvious manner the basis for an effective online construction of the sets TB⊗A(CA(oi)).
+Now, we are able to present our algorithm to compute V for a property φ (given by two TBA Bφ and B¬φ such that L(Bφ) = L(φ) and L(B¬φ) = L(¬φ)) and an assumption A (given by a TBA A): Given o = (φ1, I1, m1) · · · (φn, In, mn) (a rational observation) and t > sup In, do the following:
+1. Compute TA(CA(o), t). If it is nonempty (which is the case iff CA(o) is
+nonempty), but has an empty intersection with SnAe, then return ×. This checks whether there is some finite word that is consistent with the observation and can be extended to satisfy the assumption. If this is not the case, then the assumption was wrong.
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 81
+2. Compute TB¬φ⊗A(CA(o), t). If it has an empty intersection with SBne¬φ⊗A, then return : If there is a finite word consistent with the observation that can be extended to satisfy the assumption, but no such extension satisfies the complement of the property, then every such extension must satisfy the property. Hence, we can return . 3. Compute TBφ⊗A(CA(o), t). If it has an empty intersection with SBneφ⊗A, then
+return ⊥: If there is a finite word consistent with the observation that can be extended to satisfy the assumption, but no such extension satisfies the property, then every such extension must satisfy the complement of the property. Hence, we can return ⊥. 4. Return ? . Otherwise, there is both a finite word that is consistent with the observation that can be extended to satisfy the property and a finite word that is consistent with the observation that can be extended to satisfy the complement of the property. Consequently, we return ? .
+Theorem 2. The algorithm described above computes V(φ, A).
+As argued above, our algorithm can be implemented using zones: both the reach-sets and the sets of nonempty states can be computed using zones, zones are closed under intersection, and can be tested effectively for emptiness [7]. Furthermore, our algorithm is online in the following sense: The set of nonempty states only needs to be computed once for each of the three automata and the symbolic states capturing
+TA(CA((φ1, I1, m1) · · · (φn, In, mn)(φn+1, In+1, mn+1)), t′)
+can be computed from the symbolic states capturing
+TA(CA((φ1, I1, m1) · · · (φn, In, mn)), t),
+as evident from the proof of Lemma 1. The same is true for the reach-sets in the other two automata B¬φ ⊗ A and Bφ ⊗ A.
+Remark 2. Our algorithm requires TBA both for the property and its complement, but TBA are in general not closed under complementation [2]. For the important case of MITL properties, such automata always exist, as MITL is closed under negation and can be translated into equivalent TBA (Theorem 1).
+5 Evaluation
+We implemented our assumption-based online monitoring algorithm described in Sect. 4 by extending the UPPAAL tool component MoniTAal1, thereby demonstrating how the use of assumptions and unobservable events can enhance monitoring capabilities. In the following, we report on two proof-of-concept cases.
+1 https://github.com/DEIS-Tools/MoniTAal.
+
+
+82 A. Cimatti et al.
+Task Sequence. We first experiment with a system under monitoring that produces a finite sequence of events a1, . . . , ak. Each ai, with 1 ≤ i < k, is followed by ai+1 with a time within the interval [li, ui]. The assumption is formalized by the TBA shown in Fig. 3. The domain is parameterized on k, and the li and ui. Further, depending on the experiment, not all the ai will be observable. We consider the bounded response property G(a1 → F[0,B]ak). Suppose that we observe a timed word (a1, t1) · · · (ak, tk). If for some j in the range 1 < j ≤ k, we have
+tj + ∑
+j≤i<k ui ≤ B + t1, then the verdict at time tj is . On the other hand,
+if tj + ∑
+j≤i<k li > B + t1, then the verdict at time tj is ⊥. As a corner case, if
+∑
+1≤i<k ui ≤ B or ∑
+1≤i<k li > B, the verdict is respectively and ⊥ at time 0, since all words of the assumption respectively satisfy and violate the property. We run several experiments to show the effect of the assumption and study the scalability under a sequence of unobservable events.
+Fig. 3. A TBA representing the assumption for the bounded response example.
+First we show how unobservable events can affect the response-time, the time between receiving an event and outputting a verdict. We pick k = 100 and li = 50 and ui = 100 for all i. The events {ai | i ∈ {21, . . . , 40} ∪ {61, . . . , 80}} are unobservable within the interval [0, 10000]. In Fig. 4 we see that for each consecutive unobservable event, the response time grows linearly. This is due to the reach-set growing. Nevertheless, the reach-set shrinks when an observable event is received. The minimum response time is 4583 nanoseconds (ns), the maximum is 115926 ns and the average is 24753 ns. For reference, if we monitor 5000 consecutive unobservable events, the maximum response time is 32 ms. To show the effect of the assumption, we monitor the bounded response property G(a1 → F[0,675]a10) a thousand times, with and without the assumption where li = 50 and ui = 100 for all i. The observed words are random, but within the assumption. The results in Table 1 show that verdicts are computed earlier with the assumption than without. Without the assumption the earliest verdicts were in 33 cases ⊥ after observing a9, while with the assumption we saw a or ⊥ verdict in 522 cases before observing a10. Thus, when monitoring a live system in an online setting (compared to evaluating a log history), a verdict can be reached earlier, because of the restrictions the assumption inhibits. Furthermore, we demonstrate in this case how unobservable events can affect the size of the reach-set, as the number of words that are consistent with an observation can increase with the number of consecutive unobservable events. This in turn affects the response-time.
+Conveyor Belt Example. This example represents a conveyor belt that moves an item through different stations, where the item is processed according to some
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 83
+Fig. 4. Response time of the monitoring implementation, when monitoring the task sequence example with {ai | i ∈ {21, . . . , 40} ∪ {61, . . . , 80}} being unobservable.
+Table 1. Verdict distribution for monitoring the task sequence example a thousand times with k = 10, B = 675, li = 50 and ui = 100 for all i, with and without assumption. Each row specifies the number of times each verdict is given after an observation.
+Observation Verdicts No Assumption With Assumption ⊥? ⊥?
+a5 0 0 1000 0 0 1000
+a6 0 0 1000 0 1 999
+a7 0 0 1000 17 15 967
+a8 0 0 1000 81 90 796
+a9 0 33 967 165 153 478
+a10 0 457 510 246 232 0
+task. The task in the nominal case takes between 8 and 10 times units. However, if the process is faulty, it finishes earlier and takes between 7 and 9 time units: it may sometimes complete correctly on time, but it may in other cases stop too early. The fault can happen at any time and is permanent. Our assumption automaton is shown in Fig. 5. Our monitoring property is simply G¬f ault.
+Fig. 5. A TBA representing the assumption for the conveyor belt example.
+Consider that we observe the events start, stop, and move with precise information on the time. If the stop signal happens less than 8 time units after start, we detect a violation of the property. If instead stop happens between 8 and 9 time units, we cannot say if there was a fault or not. Suppose now that we have uncertainty on the time of the observations like in the following observation sequence:
+(start, [1, 1], !)(f ault, [1, 11], ∗)(stop, [8, 10], !)(f ault, [8, 11], ∗)(move, [9, 11], !) (f ault, [9, 12], ∗)(start, [10, 12], !)(f ault, [11, 22], ∗)(stop, [16, 18], !)
+
+
+84 A. Cimatti et al.
+The first stop happens at a time between 8 and 10, thus between 7 and 9 time units after the first start. This is compatible with both a nominal (with stop occurring between times 9 and 10) and a faulty execution (with stop occurring between times 8 and 9): after the first stop, we do not know if there was a fault. The second start happens in the time interval [10, 12] and has the same uncertainty: it is consistent with the nominal behavior if start actually occurred in [11, 12] and with a faulty behavior if start occurred in [10, 11]. The second stop happens in the time interval [16, 18]. Thus, the difference with the previous start is between 4 and 8 time units. This seems compatible with a nominal delay ([8, 10]). However, from the reasoning done above, if there were no fault the second start would have occurred in the interval [11, 12] and the second stop would have occurred in the interval [19, 22], which is not compatible with the observation. Thus we can conclude there was a fault.
+Table 2. Distribution of verdicts when monitoring 1000 random words of the conveyor belt assumption. Each column shows the number of times a conclusive verdict is given after observing the pattern a number of times. The longest run had 24 repetitions of the pattern before a verdict is given.
+Repetitions 1 2 3 4 5 6 7 8 9 10 11
+#Verdicts 251 185 125 121 90 47 48 31 24 20 13
+Repetitions 12 13 14 15 16 17 18 19 20 24
+#Verdicts 13 9 4 5 4 2 2 2 3 1
+We monitored the property G¬f ault with the assumption from Fig. 5 by simulating the conveyor belt with an unbounded repeating pattern ρ1 ·τ(ρ1) ρ2 ·τ(ρ1)+τ(ρ2) · · · with each ρi having the form
+(f ault, [0, 1], ∗), (start, 1, !), (f ault, [1, ti+2], ∗), (stop, [ti, ti+2], !), (move, ti+2, !)
+for some uniformly chosen ti ∈ {7, 8, 9, 10}. The assumption is never violated, thus the only conclusive verdict reported is ⊥ i.e. the property does not hold. The pattern essentially randomly selects whether stop is observed after 7, 8, 9 or 10 time units after start. Since 7 is only possible after a fault, there is a 1 in 4 chance, per repetition, of violating the property. The results in Table 2 show that in 251 out of 1000 cases a definitive verdict is given after observing the pattern once, and that the longest is 24 repetitions. With this example, we see how an assumption makes it possible to monitor properties over unobservable events. Without an assumption, reasoning about unobservable behaviour would not be possible for such a property.
+6 Related Work
+Our automata-based monitoring of finite words against specifications over infinite words follows the seminal work of Bauer et al. [6], who presented monitoring
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 85
+algorithms for LTL and timed LTL. Their algorithm for timed LTL is based on clock regions [2], while we follow the approach of Grosen et al. [20] and use clock zones [8], whose performance is an order of magnitude faster. Also, they translated timed LTL into event-clock automata, which are less expressive than the timed Büchi automata (TBA) used both by Grosen et al. [20] and here. This approach has also been applied to monitoring under delayed observations [17]. As our algorithms work with TBA, we also support MITL specifications, as these can be compiled into TBA. The monitoring problem for MITL has been investigated before. Baldor et al. showed how to construct a monitor for densetime MITL formulas by constructing a tree of timed transducers [4]. Ho et al. split unbounded and bounded parts of MITL formulas for monitoring, using traditional LTL monitoring for the unbounded parts and permitting a simpler construction for the (finite-word) bounded parts [22]. There is also a large body of work on monitoring with finite-word semantics. Roşu et al. focussed on discrete-time finite-word MTL [28], while Basin et al. proposed algorithms for monitoring real-time finite-word properties [5] and compared different time models. Donzé et al. [16] focussed on monitoring a quantitative semantics for STL, a variant of MTL with predicates over real-valued signals. André et al. consider monitoring finite logs of parameterized timed and hybrid systems [31]. Finally, Ulus et al. described monitoring timed regular expressions over finite words using unions of two-dimensional zones [29,30]. The contribution of this paper is focused on extending the monitoring of timed properties with assumptions, framing the problem as defined in [12–15] for the discrete-time setting. Assumptions were first used in [23] for extending the monitoring of LTL with predictive capabilities. In [32], the assumption for predictive RV is computed applying static analysis to the monitored program. Pinisetty et al. further extend the predictive RV idea to support RV of timed properties [25], where the a priori knowledge is also expressed as a timed property. As in [15], we adopt a four-valued semantics for timed properties and we support partial observability. Besides the complexity of moving from discrete to dense time semantics, the ABRV framework is extended with a rich notion of observations that take into account uncertainty on the time. The research of partial observability in Discrete-Event Systems is usually connected with diagnosability [26] and predictability [18,19]. These notions have been extended to timed systems (see, e.g., [10,11]). Moreover, they are related to monitorability, an important topic in RV and other related fields [1,24,27], which has been studied taking into account assumptions in [21].
+7 Conclusion
+In this paper, we extended runtime verification of timed properties with assumptions. These are used for anticipating or predicting a property failure or success, as well as for considering partial observability of the monitored system. A key contribution is to enable runtime verification to consider an observation sequence that has uncertainty on both the states/events and on the timing information.
+
+
+86 A. Cimatti et al.
+We provided an effective zone-based algorithm to compute the states that can be reached with such an observation sequence considering a property specified in MITL and an assumption as a TBA. Thus, such a computation can be used for online monitoring of timed properties under assumptions. The algorithm was implemented on top of UPPAAL and experimented with a few examples to show the feasibility of the approach. For future work, further investigation is needed to check the scalability of the approach and to apply and optimize it to real-world case studies.
+References
+1. Aceto, L., Achilleos, A., Francalanza, A., Ingólfsdóttir, A., Lehtinen, K.: An operational guide to monitorability. In: Ölveczky, P.C., Salaün, G. (eds.) SEFM 2019. LNCS, vol. 11724, pp. 433–453. Springer, Cham (2019). https://doi.org/10.1007/ 978-3-030-30446-1_23 2. Alur, R., Dill, D.L.: A theory of timed automata. Theor. Comput. Sci. 126(2), 183–235 (1994). https://doi.org/10.1016/0304-3975(94)90010-8 3. Alur, R., Feder, T., Henzinger, T.A.: The benefits of relaxing punctuality. J. ACM 43(1) (1996) 4. Baldor, K., Niu, J.: Monitoring dense-time, continuous-semantics, metric temporal logic. In: Qadeer, S., Tasiran, S. (eds.) RV 2012. LNCS, vol. 7687, pp. 245–259. Springer, Heidelberg (2013). https://doi.org/10.1007/978-3-642-35632-2_24 5. Basin, D., Klaedtke, F., Zălinescu, E.: Algorithms for monitoring real-time properties. In: Khurshid, S., Sen, K. (eds.) RV 2011. LNCS, vol. 7186, pp. 260–275. Springer, Heidelberg (2012). https://doi.org/10.1007/978-3-642-29860-8_20 6. Bauer, A., Leucker, M., Schallhart, C.: Monitoring of real-time properties. In: Arun-Kumar, S., Garg, N. (eds.) FSTTCS 2006. LNCS, vol. 4337, pp. 260–272. Springer, Heidelberg (2006). https://doi.org/10.1007/11944836_25 7. Bellman, R.: Dynamic Programming. Princeton University Press, Princeton (1957) 8. Bengtsson, J., Yi, W.: Timed automata: semantics, algorithms and tools. In: Desel, J., Reisig, W., Rozenberg, G. (eds.) ACPN 2003. LNCS, vol. 3098, pp. 87–124. Springer, Heidelberg (2004). https://doi.org/10.1007/978-3-540-27755-2_3 9. Brihaye, T., Geeraerts, G., Ho, H.-M., Monmege, B.: MightyL: a compositional translation from MITL to timed automata. In: Majumdar, R., Kunčak, V. (eds.) CAV 2017. LNCS, vol. 10426, pp. 421–440. Springer, Cham (2017). https://doi. org/10.1007/978-3-319-63387-9_21 10. Cassez, F., Grastien, A.: Predictability of event occurrences in timed systems. In: Braberman, V., Fribourg, L. (eds.) FORMATS 2013. LNCS, vol. 8053, pp. 62–76. Springer, Heidelberg (2013). https://doi.org/10.1007/978-3-642-40229-6_5 11. Cassez, F., Tripakis, S.: Fault diagnosis of timed systems. In: Communicating Embedded Systems, pp. 107–138. Wiley, New York (2013) 12. Cimatti, A., Tian, C., Tonetta, S.: Assumption-based runtime verification with partial observability and resets. In: Finkbeiner, B., Mariani, L. (eds.) RV 2019. LNCS, vol. 11757, pp. 165–184. Springer, Cham (2019). https://doi.org/10.1007/ 978-3-030-32079-9_10 13. Cimatti, A., Tian, C., Tonetta, S.: NuRV: a nuXmv extension for runtime verification. In: Finkbeiner, B., Mariani, L. (eds.) RV 2019. LNCS, vol. 11757, pp. 382–392. Springer, Cham (2019). https://doi.org/10.1007/978-3-030-32079-9_23
+
+
+Exploiting Assumptions for Effective Monitoring of Real-Time Properties 87
+14. Cimatti, A., Tian, C., Tonetta, S.: Assumption-based runtime verification of infinite-state systems. In: Feng, L., Fisman, D. (eds.) RV 2021. LNCS, vol. 12974, pp. 207–227. Springer, Cham (2021). https://doi.org/10.1007/978-3-030-884949_11 15. Cimatti, A., Tian, C., Tonetta, S.: Assumption-based runtime verification. Formal Methods Syst. Des. 60(2), 277–324 (2022) 16. Donzé, A., Ferrère, T., Maler, O.: Efficient robust monitoring for STL. In: Sharygina, N., Veith, H. (eds.) CAV 2013. LNCS, vol. 8044, pp. 264–279. Springer, Heidelberg (2013). https://doi.org/10.1007/978-3-642-39799-8_19 17. Fränzle, M., Grosen, T.M., Larsen, K.G., Zimmermann, M.: Monitoring realtime systems under parametric delay. arXiv:2404.18282 (2024). https://doi.org/ 10.48550/ARXIV.2404.18282. Accepted for publication at iFM 2024 18. Genc, S., Lafortune, S.: Predictability of event occurrences in partially-observed discrete-event systems. Automatica 45(2), 301–311 (2009). https://doi.org/10. 1016/j.automatica.2008.06.022 19. Genc, S., Lafortune, S.: Predictability in discrete-event systems under partial observation. IFAC Proc. Vol. 39(13), 1461–1466 (2006). https://doi.org/10.3182/ 20060829-4-CN-2909.00243 20. Grosen, T.M., Kauffman, S., Larsen, K.G., Zimmermann, M.: Monitoring timed properties (revisited). In: Bogomolov, S., Parker, D. (eds.) FORMATS 2022. LNCS, vol. 13465, pp. 43–62. Springer, Cham (2022). https://doi.org/10.1007/978-3-03115839-1_3 21. Henzinger, T.A., Saraç, N.E.: Monitorability under assumptions. In: Deshmukh, J., Ničković, D. (eds.) RV 2020. LNCS, vol. 12399, pp. 3–18. Springer, Cham (2020). https://doi.org/10.1007/978-3-030-60508-7_1 22. Ho, H.-M., Ouaknine, J., Worrell, J.: Online monitoring of metric temporal logic. In: Bonakdarpour, B., Smolka, S.A. (eds.) RV 2014. LNCS, vol. 8734, pp. 178–192. Springer, Cham (2014). https://doi.org/10.1007/978-3-319-11164-3_15 23. Leucker, M.: Sliding between model checking and runtime verification. In: Qadeer, S., Tasiran, S. (eds.) RV 2012. LNCS, vol. 7687, pp. 82–87. Springer, Heidelberg (2013). https://doi.org/10.1007/978-3-642-35632-2_10 24. Peled, D., Havelund, K.: Refining the safety–liveness classification of temporal properties according to monitorability. In: Margaria, T., Graf, S., Larsen, K.G. (eds.) Models, Mindsets, Meta: The What, the How, and the Why Not? LNCS, vol. 11200, pp. 218–234. Springer, Cham (2019). https://doi.org/10.1007/978-3030-22348-9_14 25. Pinisetty, S., Jéron, T., Tripakis, S., Falcone, Y., Marchand, H., Preoteasa, V.: Predictive runtime verification of timed properties. J. Syst. Softw. 132, 353–365 (2017). https://doi.org/10.1016/j.jss.2017.06.060 26. Sampath, M., Sengupta, R., Lafortune, S., Sinnamohideen, K., Teneketzis, D.: Diagnosability of discrete-event systems. IEEE Trans. Autom. Control 40(9), 15551575 (1995). https://doi.org/10.1109/9.412626 27. Sistla, A.P., Žefran, M., Feng, Y.: Monitorability of stochastic dynamical systems. In: Gopalakrishnan, G., Qadeer, S. (eds.) CAV 2011. LNCS, vol. 6806, pp. 720–736. Springer, Heidelberg (2011). https://doi.org/10.1007/978-3-642-22110-1_58 28. Thati, P., Roşu, G.: Monitoring algorithms for metric temporal logic specifications. Electron. Notes Theor. Comput. Sci. 113, 145–162 (2005). https://doi.org/ 10.1016/j.entcs.2004.01.029, Proceedings of the Fourth Workshop on Runtime Verification (RV 2004)
+
+
+88 A. Cimatti et al.
+29. Ulus, D., Ferrère, T., Asarin, E., Maler, O.: Timed pattern matching. In: Legay, A., Bozga, M. (eds.) FORMATS 2014. LNCS, vol. 8711, pp. 222–236. Springer, Cham (2014). https://doi.org/10.1007/978-3-319-10512-3_16 30. Ulus, D., Ferrère, T., Asarin, E., Maler, O.: Online timed pattern matching using derivatives. In: Chechik, M., Raskin, J.-F. (eds.) TACAS 2016. LNCS, vol. 9636, pp. 736–751. Springer, Heidelberg (2016). https://doi.org/10.1007/978-3-662-496749_47 31. Waga, M., André, É., Hasuo, I.: Model-bounded monitoring of hybrid systems. ACM Trans. Cyber Phys. Syst. 6(4), 30:1–30:26 (2022). https://doi.org/10.1145/ 3529095 32. Zhang, X., Leucker, M., Dong, W.: Runtime verification with predictive semantics. In: Goodloe, A.E., Person, S. (eds.) NFM 2012. LNCS, vol. 7226, pp. 418–432. Springer, Heidelberg (2012). https://doi.org/10.1007/978-3-642-28891-3_37

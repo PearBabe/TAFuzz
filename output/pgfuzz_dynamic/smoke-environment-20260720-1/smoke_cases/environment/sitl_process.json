@@ -1,0 +1,109 @@
+{
+  "command": [
+    "/home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arducopter",
+    "--wipe",
+    "--model",
+    "quad",
+    "--home",
+    "-35.363261,149.165230,584,353",
+    "--speedup",
+    "1",
+    "--base-port",
+    "22500",
+    "--rc-in-port",
+    "23501",
+    "--sim-port-in",
+    "24501",
+    "--sim-port-out",
+    "24502",
+    "--irlock-port",
+    "25501",
+    "--serial0",
+    "udpclient:127.0.0.1:19611",
+    "--sysid",
+    "151",
+    "--autotest-dir",
+    "/home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest"
+  ],
+  "outbound_records": [
+    {
+      "fields": {
+        "custom_mode": 0,
+        "source_component": 1,
+        "source_system": 151
+      },
+      "host_monotonic_ns": 25611447111332,
+      "host_wall_utc": "2026-07-20T15:44:19.087726+00:00",
+      "kind": "TARGET_HEARTBEAT"
+    },
+    {
+      "fields": {
+        "rate_hz": 10
+      },
+      "host_monotonic_ns": 25611447251949,
+      "host_wall_utc": "2026-07-20T15:44:19.087861+00:00",
+      "kind": "REQUEST_DATA_STREAM_ALL"
+    },
+    {
+      "fields": {
+        "name": "SIM_BATT_VOLTAGE",
+        "param_type_name": "MAV_PARAM_TYPE_REAL32",
+        "value": 11.55
+      },
+      "host_monotonic_ns": 25622449186930,
+      "host_wall_utc": "2026-07-20T15:44:29.363014+00:00",
+      "kind": "PARAM_SET"
+    },
+    {
+      "fields": {
+        "name": "SIM_BATT_VOLTAGE",
+        "param_type_name": "MAV_PARAM_TYPE_REAL32",
+        "value": 12.600000381469727
+      },
+      "host_monotonic_ns": 25625455594331,
+      "host_wall_utc": "2026-07-20T15:44:32.369424+00:00",
+      "kind": "PARAM_SET"
+    },
+    {
+      "fields": {
+        "name": "SIM_BATT_VOLTAGE",
+        "param_type_name": "MAV_PARAM_TYPE_REAL32",
+        "value": 11.55
+      },
+      "host_monotonic_ns": 25631460797447,
+      "host_wall_utc": "2026-07-20T15:44:38.374623+00:00",
+      "kind": "PARAM_SET"
+    },
+    {
+      "fields": {
+        "name": "SIM_BATT_VOLTAGE",
+        "param_type_name": "MAV_PARAM_TYPE_REAL32",
+        "value": 12.600000381469727
+      },
+      "host_monotonic_ns": 25634464750272,
+      "host_wall_utc": "2026-07-20T15:44:41.378577+00:00",
+      "kind": "PARAM_SET"
+    },
+    {
+      "fields": {
+        "name": "SIM_BATT_VOLTAGE",
+        "param_type_name": "MAV_PARAM_TYPE_REAL32",
+        "value": 11.55
+      },
+      "host_monotonic_ns": 25640468782357,
+      "host_wall_utc": "2026-07-20T15:44:47.382608+00:00",
+      "kind": "PARAM_SET"
+    },
+    {
+      "fields": {
+        "name": "SIM_BATT_VOLTAGE",
+        "param_type_name": "MAV_PARAM_TYPE_REAL32",
+        "value": 12.600000381469727
+      },
+      "host_monotonic_ns": 25643489343364,
+      "host_wall_utc": "2026-07-20T15:44:50.403166+00:00",
+      "kind": "PARAM_SET"
+    }
+  ],
+  "return_code": 0
+}

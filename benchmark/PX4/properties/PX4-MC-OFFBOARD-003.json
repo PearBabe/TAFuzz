@@ -1,0 +1,1065 @@
+{
+  "schema_version": "1.0",
+  "property_id": "PX4-MC-OFFBOARD-003",
+  "title_zh": "PX4 Offboard proof-of-life 时序",
+  "title_en": "PX4 Offboard proof-of-life admission/loss timing",
+  "system_scope": {
+    "system": "PX4",
+    "vehicles": [
+      "multicopter SITL"
+    ],
+    "firmware_release": "v1.17.0",
+    "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "PX4 multicopter SITL；Offboard message family/type mask、RC availability 和运行时参数已归档。"
+  },
+  "status": "NEEDS_CONTEXT",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "PX4-MC-OFFBOARD-003-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Offboard Mode",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/flight_modes/offboard.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "42c1bddd291b9b1b5ae3a22484871087ffe786357c528d51bb24aa46dfecbab7",
+      "locator": {
+        "page": null,
+        "section": "Offboard Mode",
+        "anchor": null,
+        "line_start": 5,
+        "line_end": 18,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+      "context_summary_zh": "定义进入 Offboard 前的 proof-of-life 速率和持续时间。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-OFFBOARD-003-S2",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Offboard Mode",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/flight_modes/offboard.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "42c1bddd291b9b1b5ae3a22484871087ffe786357c528d51bb24aa46dfecbab7",
+      "locator": {
+        "page": null,
+        "section": "Description",
+        "anchor": null,
+        "line_start": 24,
+        "line_end": 31,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "Offboard mode is used for controlling vehicle movement and attitude, by setting position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints.\n\nPX4 must receive a stream of MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) at 2 Hz as proof that the external controller is healthy.\nThe stream must be sent for at least a second before PX4 will arm in offboard mode, or switch to offboard mode when flying.\nIf the rate falls below 2Hz while under external control PX4 will switch out of offboard mode after a timeout ([COM_OF_LOSS_T](#COM_OF_LOSS_T)), and attempt to land or perform some other failsafe action.\nThe action depends on whether or not RC control is available, and is defined in the parameter [COM_OBL_RC_ACT](#COM_OBL_RC_ACT).\n\nWhen using MAVLink the setpoint messages convey both the signal to indicate that the external source is \"alive\", and the setpoint value itself.",
+      "context_summary_zh": "同页对 2Hz、>2Hz、below 2Hz 的边界表述存在冲突。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-OFFBOARD-003-S3",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "PX4 Offboard loss parameters",
+      "version": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "path_or_url": "baseline/px4/src/modules/commander/commander_params.c",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "4e83db4e821aac5fb5ad96aa7755bac8dffac0714581d0895688198c8e41902a",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 329,
+        "line_end": 369,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "/**\n * Time-out to wait when offboard connection is lost before triggering offboard lost action.\n *\n * See COM_OBL_RC_ACT to configure action.\n *\n * @group Commander\n * @unit s\n * @min 0\n * @max 60\n * @increment 0.01\n */\nPARAM_DEFINE_FLOAT(COM_OF_LOSS_T, 1.0f);\n\n/**\n * Set action after a quadchute\n *\n * @value -1 Warning only\n * @value  0 Return mode\n * @value  1 Land mode\n * @value  2 Hold mode\n * @group Commander\n */\nPARAM_DEFINE_INT32(COM_QC_ACT, 0);\n\n/**\n * Set offboard loss failsafe mode\n *\n * The offboard loss failsafe will only be entered after a timeout,\n * set by COM_OF_LOSS_T in seconds.\n *\n * @value 0 Position mode\n * @value 1 Altitude mode\n * @value 2 Stabilized\n * @value 3 Return mode\n * @value 4 Land mode\n * @value 5 Hold mode\n * @value 6 Terminate\n * @value 7 Disarm\n * @group Commander\n */\nPARAM_DEFINE_INT32(COM_OBL_RC_ACT, 0);",
+      "context_summary_zh": "冻结提交中的 COM_OF_LOSS_T 和 COM_OBL_RC_ACT 元数据。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "PX4-MC-OFFBOARD-003-S1",
+      "PX4-MC-OFFBOARD-003-S2",
+      "PX4-MC-OFFBOARD-003-S3"
+    ],
+    "edges": [
+      {
+        "from": "PX4-MC-OFFBOARD-003-S1",
+        "relation": "refers_to",
+        "to": "PX4-MC-OFFBOARD-003-S2",
+        "evidence_source_id": "PX4-MC-OFFBOARD-003-S2",
+        "confidence": "REVIEWED"
+      },
+      {
+        "from": "PX4-MC-OFFBOARD-003-S1",
+        "relation": "parameterizes",
+        "to": "PX4-MC-OFFBOARD-003-S3",
+        "evidence_source_id": "PX4-MC-OFFBOARD-003-S3",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "同一冻结文档同时写 2Hz、>2Hz 和 below 2Hz，无法确定 equality boundary。",
+      "admission 的 one-second 起止边界与 accepted-event 还未可靠绑定。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "PX4 Offboard mode manager",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-OFFBOARD-003-S1",
+          "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "受支持的 Offboard proof-of-life stream 出现或停止。",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-OFFBOARD-003-S1",
+          "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "消息被 PX4 接受且字段/type-mask 对当前 Offboard control mode 有效。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-OFFBOARD-003-S1",
+            "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "进入 Offboard 前需持续约一秒满足文档规定的 rate；进入后 proof loss 持续 COM_OF_LOSS_T 时退出或执行配置 action。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-OFFBOARD-003-S1",
+            "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [],
+    "exceptions": [
+      {
+        "text": "RC availability 会改变配置 action。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-OFFBOARD-003-S1",
+            "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "离开 Offboard 或合法 mode override 取消 loss 义务。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-OFFBOARD-003-S1",
+            "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "accepted Offboard proof stream",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-OFFBOARD-003-S1",
+          "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "离开 Offboard、恢复 proof stream 或 run 结束",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-OFFBOARD-003-S1",
+          "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "offboard_proof",
+        "relation": "TRIGGERS",
+        "right": "offboard_admission_qualification",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-OFFBOARD-003-S1",
+            "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "offboard_proof",
+        "relation": "RESETS",
+        "right": "offboard_loss_gap",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-OFFBOARD-003-S1",
+            "quote": "The vehicle obeys position, velocity, acceleration, attitude, attitude rates or thrust/torque setpoints provided by some source that is external to the flight stack, such as a companion computer.\nThe setpoints may be provided using MAVLink (or a MAVLink API such as [MAVSDK](https://mavsdk.mavlink.io/)) or by [ROS 2](../ros2/index.md).\n\nPX4 requires that the external controller provides a continuous 2Hz \"proof of life\" signal, by streaming any of the supported MAVLink setpoint messages or the ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) message.\nPX4 enables offboard control only after receiving the signal for more than a second, and will regain control if the signal stops.\n\n::: info\n\n- This mode requires position or pose/attitude information - e.g. GPS, optical flow, visual-inertial odometry, mocap, etc.\n- RC control is disabled except to change modes (you can also fly without any manual controller at all by setting the parameter [COM_RC_IN_MODE](../advanced_config/parameter_reference.md#COM_RC_IN_MODE) to 4: Stick input disabled).\n- The vehicle must be already be receiving a stream of MAVLink setpoint messages or ROS 2 [OffboardControlMode](../msg_docs/OffboardControlMode.md) messages before arming in offboard mode or switching to offboard mode when flying.\n- The vehicle will exit offboard mode if MAVLink setpoint messages or `OffboardControlMode` are not received at a rate of > 2Hz.\n- Not all coordinate frames and field values allowed by MAVLink are supported for all setpoint messages and vehicles.\n  Read the sections below _carefully_ to ensure only supported values are used.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "同一冻结文档同时写 2Hz、>2Hz 和 below 2Hz，无法确定 equality boundary。",
+      "admission 的 one-second 起止边界与 accepted-event 还未可靠绑定。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_offboard_loss",
+      "semantic_start_event": "offboard_proof_loss_epoch",
+      "semantic_end_event": "offboard_loss_action",
+      "cancel_event": "leave_offboard_or_run_end",
+      "reset_event": "accepted_offboard_proof",
+      "raw_expression": "runtime(COM_OF_LOSS_T)",
+      "lower": "runtime(COM_OF_LOSS_T)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "PX4-MC-OFFBOARD-003-S3",
+      "source_span": {
+        "source_id": "PX4-MC-OFFBOARD-003-S3",
+        "quote": "/**\n * Time-out to wait when offboard connection is lost before triggering offboard lost action.\n *\n * See COM_OBL_RC_ACT to configure action.\n *\n * @group Commander\n * @unit s\n * @min 0\n * @max 60\n * @increment 0.01\n */\nPARAM_DEFINE_FLOAT(COM_OF_LOSS_T, 1.0f);\n\n/**\n * Set action after a quadchute\n *\n * @value -1 Warning only\n * @value  0 Return mode\n * @value  1 Land mode\n * @value  2 Hold mode\n * @group Commander\n */\nPARAM_DEFINE_INT32(COM_QC_ACT, 0);\n\n/**\n * Set offboard loss failsafe mode\n *\n * The offboard loss failsafe will only be entered after a timeout,\n * set by COM_OF_LOSS_T in seconds.\n *\n * @value 0 Position mode\n * @value 1 Altitude mode\n * @value 2 Stabilized\n * @value 3 Return mode\n * @value 4 Land mode\n * @value 5 Hold mode\n * @value 6 Terminate\n * @value 7 Disarm\n * @group Commander\n */\nPARAM_DEFINE_INT32(COM_OBL_RC_ACT, 0);",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "COM_OF_LOSS_T",
+      "formula": "T_offboard_loss = runtime(COM_OF_LOSS_T)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 1.0,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/PX4-MC-OFFBOARD-003"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 1.0,
+          "unit": "s",
+          "source_id": "PX4-MC-OFFBOARD-003-S3"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "PX4 HRT on accepted offboard_control_mode",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": null,
+    "concrete": null,
+    "concrete_instances": [
+      {
+        "profile": "PX4/multicopter — px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+        "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+        "parameter_id": "COM_OF_LOSS_T",
+        "raw_value": 1.0,
+        "raw_unit": "s",
+        "normalized_value": 1.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 1 s = 1 s",
+        "formula": null,
+        "status": "NOT_FORMALIZED",
+        "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "source_param_index": 285,
+        "source_param_count": 900,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "时间值已观测，但 Requirement IR 的上下文尚未闭合，因此没有生成具体公式。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [],
+    "status": "NEEDS_CONTEXT"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-01",
+      "name": "offboard_proof",
+      "controlled_natural_language": "受支持且被接受的 Offboard proof message。",
+      "truth_condition": "accepted setpoint/offboard-control update 对当前 control mode 有效。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/OffboardControlMode.msg",
+          "line": 3,
+          "column": 1,
+          "symbol": "timestamp",
+          "semantic_identity": "Vehicle receipt timestamp on the accepted offboard_control_mode update.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint64",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The uORB message timestamp is set by accepted MAVLink handlers in vehicle boot time. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/OffboardControlMode.msg#L3"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1034,
+          "column": 1,
+          "symbol": "MavlinkReceiver::handle_message_set_position_target_local_ned",
+          "semantic_identity": "Consumer for local-NED Offboard proof candidates.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "MavlinkReceiver::handle_message_set_position_target_local_ned",
+          "role": "CONSUMER",
+          "type": "void(mavlink_message_t *)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The handler applies forwarding, target, frame, mask, and validity checks before publishing control mode. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1034"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1131,
+          "column": 3,
+          "symbol": "ocm.position",
+          "semantic_identity": "Acceptance guard requiring at least one supported local position, velocity, or acceleration control dimension.",
+          "entity_kind": "OTHER",
+          "function": "MavlinkReceiver::handle_message_set_position_target_local_ned",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Only a non-empty supported control-mode update reaches the publisher. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1131"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1134,
+          "column": 4,
+          "symbol": "_offboard_control_mode_pub.publish",
+          "semantic_identity": "uORB producer for an accepted local-NED Offboard control-mode update.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkReceiver::handle_message_set_position_target_local_ned",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<offboard_control_mode_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Publication occurs after the handler's target, frame, mask, and finite-value checks. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1134"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1154,
+          "column": 1,
+          "symbol": "MavlinkReceiver::handle_message_set_position_target_global_int",
+          "semantic_identity": "Consumer for global-int Offboard proof candidates.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "MavlinkReceiver::handle_message_set_position_target_global_int",
+          "role": "CONSUMER",
+          "type": "void(mavlink_message_t *)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is a distinct accepted proof path for supported global position/velocity/acceleration input. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1154"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1256,
+          "column": 4,
+          "symbol": "_offboard_control_mode_pub.publish",
+          "semantic_identity": "uORB producer for an accepted global-int Offboard control-mode update.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkReceiver::handle_message_set_position_target_global_int",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<offboard_control_mode_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The update is published only after a supported and valid control dimension is established. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1256"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B07",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1616,
+          "column": 1,
+          "symbol": "MavlinkReceiver::handle_message_set_attitude_target",
+          "semantic_identity": "Consumer for attitude or body-rate Offboard proof candidates.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "MavlinkReceiver::handle_message_set_attitude_target",
+          "role": "CONSUMER",
+          "type": "void(mavlink_message_t *)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the supported attitude/rate proof path. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1616"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-01-B08",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 1641,
+          "column": 4,
+          "symbol": "_offboard_control_mode_pub.publish",
+          "semantic_identity": "uORB producer for an accepted attitude or body-rate Offboard control-mode update.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkReceiver::handle_message_set_attitude_target",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<offboard_control_mode_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The handler stamps vehicle receipt time at line 1640 and publishes at this site. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L1641"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "SET_POSITION_TARGET_LOCAL_NED",
+          "message_id": 84,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential proof/setpoint; time_boot_ms is sender boot time and does not prove PX4 acceptance.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_ATTITUDE_TARGET",
+          "message_id": 82,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential attitude/rate proof; acceptance depends on supported fields and estimates.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-02",
+      "name": "offboard_proof_qualified",
+      "controlled_natural_language": "proof history 满足 admission rate/duration。",
+      "truth_condition": "待解决 2Hz equality 和持续时长边界后才能定义。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-02-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp",
+          "line": 38,
+          "column": 6,
+          "symbol": "OffboardChecks::checkAndReport",
+          "semantic_identity": "Commander health-check consumer for the latest offboard_control_mode sample.",
+          "entity_kind": "FUNCTION",
+          "function": "OffboardChecks::checkAndReport",
+          "role": "CONSUMER",
+          "type": "void(const Context &,Report &)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The check reads one latest uORB sample; no history buffer is maintained here. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp#L38"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-02-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp",
+          "line": 44,
+          "column": 2,
+          "symbol": "_offboard_control_mode_sub.copy",
+          "semantic_identity": "Read of the latest offboard-control proof state.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "OffboardChecks::checkAndReport",
+          "role": "CONSUMER",
+          "type": "uORB::Subscription",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Only the most recent sample is copied. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp#L44"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-02-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp",
+          "line": 46,
+          "column": 3,
+          "symbol": "data_is_recent",
+          "semantic_identity": "Single-sample freshness derivation using timestamp plus COM_OF_LOSS_T.",
+          "entity_kind": "VARIABLE",
+          "function": "OffboardChecks::checkAndReport",
+          "role": "DERIVATION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This locates current freshness but does not encode a 2 Hz equality rule or one-second history. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp#L46"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-02-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp",
+          "line": 49,
+          "column": 3,
+          "symbol": "offboard_available",
+          "semantic_identity": "Derived availability from supported control bits and current freshness.",
+          "entity_kind": "VARIABLE",
+          "function": "OffboardChecks::checkAndReport",
+          "role": "DERIVATION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Estimator validity can further clear the value; it is not a historical admission qualifier. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp#L49"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-02-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp",
+          "line": 65,
+          "column": 3,
+          "symbol": "offboard_control_signal_lost",
+          "semantic_identity": "Current loss flag derived as the inverse of offboard_available.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "OffboardChecks::checkAndReport",
+          "role": "WRITE",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This is a current availability consequence, not proof of historical rate/duration qualification. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp#L65"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-02-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/commander_params.c",
+          "line": 340,
+          "column": 1,
+          "symbol": "COM_OF_LOSS_T",
+          "semantic_identity": "Runtime offboard-loss timeout used by the current freshness check.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "float",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The parameter defines tolerated staleness, not admission history duration. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/commander_params.c#L340"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "SET_POSITION_TARGET_LOCAL_NED",
+          "message_id": 84,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential proof/setpoint; time_boot_ms is sender boot time and does not prove PX4 acceptance.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_ATTITUDE_TARGET",
+          "message_id": 82,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential attitude/rate proof; acceptance depends on supported fields and estimates.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "UNRESOLVED",
+      "status": "PARTIALLY_BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-03",
+      "name": "mode_offboard",
+      "controlled_natural_language": "PX4 当前处于 Offboard。",
+      "truth_condition": "vehicle navigation state 映射为 Offboard。",
+      "kind": "STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-03-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 35,
+          "column": 1,
+          "symbol": "nav_state",
+          "semantic_identity": "Current active vehicle navigation-state field.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The AP is true when this field equals the OFFBOARD enum. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L35"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-03-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 50,
+          "column": 1,
+          "symbol": "NAVIGATION_STATE_OFFBOARD",
+          "semantic_identity": "VehicleStatus enum constant identifying Offboard mode.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8 constant",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the direct internal mode identity. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L50"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-03-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 1945,
+          "column": 4,
+          "symbol": "_vehicle_status_pub.publish",
+          "semantic_identity": "uORB producer for the current nav_state and vehicle timestamp.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "Commander::Run",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<vehicle_status_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Internal observation of vehicle_status gives exact state identity. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L1945"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-03-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/px4_custom_mode.h",
+          "line": 157,
+          "column": 2,
+          "symbol": "NAVIGATION_STATE_OFFBOARD",
+          "semantic_identity": "Mapping branch from internal Offboard nav_state to PX4 custom mode.",
+          "entity_kind": "OTHER",
+          "function": "get_px4_custom_mode",
+          "role": "DERIVATION",
+          "type": "switch case",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The branch selects PX4_CUSTOM_MAIN_MODE_OFFBOARD. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/px4_custom_mode.h#L157"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-03-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/streams/HEARTBEAT.hpp",
+          "line": 104,
+          "column": 4,
+          "symbol": "get_px4_custom_mode",
+          "semantic_identity": "HEARTBEAT producer derives custom_mode from current VehicleStatus nav_state.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkStreamHeartbeat::send",
+          "role": "DERIVATION",
+          "type": "px4_custom_mode",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The mapped mode is sent in HEARTBEAT at lines 129-130. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/streams/HEARTBEAT.hpp#L104"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-03-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/streams/CURRENT_MODE.hpp",
+          "line": 71,
+          "column": 4,
+          "symbol": "mavlink_msg_current_mode_send_struct",
+          "semantic_identity": "CURRENT_MODE wire producer for current and intended PX4 custom mode.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkStreamCurrentMode::send",
+          "role": "PRODUCER",
+          "type": "mavlink_current_mode_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The stream sends custom_mode derived from vehicle_status.nav_state. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/streams/CURRENT_MODE.hpp#L71"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode PX4 custom OFFBOARD mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "CURRENT_MODE",
+          "message_id": 436,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Direct current custom mode with no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-04",
+      "name": "offboard_loss_action",
+      "controlled_natural_language": "退出 Offboard 并执行运行时配置的 loss action。",
+      "truth_condition": "结果 mode/action 与 COM_OBL_RC_ACT 和 RC availability 匹配。",
+      "kind": "CORRELATION",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-04-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/commander_params.c",
+          "line": 369,
+          "column": 1,
+          "symbol": "COM_OBL_RC_ACT",
+          "semantic_identity": "Runtime parameter selecting the primary Offboard-loss action.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "int32",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Runtime capture, not the source default, is needed for correlation. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/commander_params.c#L369"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-04-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 280,
+          "column": 22,
+          "symbol": "Failsafe::fromOffboardLossActParam",
+          "semantic_identity": "Parameter-to-failsafe-action and intended-mode mapping function.",
+          "entity_kind": "FUNCTION",
+          "function": "Failsafe::fromOffboardLossActParam",
+          "role": "DERIVATION",
+          "type": "FailsafeBase::Action(int,uint8_t &)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The switch maps all COM_OBL_RC_ACT values to fallback, RTL, Land, Hold, Terminate, or Disarm. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L280"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-04-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 665,
+          "column": 2,
+          "symbol": "offboard_control_signal_lost",
+          "semantic_identity": "Guard requiring Offboard signal loss to matter for the intended mode.",
+          "entity_kind": "OTHER",
+          "function": "Failsafe::checkModeFallback",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The guard combines the loss flag with mode_req_offboard_signal. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L665"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-04-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 666,
+          "column": 3,
+          "symbol": "fromOffboardLossActParam",
+          "semantic_identity": "Runtime action derivation from COM_OBL_RC_ACT.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Failsafe::checkModeFallback",
+          "role": "DERIVATION",
+          "type": "FailsafeBase::Action",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the primary configured-action selection site. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L666"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-04-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 675,
+          "column": 4,
+          "symbol": "manual_control_signal_lost",
+          "semantic_identity": "RC-availability fallback guard for position, altitude, or stabilized actions.",
+          "entity_kind": "FIELD",
+          "function": "Failsafe::checkModeFallback",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "If manual control is lost, NAV_RCL_ACT replaces an RC-dependent fallback action. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L675"
+        },
+        {
+          "binding_id": "PX4-MC-OFFBOARD-003-AP-04-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2371,
+          "column": 2,
+          "symbol": "_vehicle_status.nav_state",
+          "semantic_identity": "Commander writes the selected failsafe action's available mode replacement to current nav_state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::Run",
+          "role": "WRITE",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Mode management can replace unavailable modes, so final state is a downstream result rather than a cause tag. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2371"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_OBL_RC_ACT, COM_OF_LOSS_T; expected action and timeout",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Observe resulting mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May identify Offboard-control-loss cause/action. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone7-monitor-and-independent-audit-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/extraction_runs/milestone4/superseded_px4_draft/properties/*.yaml (SUPERSEDED_NON_CANONICAL_DRAFT; immutable historical input only)",
+      "benchmark/extraction_runs/milestone5/px4_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "benchmark/extraction_runs/milestone7/independent_review.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction. Milestone 7 recorded a non-human independent rollback recommendation and synthetic monitor evidence; neither was used as a firmware-conformance or human-acceptance decision."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "satisfiable": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_tautology": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_vacuity": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "independent_review": {
+      "status": "INCONCLUSIVE",
+      "command": null,
+      "evidence": "Automated non-human audit completed 9 gates and recommends NEEDS_CONTEXT; blockers=same-version rate and inclusivity conflict; qualification AP partial; acceptance not wire-observable; no formula. No human reviewer or arbitration was claimed."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Automated independent evidence audit recommends NEEDS_CONTEXT and records unresolved gates in benchmark/extraction_runs/milestone7/independent_review.json (SHA-256 5241806569500e593552cf50667d6de9e7e409961bd6ea131ff255571c98ec5c). It is not a human review or arbitration; decision remains PENDING.",
+    "conflicts": [
+      "rate equality 冲突未解决，禁止生成 admission concrete MITL。",
+      "COM_OF_LOSS_T 仅解决 post-admission loss window。",
+      "M7 automated independent audit: same-version rate and inclusivity conflict",
+      "M7 automated independent audit: qualification AP partial",
+      "M7 automated independent audit: acceptance not wire-observable",
+      "M7 automated independent audit: no formula"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

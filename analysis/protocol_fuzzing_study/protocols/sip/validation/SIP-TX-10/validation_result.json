@@ -1,0 +1,44 @@
+{
+  "id": "SIP-TX-10",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {
+    "superseded_by_noninvite_final_response_received": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    },
+    "superseded_by_noninvite_transport_error": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    }
+  },
+  "additional_negative_results": {
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "timer_e_fired_in_proceeding_and_rearmed_t2",
+    "timer_e_deadline",
+    "noninvite_final_response_received",
+    "noninvite_transport_error"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 11,
+  "positive_edges": 328,
+  "positive_clocks": 2,
+  "negative_locations": 9,
+  "negative_edges": 278,
+  "negative_clocks": 2,
+  "build_ms": 20,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

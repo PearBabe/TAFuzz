@@ -1,0 +1,81 @@
+{
+  "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+  "dropped_event_count": 0,
+  "epoch": "synthetic_zero_integer_milliseconds",
+  "events": [
+    {
+      "correlation_id": "ARD-ROVER-CRASH-002--too_early_one_tick",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-ROVER-CRASH-002",
+      "seq": 0,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 0,
+      "values": {
+        "crash_action": false,
+        "crash_check_enabled": false,
+        "crash_condition_start": false
+      }
+    },
+    {
+      "correlation_id": "ARD-ROVER-CRASH-002--too_early_one_tick",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-ROVER-CRASH-002",
+      "seq": 1,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 1000,
+      "values": {
+        "crash_action": false,
+        "crash_check_enabled": true,
+        "crash_condition_start": true
+      }
+    },
+    {
+      "correlation_id": "ARD-ROVER-CRASH-002--too_early_one_tick",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-ROVER-CRASH-002",
+      "seq": 2,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 2999,
+      "values": {
+        "crash_action": true,
+        "crash_check_enabled": true,
+        "crash_condition_start": false
+      }
+    },
+    {
+      "correlation_id": "ARD-ROVER-CRASH-002--too_early_one_tick",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-ROVER-CRASH-002",
+      "seq": 3,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 3000,
+      "values": {
+        "crash_action": false,
+        "crash_check_enabled": true,
+        "crash_condition_start": false
+      }
+    },
+    {
+      "correlation_id": "ARD-ROVER-CRASH-002--too_early_one_tick",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-ROVER-CRASH-002",
+      "seq": 4,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 4000,
+      "values": {
+        "crash_action": false,
+        "crash_check_enabled": true,
+        "crash_condition_start": false
+      }
+    }
+  ],
+  "notes": "Response occurs one exact monitor tick before the threshold. No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+  "property_id": "ARD-ROVER-CRASH-002",
+  "schema_version": "1.0",
+  "trace_id": "ARD-ROVER-CRASH-002--too_early_one_tick"
+}

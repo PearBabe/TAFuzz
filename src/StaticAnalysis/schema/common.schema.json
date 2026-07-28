@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/common/1.0.0",
+  "title": "RIFT common project-neutral semantic types",
+  "type": "object",
+  "additionalProperties": false,
+  "description": "Shared definitions only; this schema is not an analysis artifact.",
+  "definitions": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$"
+    },
+    "stable_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_.:-]{0,127}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nonempty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullable_nonempty_string": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "ap_role": {
+      "enum": [
+        "trigger",
+        "response",
+        "cancel",
+        "state",
+        "guard",
+        "bound",
+        "clock",
+        "scope"
+      ]
+    },
+    "certainty": {
+      "enum": ["must", "may", "modelled", "unknown"]
+    },
+    "value_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "canonical"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "bool", "integer", "floating", "enum", "bitvector",
+            "timestamp", "duration", "pointer", "record", "array", "unknown"
+          ]
+        },
+        "canonical": {"$ref": "#/definitions/nonempty_string"},
+        "bit_width": {"type": "integer", "minimum": 1},
+        "signed": {"type": "boolean"},
+        "unit": {"$ref": "#/definitions/nonempty_string"}
+      }
+    },
+    "source_location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "line", "column", "location_kind"],
+      "properties": {
+        "file": {"$ref": "#/definitions/nonempty_string"},
+        "line": {"type": "integer", "minimum": 1},
+        "column": {"type": "integer", "minimum": 1},
+        "end_line": {"type": "integer", "minimum": 1},
+        "end_column": {"type": "integer", "minimum": 1},
+        "location_kind": {"enum": ["spelling", "expansion", "presumed", "debug", "unknown"]},
+        "macro_stack": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/nonempty_string"}
+        }
+      }
+    },
+    "expression_structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_kind", "value_type", "operands"],
+      "properties": {
+        "node_kind": {
+          "enum": [
+            "literal", "reference", "field", "index", "unary", "binary",
+            "comparison", "boolean", "call", "cast", "conditional", "unknown"
+          ]
+        },
+        "operator": {"$ref": "#/definitions/nullable_nonempty_string"},
+        "value_type": {"$ref": "#/definitions/value_type"},
+        "referenced_selector_id": {
+          "oneOf": [
+            {"$ref": "#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "literal": {
+          "description": "Scalar literal retained exactly enough for typed mutation reasoning; object and array literals are outside the supported predicate subset.",
+          "type": ["null", "boolean", "integer", "number", "string"]
+        },
+        "operands": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/expression_structure"}
+        }
+      }
+    },
+    "selector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector_id", "kind"],
+      "properties": {
+        "selector_id": {"$ref": "#/definitions/stable_id"},
+        "kind": {
+          "enum": [
+            "usr", "qualified_signature", "source_location",
+            "typed_field_path", "expression_structure", "composite"
+          ]
+        },
+        "usr": {"$ref": "#/definitions/nonempty_string"},
+        "qualified_signature": {"$ref": "#/definitions/nonempty_string"},
+        "location": {"$ref": "#/definitions/source_location"},
+        "value_type": {"$ref": "#/definitions/value_type"},
+        "field_path": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/definitions/nonempty_string"}
+        },
+        "expression_structure": {"$ref": "#/definitions/expression_structure"},
+        "components": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {"$ref": "#/definitions/stable_id"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "usr"}}},
+          "then": {"required": ["usr"]}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "qualified_signature"}}},
+          "then": {"required": ["qualified_signature"]}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "source_location"}}},
+          "then": {"required": ["location"]}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "typed_field_path"}}},
+          "then": {"required": ["value_type", "field_path"]}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "expression_structure"}}},
+          "then": {"required": ["expression_structure"]}
+        },
+        {
+          "if": {"properties": {"kind": {"const": "composite"}}},
+          "then": {"required": ["components"]}
+        }
+      ]
+    },
+    "entity_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_id", "entity_kind", "identity_status", "usr",
+        "qualified_signature", "canonical_type"
+      ],
+      "properties": {
+        "entity_id": {"$ref": "#/definitions/stable_id"},
+        "entity_kind": {
+          "enum": [
+            "function", "method", "constructor", "destructor", "parameter",
+            "local", "global", "field", "type", "expression", "synthetic", "unknown"
+          ]
+        },
+        "identity_status": {"enum": ["exact", "summary", "unknown"]},
+        "usr": {"$ref": "#/definitions/nullable_nonempty_string"},
+        "qualified_signature": {"$ref": "#/definitions/nullable_nonempty_string"},
+        "canonical_type": {"$ref": "#/definitions/nullable_nonempty_string"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "kind", "certainty", "fact", "producer"],
+      "properties": {
+        "evidence_id": {"$ref": "#/definitions/stable_id"},
+        "kind": {
+          "enum": [
+            "usr_match", "qualified_signature_match", "source_location_match",
+            "type_field_match", "expression_structure_match", "ast_semantics",
+            "llvm_value_flow", "memoryssa", "alias_analysis", "control_dependence",
+            "call_graph", "debug_mapping", "model_rule", "path_constraint",
+            "temporal_role", "scope_match", "name_similarity", "llm_similarity",
+            "unresolved"
+          ]
+        },
+        "certainty": {"$ref": "#/definitions/certainty"},
+        "fact": {"$ref": "#/definitions/nonempty_string"},
+        "producer": {"$ref": "#/definitions/nonempty_string"},
+        "location": {"$ref": "#/definitions/source_location"},
+        "model_rule_id": {"$ref": "#/definitions/stable_id"},
+        "score": {"type": "number", "minimum": 0, "maximum": 1},
+        "artifact_digest": {"$ref": "#/definitions/sha256"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "model_rule"}}},
+          "then": {"required": ["model_rule_id"]}
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {"enum": ["name_similarity", "llm_similarity"]}
+            }
+          },
+          "then": {"required": ["score"]}
+        }
+      ]
+    },
+    "unsupported_construct": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["construct_id", "kind", "effect", "detail", "locations"],
+      "properties": {
+        "construct_id": {"$ref": "#/definitions/stable_id"},
+        "kind": {"$ref": "#/definitions/nonempty_string"},
+        "effect": {"enum": ["precision_loss", "soundness_risk", "stage_failure"]},
+        "detail": {"$ref": "#/definitions/nonempty_string"},
+        "locations": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/source_location"}
+        },
+        "affected_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "#/definitions/stable_id"}
+        }
+      }
+    }
+  }
+}

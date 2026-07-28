@@ -1,0 +1,705 @@
+{
+  "schema_version": "2.0.0",
+  "artifact_id": "rift.m4.coap_tx_01.property",
+  "property_id": "COAP-TX-01",
+  "logic": "MITL",
+  "time_domain": "dense",
+  "formula_text": "G (coap_con_wait_started -> (G [0,2000) (!coap_first_retransmit_deadline_reached) && F [0,3000] (coap_first_retransmit_deadline_reached || coap_matching_ack_or_reset_received || coap_attempt_cancelled)))",
+  "formula": {
+    "node_id": "formula.root",
+    "operator": "globally",
+    "interval": {
+      "lower": 0,
+      "upper": "infinity",
+      "lower_closed": true,
+      "upper_closed": false,
+      "unit": "ms",
+      "bound_ap_refs": []
+    },
+    "operands": [
+      {
+        "node_id": "formula.obligation",
+        "operator": "implies",
+        "operands": [
+          {
+            "node_id": "formula.trigger",
+            "operator": "atom",
+            "ap_ref": "coap_con_wait_started",
+            "operands": []
+          },
+          {
+            "node_id": "formula.window_conjunction",
+            "operator": "and",
+            "operands": [
+              {
+                "node_id": "formula.no_early_deadline",
+                "operator": "globally",
+                "interval": {
+                  "lower": 0,
+                  "upper": 2000,
+                  "lower_closed": true,
+                  "upper_closed": false,
+                  "unit": "ms",
+                  "bound_ap_refs": [
+                    "coap_first_retransmit_deadline_reached"
+                  ]
+                },
+                "operands": [
+                  {
+                    "node_id": "formula.not_deadline",
+                    "operator": "not",
+                    "operands": [
+                      {
+                        "node_id": "formula.deadline_early_atom",
+                        "operator": "atom",
+                        "ap_ref": "coap_first_retransmit_deadline_reached",
+                        "operands": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "node_id": "formula.eventual_discharge",
+                "operator": "eventually",
+                "interval": {
+                  "lower": 0,
+                  "upper": 3000,
+                  "lower_closed": true,
+                  "upper_closed": true,
+                  "unit": "ms",
+                  "bound_ap_refs": [
+                    "coap_first_retransmit_deadline_reached"
+                  ]
+                },
+                "operands": [
+                  {
+                    "node_id": "formula.discharge_disjunction",
+                    "operator": "or",
+                    "operands": [
+                      {
+                        "node_id": "formula.deadline_atom",
+                        "operator": "atom",
+                        "ap_ref": "coap_first_retransmit_deadline_reached",
+                        "operands": []
+                      },
+                      {
+                        "node_id": "formula.ack_or_reset_atom",
+                        "operator": "atom",
+                        "ap_ref": "coap_matching_ack_or_reset_received",
+                        "operands": []
+                      },
+                      {
+                        "node_id": "formula.local_cancel_atom",
+                        "operator": "atom",
+                        "ap_ref": "coap_attempt_cancelled",
+                        "operands": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "coap_con_wait_started",
+      "roles": [
+        "trigger",
+        "scope"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "_Bool"
+      },
+      "predicate": {
+        "node_kind": "reference",
+        "operator": null,
+        "value_type": {
+          "kind": "bool",
+          "canonical": "_Bool"
+        },
+        "referenced_selector_id": "selector.trigger.commit",
+        "operands": []
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "binding-group.wait-start.trigger",
+          "role": "trigger",
+          "all_of": [
+            "selector.trigger.commit"
+          ]
+        },
+        {
+          "group_id": "binding-group.wait-start.scope",
+          "role": "scope",
+          "all_of": [
+            "selector.scope.exchange"
+          ]
+        }
+      ],
+      "description": "Successful initial Confirmable send followed by retransmission-node timeout and delta-queue commit."
+    },
+    {
+      "ap_id": "coap_first_retransmit_deadline_reached",
+      "roles": [
+        "response",
+        "bound",
+        "clock",
+        "scope"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "_Bool"
+      },
+      "predicate": {
+        "node_kind": "reference",
+        "operator": null,
+        "value_type": {
+          "kind": "bool",
+          "canonical": "_Bool"
+        },
+        "referenced_selector_id": "selector.deadline.crossing",
+        "operands": []
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "binding-group.deadline.response",
+          "role": "response",
+          "all_of": [
+            "selector.deadline.crossing"
+          ]
+        },
+        {
+          "group_id": "binding-group.deadline.bound",
+          "role": "bound",
+          "all_of": [
+            "selector.bound.initial_timeout"
+          ]
+        },
+        {
+          "group_id": "binding-group.deadline.clock",
+          "role": "clock",
+          "all_of": [
+            "selector.deadline.crossing"
+          ]
+        },
+        {
+          "group_id": "binding-group.deadline.scope",
+          "role": "scope",
+          "all_of": [
+            "selector.scope.exchange"
+          ]
+        }
+      ],
+      "description": "Synthetic monotonic crossing of the correlated delta-queue deadline; callback dispatch time is not substituted for this event."
+    },
+    {
+      "ap_id": "coap_matching_ack_or_reset_received",
+      "roles": [
+        "cancel",
+        "guard",
+        "scope"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "_Bool"
+      },
+      "predicate": {
+        "node_kind": "reference",
+        "operator": null,
+        "value_type": {
+          "kind": "bool",
+          "canonical": "_Bool"
+        },
+        "referenced_selector_id": "selector.ack.commit",
+        "operands": []
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "binding-group.ack-rst.cancel.ack",
+          "role": "cancel",
+          "all_of": [
+            "selector.ack.commit"
+          ]
+        },
+        {
+          "group_id": "binding-group.ack-rst.cancel.rst",
+          "role": "cancel",
+          "all_of": [
+            "selector.rst.commit"
+          ]
+        },
+        {
+          "group_id": "binding-group.ack-rst.guard.ack",
+          "role": "guard",
+          "all_of": [
+            "selector.ack.commit"
+          ]
+        },
+        {
+          "group_id": "binding-group.ack-rst.guard.rst",
+          "role": "guard",
+          "all_of": [
+            "selector.rst.commit"
+          ]
+        },
+        {
+          "group_id": "binding-group.ack-rst.scope",
+          "role": "scope",
+          "all_of": [
+            "selector.scope.exchange"
+          ]
+        }
+      ],
+      "description": "ACK or RST arm removes the exact session/MID queue generation; non-empty ACK may additionally require token equality."
+    },
+    {
+      "ap_id": "coap_attempt_cancelled",
+      "roles": [
+        "cancel",
+        "guard",
+        "scope"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "_Bool"
+      },
+      "predicate": {
+        "node_kind": "reference",
+        "operator": null,
+        "value_type": {
+          "kind": "bool",
+          "canonical": "_Bool"
+        },
+        "referenced_selector_id": "selector.cancel.session_head",
+        "operands": []
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "binding-group.local-cancel.cancel.head",
+          "role": "cancel",
+          "all_of": [
+            "selector.cancel.session_head"
+          ]
+        },
+        {
+          "group_id": "binding-group.local-cancel.cancel.tail",
+          "role": "cancel",
+          "all_of": [
+            "selector.cancel.session_tail"
+          ]
+        },
+        {
+          "group_id": "binding-group.local-cancel.cancel.token",
+          "role": "cancel",
+          "all_of": [
+            "selector.cancel.token"
+          ]
+        },
+        {
+          "group_id": "binding-group.local-cancel.guard.head",
+          "role": "guard",
+          "all_of": [
+            "selector.cancel.session_head"
+          ]
+        },
+        {
+          "group_id": "binding-group.local-cancel.guard.tail",
+          "role": "guard",
+          "all_of": [
+            "selector.cancel.session_tail"
+          ]
+        },
+        {
+          "group_id": "binding-group.local-cancel.guard.token",
+          "role": "guard",
+          "all_of": [
+            "selector.cancel.token"
+          ]
+        },
+        {
+          "group_id": "binding-group.local-cancel.scope",
+          "role": "scope",
+          "all_of": [
+            "selector.scope.exchange"
+          ]
+        }
+      ],
+      "description": "Explicit local session- or token-scoped cancellation removes the correlated queue generation."
+    }
+  ],
+  "selectors": [
+    {
+      "selector_id": "selector.fn.wait_ack",
+      "kind": "qualified_signature",
+      "qualified_signature": "coap_wait_ack:int (struct coap_context_t *, struct coap_session_t *, struct coap_queue_t *)"
+    },
+    {
+      "selector_id": "selector.loc.trigger_post_commit",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 1418,
+        "column": 16,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.trigger.commit",
+      "kind": "composite",
+      "components": [
+        "selector.fn.wait_ack",
+        "selector.loc.trigger_post_commit",
+        "selector.field.queue_timeout",
+        "selector.field.queue_id"
+      ]
+    },
+    {
+      "selector_id": "selector.fn.io_prepare",
+      "kind": "qualified_signature",
+      "qualified_signature": "coap_io_prepare_io_lkd:unsigned int (struct coap_context_t *, struct coap_socket_t **, unsigned int, unsigned int *, unsigned long)"
+    },
+    {
+      "selector_id": "selector.loc.deadline_due",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_io.c",
+        "line": 367,
+        "column": 19,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.deadline.crossing",
+      "kind": "composite",
+      "components": [
+        "selector.fn.io_prepare",
+        "selector.loc.deadline_due",
+        "selector.field.sendqueue_basetime",
+        "selector.field.queue_t"
+      ]
+    },
+    {
+      "selector_id": "selector.fn.calc_timeout",
+      "kind": "qualified_signature",
+      "qualified_signature": "coap_calc_timeout:unsigned int (struct coap_session_t *, unsigned char)"
+    },
+    {
+      "selector_id": "selector.loc.timeout_store",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 2293,
+        "column": 19,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.bound.initial_timeout",
+      "kind": "composite",
+      "components": [
+        "selector.fn.calc_timeout",
+        "selector.loc.timeout_store",
+        "selector.field.ack_timeout",
+        "selector.field.ack_random_factor"
+      ]
+    },
+    {
+      "selector_id": "selector.fn.dispatch",
+      "kind": "qualified_signature",
+      "qualified_signature": "coap_dispatch:void (struct coap_context_t *, struct coap_session_t *, struct coap_pdu_t *)"
+    },
+    {
+      "selector_id": "selector.loc.ack_post_remove",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 4785,
+        "column": 7,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.ack.commit",
+      "kind": "composite",
+      "components": [
+        "selector.fn.dispatch",
+        "selector.loc.ack_post_remove",
+        "selector.field.pdu_type",
+        "selector.field.pdu_mid"
+      ]
+    },
+    {
+      "selector_id": "selector.loc.rst_post_remove",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 4943,
+        "column": 5,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.rst.commit",
+      "kind": "composite",
+      "components": [
+        "selector.fn.dispatch",
+        "selector.loc.rst_post_remove",
+        "selector.field.pdu_type",
+        "selector.field.pdu_mid"
+      ]
+    },
+    {
+      "selector_id": "selector.fn.cancel_session",
+      "kind": "qualified_signature",
+      "qualified_signature": "coap_cancel_session_messages:void (struct coap_context_t *, struct coap_session_t *, coap_nack_reason_t)"
+    },
+    {
+      "selector_id": "selector.loc.cancel_session_head",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 3279,
+        "column": 5,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.cancel.session_head",
+      "kind": "composite",
+      "components": [
+        "selector.fn.cancel_session",
+        "selector.loc.cancel_session_head",
+        "selector.field.queue_session"
+      ]
+    },
+    {
+      "selector_id": "selector.loc.cancel_session_tail",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 3296,
+        "column": 7,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.cancel.session_tail",
+      "kind": "composite",
+      "components": [
+        "selector.fn.cancel_session",
+        "selector.loc.cancel_session_tail",
+        "selector.field.queue_session"
+      ]
+    },
+    {
+      "selector_id": "selector.fn.cancel_token",
+      "kind": "qualified_signature",
+      "qualified_signature": "coap_cancel_all_messages:void (struct coap_context_t *, struct coap_session_t *, struct coap_bin_const_t *)"
+    },
+    {
+      "selector_id": "selector.loc.cancel_token",
+      "kind": "source_location",
+      "location": {
+        "file": "src/coap_net.c",
+        "line": 3330,
+        "column": 7,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "selector.cancel.token",
+      "kind": "composite",
+      "components": [
+        "selector.fn.cancel_token",
+        "selector.loc.cancel_token",
+        "selector.field.queue_session",
+        "selector.field.pdu_actual_token"
+      ]
+    },
+    {
+      "selector_id": "selector.field.queue_timeout",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "integer",
+        "canonical": "unsigned int",
+        "signed": false
+      },
+      "field_path": [
+        "coap_queue_t",
+        "timeout"
+      ]
+    },
+    {
+      "selector_id": "selector.field.queue_t",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "duration",
+        "canonical": "unsigned long",
+        "unit": "tick"
+      },
+      "field_path": [
+        "coap_queue_t",
+        "t"
+      ]
+    },
+    {
+      "selector_id": "selector.field.queue_id",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "signed": true
+      },
+      "field_path": [
+        "coap_queue_t",
+        "id"
+      ]
+    },
+    {
+      "selector_id": "selector.field.queue_session",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "pointer",
+        "canonical": "struct coap_session_t *"
+      },
+      "field_path": [
+        "coap_queue_t",
+        "session"
+      ]
+    },
+    {
+      "selector_id": "selector.field.sendqueue_basetime",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "timestamp",
+        "canonical": "unsigned long",
+        "unit": "tick"
+      },
+      "field_path": [
+        "coap_context_t",
+        "sendqueue_basetime"
+      ]
+    },
+    {
+      "selector_id": "selector.field.ack_timeout",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "record",
+        "canonical": "struct coap_fixed_point_t"
+      },
+      "field_path": [
+        "coap_session_t",
+        "ack_timeout"
+      ]
+    },
+    {
+      "selector_id": "selector.field.ack_random_factor",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "record",
+        "canonical": "struct coap_fixed_point_t"
+      },
+      "field_path": [
+        "coap_session_t",
+        "ack_random_factor"
+      ]
+    },
+    {
+      "selector_id": "selector.field.pdu_type",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "enum",
+        "canonical": "enum coap_pdu_type_t"
+      },
+      "field_path": [
+        "coap_pdu_t",
+        "type"
+      ]
+    },
+    {
+      "selector_id": "selector.field.pdu_mid",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "signed": true
+      },
+      "field_path": [
+        "coap_pdu_t",
+        "mid"
+      ]
+    },
+    {
+      "selector_id": "selector.field.pdu_actual_token",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "record",
+        "canonical": "struct coap_bin_const_t"
+      },
+      "field_path": [
+        "coap_pdu_t",
+        "actual_token"
+      ]
+    },
+    {
+      "selector_id": "selector.field.session_local",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "record",
+        "canonical": "struct coap_address_t"
+      },
+      "field_path": [
+        "coap_session_t",
+        "addr_info",
+        "local"
+      ]
+    },
+    {
+      "selector_id": "selector.field.session_remote",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "record",
+        "canonical": "struct coap_address_t"
+      },
+      "field_path": [
+        "coap_session_t",
+        "addr_info",
+        "remote"
+      ]
+    },
+    {
+      "selector_id": "selector.field.session_proto",
+      "kind": "typed_field_path",
+      "value_type": {
+        "kind": "enum",
+        "canonical": "enum coap_proto_t"
+      },
+      "field_path": [
+        "coap_session_t",
+        "proto"
+      ]
+    },
+    {
+      "selector_id": "selector.scope.exchange",
+      "kind": "composite",
+      "components": [
+        "selector.field.session_local",
+        "selector.field.session_remote",
+        "selector.field.session_proto",
+        "selector.field.queue_id",
+        "selector.field.queue_session"
+      ]
+    }
+  ],
+  "source_document": {
+    "document_id": "doc.coap_tx_01.catalog",
+    "digest": "aa514d2a284d360db8fb3256a7b04168472f8ad8759daa4781dc7ed31410852e",
+    "requirement_location": "RFC 7252 sections 4.2 and 4.8; admitted COAP-TX-01 record in the frozen CoAP property catalog"
+  }
+}

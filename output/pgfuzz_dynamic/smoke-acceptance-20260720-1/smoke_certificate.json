@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "case": "environment",
+      "effect_status": "CONFIRMED_EFFECT",
+      "expected_group": "status",
+      "input": "SIM_BATT_VOLTAGE",
+      "passed": true,
+      "protocol_field": null,
+      "result_file_contains_exact_name": true
+    },
+    {
+      "case": "command",
+      "effect_status": "CONFIRMED_EFFECT",
+      "expected_group": "roll",
+      "input": "RC1",
+      "passed": true,
+      "protocol_field": "RC_CHANNELS_OVERRIDE.chan1_raw",
+      "result_file_contains_exact_name": true
+    },
+    {
+      "case": "parameter",
+      "effect_status": "CONFIRMED_EFFECT",
+      "expected_group": "status",
+      "input": "FS_GCS_TIMEOUT",
+      "passed": true,
+      "protocol_field": null,
+      "result_file_contains_exact_name": true
+    }
+  ],
+  "clock_boundary": "host-observed timing is not internal firmware event time",
+  "errors": [],
+  "full_campaign_executed": false,
+  "generated_at": "2026-07-20T15:56:24.950829+00:00",
+  "schema_version": "1.0",
+  "selected_cases": [
+    "environment",
+    "command",
+    "parameter"
+  ],
+  "status": "PASS"
+}

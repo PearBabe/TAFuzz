@@ -1,0 +1,44 @@
+{
+  "id": "COAP-TX-03",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {},
+  "additional_negative_results": {
+    "early_deadline": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "late_or_missing_deadline": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "coap_fourth_retransmission_completed",
+    "coap_final_wait_deadline_reached",
+    "coap_matching_ack_or_reset_received",
+    "coap_attempt_cancelled",
+    "coap_fifth_retransmission_sent"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 13,
+  "positive_edges": 408,
+  "positive_clocks": 2,
+  "negative_locations": 11,
+  "negative_edges": 716,
+  "negative_clocks": 2,
+  "build_ms": 26,
+  "monitor_ms_positive": 2,
+  "monitor_ms_negative": 1,
+  "status": "PASS"
+}

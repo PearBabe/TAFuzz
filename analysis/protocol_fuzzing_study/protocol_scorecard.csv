@@ -1,0 +1,15 @@
+﻿protocol,authentic_properties_25,benchmark_comparability_25,setup_ease_15,observability_15,tafuzz_fit_10,reproducibility_10,total_100,hard_gate,evidence_note
+SIP,23,25,13,14,10,9,94,PASS,ProFuzzBench Kamailio + 20 RFC 3261 properties
+DTLS,19,24,13,13,9,9,87,FAIL_20,TinyDTLS benchmark version and modern DTLS timer properties mismatch
+CoAP,25,10,15,14,10,9,83,FAIL_3_BASELINES,"excellent RFC timers, absent from original ProFuzzBench targets"
+MQTT,14,14,15,13,8,9,73,FAIL_3_BASELINES,simple setup but weaker timed transaction corpus
+TLS,12,25,13,11,7,9,77,FAIL_20,benchmark mature; most core obligations are not bounded timers
+RTSP,8,25,14,12,7,9,75,FAIL_20,benchmark mature but timed RFC obligations are sparse
+FTP,5,25,15,12,6,9,72,FAIL_20,"strong baselines, weak genuine MITL catalog"
+SMTP,6,25,14,12,6,9,72,FAIL_20,"strong baselines, many implementation rather than RFC deadlines"
+DNS,7,23,15,10,6,9,70,FAIL_20,"benchmark available, retransmission mostly resolver policy"
+QUIC,21,12,8,12,9,8,70,FAIL_SETUP,rich timers but complex harness and fast-moving implementations
+DDS/RTPS,22,11,7,10,9,7,66,FAIL_SETUP,"rich real-time QoS, heavy ecosystem/adaptation"
+Modbus/TCP,8,12,14,10,7,8,59,FAIL_20,"easy SUT, limited normative timed state machine"
+OPC UA,16,10,7,9,8,7,57,FAIL_SETUP,properties exist but stack/conformance setup is heavy
+CAN/UDS,15,9,6,8,8,6,52,FAIL_BASELINE,"good automotive timers, hardware/simulator comparability cost"

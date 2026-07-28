@@ -1,0 +1,574 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "PX4-M5-SOURCE-BINDING-AUDIT",
+  "scope": {
+    "system": "PX4",
+    "firmware_release": "v1.17.0",
+    "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "vehicle_scope": "multicopter SITL",
+    "source_root": "baseline/px4",
+    "binding_file_base": "baseline/px4",
+    "audit_semantics": "Source identity, location, derivation, and observation audit only.",
+    "implementation_satisfaction": "NOT_ASSESSED",
+    "runtime_capture": "NOT_RUN_STATIC_AUDIT"
+  },
+  "compile_database": {
+    "path": "baseline/px4/build/px4_sitl_default/compile_commands.json",
+    "target": "px4_sitl_default",
+    "generator_result": "PASS_1095_OF_1095",
+    "entry_count": 868,
+    "unique_source_file_count": 826,
+    "sha256": "86e28dc5a3926a2d59ef69a905f4fa53265ceec41dd9be1745d35eda4ab5ae14",
+    "build_environment_note": "Host Python packages were isolated under /tmp/tafuzz_px4_v117_pydeps and supplied through PYTHONPATH; no source-tree dependency files were edited.",
+    "locked_submodules_initialized": [
+      {"path": "src/modules/mavlink/mavlink", "commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72"},
+      {"path": "src/modules/mavlink/mavlink/pymavlink", "commit": "fcaa2c7d25e3169dc66155929c338487941555e9"},
+      {"path": "src/drivers/gps/devices", "commit": "0b9695881bd1e8f830ab4538ab3acc0050019eba"},
+      {"path": "src/lib/events/libevents", "commit": "9ef591c447fe0386d698bf6fb9a6d27e43988ee4"},
+      {"path": "src/lib/heatshrink/heatshrink", "commit": "052e6de72f67f1777198bce98f3de62f7f3c16a0"},
+      {"path": "src/modules/uxrce_dds_client/Micro-XRCE-DDS-Client", "commit": "711aef423edd1820347b866d1e4164832df35d04"}
+    ],
+    "binding_translation_unit_coverage": {
+      "unique_binding_source_files": 30,
+      "direct_cpp_translation_units": 15,
+      "direct_cpp_translation_units_in_database": 15,
+      "parameter_metadata_c_sources": 2,
+      "bound_parameter_names_in_generated_parameters_json": "PASS_9_OF_9",
+      "message_definition_sources": 6,
+      "generated_message_translation_units_in_database": "PASS_6_OF_6",
+      "header_only_sources": 7,
+      "note": "commander_params.c and rtl_params.c are PX4 parameter metadata inputs rather than direct compiler translation units; all bound names from them were verified in build/px4_sitl_default/parameters.json."
+    }
+  },
+  "audit_policy": {
+    "catalog": "benchmark/PX4/property_catalog.json",
+    "normalized_ap_count": 21,
+    "many_to_many": true,
+    "wire_support_policy": "STATIC_SUPPORTED and CONDITIONAL mean source support only; neither means a runtime frame was observed.",
+    "clock_policy": "Vehicle boot timestamps are retained where present. Host arrival time is never substituted for vehicle receipt time.",
+    "macro_policy": "Macro locations are null unless a binding is specifically to a macro invocation; no inferred expansion coordinate is fabricated.",
+    "implementation_satisfaction": "NOT_ASSESSED"
+  },
+  "counts": {
+    "atomic_propositions": 21,
+    "source_bindings": 120,
+    "mavlink_observations": 40,
+    "fully_bound": 14,
+    "partially_bound": 5,
+    "unresolved": 2,
+    "binding_confidence": {
+      "EXACT": 102,
+      "MODELLED": 17,
+      "MAY": 1,
+      "NAME_ONLY": 0
+    },
+    "mavlink_support": {
+      "STATIC_SUPPORTED": 13,
+      "CONDITIONAL": 27,
+      "RUNTIME_OBSERVED": 0
+    }
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "PX4-MC-RCLOSS-001-AP-01",
+      "name": "manual_gap_start",
+      "binding_status": "BOUND",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-01-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/ManualControlSetpoint.msg","line":3,"column":1,"symbol":"timestamp","semantic_identity":"Vehicle-boot timestamp of the selected manual-control setpoint topic sample.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint64","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The message definition assigns timestamp to each manual_control_setpoint sample."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-01-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/manual_control/ManualControlSelector.cpp","line":44,"column":6,"symbol":"ManualControlSelector::updateWithNewInputSample","semantic_identity":"Selector entry point that accepts a candidate source sample and may replace the selected setpoint.","entity_kind":"FUNCTION","function":"ManualControlSelector::updateWithNewInputSample","role":"CONSUMER","type":"void(uint64_t,const manual_control_setpoint_s &,int)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The function owns selected-source replacement; candidate receipt alone is not equivalent to selection."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-01-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/manual_control/ManualControlSelector.cpp","line":53,"column":3,"symbol":"_setpoint.timestamp","semantic_identity":"Selector writes the selected setpoint receipt epoch while preserving timestamp_sample.","entity_kind":"ASSIGNMENT","function":"ManualControlSelector::updateWithNewInputSample","role":"WRITE","type":"uint64","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This assignment is the source-level epoch update for a newly selected input sample."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-01-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/manual_control/ManualControl.cpp","line":124,"column":3,"symbol":"_selector.setpoint().timestamp","semantic_identity":"ManualControl refreshes the selected setpoint publication timestamp when the selected sample changes.","entity_kind":"ASSIGNMENT","function":"ManualControl::Run","role":"WRITE","type":"uint64","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The current vehicle time is written immediately before publishing the selected sample."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-01-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/manual_control/ManualControl.cpp","line":125,"column":3,"symbol":"_manual_control_setpoint_pub.publish","semantic_identity":"uORB producer for the selected manual_control_setpoint sample whose timestamp defines the gap epoch.","entity_kind":"MESSAGE_PRODUCER","function":"ManualControl::Run","role":"PRODUCER","type":"uORB::Publication<manual_control_setpoint_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The selected setpoint and its vehicle timestamp are published together."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-01-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":2136,"column":2,"symbol":"manual_control_setpoint.timestamp","semantic_identity":"Vehicle receipt timestamp assigned to a MAVLink manual-control candidate before selector processing.","entity_kind":"ASSIGNMENT","function":"MavlinkReceiver::handle_message_manual_control","role":"WRITE","type":"uint64","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is exact for the MAVLink candidate receipt, but the candidate may not become the selected source."}
+      ],
+      "mavlink_observations": [
+        {"message":"MANUAL_CONTROL","message_id":69,"field":null,"direction":"INCOMING","derivation":"A harness controls candidate manual inputs; PX4 assigns vehicle receipt time only after target and range checks.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:2091-2138; MANUAL_CONTROL has no vehicle-receipt timestamp field."},
+        {"message":"MANUAL_CONTROL","message_id":69,"field":null,"direction":"OUTGOING","derivation":"The stream republishes selected manual values, but the wire message contains no selected-sample timestamp.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/streams/MANUAL_CONTROL.hpp:60-119."}
+      ],
+      "unresolved": [
+        "Wire transmission of MANUAL_CONTROL does not prove that the selector accepted that source.",
+        "Exact gap start requires the internal manual_control_setpoint timestamp or equivalent instrumentation; neither incoming nor outgoing MANUAL_CONTROL carries it."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-RCLOSS-001-AP-02",
+      "name": "rc_loss_applicable",
+      "binding_status": "PARTIALLY_BOUND",
+      "observability": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-02-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":633,"column":1,"symbol":"COM_RCL_EXCEPT","semantic_identity":"Runtime bitmask parameter naming manual-control-loss mode exceptions.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"PARAM_DEFINE_INT32 defines the frozen-source parameter identity; its runtime value must be captured separately."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-02-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":199,"column":1,"symbol":"COM_RC_IN_MODE","semantic_identity":"Runtime manual-control input-source configuration parameter.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The source defines the parameter name and default only; applicability uses its runtime value."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-02-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/framework.h","line":128,"column":3,"symbol":"user_intended_mode","semantic_identity":"Failsafe state input used as the current intended navigation-mode discriminator.","entity_kind":"FIELD","function":"FailsafeBase::update","role":"READ","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Mode exception derivation reads this field; it is not itself the complete AP."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-02-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":489,"column":2,"symbol":"rc_loss_ignored","semantic_identity":"Implementation aggregation of manual-control-loss exception and transient ignore predicates.","entity_kind":"VARIABLE","function":"Failsafe::update","role":"DERIVATION","type":"const bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The expression combines mode exception bits with VTOL-takeoff, lost-at-arming, external-mode, and altitude-cruise conditions."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-02-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":493,"column":2,"symbol":"_param_com_rc_in_mode","semantic_identity":"Implementation guard requiring manual control to be enabled and the aggregate ignore predicate to be false.","entity_kind":"OTHER","function":"Failsafe::update","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This is an implementation applicability site, not a substitute for the normalized official truth source."}
+      ],
+      "mavlink_observations": [
+        {"message":"PARAM_VALUE","message_id":22,"field":"param_id,param_value","direction":"REQUESTABLE","derivation":"Archive COM_RCL_EXCEPT and COM_RC_IN_MODE runtime values; PARAM_VALUE carries no embedded timestamp.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/mavlink_parameters.cpp:475-549."},
+        {"message":"CURRENT_MODE","message_id":436,"field":"custom_mode","direction":"OUTGOING","derivation":"Decode the current custom mode and combine it with archived parameter values.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/CURRENT_MODE.hpp:61-71; exact applicability also uses internal transient predicates."}
+      ],
+      "unresolved": [
+        "The normalized AP names runtime mode, COM_RCL_EXCEPT, and RC source configuration, while the implementation also ignores loss-at-arming, parts of VTOL takeoff, altitude cruise, and external modes.",
+        "Implementation guards are identity evidence only and must not be promoted into the official property source.",
+        "No single MAVLink field exposes the complete applicability predicate."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-RCLOSS-001-AP-03",
+      "name": "manual_control_lost",
+      "binding_status": "BOUND",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-03-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/FailsafeFlags.msg","line":39,"column":1,"symbol":"manual_control_signal_lost","semantic_identity":"uORB failsafe flag whose false-to-true transition is the normalized AP.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The field is explicitly documented as manual-control signal lost."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-03-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp","line":48,"column":2,"symbol":"manual_control_setpoint.valid","semantic_identity":"Freshness and validity guard that decides the manual-control lost branch.","entity_kind":"OTHER","function":"RcAndDataLinkChecks::checkAndReport","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The branch also compares the selected timestamp against COM_RC_LOSS_T on following lines."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-03-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp","line":57,"column":3,"symbol":"manual_control_signal_lost","semantic_identity":"Assignment that marks the report flag true in the lost branch.","entity_kind":"ASSIGNMENT","function":"RcAndDataLinkChecks::checkAndReport","role":"WRITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the direct true write for the AP state."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-03-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecks.cpp","line":111,"column":3,"symbol":"_failsafe_flags_pub.publish","semantic_identity":"uORB producer that publishes failsafe_flags with a vehicle timestamp.","entity_kind":"MESSAGE_PRODUCER","function":"HealthAndArmingChecks::runChecks","role":"PRODUCER","type":"uORB::Publication<failsafe_flags_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Instrumentation can observe the field transition on this published topic."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-03-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp","line":53,"column":4,"symbol":"commander_rc_lost","semantic_identity":"Named PX4 event emitted on entry into the manual-control lost branch.","entity_kind":"EVENT","function":"RcAndDataLinkChecks::checkAndReport","role":"PRODUCER","type":"events::ID","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The named event is transition-oriented evidence; exact flag state remains the uORB field."},
+        {"binding_id":"PX4-MC-RCLOSS-001-AP-03-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_events.cpp","line":209,"column":6,"symbol":"SendProtocol::send_event","semantic_identity":"Generic PX4 EVENT MAVLink producer used for named commander events.","entity_kind":"MESSAGE_PRODUCER","function":"SendProtocol::send_event","role":"PRODUCER","type":"void(const Event &)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The producer maps event timestamp and ID into MAVLink EVENT."}
+      ],
+      "mavlink_observations": [
+        {"message":"EVENT","message_id":410,"field":"id","direction":"OUTGOING","derivation":"Resolve the statically generated ID for commander_rc_lost and observe the EVENT frame; the frame reports vehicle event_time_boot_ms.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp:53; src/modules/mavlink/mavlink_events.cpp:209-221."}
+      ],
+      "unresolved": [
+        "No standard MAVLink state bit directly exports failsafe_flags.manual_control_signal_lost.",
+        "EVENT delivery is conditional on stream negotiation and buffering, so uORB instrumentation remains the exact state observation."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-01",
+      "name": "data_link_loss_gap_start",
+      "binding_status": "PARTIALLY_BOUND",
+      "observability": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-01-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":2142,"column":1,"symbol":"MavlinkReceiver::handle_message_heartbeat","semantic_identity":"Current implementation candidate HEARTBEAT consumer; the official source does not establish equivalence to the normative telemetry/data-connection liveness event.","entity_kind":"MESSAGE_CONSUMER","function":"MavlinkReceiver::handle_message_heartbeat","role":"CONSUMER","type":"void(mavlink_message_t *)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This handler decodes incoming HEARTBEAT and classifies GCS type. It locates the current realization only and is not normative evidence."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-01-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":2154,"column":3,"symbol":"MAV_TYPE_GCS","semantic_identity":"Current implementation heartbeat-classification guard; it does not define general telemetry/data-connection availability.","entity_kind":"OTHER","function":"MavlinkReceiver::handle_message_heartbeat","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The source accepts MAV_TYPE_GCS independent of same_system and retains no normative connection identity; official docs do not make this the liveness predicate."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-01-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":2164,"column":5,"symbol":"_heartbeat_type_gcs","semantic_identity":"Current implementation HRT epoch for an accepted GCS heartbeat; only a MODELLED candidate for the unresolved normative connection event.","entity_kind":"ASSIGNMENT","function":"MavlinkReceiver::handle_message_heartbeat","role":"WRITE","type":"hrt_abstime","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The handler stores current hrt time for an accepted GCS heartbeat, but official data-link-loss sources do not identify this as the normative start carrier."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-01-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":2923,"column":3,"symbol":"heartbeat_type_gcs","semantic_identity":"Current implementation heartbeat-freshness projection; not an official definition of telemetry/data-connection availability.","entity_kind":"ASSIGNMENT","function":"MavlinkReceiver::CheckHeartbeats","role":"DERIVATION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This is a 2.5-second heartbeat freshness projection, not a source-defined data-connection liveness event."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-01-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/TelemetryStatus.msg","line":42,"column":1,"symbol":"heartbeat_type_gcs","semantic_identity":"Current implementation uORB heartbeat-freshness field; only a candidate projection for the unresolved normative data-link predicate.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The message field carries per-link heartbeat freshness. No selected official source equates it with all telemetry/data-connection liveness."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-01-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2792,"column":5,"symbol":"_datalink_last_heartbeat_gcs","semantic_identity":"Commander copies telemetry_status publication time while heartbeat_type_gcs remains true.","entity_kind":"ASSIGNMENT","function":"Commander::dataLinkCheck","role":"WRITE","type":"hrt_abstime","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"telemetry.timestamp is later than the underlying receipt epoch and can refresh during the 2.5-second receiver freshness window."}
+      ],
+      "mavlink_observations": [
+        {"message":"HEARTBEAT","message_id":0,"field":"type","direction":"INCOMING","derivation":"The harness can exercise the current MAV_TYPE_GCS-heartbeat realization, but this does not establish the official telemetry/data-connection loss event. HEARTBEAT contains no receipt timestamp.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:2142-2164 is current implementation evidence only; the official safety source does not define heartbeat equivalence."}
+      ],
+      "unresolved": [
+        "The official source does not define the telemetry/data-connection liveness predicate, correlation key, event carrier, or clock.",
+        "Commander _datalink_last_heartbeat_gcs is based on the current heartbeat realization and telemetry publication time; it cannot prove normative equivalence.",
+        "Multiple MAVLink instances and senders collapse into global Commander state, while the normative connection identity remains unresolved."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-02",
+      "name": "dl_loss_applicable",
+      "binding_status": "PARTIALLY_BOUND",
+      "observability": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-02-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":598,"column":1,"symbol":"NAV_DLL_ACT","semantic_identity":"Runtime GCS data-link-loss action parameter, including disabled.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The frozen source defines parameter identity and default; campaign capture supplies the runtime value."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-02-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":647,"column":1,"symbol":"COM_DLL_EXCEPT","semantic_identity":"Runtime data-link-loss mode-exception bitmask.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The parameter is one input to applicability."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-02-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/framework.h","line":128,"column":3,"symbol":"user_intended_mode","semantic_identity":"Current intended navigation mode consumed by the data-link exception derivation.","entity_kind":"FIELD","function":"FailsafeBase::update","role":"READ","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Mode is combined with exception bits and implementation-specific ignore states."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-02-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":512,"column":2,"symbol":"dll_loss_ignored","semantic_identity":"Implementation aggregate for GCS-loss ignore conditions.","entity_kind":"VARIABLE","function":"Failsafe::update","role":"DERIVATION","type":"const bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The aggregate covers mission, hold, offboard, takeoff, VTOL-takeoff, and unconditional land/precland handling."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-02-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":515,"column":2,"symbol":"_param_nav_dll_act","semantic_identity":"Implementation guard requiring NAV_DLL_ACT to be enabled and no ignore predicate to hold.","entity_kind":"OTHER","function":"Failsafe::update","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The guard locates the implementation decision but does not redefine the normalized official AP."}
+      ],
+      "mavlink_observations": [
+        {"message":"PARAM_VALUE","message_id":22,"field":"param_id,param_value","direction":"REQUESTABLE","derivation":"Archive NAV_DLL_ACT and COM_DLL_EXCEPT and correlate them with mode.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/mavlink_parameters.cpp:475-549."},
+        {"message":"CURRENT_MODE","message_id":436,"field":"custom_mode","direction":"OUTGOING","derivation":"Reports coarse current custom mode; combine with runtime parameter snapshot and internal transient predicates.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/CURRENT_MODE.hpp:61-71."}
+      ],
+      "unresolved": [
+        "No single MAVLink field exports the combined applicability state.",
+        "Implementation behavior always ignores AUTO_LAND/AUTO_PRECLAND and includes VTOL-takeoff handling beyond the normalized parameter/mode statement.",
+        "Implementation guards are recorded as MODELLED identity evidence and are not substituted for official property sources."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-03",
+      "name": "gcs_connection_lost",
+      "binding_status": "BOUND",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-03-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":106,"column":1,"symbol":"gcs_connection_lost","semantic_identity":"VehicleStatus boolean whose false-to-true transition is the normalized AP.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The field explicitly represents lost data link to GCS."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-03-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2849,"column":7,"symbol":"_datalink_last_heartbeat_gcs","semantic_identity":"Commander timeout guard using COM_DL_LOSS_T against its last-GCS time state.","entity_kind":"OTHER","function":"Commander::dataLinkCheck","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The guard identifies the internal transition site."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-03-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2851,"column":4,"symbol":"gcs_connection_lost","semantic_identity":"Assignment marking VehicleStatus GCS connection lost true.","entity_kind":"ASSIGNMENT","function":"Commander::dataLinkCheck","role":"WRITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the direct true write for the AP."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-03-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2855,"column":4,"symbol":"commander_gcs_lost","semantic_identity":"Named event emitted when Commander enters the GCS-lost state.","entity_kind":"EVENT","function":"Commander::dataLinkCheck","role":"PRODUCER","type":"events::ID","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The event is colocated with the flag transition and counter increment."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-03-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":1945,"column":4,"symbol":"_vehicle_status_pub.publish","semantic_identity":"uORB producer for VehicleStatus, including gcs_connection_lost and a vehicle timestamp.","entity_kind":"MESSAGE_PRODUCER","function":"Commander::Run","role":"PRODUCER","type":"uORB::Publication<vehicle_status_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Internal instrumentation can observe the state transition on vehicle_status."},
+        {"binding_id":"PX4-MC-GCSLOSS-002-AP-03-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_events.cpp","line":216,"column":3,"symbol":"event_msg.id","semantic_identity":"MAVLink EVENT ID field populated from the PX4 event identity.","entity_kind":"ASSIGNMENT","function":"SendProtocol::send_event","role":"WRITE","type":"uint32_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The generic EVENT producer preserves the named event ID."}
+      ],
+      "mavlink_observations": [
+        {"message":"EVENT","message_id":410,"field":"id","direction":"OUTGOING","derivation":"Resolve commander_gcs_lost to its generated numeric ID and correlate event_time_boot_ms.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/commander/Commander.cpp:2855; src/modules/mavlink/mavlink_events.cpp:209-221."}
+      ],
+      "unresolved": [
+        "VehicleStatus.gcs_connection_lost has no direct standard MAVLink state-field projection.",
+        "The EVENT is a transition observation subject to stream/buffer delivery and does not replace the internal state topic."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-01",
+      "name": "offboard_proof",
+      "binding_status": "BOUND",
+      "observability": "CONDITIONAL",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/OffboardControlMode.msg","line":3,"column":1,"symbol":"timestamp","semantic_identity":"Vehicle receipt timestamp on the accepted offboard_control_mode update.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint64","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The uORB message timestamp is set by accepted MAVLink handlers in vehicle boot time."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1034,"column":1,"symbol":"MavlinkReceiver::handle_message_set_position_target_local_ned","semantic_identity":"Consumer for local-NED Offboard proof candidates.","entity_kind":"MESSAGE_CONSUMER","function":"MavlinkReceiver::handle_message_set_position_target_local_ned","role":"CONSUMER","type":"void(mavlink_message_t *)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The handler applies forwarding, target, frame, mask, and validity checks before publishing control mode."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1131,"column":3,"symbol":"ocm.position","semantic_identity":"Acceptance guard requiring at least one supported local position, velocity, or acceleration control dimension.","entity_kind":"OTHER","function":"MavlinkReceiver::handle_message_set_position_target_local_ned","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Only a non-empty supported control-mode update reaches the publisher."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1134,"column":4,"symbol":"_offboard_control_mode_pub.publish","semantic_identity":"uORB producer for an accepted local-NED Offboard control-mode update.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkReceiver::handle_message_set_position_target_local_ned","role":"PRODUCER","type":"uORB::Publication<offboard_control_mode_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Publication occurs after the handler's target, frame, mask, and finite-value checks."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1154,"column":1,"symbol":"MavlinkReceiver::handle_message_set_position_target_global_int","semantic_identity":"Consumer for global-int Offboard proof candidates.","entity_kind":"MESSAGE_CONSUMER","function":"MavlinkReceiver::handle_message_set_position_target_global_int","role":"CONSUMER","type":"void(mavlink_message_t *)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is a distinct accepted proof path for supported global position/velocity/acceleration input."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1256,"column":4,"symbol":"_offboard_control_mode_pub.publish","semantic_identity":"uORB producer for an accepted global-int Offboard control-mode update.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkReceiver::handle_message_set_position_target_global_int","role":"PRODUCER","type":"uORB::Publication<offboard_control_mode_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The update is published only after a supported and valid control dimension is established."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B07","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1616,"column":1,"symbol":"MavlinkReceiver::handle_message_set_attitude_target","semantic_identity":"Consumer for attitude or body-rate Offboard proof candidates.","entity_kind":"MESSAGE_CONSUMER","function":"MavlinkReceiver::handle_message_set_attitude_target","role":"CONSUMER","type":"void(mavlink_message_t *)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the supported attitude/rate proof path."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-01-B08","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_receiver.cpp","line":1641,"column":4,"symbol":"_offboard_control_mode_pub.publish","semantic_identity":"uORB producer for an accepted attitude or body-rate Offboard control-mode update.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkReceiver::handle_message_set_attitude_target","role":"PRODUCER","type":"uORB::Publication<offboard_control_mode_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The handler stamps vehicle receipt time at line 1640 and publishes at this site."}
+      ],
+      "mavlink_observations": [
+        {"message":"SET_ATTITUDE_TARGET","message_id":82,"field":"type_mask","direction":"INCOMING","derivation":"Candidate proof; accepted only after target/forwarding and supported attitude or body-rate checks.","time_field":"time_boot_ms (sender clock, not vehicle receipt)","support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:1616-1641."},
+        {"message":"SET_POSITION_TARGET_LOCAL_NED","message_id":84,"field":"type_mask","direction":"INCOMING","derivation":"Candidate local proof; acceptance also depends on target, frame, mask, finite values, and force-set handling.","time_field":"time_boot_ms (sender clock, not vehicle receipt)","support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:1034-1134."},
+        {"message":"SET_POSITION_TARGET_GLOBAL_INT","message_id":86,"field":"type_mask","direction":"INCOMING","derivation":"Candidate global proof; acceptance also depends on target, frame, mask, and finite values.","time_field":"time_boot_ms (sender clock, not vehicle receipt)","support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:1154-1256."}
+      ],
+      "unresolved": [
+        "A transmitted setpoint is not equivalent to an accepted offboard_control_mode publication.",
+        "Exact proof receipt time is internal vehicle time; MAVLink time_boot_ms belongs to the sender."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-02",
+      "name": "offboard_proof_qualified",
+      "binding_status": "UNRESOLVED",
+      "observability": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-02-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp","line":38,"column":6,"symbol":"OffboardChecks::checkAndReport","semantic_identity":"Commander health-check consumer for the latest offboard_control_mode sample.","entity_kind":"FUNCTION","function":"OffboardChecks::checkAndReport","role":"CONSUMER","type":"void(const Context &,Report &)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The check reads one latest uORB sample; no history buffer is maintained here."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-02-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp","line":44,"column":2,"symbol":"_offboard_control_mode_sub.copy","semantic_identity":"Read of the latest offboard-control proof state.","entity_kind":"MESSAGE_CONSUMER","function":"OffboardChecks::checkAndReport","role":"CONSUMER","type":"uORB::Subscription","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Only the most recent sample is copied."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-02-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp","line":46,"column":3,"symbol":"data_is_recent","semantic_identity":"Single-sample freshness derivation using timestamp plus COM_OF_LOSS_T.","entity_kind":"VARIABLE","function":"OffboardChecks::checkAndReport","role":"DERIVATION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This locates current freshness but does not encode a 2 Hz equality rule or one-second history."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-02-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp","line":49,"column":3,"symbol":"offboard_available","semantic_identity":"Derived availability from supported control bits and current freshness.","entity_kind":"VARIABLE","function":"OffboardChecks::checkAndReport","role":"DERIVATION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Estimator validity can further clear the value; it is not a historical admission qualifier."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-02-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp","line":65,"column":3,"symbol":"offboard_control_signal_lost","semantic_identity":"Current loss flag derived as the inverse of offboard_available.","entity_kind":"ASSIGNMENT","function":"OffboardChecks::checkAndReport","role":"WRITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This is a current availability consequence, not proof of historical rate/duration qualification."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-02-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":340,"column":1,"symbol":"COM_OF_LOSS_T","semantic_identity":"Runtime offboard-loss timeout used by the current freshness check.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"float","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The parameter defines tolerated staleness, not admission history duration."}
+      ],
+      "mavlink_observations": [
+        {"message":"SET_ATTITUDE_TARGET","message_id":82,"field":"time_boot_ms","direction":"INCOMING","derivation":"Harness history can estimate send rate, but cannot establish vehicle acceptance or substitute sender time for receipt time.","time_field":"time_boot_ms (sender clock)","support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:1616-1641."},
+        {"message":"SET_POSITION_TARGET_LOCAL_NED","message_id":84,"field":"time_boot_ms","direction":"INCOMING","derivation":"Harness history can estimate candidate rate only.","time_field":"time_boot_ms (sender clock)","support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:1034-1134."},
+        {"message":"SET_POSITION_TARGET_GLOBAL_INT","message_id":86,"field":"time_boot_ms","direction":"INCOMING","derivation":"Harness history can estimate candidate rate only.","time_field":"time_boot_ms (sender clock)","support":"CONDITIONAL","evidence":"src/modules/mavlink/mavlink_receiver.cpp:1154-1256."}
+      ],
+      "unresolved": [
+        "The normalized 2 Hz equality boundary and required duration are deliberately unresolved in the catalog.",
+        "No explicit one-second accepted-proof history or rate qualifier was found in the current health check; it evaluates the latest timestamp and control bits.",
+        "Source implementation freshness cannot be promoted into the missing normative admission definition."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-03",
+      "name": "mode_offboard",
+      "binding_status": "BOUND",
+      "observability": "DIRECT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-03-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":35,"column":1,"symbol":"nav_state","semantic_identity":"Current active vehicle navigation-state field.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint8","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The AP is true when this field equals the OFFBOARD enum."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-03-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":50,"column":1,"symbol":"NAVIGATION_STATE_OFFBOARD","semantic_identity":"VehicleStatus enum constant identifying Offboard mode.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"uint8 constant","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the direct internal mode identity."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-03-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":1945,"column":4,"symbol":"_vehicle_status_pub.publish","semantic_identity":"uORB producer for the current nav_state and vehicle timestamp.","entity_kind":"MESSAGE_PRODUCER","function":"Commander::Run","role":"PRODUCER","type":"uORB::Publication<vehicle_status_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Internal observation of vehicle_status gives exact state identity."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-03-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/px4_custom_mode.h","line":157,"column":2,"symbol":"NAVIGATION_STATE_OFFBOARD","semantic_identity":"Mapping branch from internal Offboard nav_state to PX4 custom mode.","entity_kind":"OTHER","function":"get_px4_custom_mode","role":"DERIVATION","type":"switch case","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The branch selects PX4_CUSTOM_MAIN_MODE_OFFBOARD."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-03-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/streams/HEARTBEAT.hpp","line":104,"column":4,"symbol":"get_px4_custom_mode","semantic_identity":"HEARTBEAT producer derives custom_mode from current VehicleStatus nav_state.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkStreamHeartbeat::send","role":"DERIVATION","type":"px4_custom_mode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The mapped mode is sent in HEARTBEAT at lines 129-130."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-03-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/streams/CURRENT_MODE.hpp","line":71,"column":4,"symbol":"mavlink_msg_current_mode_send_struct","semantic_identity":"CURRENT_MODE wire producer for current and intended PX4 custom mode.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkStreamCurrentMode::send","role":"PRODUCER","type":"mavlink_current_mode_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The stream sends custom_mode derived from vehicle_status.nav_state."}
+      ],
+      "mavlink_observations": [
+        {"message":"HEARTBEAT","message_id":0,"field":"custom_mode","direction":"OUTGOING","derivation":"Decode PX4 main mode OFFBOARD (6). HEARTBEAT has no embedded timestamp.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/commander/px4_custom_mode.h:157-159; src/modules/mavlink/streams/HEARTBEAT.hpp:104-130."},
+        {"message":"CURRENT_MODE","message_id":436,"field":"custom_mode","direction":"OUTGOING","derivation":"Decode the current PX4 custom mode as Offboard.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/streams/CURRENT_MODE.hpp:61-71."}
+      ],
+      "unresolved": [
+        "Wire mode frames have no embedded vehicle state-transition timestamp; correlate arrival with vehicle_status instrumentation when exact transition time is required."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-04",
+      "name": "offboard_loss_action",
+      "binding_status": "PARTIALLY_BOUND",
+      "observability": "CONDITIONAL",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-04-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":369,"column":1,"symbol":"COM_OBL_RC_ACT","semantic_identity":"Runtime parameter selecting the primary Offboard-loss action.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Runtime capture, not the source default, is needed for correlation."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-04-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":280,"column":22,"symbol":"Failsafe::fromOffboardLossActParam","semantic_identity":"Parameter-to-failsafe-action and intended-mode mapping function.","entity_kind":"FUNCTION","function":"Failsafe::fromOffboardLossActParam","role":"DERIVATION","type":"FailsafeBase::Action(int,uint8_t &)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The switch maps all COM_OBL_RC_ACT values to fallback, RTL, Land, Hold, Terminate, or Disarm."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-04-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":665,"column":2,"symbol":"offboard_control_signal_lost","semantic_identity":"Guard requiring Offboard signal loss to matter for the intended mode.","entity_kind":"OTHER","function":"Failsafe::checkModeFallback","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The guard combines the loss flag with mode_req_offboard_signal."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-04-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":666,"column":3,"symbol":"fromOffboardLossActParam","semantic_identity":"Runtime action derivation from COM_OBL_RC_ACT.","entity_kind":"ASSIGNMENT","function":"Failsafe::checkModeFallback","role":"DERIVATION","type":"FailsafeBase::Action","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the primary configured-action selection site."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-04-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":675,"column":4,"symbol":"manual_control_signal_lost","semantic_identity":"RC-availability fallback guard for position, altitude, or stabilized actions.","entity_kind":"FIELD","function":"Failsafe::checkModeFallback","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"If manual control is lost, NAV_RCL_ACT replaces an RC-dependent fallback action."},
+        {"binding_id":"PX4-MC-OFFBOARD-003-AP-04-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2371,"column":2,"symbol":"_vehicle_status.nav_state","semantic_identity":"Commander writes the selected failsafe action's available mode replacement to current nav_state.","entity_kind":"ASSIGNMENT","function":"Commander::Run","role":"WRITE","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Mode management can replace unavailable modes, so final state is a downstream result rather than a cause tag."}
+      ],
+      "mavlink_observations": [
+        {"message":"PARAM_VALUE","message_id":22,"field":"param_id,param_value","direction":"REQUESTABLE","derivation":"Archive COM_OBL_RC_ACT and NAV_RCL_ACT runtime values before the campaign.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/mavlink_parameters.cpp:475-549."},
+        {"message":"CURRENT_MODE","message_id":436,"field":"custom_mode","direction":"OUTGOING","derivation":"Observe the resulting current mode and confirm exit from Offboard; the frame does not encode cause or selected action.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/CURRENT_MODE.hpp:61-71."},
+        {"message":"HEARTBEAT","message_id":0,"field":"custom_mode","direction":"OUTGOING","derivation":"Coarse resulting-mode observation with no embedded timestamp or cause.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/HEARTBEAT.hpp:104-130."}
+      ],
+      "unresolved": [
+        "The final action can be superseded by higher-priority simultaneous failures or availability fallback.",
+        "Resulting mode frames identify outcome but not Offboard-loss cause or the intermediate selected action.",
+        "RC availability is represented internally by manual_control_signal_lost and is not a direct standard MAVLink bit."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-01",
+      "name": "landed_start",
+      "binding_status": "BOUND",
+      "observability": "DIRECT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-01-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleLandDetected.msg","line":8,"column":1,"symbol":"landed","semantic_identity":"Vehicle landed state whose false-to-true transition defines the AP.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The message defines the final land-detector stage state."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-01-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/land_detector/LandDetector.cpp","line":148,"column":2,"symbol":"landDetected","semantic_identity":"Hysteresis-qualified landed-state derivation.","entity_kind":"VARIABLE","function":"LandDetector::Run","role":"DERIVATION","type":"const bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The value is read from the landed hysteresis state."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-01-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/land_detector/LandDetector.cpp","line":169,"column":3,"symbol":"_land_detected.landed","semantic_identity":"Assignment of the qualified state to vehicle_land_detected.","entity_kind":"ASSIGNMENT","function":"LandDetector::Run","role":"WRITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The state change is committed here before publication."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-01-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/land_detector/LandDetector.cpp","line":182,"column":3,"symbol":"_vehicle_land_detected_pub.publish","semantic_identity":"uORB producer for landed state with a vehicle timestamp.","entity_kind":"MESSAGE_PRODUCER","function":"LandDetector::Run","role":"PRODUCER","type":"uORB::Publication<vehicle_land_detected_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Internal instrumentation can observe the exact state transition."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-01-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2134,"column":5,"symbol":"commander_landing_detected","semantic_identity":"Named Commander event emitted on armed false-to-true landed transition.","entity_kind":"EVENT","function":"Commander::landDetectorUpdate","role":"PRODUCER","type":"events::ID","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Commander compares the prior and current landed states before sending this event."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-01-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp","line":101,"column":4,"symbol":"land_detected.landed","semantic_identity":"Wire projection mapping internal landed true to MAV_LANDED_STATE_ON_GROUND.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkStreamExtendedSysState::send","role":"DERIVATION","type":"mavlink_extended_sys_state_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The stream consumes vehicle_land_detected and sends EXTENDED_SYS_STATE."}
+      ],
+      "mavlink_observations": [
+        {"message":"EXTENDED_SYS_STATE","message_id":245,"field":"landed_state","direction":"OUTGOING","derivation":"MAV_LANDED_STATE_ON_GROUND projects the current landed state; detect the transition from the ordered stream.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp:98-124."},
+        {"message":"EVENT","message_id":410,"field":"id","direction":"OUTGOING","derivation":"Resolve commander_landing_detected and use event_time_boot_ms for the armed landing transition.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/commander/Commander.cpp:2132-2134; src/modules/mavlink/mavlink_events.cpp:209-221."}
+      ],
+      "unresolved": [
+        "EXTENDED_SYS_STATE has no embedded timestamp; exact epoch should use vehicle_land_detected.timestamp or the named EVENT when delivered."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-02",
+      "name": "auto_disarm_eligible",
+      "binding_status": "UNRESOLVED",
+      "observability": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":227,"column":1,"symbol":"COM_DISARM_LAND","semantic_identity":"Runtime landed auto-disarm delay parameter; positive enables one implementation input.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"float","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Source default is not substituted for the campaign runtime value."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2279,"column":6,"symbol":"Commander::handleAutoDisarm","semantic_identity":"Implementation function evaluating automatic disarm guards.","entity_kind":"FUNCTION","function":"Commander::handleAutoDisarm","role":"DERIVATION","type":"void()","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The function is implementation identity only; catalog truth awaits complete official eligibility."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2282,"column":2,"symbol":"isArmed","semantic_identity":"Implementation guard requiring the vehicle to be armed.","entity_kind":"OTHER","function":"Commander::handleAutoDisarm","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Recorded as implementation guard, not as normative source."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2287,"column":4,"symbol":"auto_disarm_land_enabled","semantic_identity":"Implementation conjunction of positive delay, no mission in progress, and no disable override.","entity_kind":"VARIABLE","function":"Commander::handleAutoDisarm","role":"DERIVATION","type":"const bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This implementation conjunction cannot fill missing official exceptions."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2290,"column":4,"symbol":"_have_taken_off_since_arming","semantic_identity":"Implementation guard requiring a detected takeoff since arming.","entity_kind":"VARIABLE","function":"Commander::handleAutoDisarm","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This guard is recorded for identity only."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2291,"column":5,"symbol":"_auto_disarm_landed.set_hysteresis_time_from","semantic_identity":"Implementation delay configuration from COM_DISARM_LAND.","entity_kind":"ASSIGNMENT","function":"Commander::handleAutoDisarm","role":"DERIVATION","type":"Hysteresis","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The landed false-to-true hysteresis duration is set at this site."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B07","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2300,"column":4,"symbol":"isThrowLaunchInProgress","semantic_identity":"Implementation exclusion while multicopter throw launch is in progress.","entity_kind":"OTHER","function":"Commander::handleAutoDisarm","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The exclusion appears immediately before the disarm call."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-02-B08","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2302,"column":6,"symbol":"auto_disarm_land","semantic_identity":"Implementation call-site reason for landed auto-disarm after guards and hysteresis.","entity_kind":"ASSIGNMENT","function":"Commander::handleAutoDisarm","role":"OBSERVATION_SITE","type":"arm_disarm_reason_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The call identifies the implementation outcome but not a complete official eligibility definition."}
+      ],
+      "mavlink_observations": [
+        {"message":"PARAM_VALUE","message_id":22,"field":"param_id,param_value","direction":"REQUESTABLE","derivation":"Archive COM_DISARM_LAND; it is only one eligibility input.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/mavlink_parameters.cpp:475-549."},
+        {"message":"HEARTBEAT","message_id":0,"field":"base_mode","direction":"OUTGOING","derivation":"Provides current armed bit but not mission, override, takeoff-history, throw-launch, or hysteresis state.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/HEARTBEAT.hpp:82-130."},
+        {"message":"EXTENDED_SYS_STATE","message_id":245,"field":"landed_state","direction":"OUTGOING","derivation":"Provides landed projection but not the complete eligibility conjunction.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp:98-124."}
+      ],
+      "unresolved": [
+        "The catalog explicitly requires complete official exceptions before this AP can be defined.",
+        "Mission-in-progress, config override, takeoff-history, throw-launch, and hysteresis guards are implementation evidence only and cannot become the property source.",
+        "No single MAVLink observation exports the complete implementation conjunction."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-03",
+      "name": "armed",
+      "binding_status": "BOUND",
+      "observability": "DIRECT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-03-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":10,"column":1,"symbol":"arming_state","semantic_identity":"Current vehicle arming-state field.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint8","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The AP is true when arming_state equals ARMING_STATE_ARMED."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-03-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":12,"column":1,"symbol":"ARMING_STATE_ARMED","semantic_identity":"VehicleStatus enum value for armed.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"uint8 constant","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Direct internal state identity."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-03-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":622,"column":2,"symbol":"_vehicle_status.arming_state","semantic_identity":"Commander assignment entering armed state.","entity_kind":"ASSIGNMENT","function":"Commander::arm","role":"WRITE","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The assignment is paired with armed_time and arming reason."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-03-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":1945,"column":4,"symbol":"_vehicle_status_pub.publish","semantic_identity":"uORB producer for current arming_state.","entity_kind":"MESSAGE_PRODUCER","function":"Commander::Run","role":"PRODUCER","type":"uORB::Publication<vehicle_status_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Internal state publication includes a vehicle timestamp."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-03-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/streams/HEARTBEAT.hpp","line":82,"column":4,"symbol":"ARMING_STATE_ARMED","semantic_identity":"Wire derivation guard setting MAV_MODE_FLAG_SAFETY_ARMED.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkStreamHeartbeat::send","role":"DERIVATION","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"HEARTBEAT base_mode is derived directly from vehicle_status.arming_state."}
+      ],
+      "mavlink_observations": [
+        {"message":"HEARTBEAT","message_id":0,"field":"base_mode","direction":"OUTGOING","derivation":"Test MAV_MODE_FLAG_SAFETY_ARMED in base_mode for the target autopilot.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/streams/HEARTBEAT.hpp:82-84,129-130."}
+      ],
+      "unresolved": [
+        "HEARTBEAT has no embedded timestamp; exact state-change epoch is vehicle_status.timestamp or the commander_armed_by EVENT."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-04",
+      "name": "disarmed",
+      "binding_status": "BOUND",
+      "observability": "DIRECT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-04-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":11,"column":1,"symbol":"ARMING_STATE_DISARMED","semantic_identity":"VehicleStatus enum value for disarmed.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"uint8 constant","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Direct internal state identity."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-04-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":638,"column":21,"symbol":"Commander::disarm","semantic_identity":"Commander state-transition function for disarming.","entity_kind":"FUNCTION","function":"Commander::disarm","role":"DERIVATION","type":"transition_result_t(arm_disarm_reason_t,bool)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Successful calls write DISARMED and clear armed/takeoff time."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-04-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":667,"column":2,"symbol":"_vehicle_status.arming_state","semantic_identity":"Commander assignment entering disarmed state.","entity_kind":"ASSIGNMENT","function":"Commander::disarm","role":"WRITE","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the direct state write for the AP."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-04-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":668,"column":2,"symbol":"latest_disarming_reason","semantic_identity":"VehicleStatus reason assignment allowing auto_disarm_land to be distinguished internally.","entity_kind":"ASSIGNMENT","function":"Commander::disarm","role":"WRITE","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The AP itself is state-based; reason is supplementary correlation evidence."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-04-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":678,"column":2,"symbol":"commander_disarmed_by","semantic_identity":"Named event carrying arm_disarm_reason_t for a disarm transition.","entity_kind":"EVENT","function":"Commander::disarm","role":"PRODUCER","type":"events::ID with enum argument","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Argument value AUTO_DISARM_LAND identifies the landed auto-disarm reason when applicable."},
+        {"binding_id":"PX4-MC-AUTODISARM-004-AP-04-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/streams/HEARTBEAT.hpp","line":82,"column":4,"symbol":"vehicle_status.arming_state","semantic_identity":"HEARTBEAT producer tests armed state; the absence of MAV_MODE_FLAG_SAFETY_ARMED projects disarmed for the target autopilot.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkStreamHeartbeat::send","role":"DERIVATION","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The base-mode armed bit is set only for ARMING_STATE_ARMED."}
+      ],
+      "mavlink_observations": [
+        {"message":"HEARTBEAT","message_id":0,"field":"base_mode","direction":"OUTGOING","derivation":"For the target autopilot, MAV_MODE_FLAG_SAFETY_ARMED clear is the normalized direct disarmed observation.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/streams/HEARTBEAT.hpp:82-84,129-130."},
+        {"message":"EVENT","message_id":410,"field":"id,arguments","direction":"OUTGOING","derivation":"commander_disarmed_by plus arm_disarm_reason_t argument can distinguish auto_disarm_land from other disarm causes.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/commander/Commander.cpp:678-679; msg/versioned/VehicleStatus.msg:23; src/modules/mavlink/mavlink_events.cpp:209-221."}
+      ],
+      "unresolved": [
+        "HEARTBEAT identifies disarmed state but not the disarm cause and has no embedded timestamp.",
+        "EVENT cause correlation is conditional on event stream delivery."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-01",
+      "name": "detected_takeoff",
+      "binding_status": "BOUND",
+      "observability": "CONDITIONAL",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-01-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":8,"column":1,"symbol":"takeoff_time","semantic_identity":"Commander-recorded takeoff epoch in vehicle boot microseconds.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint64","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The field stores the detected takeoff timestamp used by flight-time checks."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-01-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2124,"column":6,"symbol":"Commander::landDetectorUpdate","semantic_identity":"Commander consumer for vehicle_land_detected transitions.","entity_kind":"FUNCTION","function":"Commander::landDetectorUpdate","role":"CONSUMER","type":"void()","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The function copies the land-detector topic and compares previous/current landed state."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-01-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2136,"column":4,"symbol":"was_landed","semantic_identity":"Armed landed-to-air transition guard for takeoff detection.","entity_kind":"OTHER","function":"Commander::landDetectorUpdate","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The enclosing armed guard and this previous/current comparison identify detected takeoff."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-01-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2138,"column":5,"symbol":"commander_takeoff_detected","semantic_identity":"Named event emitted at the detected takeoff transition.","entity_kind":"EVENT","function":"Commander::landDetectorUpdate","role":"PRODUCER","type":"events::ID","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The event is generated immediately before takeoff_time is written."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-01-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2139,"column":5,"symbol":"_vehicle_status.takeoff_time","semantic_identity":"Assignment of the detected takeoff epoch to VehicleStatus.","entity_kind":"ASSIGNMENT","function":"Commander::landDetectorUpdate","role":"WRITE","type":"uint64_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The vehicle's hrt clock is sampled at the transition."}
+      ],
+      "mavlink_observations": [
+        {"message":"EVENT","message_id":410,"field":"id","direction":"OUTGOING","derivation":"Resolve commander_takeoff_detected and use its event_time_boot_ms.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/commander/Commander.cpp:2138; src/modules/mavlink/mavlink_events.cpp:209-221."},
+        {"message":"EXTENDED_SYS_STATE","message_id":245,"field":"landed_state","direction":"OUTGOING","derivation":"ON_GROUND to IN_AIR is a wire projection of the landed transition but does not expose Commander takeoff_time.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp:98-124."}
+      ],
+      "unresolved": [
+        "EXTENDED_SYS_STATE lacks an embedded timestamp and does not establish that Commander recorded the transition while armed.",
+        "Exact state is vehicle_status.takeoff_time; EVENT observation is conditional on stream delivery."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-02",
+      "name": "max_flight_time_enabled",
+      "binding_status": "BOUND",
+      "observability": "CONDITIONAL",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-02-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/commander_params.c","line":897,"column":1,"symbol":"COM_FLT_TIME_MAX","semantic_identity":"Runtime maximum flight-time parameter in seconds; positive means enabled in the normalized AP.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The source defines identity and default -1; only captured runtime value is used by the AP."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-02-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.hpp","line":50,"column":7,"symbol":"COM_FLT_TIME_MAX","semantic_identity":"Typed Commander parameter wrapper consumed by FlightTimeChecks.","entity_kind":"PARAMETER","function":"FlightTimeChecks::checkAndReport","role":"READ","type":"ParamInt<px4::params::COM_FLT_TIME_MAX>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The wrapper supplies the runtime value to flight-time logic."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-02-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp","line":63,"column":6,"symbol":"_param_com_flt_time_max","semantic_identity":"Positive-value guard enabling warning-time calculation.","entity_kind":"OTHER","function":"FlightTimeChecks::checkAndReport","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The check compares the runtime parameter to zero."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-02-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_parameters.cpp","line":549,"column":3,"symbol":"mavlink_msg_param_value_send_struct","semantic_identity":"MAVLink PARAM_VALUE producer used to return runtime parameter values.","entity_kind":"MESSAGE_PRODUCER","function":"MavlinkParametersManager::send_param","role":"PRODUCER","type":"mavlink_param_value_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"param_id is populated at line 525 and the typed value is sent here."}
+      ],
+      "mavlink_observations": [
+        {"message":"PARAM_VALUE","message_id":22,"field":"param_value","direction":"REQUESTABLE","derivation":"Select param_id COM_FLT_TIME_MAX and evaluate the decoded INT32 value greater than zero.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/mavlink_parameters.cpp:475-549."}
+      ],
+      "unresolved": [
+        "PARAM_VALUE has no embedded timestamp; archive request/response ordering and configuration epoch in the campaign record."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-03",
+      "name": "flight_time_warning",
+      "binding_status": "BOUND",
+      "observability": "CONDITIONAL",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-03-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp","line":65,"column":3,"symbol":"remaining_flight_time_sec","semantic_identity":"Remaining-flight-time derivation from takeoff_time and COM_FLT_TIME_MAX.","entity_kind":"VARIABLE","function":"FlightTimeChecks::checkAndReport","role":"DERIVATION","type":"const float","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The following lines subtract elapsed flight time from the runtime limit."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-03-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp","line":69,"column":3,"symbol":"remaining_flight_time_sec","semantic_identity":"Implementation last-ten-percent guard.","entity_kind":"OTHER","function":"FlightTimeChecks::checkAndReport","role":"GUARD","type":"bool expression","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The guard compares remaining time with 0.1 times the configured maximum."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-03-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp","line":86,"column":5,"symbol":"commander_max_flight_time_warning_seconds","semantic_identity":"Seconds-form warning event identity for the final minute.","entity_kind":"EVENT","function":"FlightTimeChecks::checkAndReport","role":"PRODUCER","type":"events::ID with int16 argument","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The event argument is floored remaining seconds."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-03-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp","line":103,"column":5,"symbol":"commander_max_flight_time_warning_minutes","semantic_identity":"Minutes-form warning event identity for earlier whole-minute warnings.","entity_kind":"EVENT","function":"FlightTimeChecks::checkAndReport","role":"PRODUCER","type":"events::ID with int16 argument","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The event is emitted on the guarded whole-minute schedule."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-03-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/mavlink/mavlink_events.cpp","line":209,"column":6,"symbol":"SendProtocol::send_event","semantic_identity":"MAVLink EVENT producer preserving PX4 warning event ID, arguments, and vehicle time.","entity_kind":"MESSAGE_PRODUCER","function":"SendProtocol::send_event","role":"PRODUCER","type":"void(const Event &)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"event_time_boot_ms, ID, and arguments are sent by this function."}
+      ],
+      "mavlink_observations": [
+        {"message":"EVENT","message_id":410,"field":"id,arguments","direction":"OUTGOING","derivation":"Resolve either maximum-flight-time warning ID and correlate its remaining-time argument with the archived takeoff epoch and COM_FLT_TIME_MAX.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp:69-104; src/modules/mavlink/mavlink_events.cpp:209-221."}
+      ],
+      "unresolved": [
+        "The source schedules seconds and whole-minute events conditionally, so the exact 90 percent crossing is not necessarily an event emission instant.",
+        "EVENT delivery is conditional; absence of a frame does not prove absence of the internal warning path."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-04",
+      "name": "mode_return",
+      "binding_status": "BOUND",
+      "observability": "DIRECT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-04-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/FailsafeFlags.msg","line":52,"column":1,"symbol":"flight_time_limit_exceeded","semantic_identity":"Internal maximum-flight-time-exceeded cause flag.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This cause is upstream of the nondeferable RTL action."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-04-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/failsafe.cpp","line":544,"column":31,"symbol":"flight_time_limit_exceeded","semantic_identity":"Failsafe invocation mapping the flight-time limit cause to a nondeferable RTL action.","entity_kind":"OTHER","function":"Failsafe::update","role":"DERIVATION","type":"CHECK_FAILSAFE invocation","macro_spelling_location":"src/modules/commander/failsafe/framework.h:44","macro_expansion_location":"src/modules/commander/failsafe/failsafe.cpp:544","confidence":"EXACT","evidence":"The macro call identifies the cause-to-action mapping; it does not assess whether the cause occurs."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-04-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/failsafe/framework.cpp","line":682,"column":7,"symbol":"Action::RTL","semantic_identity":"Failsafe action-to-VehicleStatus AUTO_RTL mode mapping.","entity_kind":"RETURN","function":"FailsafeBase::modeFromAction","role":"DERIVATION","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Action::RTL returns NAVIGATION_STATE_AUTO_RTL."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-04-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":2371,"column":2,"symbol":"_vehicle_status.nav_state","semantic_identity":"Commander assignment of the selected and available failsafe mode to current nav_state.","entity_kind":"ASSIGNMENT","function":"Commander::Run","role":"WRITE","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Mode management may replace an unavailable requested state before this write."},
+        {"binding_id":"PX4-MC-FLIGHTTIME-005-AP-04-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":41,"column":1,"symbol":"NAVIGATION_STATE_AUTO_RTL","semantic_identity":"VehicleStatus enum constant for Return/RTL mode.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"uint8 constant","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the direct internal mode identity for the AP."}
+      ],
+      "mavlink_observations": [
+        {"message":"HEARTBEAT","message_id":0,"field":"custom_mode","direction":"OUTGOING","derivation":"Decode PX4 AUTO main mode with AUTO_RTL submode; no embedded timestamp or cause.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/commander/px4_custom_mode.h:139-142; src/modules/mavlink/streams/HEARTBEAT.hpp:104-130."},
+        {"message":"CURRENT_MODE","message_id":436,"field":"custom_mode","direction":"OUTGOING","derivation":"Decode current PX4 custom mode as AUTO_RTL.","time_field":null,"support":"STATIC_SUPPORTED","evidence":"src/modules/mavlink/streams/CURRENT_MODE.hpp:61-71."}
+      ],
+      "unresolved": [
+        "Return mode alone does not identify the flight-time-limit cause when concurrent failsafes or user actions are possible.",
+        "Wire mode frames have no embedded state-transition timestamp."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-01",
+      "name": "enter_rtl_destination_loiter",
+      "binding_status": "BOUND",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-01-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_direct.h","line":124,"column":3,"symbol":"LOITER_HOLD","semantic_identity":"Direct-RTL state-machine phase for destination loiter hold.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"RtlDirect::RTLState","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The AP's internal phase identity is this enum value."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-01-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_direct.cpp","line":187,"column":3,"symbol":"RTLState::LOITER_HOLD","semantic_identity":"State-machine transition target after LOITER_DOWN reaches its mission item.","entity_kind":"ASSIGNMENT","function":"RtlDirect::_updateRtlState","role":"WRITE","type":"RtlDirect::RTLState","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"new_state is set to LOITER_HOLD in the LOITER_DOWN branch."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-01-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_direct.cpp","line":223,"column":2,"symbol":"_rtl_state","semantic_identity":"Commit of the computed direct-RTL phase transition.","entity_kind":"ASSIGNMENT","function":"RtlDirect::_updateRtlState","role":"WRITE","type":"RtlDirect::RTLState","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Instrumentation at this assignment gives the exact phase-entry event."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-01-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_direct.cpp","line":601,"column":2,"symbol":"navigator_mission_item.sequence_current","semantic_identity":"Logging projection of current direct-RTL enum value into navigator_mission_item.sequence_current.","entity_kind":"ASSIGNMENT","function":"RtlDirect::publish_rtl_direct_navigator_mission_item","role":"OBSERVATION_SITE","type":"uint16_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"The projection is exact only when interpreted in the direct-RTL producer context; the field has other semantics in other Navigator paths."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-01-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_direct.cpp","line":623,"column":2,"symbol":"_navigator_mission_item_pub.publish","semantic_identity":"uORB/log producer for the current direct-RTL phase projection and vehicle timestamp.","entity_kind":"MESSAGE_PRODUCER","function":"RtlDirect::publish_rtl_direct_navigator_mission_item","role":"PRODUCER","type":"uORB::Publication<navigator_mission_item_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Use only with direct-RTL context and sequence_current enum mapping."}
+      ],
+      "mavlink_observations": [
+        {"message":"EVENT","message_id":410,"field":"id","direction":"OUTGOING","derivation":"rtl_completed_loiter is emitted only for an indefinite negative RTL_LAND_DELAY after LOITER_HOLD item setup; it is not a general phase-entry event.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/navigator/rtl_direct.cpp:299-311; src/modules/mavlink/mavlink_events.cpp:209-221."},
+        {"message":"HEARTBEAT","message_id":0,"field":"custom_mode","direction":"OUTGOING","derivation":"Confirms only coarse RTL mode and cannot identify LOITER_HOLD phase.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/commander/px4_custom_mode.h:139-142."}
+      ],
+      "unresolved": [
+        "No standard MAVLink stream directly exports the direct-RTL LOITER_HOLD phase.",
+        "navigator_mission_item.sequence_current has different semantics in non-direct RTL and mission paths; producer context is mandatory.",
+        "For multicopters with RTL_LAND_DELAY equal to zero, the state machine can skip LOITER_DOWN and LOITER_HOLD; this is path identity, not a satisfaction assessment.",
+        "rtl_completed_loiter is conditional on negative indefinite delay and cannot represent every destination-loiter entry."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-02",
+      "name": "direct_return_landing_path",
+      "binding_status": "BOUND",
+      "observability": "CONDITIONAL",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-02-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_params.c","line":118,"column":1,"symbol":"RTL_TYPE","semantic_identity":"Runtime RTL path-preference parameter.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"int32","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The parameter influences but does not alone determine the selected runtime RtlType."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-02-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl.cpp","line":311,"column":6,"symbol":"RTL::setRtlTypeAndDestination","semantic_identity":"Runtime path-selection function combining RTL_TYPE, mission landing availability, safe points, and destination choice.","entity_kind":"FUNCTION","function":"RTL::setRtlTypeAndDestination","role":"DERIVATION","type":"void()","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This function resolves the actual RTL type rather than copying RTL_TYPE directly."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-02-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl.cpp","line":327,"column":4,"symbol":"RTL_DIRECT_MISSION_LAND","semantic_identity":"Selection of direct travel to a mission landing pattern, which is excluded by the normalized direct-landing-path AP.","entity_kind":"ASSIGNMENT","function":"RTL::setRtlTypeAndDestination","role":"WRITE","type":"RTL::RtlType","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Destination type MISSION_LAND selects the distinct runtime type."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-02-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl.cpp","line":348,"column":4,"symbol":"RtlType::RTL_DIRECT","semantic_identity":"Selection of direct safe-point/home landing path.","entity_kind":"ASSIGNMENT","function":"RTL::setRtlTypeAndDestination","role":"WRITE","type":"RTL::RtlType","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the runtime type matching the normalized direct path."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-02-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl.cpp","line":362,"column":2,"symbol":"rtl_type","semantic_identity":"uORB rtl_status field assignment exposing the resolved runtime RTL type.","entity_kind":"ASSIGNMENT","function":"RTL::setRtlTypeAndDestination","role":"PRODUCER","type":"uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"RtlType::RTL_DIRECT maps to RtlStatus direct safe-point value 1 and is published at line 365."}
+      ],
+      "mavlink_observations": [
+        {"message":"PARAM_VALUE","message_id":22,"field":"param_id,param_value","direction":"REQUESTABLE","derivation":"Archive RTL_TYPE, but combine it with internal mission/destination selection; the parameter alone is insufficient.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/navigator/rtl_params.c:106-118; src/modules/mavlink/mavlink_parameters.cpp:475-549."}
+      ],
+      "unresolved": [
+        "No standard MAVLink stream directly exports rtl_status.rtl_type.",
+        "RTL_TYPE alone does not prove the resolved path because mission landing and destination availability participate in selection.",
+        "Exact observation requires rtl_status instrumentation or an equivalent Navigator trace."
+      ]
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-03",
+      "name": "mode_land",
+      "binding_status": "PARTIALLY_BOUND",
+      "observability": "DIRECT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "bindings": [
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-03-B01","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":35,"column":1,"symbol":"nav_state","semantic_identity":"Current active navigation-state field used for exact internal Land-mode identity.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint8","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The exact catalog default compares this field with NAVIGATION_STATE_AUTO_LAND."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-03-B02","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":54,"column":1,"symbol":"NAVIGATION_STATE_AUTO_LAND","semantic_identity":"VehicleStatus enum constant for Auto Land mode.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"uint8 constant","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"This is the exact internal mode identity specified by the catalog default."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-03-B03","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"msg/versioned/VehicleStatus.msg","line":48,"column":1,"symbol":"NAVIGATION_STATE_DESCEND","semantic_identity":"Distinct internal Descend navigation state whose inclusion is a campaign-level choice.","entity_kind":"OTHER","function":null,"role":"DEFINITION","type":"uint8 constant","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"It is not AUTO_LAND internally even though PX4 custom-mode mapping conflates them."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-03-B04","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/navigator/rtl_direct.cpp","line":365,"column":7,"symbol":"RTLState::LAND","semantic_identity":"Direct-RTL internal phase that builds a land mission item; it is related path evidence, not identical to VehicleStatus AUTO_LAND.","entity_kind":"OTHER","function":"RtlDirect::set_rtl_item","role":"DERIVATION","type":"RtlDirect::RTLState","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MAY","evidence":"Navigator LAND phase can execute while coarse vehicle mode remains RTL; do not substitute it for nav_state."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-03-B05","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/Commander.cpp","line":1945,"column":4,"symbol":"_vehicle_status_pub.publish","semantic_identity":"uORB producer for exact current nav_state and vehicle timestamp.","entity_kind":"MESSAGE_PRODUCER","function":"Commander::Run","role":"PRODUCER","type":"uORB::Publication<vehicle_status_s>","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Internal vehicle_status instrumentation distinguishes AUTO_LAND from DESCEND."},
+        {"binding_id":"PX4-MC-RTLLOITER-006-AP-03-B06","commit":"d6f12ad1c4f70ad3230afd7d86e971421e02fef4","file":"src/modules/commander/px4_custom_mode.h","line":148,"column":2,"symbol":"NAVIGATION_STATE_DESCEND","semantic_identity":"Custom-mode mapping branch that maps internal DESCEND to PX4 AUTO_LAND wire submode.","entity_kind":"OTHER","function":"get_px4_custom_mode","role":"DERIVATION","type":"switch case","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"AUTO_LAND is also mapped to the same wire submode at lines 170-172, creating a wire ambiguity."}
+      ],
+      "mavlink_observations": [
+        {"message":"HEARTBEAT","message_id":0,"field":"custom_mode","direction":"OUTGOING","derivation":"PX4 AUTO/LAND wire mode is direct only for the union of internal AUTO_LAND and DESCEND; it cannot distinguish them.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/commander/px4_custom_mode.h:148-151,170-172; src/modules/mavlink/streams/HEARTBEAT.hpp:104-130."},
+        {"message":"CURRENT_MODE","message_id":436,"field":"custom_mode","direction":"OUTGOING","derivation":"The same custom-mode mapping conflates internal DESCEND and AUTO_LAND.","time_field":null,"support":"CONDITIONAL","evidence":"src/modules/mavlink/streams/CURRENT_MODE.hpp:61-71; src/modules/commander/px4_custom_mode.h:148-172."},
+        {"message":"EVENT","message_id":410,"field":"id","direction":"OUTGOING","derivation":"rtl_land_at_destination identifies direct-RTL LAND mission-item setup, not the VehicleStatus AUTO_LAND state.","time_field":"event_time_boot_ms (vehicle boot clock)","support":"CONDITIONAL","evidence":"src/modules/navigator/rtl_direct.cpp:365-377; src/modules/mavlink/mavlink_events.cpp:209-221."}
+      ],
+      "unresolved": [
+        "The campaign must fix before execution whether internal DESCEND counts; the catalog default is AUTO_LAND only.",
+        "HEARTBEAT and CURRENT_MODE cannot distinguish internal DESCEND from AUTO_LAND because both map to PX4 AUTO/LAND.",
+        "RtlDirect::RTLState::LAND and rtl_land_at_destination are Navigator path-phase evidence, not exact VehicleStatus mode identity."
+      ]
+    }
+  ],
+  "global_unresolved": [
+    "No runtime MAVLink capture was performed; all MAVLink support labels are static or conditional.",
+    "Incoming MAVLink messages without a vehicle receipt timestamp cannot by themselves establish an internal timeout epoch.",
+    "A final navigation mode can be the result of competing or higher-priority failsafe causes; mode observation alone does not establish cause.",
+    "Configuration snapshots and campaign-specific choices remain Milestone-6 inputs and are not replaced by source defaults."
+  ],
+  "verification": {
+    "status": "PASS",
+    "json_parse": "PASS",
+    "catalog_ap_set": "PASS_21_OF_21_EXACT_SET_AND_ORDER",
+    "binding_schema": "PASS_120_SOURCE_BINDINGS_AND_40_MAVLINK_OBSERVATIONS",
+    "binding_paths": "PASS_120_OF_120",
+    "binding_lines": "PASS_120_OF_120",
+    "binding_symbols": "PASS_120_OF_120_LITERAL_AT_RECORDED_LINE",
+    "compile_database_sha256": "PASS",
+    "compile_database_coverage": "PASS_15_OF_15_DIRECT_CPP_TUS_PLUS_6_OF_6_GENERATED_MESSAGE_TUS; 9_OF_9_BOUND_PARAMETER_METADATA_NAMES_IN_PARAMETERS_JSON",
+    "px4_head": "PASS_d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "px4_worktree": "PASS_CLEAN",
+    "submodule_gitlinks": "PASS_6_INITIALIZED_AT_LOCKED_COMMITS_NO_PLUS_OR_U_STATUS"
+  }
+}

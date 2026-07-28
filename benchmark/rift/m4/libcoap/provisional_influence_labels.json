@@ -1,0 +1,626 @@
+{
+  "schema_version": "rift.acceptance.influence-labels/0.1.0",
+  "property_id": "COAP-TX-01",
+  "status": "PROVISIONAL_EXPERT_DRAFT_NOT_GOLD",
+  "review_contract": {
+    "required_independent_human_reviewers": 2,
+    "completed_independent_human_reviewers": 0,
+    "arbitration_status": "PENDING",
+    "codex_output_counts_as_human_review": false,
+    "headline_metric_allowed": false
+  },
+  "label_semantics": {
+    "MUST_INFLUENCE": "For the named target role and frozen build profile, every realization of that target consumes the entity through a value, control, identity, or scope dependency. This does not mean every mutation flips the AP.",
+    "MAY_INFLUENCE": "A feasible conditional or alternate definition/path can affect the target, but it is not consumed on every target realization.",
+    "MODEL_REQUIRED": "The relationship crosses an external, scheduler, queue-lifecycle, callback, or synthetic-time boundary that ordinary intra-run def-use/control flow cannot establish alone.",
+    "SCOPE_ONLY": "The entity selects the correlated exchange or generation but does not by itself determine the AP Boolean value once that scope is fixed.",
+    "CANDIDATE_NO_INFLUENCE": "No path was found in the audited target semantics; this is a review candidate, not an arbitrated negative label."
+  },
+  "must_influencers": [
+    {
+      "id": "MUST-001",
+      "target": "coap_con_wait_started",
+      "target_role": "guard",
+      "entity": "coap_pdu_t.type",
+      "type": "coap_pdu_type_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "data",
+        "control"
+      ],
+      "evidence": [
+        "src/coap_net.c:2276-2277"
+      ],
+      "justification": "The post-send queue path is skipped unless the outbound PDU is Confirmable."
+    },
+    {
+      "id": "MUST-002",
+      "target": "coap_con_wait_started",
+      "target_role": "guard",
+      "entity": "coap_session_t.proto",
+      "type": "coap_proto_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "data",
+        "control"
+      ],
+      "evidence": [
+        "src/coap_net.c:2276-2277"
+      ],
+      "justification": "Reliable transports return before retransmission-node allocation; the accepted AP is the UDP/DTLS-style message-layer wait."
+    },
+    {
+      "id": "MUST-003",
+      "target": "coap_con_wait_started",
+      "target_role": "guard",
+      "entity": "coap_send_pdu return value",
+      "type": "ssize_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "return",
+        "control"
+      ],
+      "evidence": [
+        "src/coap_net.c:2235-2240",
+        "src/coap_net.c:2253-2261"
+      ],
+      "justification": "Delayed and failed writes return before a retransmission node is created; only a completed nonnegative write can realize the trigger."
+    },
+    {
+      "id": "MUST-004",
+      "target": "coap_con_wait_started",
+      "target_role": "guard",
+      "entity": "coap_new_node allocation result",
+      "type": "coap_queue_t *",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "return",
+        "control",
+        "lifecycle"
+      ],
+      "evidence": [
+        "src/coap_net.c:2283-2287"
+      ],
+      "justification": "A failed node allocation takes the error exit and cannot commit the queue generation."
+    },
+    {
+      "id": "MUST-005",
+      "target": "scheduled_initial_delay",
+      "target_role": "bound",
+      "entity": "coap_session_t.ack_timeout",
+      "type": "coap_fixed_point_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "data",
+        "call",
+        "return"
+      ],
+      "evidence": [
+        "src/coap_net.c:100-104",
+        "src/coap_net.c:1358-1377",
+        "src/coap_net.c:2291-2294"
+      ],
+      "justification": "The session ACK timeout is read by the exact fixed-point expression whose return value is stored in node->timeout."
+    },
+    {
+      "id": "MUST-006",
+      "target": "scheduled_initial_delay",
+      "target_role": "bound",
+      "entity": "coap_session_t.ack_random_factor",
+      "type": "coap_fixed_point_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "data",
+        "call",
+        "return"
+      ],
+      "evidence": [
+        "src/coap_net.c:99-104",
+        "src/coap_net.c:1358-1377",
+        "src/coap_net.c:2291-2294"
+      ],
+      "justification": "The randomized upper factor is read on every coap_calc_timeout execution, even when a particular PRNG value makes its numeric contribution zero."
+    },
+    {
+      "id": "MUST-007",
+      "target": "scheduled_initial_delay",
+      "target_role": "bound",
+      "entity": "coap_send_internal.r",
+      "type": "uint8_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "data",
+        "call",
+        "return"
+      ],
+      "evidence": [
+        "src/coap_net.c:2097-2099",
+        "src/coap_net.c:2291-2294",
+        "src/coap_net.c:1367-1373"
+      ],
+      "justification": "The PRNG byte is passed into and consumed by the initial timeout computation."
+    },
+    {
+      "id": "MUST-008",
+      "target": "scheduled_initial_delay",
+      "target_role": "bound",
+      "entity": "COAP_TICKS_PER_SECOND",
+      "type": "compile_time_integer_constant",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "macro_expansion",
+        "data"
+      ],
+      "evidence": [
+        "include/coap3/coap_time.h:164-164",
+        "src/coap_net.c:1375-1377"
+      ],
+      "justification": "The final fixed-point result is scaled into the frozen platform's tick domain."
+    },
+    {
+      "id": "MUST-009",
+      "target": "scheduled_initial_delay",
+      "target_role": "bound",
+      "entity": "coap_queue_t.retransmit_cnt initial zero definition",
+      "type": "unsigned char",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "lifecycle",
+        "field",
+        "data"
+      ],
+      "evidence": [
+        "src/coap_net.c:234-245",
+        "src/coap_net.c:1400-1405"
+      ],
+      "justification": "The initial generation is zero-initialized, and the stored delta shifts timeout by retransmit_cnt. This distinguishes the initial deadline from later retransmissions."
+    },
+    {
+      "id": "MUST-010",
+      "target": "coap_con_wait_started",
+      "target_role": "scope",
+      "entity": "coap_pdu_t.mid -> coap_queue_t.id",
+      "type": "coap_mid_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "data"
+      ],
+      "evidence": [
+        "src/coap_net.c:2289-2290"
+      ],
+      "justification": "The trigger's exchange identity commits the outbound Message ID into the queue-node generation."
+    },
+    {
+      "id": "MUST-011",
+      "target": "coap_con_wait_started",
+      "target_role": "clock_and_queue_commit",
+      "entity": "coap_ticks(now), context.sendqueue, context.sendqueue_basetime",
+      "type": "coap_tick_t and coap_queue_t *",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "call",
+        "data",
+        "control",
+        "queue"
+      ],
+      "evidence": [
+        "src/coap_net.c:1384-1418"
+      ],
+      "justification": "Every committed node is normalized against the current monotonic time and delta-queue base before insertion. Existing queue state changes representation but not the intended logical now+initial-delay deadline."
+    },
+    {
+      "id": "MUST-012",
+      "target": "coap_first_retransmit_deadline_reached",
+      "target_role": "clock",
+      "entity": "coap_io_prepare_io_lkd.now",
+      "type": "coap_tick_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "data",
+        "control",
+        "queue"
+      ],
+      "evidence": [
+        "src/coap_io.c:364-373"
+      ],
+      "justification": "The frozen implementation recognizes a due queue head by comparing monotonic now with the base plus relative queue delay."
+    },
+    {
+      "id": "MUST-013",
+      "target": "coap_first_retransmit_deadline_reached",
+      "target_role": "deadline_representation",
+      "entity": "coap_context_t.sendqueue_basetime and correlated coap_queue_t.t",
+      "type": "coap_tick_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "data",
+        "queue",
+        "lifecycle"
+      ],
+      "evidence": [
+        "include/coap3/coap_net_internal.h:39-49",
+        "include/coap3/coap_net_internal.h:76-80",
+        "src/coap_net.c:1398-1409",
+        "src/coap_io.c:364-373"
+      ],
+      "justification": "The logical absolute deadline is represented by the delta queue, not by one standalone absolute-deadline field."
+    },
+    {
+      "id": "MUST-014",
+      "target": "coap_matching_ack_or_reset_received",
+      "target_role": "guard",
+      "entity": "coap_pdu_t.type",
+      "type": "coap_pdu_type_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "control"
+      ],
+      "evidence": [
+        "src/coap_net.c:4781-4786",
+        "src/coap_net.c:4901-4903",
+        "src/coap_net.c:4942-4945"
+      ],
+      "justification": "The discharge AP is restricted to ACK and RST switch arms; other queue removals are not this proposition."
+    },
+    {
+      "id": "MUST-015",
+      "target": "coap_matching_ack_or_reset_received",
+      "target_role": "scope_and_match",
+      "entity": "incoming coap_pdu_t.mid and queued coap_queue_t.id",
+      "type": "coap_mid_t",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "data",
+        "control",
+        "queue"
+      ],
+      "evidence": [
+        "src/coap_net.c:3158-3203",
+        "src/coap_net.c:4783-4786",
+        "src/coap_net.c:4942-4945"
+      ],
+      "justification": "Both queue-removal branches require equality between the incoming MID and the queued generation's ID."
+    },
+    {
+      "id": "MUST-016",
+      "target": "coap_matching_ack_or_reset_received",
+      "target_role": "scope_and_match",
+      "entity": "incoming coap_session_t * and queued coap_queue_t.session",
+      "type": "coap_session_t *",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "identity",
+        "field",
+        "control",
+        "queue"
+      ],
+      "evidence": [
+        "src/coap_net.c:3158-3203"
+      ],
+      "justification": "The queue matcher first requires the same session identity, which carries the endpoint scope for this frozen implementation."
+    },
+    {
+      "id": "MUST-017",
+      "target": "coap_matching_ack_or_reset_received",
+      "target_role": "post_commit",
+      "entity": "coap_remove_from_queue output sent",
+      "type": "coap_queue_t *",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "return_via_output_parameter",
+        "data",
+        "lifecycle"
+      ],
+      "evidence": [
+        "src/coap_net.c:3158-3203",
+        "src/coap_net.c:4783-4789",
+        "src/coap_net.c:4942-4945"
+      ],
+      "justification": "The proposition is emitted only for an actual correlated removal, not merely because an ACK/RST entered coap_dispatch."
+    },
+    {
+      "id": "MUST-018",
+      "target": "coap_attempt_cancelled",
+      "target_role": "scope_and_match",
+      "entity": "coap_cancel_session_messages session argument and queued node.session",
+      "type": "coap_session_t *",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "parameter",
+        "identity",
+        "control",
+        "queue",
+        "lifecycle"
+      ],
+      "evidence": [
+        "src/coap_net.c:3267-3303"
+      ],
+      "justification": "Session cancellation removes exactly queue nodes whose stored session identity matches the API argument."
+    },
+    {
+      "id": "MUST-019",
+      "target": "coap_attempt_cancelled",
+      "target_role": "post_commit",
+      "entity": "context.sendqueue membership and removed coap_queue_t generation",
+      "type": "coap_queue_t *",
+      "classification": "MUST_INFLUENCE",
+      "edge_kinds": [
+        "queue",
+        "lifecycle",
+        "control"
+      ],
+      "evidence": [
+        "src/coap_net.c:3267-3335"
+      ],
+      "justification": "A local cancellation AP is generation-specific and requires that the node was present and then unlinked/deleted."
+    }
+  ],
+  "may_influencers": [
+    {
+      "id": "MAY-001",
+      "target": "scheduled_initial_delay",
+      "entity": "coap_session_set_ack_timeout(value)",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "external_api",
+        "parameter",
+        "control",
+        "field"
+      ],
+      "evidence": [
+        "src/coap_session.c:148-155",
+        "src/coap_session.c:498-500"
+      ],
+      "justification": "The external API value reaches ack_timeout when its validation guard passes; otherwise the creation-time default or an earlier accepted value reaches the calculation."
+    },
+    {
+      "id": "MAY-002",
+      "target": "scheduled_initial_delay",
+      "entity": "coap_session_set_ack_random_factor(value)",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "external_api",
+        "parameter",
+        "control",
+        "field"
+      ],
+      "evidence": [
+        "src/coap_session.c:158-169",
+        "src/coap_session.c:498-500"
+      ],
+      "justification": "The external API value conditionally replaces the default randomized factor."
+    },
+    {
+      "id": "MAY-003",
+      "target": "coap_matching_ack_or_reset_received",
+      "entity": "incoming and queued actual_token",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "field",
+        "data",
+        "control",
+        "queue"
+      ],
+      "evidence": [
+        "src/coap_net.c:3167-3188",
+        "src/coap_net.c:4746-4749",
+        "src/coap_net.c:4783-4786"
+      ],
+      "justification": "At 94bacc89 a non-empty ACK and the OSCORE pre-decrypt path can require token equality; empty ACK and RST pass a null token and match by session+MID."
+    },
+    {
+      "id": "MAY-004",
+      "target": "coap_attempt_cancelled",
+      "entity": "coap_cancel_all_messages token argument and queued PDU actual_token",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "external_api",
+        "parameter",
+        "field",
+        "control",
+        "queue"
+      ],
+      "evidence": [
+        "src/coap_net.c:3306-3335"
+      ],
+      "justification": "A non-null token narrows cancellation; a null token cancels every queued node for the session."
+    },
+    {
+      "id": "MAY-005",
+      "target": "scheduled_initial_delay",
+      "entity": "coap_set_prng callback / default entropy source",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "callback_registration",
+        "indirect_call",
+        "external_input",
+        "data"
+      ],
+      "evidence": [
+        "src/coap_prng.c:170-175",
+        "src/coap_prng.c:189-195",
+        "src/coap_net.c:2291-2294"
+      ],
+      "justification": "Either a registered application callback or the build-selected default entropy source produces the byte consumed by the bound."
+    },
+    {
+      "id": "MAY-006",
+      "target": "coap_con_wait_started",
+      "entity": "outbound application API parameters and PDU setters",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "external_api",
+        "parameter",
+        "field",
+        "call"
+      ],
+      "evidence": [
+        "src/coap_pdu.c:104-161",
+        "src/coap_pdu.c:1717-1720",
+        "src/coap_pdu.c:1733-1738",
+        "src/coap_net.c:1600-1610"
+      ],
+      "justification": "Application-provided type/MID/session state can reach the trigger guards and exchange scope through several public API construction paths."
+    },
+    {
+      "id": "MAY-007",
+      "target": "coap_matching_ack_or_reset_received",
+      "entity": "raw inbound datagram bytes",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "external_input",
+        "parser",
+        "field",
+        "call"
+      ],
+      "evidence": [
+        "src/coap_net.c:3097-3144",
+        "src/coap_pdu.c:1146-1196",
+        "src/coap_pdu.c:1579-1599"
+      ],
+      "justification": "A valid UDP datagram supplies the ACK/RST type, MID, code and token fields, but malformed or nonmatching packets do not realize the proposition."
+    },
+    {
+      "id": "MAY-008",
+      "target": "coap_con_wait_started",
+      "entity": "transport l_write result and socket/session state",
+      "classification": "MAY_INFLUENCE",
+      "edge_kinds": [
+        "external_return",
+        "field",
+        "control",
+        "return"
+      ],
+      "evidence": [
+        "src/coap_net.c:1248-1283",
+        "src/coap_net.c:2235-2261"
+      ],
+      "justification": "The external write outcome and delay guards determine which coap_send_pdu return class reaches the trigger path."
+    }
+  ],
+  "scope_only_influencers": [
+    {
+      "id": "SCOPE-001",
+      "target": "all_atomic_propositions",
+      "entity": "session.addr_info.local and session.addr_info.remote",
+      "classification": "SCOPE_ONLY",
+      "edge_kinds": [
+        "field",
+        "identity",
+        "scope"
+      ],
+      "evidence": [
+        "src/coap_session.c:455-469",
+        "src/coap_net.c:1407-1407"
+      ],
+      "justification": "Endpoint values partition exchanges. The queue matcher uses session identity, while the monitor retains explicit local/remote endpoint fields."
+    },
+    {
+      "id": "SCOPE-002",
+      "target": "all_atomic_propositions",
+      "entity": "coap_queue_t allocation identity",
+      "classification": "SCOPE_ONLY",
+      "edge_kinds": [
+        "allocation",
+        "lifecycle",
+        "generation"
+      ],
+      "evidence": [
+        "src/coap_net.c:234-245",
+        "src/coap_net.c:2283-2294"
+      ],
+      "justification": "The allocation instance distinguishes a retransmission of one exchange from MID reuse by a later generation."
+    }
+  ],
+  "model_required_relationships": [
+    {
+      "id": "MODEL-001",
+      "target": "coap_first_retransmit_deadline_reached",
+      "entity": "queue insertion to later scheduler poll",
+      "classification": "MODEL_REQUIRED",
+      "model_class": "queue_lifecycle_and_scheduler_entry",
+      "evidence": [
+        "src/coap_net.c:1398-1418",
+        "src/coap_io.c:364-373"
+      ],
+      "justification": "The node persists across event-loop iterations; an intra-invocation def-use slice cannot connect the commit to the later due check."
+    },
+    {
+      "id": "MODEL-002",
+      "target": "coap_first_retransmit_deadline_reached",
+      "entity": "logical deadline crossing independent of callback dispatch",
+      "classification": "MODEL_REQUIRED",
+      "model_class": "timer_lifecycle",
+      "evidence": [
+        "src/coap_io.c:364-373"
+      ],
+      "justification": "The AP denotes the scheduled logical crossing. If the event loop runs late, the callback time is diagnostic only and must not replace the stored-deadline semantics."
+    },
+    {
+      "id": "MODEL-003",
+      "target": "coap_matching_ack_or_reset_received",
+      "entity": "socket/datagram external boundary",
+      "classification": "MODEL_REQUIRED",
+      "model_class": "protocol_parser_output",
+      "evidence": [
+        "src/coap_net.c:3097-3144",
+        "src/coap_pdu.c:1146-1196"
+      ],
+      "justification": "The generic analyzer can see the parse value flow, but needs a reusable parser-boundary declaration to classify raw datagram bytes as externally controllable."
+    },
+    {
+      "id": "MODEL-004",
+      "target": "scheduled_initial_delay",
+      "entity": "registered PRNG callback or operating-system entropy",
+      "classification": "MODEL_REQUIRED",
+      "model_class": "callback_registration_and_external_return",
+      "evidence": [
+        "src/coap_prng.c:170-195"
+      ],
+      "justification": "The indirect callback and system entropy source cross a reusable external-return boundary."
+    },
+    {
+      "id": "MODEL-005",
+      "target": "all_atomic_propositions",
+      "entity": "queue-node generation through insert, reorder, remove and free",
+      "classification": "MODEL_REQUIRED",
+      "model_class": "queue_lifecycle_and_generation",
+      "evidence": [
+        "src/coap_net.c:155-190",
+        "src/coap_net.c:234-269",
+        "src/coap_net.c:3158-3203"
+      ],
+      "justification": "Object identity must survive delta-queue reordering and removal without merging reused storage into the prior generation."
+    }
+  ],
+  "candidate_negative_controls": [
+    {
+      "id": "NEG-001",
+      "target": "scheduled_initial_delay",
+      "entity": "coap_session_t.max_retransmit",
+      "classification": "CANDIDATE_NO_INFLUENCE",
+      "evidence": [
+        "src/coap_net.c:1358-1377",
+        "src/coap_net.c:2291-2294"
+      ],
+      "justification": "The initial delay expression does not read max_retransmit; it affects later retry exhaustion and derived multi-retry envelopes. Human arbitration is still required before using this as a precision label."
+    },
+    {
+      "id": "NEG-002",
+      "target": "scheduled_initial_delay",
+      "entity": "coap_session_t.default_leisure",
+      "classification": "CANDIDATE_NO_INFLUENCE",
+      "evidence": [
+        "src/coap_session.c:498-503",
+        "src/coap_net.c:1358-1377"
+      ],
+      "justification": "Default leisure is the multicast-response delay parameter and is absent from the initial CON ACK timeout expression."
+    }
+  ]
+}

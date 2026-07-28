@@ -1,0 +1,76 @@
+{
+  "schema_version": "2.0.0",
+  "artifact_id": "rift.flight.px4.px4-mc-gcsloss-002.ap-projection",
+  "property_id": "PX4-MC-GCSLOSS-002-RIFT-AP-PROJECTION",
+  "logic": "MITL",
+  "time_domain": "dense",
+  "formula_text": "gcs_connection_lost",
+  "formula": {
+    "node_id": "formula.px4.gcs-connection-lost",
+    "operator": "atom",
+    "ap_ref": "gcs_connection_lost",
+    "operands": []
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "gcs_connection_lost",
+      "roles": ["response", "state"],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      },
+      "predicate": {
+        "node_kind": "reference",
+        "operator": "decl_ref_or_member",
+        "value_type": {
+          "kind": "bool",
+          "canonical": "bool",
+          "bit_width": 8,
+          "signed": false
+        },
+        "referenced_selector_id": "selector.px4.gcs-connection-lost-write",
+        "operands": []
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "group.px4.gcs-connection-lost.response-write",
+          "role": "response",
+          "all_of": ["selector.px4.gcs-connection-lost-write"]
+        },
+        {
+          "group_id": "group.px4.gcs-connection-lost.state-write",
+          "role": "state",
+          "all_of": ["selector.px4.gcs-connection-lost-write"]
+        }
+      ],
+      "description": "Static-analysis projection of the gcs_connection_lost AP from PX4-MC-GCSLOSS-002. It seeds influence discovery at the canonical state commit; it is not a replacement for the full MITL property or a firmware-conformance verdict."
+    }
+  ],
+  "selectors": [
+    {
+      "selector_id": "selector.px4.gcs-connection-lost-write",
+      "kind": "source_location",
+      "location": {
+        "file": "src/modules/commander/Commander.cpp",
+        "line": 2851,
+        "column": 20,
+        "end_line": 2851,
+        "end_column": 38,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      }
+    }
+  ],
+  "source_document": {
+    "document_id": "benchmark.px4-mc-gcsloss-002",
+    "digest": "2f4923b7ccb52dd71ebcc24f51c194ebf9d5e92bab4661043f26d4d935579201",
+    "requirement_location": "benchmark/PX4/properties/PX4-MC-GCSLOSS-002.json"
+  }
+}

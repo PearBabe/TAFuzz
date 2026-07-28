@@ -1,0 +1,53 @@
+property_id: RFC7252-MITL-007
+title: 收到 ACK/RST 后不得再发送 ACK/RST 响应该消息
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1147
+      end: 1161
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: ACK/RST message 被拒绝时应 silently ignore；更一般地，ACK/RST recipient 不得以 ACK/RST 响应。
+  normative_keyword: MUST NOT
+mitl: |
+  G( ACK_OR_RST_RECEIVED ->
+     G[0,0] !(ACK_SENT_IN_RESPONSE || RST_SENT_IN_RESPONSE) )
+informal_semantics: >
+  一旦收到 ACK 或 RST，在处理该消息的即时步骤中不得再产生 ACK 或 RST 响应该消息。
+role: client/server/both
+temporal_pattern: immediate_forbidden
+events:
+  start_event: ACK_OR_RST_RECEIVED
+  forbidden_events:
+    - ACK_SENT_IN_RESPONSE
+    - RST_SENT_IN_RESPONSE
+atomic_propositions:
+  - name: ACK_OR_RST_RECEIVED
+    semantic: 收到 ACK 或 RST message。
+    fields: [session, peer, message.type, message.id]
+    future_source_mapping: [message field, function event]
+  - name: ACK_SENT_IN_RESPONSE
+    semantic: 实现针对该 ACK/RST 发送 ACK。
+    fields: [session, peer, response.type, response.id, triggering_message.id]
+    future_source_mapping: [message field, function event]
+  - name: RST_SENT_IN_RESPONSE
+    semantic: 实现针对该 ACK/RST 发送 RST。
+    fields: [session, peer, response.type, response.id, triggering_message.id]
+    future_source_mapping: [message field, function event]
+correlation_key:
+  key: [session, peer, triggering_message_id]
+  reason: forbidden response 必须关联到触发它的 ACK/RST，而不是关联到最近任意消息。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: ACK_OR_RST_RECEIVED
+  end: outgoing ACK/RST response decision
+  interval: "[0,0]"
+  rfc_parameters: []
+  default_values: {}
+confidence: high
+verification_notes:
+  - 该性质监控 silent ignore 的可观测替代：没有 outgoing ACK/RST call/event。
+  - 网络侧无输出不足以精确判定，后续实现需要函数事件或发送队列事件。

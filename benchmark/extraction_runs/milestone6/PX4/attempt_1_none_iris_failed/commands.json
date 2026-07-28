@@ -1,0 +1,27 @@
+{
+  "capture_invocation": "/usr/bin/python3 /home/lqq/project/TAFuzz/benchmark/extraction_runs/milestone6/PX4/capture_px4_runtime.py --capture-id PX4-M6-MC-NONE-IRIS-I42-20260718",
+  "px4_command_argv": [
+    "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4",
+    "-i",
+    "42",
+    "-d",
+    "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc"
+  ],
+  "px4_command_shell": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc",
+  "px4_cwd": "/home/lqq/project/TAFuzz/benchmark/extraction_runs/milestone6/PX4/runtime_state",
+  "px4_environment_overrides": {
+    "PX4_SIM_MODEL": "none_iris",
+    "PX4_SIM_HOST_ADDR": "127.0.0.1",
+    "PX4_SIM_HOSTNAME": "127.0.0.1"
+  },
+  "mavlink_connection": "udpout:127.0.0.1:18612",
+  "source_system": 250,
+  "source_component": 190,
+  "read_only_protocol_actions": [
+    "GCS HEARTBEAT",
+    "PARAM_REQUEST_LIST",
+    "PARAM_REQUEST_READ",
+    "MAV_CMD_REQUEST_MESSAGE (512)"
+  ],
+  "persistent_parameter_writes": []
+}

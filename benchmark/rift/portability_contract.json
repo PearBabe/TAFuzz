@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "RIFT-PORTABILITY-1",
+  "status": "FROZEN_BEFORE_CORE_IMPLEMENTATION",
+  "core_interface": {
+    "required_inputs": [
+      "typed_property_ir",
+      "compile_commands",
+      "clang_llvm_facts",
+      "versioned_model_pack"
+    ],
+    "optional_inputs": [
+      "monitor_residual"
+    ],
+    "required_outputs": [
+      "ap_bindings",
+      "contextual_influence_graph",
+      "ap_influence_cones",
+      "fuzzable_frontier",
+      "mutation_recipes",
+      "analysis_certificate"
+    ],
+    "allowed_generic_concepts": [
+      "value_flow",
+      "control_dependence",
+      "call_return",
+      "alias",
+      "timer",
+      "callback",
+      "queue",
+      "scheduler",
+      "lifecycle",
+      "scope",
+      "generation",
+      "persistence",
+      "external_input"
+    ]
+  },
+  "source_layout": {
+    "implementation_root": "src/StaticAnalysis",
+    "generic_core_roots": [
+      "src/StaticAnalysis/core",
+      "src/StaticAnalysis/include",
+      "src/StaticAnalysis/cli",
+      "src/StaticAnalysis/schema"
+    ],
+    "project_knowledge_roots": [
+      "src/StaticAnalysis/model_packs",
+      "src/StaticAnalysis/examples"
+    ]
+  },
+  "core_forbidden_literals": [
+    "ArduPilot",
+    "PX4",
+    "MAVLink",
+    "libcoap",
+    "FreeCoAP",
+    "Mosquitto",
+    "TinyMQTT",
+    "FS_GCS_TIMEOUT",
+    "failsafe.gcs",
+    "gcs_failsafe_on",
+    "HEARTBEAT",
+    "PARAM_SET",
+    "vm_area_struct.vm_flags",
+    "mlockall",
+    "msync"
+  ],
+  "model_pack_rules": {
+    "must_be_versioned": true,
+    "must_be_property_independent": true,
+    "allowed_rule_classes": [
+      "external_input_boundary",
+      "parameter_registry",
+      "protocol_parser_output",
+      "callback_registration",
+      "timer_lifecycle",
+      "queue_lifecycle",
+      "scheduler_entry",
+      "scope_key",
+      "persistence_boundary"
+    ],
+    "forbidden_rule_classes": [
+      "per_property_slice",
+      "hand_selected_dependency_path",
+      "expected_answer_edge",
+      "benchmark_case_id_branch"
+    ]
+  },
+  "evaluation_gate": {
+    "minimum_independent_projects": 3,
+    "same_analyzer_binary_sha256": true,
+    "same_output_schema_sha256": true,
+    "same_core_tree_sha256": true,
+    "zero_core_source_changes_between_projects": true,
+    "report_per_project": [
+      "source_revision",
+      "compile_database_sha256",
+      "model_pack_sha256",
+      "model_pack_non_comment_lines",
+      "setup_minutes",
+      "unsupported_constructs",
+      "analysis_status",
+      "wall_seconds",
+      "peak_rss_bytes"
+    ],
+    "failure_conditions": [
+      "project_literal_in_generic_core",
+      "property_specific_model_rule",
+      "core_patch_required_for_one_subject",
+      "subject_uses_incompatible_output_schema",
+      "fewer_than_three_successful_independent_projects"
+    ]
+  }
+}

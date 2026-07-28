@@ -1,0 +1,128 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/004_direct_data_must_v3.cpp",
+        "line": 24
+      },
+      "token": "ap_primary"
+    },
+    "node_value": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/004_direct_data_must_v3.cpp",
+        "line": 22
+      },
+      "token": "node_value"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/004_direct_data_must_v3.cpp",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_value > 8",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/004_direct_data_must_v3.cpp",
+        "line": 24
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-004",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "direct_data",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "A direct assignment template fixes whether the primary external value reaches the AP expression on every path, on a guarded path, or on no path.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "direct_data",
+    "variant": 3
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross comparison threshold",
+        "kind": "boundary_crossing",
+        "relative_time_window": null,
+        "suggested_values": [
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "data",
+            "to": "node_value"
+          },
+          {
+            "certainty": "must",
+            "from": "node_value",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_value",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/004_direct_data_must_v3.cpp",
+  "source_sha256": "2bc0fa33e2483b0a010f467f9474f316d38922932a1fdb26ff6422b4c7d3a9d9",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/004_direct_data_must_v3.cpp",
+        "line": 20
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    }
+  ]
+}

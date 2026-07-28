@@ -1,0 +1,71 @@
+IF: A Validation Environment for Timed Asynchronous Systems
+Marius Bozga1, Jean-Claude Fernandez2, Lucian Ghirvu1?, Susanne Graf1, Jean-Pierre Krimm1, and Laurent Mounier1
+1 VERIMAG, Centre Equation, 2 avenue de Vignate, F-38610 Gi`eres 2 LSR/IMAG, BP 82, F-38402 Saint Martin d’He`res Cedex
+1 Introduction
+Formal validation of distributed systems relies on several specification formalisms (such as the international standards lotos [15] or sdl [16]), and it requires different kinds of tools to cover the whole development process. Presently, a wide range of tools are available, either commercial or academic ones, but none of them fulfills in itself all the practical needs.
+Commercial tools (like Objectgeode [20], sdt [1], statemate [14],etc.) provide several development facilities, like editing, code generation and testing. However, they are usually restricted to basic verification techniques (exhaustive simulation, deadlock detection, etc) and are “closed” in the sense that there are only limited possibilities to interface them with others. On the other hand, there exist many academic tools (like smv [19], hytech [12], kronos [22], uppaal [18], spin [13], invest [2], etc.) offering a broad spectrum of quite efficient verification facilities (symbolic verification, on-the-fly verification, abstraction techniques, etc.), but often supporting only low-level input languages. This may restrict their use at an industrial scale.
+This situation motivated the development of if, an intermediate representation for timed asynchronous systems together with an open validation environment. This environment fulfills several requirements. First of all, it is able to support different validation techniques, from interactive simulation to automatic property checking, together with test case and executable code generation. Indeed, all these functionalities cannot be embodied in a single tool and only tool integration facilities can provide all of them. For a sake of efficiency, this environment supports several levels of program representations. For instance it is well-known that model-checking verification of real life case studies usually needs to combine different optimization techniques to overcome the state explosion problem. In particular, some of these techniques rely on a syntactic level representation (like static analysis and computations of abstractions) whereas others techniques operate on the underlying semantic level. Another important feature is to keep this environment open and evolutive. Therefore, tool connections are performed by sharing either input/output formats, or libraries of components. For this purpose several well-defined application programming interfaces (apis) are provided.
+? Work partially supported by R ́egion Rhˆone-Alpes, France
+E.A. Emerson and A.P. Sistla (Eds.): CAV 2000, LNCS 1855, pp. 543–547, 2000. ©c Springer-Verlag Berlin Heidelberg 2000
+
+
+544 M. Bozga et al.
+2 Architecture
+The if validation environment relies on three levels of program representation: the specification level, the if intermediate level, and the lts semantic model level. Figure 1 describes the overall architecture and the connections between the toolbox components.
+CADP
+PROMELA
+IF2PML
+SDL2IF
+LIVE
+IF2C
+KRONOS
+TGV
+ObjectGEODE specification design
+translation to IF
+static analysis
+simulation
+model checking
+test generation
+translation from IF
+SDL IF LTS
+Fig. 1. An open validation environment for if
+The specification level is the initial program description, expressed for instance using an existing language. To be processed, this description is (automatically) translated into its if representation. Currently the main input specification formalism we consider is sdl, but connections with other languages such as lotos or promela could also be possible.
+The intermediate level corresponds to the if representation [7]. In if, a system is expressed by a set of parallel processes communicating either asynchronously through a set of buffers, or synchronously through a set of gates. Processes are based on timed automata with deadlines [3], extended with discrete variables. Process transitions are guarded commands consisting of synchronous/asynchronous inputs and outputs, variable assignments, and clock settings. Buffers have various queuing policies (fifo, stack, bag, etc.), can be bounded or unbounded, and reliable or lossy.
+A well-defined api allows to consult and modify the abstract tree of the if representation. Since all the variables, clocks, buffers and the communication structure are still explicit, high-level transformations based on static analysis (such as live variables computation) or program abstraction can be applied. Moreover, this api is also well suited to implement translators from if to other specification formalisms.
+
+
+IF: A Validation Environment for Timed Asynchronous Systems 545
+The semantic model level gives access to the lts representing the behaviour of the if program. Depending on the application considered, three kinds of api are proposed:
+• The implicit enumerative representation consists in a set of C functions and data structures allowing to compute on demand the successors of a given state (following the open-caesar [11] philosophy). This piece of C code is generated by the if2c compiler, and it can be linked with a “generic” exploration program performing on-the-fly analysis. • In the symbolic representation sets of states and transitions of the lts are expressed by their characteristic predicates over a set of finite variables. These predicates are implemented using decision diagrams (bdds). Existing applications based on this api are symbolic model-checking and minimal model generation. • Finally, the explicit enumerative representation simply consists in an lts file with an associated access library. Although such an explicit representation is not suitable for handling large systems globally, it is still useful in practice to minimize some of its abstractions with respect to bisimulation based relations.
+3 Components Description
+We briefly present here the main components of the environment, together with some external tools for which a strong connection exists.
+The specification level components. Objectgeode [20] is a commercial toolset developed by TTT supporting sdl, msc and omt. In particular, this toolset provides an api to access the abstract tree generated from an sdl specification. We have used this api to implement the sdl2if translator, which generates operationally equivalent if specifications from sdl ones. Given the static nature of if, this translation does not cover the dynamical features of sdl (e.g., process instances creation).
+The intermediate level components. live [5] implements several algorithms based on static analysis to transform an if specification. A first transformation concerns dead variable resetting (a variable is dead at some control point if its value is not used before being redefined). This optimisation can be also applied to buffer contents (a message parameter is dead if its value is not used when the message is consumed). Although very simple, such optimisation is particularly efficient for state space generation (reductions up to a factor 100 were frequently observed), while preserving the exact behaviour of the original specification. A second transformation is based on the slicing technique [21]. It allows to automatically abstract a given specification by eliminating some irrelevant parts w.r.t. a given property or test purpose [6].
+if2pml [4] is a tool developed at Eindhoven TU to translate if specifications into promela.
+The semantic model level components. cadp [9] is a toolset for the verification of lotos specifications. It is developed by the vasy team of Inria Rhoˆne-Alpes and verimag. Two of its model-checkers are connected to the if environment: aldebaran (bisimulation based), and evaluator (alternating-free μ-calculus).
+
+
+546 M. Bozga et al.
+For both tools, diagnostic sequences are computed on the lts level and they can be translated back into msc to be observed at the specification level.
+kronos [22] is a model-checker for symbolic verification of tctl formulae on communicating timed automata. The current connection with the if environment is as follows: control states and discrete variables are expressed using the implicit enumerative representation, whereas clocks are expressed using a symbolic representation (particular polyhedra).
+tgv [10] is a test sequence generator for conformance testing of distributed systems (joint work between verimag and the pampa project of irisa). Test cases are computed during the exploration of the model and they are selected by means of test purposes.
+4 Results and Perspectives
+The if environment has already been used to analyze some representative sdl specifications, like sscop, an Atm signalisation layer protocol [8], and mascara, an Atm wireless transport protocol. It is currently used in several on going industrial casestudies, including the real-time multicast protocol pgm, and the control part of the Ariane 5 launcher flight sequencer. The benefits of combining several techniques, working at different program level, were clearly demonstrated. In particular, traditional model-checking techniques (as provided by Objectgeode) were not sufficient to complete on these large size examples. Several directions can be investigated to improve this environment.
+First of all, other formalisms than sdl could be connected to if. In particular, the translation from a subset of uml is envisaged. To this purpose new features will be added to handle dynamic process creation and parametrized network specifications.
+From the verification point of view, the results obtained using the currently implemented static analysis techniques are very encouraging. We now plan to experiment some more sophisticated algorithms implemented in the invest tool [2], such as structural invariant generation and general abstraction computation techniques for infinite space systems.
+Another promising approach to verify large systems consists in generating their underlying model in a compositional way: each sub-system is generated in isolation, and the resulting ltss are minimized before being composed with each other. The if environment offers all the required components to experiment it in an asynchronous framework [17].
+The if package can be downloaded at http://www-verimag.imag.fr/DIST SYS/IF.
+References
+[1] Telelogic AB. SDT Reference Manual. http://www.telelogic.se.
+[2] S. Bensalem, Y. Lakhnech, and S. Owre. Computing Abstractions of Infinite State Systems Compositionally and Automatically. In Proceedings of CAV’98 , vol. 1427 of LNCS, p. 319–331. Springer, June 1998.
+
+
+IF: A Validation Environment for Timed Asynchronous Systems 547
+[3] S. Bornot, J. Sifakis, and S. Tripakis. Modeling Urgency in Timed Systems. In International Symposium: Compositionality - The Significant Difference, vol. 1536 of LNCS. Springer, September 1997. [4] D. Boˇsnaˇcki, D. Dams, L. Holenderski, and N. Sidorova. Model Checking SDL with Spin. In Proceedings of TACAS’2000, vol. 1785 of LNCS, p. 363–377. March 2000. [5] M. Bozga, J.Cl. Fernandez, and L. Ghirvu. State Space Reduction based on Live Variables Analysis. In Proceedings of SAS’99 , vol. 1694 of LNCS, p. 164–178. Springer, September 1999. [6] M. Bozga, J.Cl. Fernandez, and L. Ghirvu. Using Static Analysis to Improve Automatic Test Generation. In Proceedings of TACAS’00 , vol. 1785 in LNCS, p. 235–250. March 2000. [7] M. Bozga, J.Cl. Fernandez, L. Ghirvu, S. Graf, J.P. Krimm, and L. Mounier. IF: An Intermediate Representation and Validation Environment for Timed Asynchronous Systems. In Proceedings of FM’99, vol. 1708 of LNCS, p. 307–327. September 1999. [8] M. Bozga, J.Cl. Fernandez, L. Ghirvu, C. Jard, T. J ́eron, A. Kerbrat, P. Morel, and L. Mounier. Verification and Test Generation for the SSCOP Protocol. Journal of Science of Computer Programming, Special Isssue on Formal Methods in Industry, 36(1):27–52, January 2000. [9] J.Cl. Fernandez, H. Garavel, A. Kerbrat, R. Mateescu, L. Mounier, and M. Sighireanu. CADP: A Protocol Validation and Verification Toolbox. In Proceedings of CAV’96 , vol. 1102 of LNCS, p. 437–440. Springer, August 1996. [10] J.Cl. Fernandez, C. Jard, T. J ́eron, and C. Viho. An Experiment in Automatic Generation of Test Suites for Protocols with Verification Technology. Science of Computer Programming, 29, 1997.
+[11] H. Garavel. OPEN/CÆSAR: An Open Software Architecture for Verification, Simulation, and Testing. In Proceedings of TACAS’98 , vol. 1384 of LNCS, p. 68–84. March 1998. [12] T.H. Henzinger, P.-H. Ho, and H. Wong-Toi. HyTech : A Model Checker for Hybrid Systems. In Proceedings of CAV’97, vol. 1254 of LNCS, p. 460–463. June 1997.
+[13] Gerard J. Holzmann. Design and Validation of Computer Protocols. Prentice Hall Software Series, 1991.
+[14] I-Logix. StateMate. http://www.ilogix.com/.
+[15] ISO/IEC. LOTOS — A Formal Description Technique Based on the Temporal Ordering of Observational Behaviour. Technical Report 8807, ISO/OSI, 1988. [16] ITU-T. Recommendation Z.100. Specification and Description Language (SDL). Technical Report Z-100, International Telecommunication Union – Standardization Sector, Gene`ve, 1994. [17] J.P. Krimm and L. Mounier. Compositional State Space Generation with Partial Order Reductions for Asynchronous Communicating Systems. In Proceedings of TACAS’2000, vol. 1785 of LNCS, p. 266–282. March 2000. [18] K.G. Larsen, P. Petterson, and W. Yi. UPPAAL: Status & Developments. In Proceedings of CAV’97, vol. 1254 of LNCS, p. 456–459. June 1997.
+[19] K.L. McMillan. Symbolic Model Checking: an Approach to the State Explosion Problem. Kluwer Academic Publisher, 1993.
+[20] Verilog. ObjectGEODE Reference Manual. http://www.verilogusa.com/.
+[21] M. Weiser. Program Slicing. IEEE Transactions on Software Engineering, SE-10(4), July 1984. [22] S. Yovine. KRONOS: A Verification Tool for Real-Time Systems. Software Tools for Technology Transfer, 1(1+2):123–133, December 1997.

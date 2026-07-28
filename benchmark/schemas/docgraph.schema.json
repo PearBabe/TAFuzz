@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schemas/docgraph.schema.json",
+  "title": "TAFuzz document graph record",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "node_id", "system", "source_class", "document_id", "path", "file_sha256", "node_type", "section_path", "anchor", "line_start", "line_end", "text", "text_sha256"],
+      "properties": {
+        "record_type": {"const": "node"},
+        "node_id": {"type": "string"},
+        "system": {"enum": ["ArduPilot", "PX4"]},
+        "source_class": {"enum": ["OFFICIAL_BEHAVIOR", "PARAM_METADATA", "SOURCE_COMMENT", "MAVLINK_INTERFACE_DEFINITION"]},
+        "document_id": {"type": "string"},
+        "path": {"type": "string"},
+        "file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "node_type": {"enum": ["document", "section", "paragraph", "list_item", "table_row", "parameter_record", "source_comment", "definition", "other"]},
+        "section_path": {"type": "array", "items": {"type": "string"}},
+        "anchor": {"type": ["string", "null"]},
+        "line_start": {"type": "integer", "minimum": 1},
+        "line_end": {"type": "integer", "minimum": 1},
+        "text": {"type": "string"},
+        "text_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "edge_id", "system", "from", "relation", "to", "confidence", "evidence"],
+      "properties": {
+        "record_type": {"const": "edge"},
+        "edge_id": {"type": "string"},
+        "system": {"enum": ["ArduPilot", "PX4"]},
+        "from": {"type": "string"},
+        "relation": {"enum": ["parent_of", "next", "defines", "refers_to", "parameterizes", "exception_to", "corefers_to", "supersedes"]},
+        "to": {"type": "string"},
+        "confidence": {"enum": ["EXACT", "LEXICAL", "MODEL_PROPOSED", "UNRESOLVED"]},
+        "evidence": {"type": "string"}
+      }
+    }
+  ]
+}

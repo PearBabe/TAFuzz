@@ -1,0 +1,288 @@
+{
+  "schema_version": "rift.portability.svf.result.v2",
+  "status": "SINGLE_TU_SCHEMA2_UNION_SEALED_FULL_111_TU_TIME_GATE_PENDING",
+  "claim_label": "PORTABILITY_PROBE_NOT_REQUIREMENT",
+  "source": {
+    "name": "SVF",
+    "version": "3.2",
+    "checkout": "benchmark/rift/external/svf",
+    "commit": "197a6590bd9c695a9c3daf52622dea912ef9a002",
+    "tree": "dab507aca71987a0988ac9deef45b6da9e14e4b2",
+    "git_status": "CLEAN",
+    "source_patches": []
+  },
+  "analyzers": {
+    "before_fix": {
+      "snapshot_path": "/tmp/tafuzz-sa-svf-portability-97caa794bae8053bcce5dd8e3becda7cea83e51495cd29a3bde41f69b45e4a07",
+      "binary_sha256": "97caa794bae8053bcce5dd8e3becda7cea83e51495cd29a3bde41f69b45e4a07"
+    },
+    "owner_fix": {
+      "snapshot_path": "/tmp/tafuzz-sa-svf-portability-after-fix-bc926729d86cb35fa3c9ab8ace76a3aaaf72e66aefacb7a4faff3de2dcae1b70",
+      "binary_sha256": "bc926729d86cb35fa3c9ab8ace76a3aaaf72e66aefacb7a4faff3de2dcae1b70",
+      "production_core_sha256": "a450e52bb4cdcadcd4c01bb4539f518658a98a12df134ad5b51a9a245841089a",
+      "schema_bundle_sha256": "096368c0b0b795dbae6c8000dd0ce60f67c2f3e6021a51c122c3c5f0700a4167"
+    },
+    "traversal_fix": {
+      "snapshot_path": "/tmp/tafuzz-sa-svf-portability-final-dbef650aa250713c7f58bf743e95c891cc85046d3be78d8e69f5fd1fa3370d97",
+      "binary_sha256": "dbef650aa250713c7f58bf743e95c891cc85046d3be78d8e69f5fd1fa3370d97",
+      "production_core_sha256": "3f92ab9ac9200cd3f34e1d7e6500be95f4f609a5f6fe164a496cb0cb4442b1f4",
+      "schema_bundle_sha256": "096368c0b0b795dbae6c8000dd0ce60f67c2f3e6021a51c122c3c5f0700a4167",
+      "build_manifest_sha256": "dcd539b63f347853e2dce2546909652f0cd8dd82e96e590f2cd0d8702afe7ed0"
+    },
+    "union_diagnostic": {
+      "snapshot_path": "/tmp/tafuzz-sa-m5-union-f4b6f21b4795474e6c981787d4f34bd5bdcb21fcb1814925383a24e7aadb7dd5",
+      "binary_sha256": "f4b6f21b4795474e6c981787d4f34bd5bdcb21fcb1814925383a24e7aadb7dd5",
+      "production_core_sha256": "6a319b73f734c93254a69ca7d07fa3af99dadcfe744d50cfb509d6987dd2849e",
+      "schema_bundle_sha256": "ebe34a363b120c3db3c963e64ee1d7270ed7a10c1f21587deeaae7f31167a529"
+    },
+    "schema2_union": {
+      "snapshot_path": "/tmp/tafuzz-sa-m5-schema2-union-13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+      "binary_sha256": "13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+      "production_core_sha256": "c61e38afb3408767a01916f6100091f670ec64cd0fb997677aa36ebc6d14dd8b",
+      "schema_bundle_sha256": "84c56cc3bb808024d6ad691668ac00d7d03793d69c9a8027faa428b8ba4f59e7",
+      "build_manifest_sha256": "ed674c9c8ec3279f2d1f875672235901a473982b5dd6e2495fac7a88e8c75999"
+    }
+  },
+  "inputs": {
+    "reproduction_manifest": {
+      "path": "benchmark/rift/reproduction/svf/artifact_manifest.json",
+      "sha256": "44f012d1397b414b2da3750a788cf02245918aa5160a1d9b83d8abd418402a11"
+    },
+    "compile_database": {
+      "path": "benchmark/rift/reproduction/svf/build/compile_commands.json",
+      "sha256": "aa2dc4b5db8ee227eb6c4bad0ad6cc32cb8da0e4f52cf18a1081f2a0364b3555",
+      "entries": 111,
+      "unique_translation_units": 111
+    },
+    "preflight_compile_database": {
+      "path": "benchmark/rift/m5/portability/svf/preflight/compile_commands.ae.json",
+      "sha256": "538d66c53d8132a95e3335c25adfe491881e6e5cbbce347595941519154edea2",
+      "derivation": "exact one-entry projection; command bytes unchanged"
+    },
+    "property_ir": {
+      "path": "benchmark/rift/m5/portability/svf/property_ir.json",
+      "sha256": "ad2fb72e8e1118984d4b1e2295af2b6cf370d842dc099d64d0f07217feede306"
+    },
+    "executor_capabilities": {
+      "path": "benchmark/rift/m5/portability/svf/executor_capabilities.json",
+      "sha256": "ddb94a748b31e1e56083ac2344c677ac2bc37108eae9c49d0223a965086a4a9f"
+    },
+    "model_pack": {
+      "path": "src/StaticAnalysis/model_packs/platform/posix_lp64_v1.json",
+      "sha256": "c532d54ab0e3e2cb62d82393164aa5497be8e6a39cc9c1e60c516a8a39266da0",
+      "model_pack_id": "pack.platform.posix-lp64",
+      "layer": "platform",
+      "property_independent": true,
+      "project_specific": false
+    },
+    "ast_evidence": {
+      "path": "benchmark/rift/m5/portability/svf/ast_evidence.json",
+      "sha256": "9f26a3fef7f8b6bb8f7feb89b8db80a0720eb1c86c65f70c0e3e66407c9f3c2c",
+      "wall_seconds": 4.36,
+      "peak_rss_kib": 599512
+    }
+  },
+  "logical_roots": [
+    "source=/home/lqq/project/TAFuzz/benchmark/rift/external/svf",
+    "build=/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build",
+    "llvm=/usr/lib/llvm-18"
+  ],
+  "runs": {
+    "before_fix": {
+      "single_bind": {
+        "stderr": "benchmark/rift/m5/portability/svf/preflight/bind.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/preflight/bind.time",
+        "empty_caller_diagnostics": 6619
+      },
+      "single_influence": {
+        "stderr": "benchmark/rift/m5/portability/svf/preflight/influence.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/preflight/influence.time",
+        "empty_caller_diagnostics": 6619
+      },
+      "single_recipes": {
+        "stderr": "benchmark/rift/m5/portability/svf/preflight/recipes.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/preflight/recipes.time",
+        "empty_caller_diagnostics": 6619
+      },
+      "full_index": {
+        "stderr": "benchmark/rift/m5/portability/svf/full_index.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/full_index.time",
+        "empty_caller_diagnostics": 32625
+      }
+    },
+    "owner_fix_full": {
+      "stderr": "benchmark/rift/m5/portability/svf/after_fix/full_index.stderr",
+      "time_receipt": "benchmark/rift/m5/portability/svf/after_fix/full_index.time",
+      "exit_code": 1,
+      "wall_seconds": 559.87,
+      "peak_rss_kib": 11747472,
+      "failure": "std::bad_alloc"
+    },
+    "traversal_fix": {
+      "single_index": {
+        "stdout": "benchmark/rift/m5/portability/svf/after_final/preflight/index.stdout",
+        "stderr": "benchmark/rift/m5/portability/svf/after_final/preflight/index.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/after_final/preflight/index.time",
+        "exit_code": 0,
+        "wall_seconds": 14.51,
+        "peak_rss_kib": 1366948
+      },
+      "single_recipes": {
+        "stdout": "benchmark/rift/m5/portability/svf/after_final/preflight/recipes.stdout",
+        "stderr": "benchmark/rift/m5/portability/svf/after_final/preflight/recipes.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/after_final/preflight/recipes.time",
+        "exit_code": 0,
+        "wall_seconds": 32.78,
+        "peak_rss_kib": 1365660
+      },
+      "full_index": {
+        "stdout": "benchmark/rift/m5/portability/svf/after_final/full_index.stdout",
+        "stderr": "benchmark/rift/m5/portability/svf/after_final/full_index.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/after_final/full_index.time",
+        "exit_code": 124,
+        "wall_seconds": 614.49,
+        "peak_rss_kib": 1679452,
+        "timeout_seconds": 600,
+        "address_space_limit_bytes": 12884901888,
+        "output_artifact_created": false,
+        "argv": [
+          "/tmp/tafuzz-sa-svf-portability-final-dbef650aa250713c7f58bf743e95c891cc85046d3be78d8e69f5fd1fa3370d97",
+          "index", "--compile-db", "/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build/compile_commands.json",
+          "--logical-root", "source=/home/lqq/project/TAFuzz/benchmark/rift/external/svf",
+          "--logical-root", "build=/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build",
+          "--logical-root", "llvm=/usr/lib/llvm-18",
+          "--output", "/tmp/rift-svf-portability-final-full-index-dbef650a.json"
+        ]
+      }
+    },
+    "union_diagnostic": {
+      "stdout": "benchmark/rift/m5/portability/svf/after_union/preflight/recipes.stdout",
+      "stderr": "benchmark/rift/m5/portability/svf/after_union/preflight/recipes.stderr",
+      "time_receipt": "benchmark/rift/m5/portability/svf/after_union/preflight/recipes.time",
+      "exit_code": 0,
+      "wall_seconds": 32.56,
+      "peak_rss_kib": 1365964
+    },
+    "schema2_union": {
+      "recipes": {
+        "stdout": "benchmark/rift/m5/portability/svf/after_schema2/preflight/recipes.stdout",
+        "stderr": "benchmark/rift/m5/portability/svf/after_schema2/preflight/recipes.stderr",
+        "time_receipt": "benchmark/rift/m5/portability/svf/after_schema2/preflight/recipes.time",
+        "exit_code": 0,
+        "wall_seconds": 31.87,
+        "peak_rss_kib": 1366464,
+        "argv": [
+          "/tmp/tafuzz-sa-m5-schema2-union-13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+          "recipes", "--compile-db", "/home/lqq/project/TAFuzz/benchmark/rift/m5/portability/svf/after_fix/preflight/compile_commands.ae.json",
+          "--property", "/home/lqq/project/TAFuzz/benchmark/rift/m5/portability/svf/property_ir.json",
+          "--logical-root", "source=/home/lqq/project/TAFuzz/benchmark/rift/external/svf",
+          "--logical-root", "build=/home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/build",
+          "--logical-root", "llvm=/usr/lib/llvm-18",
+          "--output-dir", "/tmp/rift-svf-portability-schema2-union-single-recipes-13ad31be",
+          "--model-pack", "/home/lqq/project/TAFuzz/src/StaticAnalysis/model_packs/platform/posix_lp64_v1.json",
+          "--executor-capabilities", "/home/lqq/project/TAFuzz/benchmark/rift/m5/portability/svf/executor_capabilities.json",
+          "--solver-timeout-ms", "1000", "--max-solver-queries", "100"
+        ]
+      },
+      "certificate_pre_contract_report": "benchmark/rift/m5/portability/svf/after_schema2/preflight/certificate_verification.pre_contract_fix.json",
+      "certificate_report": "benchmark/rift/m5/portability/svf/after_schema2/preflight/certificate_verification.json",
+      "certificate_sha256": "04d59472c06de0847262bcfec440d36cad5278a8be19f5e66010c277e8aa9194",
+      "certificate_checks": 62,
+      "certificate_failures": 0,
+      "physical_files_rehashed": 665
+    }
+  },
+  "summaries": {
+    "owner_fix": {
+      "path": "benchmark/rift/m5/portability/svf/after_fix/semantic_summary.json",
+      "status": "SEMANTIC_FIX_VALIDATION_PARTIAL_FULL_BUDGET_MEMORY_FAIL"
+    },
+    "traversal_fix": {
+      "path": "benchmark/rift/m5/portability/svf/after_final/semantic_summary.json",
+      "status": "SINGLE_TU_PASS_FULL_BUDGET_TIME_FAIL"
+    },
+    "schema2_union": {
+      "path": "benchmark/rift/m5/portability/svf/after_schema2/semantic_summary.json",
+      "status": "RECIPES_AND_DETACHED_CERTIFICATE_PASS"
+    }
+  },
+  "bulk_artifacts": {
+    "pre_union_output_root": "/tmp/rift-svf-portability-final-single-recipes-dbef650a",
+    "schema2_output_root": "/tmp/rift-svf-portability-schema2-union-single-recipes-13ad31be",
+    "schema2": {
+      "semantic_index.json": {"size": 77049022, "sha256": "ed5627b950295e4d7a96a50f9c2d6c2b4d2ec0b002cc82171568af9ce8f757e0"},
+      "contextual_influence_graph.json": {"size": 158565503, "sha256": "72bbd355b9d37884be0fdf446faa673399f0367a6b8b4f313ca41cdcfa1f6a9b"},
+      "ap_influence_cones.json": {"size": 7850097, "sha256": "202a8e341c48b4d97a42cdab1762f8a83cfd5c6ab6980ee98655b940ebdd67ba"},
+      "frontier_candidates.json": {"size": 12012765, "sha256": "62b4ce4fe71225d1156b66113ab7631616d23969171e2df481cbb39065aee240"},
+      "fuzzable_frontier.json": {"size": 4510, "sha256": "8e590a6ecb03d99d6ce4dd6d048662b7b749ceebf326b3c1c3f3969d60f81181"},
+      "mutation_recipes.json": {"size": 8165686, "sha256": "1fc141787ab4e2718e906b2ef57a6831f77cdd29ea5418fe04f3a7bcf3a197c3"},
+      "analysis_certificate.json": {"size": 8173020, "sha256": "cb4699dbdc11dbab640509c03adccc0b649f1c81d3b3983591d851595c8ee08a"},
+      "m5_analysis_certificate.json": {"size": 12743, "sha256": "04d59472c06de0847262bcfec440d36cad5278a8be19f5e66010c277e8aa9194"},
+      "predicate_occurrence_bindings.json": {"size": 14086, "sha256": "1108831735e50fd26210f3c241f6f811d4447ca7ca5f7a555a1a59e61d4ab1e2"},
+      "recipe_replay_obligations.json": {"size": 1988, "sha256": "e01020642b18e24ae9a39bbe67f64137ed163a6df0e48005293c87c0b98adfce"}
+    }
+  },
+  "claim_boundary": {
+    "supported": [
+      "One frozen real SVF C++ TU completes the generic schema-2 union pipeline.",
+      "The exact single-TU artifact passes detached certificate replay.",
+      "Generic FunctionDecl traversal removes the observed fallback-owner explosion and prior full-run memory trajectory.",
+      "Union witnesses preserve the old per-group meet/path evidence on this probe."
+    ],
+    "not_supported": [
+      "The 111-TU index has not passed the registered 600-second gate.",
+      "No full-project output or certificate exists.",
+      "No gold accuracy, mutation direction, AP flip, runtime recipe, fuzz gain, or three-project portability claim is made."
+    ]
+  },
+  "evidence_files": {
+    "benchmark/rift/reproduction/svf/artifact_manifest.json": {"sha256": "44f012d1397b414b2da3750a788cf02245918aa5160a1d9b83d8abd418402a11", "size": 8759},
+    "benchmark/rift/reproduction/svf/build/compile_commands.json": {"sha256": "aa2dc4b5db8ee227eb6c4bad0ad6cc32cb8da0e4f52cf18a1081f2a0364b3555", "size": 106024},
+    "benchmark/rift/external/svf/svf-llvm/tools/AE/ae.cpp": {"sha256": "3e5f4d43401ef600a0915522f84a0395017484258af44e13025e1ebc1e35a905", "size": 45411},
+    "benchmark/rift/m5/portability/svf/README.md": {"sha256": "b0b3e4c4d5b89b7bbb9455e46291fadb4bf8eeb93c90327ec6b9eb2a70801e56", "size": 1626},
+    "benchmark/rift/m5/portability/svf/RESULTS.md": {"sha256": "9f7c8dde401039e62ccb89fcbcda33c6faf42e8d7e6fe76a90e27c605c54385a", "size": 9455},
+    "benchmark/rift/m5/portability/svf/property_ir.json": {"sha256": "ad2fb72e8e1118984d4b1e2295af2b6cf370d842dc099d64d0f07217feede306", "size": 11110},
+    "benchmark/rift/m5/portability/svf/executor_capabilities.json": {"sha256": "ddb94a748b31e1e56083ac2344c677ac2bc37108eae9c49d0223a965086a4a9f", "size": 1111},
+    "benchmark/rift/m5/portability/svf/derive_ast_evidence.py": {"sha256": "5df57e881779a3ffce472a170639ddb36889fa30f2ee756d16e82fa6056fd3c8", "size": 6680},
+    "benchmark/rift/m5/portability/svf/ast_evidence.json": {"sha256": "9f26a3fef7f8b6bb8f7feb89b8db80a0720eb1c86c65f70c0e3e66407c9f3c2c", "size": 8407},
+    "benchmark/rift/m5/portability/svf/verify_probe.py": {"sha256": "1713c083fe3aafa1a53a90710732dbe54fa1d9de8bb837952c114279d2b7de26", "size": 17173},
+    "benchmark/rift/m5/portability/svf/preflight/compile_commands.ae.json": {"sha256": "538d66c53d8132a95e3335c25adfe491881e6e5cbbce347595941519154edea2", "size": 1114},
+    "src/StaticAnalysis/model_packs/platform/posix_lp64_v1.json": {"sha256": "c532d54ab0e3e2cb62d82393164aa5497be8e6a39cc9c1e60c516a8a39266da0", "size": 14256},
+    "src/StaticAnalysis/schema/typed_property_ir.schema.json": {"sha256": "a7b213f82c518b966b220994f718effd3e4b088061213c78e7469302b308680f", "size": 8437},
+    "src/StaticAnalysis/schema/executor_capabilities.schema.json": {"sha256": "eb58036eda7c300d810cde79dc6f643621d8bf86bfeb79faa1a1603acebc3628", "size": 2273},
+    "src/StaticAnalysis/schema/frontier_candidates.schema.json": {"sha256": "8582205ffb3b91ffeb0993ede4a504d3e8b0f24cd59f6d5ea430c68b47dd7248", "size": 13679},
+    "src/StaticAnalysis/schema/fuzzable_frontier.schema.json": {"sha256": "25fa9001dc2e2f3a72d45da6c45786c501ecdafa250c128b5c9998daf335dc9c", "size": 2619},
+    "benchmark/rift/m5/portability/svf/preflight/bind.stderr": {"sha256": "23d9a31759e5bc6a571f9486b0263fd5c7610b1d730a0bcb384c92da250d4c8d", "size": 251561},
+    "benchmark/rift/m5/portability/svf/preflight/bind.time": {"sha256": "758d12f91e031d4912965373d0bd10bfa6b8262935d20f2adb9ab859a35808fa", "size": 93},
+    "benchmark/rift/m5/portability/svf/preflight/influence.stderr": {"sha256": "23d9a31759e5bc6a571f9486b0263fd5c7610b1d730a0bcb384c92da250d4c8d", "size": 251561},
+    "benchmark/rift/m5/portability/svf/preflight/influence.time": {"sha256": "249a912c5a8d3abdf96ac4be1fe9104677721027be3f7e3d1a553bef5a649aa8", "size": 93},
+    "benchmark/rift/m5/portability/svf/preflight/recipes.stderr": {"sha256": "23d9a31759e5bc6a571f9486b0263fd5c7610b1d730a0bcb384c92da250d4c8d", "size": 251561},
+    "benchmark/rift/m5/portability/svf/preflight/recipes.time": {"sha256": "ddb962af3fc18b2da5de9af6374c7630b33ed571c2ae8ace0d0ce25542895cac", "size": 93},
+    "benchmark/rift/m5/portability/svf/full_index.stderr": {"sha256": "00367e096d3fe631c5701d2646f2e0a1b288485e42c5ce3de64166329fc81ffd", "size": 1239789},
+    "benchmark/rift/m5/portability/svf/full_index.time": {"sha256": "78c60aaaeabbcd22ab1a823bcda2259ce05a82600773b6b7a5d7ca02653be029", "size": 100},
+    "benchmark/rift/m5/portability/svf/after_fix/full_index.stderr": {"sha256": "6a5695a06312a9f03e75eeb3f24f250746b5c6ed57ab85fe685741db7e2b388f", "size": 21},
+    "benchmark/rift/m5/portability/svf/after_fix/full_index.time": {"sha256": "fc4d12da933abc699b8714327662231adb3e74ffa467a4ad97a61fae6fb68629", "size": 101},
+    "benchmark/rift/m5/portability/svf/after_fix/semantic_summary.json": {"sha256": "281965639329d3647539d6f476802731a7d338c787de7fd4287c21b6f6afc2da", "size": 6688},
+    "benchmark/rift/m5/portability/svf/after_final/preflight/index.stdout": {"sha256": "3ec2cb977fceee10b96ad7fe0774b121a0cce23e1018716fc0e0c569778a83b5", "size": 150},
+    "benchmark/rift/m5/portability/svf/after_final/preflight/index.stderr": {"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "size": 0},
+    "benchmark/rift/m5/portability/svf/after_final/preflight/index.time": {"sha256": "457cb8efb0099a977743da0dd9a6e42f7a62f1261538a8a3ddd58c5a8c6a4c8b", "size": 58},
+    "benchmark/rift/m5/portability/svf/after_final/preflight/recipes.stdout": {"sha256": "0281eae00fa831ead4c5db8c55962b6b9857a74d29fb137883da05ef72bb2898", "size": 236},
+    "benchmark/rift/m5/portability/svf/after_final/preflight/recipes.stderr": {"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "size": 0},
+    "benchmark/rift/m5/portability/svf/after_final/preflight/recipes.time": {"sha256": "fc6a86a879ad606bf7445db7cc1dcf55c3e62175d86e2b90106cd5067126fdde", "size": 59},
+    "benchmark/rift/m5/portability/svf/after_final/full_index.stdout": {"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "size": 0},
+    "benchmark/rift/m5/portability/svf/after_final/full_index.stderr": {"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "size": 0},
+    "benchmark/rift/m5/portability/svf/after_final/full_index.time": {"sha256": "be29be5c073a83be889f8915f405e9557886229ef3584067bd3674d47b58d8c5", "size": 104},
+    "benchmark/rift/m5/portability/svf/after_final/semantic_summary.json": {"sha256": "80bd5b2ce90ae4796620b3f8255f68563c7171459cf32be01260688d1e187061", "size": 4788},
+    "benchmark/rift/m5/portability/svf/after_union/preflight/recipes.stdout": {"sha256": "ae035e7d07bf0d0e9c7beee9bb2a99b0812e23bb1eaa4d5b30ec5c8896430018", "size": 236},
+    "benchmark/rift/m5/portability/svf/after_union/preflight/recipes.stderr": {"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "size": 0},
+    "benchmark/rift/m5/portability/svf/after_union/preflight/recipes.time": {"sha256": "3d54bf20edc65a7c40e35dcfe9515c1b76117bfcea7270a8024c6dfafdf83362", "size": 59},
+    "benchmark/rift/m5/portability/svf/after_union/union_comparison.json": {"sha256": "80efb477a6cd25020b561238e6fe9b84cfd222f4009839467c3efb0a54692558", "size": 3612},
+    "benchmark/rift/m5/portability/svf/after_schema2/preflight/recipes.stdout": {"sha256": "50a88c4f7ad7cc4f6ccf2338789176f092e6b773a79edd1d08ad8339a05cedb9", "size": 244},
+    "benchmark/rift/m5/portability/svf/after_schema2/preflight/recipes.stderr": {"sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", "size": 0},
+    "benchmark/rift/m5/portability/svf/after_schema2/preflight/recipes.time": {"sha256": "0a7202ff02eb18aeb595536c25094044098aac7c0b4e298cb3f8c8e75cfa0b4c", "size": 59},
+    "benchmark/rift/m5/portability/svf/after_schema2/preflight/certificate_verification.pre_contract_fix.json": {"sha256": "29a6baadc4c994cfde453430e600fafdfe33fa3e554adf7e52f0c3b2f52e0d76", "size": 12152},
+    "benchmark/rift/m5/portability/svf/after_schema2/preflight/certificate_verification.json": {"sha256": "efad2b37f90c08bbae885a847421855e9435acdb8674ed825737efa8f2f500d3", "size": 11121},
+    "benchmark/rift/m5/portability/svf/after_schema2/preflight/certificate_verify.time": {"sha256": "e2b78381ccfb3376026213c7c763b89dbc1f8d3a27eef9476c4f30b2a9dd0bbc", "size": 57},
+    "benchmark/rift/m5/portability/svf/after_schema2/semantic_summary.json": {"sha256": "ed3945b600a2e389bc5be560ae3f99cc3f437af2cd895ee08b3bf94d1ac84735", "size": 3540}
+  }
+}

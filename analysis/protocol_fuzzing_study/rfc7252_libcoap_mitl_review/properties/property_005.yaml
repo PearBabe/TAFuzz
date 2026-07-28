@@ -1,0 +1,55 @@
+property_id: RFC7252-MITL-005
+title: Message ID 在 EXCHANGE_LIFETIME 内不得复用
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.4"
+    - "4.8.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1295
+      end: 1307
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1618
+      end: 1641
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: 同一 endpoint 通信中，相同 Message ID 在 EXCHANGE_LIFETIME 内不得复用。
+  normative_keyword: MUST NOT
+mitl: |
+  G( MID_USED ->
+     G(0, EXCHANGE_LIFETIME) !MID_REUSED_SAME_ENDPOINT )
+informal_semantics: >
+  对同一 session/endpoint，发送一个 CON 或 NON message 使用某个 Message ID 后，
+  在 EXCHANGE_LIFETIME 内不得再次使用相同 Message ID。
+role: client/server/both
+temporal_pattern: lifetime_state
+events:
+  start_event: MID_USED
+  forbidden_event: MID_REUSED_SAME_ENDPOINT
+atomic_propositions:
+  - name: MID_USED
+    semantic: 端点向某 peer 发送 CON 或 NON message，并使用某个 Message ID。
+    fields: [session, peer, message.id, message.type]
+    future_source_mapping: [message field, internal state]
+  - name: MID_REUSED_SAME_ENDPOINT
+    semantic: 在同一 endpoint 上再次发送相同 Message ID。
+    fields: [session, peer, message.id, message.type]
+    future_source_mapping: [message field, internal state, data structure]
+correlation_key:
+  key: [session, peer, message_id]
+  reason: RFC7252 明确 MID 复用限制限定在与同一 endpoint 通信的范围内。
+time_parameters:
+  bound_kind: nonzero_bounded
+  start: MID_USED
+  end: allowed reuse time
+  rfc_parameters:
+    - EXCHANGE_LIFETIME
+  default_values:
+    EXCHANGE_LIFETIME: 247 seconds
+  derived_formula:
+    EXCHANGE_LIFETIME: MAX_TRANSMIT_SPAN + (2 * MAX_LATENCY) + PROCESSING_DELAY
+confidence: high
+verification_notes:
+  - 需要记录最近使用过的 MID history，不能只看当前包。
+  - 对只想使用单一 timeout 退休 MID 的实现，RFC 允许用更大的 EXCHANGE_LIFETIME。

@@ -1,0 +1,219 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 33
+      },
+      "token": "ap_primary"
+    },
+    "node_alias": {
+      "kind": "NODE",
+      "location": {
+        "column": 35,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 28
+      },
+      "token": "node_alias"
+    },
+    "node_field": {
+      "kind": "NODE",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 31
+      },
+      "token": "node_field"
+    },
+    "source_gate": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 24
+      },
+      "token": "source_gate"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 22
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "first.observed != 0",
+      "id": "ap_primary",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 33
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-035",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "alias_object_field",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "Named objects and fields make the alias oracle exact: positive variants share the AP object/field; negative variants differ in both object and field.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "alias_object_field",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "alias",
+        "field",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "toggle selected object field",
+        "kind": "field_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "alias",
+            "to": "node_alias"
+          },
+          {
+            "certainty": "may",
+            "from": "node_alias",
+            "kind": "field",
+            "to": "node_field"
+          },
+          {
+            "certainty": "may",
+            "from": "node_field",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_alias",
+          "node_field",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "node_alias points to first"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control",
+        "alias",
+        "field"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "select AP-observed object",
+        "kind": "alias_selection",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_gate",
+            "kind": "control",
+            "to": "node_alias"
+          },
+          {
+            "certainty": "may",
+            "from": "node_alias",
+            "kind": "alias",
+            "to": "node_field"
+          },
+          {
+            "certainty": "may",
+            "from": "node_field",
+            "kind": "field",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_gate",
+          "node_alias",
+          "node_field",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_gate"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/035_alias_object_field_may_v4.c",
+  "source_sha256": "da68add22ff68455873bf39b6c22e483d443b416e9b73c60cf8358d3b7a18447",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 22
+      },
+      "scope": "OBJECT",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_gate",
+      "kind": "external_argument",
+      "location": {
+        "column": 17,
+        "file": "cases/035_alias_object_field_may_v4.c",
+        "line": 24
+      },
+      "scope": "OBJECT",
+      "symbol": "source_gate"
+    }
+  ]
+}

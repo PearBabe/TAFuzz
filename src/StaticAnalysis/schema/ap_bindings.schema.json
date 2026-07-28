@@ -1,0 +1,230 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/ap-bindings/2.0.0",
+  "title": "RIFT typed AP binding results compatibility envelope",
+  "oneOf": [
+    {"$ref": "#/definitions/document_v1"},
+    {"$ref": "#/definitions/document_v2"}
+  ],
+  "definitions": {
+    "document_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "artifact_id", "property_ir_sha256", "semantic_index_sha256",
+        "binding_policy", "bindings", "unsupported_constructs"
+      ],
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "property_ir_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "semantic_index_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "binding_policy": {"$ref": "#/definitions/binding_policy_v1"},
+        "bindings": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/ap_role_binding_v1"}
+        },
+        "unsupported_constructs": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}
+        }
+      }
+    },
+    "document_v2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version", "artifact_id", "property_ir_sha256", "semantic_index_sha256",
+        "binding_policy", "bindings", "unsupported_constructs"
+      ],
+      "properties": {
+        "schema_version": {"const": "2.0.0"},
+        "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "property_ir_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "semantic_index_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "binding_policy": {"$ref": "#/definitions/binding_policy_v2"},
+        "bindings": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/ap_role_binding_v2"}
+        },
+        "unsupported_constructs": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}
+        }
+      }
+    },
+    "binding_policy_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["joint_role_binding", "similarity_is_confirmation"],
+      "properties": {
+        "joint_role_binding": {"const": true},
+        "similarity_is_confirmation": {"const": false}
+      }
+    },
+    "binding_policy_v2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role_selector_logic", "cross_role_consistency", "similarity_is_confirmation"
+      ],
+      "properties": {
+        "role_selector_logic": {"const": "role-dnf/1"},
+        "cross_role_consistency": {"const": "NOT_EVALUATED"},
+        "similarity_is_confirmation": {"const": false}
+      }
+    },
+    "binding_candidate_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id", "status", "selector_refs", "semantic_node_refs", "evidence",
+        "confidence", "uncertainty_reasons"
+      ],
+      "properties": {
+        "binding_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "status": {"enum": ["CANDIDATE", "CONFIRMED", "REJECTED", "UNRESOLVED"]},
+        "selector_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "semantic_node_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "evidence": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/evidence"}
+        },
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {"$ref": "#/definitions/confirmed_candidate_contract"}
+      ]
+    },
+    "binding_candidate_v2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id", "status", "selector_group_id", "selector_refs",
+        "semantic_node_refs", "evidence", "confidence", "uncertainty_reasons"
+      ],
+      "properties": {
+        "binding_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "status": {"enum": ["CANDIDATE", "CONFIRMED", "REJECTED", "UNRESOLVED"]},
+        "selector_group_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "selector_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "semantic_node_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "evidence": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/evidence"}
+        },
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {"$ref": "#/definitions/confirmed_candidate_contract"}
+      ]
+    },
+    "confirmed_candidate_contract": {
+      "if": {"properties": {"status": {"const": "CONFIRMED"}}},
+      "then": {
+        "properties": {
+          "semantic_node_refs": {"minItems": 1},
+          "evidence": {
+            "minItems": 1,
+            "contains": {
+              "type": "object",
+              "required": ["kind"],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "usr_match", "qualified_signature_match", "source_location_match",
+                    "type_field_match", "expression_structure_match", "ast_semantics",
+                    "llvm_value_flow", "memoryssa", "alias_analysis",
+                    "control_dependence", "call_graph", "debug_mapping",
+                    "model_rule", "path_constraint", "temporal_role", "scope_match"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ap_role_binding_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ap_id", "role", "resolution", "candidates"],
+      "properties": {
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "role": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/ap_role"},
+        "resolution": {"enum": ["CONFIRMED", "AMBIGUOUS", "UNRESOLVED", "FAILED"]},
+        "candidates": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/binding_candidate_v1"}
+        }
+      },
+      "allOf": [
+        {"$ref": "#/definitions/confirmed_binding_contract"},
+        {"$ref": "#/definitions/ambiguous_binding_contract"}
+      ]
+    },
+    "ap_role_binding_v2": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ap_id", "role", "resolution", "candidates"],
+      "properties": {
+        "ap_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "role": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/ap_role"},
+        "resolution": {
+          "enum": ["CONFIRMED", "PARTIAL", "AMBIGUOUS", "UNRESOLVED", "FAILED"]
+        },
+        "candidates": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/binding_candidate_v2"}
+        }
+      },
+      "allOf": [
+        {"$ref": "#/definitions/confirmed_binding_contract"},
+        {"$ref": "#/definitions/ambiguous_binding_contract"}
+      ]
+    },
+    "confirmed_binding_contract": {
+      "if": {"properties": {"resolution": {"const": "CONFIRMED"}}},
+      "then": {
+        "properties": {
+          "candidates": {
+            "minItems": 1,
+            "contains": {
+              "type": "object",
+              "required": ["status"],
+              "properties": {"status": {"const": "CONFIRMED"}}
+            }
+          }
+        }
+      }
+    },
+    "ambiguous_binding_contract": {
+      "if": {"properties": {"resolution": {"const": "AMBIGUOUS"}}},
+      "then": {"properties": {"candidates": {"minItems": 2}}}
+    }
+  }
+}

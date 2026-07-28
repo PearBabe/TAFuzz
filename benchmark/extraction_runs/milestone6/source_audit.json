@@ -1,0 +1,1196 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "M6-MAVLINK-OFFICIAL-SOURCE-AUDIT",
+  "audit_date": "2026-07-18",
+  "retrieval_date": "2026-07-18",
+  "scope": {
+    "systems": [
+      "ArduPilot",
+      "PX4"
+    ],
+    "purpose": "Versioned MAVLink semantics and observability evidence policy for the MITL benchmark.",
+    "included": [
+      "Frozen dialect and frame definitions",
+      "Official MAVLink, ArduPilot, and PX4 documentation",
+      "Message-field, MAV_CMD-slot, and configuration-parameter separation",
+      "PARAM versus PARAM_EXT",
+      "Static and runtime observability state separation",
+      "Time-domain and timing-uncertainty rules"
+    ],
+    "excluded": [
+      "Runtime execution",
+      "Packet capture",
+      "Firmware conformance assessment",
+      "Claim that any dialect-defined message is actually supported"
+    ]
+  },
+  "runtime_observation_status": "NOT_RUN_NO_CAPTURE",
+  "conformance_assessment": "NOT_PERFORMED",
+  "frozen_targets": {
+    "ardupilot": {
+      "sut_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472",
+      "mavlink_commit_date": "2026-07-01T15:20:12+10:00",
+      "official_permalinks": {
+        "retrieved_on": "2026-07-18",
+        "build_entry": "https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/wscript#L778-L784",
+        "dialect_entry": "https://github.com/ArduPilot/mavlink/blob/13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472/message_definitions/v1.0/all.xml#L3-L30",
+        "common_xml": "https://github.com/ArduPilot/mavlink/blob/13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472/message_definitions/v1.0/common.xml"
+      },
+      "build_entrypoint": {
+        "path": "baseline/ardupilot/wscript",
+        "lines": "778-784",
+        "dialect": "modules/mavlink/message_definitions/v1.0/all.xml",
+        "generated_output": "libraries/GCS_MAVLink/include/mavlink/v2.0/"
+      },
+      "dialect_entry": {
+        "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/all.xml",
+        "lines": "3-30",
+        "warning": "Includes common, ardupilotmega, development, test, python_array_test, and other dialects. The include closure is a generation universe, not a support list."
+      },
+      "common_xml": {
+        "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+        "sha256": "aead2b840e503bd30f0d175d0659b07fcecf11644e7abb826590a582aff4c850"
+      },
+      "mavlink_types_header": {
+        "path": "baseline/ardupilot/modules/mavlink/pymavlink/generator/C/include_v2.0/mavlink_types.h",
+        "sha256": "407273090067c0da447a0b94646cae2fe580c1fa4c2accddb13efb7270f06962",
+        "lines": "22-35"
+      }
+    },
+    "px4": {
+      "sut_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "release": "v1.17.0",
+      "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+      "mavlink_commit_date": "2025-09-25T16:32:07+10:00",
+      "official_permalinks": {
+        "retrieved_on": "2026-07-18",
+        "board_selection": "https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/boards/px4/sitl/default.px4board#L37-L38",
+        "build_entry": "https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/CMakeLists.txt#L40-L80",
+        "dialect_entry": "https://github.com/mavlink/mavlink/blob/33af200d25ec6f0925b49b1ba82bbf1294ea5f72/message_definitions/v1.0/development.xml#L3-L6",
+        "common_xml": "https://github.com/mavlink/mavlink/blob/33af200d25ec6f0925b49b1ba82bbf1294ea5f72/message_definitions/v1.0/common.xml"
+      },
+      "board_selection": {
+        "path": "baseline/px4/boards/px4/sitl/default.px4board",
+        "lines": "37-38",
+        "mavlink_enabled": true,
+        "primary_dialect": "development"
+      },
+      "build_entrypoint": {
+        "path": "baseline/px4/src/modules/mavlink/CMakeLists.txt",
+        "lines": "40-80",
+        "wire_protocol": "2.0",
+        "generated_dialects": [
+          "development",
+          "uAvionix"
+        ],
+        "warning": "Generated dialects are not runtime support evidence."
+      },
+      "dialect_entry": {
+        "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/development.xml",
+        "lines": "3-6",
+        "includes": [
+          "common.xml"
+        ],
+        "lifecycle_warning": "Definitions in development.xml are managed as work in progress."
+      },
+      "common_xml": {
+        "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+        "sha256": "bbc1c382a217209f2cb3922416539da3226878dd19c7549f928913a6f72b1498"
+      },
+      "mavlink_types_header": {
+        "path": "baseline/px4/src/modules/mavlink/mavlink/pymavlink/generator/C/include_v2.0/mavlink_types.h",
+        "sha256": "407273090067c0da447a0b94646cae2fe580c1fa4c2accddb13efb7270f06962",
+        "lines": "22-35"
+      }
+    }
+  },
+  "authority_policy": [
+    {
+      "rank": 1,
+      "source_class": "SUT_FROZEN_XML_AND_BUILD_ENTRY",
+      "supports": [
+        "System-version wire layout",
+        "Types and arrays",
+        "Extension boundary",
+        "Units and multiplier",
+        "Enums and invalid values",
+        "Lifecycle metadata",
+        "Dialect include closure"
+      ],
+      "does_not_support": [
+        "Actual RX",
+        "Actual TX",
+        "Requestability",
+        "Default streaming",
+        "Runtime observation"
+      ]
+    },
+    {
+      "rank": 2,
+      "source_class": "RELEASE_PAIRED_OFFICIAL_FIRMWARE_DOCS",
+      "supports": [
+        "Version-specific documented implementation paths",
+        "Documented support boundaries"
+      ],
+      "does_not_support": [
+        "A path is enabled in every build or runtime"
+      ]
+    },
+    {
+      "rank": 3,
+      "source_class": "ROLLING_OFFICIAL_FIRMWARE_DOCS",
+      "supports": [
+        "Official implementation explanation with retrieval date",
+        "Operational request and routing concepts"
+      ],
+      "does_not_support": [
+        "Override of frozen XML",
+        "Runtime observation"
+      ]
+    },
+    {
+      "rank": 4,
+      "source_class": "ROLLING_MAVLINK_IO",
+      "supports": [
+        "General framing and serialization",
+        "XML schema",
+        "Microservice concepts",
+        "Specification-drift detection"
+      ],
+      "does_not_support": [
+        "Silent replacement of frozen field metadata",
+        "Firmware implementation support"
+      ]
+    },
+    {
+      "rank": 5,
+      "source_class": "FROZEN_FIRMWARE_STATIC_SOURCE",
+      "supports": [
+        "Static RX handler",
+        "Static TX stream/send path",
+        "Static request path",
+        "Build-condition evidence"
+      ],
+      "does_not_support": [
+        "Runtime path execution",
+        "Frame arrival"
+      ]
+    },
+    {
+      "rank": 6,
+      "source_class": "DIRECTIONAL_RUNTIME_CAPTURE",
+      "supports": [
+        "Observation in the captured run and at the stated capture point"
+      ],
+      "required_metadata": [
+        "capture_id",
+        "direction",
+        "interface_or_channel",
+        "host_timestamp_and_clock",
+        "sysid",
+        "compid",
+        "message",
+        "request_context_if_any"
+      ]
+    }
+  ],
+  "conflict_policy": {
+    "action": "Preserve both frozen and rolling values, mark SPEC_DRIFT, and use the system's frozen XML for system-specific decoding and proposition binding.",
+    "silent_merge_forbidden": true
+  },
+  "object_classes": [
+    {
+      "id": "MESSAGE_FIELD",
+      "definition_location": "<message><field> in the selected frozen dialect",
+      "transport": "A typed payload member selected by msgid",
+      "meaning": "Message-specific measurement, state, target, event, command input, or other value",
+      "binding_requirements": [
+        "dialect",
+        "message",
+        "field",
+        "type",
+        "array_length",
+        "extension_status",
+        "units",
+        "multiplier",
+        "enum_or_bitmask",
+        "invalid_semantics",
+        "instance_key",
+        "clock_domain",
+        "direction"
+      ]
+    },
+    {
+      "id": "MAV_CMD_PARAMETER_SLOT",
+      "definition_location": "A specific entry/param in enum MAV_CMD",
+      "transport": "COMMAND_LONG, COMMAND_INT, or Mission Protocol carrier",
+      "meaning": "Command-specific semantic slot, not a generic configuration parameter",
+      "binding_requirements": [
+        "specific_MAV_CMD_entry",
+        "param_index",
+        "label",
+        "units",
+        "enum",
+        "min_max_increment",
+        "multiplier",
+        "reserved_default",
+        "carrier_and_frame"
+      ]
+    },
+    {
+      "id": "FIRMWARE_CONFIGURATION_PARAMETER",
+      "definition_location": "Firmware parameter registry/metadata and runtime table",
+      "transport": "PARAM, PARAM_EXT, local tools, or files depending on implementation",
+      "meaning": "Versioned firmware configuration state",
+      "binding_requirements": [
+        "system",
+        "firmware_version",
+        "parameter_name",
+        "native_type",
+        "metadata_source",
+        "runtime_value_source",
+        "exchange_protocol",
+        "persistence_and_reboot_semantics_if_documented"
+      ]
+    }
+  ],
+  "frame_semantics": {
+    "mavlink1": {
+      "stx_hex": "0xFE",
+      "header_bytes_including_stx": 6,
+      "payload_bytes_min": 0,
+      "payload_bytes_max": 255,
+      "checksum_bytes": 2,
+      "min_packet_bytes": 8,
+      "max_packet_bytes": 263,
+      "message_id_bits": 8,
+      "extension_fields_transmitted": false,
+      "header_fields": [
+        {
+          "offset": "0",
+          "name": "magic",
+          "meaning": "0xFE start marker"
+        },
+        {
+          "offset": "1",
+          "name": "len",
+          "meaning": "Payload byte count"
+        },
+        {
+          "offset": "2",
+          "name": "seq",
+          "meaning": "Per-sender 8-bit packet sequence"
+        },
+        {
+          "offset": "3",
+          "name": "sysid",
+          "meaning": "Sender system ID"
+        },
+        {
+          "offset": "4",
+          "name": "compid",
+          "meaning": "Sender component ID"
+        },
+        {
+          "offset": "5",
+          "name": "msgid",
+          "meaning": "8-bit message ID selecting the payload definition"
+        }
+      ]
+    },
+    "mavlink2": {
+      "stx_hex": "0xFD",
+      "header_bytes_including_stx": 10,
+      "payload_bytes_min": 0,
+      "payload_bytes_max": 255,
+      "checksum_bytes": 2,
+      "optional_trailer_bytes": 13,
+      "min_packet_bytes": 12,
+      "max_unsigned_full_payload_bytes": 267,
+      "max_with_optional_trailer_bytes": 280,
+      "message_id_bits": 24,
+      "extension_fields_transmitted": true,
+      "trailing_zero_payload_truncation": true,
+      "first_payload_byte_is_never_truncated": true,
+      "header_fields": [
+        {
+          "offset": "0",
+          "name": "magic",
+          "meaning": "0xFD start marker"
+        },
+        {
+          "offset": "1",
+          "name": "len",
+          "meaning": "On-wire payload byte count after any trailing-zero truncation"
+        },
+        {
+          "offset": "2",
+          "name": "incompat_flags",
+          "meaning": "Format capability flags that must be understood"
+        },
+        {
+          "offset": "3",
+          "name": "compat_flags",
+          "meaning": "Compatibility flags that may be ignored when unknown"
+        },
+        {
+          "offset": "4",
+          "name": "seq",
+          "meaning": "Per-sender 8-bit packet sequence"
+        },
+        {
+          "offset": "5",
+          "name": "sysid",
+          "meaning": "Sender system ID"
+        },
+        {
+          "offset": "6",
+          "name": "compid",
+          "meaning": "Sender component ID"
+        },
+        {
+          "offset": "7-9",
+          "name": "msgid",
+          "meaning": "Little-endian 24-bit message ID selecting the payload definition"
+        }
+      ]
+    },
+    "common": {
+      "endianness": "little-endian for multi-byte fields",
+      "sequence": {
+        "type": "uint8_t",
+        "range": "0..255",
+        "role": "Per-sender packet sequence and loss/reordering clue",
+        "not_a_timestamp": true,
+        "wrap_modulus": 256
+      },
+      "source_identity": "sysid and compid identify the sender, not the target",
+      "payload_self_describing": false,
+      "decoder_requirement": "Use a decoder generated from a compatible frozen dialect."
+    }
+  },
+  "serialization_rules": [
+    {
+      "id": "FIELD_ORDER",
+      "rule": "Stable-sort non-extension fields by native element size 8, 4, 2, 1 bytes; preserve XML order within equal sizes."
+    },
+    {
+      "id": "ARRAY_ORDER",
+      "rule": "Order arrays by element type size, not total array size."
+    },
+    {
+      "id": "EXTENSION_ORDER",
+      "rule": "Fields after <extensions/> are MAVLink 2 fields, remain in XML declaration order, and are excluded from CRC_EXTRA."
+    },
+    {
+      "id": "UNKNOWN_EXTENSION_SENDER",
+      "rule": "A receiver with extension fields sees zero when the sender does not have those extension fields; zero is not proof that an explicit zero measurement was transmitted."
+    },
+    {
+      "id": "MAVLINK2_ZERO_TRUNCATION",
+      "rule": "Trailing zero bytes are omitted on the wire and restored as zero during decoding; a shortened payload can be valid."
+    }
+  ],
+  "field_metadata_rules": [
+    {
+      "attribute": "type_and_array_length",
+      "rule": "Treat as fixed wire primitive and element count. Treat char arrays as strings only when the field description defines string termination."
+    },
+    {
+      "attribute": "units",
+      "rule": "Record the specified physical or encoded unit; do not apply an additional undocumented scale."
+    },
+    {
+      "attribute": "multiplier",
+      "rule": "Apply the frozen XML multiplier exactly once."
+    },
+    {
+      "attribute": "enum",
+      "rule": "Map known raw values; preserve unknown values as UNKNOWN(raw)."
+    },
+    {
+      "attribute": "bitmask",
+      "rule": "Decode as combinable bits, not as mutually exclusive values."
+    },
+    {
+      "attribute": "invalid",
+      "rule": "Use only the exact frozen-field declaration. Support scalar, [value], [value:], and positional-array notation. Use isnan for NaN. Absence of invalid metadata does not authorize an invented sentinel."
+    },
+    {
+      "attribute": "instance",
+      "rule": "Include the instance value in the observation key."
+    },
+    {
+      "attribute": "lifecycle",
+      "rule": "Store wip, superseded, and deprecated independently from support status."
+    }
+  ],
+  "parameter_protocols": {
+    "param": {
+      "messages": [
+        "PARAM_REQUEST_READ",
+        "PARAM_REQUEST_LIST",
+        "PARAM_VALUE",
+        "PARAM_SET"
+      ],
+      "value_container": "float",
+      "value_container_bytes": 4,
+      "type_enum": "MAV_PARAM_TYPE",
+      "parameter_id": {
+        "type": "char[16]",
+        "termination": "NUL if shorter than 16 human-readable characters; no NUL when exactly 16"
+      },
+      "encodings": [
+        {
+          "name": "byte-wise",
+          "constraint": "The carrier is only four bytes. Do not infer lossless transport for a native value wider than the carrier."
+        },
+        {
+          "name": "C-style cast",
+          "constraint": "Float has only 24 bits of integer precision, so larger integer values may lose precision."
+        }
+      ],
+      "support_constraint": "The type enum lists more types than any particular implementation necessarily supports.",
+      "write_response": "PARAM_VALUE broadcasts the current value; no benchmark timeout constant is supplied by XML.",
+      "cache_sync_guaranteed": false
+    },
+    "param_ext": {
+      "messages": [
+        "PARAM_EXT_REQUEST_READ",
+        "PARAM_EXT_REQUEST_LIST",
+        "PARAM_EXT_VALUE",
+        "PARAM_EXT_SET",
+        "PARAM_EXT_ACK"
+      ],
+      "value_container": "char[128]",
+      "value_container_bytes": 128,
+      "type_enum": "MAV_PARAM_EXT_TYPE",
+      "encoding": "byte-wise typed value",
+      "listed_types": [
+        "UINT8",
+        "INT8",
+        "UINT16",
+        "INT16",
+        "UINT32",
+        "INT32",
+        "UINT64",
+        "INT64",
+        "REAL32",
+        "REAL64",
+        "CUSTOM"
+      ],
+      "write_response": "PARAM_EXT_ACK can distinguish accepted, failed, in-progress, and unsupported.",
+      "cache_sync_guaranteed": false
+    },
+    "implementation_boundaries": [
+      "ArduPilot parameter sets vary by vehicle and release; hidden parameters can change param_count and param_index.",
+      "PX4 v1.17 documents a native flat table of float and int32_t parameters, with metadata and code definitions.",
+      "Presence of PARAM_EXT definitions does not prove that either flight controller exposes its flight-control configuration table through PARAM_EXT.",
+      "PX4 v1.17 documents Extended Parameter support in some form for camera-definition string parameters; that statement is not generalized here."
+    ]
+  },
+  "support_state_model": [
+    {
+      "state": "DIALECT_DEFINED",
+      "minimum_evidence": "Definition occurs in the frozen build entrypoint include closure.",
+      "meaning": "The generator knows the definition.",
+      "does_not_imply": [
+        "RX",
+        "TX",
+        "requestability",
+        "runtime observation"
+      ]
+    },
+    {
+      "state": "GENERATED",
+      "minimum_evidence": "Generated header or metadata exists for the selected dialect.",
+      "meaning": "Encode/decode API was generated."
+    },
+    {
+      "state": "STATIC_RX_HANDLER",
+      "minimum_evidence": "Explicit frozen-source dispatch plus decode/handler with satisfied build conditions.",
+      "meaning": "A static inbound implementation path exists."
+    },
+    {
+      "state": "STATIC_TX_STREAM",
+      "minimum_evidence": "Explicit frozen-source stream/pack/send path with satisfied build conditions.",
+      "meaning": "A static outbound candidate path exists."
+    },
+    {
+      "state": "REQUESTABLE",
+      "minimum_evidence": "A generic request mechanism plus message-specific stream registration/request handler, or a controlled runtime request with an explicit response.",
+      "meaning": "The message is a requestable-send candidate.",
+      "does_not_imply": [
+        "default streaming",
+        "runtime observation"
+      ]
+    },
+    {
+      "state": "CONFIGURED_DEFAULT_STREAM",
+      "minimum_evidence": "Current build, vehicle, port, profile, and parameter configuration resolves to a default stream.",
+      "meaning": "Configuration intends a default stream."
+    },
+    {
+      "state": "RUNTIME_OBSERVED_INBOUND",
+      "minimum_evidence": "Directional capture with interface/channel, host time, source identity, message, and fields.",
+      "meaning": "The frame entered the observation point during this run."
+    },
+    {
+      "state": "RUNTIME_OBSERVED_OUTBOUND",
+      "minimum_evidence": "Directional capture with interface/channel, host time, source identity, and forwarded-frame handling.",
+      "meaning": "The frame left the observation point during this run."
+    },
+    {
+      "state": "PROPERTY_DIRECT_OBSERVABLE",
+      "minimum_evidence": "Runtime observation plus adequate field semantics, validity, instance identity, provenance, and clock domain for the proposition.",
+      "meaning": "The field can directly support the stated proposition in the captured run."
+    }
+  ],
+  "observability_rules": [
+    "Incoming and outgoing support are separate dimensions.",
+    "Requestable and default-streaming status are separate dimensions.",
+    "Requestable and runtime-observed status are separate dimensions.",
+    "A forwarded frame is attributed to its source sysid/compid, not automatically to the flight controller.",
+    "A frame captured on a flight-controller link is not by itself proof that the flight controller generated it.",
+    "A missing frame is not proof that the represented state did not occur.",
+    "PX4 XML presence requires separate stream-list evidence for TX and handler/dispatch evidence for RX.",
+    "ArduPilot generic SET_MESSAGE_INTERVAL or REQUEST_MESSAGE support does not prove that every msgid is requestable."
+  ],
+  "time_semantics": [
+    {
+      "id": "TIME_BOOT_MS",
+      "field_pattern": "time_boot_ms",
+      "wire_type": "uint32_t",
+      "unit": "ms",
+      "clock_domain": "sender/component boot domain",
+      "official_fact": "The frozen field descriptions state time since system boot.",
+      "derived_wrap": {
+        "method": "2^32 multiplied by the 1 ms unit",
+        "modulus_ms": 4294967296,
+        "modulus_text": "49 days 17:02:47.296",
+        "modulus_days": 49.7102696,
+        "half_range_ms": 2147483648,
+        "half_range_text": "24 days 20:31:23.648",
+        "half_range_days": 24.8551348,
+        "provenance": "Audit arithmetic inference from frozen type and unit, not a quoted XML constant."
+      },
+      "monitor_rule": "Compare only within the same source and boot session; handle wrap; split traces on reboot or unresolved wrap/reordering.",
+      "forbidden_inference": "Unix epoch or host boot time"
+    },
+    {
+      "id": "SYSTEM_TIME_UNIX",
+      "field_pattern": "SYSTEM_TIME.time_unix_usec",
+      "wire_type": "uint64_t",
+      "unit": "us",
+      "clock_domain": "sender master clock, Unix epoch",
+      "official_fact": "SYSTEM_TIME describes sender master time and recommends TIMESYNC for precise synchronization.",
+      "monitor_rule": "Keep paired with the same message's time_boot_ms and source identity; quantify mapping error before cross-clock MITL use.",
+      "forbidden_inferences": [
+        "Assume zero is invalid when the frozen XML has no invalid attribute",
+        "Assume precision or synchronization quality"
+      ]
+    },
+    {
+      "id": "TIME_USEC_PER_FIELD",
+      "field_pattern": "time_usec",
+      "clock_domain": "message-field specific",
+      "official_fact": "Frozen XML definitions vary between Unix-or-boot, boot-only, and synchronized-Unix-or-boot.",
+      "monitor_rule": "Register clock domain for each message.field; use AMBIGUOUS_SPEC when the frozen description is not operationally decidable.",
+      "forbidden_inference": "A global clock domain based only on the field name"
+    },
+    {
+      "id": "SERVO_OUTPUT_RAW_TIME",
+      "field_pattern": "SERVO_OUTPUT_RAW.time_usec",
+      "wire_type": "uint32_t",
+      "unit": "us",
+      "frozen_description": "Unix epoch time or time since system boot, infer by magnitude",
+      "audit_status": "AMBIGUOUS_SPEC",
+      "derived_wrap": {
+        "method": "2^32 multiplied by the 1 us unit",
+        "modulus_us": 4294967296,
+        "modulus_seconds": 4294.967296,
+        "modulus_text": "71 minutes 34.967296 seconds"
+      },
+      "reason": "A uint32_t microsecond value cannot reliably carry contemporary Unix epoch microseconds, and the XML supplies no decision threshold.",
+      "monitor_rule": "Do not automatically convert to epoch; require version-specific implementation evidence and runtime calibration."
+    },
+    {
+      "id": "GPS_WEEK",
+      "field_pattern": "GPS_INPUT.time_week_ms + GPS_INPUT.time_week",
+      "wire_types": [
+        "uint32_t",
+        "uint16_t"
+      ],
+      "unit": "ms within GPS week plus GPS week number",
+      "official_fact": "time_week_ms is time from start of GPS week; time_week is GPS week number.",
+      "derived_week_length_ms": 604800000,
+      "derived_week_length_method": "7*24*60*60*1000",
+      "monitor_rule": "Capture both fields; treat week boundary as expected; use an explicit time-scale and leap-second policy for Unix conversion.",
+      "forbidden_inferences": [
+        "Use time_week_ms alone as global monotonic time",
+        "Invent a receiver rollover rule not present in frozen XML"
+      ]
+    },
+    {
+      "id": "TIMESYNC",
+      "field_pattern": "TIMESYNC.ts1/tc1",
+      "wire_type": "int64_t",
+      "unit": "ns",
+      "official_fact": "A request uses tc1=0 and requester time in ts1; a response mirrors ts1 and places responder time in tc1. Repetition and filtering estimate offset; congestion and processing time vary RTT.",
+      "monitor_rule": "Store paired request/response, RTT, offset samples, filtering method, sample interval, and residual uncertainty.",
+      "forbidden_inferences": [
+        "One exchange proves synchronization",
+        "TIMESYNC timestamps are event timestamps for unrelated messages",
+        "A tool-specific 10 ms cutoff is a MAVLink-wide MITL epsilon"
+      ]
+    },
+    {
+      "id": "HOST_ARRIVAL",
+      "field_pattern": "capture timestamp",
+      "clock_domain": "capture host clock",
+      "official_fact": "Not a MAVLink payload field.",
+      "audit_inference": "Arrival occurs after scheduling, routing, serialization, transport, host queue, and parsing delays.",
+      "monitor_rule": "Record clock API, capture point, interface, direction, and measured uncertainty. Prefer a monotonic clock for durations.",
+      "forbidden_inference": "Treat arrival time as source event time without an error budget"
+    },
+    {
+      "id": "FRAME_SEQUENCE",
+      "field_pattern": "MAVLink frame seq",
+      "wire_type": "uint8_t",
+      "unit": null,
+      "clock_domain": null,
+      "official_fact": "Used for packet-loss detection and incremented per sent message.",
+      "monitor_rule": "Use only as a per-source loss/reordering clue and handle modulo-256 wrap.",
+      "forbidden_inference": "Use as a timestamp or global event sequence"
+    }
+  ],
+  "timing_uncertainty": {
+    "officially_documented_sources": [
+      "ArduPilot parameter/waypoint transfer may temporarily slow requested stream rates by four times or more.",
+      "PX4 MAV_X_RATE is a combined cap and reduces individual message rates when the total exceeds it.",
+      "TIMESYNC RTT varies with link congestion and processing time.",
+      "Routing and forwarding can add extra hops."
+    ],
+    "additional_observation_path_components": [
+      "firmware scheduling",
+      "serialization",
+      "serial or UDP queue",
+      "host socket queue",
+      "parser queue"
+    ],
+    "universal_numeric_upper_bound_found": false,
+    "benchmark_epsilon_status": "UNAVAILABLE_NO_MEASUREMENT",
+    "decision_rule": "If a temporal proposition lacks a common embedded clock or a measured arrival-time error budget, report INCONCLUSIVE rather than PASS or FAIL."
+  },
+  "known_drift": [
+    {
+      "id": "DRIFT-COMMAND-INVALID",
+      "subject": "COMMAND_INT and COMMAND_LONG invalid metadata",
+      "ardupilot_frozen": {
+        "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+        "lines": "5671-5700",
+        "value": "No field-level invalid attribute on param fields or x/y/z."
+      },
+      "px4_frozen": {
+        "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+        "lines": "5871-5900",
+        "value": "Float parameters use invalid=NaN; COMMAND_INT x/y use invalid=INT32_MAX."
+      },
+      "decision": "Decode each system separately; do not copy PX4 sentinel rules to ArduPilot."
+    },
+    {
+      "id": "DRIFT-TIMESYNC-TARGET-EXTENSIONS",
+      "subject": "TIMESYNC target fields",
+      "ardupilot_frozen": {
+        "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+        "lines": "6044-6057",
+        "value": "No target_system or target_component extension fields."
+      },
+      "px4_frozen": {
+        "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+        "lines": "6254-6270",
+        "value": "Has target_system and target_component after <extensions/>."
+      },
+      "decision": "Keep version-specific layouts; do not overwrite either with the rolling page."
+    },
+    {
+      "id": "DRIFT-SYSTEM-TIME-DESCRIPTION",
+      "subject": "SYSTEM_TIME prose",
+      "ardupilot_frozen": "sender's master clock",
+      "px4_frozen": "master clock, with older SYSTEM_TYPE wording",
+      "decision": "Use frame source identity and retain the prose difference; infer no implementation behavior from wording drift."
+    },
+    {
+      "id": "DRIFT-PING-LIFECYCLE",
+      "subject": "PING lifecycle",
+      "ardupilot_frozen": "superseded",
+      "px4_frozen": "deprecated",
+      "decision": "Store each frozen lifecycle value independently from support status."
+    },
+    {
+      "id": "INCONSISTENT-SERVO-TIME-WIDTH",
+      "subject": "SERVO_OUTPUT_RAW.time_usec",
+      "value": "uint32_t with Unix-or-boot-by-magnitude description",
+      "decision": "Mark AMBIGUOUS_SPEC and do not use as epoch time without extra evidence."
+    }
+  ],
+  "web_sources": [
+    {
+      "id": "WEB-MAV-01",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/guide/serialization.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Packet Format",
+        "MAVLink 2 Packet Format",
+        "MAVLink 1 Packet Format",
+        "Payload Format",
+        "Field Reordering",
+        "Empty-Byte Payload Truncation (MAVLink 2)",
+        "CRC_EXTRA Calculation"
+      ],
+      "supports": [
+        "Frame structure and lengths",
+        "Little-endian serialization",
+        "Field ordering",
+        "Extension exception",
+        "MAVLink 2 trailing-zero truncation",
+        "Payload is not self-describing"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-02",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/guide/xml_schema.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "MAVLink Commands (enum MAV_CMD)",
+        "<param> element",
+        "Message Definition (messages)",
+        "<field> element",
+        "Lifecycle Elements"
+      ],
+      "supports": [
+        "Command parameter metadata",
+        "Field attributes",
+        "Scalar and array invalid syntax",
+        "Lifecycle meaning"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-03",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/guide/define_xml_element.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Messages vs Commands",
+        "Message Extensions (MAVLink 2)",
+        "Enums",
+        "Commands"
+      ],
+      "supports": [
+        "Message-command distinction",
+        "Extension behavior",
+        "Enum and bitmask rules",
+        "Specific MAV_CMD parameter definitions"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-04",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/services/command.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Message/Enum Summary",
+        "Use COMMAND_INT or COMMAND_LONG?",
+        "Sequences",
+        "Long Running Commands"
+      ],
+      "supports": [
+        "COMMAND_INT and COMMAND_LONG carrier differences",
+        "Frame and scaling distinctions",
+        "Flight-stack packaging support boundary",
+        "Accepted ACK is not always completion"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-05",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/services/parameter.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Message/Enum Summary",
+        "Protocol Discovery",
+        "Parameter Names",
+        "Parameter Encoding",
+        "Parameter Types",
+        "Parameter Metadata",
+        "Parameter Caching"
+      ],
+      "supports": [
+        "Four-byte float carrier",
+        "Byte-wise and C-cast encodings",
+        "Twenty-four-bit integer precision for float cast",
+        "Sixteen-character ID semantics",
+        "Implementation type limits",
+        "Cache synchronization is not guaranteed"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-06",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/services/parameter_ext.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Extended Parameter Protocol",
+        "Message/Enum Summary",
+        "Parameter Encoding",
+        "Parameter Caching"
+      ],
+      "supports": [
+        "char[128] carrier",
+        "Extended types",
+        "PARAM_EXT_ACK distinction",
+        "Camera-protocol origin and implementation boundary"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-07",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/services/timesync.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Time Synchronization Protocol v2",
+        "Sequences"
+      ],
+      "supports": [
+        "TIMESYNC request and response",
+        "RTT and offset estimation",
+        "Repeated filtering",
+        "Variable link and processing delay"
+      ],
+      "authority": "ROLLING_PROTOCOL_GUIDE"
+    },
+    {
+      "id": "WEB-MAV-08",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/messages/common.html#SYSTEM_TIME",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "SYSTEM_TIME (2)"
+      ],
+      "supports": [
+        "Rolling SYSTEM_TIME field and sender-master-clock description"
+      ],
+      "authority": "ROLLING_RENDERED_DEFINITION"
+    },
+    {
+      "id": "WEB-MAV-09",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/messages/common.html#TIMESYNC",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "TIMESYNC (111)"
+      ],
+      "supports": [
+        "Rolling TIMESYNC definition for drift comparison"
+      ],
+      "authority": "ROLLING_RENDERED_DEFINITION"
+    },
+    {
+      "id": "WEB-MAV-10",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/messages/common.html#GPS_INPUT",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "GPS_INPUT (232)"
+      ],
+      "supports": [
+        "Rolling GPS week fields for drift comparison"
+      ],
+      "authority": "ROLLING_RENDERED_DEFINITION"
+    },
+    {
+      "id": "WEB-MAV-11",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/messages/common.html#COMMAND_INT",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "COMMAND_INT (75)"
+      ],
+      "supports": [
+        "Rolling command carrier for drift comparison"
+      ],
+      "authority": "ROLLING_RENDERED_DEFINITION"
+    },
+    {
+      "id": "WEB-MAV-12",
+      "publisher": "MAVLink",
+      "url": "https://mavlink.io/en/messages/common.html#COMMAND_LONG",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "COMMAND_LONG (76)"
+      ],
+      "supports": [
+        "Rolling command carrier for drift comparison"
+      ],
+      "authority": "ROLLING_RENDERED_DEFINITION"
+    },
+    {
+      "id": "WEB-AP-01",
+      "publisher": "ArduPilot",
+      "url": "https://ardupilot.org/dev/docs/mavlink-requesting-data.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Requesting Data From The Autopilot",
+        "Using SRx Parameters",
+        "Using SET_MESSAGE_INTERVAL",
+        "Using REQUEST_MESSAGE",
+        "Specifying Message Rates in a File"
+      ],
+      "supports": [
+        "Multiple request mechanisms",
+        "Temporary rate reduction during parameter and waypoint transfer",
+        "Unsupported stream entries can be ignored",
+        "Generic request support is not universal message requestability"
+      ],
+      "authority": "ROLLING_OFFICIAL_IMPLEMENTATION_DOC"
+    },
+    {
+      "id": "WEB-AP-02",
+      "publisher": "ArduPilot",
+      "url": "https://ardupilot.org/dev/docs/mavlink-get-set-params.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Retrieving All Parameters",
+        "Retrieving a Parameter",
+        "Setting a Parameter",
+        "Hidden Parameters"
+      ],
+      "supports": [
+        "Vehicle and release dependent parameter sets",
+        "PARAM operations",
+        "Hidden parameters alter count and index"
+      ],
+      "authority": "ROLLING_OFFICIAL_IMPLEMENTATION_DOC"
+    },
+    {
+      "id": "WEB-AP-03",
+      "publisher": "ArduPilot",
+      "url": "https://ardupilot.org/dev/docs/ros-timesync.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Clock/Time Synchronisation",
+        "Mavros Configuration",
+        "ArduPilot Configuration"
+      ],
+      "supports": [
+        "SYSTEM_TIME and TIMESYNC clock synchronization use",
+        "Configurable flight-controller time source",
+        "MAVROS-specific ten-millisecond RTT cutoff"
+      ],
+      "authority": "ROLLING_OFFICIAL_IMPLEMENTATION_DOC",
+      "boundary": "The MAVROS cutoff is not adopted as a protocol or benchmark epsilon."
+    },
+    {
+      "id": "WEB-AP-04",
+      "publisher": "ArduPilot",
+      "url": "https://ardupilot.org/dev/docs/mavlink-routing-in-ardupilot.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "MAVLink Routing in ArduPilot",
+        "Detailed theory of MAVLink routing"
+      ],
+      "supports": [
+        "Port-to-port routing",
+        "Source and target identities",
+        "Channel mapping",
+        "Captured frames may be forwarded rather than generated by the flight controller"
+      ],
+      "authority": "ROLLING_OFFICIAL_IMPLEMENTATION_DOC"
+    },
+    {
+      "id": "WEB-PX4-01",
+      "publisher": "PX4",
+      "url": "https://docs.px4.io/v1.17/en/mavlink/streaming_messages.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Overview",
+        "Streaming on Request"
+      ],
+      "supports": [
+        "MavlinkStream class and stream-list requirement",
+        "SET_MESSAGE_INTERVAL and REQUEST_MESSAGE request paths"
+      ],
+      "authority": "RELEASE_PAIRED_OFFICIAL_IMPLEMENTATION_DOC",
+      "frozen_copy": "baseline/px4/docs/en/mavlink/streaming_messages.md:7-12,190-211,250-256"
+    },
+    {
+      "id": "WEB-PX4-02",
+      "publisher": "PX4",
+      "url": "https://docs.px4.io/v1.17/en/mavlink/receiving_messages.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Overview",
+        "Steps"
+      ],
+      "supports": [
+        "Receive support requires handler, decode, publication, and dispatch"
+      ],
+      "authority": "RELEASE_PAIRED_OFFICIAL_IMPLEMENTATION_DOC",
+      "frozen_copy": "baseline/px4/docs/en/mavlink/receiving_messages.md:1-9,41-84"
+    },
+    {
+      "id": "WEB-PX4-03",
+      "publisher": "PX4",
+      "url": "https://docs.px4.io/v1.17/en/mavlink/protocols.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Supported Microservices"
+      ],
+      "supports": [
+        "PX4 v1.17 lists services supported in some form"
+      ],
+      "authority": "RELEASE_PAIRED_OFFICIAL_IMPLEMENTATION_DOC",
+      "boundary": "Does not prove every message, role, or operation in a listed service.",
+      "frozen_copy": "baseline/px4/docs/en/mavlink/protocols.md:1-12,36-42"
+    },
+    {
+      "id": "WEB-PX4-04",
+      "publisher": "PX4",
+      "url": "https://docs.px4.io/v1.17/en/advanced/parameters_and_configurations.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "Parameters & Configurations",
+        "Creating/Defining Parameters"
+      ],
+      "supports": [
+        "PX4 flat float/int32_t parameter table",
+        "Metadata and code definition",
+        "Firmware metadata exposure",
+        "Configuration parameters are distinct from MAV_CMD slots"
+      ],
+      "authority": "RELEASE_PAIRED_OFFICIAL_IMPLEMENTATION_DOC",
+      "frozen_copy": "baseline/px4/docs/en/advanced/parameters_and_configurations.md:1-6,85-105"
+    },
+    {
+      "id": "WEB-PX4-05",
+      "publisher": "PX4",
+      "url": "https://docs.px4.io/v1.17/en/peripherals/mavlink_peripherals.html",
+      "retrieved_on": "2026-07-18",
+      "sections": [
+        "MAVLink Instances"
+      ],
+      "supports": [
+        "Instance profile and default-stream configuration",
+        "Request override",
+        "Combined MAV_X_RATE cap",
+        "Forwarding"
+      ],
+      "authority": "RELEASE_PAIRED_OFFICIAL_IMPLEMENTATION_DOC"
+    }
+  ],
+  "frozen_evidence": [
+    {
+      "id": "FRZ-AP-BUILD-01",
+      "path": "baseline/ardupilot/wscript",
+      "lines": "778-784",
+      "supports": "ArduPilot generates from all.xml into a v2.0 output tree."
+    },
+    {
+      "id": "FRZ-AP-DIALECT-01",
+      "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/all.xml",
+      "lines": "3-30",
+      "supports": "Wide include closure contains development and test dialects; generation is not support."
+    },
+    {
+      "id": "FRZ-PX4-BUILD-01",
+      "path": "baseline/px4/boards/px4/sitl/default.px4board",
+      "lines": "37-38",
+      "additional_path": "baseline/px4/src/modules/mavlink/CMakeLists.txt:40-80",
+      "supports": "PX4 SITL chooses development and generates MAVLink 2.0 primary and uAvionix headers."
+    },
+    {
+      "id": "FRZ-PX4-DIALECT-01",
+      "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/development.xml",
+      "lines": "3-6",
+      "supports": "Development includes common and belongs to the WIP definition domain."
+    },
+    {
+      "id": "FRZ-FRAME-01",
+      "path": "baseline/ardupilot/modules/mavlink/pymavlink/generator/C/include_v2.0/mavlink_types.h",
+      "lines": "22-35",
+      "additional_path": "baseline/px4/src/modules/mavlink/mavlink/pymavlink/generator/C/include_v2.0/mavlink_types.h:22-35",
+      "supports": "Both frozen generators use payload 255, v2 header 10 including STX, checksum 2, optional trailer 13, and the same max-packet formula."
+    },
+    {
+      "id": "FRZ-AP-TIME-01",
+      "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "5109-5117,5320-5323,6044-6057,6545-6551,7389-7402,7465-7474",
+      "supports": "ArduPilot-frozen SYSTEM_TIME, ambiguous SERVO_OUTPUT_RAW time, TIMESYNC, GPS week, boot-only, and synchronized-or-boot time definitions."
+    },
+    {
+      "id": "FRZ-PX4-TIME-01",
+      "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "5273-5280,6254-6270,6757-6763",
+      "supports": "PX4-frozen SYSTEM_TIME, TIMESYNC with target extensions, and GPS week fields."
+    },
+    {
+      "id": "FRZ-AP-PARAM-01",
+      "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "2718-2809,5151-5180,7190-7223",
+      "supports": "Frozen regular and extended parameter carriers and type enums."
+    },
+    {
+      "id": "FRZ-PX4-PARAM-01",
+      "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "5331-5360,7454-7487",
+      "supports": "PX4-frozen regular and extended parameter wire definitions."
+    },
+    {
+      "id": "FRZ-AP-CMD-01",
+      "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "5671-5700",
+      "supports": "ArduPilot-frozen command carrier fields without field-level invalid attributes."
+    },
+    {
+      "id": "FRZ-PX4-CMD-01",
+      "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "5871-5900",
+      "supports": "PX4-frozen command carrier fields with NaN and INT32_MAX invalid metadata."
+    },
+    {
+      "id": "FRZ-META-01",
+      "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+      "lines": "5104-5107,5189-5208,5279-5280,5519,6305,6430",
+      "supports": "Concrete frozen examples of extensions, multipliers, arrays, bitmasks, and scalar/array invalid syntax."
+    }
+  ],
+  "downstream_requirements": [
+    "Record system, SUT commit, MAVLink commit, dialect entrypoint, XML path, and XML hash.",
+    "Record message id/name and full frozen field metadata: type, array, extension, units, multiplier, enum/bitmask, invalid, instance, lifecycle.",
+    "Keep RX, TX, requestable, and default-stream evidence in separate columns.",
+    "Keep runtime capture evidence separate and use NOT_RUN_NO_CAPTURE when absent.",
+    "Record producer identity and do not attribute forwarded frames to the flight controller without source evidence.",
+    "Register clock domain and wrap for every timestamp field; interpret time_usec per message.field.",
+    "Use DIRECT, DERIVED_WITH_ASSUMPTIONS, NOT_DIRECT, or INCONCLUSIVE for proposition observability.",
+    "Record SPEC_DRIFT whenever rolling documentation and frozen XML differ; use frozen values for system decoding.",
+    "Do not invent a temporal epsilon."
+  ],
+  "unresolved_questions": [
+    "No directional runtime capture exists for either SUT.",
+    "Message-by-message static RX, TX, requestability, and default-stream scans remain to be completed.",
+    "It is not established that either flight controller exposes its flight-control configuration table through PARAM_EXT.",
+    "No measured Unix/GPS/boot clock mapping or leap-second/time-scale policy exists.",
+    "No link, scheduler, queue, routing, or host-capture delay distribution exists; no numeric epsilon is justified.",
+    "SERVO_OUTPUT_RAW.time_usec remains AMBIGUOUS_SPEC until version-specific implementation and runtime evidence are added.",
+    "ArduPilot Dev pages are rolling; publication-grade replay would benefit from a fixed page-content hash or a document commit paired to the SUT revision."
+  ]
+}

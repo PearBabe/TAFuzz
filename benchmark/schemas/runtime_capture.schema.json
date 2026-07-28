@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schemas/runtime_capture.schema.json",
+  "title": "TAFuzz frozen-SITL MAVLink runtime evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "captures", "property_parameters", "implementation_satisfaction"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "captures": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/capture"}},
+    "property_parameters": {"type": "array", "items": {"$ref": "#/$defs/propertyParameter"}},
+    "implementation_satisfaction": {"const": "NOT_ASSESSED"}
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "role"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "role": {"type": "string"}
+      }
+    },
+    "phase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "start_host_monotonic_ns", "end_host_monotonic_ns", "traffic_origin"],
+      "properties": {
+        "name": {"enum": ["BASELINE", "PARAMETER_DOWNLOAD", "REQUEST_SWEEP", "OTHER"]},
+        "start_host_monotonic_ns": {"type": "integer", "minimum": 0},
+        "end_host_monotonic_ns": {"type": "integer", "minimum": 0},
+        "traffic_origin": {"type": "string"},
+        "notes": {"type": "string"}
+      }
+    },
+    "parameterSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "protocol", "path", "sha256", "expected_count", "received_count", "unique_parameter_count", "missing_indices", "key_values"],
+      "properties": {
+        "status": {"enum": ["COMPLETE", "PARTIAL", "FAILED", "NOT_RUN"]},
+        "protocol": {"enum": ["PARAM", "PARAM_EXT"]},
+        "path": {"type": ["string", "null"]},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "expected_count": {"type": ["integer", "null"], "minimum": 0},
+        "received_count": {"type": "integer", "minimum": 0},
+        "unique_parameter_count": {"type": "integer", "minimum": 0},
+        "missing_indices": {"type": "array", "items": {"type": "integer", "minimum": 0}, "uniqueItems": true},
+        "key_values": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "wire_value", "decoded_value", "param_type", "param_index", "param_count", "source_system", "source_component", "received_host_monotonic_ns"],
+            "properties": {
+              "name": {"type": "string"},
+              "wire_value": {"type": "number"},
+              "decoded_value": {"type": "number"},
+              "param_type": {"type": ["integer", "string"]},
+              "param_index": {"type": "integer", "minimum": 0},
+              "param_count": {"type": "integer", "minimum": 0},
+              "source_system": {"type": "integer", "minimum": 0, "maximum": 255},
+              "source_component": {"type": "integer", "minimum": 0, "maximum": 255},
+              "received_host_monotonic_ns": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "messageSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "total_message_count", "distinct_message_count", "baseline_distinct_message_count", "host_clock"],
+      "properties": {
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "total_message_count": {"type": "integer", "minimum": 0},
+        "distinct_message_count": {"type": "integer", "minimum": 0},
+        "baseline_distinct_message_count": {"type": "integer", "minimum": 0},
+        "host_clock": {"const": "CLOCK_MONOTONIC_NS"}
+      }
+    },
+    "requestSweep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path", "sha256", "attempted", "message_observed", "unsupported", "no_response"],
+      "properties": {
+        "status": {"enum": ["COMPLETE", "PARTIAL", "FAILED", "NOT_RUN"]},
+        "path": {"type": ["string", "null"]},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "attempted": {"type": "integer", "minimum": 0},
+        "message_observed": {"type": "integer", "minimum": 0},
+        "unsupported": {"type": "integer", "minimum": 0},
+        "no_response": {"type": "integer", "minimum": 0}
+      }
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capture_id", "system", "vehicle", "profile", "firmware_commit", "mavlink_commit", "runtime_status", "launch_command", "connection", "phases", "parameter_snapshot", "message_summary", "request_sweep", "clock_domains", "process_cleanup", "artifacts", "limitations"],
+      "properties": {
+        "capture_id": {"type": "string"},
+        "system": {"enum": ["ArduPilot", "PX4"]},
+        "vehicle": {"type": "string"},
+        "profile": {"type": "string"},
+        "firmware_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "mavlink_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "runtime_status": {"enum": ["COMPLETE", "PARTIAL", "FAILED"]},
+        "launch_command": {"type": "string"},
+        "connection": {"type": "string"},
+        "phases": {"type": "array", "items": {"$ref": "#/$defs/phase"}},
+        "parameter_snapshot": {"$ref": "#/$defs/parameterSnapshot"},
+        "message_summary": {"$ref": "#/$defs/messageSummary"},
+        "request_sweep": {"$ref": "#/$defs/requestSweep"},
+        "clock_domains": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "process_cleanup": {"type": "string"},
+        "artifacts": {"type": "array", "items": {"$ref": "#/$defs/artifact"}},
+        "limitations": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "propertyParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["property_id", "parameter_id", "capture_id", "value", "unit", "source_path", "source_sha256", "source_param_index", "source_param_count", "status"],
+      "properties": {
+        "property_id": {"type": "string"},
+        "parameter_id": {"type": "string"},
+        "capture_id": {"type": "string"},
+        "value": {"type": "number"},
+        "unit": {"type": "string"},
+        "source_path": {"type": "string"},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_param_index": {"type": "integer", "minimum": 0},
+        "source_param_count": {"type": "integer", "minimum": 0},
+        "status": {"enum": ["RUNTIME_OBSERVED", "RUNTIME_OBSERVED_DISABLED_DOMAIN", "UNRESOLVED"]}
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "protocol": "FTP",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE",
+  "admission_summary": {
+    "proposed": 0,
+    "admitted": 0,
+    "conclusion": "RFC 1123 has one fixed FTP timing floor (a default idle timeout of at least five minutes), but the locked LightFTP server has neither an idle-timeout configuration field nor an idle-timeout execution path. RFC 959 timing-like replies and waits supply no universal numeric bound."
+  },
+  "standards": [
+    {
+      "id": "RFC959",
+      "title": "File Transfer Protocol",
+      "version": "RFC 959 (October 1985)",
+      "url": "https://www.rfc-editor.org/rfc/rfc959.html",
+      "source_type": "IETF Internet Standard",
+      "sections_reviewed": ["4.1", "4.2", "5.2", "5.4"]
+    },
+    {
+      "id": "RFC1123",
+      "title": "Requirements for Internet Hosts -- Application and Support",
+      "version": "RFC 1123 (October 1989)",
+      "url": "https://www.rfc-editor.org/rfc/rfc1123.html",
+      "source_type": "IETF Internet Standard",
+      "sections_reviewed": ["4.1.2.11", "4.1.3.2", "4.1.3.3"]
+    }
+  ],
+  "implementation": {
+    "repository": "hfiref0x/LightFTP",
+    "version": "LightFTP 2.0a ProFuzzBench pinned snapshot",
+    "commit": "5980ea1a0ee0e5c3015275f93445626f8c25c83a",
+    "url": "https://github.com/hfiref0x/LightFTP/tree/5980ea1a0ee0e5c3015275f93445626f8c25c83a",
+    "selection": "Exact ProFuzzBench FTP target option.",
+    "source_files_reviewed": [
+      {
+        "path": "Source/ftpserv.h",
+        "symbols": ["FTP_CONFIG", "FTPCONTEXT", "success220"],
+        "lines": "36-45,75-102,149-196",
+        "url": "https://github.com/hfiref0x/LightFTP/blob/5980ea1a0ee0e5c3015275f93445626f8c25c83a/Source/ftpserv.h"
+      },
+      {
+        "path": "Source/main.c",
+        "symbols": ["main"],
+        "lines": "91-128",
+        "url": "https://github.com/hfiref0x/LightFTP/blob/5980ea1a0ee0e5c3015275f93445626f8c25c83a/Source/main.c#L91-L128"
+      },
+      {
+        "path": "Source/ftpserv.c",
+        "symbols": ["recvcmd", "ftp_client_thread"],
+        "lines": "1822-1854,1856-1970",
+        "url": "https://github.com/hfiref0x/LightFTP/blob/5980ea1a0ee0e5c3015275f93445626f8c25c83a/Source/ftpserv.c#L1822-L1970"
+      },
+      {
+        "path": "Source/fftp.conf",
+        "symbols": ["ftpconfig"],
+        "lines": "1-55",
+        "url": "https://github.com/hfiref0x/LightFTP/blob/5980ea1a0ee0e5c3015275f93445626f8c25c83a/Source/fftp.conf#L1-L55"
+      }
+    ]
+  },
+  "method": "Exhaustive numeric-timing screening of RFC 959 greetings, delayed-service replies, command/reply sequencing, connection closure language, and RFC 1123 FTP idle/response timeout requirements. Source searches covered timeout, idle, socket timeout options, select/poll/alarm, configuration parsing, and control-loop receive/close paths.",
+  "screening_records": [
+    {
+      "candidate_id": "FTP-IDLE-300",
+      "standard_section": "RFC 1123 4.1.3.2",
+      "numeric_rule": "A Server-FTP SHOULD have a configurable idle timeout whose default is at least five minutes.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": ["NO_FIXED_SOURCE_MAP"],
+      "source_evidence": [
+        "Source/ftpserv.h:36-45 defines FTP_CONFIG without an idle-timeout field.",
+        "Source/main.c:91-128 parses all server configuration fields and no idle timeout.",
+        "Source/ftpserv.c:1822-1854 uses blocking recv/gnutls_record_recv without an idle deadline.",
+        "Source/ftpserv.c:1913-1969 closes the control connection only after receive/command termination."
+      ]
+    },
+    {
+      "candidate_id": "FTP-CLIENT-RESPONSE-TIMEOUT",
+      "standard_section": "RFC 1123 4.1.3.2",
+      "numeric_rule": "Program-invoked User-FTP clients need response timeouts, but no value is specified.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": ["NO_NUMERIC_BOUND", "NO_FIXED_SOURCE_MAP"],
+      "source_evidence": [
+        "The locked target is a server and contains no User-FTP response timer."
+      ]
+    },
+    {
+      "candidate_id": "FTP-120-DYNAMIC",
+      "standard_section": "RFC 959 4.2 and 5.4",
+      "numeric_rule": "Reply 120 announces service ready in nnn minutes; nnn is supplied per reply and has no default.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": ["NO_NUMERIC_BOUND", "NO_FIXED_SOURCE_MAP"],
+      "source_evidence": [
+        "Source/ftpserv.h:149-196 defines the fixed reply strings; it has 220 but no 120 delayed-service reply."
+      ]
+    },
+    {
+      "candidate_id": "FTP-PROMPT-REPLY",
+      "standard_section": "RFC 959 5.4",
+      "numeric_rule": "The server sends a prompt primary reply and the client waits, but no elapsed-time bound is specified.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": ["NO_NUMERIC_BOUND"],
+      "source_evidence": [
+        "Source/ftpserv.c:1913-1953 dispatches commands and their replies without a standard-derived response deadline."
+      ]
+    },
+    {
+      "candidate_id": "FTP-TEMPORARY-FAILURE-HOURS",
+      "standard_section": "RFC 1123 4.1.2.11",
+      "numeric_rule": "The phrase 'a few hours later' guides 4xx versus 5xx reply classification; it is not a timer obligation.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": ["NO_NUMERIC_BOUND", "FORMULA_UNSUPPORTED"],
+      "source_evidence": [
+        "The text supplies neither endpoints nor a timed state transition that can be projected to a finite pointwise formula."
+      ]
+    }
+  ],
+  "verification": {
+    "standard_text_retrieved": true,
+    "source_commit_checked_out": "5980ea1a0ee0e5c3015275f93445626f8c25c83a",
+    "source_paths_and_lines_checked": true,
+    "idle_timer_source_search_result": "No FTP control-connection idle timer or configuration field found.",
+    "service_started": false,
+    "protocol_messages_sent": false,
+    "formula_or_trace_execution": false
+  }
+}

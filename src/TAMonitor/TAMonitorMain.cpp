@@ -2,7 +2,10 @@
 
 #include "TAMonitor.h"
 #include "PTA/PTAAnalysis.h"
+#include "PTA/PrefixCostOutput.h"
+#include "PTA/PrefixRuntime.h"
 
+#include <chrono>
 #include <exception>
 #include <iostream>
 #include <optional>
@@ -51,27 +54,61 @@ int main(int argc, const char** argv) {
         tamonitor::BuildPair build = tamonitor::build_automata_pair(formula, options);
         std::vector<tamonitor::TimedEvent> trace;
         tamonitor::RunResult run;
+        bool pta_success = true;
+        std::optional<tamonitor::pta::PTAExecutionResult> pta_result;
+        std::optional<tamonitor::pta::PTAMixedExecutionResult> mixed_pta_result;
+        std::optional<tamonitor::pta::PrefixRuntimeObserver> prefix_observer;
         if (options.build_only) {
             run.final_verdict = "NOT_RUN_BUILD_ONLY";
         } else {
             trace = tamonitor::parse_trace(options, build.proposition_order);
-            run = tamonitor::run_monitor(build, trace, options);
+            if (options.pta_prefix_cost) {
+                const auto precompute_start = std::chrono::steady_clock::now();
+                mixed_pta_result.emplace(
+                    tamonitor::pta::run_mixed_pta_analysis(build, options));
+                const auto precompute_us = static_cast<std::uint64_t>(
+                    std::chrono::duration_cast<std::chrono::microseconds>(
+                        std::chrono::steady_clock::now() - precompute_start)
+                        .count());
+                tamonitor::pta::PrefixQueryOptions query_options;
+                query_options.optimizer =
+                    tamonitor::pta::parse_prefix_optimizer_backend(
+                        options.pta_prefix_optimizer);
+                query_options.timeout_ms = options.pta_prefix_query_timeout_ms;
+                query_options.max_regions = options.pta_prefix_max_regions;
+                prefix_observer.emplace(
+                    *mixed_pta_result, query_options, precompute_us);
+                run = tamonitor::run_monitor(
+                    build, trace, options, &*prefix_observer);
+            } else {
+                run = tamonitor::run_monitor(build, trace, options);
+            }
         }
         tamonitor::write_report(options, formula, build, trace, run);
 
-        bool pta_success = true;
-        std::optional<tamonitor::pta::PTAExecutionResult> pta_result;
-        std::optional<tamonitor::pta::PTAMixedExecutionResult> mixed_pta_result;
         if (options.pta_analysis == tamonitor::PTAAnalysisMode::Backward) {
             pta_result.emplace(tamonitor::pta::run_pta_analysis(build, options));
             tamonitor::pta::write_pta_outputs(options.output_dir, *pta_result);
             pta_success = tamonitor::pta::is_successful(*pta_result);
         } else if (options.pta_analysis == tamonitor::PTAAnalysisMode::Mixed) {
-            mixed_pta_result.emplace(
-                tamonitor::pta::run_mixed_pta_analysis(build, options));
+            if (!mixed_pta_result.has_value()) {
+                mixed_pta_result.emplace(
+                    tamonitor::pta::run_mixed_pta_analysis(build, options));
+            }
             tamonitor::pta::write_mixed_pta_outputs(
                 options.output_dir, *mixed_pta_result);
             pta_success = tamonitor::pta::is_successful(*mixed_pta_result);
+            if (prefix_observer.has_value()) {
+                (void)tamonitor::pta::write_prefix_cost_outputs(
+                    options.output_dir, prefix_observer->run());
+                if (options.pta_prefix_benchmark_iterations != 0) {
+                    const auto benchmark =
+                        prefix_observer->benchmark_evaluated_prefixes(
+                            options.pta_prefix_benchmark_iterations);
+                    tamonitor::pta::write_prefix_replay_benchmark(
+                        options.output_dir, benchmark);
+                }
+            }
         }
 
         std::cout << "TAMonitor completed\n";

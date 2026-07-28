@@ -1,0 +1,26 @@
+{
+  "cleaned_only_owned_process_group": true,
+  "completed_at": "2026-07-17T23:11:49.526465+00:00",
+  "pid": 739346,
+  "pid_exists_after_wait": false,
+  "post_cleanup_process_tree": {
+    "command": "ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 739346",
+    "exit_code": 1,
+    "stderr": "",
+    "stdout": ""
+  },
+  "pre_cleanup_process_tree": {
+    "command": "ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 739346",
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": " 739346  738202  739346  739346 Ssl  ardurover       /home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/ardurover --wipe --model rover --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20300 --rc-in-port 21301 --sim-port-in 22301 --sim-port-out 22302 --irlock-port 23301 --serial0 udpclient:127.0.0.1:19103 --sysid 153 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest\n"
+  },
+  "process_group": 739346,
+  "return_code": -2,
+  "signals": [
+    {
+      "sent_at": "2026-07-17T23:11:49.520872+00:00",
+      "signal": "SIGINT"
+    }
+  ]
+}

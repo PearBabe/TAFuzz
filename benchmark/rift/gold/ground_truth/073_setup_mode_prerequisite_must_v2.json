@@ -1,0 +1,149 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/073_setup_mode_prerequisite_must_v2.c",
+        "line": 36
+      },
+      "token": "ap_primary"
+    },
+    "node_context": {
+      "kind": "NODE",
+      "location": {
+        "column": 31,
+        "file": "cases/073_setup_mode_prerequisite_must_v2.c",
+        "line": 29
+      },
+      "token": "node_context"
+    },
+    "node_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/073_setup_mode_prerequisite_must_v2.c",
+        "line": 34
+      },
+      "token": "node_state"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/073_setup_mode_prerequisite_must_v2.c",
+        "line": 27
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "prepared context state == 8",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/073_setup_mode_prerequisite_must_v2.c",
+        "line": 36
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-073",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "setup_mode_prerequisite",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "Lifecycle order and required mode are explicit in the template, allowing the oracle to distinguish a valid setup sequence from an ignored pre-setup update.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "setup_mode_prerequisite",
+    "variant": 2
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "setup",
+        "state_commit",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross committed-state equality",
+        "kind": "state_value",
+        "relative_time_window": null,
+        "suggested_values": [
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "setup",
+            "to": "node_context"
+          },
+          {
+            "certainty": "must",
+            "from": "node_context",
+            "kind": "state_commit",
+            "to": "node_state"
+          },
+          {
+            "certainty": "must",
+            "from": "node_state",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_context",
+          "node_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "initialize_context occurs first",
+        "mode equals 2"
+      ],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/073_setup_mode_prerequisite_must_v2.c",
+  "source_sha256": "da2c9b85d7a5d1248a20f8f57c0a5831338dd06e892a302b81919541e218a62f",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 13,
+        "file": "cases/073_setup_mode_prerequisite_must_v2.c",
+        "line": 27
+      },
+      "scope": "SESSION",
+      "symbol": "source_primary"
+    }
+  ]
+}

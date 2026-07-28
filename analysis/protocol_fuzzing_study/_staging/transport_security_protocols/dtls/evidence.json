@@ -1,0 +1,49 @@
+{
+  "protocol": "DTLS",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_EXCLUSION",
+  "standards": [
+    {
+      "id": "RFC6347",
+      "title": "Datagram Transport Layer Security Version 1.2",
+      "url": "https://www.rfc-editor.org/rfc/rfc6347.html",
+      "sections": [
+        "4.2.4",
+        "4.2.4.1"
+      ],
+      "source_type": "IETF Standards Track"
+    },
+    {
+      "id": "RFC9147",
+      "title": "The Datagram Transport Layer Security (DTLS) Protocol Version 1.3",
+      "url": "https://www.rfc-editor.org/rfc/rfc9147.html",
+      "sections": [
+        "5.8"
+      ],
+      "source_type": "IETF Standards Track; excluded for implementation-version mismatch"
+    }
+  ],
+  "sources": [
+    {
+      "repository": "openssl/openssl",
+      "commit": "0437435a960123be1ced766d18d715f939698345",
+      "url": "https://github.com/openssl/openssl/tree/0437435a960123be1ced766d18d715f939698345",
+      "role": "DTLS 1.2 conforming timer source"
+    },
+    {
+      "repository": "assist-project/tinydtls-fuzz",
+      "commit": "06995d43e9eba892aa7db604b3879b5f91872328",
+      "url": "https://github.com/assist-project/tinydtls-fuzz/tree/06995d43e9eba892aa7db604b3879b5f91872328",
+      "role": "ProFuzzBench SUT; 2-second initial-timer divergence"
+    },
+    {
+      "repository": "ProFuzzBench/ProFuzzBench",
+      "commit": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+      "url": "https://github.com/ProFuzzBench/ProFuzzBench/blob/8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074/subjects/DTLS/TinyDTLS/Dockerfile#L71-L87",
+      "role": "benchmark pin evidence"
+    }
+  ],
+  "version_caveat": "RFC 9147 properties are excluded because neither locked benchmark TinyDTLS nor OpenSSL 0437435a implements DTLS 1.3.",
+  "method": "Screened and independently audited flight retransmission arm/backoff/cap, duplicate-flight response and final-flight retention; the unsupported final-flight retention card was rejected and duplicate constant steps removed.",
+  "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md"
+}

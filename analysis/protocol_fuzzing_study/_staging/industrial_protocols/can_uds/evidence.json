@@ -1,0 +1,65 @@
+{
+  "protocol": "AUTOSAR CAN-TP/DCM profiles (catalogue label CAN/UDS)",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+  "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+  "scope": "Public AUTOSAR R24-11 obligations instantiated with locked python-can-isotp and driftregion/iso14229 profiles. No paid ISO 15765/14229 text or secondary paraphrase is used as normative evidence; claims must not be generalized to all ISO implementations.",
+  "proposal_summary": {
+    "emitted": 5,
+    "approve": 1,
+    "fix_applied": 4,
+    "rejected": 1
+  },
+  "standards": [
+    {
+      "title": "AUTOSAR SWS CAN Transport Layer",
+      "version": "R24-11",
+      "url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_CANTransportLayer.pdf",
+      "sha256": "7334d633b02c443aacbe0ca25e20c319e977104eeb4bf8e67ac0358cfea34a22",
+      "sections_reviewed": [
+        "7.2.2 [SWS_CanTp_00312-SWS_CanTp_00313]",
+        "7.2.3 [SWS_CanTp_00315-SWS_CanTp_00316]",
+        "10.2 [ECUC_CanTp_00264, ECUC_CanTp_00279]"
+      ]
+    },
+    {
+      "title": "AUTOSAR SWS Diagnostic Communication Manager",
+      "version": "R24-11",
+      "url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+      "sha256": "cf5aeee78fda6e5a25f982f04cb146ce4a75586de7ba41913d46b0cea1cc2407",
+      "sections_reviewed": [
+        "7.2.4.3 [SWS_Dcm_01666-SWS_Dcm_01667]",
+        "7.2.4.6 [SWS_Dcm_00024]",
+        "7.2.4.13 [SWS_Dcm_01670]",
+        "7.2.4.14 [SWS_Dcm_01679-SWS_Dcm_01680]"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "repository": "pylessard/python-can-isotp",
+      "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+      "url": "https://github.com/pylessard/python-can-isotp"
+    },
+    {
+      "repository": "driftregion/iso14229",
+      "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+      "url": "https://github.com/driftregion/iso14229"
+    }
+  ],
+  "profile_differences": [
+    "AUTOSAR defines N_Bs/N_Cr as configurable and supplies no 1000 ms default; 1000 ms is python-can-isotp.",
+    "AUTOSAR timer starts use transmission confirmations; python-can-isotp may start its local timer earlier.",
+    "AUTOSAR unoverwritten S3 default is 5000 ms; driftregion/iso14229 uses 5100 ms.",
+    "P2/P2* cards explicitly fix server adjustment=0 and use implementation defaults 50/5000 ms."
+  ],
+  "rejected_candidates": [
+    {
+      "id": "UDS-S3-02",
+      "independent_audit_status": "REJECT_OR_FIX",
+      "decision_code": "DUPLICATE_OBLIGATION_AND_UNSUPPORTED_MULTI_CONNECTION",
+      "reason": "Current formula is a TesterPresent-specialized subset of UDS-S3-01 and never tests the cited owner-versus-foreign DcmDslConnection obligation; the locked SUT does not model multiple DcmDslConnections.",
+      "repair_gate": "Use a multi-connection SUT or an explicit owner/foreign model and test that a foreign TesterPresent does not reset the owner's S3 generation."
+    }
+  ]
+}

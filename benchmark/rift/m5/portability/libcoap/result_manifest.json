@@ -1,0 +1,152 @@
+{
+  "schema_version": "rift.portability.libcoap.result.v1",
+  "captured_at": "2026-07-18T14:16:38+08:00",
+  "status": "FAILED_IDENTITY_DRIFT_AND_RESOURCE_LIMIT",
+  "claim_label": "PORTABILITY_ENGINEERING_PROBE_NOT_GOLD",
+  "source": {
+    "name": "libcoap",
+    "checkout": "benchmark/coap/libcoap",
+    "commit": "94bacc8939dd6711169cd2332a002a361ec62531",
+    "tree": "1a87122c8836ffe4ef33971ead9536231df2d8f0",
+    "git_status": "CLEAN",
+    "source_patches": []
+  },
+  "analyzer": {
+    "requested_live_path": "/tmp/tafuzz-sa-m5-final-clang18-v2/tafuzz-sa",
+    "pre_run_binary_sha256": "a299c7935afb4c4341389b55a4d0ced6425b8c7e7a800c01566b22f8e6c72c76",
+    "post_run_live_path_sha256": "dbef650aa250713c7f58bf743e95c891cc85046d3be78d8e69f5fd1fa3370d97",
+    "digest_named_snapshot_created": false,
+    "exact_identity_replayable": false,
+    "identity_finding": "The live build path was rebuilt concurrently after the pre-run hash was captured. The process was launched from the a299c793 bytes, but those bytes were not snapshotted and cannot be physically rehashed after process exit."
+  },
+  "toolchain": {
+    "clang": "Ubuntu clang version 18.1.8 (++20240731024944+3b5b5c1ec4a3-1~exp1~20240731145000.144)",
+    "libclang_cpp_path": "/usr/lib/llvm-18/lib/libclang-cpp.so.18.1",
+    "libllvm_path": "/lib/x86_64-linux-gnu/libLLVM-18.so.18.1",
+    "libz3_path": "/lib/x86_64-linux-gnu/libz3.so.4"
+  },
+  "inputs": {
+    "compile_database": {
+      "path": "/tmp/tafuzz-rift-libcoap-fixed/compile_commands.json",
+      "sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+      "translation_units": 38,
+      "deep_acceptance_gate": "PASS_246_CHECKS"
+    },
+    "base_property_ir": {
+      "path": "benchmark/rift/m4/libcoap/typed_property_ir.json",
+      "sha256": "0b5aea91edc4d7c68e9a39a3a24f82640d2b37385fdaa9bcda9b98cf20e9f187"
+    },
+    "derived_property_ir": {
+      "path": "benchmark/rift/m5/portability/libcoap/property_ir.json",
+      "sha256": "5949ccdd901d22172eaab8061b64f230d685c989b82a3a514c4778aeecf741c4",
+      "schema_validation": "PASS",
+      "formula_changed": false,
+      "typed_predicate_source_selectors_added": 11
+    },
+    "derivation_script": {
+      "path": "benchmark/rift/m5/portability/libcoap/derive_property.py",
+      "sha256": "d1612ee277fc8bb82eeb436ee029e4088cfe28ef329331ebc4eff3d3d89d2407"
+    },
+    "platform_model_pack": {
+      "path": "src/StaticAnalysis/model_packs/platform/posix_lp64_v1.json",
+      "sha256": "c532d54ab0e3e2cb62d82393164aa5497be8e6a39cc9c1e60c516a8a39266da0",
+      "model_pack_id": "pack.platform.posix-lp64",
+      "property_independent": true
+    },
+    "project_adapter_model_pack": {
+      "path": "benchmark/rift/m5/portability/libcoap/model_pack.json",
+      "sha256": "083b46b375b5f2bccdd96dc024953f8a672ed9bb900abdbcf062a390cb5a2efb",
+      "model_pack_id": "pack.adapter.libcoap-public-api",
+      "property_independent": true,
+      "schema_validation": "PASS",
+      "core_project_literals_added": false
+    },
+    "executor_capabilities": {
+      "path": "benchmark/rift/m5/portability/libcoap/executor_capabilities.json",
+      "sha256": "36cf0de135054a6ffe827331f7a1c1d128d4b13088162d1f31a41c13bdb3c8b0",
+      "schema_validation": "PASS",
+      "status": "CONSERVATIVE_INCOMPLETE",
+      "all_declared_controllability": "UNKNOWN",
+      "reason": "No concrete replay harness is certified by this portability-only run."
+    }
+  },
+  "run": {
+    "command": "recipes",
+    "output_root": "/tmp/rift-m5-libcoap-final-a299c793.CciHtu/result",
+    "logical_roots": [
+      "source=/home/lqq/project/TAFuzz/benchmark/coap/libcoap",
+      "build=/tmp/tafuzz-rift-libcoap-fixed"
+    ],
+    "solver_timeout_ms": 1000,
+    "max_solver_queries": 1000,
+    "wall_timeout_seconds": 1800,
+    "address_space_limit_bytes": 12884901888,
+    "exit_code": 1,
+    "failure": "std::bad_alloc",
+    "wall_seconds": 417.76,
+    "user_seconds": 361.95,
+    "system_seconds": 22.19,
+    "peak_rss_kib": 12211160,
+    "output_bundle_created": false,
+    "certificate_created": false,
+    "atomic_publication_preserved": true,
+    "stdout": "benchmark/rift/m5/portability/libcoap/final/recipes.stdout",
+    "stderr": "benchmark/rift/m5/portability/libcoap/final/recipes.stderr",
+    "time_receipt": "benchmark/rift/m5/portability/libcoap/final/recipes.time"
+  },
+  "failure_localization": {
+    "method": "READ_ONLY_CODE_ORDER_AND_FILESYSTEM_TIMELINE",
+    "second_large_run_performed": false,
+    "last_definitely_completed_stage": "semantic_index_in_memory",
+    "first_not_completed_artifact": "semantic_index.json",
+    "downstream_stages_reached": false,
+    "likely_failure_operation": "semantic_index_json / encoded_json materialization before first staged publication",
+    "phase_trace_available": false,
+    "public_result_files": 0,
+    "report": "benchmark/rift/m5/portability/libcoap/final/failure_localization.md"
+  },
+  "detached_verification": {
+    "verifier_path": "src/StaticAnalysis/tests/verify_m5_certificate.py",
+    "verifier_sha256": "7ab528c78d183acb058ae897b14f2c64ee5ee861d2db3a7ea904a7078515d698",
+    "invoked": true,
+    "exit_code": 1,
+    "verdict": "FAIL",
+    "reason": "The analyzer failed before atomically publishing m5_analysis_certificate.json.",
+    "report": "benchmark/rift/m5/portability/libcoap/final/certificate_verification.json",
+    "stdout": "benchmark/rift/m5/portability/libcoap/final/certificate_verify.stdout",
+    "stderr": "benchmark/rift/m5/portability/libcoap/final/certificate_verify.stderr",
+    "time_receipt": "benchmark/rift/m5/portability/libcoap/final/certificate_verify.time"
+  },
+  "semantic_results": {
+    "predicate_occurrences": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "frontier_candidates": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "actionable_frontier": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "mutation_recipes": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "unknown_recipes": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE"
+  },
+  "gates": {
+    "same_binary_schema_core": "FAIL_IDENTITY_DRIFT",
+    "portable_core_zero_edits": "PASS_FOR_THIS_PROBE_SETUP",
+    "recipes_completed": "FAIL_RESOURCE_LIMIT",
+    "detached_certificate": "FAIL_NO_CERTIFICATE",
+    "libcoap_60_seconds_2_gib": "FAIL",
+    "real_project_accuracy": "NOT_ASSESSED_PENDING_TWO_HUMANS_AND_ARBITRATION"
+  },
+  "claim_boundary": {
+    "portability_engineering_verdict": "FAIL",
+    "accuracy_metrics_reported": false,
+    "fuzz_effectiveness_reported": false,
+    "executor_actionability_reported": false,
+    "reason": "The analyzer exhausted the 12 GiB address-space gate before publishing any semantic result, and the requested live binary path drifted."
+  },
+  "evidence_files": {
+    "benchmark/rift/m5/portability/libcoap/final/recipes.stdout": {"size": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    "benchmark/rift/m5/portability/libcoap/final/recipes.stderr": {"size": 21, "sha256": "6a5695a06312a9f03e75eeb3f24f250746b5c6ed57ab85fe685741db7e2b388f"},
+    "benchmark/rift/m5/portability/libcoap/final/recipes.time": {"size": 128, "sha256": "4c83301170eb2dc8cef573913c3c95b5feafa558ecc4eb0cd84059deaf937e7f"},
+    "benchmark/rift/m5/portability/libcoap/final/output_root.txt": {"size": 43, "sha256": "fd0c7dadb7d8048b5e1743dac277e3cde1afd86f1939f3ebf62e39b47a3677b1"},
+    "benchmark/rift/m5/portability/libcoap/final/certificate_verification.json": {"size": 814, "sha256": "60c79b5e6ab5850fd65eee50907db48afb06a54588c9f1449f9ba2436976a5dd"},
+    "benchmark/rift/m5/portability/libcoap/final/certificate_verify.stdout": {"size": 814, "sha256": "60c79b5e6ab5850fd65eee50907db48afb06a54588c9f1449f9ba2436976a5dd"},
+    "benchmark/rift/m5/portability/libcoap/final/certificate_verify.stderr": {"size": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    "benchmark/rift/m5/portability/libcoap/final/certificate_verify.time": {"size": 120, "sha256": "0e524f3baa87b24bbf8986248606b828fc7cb25154f58437cf11258caab2527d"}
+  }
+}

@@ -1,0 +1,2746 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFC Errata</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/search/">RFC Errata</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="https://www.rfc-editor.org/series/rfc-errata/" rel="noopener" target="_blank">About</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="/oidc/authenticate/">Login</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        
+<div>
+<h1>Errata</h1>
+
+
+<form id="errata-search-form" method="get">
+    <div class="mb-3"><label class="form-label" for="id_rfc_number">RFC Number</label><input type="number" name="rfc_number" value="3261" class="form-control is-valid" placeholder="RFC Number" id="id_rfc_number"></div><div class="mb-3"><label class="form-label" for="id_errata_id">Errata ID</label><input type="number" name="errata_id" class="form-control is-valid" placeholder="Errata ID" id="id_errata_id"></div><div class="mb-3"><label class="form-label" for="id_status">Status</label><select name="status" class="form-select is-valid" id="id_status">
+  <option value="any">All/Any</option>
+
+  <option value="verified_reported">Verified+Reported</option>
+
+  <option value="verified">Verified</option>
+
+  <option value="reported">Reported</option>
+
+  <option value="held_for_doc_update">Held for Document Update</option>
+
+  <option value="rejected">Rejected</option>
+
+</select></div><div class="mb-3"><label class="form-label" for="id_area">Area Acronym</label><select name="area" class="form-select is-valid" id="id_area">
+  <option value="any">All/Any</option>
+
+  <option value="app">app</option>
+
+  <option value="art">art</option>
+
+  <option value="gen">gen</option>
+
+  <option value="int">int</option>
+
+  <option value="ops">ops</option>
+
+  <option value="rai">rai</option>
+
+  <option value="rtg">rtg</option>
+
+  <option value="sec">sec</option>
+
+  <option value="tsv">tsv</option>
+
+  <option value="wit">wit</option>
+
+</select></div><div class="mb-3"><label class="form-label" for="id_errata_type">Type</label><select name="errata_type" class="form-select is-valid" id="id_errata_type">
+  <option value="any">All/Any</option>
+
+  <option value="editorial">Editorial</option>
+
+  <option value="technical">Technical</option>
+
+</select></div><div class="mb-3"><label class="form-label" for="id_wg_acronym">WG Acronym</label><input type="text" name="wg_acronym" maxlength="40" class="form-control is-valid" placeholder="WG Acronym" id="id_wg_acronym"></div><div class="mb-3"><label class="form-label" for="id_submitter_name">Submitter Name</label><input type="text" name="submitter_name" maxlength="80" class="form-control is-valid" placeholder="Submitter Name" id="id_submitter_name"></div><div class="mb-3"><label class="form-label" for="id_stream">Stream</label><select name="stream" class="form-select is-valid" id="id_stream">
+  <option value="any">All/Any</option>
+
+  <option value="IAB">IAB</option>
+
+  <option value="INDEPENDENT">INDEPENDENT</option>
+
+  <option value="IRTF">IRTF</option>
+
+  <option value="Legacy">Legacy</option>
+
+  <option value="Editorial">Editorial</option>
+
+</select></div><div class="mb-3"><label class="form-label" for="id_date">Date Submitted</label><input type="text" name="date" placeholder="YYYY-MM-DD, YYYY-MM, or YYYY" class="form-control is-valid" id="id_date"></div><div class="mb-3"><label class="form-label" for="id_presentation">Presentation</label><select name="presentation" class="form-select is-valid" id="id_presentation">
+  <option value="table">Table</option>
+
+  <option value="records" selected>Full Records</option>
+
+</select></div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<div class="container mt-4">
+    
+    
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">Verified (12)</h2>
+            </div>
+            <div class="card-body">
+                
+                <div class="row g-3">
+                    
+                        <div class="col-md-12">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light text-dark">
+                                    <h3 class="mt-4">RFC 3261</h3>
+                                    <div class="card-body bg-warning text-light">
+                                        <p class="mb-0"><strong>Source of RFC:</strong> sip (rai)</p>
+                                        
+                                        
+                                            <p class="mb-0"><strong>Updated by:</strong> RFC3265, RFC3853, RFC4320, RFC4916, RFC5393, RFC5621, RFC5626, RFC5630, RFC5922, RFC5954, RFC6026, RFC6141, RFC6665, RFC6878, RFC7462, RFC7463, RFC8217, RFC8591, RFC8760, RFC8898, RFC8996</p>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid316/">316</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>RFC Editor</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2003-10-03</span>
+                                                    </dd>
+
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        In Section 25.1: 
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>     digest-uri-value  =  rquest-uri ; Equal to request-uri as
+                          specified by HTTP/1.1 </code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>     digest-uri-value  =  request-uri ; Equal to request-uri as
+                          specified by HTTP/1.1
+</code></pre>
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1051/">1051</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Alexandre Machado</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2007-08-23</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2010-04-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 25.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>    srvr           =  [ [ userinfo &quot;@&quot; ] hostport ]</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>    srvr           =  [ [ userinfo ] hostport ]</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The character &quot;@&quot; should not appear in this rule since it already appears at the end of the rule &quot;userinfo&quot;:
+
+userinfo         =  ( user / telephone-subscriber ) [ &quot;:&quot; password ] &quot;@&quot;
+
+According to the use of rule &quot;userinfo&quot; in other rules such as &quot;SIP-URI&quot; and &quot;SIPS-URI&quot;, the correct place of character &quot;@&quot; is really at the end of rule &quot;userinfo&quot; and not in all other rules using it.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1073/">1073</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Marco Ambu</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2005-12-15</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2010-04-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 8.1.3.4 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>sip:user@host?Subject=foo&amp;Call-Info=&lt;http://www.foo.com&gt;</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>sip:user@host?Subject=foo&amp;Call-Info=%3Chttp://www.foo.com%3E </code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>[from pending]
+I would like to show you an error in RFC 3261. I&#x27;ve discussed in
+SIP-implementors mailing list too.
+
+in RFC 3261 page 44 par 8.1.3.4 there is an example of URI (contact URI)
+with uri headers:
+
+sip:user@host?Subject=foo&amp;Call-Info=&lt;http://www.foo.com&gt;
+
+I&#x27;ve noticed that URI header &quot;Call-Info&quot; has a value with characters not
+allowed in uri headers.
+
+The BNF says that an header value must contain characters in   
+hnv-unreserved or unreserved or escaped but &#x27;&lt;&#x27; and &#x27;&gt;&#x27; are not in that set.
+
+The right example should be the following:
+sip:user@host?Subject=foo&amp;Call-Info=%3Chttp://www.foo.com%3E  </code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1470/">1470</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Iñaki Baz Castillo</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2008-07-14</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2010-04-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17.2.2 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>If the TU passes a final response (status codes 200-699) to the 
+server while in the &quot;Proceeding&quot; state, the transaction MUST enter 
+the &quot;Completed&quot; state...</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>If the TU passes a final response (status codes 200-699) to the 
+server while in the &quot;Trying&quot; or &quot;Proceeding&quot; state, the transaction 
+MUST enter the &quot;Completed&quot; state...</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>&quot;17.2.2 Non-INVITE Server Transaction&quot; doesn&#x27;t consider the case in which the transaction state is &quot;Trying&quot; and the transaction receives from the TU a final response.
+It&#x27;s totally possible that TU sends a final response without sending before a provisional response. Note that this case is perfectly valid in the diagram of page 139.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid3183/">3183</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Bruno CHATRAS</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2012-04-10</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 23.4.3 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>         --boundary42
+         Content-Type: application/pkcs7-mime; smime-type=enveloped-data;
+              name=smime.p7m
+         Content-Transfer-Encoding: base64
+         Content-Disposition: attachment; filename=smime.p7m
+            handling=required
+         Content-Length: 231
+
+</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>   --boundary42
+         Content-Type: application/pkcs7-mime; smime-type=enveloped-data;
+              name=smime.p7m
+         Content-Transfer-Encoding: base64
+         Content-Disposition: attachment; filename=smime.p7m
+            handling=required
+
+</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>A Content-Length header is shown for a body-part within a multipart body. But Content-Length is an HTTP/SIP header, not a IANA-registered MIME header and should therefore not appear at that location in valid examples. The length of a body part within a multipart body is determined by MIME framing. A Content-Length header found for a body-part within a multipart body is meaningless and should be ignored.
+
+This was discussed on both the SIP Implementors and SIP Core mailing lists.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4567/">4567</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Christer Holmberg</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2015-12-17</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Ben Campbell</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2015-12-17</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 20.11 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>The handling parameter, handling-param, describes how the UAS should
+react if it receives a message body whose content type or disposition
+type it does not understand. The parameter has defined values of
+&quot;optional&quot; and &quot;required&quot;. If the handling parameter is missing, the
+value &quot;required&quot; SHOULD be assumed. The handling parameter is
+described in RFC 3204 [19].</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The handling parameter, handling-param, describes how the UAS should
+react if it receives a message body whose content type or disposition
+type it does not understand. The parameter has defined values of
+&quot;optional&quot; and &quot;required&quot;. If the handling parameter is missing, or if
+the Content-Disposition header field is missing, the value &quot;required&quot; 
+SHOULD be assumed. The handling parameter is described in RFC 3204 [19].
+</code></pre>
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid6645/">6645</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Matt Hertogs</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2021-07-20</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-05-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 23.3 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>Content-Disposition: attachment; filename=smime.p7m
+           handling=required</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Content-Disposition: attachment; filename=smime.p7m;
+           handling=required</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The example for Content-Disposition header is incorrectly formatted according to the BNF.
+It is missing a semicolon between each disp-param.
+(Relevant section of BNF posted below)
+
+Content-Disposition   =  &quot;Content-Disposition&quot; HCOLON
+                         disp-type *( SEMI disp-param )
+disp-type             =  &quot;render&quot; / &quot;session&quot; / &quot;icon&quot; / &quot;alert&quot;
+                         / disp-extension-token
+disp-param            =  handling-param / generic-param
+handling-param        =  &quot;handling&quot; EQUAL
+                         ( &quot;optional&quot; / &quot;required&quot;
+                         / other-handling )
+other-handling        =  token
+disp-extension-token  =  token
+
+This also occurs in 23.4.3</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid7529/">7529</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Shraddha Soni</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2023-05-29</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-05-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 25.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>This is intended to behave exactly as HTTP/1.1 as described in RFC 2616 [8].
+The SWS construct is used when linear white space is optional, generally between tokens and separators.
+
+      LWS  =  [*WSP CRLF] 1*WSP ; linear whitespace</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>This is intended to behave exactly as HTTP/1.1 as described in RFC 2616 [8].
+The SWS construct is used when linear white space is optional, generally between tokens and separators.
+
+      LWS  =  [CRLF] 1*WSP ; linear whitespace</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>RFC 2616 states 
+LWS            = [CRLF] 1*( SP | HT )
+
+RFC 2234 states 
+WSP            =  SP / HTAB
+                               ; white space
+RFC 3261 is referencing both for BNF to follow, but looks like a new BNF is stated. So either it should not reference to follow RFC 2616 exactly or follow the same BNF as 2616.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid2051/">2051</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Cullen Jennings</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2010-02-24</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2010-05-23</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 26.3.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>   Proxy servers, redirect
+   servers, and registrars SHOULD possess a site certificate whose
+   subject corresponds to their canonical hostname. </code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>   Proxy servers, redirect
+   servers, and registrars SHOULD possess a site certificate whose
+   subject corresponds to the DNS name other SIP devices will use to reach them. </code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The term hostname seemed to make some people think if you had two sip servers for the domain example.com with hostnames host1 and host2, the the cert should have host1.example.com when in fact the sip signaling always used exmaple.com and the cert should have a example.com as the name.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4084/">4084</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Xing Lou Han</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2014-08-15</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-03-29</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 13.2.2.4 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>   If the dialog identifier in the 2xx response matches the dialog
+   identifier of an existing dialog, the dialog MUST be transitioned to
+   the &quot;confirmed&quot; state, and the route set for the dialog MUST be
+   recomputed based on the 2xx response using the procedures of Section
+   12.2.1.2.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>   If the dialog identifier in the 2xx response matches the dialog
+   identifier of an existing dialog, the dialog MUST be transitioned to
+   the &quot;confirmed&quot; state, and the route set for the dialog MUST be
+   recomputed based on the 2xx response using the procedures of Section
+   12.2.1.1.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The procedures of recomputing the route set should refer to the Section 12.2.1.1, rather than Section 12.2.1.2. 
+
+Actually in Section 12.2.1.2, there is no procedure of computing route set. Instead, the related procedures can only be found in Section 12.2.1.1.
+
+To avoid misleading, &quot;12.2.1.2&quot; here should be &quot;12.2.1.1&quot; instead.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4300/">4300</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Tamas Horvath</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2015-03-12</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-03-29</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 24.2 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>F2 100 Trying atlanta.com proxy -&gt; Alice
+(...)
+F3 INVITE atlanta.com proxy -&gt; biloxi.com proxy
+(...)
+F4 100 Trying biloxi.com proxy -&gt; atlanta.com proxy
+(...)
+F5 INVITE biloxi.com proxy -&gt; Bob</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>F3 100 Trying atlanta.com proxy -&gt; Alice
+(...)
+F2 INVITE atlanta.com proxy -&gt; biloxi.com proxy
+(...)
+F5 100 Trying biloxi.com proxy -&gt; atlanta.com proxy
+(...)
+F4 INVITE biloxi.com proxy -&gt; Bob</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Figure 1 in Section 4 shows different indexes for the 100 Trying and INVITE messages.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4637/">4637</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Verified</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Boris Shtrasman</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2016-03-11</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Verified by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Verified:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-03-29</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 23.4.3 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>        ghyHhHUujhJhjH77n8HHGTrfvbnj756tbB9HG4VQpfyF467GhIGfHfYT6
+        4VQpfyF467GhIGfHfYT6jH77n8HHGghyHhHUujhJh756tbB9HGTrfvbnj
+        n8HHGTrfvhJhjH776tbB9HG4VQbnj7567GhIGfHfYT6ghyHhHUujpfyF4
+        7GhIGfHfYT64VQbnj756
+
+        --boundary42-</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>        ghyHhHUujhJhjH77n8HHGTrfvbnj756tbB9HG4VQpfyF467GhIGfHfYT6
+        4VQpfyF467GhIGfHfYT6jH77n8HHGghyHhHUujhJh756tbB9HGTrfvbnj
+        n8HHGTrfvhJhjH776tbB9HG4VQbnj7567GhIGfHfYT6ghyHhHUujpfyF4
+        7GhIGfHfYT64VQbnj756
+
+        --boundary42--</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>As far as I know a boundary end should end with two dashes as for RFC 3851 for that specific case, hence it should be :
+
+ --boundary42--</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">Held for Document Update (16)</h2>
+            </div>
+            <div class="card-body">
+                
+                <div class="row g-3">
+                    
+                        <div class="col-md-12">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light text-dark">
+                                    <h3 class="mt-4">RFC 3261</h3>
+                                    <div class="card-body bg-warning text-light">
+                                        <p class="mb-0"><strong>Source of RFC:</strong> sip (rai)</p>
+                                        
+                                        
+                                            <p class="mb-0"><strong>Updated by:</strong> RFC3265, RFC3853, RFC4320, RFC4916, RFC5393, RFC5621, RFC5626, RFC5630, RFC5922, RFC5954, RFC6026, RFC6141, RFC6665, RFC6878, RFC7462, RFC7463, RFC8217, RFC8591, RFC8760, RFC8898, RFC8996</p>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid678/">678</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Matthew S. Harris</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2006-08-14</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Cullen Jennings</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 25.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>On page 220, it says &quot;The TEXT-UTF8-TRIM rule is used for descriptive
+field contents that are n t quoted strings, where leading and trailing
+LWS is not meaningful.&quot;  (And no, I&#x27;m not talking about the &quot;n t&quot;
+typo.)  The rule for TEXT-UTF8-TRIM is
+
+ TEXT-UTF8-TRIM  = 1*TEXT-UTF8char *(*LWS TEXT-UTF8char)
+ TEXT-UTF8char = %x21-7E / UTF8-NONASCII
+
+which pretty clearly says that the final character of TEXT-UTF8-TRIM
+cannot be whitespace.  TEXT-UTF8-TRIM appears only as the value of a
+header field, and the rule for message-header does not generate
+trailing whitespace either.
+
+So the text talks about trailing whitespace, which seems reasonable
+because whitespace is allowed in many other places, but the grammar
+does not allow it.  Was trailing whitespace intended?</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>[not submitted]</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>from pending</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid832/">832</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Marco Ambu</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2006-01-11</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        &nbsp;
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>I would like to show you an ambiguity in RFC 3261.
+
+The ABNF for SIP in RFC 3261 page 227 defines header Accept as 
+&quot;Accept = &quot;Accept&quot; HCOLON [accept-range *(COMMA accept-range)].
+
+Expanding this form we have:
+
+Accept = &quot;Accept&quot; HCOLON [( (...) *(SEMI m-parameter) *(SEMI 
+accept-param) ) *(COMMA accept-range)]
+
+For example we can have
+
+Accept: 
+application/sdp;m_extension_parameter=value1;accept_extension_param=value2;q=0.5
+We know from RFC 3261 that q is an accept-param.
+We don&#x27;t know how to consider the first two unknown parameters: how to 
+distinguish from m-parameter and accept-param?
+
+While in other cases RFC 3261 shows the rules to solve ambiguities (for 
+example how to consider the parameters in a Contact URI if the URI is 
+not enclosed in angular brackets) I have not found any suggestion for 
+this specific case in RFC 3261.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>[not submitted]</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>from pending</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1682/">1682</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Iñaki Baz Castillo</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2009-02-10</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 20.7 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>Authorization: Digest username=&quot;Alice&quot;, realm=&quot;atlanta.com&quot;,
+  nonce=&quot;84a4cc6f3082121f32b42a2187831a9e&quot;,
+  response=&quot;7587245234b3434cc3412213e5f113a5432&quot;</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Authorization: Digest username=&quot;Alice&quot;, realm=&quot;atlanta.com&quot;,
+  nonce=&quot;84a4cc6f3082121f32b42a2187831a9e&quot;,
+  response=&quot;7587245234b3434cc3412213e5f113a5&quot;</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>&#x27;response&#x27; field in original example has 35 hexadecimal characters while they must be 32:
+
+  dresponse         =  &quot;response&quot; EQUAL request-digest
+  request-digest    =  LDQUOT 32LHEX RDQUOT</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid2769/">2769</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Iñaki Baz Castillo</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2011-04-08</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17.1.2.2 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>   MUST be passed to the transport layer for transmission.  If an
+   unreliable transport is in use, the client transaction MUST set timer
+   E to fire in T1 seconds.  If timer E fires while still in this state,
+   the timer is reset, but this time with a value of MIN(2*T1, T2).
+   When the timer fires again, it is reset to a MIN(4*T1, T2).  This
+   process continues so that retransmissions occur with an exponentially
+   increasing interval that caps at T2.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>   MUST be passed to the transport layer for transmission.  If an
+   unreliable transport is in use, the client transaction MUST set timer
+   E to fire in T1 seconds.  If timer E fires while still in this state,
+   the timer is reset, but this time with a value of MIN(2*T1, T2).
+   When the timer fires again, it is reset to a MIN(4*T1, T2). Multiplier
+   on T1 doubles with each reset so that retransmissions occur with an
+   exponentially increasing interval that caps at T2.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The original text doesn&#x27;t clarify that the multiplier of T1 is doubled with each timer reset, so it could be understood that the maximum value the timer takes is MIN(4*T1, T2) which is 2s (so the timer would never reach 4s and the resulting intervals would be 500ms, 1s, 2s, 2s, 2s, 2s, etc).</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid3098/">3098</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Alec Davis</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2012-01-27</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2012-01-27</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 12.2.1.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>A client could, for example, choose the 31 most significant bits of a 32-bit
+ second clock as an initial sequence number.
+
+</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>A client could, for example, choose the 31 least significant bits of a 32-bit
+ second clock as an initial sequence number.
+
+</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Choosing the most sig 31 bits would violate 8.1.1.5, where initial CSeq number must be less than 2**31
+
+8.1.1.5: The sequence number value MUST be expressible as a 32-bit unsigned integer and MUST be less than 2**31.
+
+
+REVIEWER NOTE (rjsparks@nostrum.com) : It was explicitly the intent to point to the most significant bits. The confusion in this report is not recognizing that the intent is to treat those as a 31-bit integer (which by definition will be less than 2**31). Rather than reject the errata, I&#x27;m putting this in hold for document update so future revisions can clarify the point.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid3102/">3102</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Alec Davis</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2012-02-01</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 12.2.1.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>      With a length of 32 bits, a client could generate, within a single
+      call, one request a second for about 136 years before needing to
+      wrap around.  The initial value of the sequence number is chosen
+      so that subsequent requests within the same call will not wrap
+      around.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>      With a length of 32 bits, a client could generate, within a single
+      call, one request a second for about 136 years before exhausting
+      available sequence numbers. Sequence numbers must not wrap around to 0.
+      The initial value of the sequence number (less than 2**31) is chosen
+      so that subsequent requests within the same call will not exceed 2**32-1.
+      </code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Highlight that within a dialog sequence numbers;
+   1). can increment to 2**32-1
+   2). must not wrap around to 0</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid3684/">3684</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Colin Fraizer</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2013-07-16</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Gonzalo Camarillo</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 7.3 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code> Specifically, any SIP header whose grammar is of the form
+
+      header  =  &quot;header-name&quot; HCOLON header-value *(COMMA header-value)
+
+   allows for combining header fields of the same name into a comma-
+   separated list.  The Contact header field allows a comma-separated
+   list unless the header field value is &quot;*&quot;.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code> Specifically, any SIP header whose grammar is of the form
+
+      header  =  header-name HCOLON header-value *(COMMA header-value)
+
+   allows for combining header fields of the same name into a comma-
+   separated list.  The Contact header field allows a comma-separated
+   list unless the header field value is &quot;*&quot;.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>That is, remove the double quotes around the word `header-name&#x27; in the ABNF.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid3875/">3875</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Varun Bharadwaj S V</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2014-01-31</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Richard Barnes</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2014-02-15</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>17 Transcations
+
+ - Additionally, in the case of an INVITE request, the client
+transaction is responsible for generating the ACK request for any
+final response accepting a 2xx response.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>17 Transcations
+
+ - Additionally, in the case of an INVITE request, the client
+transaction is responsible for generating the ACK request for any
+final response excepting a 2xx response.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Client transaction should generate the ACK except for 2xx responses.It should not accept &amp; generate the ACK for 2xx response.
+For Server transaction RFC says - &quot;In the case of an INVITE transaction, it absorbs the ACK request for any final response excepting a 2xx response.&quot;</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid5598/">5598</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Roman Shpount</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2019-01-11</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Ben Campbell</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2019-02-14</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 25.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>display-name   =  *(token LWS)/ quoted-string</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>display-name   =  token *(LWS token)/ quoted-string</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>There is a contradiction between the ABNF rule and specification.
+
+The name-addr ABNF rule in RFC 3261 specifies:
+
+name-addr      =  [ display-name ] LAQUOT addr-spec RAQUOT
+addr-spec      =  SIP-URI / SIPS-URI / absoluteURI
+display-name   =  *(token LWS)/ quoted-string
+
+Based on this, LWS is always required between token and the &quot;&lt;&quot; and the following Name-Address value is invalid: foo&lt;sip:foo@bar.com&gt;
+
+At the same time section 20.10 says:
+
+There may or may not be LWS between the display-name and the &quot;&lt;&quot;.
+
+This implies that foo&lt;sip:foo@bar.com&gt; should be acceptable.
+
+I propose to change ABNF rule for display-name to allow no LWS between last token and the &quot;&lt;&quot;</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid5653/">5653</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Vimal Chandra Tewari</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2019-03-12</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-05-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17.1.1.2 says:
+                                                    
+                                                </p>
+                                                
+                                                    <p class="text-muted">No original text provided.</p>
+                                                
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>When a INVITE client transaction transitions to Proceeding state (upon receiving a provisional response), the request retransmission stops (for an unreliable transport) i.e. Timer A is stopped. 
+However in Proceeding state, Timer B, i.e. Transaction Timeout Timer can still fire if no final response is received in stipulated time in which case the TU should be informed and the transaction should transition to Terminated state.
+&quot;Figure 5: INVITE client transaction&quot; in RFC 3261 does not show the Timer B expiry event in Proceeding state. This means that we are saying there is a guarantee that a final response will always be received in Proceeding state which may not always be the case.
+In my opinion, the Proceeding state in Figure 5 should be updated to include a Timer B event.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid6793/">6793</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Mojtaba Esfandiari.S</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2021-12-21</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-05-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 8.1.1.5 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>The CSeq header field serves as a way to identify and order
+   transactions.  It consists of a sequence number and a method.  The
+   method MUST match that of the request.  For non-REGISTER requests
+   outside of a dialog, the sequence number value is arbitrary.  The
+   sequence number value MUST be expressible as a 32-bit unsigned
+   integer and MUST be less than 2**31.  As long as it follows the above
+   guidelines, a client may use any mechanism it would like to select
+   CSeq header field values.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The CSeq header field serves as a way to identify and order
+   transactions.  It consists of a sequence number and a method.  The
+   method MUST match that of the request.  For non-REGISTER requests
+   outside of a dialog, the sequence number value is arbitrary. For requests with its credentials after receiving a
+   401 (Unauthorized) or 407 (Proxy Authentication Required) response,
+  the CSeq header field value MUST increment. The
+   sequence number value MUST be expressible as a 32-bit unsigned
+   integer and MUST be less than 2**31.  As long as it follows the above
+   guidelines, a client may use any mechanism it would like to select
+   CSeq header field values.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>For more clarity and more understanding, It would be nice to have a quiet bit of update in RFC 3261 section 8.1.1.5. Because, the word &quot;arbitrary&quot; in the CSeq value may be confused with the same value as before.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1471/">1471</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Iñaki Baz Castillo</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2008-07-14</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>Additionally, in the case of an INVITE request, the client
+transaction is responsible for generating the ACK request for any
+final response accepting a 2xx response.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Additionally, in the case of an INVITE request, the client
+transaction is responsible for generating the ACK request for any
+final response excepting a 2xx response.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>&quot;accepting a 2xx response&quot; =&gt; &quot;excepting a 2xx response&quot;</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1472/">1472</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Iñaki Baz Castillo</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2008-07-14</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 25.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>The TEXT-UTF8-TRIM rule is used for descriptive field 
+contents that are n t quoted strings,</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The TEXT-UTF8-TRIM rule is used for descriptive field 
+contents that are not quoted strings,</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>&quot;are n t&quot; =&gt; &quot;are not&quot;</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid3237/">3237</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Kevin P. Fleming</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2012-05-31</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 8.1.3.5 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>   In all of the above cases, the request is retried by creating a new
+   request with the appropriate modifications.  This new request
+   constitutes a new transaction and SHOULD have the same value of the
+   Call-ID, To, and From of the previous request, but the CSeq should
+   contain a new sequence number that is one higher than the previous.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>   In all of the above cases, the request is retried by creating a new 
+   request with the appropriate modifications.  This new request 
+   constitutes a new transaction and SHOULD have the same value of the 
+   Call-ID, To, and From of the previous request, but the CSeq SHOULD 
+   contain a new sequence number that is one higher than the previous.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>We have had one implementor claim that they are not required to increment CSeq when retrying the request because the RFC says &#x27;should&#x27; and not &#x27;SHOULD&#x27;. Based on current IETF discussions, though, these should probably be changed to MUST anyway, but that&#x27;s a much more substantive change throughout the whole RFC.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4385/">4385</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Krisztian Sinka</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2015-06-02</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Ben Campbell</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2015-06-05</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17.2.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>                               |INVITE
+                               |pass INV to TU
+            INVITE             V send 100 if TU won&#x27;t in 200ms
+            send response+-----------+
+                +--------|           |--------+101-199 from TU
+                |        | Proceeding|        |send response
+                +-------&gt;|           |&lt;-------+
+                         |           |          Transport Err.
+                         |           |          Inform TU
+                         |           |---------------&gt;+
+                         +-----------+                |</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>                               |INVITE
+                               |-
+            INVITE             V send 100 if TU won&#x27;t in 200ms
+            send response+-----------+
+                +--------|           |--------+101-199 from TU
+                |        | Proceeding|        |send response
+                +-------&gt;|           |&lt;-------+
+                         |           |          Transport Err.
+                         |           |          Inform TU
+                         |           |---------------&gt;+
+                         +-----------+                |</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The standard states about lifetime of the server transaction:
+
+&quot;Server transactions are created by the
+core when a request is received, and transaction handling is desired
+for that request (this is not always the case).&quot;(17.2)
+
+So this means that the server transaction is created by the TU (the core). This also means that it is useless to *pass INV to TU* due to that TU itself already has the request.
+
+The same logic should apply to Figure 8. as well.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4675/">4675</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Held for Document Update</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Bruce Florman</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2016-04-21</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Held for Document Update by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Ben Campbell</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Held for Document Update:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2016-05-05</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 8.1.1.3 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>   Examples:
+
+      From: &quot;Bob&quot; &lt;sips:bob@biloxi.com&gt; ;tag=a48s
+      From: sip:+12125551212@phone2net.com;tag=887s
+      From: Anonymous &lt;sip:c8oqz84zk7z@privacy.org&gt;;tag=hyh8
+</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>   Examples:
+
+      From: &quot;Bob&quot; &lt;sips:bob@biloxi.com&gt; ;tag=a48smh2
+      From: sip:+12125551212@phone2net.com;tag=887s6pa
+      From: Anonymous &lt;sip:c8oqz84zk7z@privacy.org&gt;;tag=hyh8mtf
+</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>I know this is more than a little picayune, but...
+
+Section 19.3 says:
+
+   When a tag is generated by a UA for insertion into a request or
+   response, it MUST be globally unique and cryptographically random
+   with at least 32 bits of randomness.
+
+This implies that the tag value must be at least 32 bits in size.
+
+Section 25.1 says:
+
+      token       =  1*(alphanum / &quot;-&quot; / &quot;.&quot; / &quot;!&quot; / &quot;%&quot; / &quot;*&quot;
+                     / &quot;_&quot; / &quot;+&quot; / &quot;`&quot; / &quot;&#x27;&quot; / &quot;~&quot; )
+and
+      tag-param   =  &quot;tag&quot; EQUAL token
+
+Although the actual representation of the tag value is implementation-specific, since there are only 72 characters available with which to encode it, a tag value with only four characters can represent a maximum of 72^4 distinct numeric values, which is less than the 2^32 values that can be represented by 32 bits by a factor of nearly 160.
+
+Even if the implementation chooses to omit &quot;leading zeros&quot; (or something equivalent), the likelihood of three 32 bit random values all falling in the range of values that can be represented in four characters would be less than one in five million. So even if the given examples are theoretically possible for a conforming implementation, they seem rather misleading.
+
+For a &quot;typical&quot; 32 bit random value, even with base74 encoding, the shortest tag value would require six characters. Given that all three examples (which are also repeated almost unchanged in section 20.20) contain no uppercase ALPHA characters in the tag values, the implied encoding is more likely something like base32 or base36, which would require at least seven characters to represent a typical 32 bit random value. So that&#x27;s how I&#x27;m suggesting that the examples be amended.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+        <div class="card mb-4 border-primary">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">Rejected (6)</h2>
+            </div>
+            <div class="card-body">
+                
+                <div class="row g-3">
+                    
+                        <div class="col-md-12">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-header bg-light text-dark">
+                                    <h3 class="mt-4">RFC 3261</h3>
+                                    <div class="card-body bg-warning text-light">
+                                        <p class="mb-0"><strong>Source of RFC:</strong> sip (rai)</p>
+                                        
+                                        
+                                            <p class="mb-0"><strong>Updated by:</strong> RFC3265, RFC3853, RFC4320, RFC4916, RFC5393, RFC5621, RFC5626, RFC5630, RFC5922, RFC5954, RFC6026, RFC6141, RFC6665, RFC6878, RFC7462, RFC7463, RFC8217, RFC8591, RFC8760, RFC8898, RFC8996</p>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid1742/">1742</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Rejected</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Pankaj Jain</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2009-03-25</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Rejected by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Rejected:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2010-05-23</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 17.1.1.2 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>Timer D reflects the amount of time that the server transaction can
+   remain in the &quot;Completed&quot; state when unreliable transports are used.
+</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Timer D reflects the amount of time that the client transaction can
+   remain in the &quot;Completed&quot; state when unreliable transports are used.
+</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>server transaction =&gt; client transaction
+ --VERIFIER NOTES-- 
+   The original text is correct. The value (and reason) for timer D is to reflect what&#x27;s happening in the server transaction. See the discussion of Timer H that immediately follows the text quoted above.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid2910/">2910</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Rejected</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Iñaki Baz Castillo</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2011-08-02</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Rejected by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Robert Sparks</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Rejected:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2011-11-04</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section Table 2 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>      Header field          where   proxy ACK BYE CAN INV OPT REG
+      ___________________________________________________________
+      Contact                1xx           -   -   -   o   -   -</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>      Header field          where   proxy ACK BYE CAN INV OPT REG
+      ___________________________________________________________
+      Contact                1xx           -   -   -   m   -   -</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>RFC 3261 says:
+
+Section 12.1: &quot;Dialogs are created through the generation of non-failure responses to requests with specific methods.  Within this specification, only 2xx and 101-199 responses with a To tag, where the request was INVITE, will establish a dialog.&quot;
+
+Section 12.1.1: &quot;When a UAS responds to a request with a response that establishes a dialog (such as a 2xx to INVITE), the UAS MUST copy all Record-Route header field values from the request into the response [...].  The UAS MUST add a Contact header field to the response.&quot;
+
+So it&#x27;s clear that a 1xx response to an INVITE creates a dialog and then it MUST contain a Contact header and mirrored Record-Route headers.
+
+However Table 2 (page 162) says:
+
+      Header field          where   proxy ACK BYE CAN INV OPT REG
+      ___________________________________________________________
+      Contact                1xx           -   -   -   o   -   -
+      Record-Route        2xx,18x    mr    -   o   o   o   o   -
+
+Obviously Record-Route is optional since in the absence of a proxy doing record-routing, such header will not be present. However Contact header should appear as mandatory (m) for 1xx responses for INVITE rather than optional (o).
+ --VERIFIER NOTES-- 
+1xx also includes 100 Trying, which cannot establish a Dialog. Contact is not mandatory in 100 Trying responses. </code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4275/">4275</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Rejected</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Chao Wang</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2015-02-19</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Rejected by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Rejected:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-05-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 15 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>The caller&#x27;s UA MAY send a BYE for either confirmed or early dialogs</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The caller&#x27;s UA MUST send a BYE for confirmed dialogs</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>In general, BYE shall be handled in the same way as CANCEL if it is for early dialogs.
+In case, when BYE is on the way to the destination, the callee probably accepts INVITE, the race condition will occure.
+If we follow the procedure as CANCEL, caller shall send ACK for 200 OK and immediately release the session using BYE.
+So two BYEs will be triggered in the case, it does not make sense.
+ --VERIFIER NOTES-- 
+This behavior was clarified in https://www.rfc-editor.org/rfc/rfc6141#section-5.3</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4553/">4553</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Rejected</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Christer Holmberg</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2015-12-04</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Rejected by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Rejected:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-05-03</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 20.11 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>The handling parameter, handling-param, describes how the UAS should
+react if it receives a message body whose content type or disposition
+type it does not understand.  The parameter has defined values of
+&quot;optional&quot; and &quot;required&quot;.  If the handling parameter is missing, the
+value &quot;required&quot; SHOULD be assumed.  The handling parameter is
+described in RFC 3204 [19].
+</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The handling parameter, handling-param, describes how the UAS should
+react if it receives a message body whose content type or disposition
+type it does not understand.  The parameter has defined values of
+&quot;optional&quot; and &quot;required&quot;.  If the handling parameter is missing, or if
+the Content-Disposition header field is missing, the value &quot;required&quot; 
+MUST be assumed.  The handling parameter is described in RFC 3204 [19].
+</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>SIPCORE discussion: https://mailarchive.ietf.org/arch/msg/sipcore/bn-pRgDyGL2FP_M7eYpyT35zNp4
+ --VERIFIER NOTES-- 
+   See https://mailarchive.ietf.org/arch/msg/sipcore/fjlcEaK4zFS3Yelzkqvljl5SxRw/</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid5619/">5619</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Rejected</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Technical</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>Isabella Damböck</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2019-01-31</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Rejected by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Ben Campbell</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Rejected:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2019-02-27</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 4 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>The address 
+of the atlanta.com SIP server could have been configured in Alice&#x27;s
+softphone, or it could have been discovered by DHCP, for example.</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>The address 
+of the atlanta.com SIP server could have been configured in Alice&#x27;s 
+softphone, or it could have been discovered by DNS, for example.</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>DHCP Server gives away the DNS-Server to use (or sets it with DHCP option) but usually does no address translation itself. It would also be possible to omit the whole sentence.
+ --VERIFIER NOTES-- 
+   DHCP was the intent of the example.</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="card mb-4">
+                                            <div class="card-header bg-light text-dark">
+                                                <h4 class="mt-4">Errata-ID: <a href="/eid4379/">4379</a></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-sm-4">Status:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span class="badge bg-info">Rejected</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Type:</dt>
+                                                    <dd class="col-sm-8">
+                                                        
+                                                            <span class="badge bg-secondary">Editorial</span>
+                                                        
+                                                    </dd>
+
+                                                    
+
+                                                    <dt class="col-sm-4">Reported By:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>OKUMURA Shinji</span>
+                                                    </dd>
+
+                                                    <dt class="col-sm-4">Date Reported:</dt>
+                                                    <dd class="col-sm-8">
+                                                        <span>2015-05-28</span>
+                                                    </dd>
+
+                                                    
+                                                        <dt class="col-sm-4">Rejected by:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>Orie Steele</span>
+                                                        </dd>
+                                                    
+
+                                                    
+                                                        <dt class="col-sm-4">Date Rejected:</dt>
+                                                        <dd class="col-sm-8">
+                                                            <span>2024-03-29</span>
+                                                        </dd>
+                                                    
+
+                                                </dl>
+                                                <p> 
+                                                    
+                                                        Section 25.1 says:
+                                                    
+                                                </p>
+                                                
+                                                    <pre class="bg-light p-3 rounded"><code>Errata ID: 316
+digest-uri-value  =  request-uri ; Equal to request-uri
+                                   as specified by HTTP/1.1
+</code></pre>
+                                                
+                                                
+                                                    <p>It should say:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>digest-uri-value  =  rquest-uri ; Equal to request-uri
+                                  as specified by HTTP/1.1
+</code></pre>
+                                                
+                                                
+                                                    <p>Notes:</p>
+                                                    <pre class="bg-light p-3 rounded"><code>Rule names are case-insensitive.
+Request-URI has been defined already.
+An original definition is correct.
+Alternatively, it may refer to request-target as specified by RFC 7230.
+ --VERIFIER NOTES-- 
+The original text includes: Errata ID: 316
+
+But the current text matches the suggestion:
+
+https://datatracker.ietf.org/doc/html/rfc3261#section-25.1</code></pre>
+                                                
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+</div>
+<a href="/new/entry-instructions/" class="btn btn-primary">Report New Erratum</a>
+</div>
+
+    </main>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-4">rfc-editor.org is maintained by the <a href="https://www.ietf.org/" rel="noopener" target="_blank">Internet Engineering Task Force</a></div>
+                    <img src="https://static.ietf.org/logos/ietf-inverted.svg" alt="IETF"
+                        style="width: 105px; height: 60px" />
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h5>Useful links</h5>
+                            <ul class="list-unstyled mt-3">
+                                <li><a href="https://www.ietf.org" rel="noopener" target="_blank" class="text-white">IETF.org</a></li>
+                                <li><a href="https://www.irtf.org" rel="noopener" target="_blank" class="text-white">IRTF.org</a></li>
+                                <li><a href="https://www.iab.org" rel="noopener" target="_blank" class="text-white">IAB.org</a></li>
+                                <li><a href="https://datatracker.ietf.org" rel="noopener" target="_blank" class="text-white">Datatracker</a></li>
+                                <li><a href="https://authors.ietf.org" rel="noopener" target="_blank" class="text-white">Author Resources</a></li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h5>Contact Us</h5>
+                            <ul class="list-unstyled mt-3">
+                                <li><a href="https://www.rfc-editor.org/about/contact/" rel="noopener" target="_blank" class="text-white">RFC Editor</a></li>
+                                <li><a href="http://mailman.rfc-editor.org/mailman/listinfo/rfc-dist" rel="noopener" target="_blank" class="text-white">rfc-dist Info Page</a></li>
+                                <li><a href="http://mailman.rfc-editor.org/mailman/listinfo/rfc-interest" rel="noopener" target="_blank" class="text-white">rfc-interest Info Page</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

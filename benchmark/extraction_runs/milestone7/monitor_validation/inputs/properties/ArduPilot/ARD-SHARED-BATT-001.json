@@ -1,0 +1,875 @@
+{
+  "schema_version": "1.0",
+  "property_id": "ARD-SHARED-BATT-001",
+  "title_zh": "ArduPilot 持续低电压 failsafe",
+  "title_en": "ArduPilot persistent low-voltage failsafe",
+  "system_scope": {
+    "system": "ArduPilot",
+    "vehicles": [
+      "Copter",
+      "Plane",
+      "Rover"
+    ],
+    "firmware_release": null,
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "SITL vehicle；battery instance、threshold、voltage source、action 和 capacity path isolation 已归档。"
+  },
+  "status": "REVIEW_READY",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "ARD-SHARED-BATT-001-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "ArduPilot Battery Failsafe",
+      "version": "209e532bc97e5a41966f8c9ab483323c264cae08",
+      "path_or_url": "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/failsafe-battery.rst",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "a34676dda9ba0afbcaae28709416dac45a31370271e778c4fe579a55155cf36b",
+      "locator": {
+        "page": null,
+        "section": "Advanced Settings",
+        "anchor": null,
+        "line_start": 93,
+        "line_end": 96,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+      "context_summary_zh": "说明电压源、LOW_TIMER 与多电池实例化。",
+      "language": "en",
+      "document_status": "MAIN_ONLY"
+    },
+    {
+      "source_id": "ARD-SHARED-BATT-001-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "AP_BattMonitor low/critical voltage metadata",
+      "version": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "path_or_url": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "c674aab5ff5631b1c19e9e556a23d7386cb2f89e57b807d2a70060c6096f0563",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 95,
+        "line_end": 129,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "// @Param: LOW_TIMER\n    // @DisplayName: Low voltage timeout\n    // @Description: This is the timeout in seconds before a low voltage event will be triggered. For aircraft with low C batteries it may be necessary to raise this in order to cope with low voltage on long takeoffs. A value of zero disables low voltage errors.\n    // @Units: s\n    // @Increment: 1\n    // @Range: 0 120\n    // @User: Advanced\n    AP_GROUPINFO(\"LOW_TIMER\", 10, AP_BattMonitor_Params, _low_voltage_timeout, 10),\n\n    // @Param: FS_VOLTSRC\n    // @DisplayName: Failsafe voltage source\n    // @Description: Voltage type used for detection of low voltage event\n    // @Values: 0:Raw Voltage, 1:Sag Compensated Voltage\n    // @User: Advanced\n    AP_GROUPINFO(\"FS_VOLTSRC\", 11, AP_BattMonitor_Params, _failsafe_voltage_source, BattMonitor_LowVoltageSource_Raw),\n\n    // @Param: LOW_VOLT\n    // @DisplayName: Low battery voltage\n    // @Description: Battery voltage that triggers a low battery failsafe. Set to 0 to disable. If the battery voltage drops below this voltage continuously for more then the period specified by the @PREFIX@LOW_TIMER parameter then the vehicle will perform the failsafe specified by the @PREFIX@FS_LOW_ACT parameter.\n    // @Units: V\n    // @Increment: 0.1\n    // @User: Standard\n    AP_GROUPINFO(\"LOW_VOLT\", 12, AP_BattMonitor_Params, _low_voltage, DEFAULT_LOW_BATTERY_VOLTAGE),\n\n    // @Param: LOW_MAH\n    // @DisplayName: Low battery capacity\n    // @Description: Battery capacity at which the low battery failsafe is triggered. Set to 0 to disable battery remaining failsafe. If the battery capacity drops below this level the vehicle will perform the failsafe specified by the @PREFIX@FS_LOW_ACT parameter.\n    // @Units: mAh\n    // @Increment: 50\n    // @User: Standard\n    AP_GROUPINFO(\"LOW_MAH\", 13, AP_BattMonitor_Params, _low_capacity, 0),\n\n    // @Param: CRT_VOLT\n    // @DisplayName: Critical battery voltage\n    // @Description: Battery voltage that triggers a critical battery failsafe. Set to 0 to disable. If the battery voltage drops below this voltage continuously for more then the period specified by the @PREFIX@LOW_TIMER parameter then the vehicle will perform the failsafe specified by the @PREFIX@FS_CRT_ACT parameter.",
+      "context_summary_zh": "冻结源码中的 LOW_TIMER、LOW_VOLT、CRT_VOLT 及连续超过时间的语义。",
+      "language": "en",
+      "document_status": "CURRENT"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "ARD-SHARED-BATT-001-S1",
+      "ARD-SHARED-BATT-001-S2"
+    ],
+    "edges": [
+      {
+        "from": "ARD-SHARED-BATT-001-S1",
+        "relation": "parameterizes",
+        "to": "ARD-SHARED-BATT-001-S2",
+        "evidence_source_id": "ARD-SHARED-BATT-001-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "FS_VOLTSRC=1 时标准 BATTERY_STATUS 不直接提供 resting estimate。",
+      "每个 battery instance 必须使用独立 correlation key。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "AP_BattMonitor and vehicle failsafe callback",
+      "evidence": [
+        {
+          "source_id": "ARD-SHARED-BATT-001-S1",
+          "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "某 battery instance 的选定电压源持续低于运行时 LOW_VOLT。",
+      "evidence": [
+        {
+          "source_id": "ARD-SHARED-BATT-001-S1",
+          "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "该 instance 的 LOW_VOLT 非零。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "记录 BATTx_FS_VOLTSRC，区分 raw 与 sag-corrected resting estimate。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "low 与 critical variant 分开验证。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "连续低于阈值超过运行时 LOW_TIMER 后触发该 instance 对应 low/critical event 和配置 action。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在严格超过 LOW_TIMER 前不得仅由该低电压区间触发。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "电压恢复到不低于阈值会重置持续区间。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "capacity-based path 不属于本性质。",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "选定电压源首次低于 instance threshold",
+      "evidence": [
+        {
+          "source_id": "ARD-SHARED-BATT-001-S1",
+          "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "电压恢复、event/action、monitor instance disabled 或 run 结束",
+      "evidence": [
+        {
+          "source_id": "ARD-SHARED-BATT-001-S1",
+          "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "low_voltage",
+        "relation": "TRIGGERS",
+        "right": "low_voltage_timer",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "voltage_recovers",
+        "relation": "RESETS",
+        "right": "low_voltage_timer",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "FS_VOLTSRC=1 时标准 BATTERY_STATUS 不直接提供 resting estimate。",
+      "每个 battery instance 必须使用独立 correlation key。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_low_voltage",
+      "semantic_start_event": "low_voltage_interval_start",
+      "semantic_end_event": "battery_failsafe_event",
+      "cancel_event": "monitor_disabled_or_run_end",
+      "reset_event": "voltage_recovers",
+      "raw_expression": "continuously for more than runtime(BATTx_LOW_TIMER)",
+      "lower": "runtime(BATTx_LOW_TIMER)",
+      "upper": null,
+      "lower_closed": false,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "ARD-SHARED-BATT-001-S2",
+      "source_span": {
+        "source_id": "ARD-SHARED-BATT-001-S2",
+        "quote": "// @Param: LOW_TIMER\n    // @DisplayName: Low voltage timeout\n    // @Description: This is the timeout in seconds before a low voltage event will be triggered. For aircraft with low C batteries it may be necessary to raise this in order to cope with low voltage on long takeoffs. A value of zero disables low voltage errors.\n    // @Units: s\n    // @Increment: 1\n    // @Range: 0 120\n    // @User: Advanced\n    AP_GROUPINFO(\"LOW_TIMER\", 10, AP_BattMonitor_Params, _low_voltage_timeout, 10),\n\n    // @Param: FS_VOLTSRC\n    // @DisplayName: Failsafe voltage source\n    // @Description: Voltage type used for detection of low voltage event\n    // @Values: 0:Raw Voltage, 1:Sag Compensated Voltage\n    // @User: Advanced\n    AP_GROUPINFO(\"FS_VOLTSRC\", 11, AP_BattMonitor_Params, _failsafe_voltage_source, BattMonitor_LowVoltageSource_Raw),\n\n    // @Param: LOW_VOLT\n    // @DisplayName: Low battery voltage\n    // @Description: Battery voltage that triggers a low battery failsafe. Set to 0 to disable. If the battery voltage drops below this voltage continuously for more then the period specified by the @PREFIX@LOW_TIMER parameter then the vehicle will perform the failsafe specified by the @PREFIX@FS_LOW_ACT parameter.\n    // @Units: V\n    // @Increment: 0.1\n    // @User: Standard\n    AP_GROUPINFO(\"LOW_VOLT\", 12, AP_BattMonitor_Params, _low_voltage, DEFAULT_LOW_BATTERY_VOLTAGE),\n\n    // @Param: LOW_MAH\n    // @DisplayName: Low battery capacity\n    // @Description: Battery capacity at which the low battery failsafe is triggered. Set to 0 to disable battery remaining failsafe. If the battery capacity drops below this level the vehicle will perform the failsafe specified by the @PREFIX@FS_LOW_ACT parameter.\n    // @Units: mAh\n    // @Increment: 50\n    // @User: Standard\n    AP_GROUPINFO(\"LOW_MAH\", 13, AP_BattMonitor_Params, _low_capacity, 0),\n\n    // @Param: CRT_VOLT\n    // @DisplayName: Critical battery voltage\n    // @Description: Battery voltage that triggers a critical battery failsafe. Set to 0 to disable. If the battery voltage drops below this voltage continuously for more then the period specified by the @PREFIX@LOW_TIMER parameter then the vehicle will perform the failsafe specified by the @PREFIX@FS_CRT_ACT parameter.",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "BATTx_LOW_TIMER",
+      "formula": "T_low_voltage = runtime(BATTx_LOW_TIMER)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 10,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/ARD-SHARED-BATT-001"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 10,
+          "unit": "s",
+          "source_id": "ARD-SHARED-BATT-001-S2"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "battery-backend vehicle millis",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,T_low_voltage] !battery_failsafe_event & F_(T_low_voltage,infty) battery_failsafe_event))",
+    "concrete": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,10] !battery_failsafe_event & F_(10,infty) battery_failsafe_event))",
+    "concrete_instances": [
+      {
+        "profile": "ArduPilot/ArduCopter — quad",
+        "capture_id": "ardupilot-copter-m6",
+        "parameter_id": "BATT_LOW_TIMER",
+        "raw_value": 10,
+        "raw_unit": "s",
+        "normalized_value": 10.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 10 s = 10 s",
+        "formula": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,10] !battery_failsafe_event & F_(10,infty) battery_failsafe_event))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+        "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+        "source_param_index": 337,
+        "source_param_count": 1387,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      },
+      {
+        "profile": "ArduPilot/ArduPlane — plane",
+        "capture_id": "ardupilot-plane-m6",
+        "parameter_id": "BATT_LOW_TIMER",
+        "raw_value": 10,
+        "raw_unit": "s",
+        "normalized_value": 10.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 10 s = 10 s",
+        "formula": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,10] !battery_failsafe_event & F_(10,infty) battery_failsafe_event))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.json",
+        "source_sha256": "0767f3f3019f5399679118cbcf0931e552bdb6ee40cc67303a8b476a6e61c4dd",
+        "source_param_index": 442,
+        "source_param_count": 1440,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      },
+      {
+        "profile": "ArduPilot/Rover — rover",
+        "capture_id": "ardupilot-rover-m6",
+        "parameter_id": "BATT_LOW_TIMER",
+        "raw_value": 10,
+        "raw_unit": "s",
+        "normalized_value": 10.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 10 s = 10 s",
+        "formula": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,10] !battery_failsafe_event & F_(10,infty) battery_failsafe_event))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+        "source_sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+        "source_param_index": 612,
+        "source_param_count": 1271,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,T_low_voltage] !battery_failsafe_event & F_(T_low_voltage,infty) battery_failsafe_event))",
+        "evidence": [
+          {
+            "source_id": "ARD-SHARED-BATT-001-S1",
+            "quote": "- :ref:`BATT_FS_VOLTSRC <BATT_FS_VOLTSRC>` allows configuring whether the raw battery voltage or a sag corrected voltage is used\n- :ref:`BATT_LOW_TIMER <BATT_LOW_TIMER>` can configure how long the voltage must be below the threshold for the failsafe to trigger\n- ``BATTx_`` parameters can be setup to trigger the failsafe on other batteries",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "CONCRETE_UNVALIDATED"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-01",
+      "name": "low_voltage_start",
+      "controlled_natural_language": "指定 battery instance 的选定电压源进入低阈值区间。",
+      "truth_condition": "selected_voltage(instance)<PARAM_VALUE(BATTx_LOW_VOLT) 的上升沿。",
+      "kind": "EVENT",
+      "value_type": "float",
+      "unit": "V",
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id + battery_instance",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-01-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 243,
+          "column": null,
+          "symbol": "failsafe_voltage_source switch",
+          "semantic_identity": "Per-instance selection of raw state.voltage or sag-compensated voltage_resting_estimate.",
+          "entity_kind": "FUNCTION",
+          "function": "AP_BattMonitor_Backend::check_failsafe_types",
+          "role": "DERIVATION",
+          "type": "float voltage_used",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 243-250 select the voltage source from BATTx_FS_VOLTSRC. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L243"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-01-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 268,
+          "column": null,
+          "symbol": "low_voltage predicate",
+          "semantic_identity": "Per-instance predicate voltage_used > 0, LOW_VOLT > 0, and voltage_used < LOW_VOLT.",
+          "entity_kind": "OTHER",
+          "function": "AP_BattMonitor_Backend::check_failsafe_types",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 268-272 set low_voltage true or false. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L268"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-01-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.h",
+          "line": 120,
+          "column": null,
+          "symbol": "BattMonitor_State::low_voltage_start_ms",
+          "semantic_identity": "Per-backend low-voltage persistence start epoch in autopilot boot milliseconds.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "BattMonitor_State also stores instance at line 140 and failsafe level at line 130. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor.h#L120"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-01-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 177,
+          "column": null,
+          "symbol": "_state.low_voltage_start_ms = now",
+          "semantic_identity": "Canonical low_voltage_start edge when the predicate is true and the per-instance timer is unset.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "AP_BattMonitor_Backend::update_failsafes",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 175-181 start the timer or return Low after persistence. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L177"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-01-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 185,
+          "column": null,
+          "symbol": "_state.low_voltage_start_ms = 0",
+          "semantic_identity": "Cancels/resets the low-voltage interval when the predicate becomes false.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "AP_BattMonitor_Backend::update_failsafes",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The reset is in the else branch for low_voltage=false. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L185"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "BATTERY_STATUS",
+          "message_id": 147,
+          "field": "voltages",
+          "direction": "OUTGOING",
+          "derivation": "Per-instance voltage array; select by id and interpret invalid sentinel. No embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SYS_STATUS",
+          "message_id": 1,
+          "field": "voltage_battery",
+          "direction": "OUTGOING",
+          "derivation": "Aggregate voltage only; not per-instance and no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects BATTx_FS_VOLTSRC, BATTx_LOW_VOLT; select voltage source and threshold",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-02",
+      "name": "voltage_threshold_enabled",
+      "controlled_natural_language": "该 instance 的低电压阈值启用。",
+      "truth_condition": "PARAM_VALUE(BATTx_LOW_VOLT)>0。",
+      "kind": "VALUE_COMPARISON",
+      "value_type": "float",
+      "unit": "V",
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id + battery_instance",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-02-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp",
+          "line": 117,
+          "column": null,
+          "symbol": "BATTx_LOW_VOLT / AP_BattMonitor_Params::_low_voltage",
+          "semantic_identity": "Per-instance low-voltage threshold in volts; zero disables.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Float volts",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:152",
+          "macro_expansion_location": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp:117",
+          "confidence": "EXACT",
+          "evidence": "AP_GROUPINFO registers LOW_VOLT inside each monitor parameter subgroup; field is Params.h:72. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp#L117"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-02-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 268,
+          "column": null,
+          "symbol": "_params._low_voltage > 0",
+          "semantic_identity": "Direct runtime threshold-enable comparison for this backend instance.",
+          "entity_kind": "OTHER",
+          "function": "AP_BattMonitor_Backend::check_failsafe_types",
+          "role": "GUARD",
+          "type": "bool over AP_Float",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The threshold must be positive along with a positive selected voltage. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L268"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-02-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp",
+          "line": 904,
+          "column": null,
+          "symbol": "for each battery instance",
+          "semantic_identity": "Frontend preserves the per-instance parameter/backend identity when checking failsafes.",
+          "entity_kind": "FUNCTION",
+          "function": "AP_BattMonitor::check_failsafes",
+          "role": "DERIVATION",
+          "type": "uint8_t instance index",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 904-909 iterate drivers and invoke the matching backend. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor.cpp#L904"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects BATTx_LOW_VOLT; enabled iff >0; correlate instance by param_id",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-03",
+      "name": "battery_failsafe_event",
+      "controlled_natural_language": "该 instance 的 low/critical voltage event 已触发。",
+      "truth_condition": "AP_BattMonitor event level 与 instance/variant 匹配。",
+      "kind": "CORRELATION",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id + battery_instance + severity",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 179,
+          "column": null,
+          "symbol": "return AP_BattMonitor::Failsafe::Low",
+          "semantic_identity": "Per-instance Low severity producer after low voltage persists longer than LOW_TIMER.",
+          "entity_kind": "RETURN",
+          "function": "AP_BattMonitor_Backend::update_failsafes",
+          "role": "PRODUCER",
+          "type": "AP_BattMonitor::Failsafe",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 179-181 use strict greater-than and positive LOW_TIMER. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L179"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp",
+          "line": 162,
+          "column": null,
+          "symbol": "return AP_BattMonitor::Failsafe::Critical",
+          "semantic_identity": "Per-instance Critical severity producer after critical voltage persists longer than the same LOW_TIMER.",
+          "entity_kind": "RETURN",
+          "function": "AP_BattMonitor_Backend::update_failsafes",
+          "role": "PRODUCER",
+          "type": "AP_BattMonitor::Failsafe",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 158-164 maintain the independent critical-voltage timer. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp#L162"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp",
+          "line": 909,
+          "column": null,
+          "symbol": "drivers[i]->update_failsafes()",
+          "semantic_identity": "Frontend consumes the per-instance backend severity and ignores non-increasing severity.",
+          "entity_kind": "FUNCTION",
+          "function": "AP_BattMonitor::check_failsafes",
+          "role": "CONSUMER",
+          "type": "AP_BattMonitor::Failsafe",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 909-912 compare the returned enum to state[i].failsafe. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor.cpp#L909"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp",
+          "line": 934,
+          "column": null,
+          "symbol": "Battery instance/severity STATUSTEXT",
+          "semantic_identity": "Produces a warning text with one-based battery number, low/critical label, voltage, and used capacity.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "AP_BattMonitor::check_failsafes",
+          "role": "PRODUCER",
+          "type": "STATUSTEXT text",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MAY",
+          "evidence": "Lines 934-935 include instance and severity but no embedded event timestamp or cause subtype. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor.cpp#L934"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp",
+          "line": 940,
+          "column": null,
+          "symbol": "state[i].failsafe = type",
+          "semantic_identity": "Canonical per-instance monotonic severity-state write, with _has_triggered_failsafe and AP_Notify aggregate mirrors.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "AP_BattMonitor::check_failsafes",
+          "role": "WRITE",
+          "type": "AP_BattMonitor::Failsafe : uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 936-940 set aggregate flags and the typed per-instance state. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor.cpp#L940"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B06",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp",
+          "line": 957,
+          "column": null,
+          "symbol": "_battery_failsafe_handler_fn(type_str, action)",
+          "semantic_identity": "Vehicle callback producer for the selected low/critical action when its priority is high enough.",
+          "entity_kind": "CALLBACK",
+          "function": "AP_BattMonitor::check_failsafes",
+          "role": "PRODUCER",
+          "type": "void(const char*, int8_t)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 942-958 map action priority and invoke the bound vehicle handler. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/AP_BattMonitor/AP_BattMonitor.cpp#L957"
+        },
+        {
+          "binding_id": "ARD-SHARED-BATT-001-AP-03-B07",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp",
+          "line": 419,
+          "column": null,
+          "symbol": "BATTERY_STATUS.charge_state producer",
+          "semantic_identity": "Outgoing per-instance charge_state derived from state[i].failsafe; Low and Critical map to corresponding MAV_BATTERY_CHARGE_STATE values.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "GCS_MAVLINK::send_battery_status",
+          "role": "OBSERVATION_SITE",
+          "type": "MAV_BATTERY_CHARGE_STATE",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MAY",
+          "evidence": "AP_BattMonitor.cpp:1169-1182 maps the enum; GCS_Common.cpp:408-422 sends BATTERY_STATUS with instance id. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS_Common.cpp#L419"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "BATTERY_STATUS",
+          "message_id": 147,
+          "field": "charge_state",
+          "direction": "OUTGOING",
+          "derivation": "May expose a battery charge state per id, but does not prove the exact internal low-voltage path.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May report battery failsafe; no timestamp and lossy correlation.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone6-runtime-instantiation-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/PX4/properties/*.yaml",
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Concrete mathematical substitution exists where enabled/context-closed, but parser and monitor syntax validation remain Milestone 7 gates."
+    },
+    "satisfiable": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_tautology": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_vacuity": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete traces are generated."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "No TAMonitor result is claimed in Milestone 4."
+    },
+    "independent_review": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Independent review is a Milestone 7 gate and does not replace human acceptance."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Milestone 6 runtime parameter evidence is bound. Final parser, trace, context-conflict, and independent-review gates remain open.",
+    "conflicts": [
+      "MAIN_ONLY 文档未 release-pair。",
+      "strict 'more than' 使用开下界；不引入 epsilon。"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

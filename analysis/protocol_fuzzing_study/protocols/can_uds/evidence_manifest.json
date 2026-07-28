@@ -1,0 +1,373 @@
+{
+  "protocol": "CAN/UDS",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/industrial_protocols/can_uds/evidence.json",
+      "record": {
+        "protocol": "AUTOSAR CAN-TP/DCM profiles (catalogue label CAN/UDS)",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+        "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+        "scope": "Public AUTOSAR R24-11 obligations instantiated with locked python-can-isotp and driftregion/iso14229 profiles. No paid ISO 15765/14229 text or secondary paraphrase is used as normative evidence; claims must not be generalized to all ISO implementations.",
+        "proposal_summary": {
+          "emitted": 5,
+          "approve": 1,
+          "fix_applied": 4,
+          "rejected": 1
+        },
+        "standards": [
+          {
+            "title": "AUTOSAR SWS CAN Transport Layer",
+            "version": "R24-11",
+            "url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_CANTransportLayer.pdf",
+            "sha256": "7334d633b02c443aacbe0ca25e20c319e977104eeb4bf8e67ac0358cfea34a22",
+            "sections_reviewed": [
+              "7.2.2 [SWS_CanTp_00312-SWS_CanTp_00313]",
+              "7.2.3 [SWS_CanTp_00315-SWS_CanTp_00316]",
+              "10.2 [ECUC_CanTp_00264, ECUC_CanTp_00279]"
+            ]
+          },
+          {
+            "title": "AUTOSAR SWS Diagnostic Communication Manager",
+            "version": "R24-11",
+            "url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+            "sha256": "cf5aeee78fda6e5a25f982f04cb146ce4a75586de7ba41913d46b0cea1cc2407",
+            "sections_reviewed": [
+              "7.2.4.3 [SWS_Dcm_01666-SWS_Dcm_01667]",
+              "7.2.4.6 [SWS_Dcm_00024]",
+              "7.2.4.13 [SWS_Dcm_01670]",
+              "7.2.4.14 [SWS_Dcm_01679-SWS_Dcm_01680]"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "repository": "pylessard/python-can-isotp",
+            "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+            "url": "https://github.com/pylessard/python-can-isotp"
+          },
+          {
+            "repository": "driftregion/iso14229",
+            "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+            "url": "https://github.com/driftregion/iso14229"
+          }
+        ],
+        "profile_differences": [
+          "AUTOSAR defines N_Bs/N_Cr as configurable and supplies no 1000 ms default; 1000 ms is python-can-isotp.",
+          "AUTOSAR timer starts use transmission confirmations; python-can-isotp may start its local timer earlier.",
+          "AUTOSAR unoverwritten S3 default is 5000 ms; driftregion/iso14229 uses 5100 ms.",
+          "P2/P2* cards explicitly fix server adjustment=0 and use implementation defaults 50/5000 ms."
+        ],
+        "rejected_candidates": [
+          {
+            "id": "UDS-S3-02",
+            "independent_audit_status": "REJECT_OR_FIX",
+            "decision_code": "DUPLICATE_OBLIGATION_AND_UNSUPPORTED_MULTI_CONNECTION",
+            "reason": "Current formula is a TesterPresent-specialized subset of UDS-S3-01 and never tests the cited owner-versus-foreign DcmDslConnection obligation; the locked SUT does not model multiple DcmDslConnections.",
+            "repair_gate": "Use a multi-connection SUT or an explicit owner/foreign model and test that a foreign TesterPresent does not reset the owner's S3 generation."
+          }
+        ]
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "CANTP-NBS-01",
+      "protocol": "CAN/UDS",
+      "standard": "AUTOSAR SWS CAN Transport Layer",
+      "standard_version": "R24-11",
+      "section": "7.2.3 [SWS_CanTp_00315-SWS_CanTp_00316]; 10.2 [ECUC_CanTp_00264]",
+      "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_CANTransportLayer.pdf",
+      "source_repository": "pylessard/python-can-isotp",
+      "source_commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+      "source_path": "isotp/protocol.py",
+      "source_lines": "987-1051",
+      "source_url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L987-L1051",
+      "auxiliary_source_mappings": [
+        {
+          "role": "N_Bs timer generation start",
+          "path": "isotp/protocol.py",
+          "symbol": "_start_rx_fc_timer",
+          "lines": "1250-1253",
+          "atomic_propositions": [
+            "n_bs_timer_generation_started_1000"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1250-L1253"
+        },
+        {
+          "role": "1000 ms receive-flow-control profile",
+          "path": "isotp/protocol.py",
+          "symbol": "__init__",
+          "lines": "349-354",
+          "atomic_propositions": [
+            "n_bs_timer_generation_started_1000"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L349-L354"
+        },
+        {
+          "role": "strict elapsed timeout predicate",
+          "path": "isotp/tools.py",
+          "symbol": "is_timed_out",
+          "lines": "48-53",
+          "atomic_propositions": [
+            "tx_aborted_n_bs"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py#L48-L53"
+        },
+        {
+          "role": "explicit send cancellation or layer reset",
+          "path": "isotp/protocol.py",
+          "symbol": "stop_sending / reset",
+          "lines": "1321-1325;1406-1415",
+          "atomic_propositions": [
+            "n_bs_generation_cancelled"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1321-L1325"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "CANTP-NCR-01",
+      "protocol": "CAN/UDS",
+      "standard": "AUTOSAR SWS CAN Transport Layer",
+      "standard_version": "R24-11",
+      "section": "7.2.2 [SWS_CanTp_00312-SWS_CanTp_00313]; 10.2 [ECUC_CanTp_00279]",
+      "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_CANTransportLayer.pdf",
+      "source_repository": "pylessard/python-can-isotp",
+      "source_commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+      "source_path": "isotp/protocol.py",
+      "source_lines": "890-894",
+      "source_url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L890-L894",
+      "auxiliary_source_mappings": [
+        {
+          "role": "accepted consecutive-frame path",
+          "path": "isotp/protocol.py",
+          "symbol": "_process_rx",
+          "lines": "895-984",
+          "atomic_propositions": [
+            "n_cr_timer_generation_started_1000",
+            "consecutive_frame_received"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L895-L984"
+        },
+        {
+          "role": "N_Cr timer generation start",
+          "path": "isotp/protocol.py",
+          "symbol": "_start_rx_cf_timer",
+          "lines": "1254-1257",
+          "atomic_propositions": [
+            "n_cr_timer_generation_started_1000"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1254-L1257"
+        },
+        {
+          "role": "1000 ms consecutive-frame profile",
+          "path": "isotp/protocol.py",
+          "symbol": "__init__",
+          "lines": "349-354",
+          "atomic_propositions": [
+            "n_cr_timer_generation_started_1000"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L349-L354"
+        },
+        {
+          "role": "strict elapsed timeout predicate",
+          "path": "isotp/tools.py",
+          "symbol": "is_timed_out",
+          "lines": "48-53",
+          "atomic_propositions": [
+            "rx_aborted_n_cr"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py#L48-L53"
+        },
+        {
+          "role": "explicit receive cancellation or layer reset",
+          "path": "isotp/protocol.py",
+          "symbol": "stop_receiving / reset",
+          "lines": "1341-1346;1406-1415",
+          "atomic_propositions": [
+            "n_cr_generation_cancelled"
+          ],
+          "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1341-L1346"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "UDS-P2-01",
+      "protocol": "CAN/UDS",
+      "standard": "AUTOSAR SWS Diagnostic Communication Manager",
+      "standard_version": "R24-11",
+      "section": "7.2.4.6 [SWS_Dcm_00024]",
+      "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+      "source_repository": "driftregion/iso14229",
+      "source_commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+      "source_path": "src/server.c",
+      "source_lines": "1581-1660",
+      "source_url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1581-L1660",
+      "auxiliary_source_mappings": [
+        {
+          "role": "50 ms P2 implementation profile",
+          "path": "src/config.h",
+          "symbol": "UDS_SERVER_DEFAULT_P2_MS",
+          "lines": "42-43",
+          "atomic_propositions": [
+            "uds_request_processing_started_p2_50_adjust0"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L42-L43"
+        },
+        {
+          "role": "strict logical deadline predicate",
+          "path": "src/util.h",
+          "symbol": "UDSTimeAfter",
+          "lines": "13",
+          "atomic_propositions": [
+            "uds_final_response_sent",
+            "uds_nrc78_sent"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13"
+        },
+        {
+          "role": "response transport handoff",
+          "path": "src/server.c",
+          "symbol": "UDSServerPoll",
+          "lines": "1617-1621",
+          "atomic_propositions": [
+            "uds_final_response_sent",
+            "uds_nrc78_sent"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1617-L1621"
+        },
+        {
+          "role": "server reset cancellation",
+          "path": "src/server.c",
+          "symbol": "UDSServerInit",
+          "lines": "1564-1579",
+          "atomic_propositions": [
+            "uds_p2_generation_cancelled"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "UDS-P2STAR-01",
+      "protocol": "CAN/UDS",
+      "standard": "AUTOSAR SWS Diagnostic Communication Manager",
+      "standard_version": "R24-11",
+      "section": "7.2.4.6 [SWS_Dcm_00024]",
+      "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+      "source_repository": "driftregion/iso14229",
+      "source_commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+      "source_path": "src/server.c",
+      "source_lines": "1598-1638",
+      "source_url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1598-L1638",
+      "auxiliary_source_mappings": [
+        {
+          "role": "5000 ms P2-star implementation profile",
+          "path": "src/config.h",
+          "symbol": "UDS_SERVER_DEFAULT_P2_STAR_MS",
+          "lines": "47-48",
+          "atomic_propositions": [
+            "uds_nrc78_sent_p2star_5000_adjust0"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L47-L48"
+        },
+        {
+          "role": "strict logical deadline predicate",
+          "path": "src/util.h",
+          "symbol": "UDSTimeAfter",
+          "lines": "13",
+          "atomic_propositions": [
+            "uds_final_response_after_nrc78",
+            "uds_nrc78_repeated"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13"
+        },
+        {
+          "role": "server reset cancellation",
+          "path": "src/server.c",
+          "symbol": "UDSServerInit",
+          "lines": "1564-1579",
+          "atomic_propositions": [
+            "uds_p2star_generation_cancelled"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "UDS-S3-01",
+      "protocol": "CAN/UDS",
+      "standard": "AUTOSAR SWS Diagnostic Communication Manager",
+      "standard_version": "R24-11",
+      "section": "7.2.4.13 [SWS_Dcm_01670]; 7.2.4.14 [SWS_Dcm_01680]",
+      "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+      "source_repository": "driftregion/iso14229",
+      "source_commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+      "source_path": "src/server.c",
+      "source_lines": "1581-1588",
+      "source_url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1581-L1588",
+      "auxiliary_source_mappings": [
+        {
+          "role": "non-default session entry and explicit session change",
+          "path": "src/server.c",
+          "symbol": "Handle_0x10_DiagnosticSessionControl",
+          "lines": "38-83",
+          "atomic_propositions": [
+            "non_default_session_idle_started_s3_5100",
+            "s3_generation_cancelled"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L38-L83"
+        },
+        {
+          "role": "TesterPresent S3 refresh",
+          "path": "src/server.c",
+          "symbol": "Handle_0x3E_TesterPresent",
+          "lines": "1304-1321",
+          "atomic_propositions": [
+            "s3_resetting_activity_received"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1304-L1321"
+        },
+        {
+          "role": "server initialization and reset",
+          "path": "src/server.c",
+          "symbol": "UDSServerInit",
+          "lines": "1564-1579",
+          "atomic_propositions": [
+            "non_default_session_idle_started_s3_5100",
+            "s3_generation_cancelled"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579"
+        },
+        {
+          "role": "5100 ms S3 implementation profile",
+          "path": "src/config.h",
+          "symbol": "UDS_SERVER_DEFAULT_S3_MS",
+          "lines": "51-53",
+          "atomic_propositions": [
+            "non_default_session_idle_started_s3_5100"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L51-L53"
+        },
+        {
+          "role": "strict S3 deadline predicate",
+          "path": "src/util.h",
+          "symbol": "UDSTimeAfter",
+          "lines": "13",
+          "atomic_propositions": [
+            "default_session_entered_due_to_s3"
+          ],
+          "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13"
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

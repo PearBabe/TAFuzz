@@ -1,0 +1,317 @@
+{
+  "protocol": "DDS/RTPS",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/industrial_protocols/dds_rtps/evidence.json",
+      "record": {
+        "protocol": "DDS 1.4 / DDSI-RTPS 2.5",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+        "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+        "scope": "Official OMG reference/default timing relationships instantiated on locked Fast-DDS and CycloneDDS commits. Harness configuration differences are explicit trigger preconditions.",
+        "proposal_summary": {
+          "emitted": 5,
+          "approve": 0,
+          "fix_applied": 5,
+          "rejected": 0
+        },
+        "standards": [
+          {
+            "title": "The Real-time Publish-Subscribe Protocol DDS Interoperability Wire Protocol Specification",
+            "version": "DDSI-RTPS 2.5 formal/2022-04-01",
+            "url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+            "sha256": "c362eaa590c9c95fc6223359ce1ebfa57776cf7ea1e47824f58d48dc16907088",
+            "sections_reviewed": [
+              "8.4.7.1",
+              "8.4.9.2.11",
+              "8.4.10.1",
+              "8.4.12.2.5",
+              "8.5.3.2.3",
+              "8.5.5.2",
+              "9.6.2.4",
+              "9.6.3 Table 9.18"
+            ]
+          },
+          {
+            "title": "Data Distribution Service",
+            "version": "DDS 1.4 formal/2015-04-10",
+            "url": "https://www.omg.org/spec/DDS/1.4/PDF",
+            "sha256": "16d6f8385c2ba79f7346dc18c867b624bc6dcc8fcf7c2ec52c55b7ae3dc113f2",
+            "sections_reviewed": [
+              "2.2.2.4.2.11",
+              "2.2.3.14"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "repository": "eProsima/Fast-DDS",
+            "version": "v3.3.0",
+            "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+            "url": "https://github.com/eProsima/Fast-DDS"
+          },
+          {
+            "repository": "eclipse-cyclonedds/cyclonedds",
+            "version": "0.10.5",
+            "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+            "url": "https://github.com/eclipse-cyclonedds/cyclonedds"
+          }
+        ],
+        "profile_differences": [
+          "Fast-DDS stock writer/reader response delays are 5 ms; reference-profile tests set 200/500 ms.",
+          "Fast-DDS stock SPDP period/lease are 3 s/20 s; the SPDP card sets the 30 s RTPS reference rate.",
+          "Fast-DDS writer nack response timer is writer-wide, so pending-reader set plus timer generation is the correlation unit.",
+          "CycloneDDS can postpone dependent proxy participants; those cases are trigger-false for the 100 s safety card."
+        ],
+        "rejected_candidates": []
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "DDS-WRITE-01",
+      "protocol": "DDS/RTPS",
+      "standard": "OMG Data Distribution Service",
+      "standard_version": "DDS 1.4 formal/2015-04-10",
+      "section": "2.2.2.4.2.11; 2.2.3.14",
+      "standard_url": "https://www.omg.org/spec/DDS/1.4/PDF",
+      "source_repository": "eProsima/Fast-DDS",
+      "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+      "source_path": "src/cpp/fastdds/publisher/DataWriterHistory.cpp",
+      "source_lines": "148-234",
+      "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.cpp#L148-L234",
+      "auxiliary_source_mappings": [
+        {
+          "role": "absolute max-blocking deadline and API return",
+          "path": "src/cpp/fastdds/publisher/DataWriterImpl.cpp",
+          "symbol": "DataWriterImpl::perform_create_new_change",
+          "lines": "1003-1107",
+          "atomic_propositions": [
+            "reliable_write_resource_wait_started_default",
+            "write_returned_from_blocking"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterImpl.cpp#L1003-L1107"
+        },
+        {
+          "role": "templated history caller return",
+          "path": "src/cpp/fastdds/publisher/DataWriterHistory.hpp",
+          "symbol": "add_pub_change_with_commit_hook",
+          "lines": "142-170",
+          "atomic_propositions": [
+            "write_returned_from_blocking"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.hpp#L142-L170"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "RTPS-DISC-01",
+      "protocol": "DDS/RTPS",
+      "standard": "OMG DDSI-RTPS",
+      "standard_version": "2.5 formal/2022-04-01",
+      "section": "9.6.2.4",
+      "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+      "source_repository": "eProsima/Fast-DDS",
+      "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+      "source_path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+      "source_lines": "1534-1546",
+      "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L1534-L1546",
+      "auxiliary_source_mappings": [
+        {
+          "role": "periodic SPDP announcement action",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::announceParticipantState",
+          "lines": "576-692",
+          "atomic_propositions": [
+            "next_periodic_spdp_announcement_sent"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L576-L692"
+        },
+        {
+          "role": "periodic announcement generation reset",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::resetParticipantAnnouncement",
+          "lines": "702-708",
+          "atomic_propositions": [
+            "spdp_period_generation_superseded"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L702-L708"
+        },
+        {
+          "role": "participant stop and timer cancellation",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::stopParticipantAnnouncement / PDP::disable",
+          "lines": "558-574;694-700",
+          "atomic_propositions": [
+            "local_participant_stopped"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L558-L574"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "RTPS-DISC-02",
+      "protocol": "DDS/RTPS",
+      "standard": "OMG DDSI-RTPS",
+      "standard_version": "2.5 formal/2022-04-01",
+      "section": "8.5.5.2; 9.6.3 Table 9.18",
+      "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+      "source_repository": "eclipse-cyclonedds/cyclonedds",
+      "source_commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+      "source_path": "src/core/ddsi/src/q_lease.c",
+      "source_lines": "218-292",
+      "source_url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L218-L292",
+      "auxiliary_source_mappings": [
+        {
+          "role": "default lease creation and SPDP refresh",
+          "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+          "symbol": "handle_spdp_alive",
+          "lines": "723-981",
+          "atomic_propositions": [
+            "remote_participant_default_lease_started",
+            "remote_spdp_refresh_supersedes_lease"
+          ],
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L723-L981"
+        },
+        {
+          "role": "explicit SPDP dispose cancellation",
+          "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+          "symbol": "handle_spdp_dead",
+          "lines": "638-671",
+          "atomic_propositions": [
+            "remote_lease_generation_cancelled"
+          ],
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L638-L671"
+        },
+        {
+          "role": "privileged participant lease exception",
+          "path": "src/core/ddsi/src/q_lease.c",
+          "symbol": "check_and_handle_lease_expiration",
+          "lines": "247-281",
+          "atomic_propositions": [
+            "remote_participant_default_lease_started"
+          ],
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L247-L281"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "RTPS-REL-01",
+      "protocol": "DDS/RTPS",
+      "standard": "OMG DDSI-RTPS",
+      "standard_version": "2.5 formal/2022-04-01",
+      "section": "8.4.7.1; 8.4.9.2.11",
+      "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+      "source_repository": "eProsima/Fast-DDS",
+      "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+      "source_path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+      "source_lines": "1921-1960",
+      "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1921-L1960",
+      "auxiliary_source_mappings": [
+        {
+          "role": "writer nack-response callback action",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::perform_nack_response",
+          "lines": "1880-1900",
+          "atomic_propositions": [
+            "nack_response_action_observed"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1880-L1900"
+        },
+        {
+          "role": "TimedEvent callback binding",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::init",
+          "lines": "225-232",
+          "atomic_propositions": [
+            "nack_response_action_observed"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L225-L232"
+        },
+        {
+          "role": "reader unmatch can empty pending-reader set",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::matched_reader_remove",
+          "lines": "1211-1302",
+          "atomic_propositions": [
+            "rtps_pending_reader_set_empty"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1211-L1302"
+        },
+        {
+          "role": "writer removal stops timer and reader proxies",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::local_actions_on_writer_removed",
+          "lines": "256-315",
+          "atomic_propositions": [
+            "rtps_writer_stopped"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L256-L315"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "RTPS-REL-02",
+      "protocol": "DDS/RTPS",
+      "standard": "OMG DDSI-RTPS",
+      "standard_version": "2.5 formal/2022-04-01",
+      "section": "8.4.10.1; 8.4.12.2.5",
+      "standard_url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+      "source_repository": "eProsima/Fast-DDS",
+      "source_commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+      "source_path": "src/cpp/rtps/reader/WriterProxy.cpp",
+      "source_lines": "550-615",
+      "source_url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L550-L615",
+      "auxiliary_source_mappings": [
+        {
+          "role": "heartbeat-response ACKNACK handoff",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::perform_heartbeat_response",
+          "lines": "535-548",
+          "atomic_propositions": [
+            "heartbeat_acknack_sent"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L535-L548"
+        },
+        {
+          "role": "remote writer unmatch",
+          "path": "src/cpp/rtps/reader/StatefulReader.cpp",
+          "symbol": "StatefulReader::matched_writer_remove",
+          "lines": "381-482",
+          "atomic_propositions": [
+            "rtps_writer_unmatched"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/StatefulReader.cpp#L381-L482"
+        },
+        {
+          "role": "WriterProxy timer cancellation",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::stop",
+          "lines": "170-187",
+          "atomic_propositions": [
+            "rtps_writer_unmatched",
+            "rtps_reader_stopped"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L170-L187"
+        },
+        {
+          "role": "local reader removal lifecycle",
+          "path": "src/cpp/rtps/reader/BaseReader.cpp",
+          "symbol": "BaseReader::local_actions_on_reader_removed",
+          "lines": "109-112",
+          "atomic_propositions": [
+            "rtps_reader_stopped"
+          ],
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/BaseReader.cpp#L109-L112"
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

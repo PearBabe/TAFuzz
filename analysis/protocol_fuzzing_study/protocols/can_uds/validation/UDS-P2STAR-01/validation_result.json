@@ -1,0 +1,35 @@
+{
+  "id": "UDS-P2STAR-01",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {},
+  "additional_negative_results": {
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "uds_nrc78_sent_p2star_5000_adjust0",
+    "uds_final_response_after_nrc78",
+    "uds_nrc78_repeated",
+    "uds_p2star_generation_cancelled"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 7,
+  "positive_edges": 160,
+  "positive_clocks": 2,
+  "negative_locations": 7,
+  "negative_edges": 198,
+  "negative_clocks": 2,
+  "build_ms": 21,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

@@ -1,11 +1,21 @@
 __pycache__/
 *.py[cod]
 
-build/
+# External source checkouts and local working data are not part of a publish snapshot.
+baseline/
+tmp/
+
+# Exclude build, build-env, build-repro, and similarly named build directories.
+build*/
 CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 compile_commands.json
+
+# Original generated graphs exceed GitHub's regular per-file size limit.
+# Their lossless gzip snapshots remain publishable beside these local originals.
+benchmark/extraction_runs/milestone3/ArduPilot/docgraph.jsonl
+benchmark/extraction_runs/milestone3/PX4/docgraph.jsonl
 
 .DS_Store
 *~

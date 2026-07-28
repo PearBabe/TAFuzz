@@ -1,0 +1,152 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-17T23:06:40.007800+00:00",
+  "captures": [
+    {
+      "capture_id": "PX4-M6-MC-NONE-IRIS-I42-20260718",
+      "system": "PX4",
+      "vehicle": "multicopter",
+      "profile": "px4_sitl_default none_iris headless instance 42",
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+      "runtime_status": "FAILED",
+      "launch_command": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc",
+      "connection": "udpout:127.0.0.1:18612 source=250:190 target=None:None",
+      "phases": [],
+      "parameter_snapshot": {
+        "status": "FAILED",
+        "protocol": "PARAM",
+        "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/parameters_runtime.json",
+        "sha256": "8f1b8daa832ed096314b3f44039daf4abe9ed7b016fdb7b4cb6fef6c0f90f70f",
+        "expected_count": null,
+        "received_count": 0,
+        "unique_parameter_count": 0,
+        "missing_indices": [],
+        "key_values": []
+      },
+      "message_summary": {
+        "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/message_inventory.json",
+        "sha256": "6cf7d2303a176dc73846cd08b3cf029cd0729ae960aed8edfdf4b1c359d3db30",
+        "total_message_count": 0,
+        "distinct_message_count": 0,
+        "baseline_distinct_message_count": 0,
+        "host_clock": "CLOCK_MONOTONIC_NS"
+      },
+      "request_sweep": {
+        "status": "FAILED",
+        "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/message_request_sweep.json",
+        "sha256": "a135fb2984f367f6e810d6e5999bc4f196b90731bd2ac62c6a3c047ee439d855",
+        "attempted": 0,
+        "message_observed": 0,
+        "unsupported": 0,
+        "no_response": 0
+      },
+      "clock_domains": [
+        "CLOCK_MONOTONIC_NS",
+        "HOST_UTC_WALL_FOR_TLOG_ONLY",
+        "PX4_BOOT_OR_UNIX_OR_PROTOCOL_SPECIFIC_ONBOARD_FIELDS_AS_NAMED"
+      ],
+      "process_cleanup": "pid=736227 pgid=736227 exit_code=255 cleanup_complete=True",
+      "artifacts": [
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/mavlink_messages.jsonl",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "Decoded MAVLink JSONL with raw frame hex and phase/timing metadata"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/mavlink_capture.tlog",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "Raw MAVLink tlog"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/message_inventory.json",
+          "sha256": "6cf7d2303a176dc73846cd08b3cf029cd0729ae960aed8edfdf4b1c359d3db30",
+          "role": "Message inventory and three-layer counts"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/parameters_runtime.json",
+          "sha256": "8f1b8daa832ed096314b3f44039daf4abe9ed7b016fdb7b4cb6fef6c0f90f70f",
+          "role": "Runtime parameter snapshot"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/message_request_sweep.json",
+          "sha256": "a135fb2984f367f6e810d6e5999bc4f196b90731bd2ac62c6a3c047ee439d855",
+          "role": "Full dialect request sweep"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/px4.stdout.log",
+          "sha256": "02691315ba1b2e8b4e7a3a6199b947da9e5a4ac05c5cb3c97a723ef6c10fecff",
+          "role": "PX4 stdout"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/px4.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "PX4 stderr"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/process_lifecycle.json",
+          "sha256": "81cba146659c7e005f8a11365e2774ba09e65b495177d30c10ef394b4e16e72d",
+          "role": "Process exit and cleanup evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/source_integrity.json",
+          "sha256": "3a66b84addca4db4e4dc7a256c8439f1dbc91d02ab2578faea9e758bfdd55d83",
+          "role": "Frozen source/worktree verification"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/commands.json",
+          "sha256": "e76057b80c8726fe7b2f94f42f3d502ba386369fed419734a56abaac51bfd5de",
+          "role": "Exact commands and protocol actions"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/capture_details.json",
+          "sha256": "83f7c50822b0a96d2b5d4fc7144807536a48c9622588850d7f145b8a01f8ee5d",
+          "role": "Extended capture facts"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/capture_driver.log",
+          "sha256": "e83f300a02326975bd42d6aa9112a31ef972bd2a3445f1699aaa6ae1673f24ce",
+          "role": "Capture-driver progress and errors"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/px4_development_v20.py",
+          "sha256": "ca4927eceb3db48675481867da92d41cb4dd603d17b2f6dbb8a6abe9b188c94f",
+          "role": "Generated frozen PX4 development dialect decoder"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/dialect_generation.log",
+          "sha256": "cadaf2a7bd727b40bfbd7ac9c8e0305cab16764ee538261536181567fbb147db",
+          "role": "Dialect generation log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/README.md",
+          "sha256": "62d3382050aeee2935cb0e135b7fd38729f1518969abcb03e8e58960e2634ee7",
+          "role": "Human-readable capture report"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/capture_px4_runtime_attempt1.py",
+          "sha256": "a78483f36edf4b58c27609f8ecdba4e918f46b31c05696cc3980e30d3ead4632",
+          "role": "Reproduction script"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/runtime_state/dataman",
+          "sha256": "55cf902b00539fd43b45029e449392ebfab82acdda744f056fcbe3aa0b0c10c4",
+          "role": "PX4 isolated runtime-state artifact"
+        }
+      ],
+      "limitations": [
+        "This is runtime acquisition only; implementation/property satisfaction is NOT_ASSESSED.",
+        "PX4 used the none_iris multicopter airframe without an external physics simulator; no arming, takeoff, or flight path was attempted.",
+        "Host CLOCK_MONOTONIC_NS arrival time is not substituted for PX4 onboard time fields.",
+        "MAV_CMD_REQUEST_MESSAGE COMMAND_ACK identifies command 512 but not the requested message ID; correlation is sequential and temporal.",
+        "A matching frame after a request is not asserted causal when that message was already present in BASELINE.",
+        "No PARAM_SET, stream-interval change, arming command, mode command, or actuator command was sent.",
+        "Capture encountered an exception recorded in capture_details.json and capture_driver.log.",
+        "PARAM download was FAILED; expected=None, missing_indices=0.",
+        "Required runtime parameters not observed: COM_RC_LOSS_T, COM_RC_IN_MODE, COM_RCL_EXCEPT, NAV_RCL_ACT, COM_DL_LOSS_T, COM_DLL_EXCEPT, NAV_DLL_ACT, COM_OF_LOSS_T, COM_OBL_RC_ACT, COM_DISARM_LAND, COM_DISARM_PRFLT, COM_FLT_TIME_MAX, RTL_LAND_DELAY, RTL_TYPE, RTL_DESCEND_ALT, MAV_SYS_ID, MAV_TYPE, SYS_AUTOSTART"
+      ]
+    }
+  ],
+  "property_parameters": [],
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

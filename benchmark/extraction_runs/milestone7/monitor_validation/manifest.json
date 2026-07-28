@@ -1,0 +1,2355 @@
+{
+  "command_count": 85,
+  "generator": {
+    "bytes": 90436,
+    "path": "benchmark/scripts/build_monitor_validation.py",
+    "sha256": "34b368e89f8dcfa38534dcf17bed39d65ce8e146b671bd8876fe1c660c16d7e7"
+  },
+  "inputs": [
+    {
+      "bytes": 47122,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-COPTER-GCS-001.json",
+      "sha256": "b70d364317303fb2087fbf8760910fca93eaba1fe5e06cf95d63730e9818b3c0"
+    },
+    {
+      "bytes": 46135,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-COPTER-GUID-002.json",
+      "sha256": "674b69a84e8569d827db11e7b90bef76de1425c93eeb9bd406cc2f04d7937fbe"
+    },
+    {
+      "bytes": 30184,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-COPTER-RTL-003.json",
+      "sha256": "b3051ad0d82d38c3a70388e6929ff4394c6ed4bc70b360041c9937a05f577068"
+    },
+    {
+      "bytes": 55338,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-ROVER-CRASH-002.json",
+      "sha256": "b48a8632b0933237c8b3120eeb1e615a1596b7b478f08be0a02867524325c9f5"
+    },
+    {
+      "bytes": 49122,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-ROVER-RCFS-001.json",
+      "sha256": "59f64a2a73bdfe66c8a41041b29aa8a63c504b8c8cd7463f28f96b3e03a9413d"
+    },
+    {
+      "bytes": 48255,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-SHARED-BATT-001.json",
+      "sha256": "6fe4baa676d8a5e6c559bf5cc1b24baf6e1639f524a227c54fc08b8c73ef0fd7"
+    },
+    {
+      "bytes": 63614,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/PX4/PX4-MC-GCSLOSS-002.json",
+      "sha256": "1f1c94fbe23055e3e4e4b2f95b0de4fd9506f2aa3da84261d3322a4a2a7491b2"
+    },
+    {
+      "bytes": 104139,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/PX4/PX4-MC-RCLOSS-001.json",
+      "sha256": "cf9cc2325975f04aa2b712ad9df035255899b7dddc2bfc4ef3d30ab672f1e5e6"
+    },
+    {
+      "bytes": 1292,
+      "path": "benchmark/schemas/timed_trace.schema.json",
+      "sha256": "e19254fd80d8070278a85f4d9cba1baec75f69edf4b8399fd6ccf9d965d1cf05"
+    }
+  ],
+  "outputs": {
+    "benchmark/ArduPilot/validation/monitor_validation.json": {
+      "bytes": 2841,
+      "sha256": "46acfef343f65d655f6fa716b613556e32159f49293124e7df5d32f7dfbe1416"
+    },
+    "benchmark/PX4/validation/monitor_validation.json": {
+      "bytes": 1213,
+      "sha256": "2dcc5d92f28d00d09a7ec9e4ca637d835b63c31eb3ef5e503af7b71252b68837"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/README.md": {
+      "bytes": 6766,
+      "sha256": "a269bddaf2b7dbdd879669d974b1b37aa77b3a32bb01d0c1980dd8b0aaa242a8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/commands.jsonl": {
+      "bytes": 121935,
+      "sha256": "3fe7fa009e4d2bda8569282639562bed6da5101d13c2f500279d271a71d14a46"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-COPTER-GCS-001.json": {
+      "bytes": 47122,
+      "sha256": "b70d364317303fb2087fbf8760910fca93eaba1fe5e06cf95d63730e9818b3c0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-COPTER-GUID-002.json": {
+      "bytes": 46135,
+      "sha256": "674b69a84e8569d827db11e7b90bef76de1425c93eeb9bd406cc2f04d7937fbe"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-COPTER-RTL-003.json": {
+      "bytes": 30184,
+      "sha256": "b3051ad0d82d38c3a70388e6929ff4394c6ed4bc70b360041c9937a05f577068"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-ROVER-CRASH-002.json": {
+      "bytes": 55338,
+      "sha256": "b48a8632b0933237c8b3120eeb1e615a1596b7b478f08be0a02867524325c9f5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-ROVER-RCFS-001.json": {
+      "bytes": 49122,
+      "sha256": "59f64a2a73bdfe66c8a41041b29aa8a63c504b8c8cd7463f28f96b3e03a9413d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/ArduPilot/ARD-SHARED-BATT-001.json": {
+      "bytes": 48255,
+      "sha256": "6fe4baa676d8a5e6c559bf5cc1b24baf6e1639f524a227c54fc08b8c73ef0fd7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/PX4/PX4-MC-GCSLOSS-002.json": {
+      "bytes": 63614,
+      "sha256": "1f1c94fbe23055e3e4e4b2f95b0de4fd9506f2aa3da84261d3322a4a2a7491b2"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/inputs/properties/PX4/PX4-MC-RCLOSS-001.json": {
+      "bytes": 104139,
+      "sha256": "cf9cc2325975f04aa2b712ad9df035255899b7dddc2bfc4ef3d30ab672f1e5e6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json": {
+      "bytes": 321163,
+      "sha256": "06cfc09caafc2776e7ebc4a6dd1534fab9aba1337d10eb75ad031184ad6502e4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/formula_ast.json": {
+      "bytes": 2176,
+      "sha256": "488489f57281a7341b4d668aabd210fb91bdc63b5bbd7ed06584c778d705e2b7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/monitor_formula_ms.mitl": {
+      "bytes": 149,
+      "sha256": "f0ae8c307cad4ec871bdd2e90e6f8f6dcad0fbabf91fc1d87f4c98b442f27a04"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/mitppl_sat.stdout.txt": {
+      "bytes": 42260,
+      "sha256": "c377f3c86c0b27017b9603a552364b3a938f51288114db38bc0f7f852d6ae747"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/monitor-build/metadata.json": {
+      "bytes": 1531,
+      "sha256": "de4d97e08effefeea55ed94255899310652dd49e416057520a670859314c5e51"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/monitor-build/results.xlsx": {
+      "bytes": 3758,
+      "sha256": "f588ef391cb3f089572939d537aff0453b23e251050689d650c41118afe9147f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/monitor-build/summary.csv": {
+      "bytes": 749,
+      "sha256": "5f5e363e33e17f863941037ba698b1e484725cb4b16f08c02c594975a2a4bfc5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/monitor_parser.stdout.txt": {
+      "bytes": 221,
+      "sha256": "a1c6831ff579780ea2ad1f9e497715d91f4bb225d08e490eee2ce9cb1abc37ca"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/source_parser.stderr.txt": {
+      "bytes": 507,
+      "sha256": "92d46ae40d3bc70bcff3df78c56857c9e41db9f436389f91369c01b018e17be2"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/source_formula.mitl": {
+      "bytes": 140,
+      "sha256": "768c7735a6f54ca991898ff0354f6c47c004740bb94042cc5f7e3fa14980bde0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 250,
+      "sha256": "bf3943c5fce3d155b83d104d18fdbb0f4869418329072fe32cdc059675c250c3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/result.json": {
+      "bytes": 3902,
+      "sha256": "13bed73426554c1b9ef27544f3154afb86d4771cda1846ec5c95025516d85c7e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 1086,
+      "sha256": "96b1fb7eb33d2df9dcc7a4ffdbc7ae1e65da2200f63eba2c11553decf9a90b59"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/tamonitor/metadata.json": {
+      "bytes": 1531,
+      "sha256": "763d00fa1a3698c2349a03aaf1f7fcee9cf7719fff168805c092303e24b1d828"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/tamonitor/results.xlsx": {
+      "bytes": 4030,
+      "sha256": "45c0557d7ecc2ae7c25d808aa3d14d72fbbddf2e4432335d6498e5f2e33d0588"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/tamonitor/steps.csv": {
+      "bytes": 504,
+      "sha256": "50856ac65be2409086dfb6efa40fa4069b1fbaca34206113fae26446e633a760"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/tamonitor/summary.csv": {
+      "bytes": 747,
+      "sha256": "d5e9aee04ff8e95b9cfebae0a85070cf5ac3baace97e8fde68bf300109d5496f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2945,
+      "sha256": "6c04300b1474de235d2c8893c9f55cad5723ecd7b824894b61221eec26fdf54f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 300,
+      "sha256": "90de9026edc23ffacfa9934b2de80e884e006bb6a0688f2aa7b2d7cc1cd6d027"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3989,
+      "sha256": "a73e58071f487f85ebd082e1fcfba2959c111c0e53c28692dbfaf6c561a740c5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1265,
+      "sha256": "4706781f3419b9213efcc5361dac1c42d97a7f7a08651e752bf5967ed12e05f8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1531,
+      "sha256": "6836c78a71910943f1850e046ac68a892c2b86b7477886aebb24f26f391c1f10"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4066,
+      "sha256": "c2aa2ea9b909b8377d7d946828d2ebb841ff04d10c1e814b4654c3db2722d980"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 588,
+      "sha256": "b9869a13e2dcd62e14c3cef00bf3c7e96641219ce1d0cc04bcd10eaccec215fa"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 747,
+      "sha256": "33c42f49d81588e251873759d95b47e67ce4a735ec1b569c40d92a48ec2e3d0b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3481,
+      "sha256": "28aba6a378938db88850cba223f65f2d2b6a1b2312ff8ee7ea6e2f7340820ab1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 231,
+      "sha256": "c490d5ff4e56eacc6ce29229db978969509b5cc5ca33096221ed1480e2f49667"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/result.json": {
+      "bytes": 3938,
+      "sha256": "696df316ef75ae4f036fcc821ca3eff259ab208c4beba5001682444c737113b6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 1070,
+      "sha256": "e32cfc02c1369c4096cfe5c67649cedc4aa364ba20e509add2dd379110fc195b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1531,
+      "sha256": "763d00fa1a3698c2349a03aaf1f7fcee9cf7719fff168805c092303e24b1d828"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 4011,
+      "sha256": "7e57d3dd8b072ee169dfa454572eda67ff6e24c8d4253c4e6168089383ea51f5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 485,
+      "sha256": "49131c6776bd6429b7bbe31267624d0cdbaad6f61c3f3a5449318d3a39e2e8b3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 747,
+      "sha256": "d5e9aee04ff8e95b9cfebae0a85070cf5ac3baace97e8fde68bf300109d5496f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/missing_completed_trace/trace.json": {
+      "bytes": 2971,
+      "sha256": "6b5173447451ecf23d068a6fbf4ebeb8973bbca2246f91fac086201b7f179c10"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 298,
+      "sha256": "5b1bf8430cf7539ab8979cd63f178d7e525202810489ca7359fc487a30f39c66"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/result.json": {
+      "bytes": 3928,
+      "sha256": "d2cedf7f22fb98c5a64a3df96b671ec2f55b822c5c61cb9d1bd10f574a017440"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1258,
+      "sha256": "909cc7cf1931dcd4bd844ddd830fa4cfb965150141c0a379fdb33fb7243a5812"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1531,
+      "sha256": "e73f7fc8ad5e8b828230435a7a58c7e9dc3b243e2d7896a2499ad27e611bc49a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 4062,
+      "sha256": "b792d7ad9d77ae1c1249f618269acadcee09c514653108039f2e6f9e551f8820"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 586,
+      "sha256": "949356c9e465c438d9ca63de4a316527269c5a9485f98a0bab4e0c205a817a2c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 747,
+      "sha256": "a37aabae35e40c93b42f31e4ac2e94a263abe6a63e23b4c53463cf2f44668c86"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/positive_after_threshold/trace.json": {
+      "bytes": 3431,
+      "sha256": "9b2dc1bf15a7dceb1acdf1257575d8d5a79bc64498cb8383e90bc7a8b7ef51dd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 250,
+      "sha256": "355d61fd9488f2479b5803816e32b5d5cf90d4cea205fd1ed9ad82f93dbf7d3c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/result.json": {
+      "bytes": 3785,
+      "sha256": "a095b1b55a3f62f32104f690804d7cf9eb4e8bcc2c635354dd3d297edcf6c28b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 1070,
+      "sha256": "d73ed6ab89b1bb61c9213bf3c7bbc8998e3496c7bcdea173416d3f77dd4348dc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1527,
+      "sha256": "e591df7c028a9180322c43b529d1bf1253ebd868081158fff45204686eb70901"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 4031,
+      "sha256": "e6d517b78b8f9458a81b4a5f51e8eaecb56d40175e2a3cf3b8f5d6f3a431c016"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 494,
+      "sha256": "de88794d4fdb3f9ad7491c3f01be9ad4411d963049bb3a43faf8c9370305bcfd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 743,
+      "sha256": "6d6717806b442349416af91bc1a7cd4a480fe040ed299074e2d8d46f306838ec"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/trace.json": {
+      "bytes": 2899,
+      "sha256": "9aebe12f05ac7d8cfb51ef2865e38f2d06b5288425f18ed4667ae05129881a03"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 226,
+      "sha256": "a1c4160ed40a4721a0aec7c2e7021eb750023fd57d36cc72f03911b6de4f08f3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3957,
+      "sha256": "0159700f58adf4801c6c363489f27fb1d54a3af5f97e9d1b73986391c4b84f41"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 1065,
+      "sha256": "89ee711518a263769e6dc60dc9b9b0bb0fe9a22d4bc77fdbe305d4082e6aa3a7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1531,
+      "sha256": "7b8fbf3595fd8a37180d42d357fb0003ca95c8dbb5120ecaca2058deb40aec6f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 4013,
+      "sha256": "5aaaf451c0350327d4a76051808a389a213b8db80f000a1e9afd1f0f7c0fe5af"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 480,
+      "sha256": "c48fdf510a429ca53172caa9e07cd5fb1d8cb72f22653c72d1374d07ac80cefd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 747,
+      "sha256": "581692451cac3c6ae195f0851382987b929d71469861fcecaa1ee1588f49ea07"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2990,
+      "sha256": "bd7e6e27b3ec45c73484b0a5a95b67013e8e06923bf83fc49c6a897c3008f9b5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/formula_ast.json": {
+      "bytes": 1936,
+      "sha256": "2f45811c4dc5dec437ac53f2fc84b6edae19344bb18577d6170ef0ca7e00be7d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/monitor_formula_ms.mitl": {
+      "bytes": 132,
+      "sha256": "a7a8603d40a96d90638a61d92860fce1dec26fcc67e146776ed6e5a503ca85a3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/mitppl_sat.stdout.txt": {
+      "bytes": 42002,
+      "sha256": "2155a2a345058319a4f55b7a5534bafebc3e47c2f542dcecb5c2e0f2144f7c25"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/monitor-build/metadata.json": {
+      "bytes": 1439,
+      "sha256": "2ec36b127608575433493a715caed09a01ce45de428914041b4e04ee88431529"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/monitor-build/results.xlsx": {
+      "bytes": 3727,
+      "sha256": "39c09686db2318e5a6f803c4a64ba230265eaf1a78d4f4fbeeb264f5bc031da5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/monitor-build/summary.csv": {
+      "bytes": 732,
+      "sha256": "b8b8af5c71b6279c7e5d1aa93d3cc117c16a0941f151f3218e591aacaba65b84"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/monitor_parser.stdout.txt": {
+      "bytes": 222,
+      "sha256": "26b64101311d412d23d9ca6452ec9eaea0149752319081426da3003707211ad4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/source_parser.stderr.txt": {
+      "bytes": 527,
+      "sha256": "92ca27d12dd8a93fca79eaf2fadf1440f61fc29a74094b1021224263b223d21a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/source_formula.mitl": {
+      "bytes": 124,
+      "sha256": "2141188b535c8864b438f897dc3bd5ffe5ce08ff651a0a4e70be1ad2823d8585"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 173,
+      "sha256": "5bcab3050fd8ad2d1eb674ec2cb377bcf2501d819a9e6209e884490a7ca3d905"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/result.json": {
+      "bytes": 3910,
+      "sha256": "e6321c40b715148281f08ed0eacd3e2a0604a47475993272db66f2806adb5dde"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 1005,
+      "sha256": "cac642e7fe74cf265cc6225e06058afa2835f56381b25ca575c472338c52a4a8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/tamonitor/metadata.json": {
+      "bytes": 1435,
+      "sha256": "d84674484e6586cb4df7231c959bd66500df04f3863315469c696c6c89f94eeb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/tamonitor/results.xlsx": {
+      "bytes": 3981,
+      "sha256": "9d0aca9ab835d2c3118e88bb9e39eff7129e38b09cc3e59162f968593ac011a6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/tamonitor/steps.csv": {
+      "bytes": 422,
+      "sha256": "22cd800a60f4f1018c29f608aa6a501fdb583694ccea138a8196c92194727247"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/tamonitor/summary.csv": {
+      "bytes": 728,
+      "sha256": "db5d4437790684050f99005a50998e3ddcbc4a88d83d9d9cea01e8141115ead6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2771,
+      "sha256": "5bfa11590c5ab17f91853f2955d55e2af9cfa598955c94f322d77c85f86e2842"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 204,
+      "sha256": "e7f2ded9b80172f742901ed50ded5baec6d73eb1e0ca5ab8d85b7c7eaae5a990"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3996,
+      "sha256": "7852fb3cf850e1aae4a76d89aeaff3652a9d9f5dfdd3a59b7faed8cf60a99f31"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1164,
+      "sha256": "7ab442802b1fc78fc9d19d86dcb641215959c0e43f0f0aad6cc43a984072fa36"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1435,
+      "sha256": "d284cde29e37b92ef306c6e52b25f054db7e1837d2201b746dc6b71dd0b2fb2e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4022,
+      "sha256": "0814ee24e6dab5fd25694a404c16e79496c309635fd0e3ada91196610584ecb9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 486,
+      "sha256": "e1017ee283b55000909e22fad70206028e662d5097cd2d9182d8cac2ad58ba51"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 728,
+      "sha256": "a0c331755887e2645ba89376e3aa5404268d2ec2b9ebf613ec3f7983cf0453c0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3272,
+      "sha256": "6ef697d2fed59dc8e732417ac5f5c3be0388528f69a9aa55c30adc124bb7079f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 148,
+      "sha256": "eafe688aae39ea7103bee27417f43d5c10dfcd26b7b0f77d7ce7e6436b870eaa"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/result.json": {
+      "bytes": 3945,
+      "sha256": "7311a7c73a583f1c292dc6d3a6b595a7740cb6ff59952211e84197443dd0c613"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 983,
+      "sha256": "12a91813afb67e7d0e60fca06497285d269a3cd5314d53b0637b760cc35f13ba"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1435,
+      "sha256": "78d97fd6f90cd6ce9c44b22847faed05022296c01402c0135453395591b7245f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 3957,
+      "sha256": "cf9bde346261b450c28c787e36e882b6a2f1f98312bcb7b108a5865f532c61e9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 397,
+      "sha256": "7e1f2adf3440934cf04b11052234986db01196c660f3f505b9a6193ba728dfde"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 728,
+      "sha256": "784b4e046f45b3cd2f154b3a99f1a4c5a88400b35ae7e3fc30cd3c31be1abbbb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/missing_completed_trace/trace.json": {
+      "bytes": 2797,
+      "sha256": "3a1a3c56295ca878b09766b9c8ddc88885c58c9816301139b85dbd6e81c60671"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 202,
+      "sha256": "a30e63f110fed90e7d90679a6d79253e1c17f07316e9c723e01cb18a8eb75155"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/result.json": {
+      "bytes": 3936,
+      "sha256": "fed0937cca6d3808623dd7bee0fde57c9521bc496d715cad9943541459971b70"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1157,
+      "sha256": "2f17c3039d24f87187d4f3fd8447ec343ed2cc2a2624fac0e3b0b600fe1269f9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1435,
+      "sha256": "d5f0d53c9a10670948b08e0dd967b2ebb423fa34f868a7d31cf9eb059c12604d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 4013,
+      "sha256": "c197bb73d287788bc2172e9748f5c704da5d91038f9ef4f45539274bbd41e9e6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 484,
+      "sha256": "13bea0a468668d001dabbd100a36397600cf20fad00303abcef0327b9c18ea79"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 728,
+      "sha256": "5e7a6e404379295b6e4ef3c64815b5da9cb82145a540f59dcd6ed98278b0f008"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/positive_after_threshold/trace.json": {
+      "bytes": 3222,
+      "sha256": "4334e9f6298aa502f3c2d149d83e22afb8854b622d79d867b0d68ddbe44d9d03"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 173,
+      "sha256": "eadfbd13b91e6b8793e8cef4ee23c81a1212e3a99d47ffc35918c7f1c1a07d2e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/result.json": {
+      "bytes": 3792,
+      "sha256": "70f1bd91e7e72569aa1f3e9db1dd3e439afaf2dcf2b65851aafa67c97fb5bc46"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 989,
+      "sha256": "8af687e3f20dfcc86a03c36b86ed622933dd816f791113741b873004bf702115"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1431,
+      "sha256": "ec7d05eaf2ec9bf6bec9f856d33c2b1f98733d42497a676375042655e4964feb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 3980,
+      "sha256": "b4800759a4d5aa24aef0dc93c693e50486b86bb92d8a1d24d39fa76d70b9574d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 412,
+      "sha256": "e486ad82cb7bd750e47a12ec42dfc126fdfe39c3e7e9e39314399b5097062553"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 724,
+      "sha256": "2e3e4f59b0f380181b3cfd7dcde0605a50826093cf25a27534b33984d55eaf32"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/too_early_one_tick/trace.json": {
+      "bytes": 2725,
+      "sha256": "9714b92d4dbf5b6702236cdf2d207eeadc4330230487e98c8082f3e179b8393a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 156,
+      "sha256": "93dcee2f0ead763f94e463d809014194aa12958108a3c95a1e31471be1d85b24"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3964,
+      "sha256": "a5b7f789d6117ad2044cb6926360fcc4ebe6794e5e6d9aee15c62d1ab63f6eef"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 991,
+      "sha256": "5c56e10c349383e62d1cd8a3904d36ab7c0f506f96a592b15ad8e8b83397d687"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1435,
+      "sha256": "6983b271039e9a3ac9f2907ddcffacfbb55897fb47541a6aa1a7360494ac9922"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 3964,
+      "sha256": "ac0468a7f1f0d00b9884ab3b74a424818727742ee8ba1c00fb6bca48d9bcc86b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 405,
+      "sha256": "a31bf2e6ed42bd23ee18c4c951dc479323b43ab352739dea4bd727528bdbd912"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 728,
+      "sha256": "0b52aeb9bcdb93f39be103b1606d76a4e6e499b5406091c97df49719a0377dbc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GUID-002/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2816,
+      "sha256": "089943108f83f7c7b7250c02031f69f26a9675dc6e5fe3eb009ace1e5dc9d8bd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/concrete_default_max_valuations/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/concrete_default_max_valuations/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/diagnostic_attempts.json": {
+      "bytes": 4521,
+      "sha256": "c1ec1022363fb9710774fc9861db02978df229f25ecba6e46c3e9073a6bf5200"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/symbolic_max_valuations_65536/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/symbolic_max_valuations_65536/tamonitor.stdout.txt": {
+      "bytes": 1024,
+      "sha256": "32246ca0228638c79d16c8d9045ec83aa3b755c08096ab4fe0b5bbe0162cb9dc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/symbolic_max_valuations_65536/tamonitor/metadata.json": {
+      "bytes": 1450,
+      "sha256": "f6b6dbd9c7fe0056d0295cf98725f65f6260301cf88562e74bbbfc61d56088ad"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/symbolic_max_valuations_65536/tamonitor/results.xlsx": {
+      "bytes": 3999,
+      "sha256": "fc1b51e7976e20e52b10a67f857a187fbb3897fb4b8ab394cf88b8a8acda66a0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/symbolic_max_valuations_65536/tamonitor/steps.csv": {
+      "bytes": 413,
+      "sha256": "9dda2da280db4bb768dd4920f1613c6ba1015351c49754ed0cf36132c28a326d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/diagnostics/runtime_limits/symbolic_max_valuations_65536/tamonitor/summary.csv": {
+      "bytes": 736,
+      "sha256": "00118d31202628b66d327c809dbe080513a4cc38ca77e3dd36d15562f8119d51"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/formula_ast.json": {
+      "bytes": 2426,
+      "sha256": "df7a48cc7ef8bcaf67003faa9e63f3fbdb7693d07e1d7683d0cf8ddc86878c81"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/monitor_formula_ms.mitl": {
+      "bytes": 134,
+      "sha256": "12d637536e9561b4502bccdc3cab09bd406ed3794bf9355397405e34c89d9e68"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/mitppl_sat.stdout.txt": {
+      "bytes": 293055,
+      "sha256": "72d2dea64dac57fbc686113f63e07df02887e242490889610f6bc912e8eeec5f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/monitor-build/metadata.json": {
+      "bytes": 1452,
+      "sha256": "745beb8ca8e5033175b847307cdabfb4dadefeca83ff572cad06ba36ecb5161c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/monitor-build/results.xlsx": {
+      "bytes": 3745,
+      "sha256": "1611630f3998810ecb345606871847457405d1549535c231577e42e538705d57"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/monitor-build/summary.csv": {
+      "bytes": 737,
+      "sha256": "b74cc68ac99d42bae3ec08f79539c992e2c362d7393d0a6589a988ca7042593b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/monitor_parser.stdout.txt": {
+      "bytes": 221,
+      "sha256": "6d943d4adf7c77d8ee7abe04584f01baf941bd7f2c1f5010d06cb18d9908525f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/source_parser.stderr.txt": {
+      "bytes": 503,
+      "sha256": "05962f9b6568c94ae87d9fe6dbe930a4c22368c00d7689f4731f55378cf717c8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/source_formula.mitl": {
+      "bytes": 125,
+      "sha256": "45e396533a8b9b9348d0da221be57dad2c84e05f5c629207726d9882357069a8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 164,
+      "sha256": "72e7953a7d56ddec4a78b258d051d4b812d7acfe937b289c9fa5b0ed9f643bd8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/boundary_exact_legal/result.json": {
+      "bytes": 3430,
+      "sha256": "e0e25fd1264676199cfddfd56573b0b35c89cd24319a52f1a4fc4649122cc330"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2744,
+      "sha256": "fb02f5ef1a1a33b4e0f6904bf90a4aa1a1a6a2ae1e4848f4b9b3f54802a7660d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 193,
+      "sha256": "555411f11c30e5a7368e004477640164bfd33fa145c31da7784277147550cd35"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3498,
+      "sha256": "0335fe64d9ca8c6006ec79d7d1ec70311ca104183b4dcfbd49e26083f9cfaeb5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3240,
+      "sha256": "12190e026c94799bc8e8e9020cc2c503d32df1e6e9f6cce6cfb0fc045e471646"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 144,
+      "sha256": "4c812e540a1609e1be8f377c7e3bf8d73031fcae48b06eae6b73d1d3d0185c72"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/result.json": {
+      "bytes": 3460,
+      "sha256": "e71e6d90fe39552263675aff7b4009cffb2280224253e40f0b08f384f93f4fab"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/trace.json": {
+      "bytes": 2770,
+      "sha256": "8cb5220b75bcb17c8d338f15950b7faa488eec434e223a324238455417c3e0d9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 191,
+      "sha256": "1fbfc774c03d7199d655f8a33eb6507725dee6b93742bfea8e48f3c53c51d484"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/result.json": {
+      "bytes": 3448,
+      "sha256": "11ff6599da39f235793212369aaf0860bc7ef906ffe9013af139e92bd31593f3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/trace.json": {
+      "bytes": 3190,
+      "sha256": "1c568db460e69b9826751ca6042d6f98d0db61d1c5423beed3e3695a316a665a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 164,
+      "sha256": "90c3cfa9d1925d0012cd880fb813efaf917697260227901e86b5329c8b55bab3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/result.json": {
+      "bytes": 3328,
+      "sha256": "bbe939af9cd5c038e6bedf47df2bc959d34f350b4426f6b97347fa329f004f40"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/trace.json": {
+      "bytes": 2698,
+      "sha256": "b4d06b04c1f58ea95d6750d7c2722207842cc40ece1cf82b2ed0f9fd8eb0f2b9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 143,
+      "sha256": "4cbc232aa1d488a69b7bc39daaced30d37182ce6f106c4a7d514f184a8119cf3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3479,
+      "sha256": "5673538e1906bcd8f7fb7a1eb39c54d32e6ae9fe19c03d11d94d612ccfa6ab20"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 57,
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2789,
+      "sha256": "972bc93bc73fde6c9a6e7a63eef29e9cadc5d3c011b0a007c6898dedfb639fb5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/formula_ast.json": {
+      "bytes": 1915,
+      "sha256": "11131cabddfbb676266723471226bdbab5e95d59c5f0c76c50ccd1b8db6890b2"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/monitor_formula_ms.mitl": {
+      "bytes": 111,
+      "sha256": "94c2800a78ddd114adee56e8effbd84ad639c47c8323f8fa56dd55248c06887e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/mitppl_sat.stdout.txt": {
+      "bytes": 41819,
+      "sha256": "908f1a19192d1c5f0d7eaba91d89ad79101488149e0a96c43790f914ed9580f1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/monitor-build/metadata.json": {
+      "bytes": 1346,
+      "sha256": "8eae37917c66d7da768162640718b244aa3b01a58fcf57aabb9761a2c85ea8f4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/monitor-build/results.xlsx": {
+      "bytes": 3715,
+      "sha256": "dc2043c7774013137906f780117dd8bf2d27329893edd1994e69852046cf06a1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/monitor-build/summary.csv": {
+      "bytes": 711,
+      "sha256": "041298336153e3db96cac9d4d7fbb3d630f92a30a543bc76bd9f7325ef9144bd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/monitor_parser.stdout.txt": {
+      "bytes": 222,
+      "sha256": "e554527ff892498e608dddb12df58ed4b3c505790f1cc693319b02a598f86442"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/source_parser.stderr.txt": {
+      "bytes": 513,
+      "sha256": "030d9936d856946305a943b652c9b6acc722bd6f0f2e5fa8fa332811dc08b47d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/source_formula.mitl": {
+      "bytes": 103,
+      "sha256": "e37d9800dd6ecd8b5845967bf16acff86782dc8a45ff374bd065e9cbfab8b905"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 158,
+      "sha256": "676e5ec214a40913ca8d666b6fab754061e45ca399ad00173ac0edccb5f6f189"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/result.json": {
+      "bytes": 3909,
+      "sha256": "17b46f03d663d54f210d39f4e4f98db8b9e074f8a0b4c8dd6a7f5a2b49126915"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 990,
+      "sha256": "c6c66714972a5d55bf742f44b30f6d316cb6d819bf9e445e4d7966c367ff4892"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor/metadata.json": {
+      "bytes": 1342,
+      "sha256": "b3ec0319abd4b65629836c6d8975772d990efe9bdaed7169fc050fa2283236b7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor/results.xlsx": {
+      "bytes": 3961,
+      "sha256": "67ac815823aa018b0147df0681b07a942035bf095484cfc0230f848286e291e3"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor/steps.csv": {
+      "bytes": 407,
+      "sha256": "3dc2e81a99277710427c21297b543588c4be1554660381f60bf0d666ba9e51c8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/tamonitor/summary.csv": {
+      "bytes": 707,
+      "sha256": "062e7d315702cbe2d0d8eb9b9cf6a196e95d74eed50082b13b15180afac8f7eb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2726,
+      "sha256": "cb2efffc720d4a1ac7143e5a5cff28996e14ad2aa5c94b061f314cc3ffd8a799"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 185,
+      "sha256": "63070b3a31a84b88f95e0fbc15fce733c82752e5f12699fafa0b030bfa860178"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3994,
+      "sha256": "b2f58c60b9ec32cd159566b34076928953b6c11fe04aa0688845b1485acf50b0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1145,
+      "sha256": "1b37f8dfb51f4a1210de8e1f4af278d23a02722ff958ae6e88ec8fc8770d110c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1342,
+      "sha256": "82f9317e5733d1a9f8493712d03badfda8e89420b1c10df66d491f0322b6c319"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4000,
+      "sha256": "4aeb384d1ccfe8aee52f7b32c8cad417ea271a46ba7cfd3d524921cf1694ad04"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 467,
+      "sha256": "be76eeaef12ff871c179681bfd21588eb0e5285535227b05a3dea72451946878"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 707,
+      "sha256": "b9c20637deff352b136eb72982d70cd474d10630babb039449bfbb0f75bfea88"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3216,
+      "sha256": "6aaea03c096ba97c17375651fc56ac5f9d6cd279816f2d951bbfe26865f34bab"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 145,
+      "sha256": "12ae809746aad1b64cd2c5ecdaa29d220b33d2ed196a4573d242153c418453e8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/result.json": {
+      "bytes": 3945,
+      "sha256": "517adc70a5765f3ac84a968777c5e36eca6c245216da1ca09fb3b248f0a32cec"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 980,
+      "sha256": "e2b93effa904fb04e639f21908247c79f857d0e198a5686881ccfdc753609b89"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1342,
+      "sha256": "554dfae63621ba0ea9b86f298eb06d56f2a44c1730d9b2b0ade69437bebce054"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 3949,
+      "sha256": "726390f017da696dd31616f178920f969f0d23010b8a23b011f4ae71ce64270e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 394,
+      "sha256": "87dca60804a4c721388b11154ebcfd80409cddcaccd96608d31a588c60495934"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 707,
+      "sha256": "f4be676c348094b0cd159dc49cf6e1621311fd3d9b6761ce059fb58d86b4bb1d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/missing_completed_trace/trace.json": {
+      "bytes": 2752,
+      "sha256": "a5ce8dd96d4c5aac2a1df9d35e969922e31e726e55bd64adc104f4c6e2de1a52"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 185,
+      "sha256": "b8174819c2c77104236685a3293ad74d389a719ae9b78371449e5cada2e56a85"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/result.json": {
+      "bytes": 3936,
+      "sha256": "1dfd057f3e02364c07379f8102433f5650392efafdb692a5ceacfe823a21dc46"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1140,
+      "sha256": "4aba9fc269f663a335a1db41e73f788fa652b26a437f70a4ee8e56e2d7b86880"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1342,
+      "sha256": "6392cd4e6ee4042e6b4fb041896fadb7e5b47c777435e14047788387b7633527"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 3997,
+      "sha256": "d81e3eabdbbea5cb73b8805e81ce5540c742206eb948578f986b1b776e40febe"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 467,
+      "sha256": "bd21ea20540b09887d2f180f56d4d953a68da7f08407365027ed62a4c094d59d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 707,
+      "sha256": "248f3e7f8f911004cf51b83d7e359611001106d709b196dca07a6477704c82b5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/trace.json": {
+      "bytes": 3168,
+      "sha256": "cdcf17c075600dce297d0545ff9822aeab1d0099635eb7c7481837516e7d6f21"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 158,
+      "sha256": "ac441f15eb31e6e621cdb5d6abd039d11c74f251b97784c891d0c7e61d2615d0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/result.json": {
+      "bytes": 3792,
+      "sha256": "28148df0f113323e5090bbec63f97d22a8b64101e812c9b430c0b28a64934d49"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 974,
+      "sha256": "4f4fdafe8a5c0aa141462711dc3bf650aac0d9469452d85d32f67e948f9d64e8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1338,
+      "sha256": "7b7ddc39476e8abf7f84d8167ba64e0fee63954f7573939e4ca59ccc8af0e088"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 3959,
+      "sha256": "560b3c6ad37a96197b7d1b2fdb877cdfe9662df76cc8dcaa800e3c393bc59614"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 397,
+      "sha256": "583e692f08537eb2ef78b84bd37195d376b0a29890ff9a9835efea3d9f85c441"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 703,
+      "sha256": "2efbf45a0288c0d733ea55e1d0bcc714b5d71cf2c69cbd76b4a4a51a51121238"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/too_early_one_tick/trace.json": {
+      "bytes": 2680,
+      "sha256": "6aef306d88fea6c19759cd460be79fe76678f7f7bfb0f23d4a52994aa620faec"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 136,
+      "sha256": "65a914efa02b497876368145588fc2d0a01d8234472e2f5ce5d394fe697d85fc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3964,
+      "sha256": "03ad92050821f419b05b643cf17e8405038bf32813047f3d4b82fdb106423114"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 971,
+      "sha256": "12304c7ede29ce595aea82ec5f9bd7c8162d4c9075cbeda0a0b43c00d47cbefb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1342,
+      "sha256": "27026fafe022d68876f68390828feccd75e0947562f442562fc40933cb44acbc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 3942,
+      "sha256": "02d70507592d47c18bf06444676e839c14ffe0ed326ca2cc757a398aa622abd8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 385,
+      "sha256": "44bedc3e5b2b45c6453df790cf6b9d692e77affdc71616230048de1b449039b1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 707,
+      "sha256": "adeeb8856fda878f2724395f08a44198e308cb6d11e7727777358d0cf5c6d076"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2771,
+      "sha256": "8e4f63b95d4bd4f60d5c2e402066ef8daadf87d7e7572e092943a8c9293aee74"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/formula_ast.json": {
+      "bytes": 2182,
+      "sha256": "7624725cfa79ffe13e0913681006add18a15581d75a36a7aa3db736388cbc745"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/monitor_formula_ms.mitl": {
+      "bytes": 155,
+      "sha256": "64dcdce9bf94ce36f8be540d7c8fbb2b3571eeb0d851e06d929e5ae15508f5cc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/mitppl_sat.stdout.txt": {
+      "bytes": 42326,
+      "sha256": "f2f8734a2efc61b2c12d80d2bebfb1fb0e95c3ca4417cc6e9b02057e06e32d05"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/monitor-build/metadata.json": {
+      "bytes": 1553,
+      "sha256": "79377f8a696631405b02d98c529197ab716bf2a405628cc906120a30a0758b64"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/monitor-build/results.xlsx": {
+      "bytes": 3766,
+      "sha256": "f55862d90499fa1b9473c63a18da269cd87eb6428420887fc6c5aac5049535bd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/monitor-build/summary.csv": {
+      "bytes": 755,
+      "sha256": "8d1d0740a5268056e0003fd91b7fa3db7215c0fa2ed0e0bfabc2dad6052d769b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/monitor_parser.stdout.txt": {
+      "bytes": 221,
+      "sha256": "282ea320ecb853a43d5db22a8c223ec39c2157cc284fc6c7135d585cb1e9d4fb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/source_parser.stderr.txt": {
+      "bytes": 490,
+      "sha256": "1b7fc6050e67ca204cae0d10c8ea2f60df99262792bbcfefe1e86ca7435e9e60"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/source_formula.mitl": {
+      "bytes": 150,
+      "sha256": "7ba74db74e198b45d5f0562bb0fc66c2a10a4ab5a8c5f8723d52498de3e91d1e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 233,
+      "sha256": "6c2d7ee212deea7dac89e6ed847efe84d6ffd275afd2d38be5fb9bafa29bd4fa"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/result.json": {
+      "bytes": 3902,
+      "sha256": "2cbdafedcf256f49890960a7af9728191892a8d9773f7a30d1c5f087697bfd21"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 1069,
+      "sha256": "352ab77779e82c6be565b78175428051b03a4e7bad977e6161655c2cacf7c766"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/tamonitor/metadata.json": {
+      "bytes": 1553,
+      "sha256": "bd5cd0e8820b1de8329e0930bd74a0395b3bf855088a24bd727070dcd42fb4c4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/tamonitor/results.xlsx": {
+      "bytes": 4045,
+      "sha256": "31871283e4464967e9cb07317e8da7860105ff8962636185218df784514398fe"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/tamonitor/steps.csv": {
+      "bytes": 487,
+      "sha256": "e186c4f18af0870e8902bfa13dac29583c901c410ba1dfddfd30fd41d53f0c27"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/tamonitor/summary.csv": {
+      "bytes": 753,
+      "sha256": "8a2082d81be79a5be0d8a2315248015ae7db3b345c7b2f0e9cce007a7a65956b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2935,
+      "sha256": "cdbd26fa926e019f8758aae2576bc20fd9586f954753bfd6828e0bd45eba7fc8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 276,
+      "sha256": "033a4f97fdfe5d4d129b88d2a7b43368a02c3158bbfdbca6272b608828f1df6a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3986,
+      "sha256": "f421d8a28cd8d6001613164743891bce665fe61037c7a6b5c78716fad8e24a9f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1241,
+      "sha256": "d2ab1213aef8db1599767ddaf52d615cf8e6ef82a93dbbaf64f0d9b30e1a1070"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1553,
+      "sha256": "701fb8d56eab6f80da2dcb16db582ff3646fb98a7ac9bc8147af44d65793e6af"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4078,
+      "sha256": "2ada528538a15b654d10d24774038adf37fd3de29b1c357221e2b821464f10db"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 564,
+      "sha256": "4220207a929e0fc2d94ff91b169ca8327edf12fcb1735f9f6b8f860c5c6012b9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 753,
+      "sha256": "c8d28a87a70049e42044097a483737b9085dcb093b2cb775e4f4a36c5909aa02"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3467,
+      "sha256": "61c3a03079efd083790078370f97eab785ea26a2faee3f69e324dad0dc0f591a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 206,
+      "sha256": "5a5a017286cf5ce5123ec5d97a6808ed9408095872d3e0c8e49f756b0a21efe0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/result.json": {
+      "bytes": 3938,
+      "sha256": "96496e40c329bd3af9d235f0e32e5f48bcd7c1f038f6b74f23246614cf15be40"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 1045,
+      "sha256": "89420ca281304e9c7f0997f1a22b43cc7f51cc44ed2d87ad6cf06c9b10a50c67"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1553,
+      "sha256": "f62fd6d611b04100f5b45ec1b65ba2308b227a87f806f0f31aacc24f5d5854e1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 4017,
+      "sha256": "85a4718be977bef179a2f4a5bb8303bcf8203aa270e4dd7beaa02a4356225629"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 460,
+      "sha256": "81ddc75157e1bbf48b108e64fd46fd8f555cb1b9c081bafd3453ce23db9fc482"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 753,
+      "sha256": "c78243f75fd3b0ee7d020855cf5a9783587067a21fc352a73d1586031fcbd2d2"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/trace.json": {
+      "bytes": 2961,
+      "sha256": "c462314fa4b89499339e4df54be8765bb4aca921f62e3100a5e7bd22196ca1f8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 276,
+      "sha256": "89ce3efb450a77906bd1982f6cc2ab0800bc0bce5e31738f33aa9573f108e54f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/result.json": {
+      "bytes": 3928,
+      "sha256": "75ad00108ffdcd812627801543b1842a0ec93476c81d0a01967944f83be4a6fd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1236,
+      "sha256": "c3fbef97f453e6f5f1d897326b3a0fb5b855859040b777cf17911ba2e0079eff"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1554,
+      "sha256": "bcdbf04d06a1234c0a51610d931ceb6fbea3821c97278b3b54bcc1984ac8aad8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 4080,
+      "sha256": "e1c900c26602f74421fc14c47d42c67233b25f0bfed2038607bd09dd8867e96f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 564,
+      "sha256": "cd457e64eba25ab82bb8eec4caea285f4c7fbd305bae79cc4a54c9aae4c84539"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 754,
+      "sha256": "fecbdb2d629662ecd0983482273cdd48a82a7f987d07ea33835d43fde97772c9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/trace.json": {
+      "bytes": 3419,
+      "sha256": "3ca11e5dd4b54182c200fbb2d5395a7f45a0516cbc97c7d4c0aa617c499a77d0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 233,
+      "sha256": "e234e3f69c351f8ad4a26f6457af9342eec08fc2bbb98f98f28bdcd7ea26f27e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/result.json": {
+      "bytes": 3785,
+      "sha256": "5d66c437e2cf328dffa6286f5fb7bf64592985887a68e86041beb7706657042f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 1053,
+      "sha256": "d1364e389a0668f2e6362378122cc789348cde0c32a621d458c255b60698aec4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1549,
+      "sha256": "294fba2c6004c6a4c24adc864dce03a32a77487f02956183b9c96e319a47e30a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 4045,
+      "sha256": "91e1c9d5eed704aa1a820aaaa0a53fa8f9d360a8e4e60523db716fa8bb5693e7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 477,
+      "sha256": "97033bad6dcbcd65ce5e1f7188016e3a3dd89d04418ec4d084189233dcae2515"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 749,
+      "sha256": "49fcae9d856840c73f74a2496933fa5869671b37c895edaa24ddc9d93ae3a658"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/trace.json": {
+      "bytes": 2889,
+      "sha256": "961173680ed8955378e1febc1e9dda45d08e4c481019394476ca2dc6bb7491f0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 214,
+      "sha256": "77b76b1052114a39ebb479902a36f9f8e9ab6a1076778e4702813fa888724815"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3957,
+      "sha256": "5f027941bf2c0a31af7c62228055519e4571ee74ae6a18772b35fbe41aa5170d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 1053,
+      "sha256": "b59ea3ae1ef586a4402aa9056cf0563bf80ca30625a3c8311335149b2d2ed1eb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1553,
+      "sha256": "f62fd6d611b04100f5b45ec1b65ba2308b227a87f806f0f31aacc24f5d5854e1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 4028,
+      "sha256": "3af206abcb3762531cadeb0315868768a640a03760abd86822aa39c8ce9df535"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 468,
+      "sha256": "81b9114c5c59c2f72c4a74273baeeb2c43875157e7c6d0b6f50fdab7eeae7553"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 753,
+      "sha256": "c78243f75fd3b0ee7d020855cf5a9783587067a21fc352a73d1586031fcbd2d2"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2980,
+      "sha256": "de2785db5241951d872423cc5a40e95bc3fcd2cc7e3849340148fecabaf1c78f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/formula_ast.json": {
+      "bytes": 1939,
+      "sha256": "2f502f2fa1059edb948c8400b31cfcf89b208ad3ce2376a7934b0600b06b0110"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/monitor_formula_ms.mitl": {
+      "bytes": 135,
+      "sha256": "534b53175060b8c5cf79ebad941f3d5f58961de3f70843fafd0c3c229ea275b1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/mitppl_sat.stdout.txt": {
+      "bytes": 42019,
+      "sha256": "2e702f42b7134d884f2a5c63d1eb5f599f116c437c233a3189d7cc82cf930875"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/monitor-build/metadata.json": {
+      "bytes": 1454,
+      "sha256": "31f5d459370b86d0c651bea2eae5e3aa2f4810fbf072ff9237839029e28eae34"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/monitor-build/results.xlsx": {
+      "bytes": 3738,
+      "sha256": "8bf66b0c6029d5a06a992b6c98a13b0f78a7c4e99effbc44bb7b7aa470503c98"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/monitor-build/summary.csv": {
+      "bytes": 735,
+      "sha256": "5b439e91626a9eed5465a8bf243c1f9ca094323e3b14a7826886864ff3487279"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/monitor_parser.stdout.txt": {
+      "bytes": 222,
+      "sha256": "d391246cafa34fbc02fc0785b446f597928c682726135c83a6fd7c065b9daf1b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/source_parser.stderr.txt": {
+      "bytes": 530,
+      "sha256": "36cc8feef6d0de2432a2bc28a0f40ba92fc0e8d4a2db19744a51b77de1abd1fc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/source_formula.mitl": {
+      "bytes": 127,
+      "sha256": "c7e04a2277fdad4ee2101f37f5a914469bcb3b320eaddf65b4d7baa0980c002f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/monitor_trace.csv": {
+      "bytes": 191,
+      "sha256": "874a9109dca4491e862ce8fefdc3945214380d5549fd4ab11aec5f202a901e00"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/result.json": {
+      "bytes": 3889,
+      "sha256": "c9d793f542c25afee4a7df4fafbc3ea95b037ef3a51fddb95b80269168ac3c88"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor.stdout.txt": {
+      "bytes": 1015,
+      "sha256": "4a2698d013f9ad4f9e5eb55046f8cb8de02aaa69b468fb4eb9dcdf23bc05ee0f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor/metadata.json": {
+      "bytes": 1446,
+      "sha256": "7ca0cc486fcfd582627ba78f8d85b7ae91fa85b144d6309dccc5b67528453cad"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor/results.xlsx": {
+      "bytes": 3998,
+      "sha256": "95b4309cadfbf290cd681cbdd36226a83f222995bbc0db7b6fca72c6cf6176e9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor/steps.csv": {
+      "bytes": 433,
+      "sha256": "a5021d4124d15e211525d50aae4f638e8105bc3b76c8c0999bf18fb2087b6ecd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/tamonitor/summary.csv": {
+      "bytes": 727,
+      "sha256": "1e7ce464b9ee8215c82e99e2e65ff7ec5de3277d039de783b6e286aef8ab237d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_exact_excluded/trace.json": {
+      "bytes": 2821,
+      "sha256": "ded3cfcbbe7c0ae9349ae5ff3afe11f4a76a9020493e312233d67f49b819356e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/monitor_trace.csv": {
+      "bytes": 225,
+      "sha256": "9fb4767f393997af283f4667b51e435b4f9d8b33fff5175948006bd1b72cec09"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/result.json": {
+      "bytes": 4026,
+      "sha256": "2a42b221315ad8a45e9bd55562224b17e0446ea8be3bd9a10cfee62d50a26ae1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor.stdout.txt": {
+      "bytes": 1187,
+      "sha256": "d009d6e4bb4c55527732da434cdd5aab684fb4f90dfcbc63ecfec402362a303b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor/metadata.json": {
+      "bytes": 1450,
+      "sha256": "effef0d62a43c1fef3d57f687687feb9c2a5d98b743edc9fd90a709e661eedd0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor/results.xlsx": {
+      "bytes": 4035,
+      "sha256": "d143f96529218b9d74d5a00eb4c37139246fc9e2dfc2ced55bbe8fe0164277cf"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor/steps.csv": {
+      "bytes": 507,
+      "sha256": "1ce42d66fc74be3c4f2ae3fb13ca59de21b477e29d5fb49c7e220fc2c7705856"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor/summary.csv": {
+      "bytes": 731,
+      "sha256": "e7b18e1e9db5ab36836081d1a8a7738e978d268a879febfcb254c08069fbe161"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/trace.json": {
+      "bytes": 3316,
+      "sha256": "6dc423d3013ae502bed667e8a3eec0cbcf8ebc3985cd66a5fa55832c8e483250"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 225,
+      "sha256": "64ba6512e2e622c790d7af60b050fbbe07dbb511db7a1103ba9c704ca4e2dd1f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3998,
+      "sha256": "784886268f17e57de96e228e99f94e253e2fcac1f5465c393223115dd86f5668"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1185,
+      "sha256": "f8fea9560734cc96e291fa63e1645dcfb2dfed228f2a075b1d3b27e7eca75f07"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1450,
+      "sha256": "c067f8700915d64ea2150b018dcb8e3c3eefd59258d3581b84163111008cdb25"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4034,
+      "sha256": "0d47a3259489f79dbdb03c26db459e6d92a890ac7d0d2c77a00a3c77c5d690ab"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 507,
+      "sha256": "f9956979009f2b014879cfe16c1f5cbe082f466c5ddc0e13d41434b66e5a258c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 731,
+      "sha256": "8f3bf304a98722fae3aa298776d60d199ae94bdfcc7023788a9ef429e5504abe"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3292,
+      "sha256": "7af3e39d2c823686f9ecebb4f8faef256c69efdde0dbab3b4cc9682abcc6d0d5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 168,
+      "sha256": "0190e65711a213a8f2adfdf938e77ccfa4609b10297f90bacf2c8cbcb6ed3a05"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/result.json": {
+      "bytes": 3949,
+      "sha256": "8a5969e5e88f56221f6a3e74d220fb48809457de2eab1fb48dbbe27573bf057f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 1003,
+      "sha256": "fae8f86d8bd29a9e59bee4f9501b35704ef7332eac4f2cd83de85ead36dcc2c5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1450,
+      "sha256": "36b628de2ee0968b3e061a95180ed84cd1f946ca2902b9bd5005e2f2a833c332"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 3977,
+      "sha256": "2e5034543f5e334f0465055c8a26f544ff2a7db45bead77c72ec2702f4057177"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 417,
+      "sha256": "1a41687fb5fe6285d9134d8c24a065b06187ea4810ae1c43ea76fee17a52b6e8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 731,
+      "sha256": "cff36a28ba46a65fc530ce374f28623f79f4b1e17ea009388d639757a956457a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/missing_completed_trace/trace.json": {
+      "bytes": 2815,
+      "sha256": "f749cda7087f4e2c048f71fc45253a4e4738c1b675540468198e12c8dc2f6e96"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 225,
+      "sha256": "ad3960445d1b7044b0acc6d69b97ea42c1538ea34573f22f98bd9f5191a852fc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/result.json": {
+      "bytes": 3940,
+      "sha256": "ec98c6928694aede2569da7bb93a5b97ed24b6648a2f3771605e5bc45fdbe660"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1180,
+      "sha256": "7aaf51966ff0276d222cd804b1c6d9c6a064db8da3cd7441629b4bbf3a94312c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1450,
+      "sha256": "285dbf9776dc92581d7ebb2e802b35103775c99e95badd340b5c855997ca1123"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 4031,
+      "sha256": "5ff5be2c1de42c71efa015f296cf9e908921ab8594cef20b9315dd73d2b3136f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 507,
+      "sha256": "d0399531ac9129d0f08caf30f2950d07311eee2c3ea13965521c7ec1ae21f38b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 731,
+      "sha256": "76cdde09489c0ad38e3f010b96e77ca97f1541bde809a15c4ca821cdb8d13ee7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/positive_after_threshold/trace.json": {
+      "bytes": 3244,
+      "sha256": "08442caca164ff589654389762ff7f36ff172feceb104b5eb9fe39af3be43390"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 191,
+      "sha256": "2583223ebe712da86ab70ac4e827a2c39740ce5661d1926d486c70ce591aaf3c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/result.json": {
+      "bytes": 3796,
+      "sha256": "8f28a75a18e7cf08e2dec9d150ba3b356fe1b49a2514442fe8aa94cfd288a89c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 1007,
+      "sha256": "fe29241001fc0e51c9202bf081a6bfb2feef27c41d89542d9623ae74a3223e68"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1446,
+      "sha256": "cf37f4e395b48054bd6192e703d497722cae7f27abe5c8f3231ff99754d71789"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 3994,
+      "sha256": "a60b3c303764eb287b1811f6de53f1f83a8847c10e81ec97a0314f5ef42fe81b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 430,
+      "sha256": "52efc863de15ac6f826d10d07b6084de9ef37a1d09ed8608710ed741796a740f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 727,
+      "sha256": "d34d4c2a3e4a3b4cfe5ee8c259f68a6cf0859041094d62ac44c5499bf1e65adf"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/too_early_one_tick/trace.json": {
+      "bytes": 2743,
+      "sha256": "982c80a49229187fc3d6f5b7a4682fd6c0144bdbabb57a5fee2294b62c8dc456"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 173,
+      "sha256": "3557791eb7f11d6a2b0d6c6bb89adb561268a508c1eabc79d049a21243730c62"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3968,
+      "sha256": "7d4daccbc319f09ba48cc133f2b7604b82014ad81295304beaf564857c3c6d0c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 1008,
+      "sha256": "65dd1b6a2b9cdca7ead7492f82a89e8539a4bc92c6ec3a1baf97af2ef2c0b11c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1450,
+      "sha256": "36b628de2ee0968b3e061a95180ed84cd1f946ca2902b9bd5005e2f2a833c332"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 3984,
+      "sha256": "da228f0da903c4075eead5c6d52f7cca7d44a8ba257ee87bf128edfdb969f36f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 422,
+      "sha256": "09f60721f084d614e2e8801cb8288ef4e12a8a2547a2441eeb292d57a369db21"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 731,
+      "sha256": "cff36a28ba46a65fc530ce374f28623f79f4b1e17ea009388d639757a956457a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2834,
+      "sha256": "3781d4f2e8cb694032576af2fc8c3c58d70dd380c19e0a45673c634b1a9f156e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/formula_ast.json": {
+      "bytes": 1933,
+      "sha256": "4e7e0e95eed2166f481fc04d58b0eb9a2365d9c44485e31fed0f4fe2e38fa78b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/monitor_formula_ms.mitl": {
+      "bytes": 129,
+      "sha256": "b14eff0e719beec470ef0bf8d9406f04d69aa0d618fced264530de1b6763ab4c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/mitppl_sat.stdout.txt": {
+      "bytes": 41968,
+      "sha256": "e3dbd756f0531e870c79248820bba9eaacac3c44cf15da16d5ce0344647cae52"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/monitor-build/metadata.json": {
+      "bytes": 1427,
+      "sha256": "7fbb026f83420e030afac0dc8e434642100a3b92af76dcafedbdafca268b16fd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/monitor-build/results.xlsx": {
+      "bytes": 3728,
+      "sha256": "0ed2a5e37afe0720bfb6ecf2d5ccc07664498c072bb4c86a4281bd02599dc79f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/monitor-build/summary.csv": {
+      "bytes": 729,
+      "sha256": "b01b2e3d15b19054f435444a0f6b8182e573ca7c32dd6498f6d7daabdba38c33"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/monitor_parser.stdout.txt": {
+      "bytes": 221,
+      "sha256": "60f0f3bec3a3337efa1399d8f1229aaca618cbf3c5b3a849b5053d53889889f4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/source_parser.stderr.txt": {
+      "bytes": 519,
+      "sha256": "648951039b0bd19bc9a93608682f0958f1cf14a9ec85a06886f7afe829fe8aed"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/source_formula.mitl": {
+      "bytes": 121,
+      "sha256": "7015a2cffb96259346fc0ef697f13bc1bd0ecd62b92e5f9430e5a817609c4212"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 167,
+      "sha256": "4a797e89ec0bd03883b836719da9c1b299efeb5021dca769541b98bf10090867"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/result.json": {
+      "bytes": 3888,
+      "sha256": "eebbcca2f987a9c32e1d5b698114d401dedaa3a36d4a2f59a3bad91768788926"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 998,
+      "sha256": "41471207adefb2b0179077a5c99c776a4fe628ef977b6a14f567828e4a172d5e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/tamonitor/metadata.json": {
+      "bytes": 1423,
+      "sha256": "48200aa7c2fd5d93b28e9ac34dfddf64734d838c278bd36c1d678f3611e500d1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/tamonitor/results.xlsx": {
+      "bytes": 3991,
+      "sha256": "86e379963a10054b89ef3e5545f5a2312418145842f58182ccb1789634886faf"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/tamonitor/steps.csv": {
+      "bytes": 416,
+      "sha256": "3be6482a25d4f59b7c108eaea632b5911b0673538a6a6b3429b61f42d8dd8204"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/tamonitor/summary.csv": {
+      "bytes": 725,
+      "sha256": "927619ebb6694adaa27f60653c2f2cdc1cdd242614dd607bd4dcdaf04ef78216"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2745,
+      "sha256": "bb4c3f36d46da64aad20718047466feb1239ce4402441ba4f389a1abcb4817a4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 194,
+      "sha256": "4a5458d991ce66990ece794c486de927ae884f3b4fc9aaa95e4b69d0ed000d27"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3973,
+      "sha256": "a88b7396adf22d15347855843328fee5510f49db7150d9025814719ad52c1fd7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1153,
+      "sha256": "ff6a44a3c97fa5ff4bf8b75f3e3889a35f9ef5a10183e41efffaa7ea03252c7b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1423,
+      "sha256": "738c15faaa068baff6cc07a6a048ba10925574a98806d97f70e0e4425ef541dc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4028,
+      "sha256": "38fef7d6a05cff5445b14eec6b3832a1a348484ca74937772c7a487db01738b7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 476,
+      "sha256": "df6ccad3896f1c47ebc2722733b2292e1e6fa6c0517812303fef001c2bb58ac5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 725,
+      "sha256": "59f7296d9cc3c5520c5c0acf28197538a409b86ebdd845fdfbc8199ce1f58798"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3243,
+      "sha256": "36fc2097bde1b4bd5de31febb0ea12b0eb8f0c75d6ce1712dbdb5464b9e2dbd6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 147,
+      "sha256": "f2e55546eaee35bfe6fa90ee0ad51c20d9838d75cfd0f3bd3ceddf94d6c0f1f6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/result.json": {
+      "bytes": 3923,
+      "sha256": "07d13e8c266e93d5b29a5dd5d9e3abda18178c72efee0b80c11bef07c1bf1626"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 981,
+      "sha256": "eb741f778aa0a5c3f633876fec91058e82e7eeb9ae1cfd0f55e97e1163b3c760"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1423,
+      "sha256": "48200aa7c2fd5d93b28e9ac34dfddf64734d838c278bd36c1d678f3611e500d1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 3971,
+      "sha256": "1590b26845ac9d91726314976266da30082154f34da476e7b0bd4564204462c0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 396,
+      "sha256": "ab9119d0dbb0e7a342509d233acd1dda033ac8fc9de809ddd0680b1ac047899c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 725,
+      "sha256": "927619ebb6694adaa27f60653c2f2cdc1cdd242614dd607bd4dcdaf04ef78216"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/missing_completed_trace/trace.json": {
+      "bytes": 2771,
+      "sha256": "bee65bb9aac3a2e65feca531e6c3d81ff416aee879ee35549dd4c9f4783a90ff"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 194,
+      "sha256": "6c7b35ed18c2f771584fc580b10823967244e5aa2afcc85f672a19976591a9cb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/result.json": {
+      "bytes": 3915,
+      "sha256": "2fc2a497662ca21a2d2f113c08ff9b79974d02d96a830e18de2466e0ecf443db"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1148,
+      "sha256": "4e4a177d509d2b78cd0f55b7c7cc083133553f699b446567e4195b9c877ce670"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1423,
+      "sha256": "27449f003c66c2efb70be58bc1fbf168a4bef35be204062d1394bcc18b31df94"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 4025,
+      "sha256": "9f39eb8e5ff62b9563af8aa9ff74330cb79f699611b0b94b78660b9edbdc469e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 476,
+      "sha256": "9cf2b6f9765a6c3c52296bcead6ecbb7a338450e225ec74178fa9c3d68c46783"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 725,
+      "sha256": "15a64c35874101bbdcc4f1d8d6a266bede992dbe94c67b02650a22935cf8242b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/positive_after_threshold/trace.json": {
+      "bytes": 3195,
+      "sha256": "9df9ebf7c9b1bcf7ec46cebc5c6e0780e61cfe2096fe3808836020288adc41e6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 167,
+      "sha256": "ef868cfeec94a8aacd8e0ee2ce458a480a5f6cf2b00a7bfb2173b037a721ac2e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/result.json": {
+      "bytes": 3770,
+      "sha256": "e2e03c23b2cbc9613c8162e8518a92df50d927885c3fe1857e6b00caaac867af"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 982,
+      "sha256": "9258f55a1ea0994fde3b39797ce8884ed08e72c844d1a14c32421361886a6667"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1419,
+      "sha256": "b5c5aad81f82bb84de1dcc8b97dd795214d932a75d9a66c16099538974d23c8d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 3990,
+      "sha256": "7338008c79d5882875a858c947a5db5f50457793ee13b4bf275b3d8a72f53f51"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 406,
+      "sha256": "64265df725380d31af33e28577395f2d576b1e0e7ac4f2ee71937f2d38850cc9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 721,
+      "sha256": "1c0018b9f24031e7a1554c9850ad96fe642bba1a6c1ee6d23aa1507a8ecc962b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/trace.json": {
+      "bytes": 2699,
+      "sha256": "e8ffb25bd8b2c458c276422867b3f15f3daadfb1a46e2882286261d36ec730e4"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 142,
+      "sha256": "ce43d7971c03e0a8fd4ffc8ed24fd31717c44c3799d0c39be96901e21cbe85d1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3942,
+      "sha256": "4ef660a9adf55268da03c348d5c1f12d3c1d886cd5c38abd834cdf3ff5bc27fe"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 976,
+      "sha256": "2d08b4071f27a04fdb40ec5dd5561e125d9644714be7a31dcbad4f47e1cd1101"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1423,
+      "sha256": "4dad15257522c26cb69a96e10c6eed09811b6145be094a1c668f70f8ee541718"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 3968,
+      "sha256": "fa1b3cdc0be5bd5bb9f72e62424d4b90051f97b7920f010630846eb684faacfa"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 391,
+      "sha256": "652605e6c15bad5aa71515c2a1d89d2f07e9c55a5bb434fe1cb453c268ae33ef"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 725,
+      "sha256": "cce43e4924467f747f0b5f1aa9609353001988a719631fbf8454060058190f5c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2790,
+      "sha256": "0042ca30182219d42c8e8cc6b7a5b8630d2a2233a9dd1b472fac71629a46e020"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/formula_ast.json": {
+      "bytes": 1921,
+      "sha256": "6376796caabe1d8cbfa9f853945cb7b66e2690d384e0f7a5eabd7f167813f1da"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/monitor_formula_ms.mitl": {
+      "bytes": 117,
+      "sha256": "0aab1ffe6a59d5f453de65b534c2daac6d7abf416981bfc9df73546a1085950d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/mitppl_sat.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/mitppl_sat.stdout.txt": {
+      "bytes": 41880,
+      "sha256": "ed7452622b78ec4073213857c6c3c5b063b298821d9ea77d05e0327e779d7ab1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/monitor-build/metadata.json": {
+      "bytes": 1371,
+      "sha256": "8838e9b91b77597622d11e7e49a3f43dbc26341e94f1cd5d432301405cb7f68b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/monitor-build/results.xlsx": {
+      "bytes": 3718,
+      "sha256": "cd2675e80358447c7b81fad4314fd0362dd825c53e43e9441589d702181e23d5"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/monitor-build/steps.csv": {
+      "bytes": 95,
+      "sha256": "25316237ad6790da209293ddbba63ba475b0724bc0a2b121c0dd940a1adf3359"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/monitor-build/summary.csv": {
+      "bytes": 717,
+      "sha256": "148252bebd208311888b7cb77cfba9228e516687a51294d0e6e917f8f020329c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/monitor_parser.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/monitor_parser.stdout.txt": {
+      "bytes": 220,
+      "sha256": "49d4f81d16ebbf23cd359b882d75f3c1ea44daf8b809c5c3e214ec5aca975da9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/source_parser.stderr.txt": {
+      "bytes": 445,
+      "sha256": "5e0832d1357869bcab11ae6271ea0940e2fe3cc00fff648f4bbfbb3b47ea6780"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/parser/source_parser.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/source_formula.mitl": {
+      "bytes": 115,
+      "sha256": "e969e1f65306f313b932bbc0e9a9c272f24d7a722c2f456aefb3eed461b846cf"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/monitor_trace.csv": {
+      "bytes": 156,
+      "sha256": "daba4385559bf41a7753180e1f31b4431ab3553fe713f787454500d93816f4b6"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/result.json": {
+      "bytes": 3924,
+      "sha256": "ab884522ec3774181ecdda01184b7892f8947bc1110501f8c2ec3c4788bbd3dc"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor.stdout.txt": {
+      "bytes": 975,
+      "sha256": "73a40164c7d4766a826052fc0fe90c3de4eb0b9cd7dac79d08b87abc0ea0b840"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor/metadata.json": {
+      "bytes": 1363,
+      "sha256": "c2af6a04742f2d4f18d523c8317b3679c121c8fd72777da47727dd39375c0c09"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor/results.xlsx": {
+      "bytes": 3967,
+      "sha256": "9637d73799874d03b7095ce5391b077bdd416b1b827b74ff46d49d4e95111680"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor/steps.csv": {
+      "bytes": 398,
+      "sha256": "f8e207e871e9f0caed8511000487f20de196a963532dec563c55540653ecdcf8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor/summary.csv": {
+      "bytes": 709,
+      "sha256": "09bf099f3c27f3e8e28517f6b78c105bcefdb0368d032175a8b287178321ab47"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/trace.json": {
+      "bytes": 2707,
+      "sha256": "5ff601a8110dee0f06bc7c8db65b0b305f39a681abc765464cc46d833f35560c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/monitor_trace.csv": {
+      "bytes": 182,
+      "sha256": "5e0cdde0d37f43b0aa31849894fac3e78dd9e338eb1ea81929ce48d27956c662"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/result.json": {
+      "bytes": 3977,
+      "sha256": "a38d98065fb06868d2ffc1a7dfe38af5c27e37eceb96d8ac2c60c07dd1349455"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/tamonitor.stdout.txt": {
+      "bytes": 1140,
+      "sha256": "85b91fbd2e80e963770df9db65139bb574bf4d59ee626d8cc90f48dd8816e99c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/tamonitor/metadata.json": {
+      "bytes": 1367,
+      "sha256": "73346ff849d287a9383ae0037f89ebe1b4ba52b207142e2fb0327f1bc6707602"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/tamonitor/results.xlsx": {
+      "bytes": 4008,
+      "sha256": "a090a1c80b3bc7e7a59e3e2bb7e36405387c956475b00b751d27ddd1e9bb6e72"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/tamonitor/steps.csv": {
+      "bytes": 464,
+      "sha256": "fc523389a84b2744f7cb4ad94791e489e190b3faba40b81d536bab74a5de241e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/tamonitor/summary.csv": {
+      "bytes": 713,
+      "sha256": "d3845ac16a193b14104585d6e3cba3dc03b261f496fe211fc64879bae3740a29"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/late_response_unbounded_legal/trace.json": {
+      "bytes": 3194,
+      "sha256": "dc89313e93d462904ede410f75e2c2c334e5b16eefa5f6ac5c2860b92d5c3440"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/monitor_trace.csv": {
+      "bytes": 136,
+      "sha256": "dd89b8ac82eac9e9f05f5f7a4152a383b9bea54e2fda949c0e2ccba0eb365b82"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/result.json": {
+      "bytes": 3928,
+      "sha256": "d58ccda257777f190ee2f701e7c07544476cb366f8af00aa5a9824280f7ca0e7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor.stdout.txt": {
+      "bytes": 969,
+      "sha256": "54a4b0684682c426976cdd56d9aa488002af8f9d525aa9189e25fb5005def567"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor/metadata.json": {
+      "bytes": 1367,
+      "sha256": "48eef27c76e8d28a951b4c9285c32429f4868b2476409124605a8cc1ad9a4f00"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor/results.xlsx": {
+      "bytes": 3954,
+      "sha256": "33707a718de3e0eaf8c8c11055989a464583c3afc289608af22b2d312444977c"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor/steps.csv": {
+      "bytes": 385,
+      "sha256": "3efaf156af250a8ed5fe4fd22e320593d9a6159f647d29d94910202e41bc439e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor/summary.csv": {
+      "bytes": 713,
+      "sha256": "4a32638625cb6f8c71af88489cc189c030064c3b5416e2c00c005c6b3bcc3948"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/trace.json": {
+      "bytes": 2733,
+      "sha256": "5947b276364c4aab377eddaf07e3b4936422fd0f424ef99f835cb174b76b71e0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/monitor_trace.csv": {
+      "bytes": 182,
+      "sha256": "5e0cdde0d37f43b0aa31849894fac3e78dd9e338eb1ea81929ce48d27956c662"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/result.json": {
+      "bytes": 3919,
+      "sha256": "cff9f3911aeb54123e96db08e3f737118de23d22455bbe192ae9e368653fa0f0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/tamonitor.stdout.txt": {
+      "bytes": 1135,
+      "sha256": "41026d8acdde947638993ea8581e5954cd1597e60a4ed3d1e5ab1a7f695debee"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/tamonitor/metadata.json": {
+      "bytes": 1367,
+      "sha256": "ec897f47330d42ab3f0a0a6cae8615f4801355769547aa36d7fe3f6388fc9b9f"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/tamonitor/results.xlsx": {
+      "bytes": 4007,
+      "sha256": "6627ea39f5371af24779751250f3d4b57a0f76d17b67f3efdaad9101ad7a4b3e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/tamonitor/steps.csv": {
+      "bytes": 464,
+      "sha256": "fc523389a84b2744f7cb4ad94791e489e190b3faba40b81d536bab74a5de241e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/tamonitor/summary.csv": {
+      "bytes": 713,
+      "sha256": "96482017a8ddd8992799f76e4cfd4cf9aa04c6b561361018ea2aff2ccae2a10a"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/positive_after_threshold/trace.json": {
+      "bytes": 3146,
+      "sha256": "a8dc7e73805730816f6d92d81ef7810e5ce352b95e9813dc6a3d7f17474c65db"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/monitor_trace.csv": {
+      "bytes": 156,
+      "sha256": "65903a054a6b385dc0a8a1b327812f25fe5aaad44c7c29c1a4dc52982d2a1cf7"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/result.json": {
+      "bytes": 3774,
+      "sha256": "269c70440bc3d47fb0b34851f700ba202cce38185ba27141cd8bbf5a6a1d9146"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/tamonitor.stdout.txt": {
+      "bytes": 970,
+      "sha256": "59d90b60d83eb85ee39f70ce221bbaf42ba3bde00b976b44fb045cfbe2e98ceb"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/tamonitor/metadata.json": {
+      "bytes": 1363,
+      "sha256": "48d62f8e9c3bab9237bd3c991f68a186c1e595743560b3fccc186d96a619ffd8"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/tamonitor/results.xlsx": {
+      "bytes": 3970,
+      "sha256": "a8487485c52797e004fa271841840230747a66ee85f17b43e0331d681312a06d"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/tamonitor/steps.csv": {
+      "bytes": 395,
+      "sha256": "283538f3099d79548a7fea6328ba086b7dc6c93526bb51bbd7ab4d9f56dda6ad"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/tamonitor/summary.csv": {
+      "bytes": 709,
+      "sha256": "709fc162aa8eef09276bb96bbe1d45de6dee80d06d086752cd450b0681b09cc1"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/too_early_one_tick/trace.json": {
+      "bytes": 2661,
+      "sha256": "8e66a20e9659264887e26f2f344ca22a790732580865a57c97a283ef65802139"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/monitor_trace.csv": {
+      "bytes": 139,
+      "sha256": "0eedfdd080e561455c4705d088860deaae347c9c39fcfbb06a1aaf99f997c591"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/result.json": {
+      "bytes": 3946,
+      "sha256": "bfce116251712e5e433ddf41b522a6e61e9dcccc58cc9697464ee33bae33b134"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/tamonitor.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/tamonitor.stdout.txt": {
+      "bytes": 972,
+      "sha256": "7f5d5a2da28c72596366b55d99ba3f8f2b6f48d9c087d74ec6e3dc8428d5016e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/tamonitor/metadata.json": {
+      "bytes": 1367,
+      "sha256": "48eef27c76e8d28a951b4c9285c32429f4868b2476409124605a8cc1ad9a4f00"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/tamonitor/results.xlsx": {
+      "bytes": 3953,
+      "sha256": "99bf5342a512857b8485070a75af6944ce5b18cbb04226bf975253b5fa8c9385"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/tamonitor/steps.csv": {
+      "bytes": 388,
+      "sha256": "09a0625623f496e3a435616549451fd6da223025b16348a776c3cfe0c93aa934"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/tamonitor/summary.csv": {
+      "bytes": 713,
+      "sha256": "4a32638625cb6f8c71af88489cc189c030064c3b5416e2c00c005c6b3bcc3948"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/vacuous_trigger_control/trace.json": {
+      "bytes": 2752,
+      "sha256": "1996ad50e92ea3fdc4fbc51df57ba620e48fdfb9f4835df18c9a06d190793156"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/mighty_status_after.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/mighty_status_after.stdout.txt": {
+      "bytes": 40,
+      "sha256": "b597d9c19f50d5b172890cb715b36967fe90f4c435c7a21afaa9215b48704173"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/mighty_status_before.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/mighty_status_before.stdout.txt": {
+      "bytes": 40,
+      "sha256": "b597d9c19f50d5b172890cb715b36967fe90f4c435c7a21afaa9215b48704173"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/mitppl_help.stderr.txt": {
+      "bytes": 546,
+      "sha256": "ba62cb126028f66cdd53fe2ceae4e9c9bb9b77035b11e71c7372e4c2e8c63faa"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/mitppl_help.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_automata_smoke.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_automata_smoke.stdout.txt": {
+      "bytes": 58,
+      "sha256": "5a83c94542cc3d5acb146db19aeefee98a90da455467b6e7211b787c018cef10"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_empty.trace": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_formula_input_probe.mitl": {
+      "bytes": 140,
+      "sha256": "768c7735a6f54ca991898ff0354f6c47c004740bb94042cc5f7e3fa14980bde0"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_formula_input_probe.stderr.txt": {
+      "bytes": 159,
+      "sha256": "e1c426f2f0eba748f65b6519d3e3eb93a2be4ae2f1ba63e9472001d114b280cd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_formula_input_probe.stdout.txt": {
+      "bytes": 192,
+      "sha256": "43283f4a01e69229698c7969e39b9c5d2ff11b4eab9b751d0abe9905eaf84687"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_help.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_help.stdout.txt": {
+      "bytes": 1208,
+      "sha256": "ecd89ef3bab9f0b8d9997ee9cd8990e4d0c694657aee40a7047ea14dae4ce5dd"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_smoke.trace": {
+      "bytes": 23,
+      "sha256": "30ae8d4886ad36aa274303f2a4332d687125cf3cfb3b7fec94f05d1c5e7b21b9"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_status_after.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_status_after.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_status_before.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/monitaal_status_before.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/tamonitor_help.stderr.txt": {
+      "bytes": 865,
+      "sha256": "e30b1b09d25aa354fa793cdfd92f385f5085c2a1336fbefa14fe8007933ab378"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/tamonitor_help.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/tamonitor_ldd.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/tamonitor_ldd.stdout.txt": {
+      "bytes": 443,
+      "sha256": "43488831e3a0dfd0da69a8bb482daee48c7aac37076fafab963cd4d208d2a25e"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/tamonitor_tree_after.json": {
+      "bytes": 8751,
+      "sha256": "509001716c26eff51642d721e3e3970a75e5b8278a68cf2c18e25df9fda4236b"
+    },
+    "benchmark/extraction_runs/milestone7/monitor_validation/tool_audit/tamonitor_tree_before.json": {
+      "bytes": 8751,
+      "sha256": "509001716c26eff51642d721e3e3970a75e5b8278a68cf2c18e25df9fda4236b"
+    }
+  },
+  "property_count": 8,
+  "schema_version": "1.0",
+  "tools": {
+    "MoniTAal-bin": {
+      "bytes": 747976,
+      "path": "tool/MightyPPL/build/monitaal-prefix/src/monitaal-build/src/monitaal-bin/MoniTAal-bin",
+      "sha256": "cb9a1c83df348df5ec141899db4ad8702ca64e8aa29e210910f98d09b586c774"
+    },
+    "TAMonitor": {
+      "bytes": 8836960,
+      "path": "tool/MightyPPL/build/TAMonitor",
+      "sha256": "e2dc4f9a77c49fe900e80d544078d9215c01d894a9396e689dd6fab6dd91d7f4"
+    },
+    "libMoniTAal.a": {
+      "bytes": 11640074,
+      "path": "tool/MightyPPL/external/monitaal/lib/libMoniTAal.a",
+      "sha256": "e9dcd8e8deada60a6110d32f65530e06bc56ad2b92616a75f9ed2941b5db8cb3"
+    },
+    "mitppl": {
+      "bytes": 7679888,
+      "path": "tool/MightyPPL/build/mitppl",
+      "sha256": "8e2ae06959eec8d3624eb1ce1923cce03c9115790075f317e16658ed933c7951"
+    }
+  },
+  "trace_count": 49,
+  "validation_command": "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check"
+}

@@ -1,0 +1,1195 @@
+{
+  "schema_version": "1.1.0",
+  "source_record_counts": {
+    "term_source_bindings": 227,
+    "current_input_identity_map": 356
+  },
+  "category_counts": {
+    "data_type": 100,
+    "unit_coordinate": 61,
+    "current_input_type": 7,
+    "current_input_unit": 28
+  },
+  "data_type_count": 100,
+  "unit_coordinate_count": 61,
+  "current_input_type_count": 7,
+  "current_input_unit_count": 28,
+  "rows": [
+    {
+      "category": "data_type",
+      "original": "",
+      "explanation_zh": "未填写源码数据类型。该绑定没有给出可核验的存储类型或表达式类型，不能据此推断位宽、符号性或数值域。",
+      "audit_effect_zh": "类型未知时不能自动选择解码、合法范围、比较容差或溢出规则；必须补证或保持未解决。"
+    },
+    {
+      "category": "data_type",
+      "original": "1-bit boolean",
+      "explanation_zh": "一位布尔量：只占一个逻辑位，取值只能表示假或真；这通常是位域，而不是完整的 C++ `bool` 对象。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "AP_Float",
+      "explanation_zh": "`AP_Float` 是 ArduPilot 参数系统封装的单精度浮点参数类型，底层数值为 32 位浮点数。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "AP_GPS_FixType enum",
+      "explanation_zh": "`AP_GPS_FixType` 枚举：ArduPilot 用它表示 GPS（Global Positioning System，全球定位系统）的定位质量等级；每个整数值对应一种定位状态。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "AP_Int16",
+      "explanation_zh": "`AP_Int16` 是 ArduPilot 参数系统封装的有符号 16 位整数类型，理论整数范围为 −32768 至 32767。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "AP_Int8 / SourceZ enum",
+      "explanation_zh": "`AP_Int8` 是 ArduPilot 参数系统封装的有符号 8 位整数；该值还按 `SourceZ` 枚举解释，用于选择竖直方向信息源。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "AP_Int8 enum",
+      "explanation_zh": "`AP_Int8` 枚举参数：以有符号 8 位整数保存枚举代码，具体含义必须结合参数枚举定义。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "AP_NavEKF_Source::SourceZ enum",
+      "explanation_zh": "`AP_NavEKF_Source::SourceZ` 枚举：ArduPilot 导航扩展卡尔曼滤波器的竖直方向信息源类型；这里是命名空间限定的源码类型标识符。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "GPS state reset and fix-type assignment",
+      "explanation_zh": "GPS 状态重置和定位类型赋值操作。它描述的是一组状态更新行为，不是单个 C/C++ 基础数据类型。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "Guided SubMode plus bool return",
+      "explanation_zh": "`Guided`（引导模式）的子模式枚举加布尔返回值；命题由当前子模式与函数成功/失败结果共同决定。",
+      "audit_effect_zh": "复合值同时包含引导子模式枚举与布尔返回结果；必须分别核对两者并说明组合真值，不能只按单一布尔位判断。"
+    },
+    {
+      "category": "data_type",
+      "original": "HOME_POSITION encoder",
+      "explanation_zh": "`HOME_POSITION` 消息编码器：把内部 Home（返航基准点）状态编码到 MAVLink 消息；它是编码函数角色，不是标量类型。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location",
+      "explanation_zh": "`Location` 是 ArduPilot 的地理位置复合类型，通常同时携带经纬度、海拔值及海拔参考框架。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location altitude (int32 centimetres internally)",
+      "explanation_zh": "`Location` 的海拔分量，内部以有符号 32 位整数厘米保存；原始数值换算为米时需除以 100。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location altitude (int32 centimetres)",
+      "explanation_zh": "`Location` 的海拔分量，以有符号 32 位整数厘米表示；必须保留厘米到目标单位的比例换算。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location altitude-frame conversion",
+      "explanation_zh": "`Location` 海拔参考框架转换操作；输出值取决于源框架和目标框架，而非简单复制数值。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location assignment",
+      "explanation_zh": "`Location` 位置对象赋值操作；它表示完整位置状态的写入，不是单一标量。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location assignment and validity latch",
+      "explanation_zh": "`Location` 赋值与有效性锁存：既写入位置对象，又设置持续保存的“位置有效”布尔状态。",
+      "audit_effect_zh": "这是位置赋值操作与有效性锁存的组合；必须核对写入对象、置位时机、持续条件和清除路径。"
+    },
+    {
+      "category": "data_type",
+      "original": "Location plus bool",
+      "explanation_zh": "`Location` 复合位置值加一个布尔结果；布尔量通常说明位置是否存在、转换是否成功或是否有效。",
+      "audit_effect_zh": "复合值包含 `Location` 对象和布尔结果；必须同时核对位置字段、参考框架及布尔量的成功或有效语义。"
+    },
+    {
+      "category": "data_type",
+      "original": "MAVLink command envelope to vehicle_command_s",
+      "explanation_zh": "把 MAVLink 命令封装转换为 PX4 的 `vehicle_command_s` 结构；命题需要检查命令字段映射和结构内容。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "Mode::Number",
+      "explanation_zh": "`Mode::Number` 是 ArduPilot 飞行模式编号的枚举类型；各编号含义随车型和冻结版本而定。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "Mode::Number (uint8_t enum)",
+      "explanation_zh": "`Mode::Number` 枚举，以无符号 8 位整数承载；数值范围为 0 至 255，但只有枚举中声明的值才有效。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "ParamFloat class member",
+      "explanation_zh": "`ParamFloat` 类成员：PX4 参数包装类中的浮点参数对象；审核时需区分包装对象和读取后的实际浮点值。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "PositionSetpoint current container",
+      "explanation_zh": "`PositionSetpoint` 当前目标点容器：存放当前导航位置设定值的复合结构，不是单一坐标标量。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "RC_Channel pointer assignment",
+      "explanation_zh": "`RC_Channel` 指针赋值：把遥控通道对象地址绑定到指针；命题所需值必须继续解引用到具体通道状态。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "SourceZ assignment",
+      "explanation_zh": "`SourceZ` 枚举赋值操作：把一个竖直信息源枚举代码写入状态。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "SourceZ enum",
+      "explanation_zh": "`SourceZ` 枚举：表示扩展卡尔曼滤波器竖直方向使用的信息源类别。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "SourceZ selection and fallback assignments",
+      "explanation_zh": "`SourceZ` 选择与回退赋值：包括首选源选择及不可用时的备用源写入，是多路径状态更新而非单值类型。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "aggregated sensor-health bit",
+      "explanation_zh": "聚合的传感器健康位：一个布尔或位标志由多个传感器健康状态合成，不能当作单一传感器原始读数。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool",
+      "explanation_zh": "`bool` 是 C++ 布尔类型，只表示假或真；对象存储大小由实现决定，不能因为逻辑二值就假定恰为一位。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool derived from float sign",
+      "explanation_zh": "由浮点数正负号派生的布尔量；真值条件取决于与零的比较，并应明确零值怎样处理。",
+      "audit_effect_zh": "结果是布尔量，但来源是浮点符号比较；必须明确大于零、小于零、等于零、非数值和负零的判真规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool derived from receiver flags",
+      "explanation_zh": "由接收器状态标志派生的布尔量；需组合并解释相应标志位，而不是读取一个独立布尔变量。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool derived from uint16 command count",
+      "explanation_zh": "由无符号 16 位命令计数派生的布尔量；通常通过“计数是否非零”等比较形成真值。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool latch",
+      "explanation_zh": "布尔锁存量：条件一旦触发会持续保存真值，直到明确的清除或重置事件发生。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool receiver frame-loss state",
+      "explanation_zh": "接收器帧丢失布尔状态：表示遥控接收链路是否报告丢帧。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool state transitions",
+      "explanation_zh": "布尔状态转换操作：关注假到真或真到假的边沿，而不仅是某一时刻的布尔值。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "bool transition plus log/text event",
+      "explanation_zh": "布尔状态转换并同时产生日志或文本事件；状态与事件两个观察面需要按同一次转换关联。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "command envelope fields",
+      "explanation_zh": "命令封装字段集合：命令编号、参数和来源等多个字段共同构成命题，不是单个基础类型。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "const Location&",
+      "explanation_zh": "`const Location&` 是 C++ 对常量 `Location` 对象的引用；函数不能经该引用修改对象，实际数据类型仍是 `Location`。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "derived bool",
+      "explanation_zh": "派生布尔量：由一个或多个源码值按条件计算得到，并非直接存储的原始字段。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "direction derived from float sign",
+      "explanation_zh": "由浮点数符号派生的方向；正、负和零分别代表的方向必须由同一处符号约定证明。",
+      "audit_effect_zh": "结果是离散方向，不是浮点值本身；必须证明正、负、零到方向的映射，并处理非数值输入。"
+    },
+    {
+      "category": "data_type",
+      "original": "direction derived from position, center and velocity",
+      "explanation_zh": "由当前位置、中心点和速度共同计算的方向；这是几何关系派生值，需要三类输入保持同一参考系和时间。",
+      "audit_effect_zh": "需按该表达形式核对真值计算、有效性与观察路径，并确认派生量所依赖的全部源值。"
+    },
+    {
+      "category": "data_type",
+      "original": "documented sign convention",
+      "explanation_zh": "文档规定的正负号约定；它是对数值语义的说明，不是独立 C/C++ 类型。",
+      "audit_effect_zh": "需按该表达形式核对真值计算、有效性与观察路径，并确认派生量所依赖的全部源值。"
+    },
+    {
+      "category": "data_type",
+      "original": "float",
+      "explanation_zh": "`float` 是 C/C++ 单精度浮点类型，在这些固件目标上作为 32 位浮点量使用；需考虑舍入、非数值和无穷值。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float after conversion",
+      "explanation_zh": "经过单位或坐标转换后的浮点值；审核时必须保留原值、转换公式和转换后的单位。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float after scaling",
+      "explanation_zh": "经过比例缩放后的浮点值；必须核对比例因子，避免把编码值直接当物理值。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float component of Vector3f",
+      "explanation_zh": "`Vector3f` 三维单精度向量中的一个浮点分量；分量含义取决于向量坐标系与轴顺序。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float derived from current AMSL and selected destination AMSL",
+      "explanation_zh": "由当前 AMSL（Above Mean Sea Level，平均海平面以上）海拔与选定目的地 AMSL 海拔计算出的浮点值。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float derived from two AMSL altitudes",
+      "explanation_zh": "由两个使用同一 AMSL 参考面的海拔相减得到的浮点值；只有参考面一致时差值才有意义。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float macro constant",
+      "explanation_zh": "浮点宏常量：通过预处理宏定义的浮点字面值或表达式；应追踪宏展开后的实际数值。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float position-accuracy threshold comparison",
+      "explanation_zh": "浮点位置精度阈值比较结果；命题应保留被比较值、阈值、单位以及小于或大于的边界方向。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float roll-rate setpoint",
+      "explanation_zh": "浮点横滚角速度设定值；正负号表示旋转方向，大小表示目标角速度。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float32",
+      "explanation_zh": "`float32` 表示 32 位单精度浮点值，通常对应 MAVLink 或 uORB 字段的明确类型。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float32 accuracy threshold",
+      "explanation_zh": "32 位浮点精度阈值；用于和位置误差或精度估计比较，必须确认单位和比较边界。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float32 normalized [-1,1]",
+      "explanation_zh": "归一化到闭区间 [−1, 1] 的 32 位浮点值；−1、0、1 的控制含义及越界处理需单独核对。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float32 or trace-derived float",
+      "explanation_zh": "32 位浮点值，或者从执行轨迹计算得到的浮点值；二者证据强度不同，必须标清实际采用哪一种。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float32 tuple",
+      "explanation_zh": "由多个 32 位单精度浮点数组成的元组；各分量的顺序、单位和参考系必须逐项一致。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "float64 tuple",
+      "explanation_zh": "由多个 64 位双精度浮点数组成的元组；精度较高但仍需明确各分量顺序和坐标语义。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "int16_t",
+      "explanation_zh": "`int16_t` 是 C/C++ 标准的有符号 16 位整数，范围为 −32768 至 32767。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "int16_t raw PWM",
+      "explanation_zh": "以有符号 16 位整数承载的原始 PWM（Pulse Width Modulation，脉宽调制）值；负数通常还可能承担“无效”哨兵语义。",
+      "audit_effect_zh": "必须同时核对有符号 16 位范围、负值哨兵和 PWM 原始编码；无校准证据时不能换算成执行器物理量。"
+    },
+    {
+      "category": "data_type",
+      "original": "int32 latitude/longitude",
+      "explanation_zh": "以有符号 32 位整数保存的纬度或经度编码值；通常还需按协议或源码规定的比例换算为角度。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "int32 microseconds parameter",
+      "explanation_zh": "以有符号 32 位整数保存的微秒参数；范围、负值语义和转换为秒时的除数都要核对。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "int32 millimetres",
+      "explanation_zh": "以有符号 32 位整数保存的毫米值；换算为米时需除以 1000。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "int8 channel-index mapping",
+      "explanation_zh": "有符号 8 位通道索引映射；它把参数编号映射到实际通道，−1 等值可能表示未配置。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "int8_t (-1 left, +1 right)",
+      "explanation_zh": "`int8_t` 有符号 8 位方向代码：−1 表示左，+1 表示右；0 的语义需查看使用上下文。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "int8_t from RC roll control sign",
+      "explanation_zh": "从遥控横滚控制输入正负号计算出的有符号 8 位值；它表达翻滚方向而不是原始遥控幅度。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "paper abstraction",
+      "explanation_zh": "论文层面的抽象量：论文把多个实现细节概括成一个变量，当前源码中未必存在同名、同型存储对象。",
+      "audit_effect_zh": "该项不是已证实的当前源码基础类型，不能据此直接构造读写或比较；需保留缺失或历史状态。"
+    },
+    {
+      "category": "data_type",
+      "original": "position tuple",
+      "explanation_zh": "位置元组：由两个或三个坐标分量组成的复合位置值；必须说明分量顺序和坐标系。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "private FlipState enum",
+      "explanation_zh": "私有 `FlipState` 枚举：类内部使用的翻转动作状态机类型，外部不能直接按公共接口读取。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "relay command",
+      "explanation_zh": "继电器命令：描述对继电器通道和开关状态的控制请求，是命令结构而非基础数值类型。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "removed seconds parameter",
+      "explanation_zh": "已删除的“秒”参数：历史实现曾有该时间参数，当前冻结源码已不再保留同一参数。",
+      "audit_effect_zh": "该项不是已证实的当前源码基础类型，不能据此直接构造读写或比较；需保留缺失或历史状态。"
+    },
+    {
+      "category": "data_type",
+      "original": "runtime parameter value consumed by control/navigation logic",
+      "explanation_zh": "运行时参数值，被控制或导航逻辑读取使用；数据类型需继续由具体参数声明确定。",
+      "audit_effect_zh": "需按该表达形式核对真值计算、有效性与观察路径，并确认派生量所依赖的全部源值。"
+    },
+    {
+      "category": "data_type",
+      "original": "servo PWM command",
+      "explanation_zh": "舵机 PWM 命令：包含输出通道与脉宽目标的控制命令，不是纯物理角度。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "signed float target velocity",
+      "explanation_zh": "有符号浮点目标速度；符号表示运动方向，绝对值表示速度大小。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "signed radius encoder",
+      "explanation_zh": "带符号的半径编码量；正负号除半径大小外还编码环绕方向。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "templated common command path",
+      "explanation_zh": "模板化公共命令路径：多个具体命令共享的 C++ 模板处理函数；类型取决于模板实参与命令字段。",
+      "audit_effect_zh": "这是操作或数据流角色，不是独立存储类型；需核对输入、输出、调用条件和可观察结果。"
+    },
+    {
+      "category": "data_type",
+      "original": "trace-derived float",
+      "explanation_zh": "从日志或运行轨迹派生的浮点值，不是直接可读源码变量；必须保存派生公式和采样来源。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "data_type",
+      "original": "two bool latches",
+      "explanation_zh": "两个布尔锁存量的组合；真值可能需要同时或分别检查两个持续状态及其重置条件。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint16 failure bitmask",
+      "explanation_zh": "无符号 16 位故障位掩码：每一位代表一种故障状态，可组合出现；不能把整个数值误作单一枚举。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint16 raw PWM",
+      "explanation_zh": "以无符号 16 位整数承载的原始 PWM 值，范围为 0 至 65535；实际有效脉宽范围需另由接口规定。",
+      "audit_effect_zh": "必须同时核对无符号 16 位范围和 PWM 原始编码；无校准证据时不能换算成执行器物理量。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint16 value 22",
+      "explanation_zh": "值为 22 的无符号 16 位整数；“22”的语义来自相邻协议或枚举定义，不能仅按数值解释。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint32 command ID",
+      "explanation_zh": "无符号 32 位命令标识符，范围为 0 至 4294967295；有效值由命令枚举限定。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint32 packed custom_mode",
+      "explanation_zh": "打包在无符号 32 位 `custom_mode` 字段中的模式信息；需按固件规定拆解位域或模式编号。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint32_t",
+      "explanation_zh": "`uint32_t` 是 C/C++ 标准的无符号 32 位整数，范围为 0 至 4294967295。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint64 boot-time timestamp",
+      "explanation_zh": "无符号 64 位启动后时间戳；表示从系统启动起的时间，不能直接当作世界协调时或 Unix 时间。",
+      "audit_effect_zh": "必须核对位宽、单位、时钟域、起点和回绕处理，启动时间不能误作绝对时间。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint64 time plus uint8 enum",
+      "explanation_zh": "无符号 64 位时间值加无符号 8 位枚举；命题同时依赖时间和离散状态两个量。",
+      "audit_effect_zh": "必须核对位宽、单位、时钟域、起点和回绕处理，启动时间不能误作绝对时间。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint64 timeout comparison",
+      "explanation_zh": "使用无符号 64 位时间值进行超时比较；审核需确认同一时钟域、单位、减法顺序和回绕处理。",
+      "audit_effect_zh": "必须核对位宽、单位、时钟域、起点和回绕处理，启动时间不能误作绝对时间。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 RC_INPUT_SOURCE enum",
+      "explanation_zh": "无符号 8 位 `RC_INPUT_SOURCE` 枚举：表示遥控输入来源，0 至 255 中只有声明的枚举值有效。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 enum",
+      "explanation_zh": "无符号 8 位枚举；底层范围 0 至 255，语义域由对应枚举定义限制。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 enum comparison",
+      "explanation_zh": "无符号 8 位枚举比较表达式；真值由当前枚举是否等于指定状态产生。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 fix enum",
+      "explanation_zh": "无符号 8 位定位质量枚举；整数代码表示不同的 GPS 定位等级。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 navigation state",
+      "explanation_zh": "无符号 8 位导航状态代码；必须结合冻结版本的导航状态枚举解释具体模式。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 source enum and field",
+      "explanation_zh": "无符号 8 位信息源枚举及其承载字段；既要核对字段类型，也要核对枚举代码表。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8 value 1",
+      "explanation_zh": "值为 1 的无符号 8 位整数；“1”的业务含义必须由相邻枚举或协议定义证明。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8_t",
+      "explanation_zh": "`uint8_t` 是 C/C++ 标准的无符号 8 位整数，范围为 0 至 255。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8_t enum",
+      "explanation_zh": "`uint8_t` 承载的枚举类型；底层范围是 0 至 255，有效集合由枚举声明决定。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "uint8_t source-set index",
+      "explanation_zh": "无符号 8 位信息源集合索引；用于选择某个源配置组，必须区分从零开始的存储索引和面向用户的编号。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "data_type",
+      "original": "undefined paper abstraction",
+      "explanation_zh": "未定义的论文抽象量：论文给出概念变量，但未给出足以确定当前源码类型的定义。",
+      "audit_effect_zh": "该项不是已证实的当前源码基础类型，不能据此直接构造读写或比较；需保留缺失或历史状态。"
+    },
+    {
+      "category": "data_type",
+      "original": "vehicle_command_ack result",
+      "explanation_zh": "`vehicle_command_ack` 的结果代码；表示 PX4 对命令的接受、拒绝、进行中或其他处理结果。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "data_type",
+      "original": "vehicle_command_ack_s",
+      "explanation_zh": "`vehicle_command_ack_s` 是 PX4 uORB（微对象请求代理）命令应答消息结构，包含命令号、结果及关联字段。",
+      "audit_effect_zh": "这是复合值，必须逐字段核对顺序、有效性和参考系，不能当成无需解释的单一标量。"
+    },
+    {
+      "category": "data_type",
+      "original": "vehicle_global_position altitude plus validity/reset metadata",
+      "explanation_zh": "`vehicle_global_position` 的海拔值，加上有效性和重置元数据；命题需联合检查数值、是否有效以及参考系重置状态。",
+      "audit_effect_zh": "需按该表达形式核对真值计算、有效性与观察路径，并确认派生量所依赖的全部源值。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "",
+      "explanation_zh": "未填写单位或坐标参考。该值的量纲、方向和参考系没有在绑定记录中确定。",
+      "audit_effect_zh": "单位或参考系未知时禁止直接换算、比较或相减；必须补证或保持未解决。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "0..2 selecting EK3 source set 1..3",
+      "explanation_zh": "整数 0 至 2 用于选择 EK3 信息源集合 1 至 3；存储索引从 0 开始，而用户可见编号从 1 开始。",
+      "audit_effect_zh": "这是无量纲离散值或计数，应按代码表或计数语义比较，不能套用物理单位换算。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "0:none, 1:barometer, 2:rangefinder, 3:GPS, 4:beacon, 6:external navigation",
+      "explanation_zh": "信息源枚举：0 表示无，1 表示气压计，2 表示测距仪，3 表示 GPS，4 表示信标，6 表示外部导航；其余值不能自行补义。",
+      "audit_effect_zh": "这是无量纲信息源枚举；必须逐值连接冻结提交中的代码表，未列出的值不能自行补义。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "GPS Location altitude frame",
+      "explanation_zh": "GPS `Location` 所携带的海拔参考框架；具体可能是绝对海拔、相对 Home 海拔等，必须读取该对象的框架标志。",
+      "audit_effect_zh": "必须读取 `Location` 的海拔框架标志并统一绝对、相对 Home 或其他参考面后才能比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "GPS_TIMEOUT_MS uses AP_HAL::millis()",
+      "explanation_zh": "`GPS_TIMEOUT_MS` 以毫秒为单位，并用 `AP_HAL::millis()` 的系统启动后单调毫秒时钟计时。",
+      "audit_effect_zh": "这是毫秒超时值并使用系统启动后单调毫秒时钟；必须统一单位和时钟域，不能当作 Unix 绝对时间。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "WGS84 degrees",
+      "explanation_zh": "WGS84（World Geodetic System 1984，1984 世界大地测量系统）角度坐标。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "WGS84 degrees or derived metres",
+      "explanation_zh": "WGS84 角度坐标，或由两点坐标计算得到的米制距离；原始角度与派生距离必须区分。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "WGS84 lat/lon and Location altitude",
+      "explanation_zh": "WGS84 纬度/经度加 `Location` 海拔；水平坐标和竖直坐标可能使用不同参考定义。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "WGS84 position with explicit Location altitude frame",
+      "explanation_zh": "带明确 `Location` 海拔框架的 WGS84 位置；审核时需同时保留经纬度、海拔值和框架标志。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "absolute Location frame after set_home conversion",
+      "explanation_zh": "经 `set_home` 转换后的绝对 `Location` 坐标框架；数值以绝对位置语义解释。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "absolute WGS84 Location after frame conversion",
+      "explanation_zh": "完成海拔框架转换后的绝对 WGS84 `Location`；不能再按转换前的相对海拔解释。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "action enum",
+      "explanation_zh": "动作枚举，没有物理单位；整数代码表示不同处置动作。",
+      "audit_effect_zh": "这是无量纲离散值或计数，应按代码表或计数语义比较，不能套用物理单位换算。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "body x angular-rate sign",
+      "explanation_zh": "机体坐标系 x 轴角速度的正负号；正负方向按机体系右手规则解释。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "deg/s angular target magnitude",
+      "explanation_zh": "度每秒（degree per second，deg/s）的目标角速度绝对值，只表达大小。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "deg/s signed angular target rate",
+      "explanation_zh": "度每秒的带符号目标角速度；符号表达旋转方向，绝对值表达速度大小。",
+      "audit_effect_zh": "这是带符号角速度；必须核对 deg/s 单位、旋转轴、正负方向和零值语义。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "degrees WGS84",
+      "explanation_zh": "以 WGS84 为参考的角度值。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "degrees scaled by 1e7, WGS84",
+      "explanation_zh": "WGS84 纬度或经度角度乘以 10^7 后存储；恢复为度时需除以 10^7。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m",
+      "explanation_zh": "米（metre，m），但此项没有进一步说明参考面或方向。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m AMSL",
+      "explanation_zh": "相对 AMSL（Above Mean Sea Level，平均海平面以上）的米制海拔。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m EPH threshold",
+      "explanation_zh": "以米表示的 EPH 字段阈值；EPH 在本任务中表示 estimated horizontal position error（水平位置估计误差），数值越大表示估计不确定性越高。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m WGS84 terrain altitude",
+      "explanation_zh": "以米表示的 WGS84 地形海拔。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above Home",
+      "explanation_zh": "相对 Home（飞行器记录的返航基准点）向上的米制高度。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above Home after conversion",
+      "explanation_zh": "完成参考框架转换后相对 Home 向上的米制高度。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above Home after origin-to-Home conversion or explicit fallback",
+      "explanation_zh": "由本地原点换算到 Home 后的米制相对高度；若换算不可用则采用源码明确规定的备用值。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above Home, safe point, or mission landing destination",
+      "explanation_zh": "相对 Home、安全点或任务着陆目的地的米制高度；实际参考点随当前导航目标选择。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above barometer reference/Home-oriented offset",
+      "explanation_zh": "相对气压计参考面或面向 Home 的偏移量，单位为米；这不是全球绝对海拔。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above local NED origin",
+      "explanation_zh": "相对本地 NED（North-East-Down，北-东-下）坐标原点向上的米制高度；NED 的 z 轴本身向下为正，需注意符号转换。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above same reference",
+      "explanation_zh": "相对同一个参考面的米制高度差；只有两个量参考面相同时才能直接比较。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above selected RTL destination",
+      "explanation_zh": "相对所选返航目的地向上的米制高度。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m above takeoff reference",
+      "explanation_zh": "相对起飞参考点向上的米制高度。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m distance above bottom/ground surface",
+      "explanation_zh": "距底部或地表面的米制垂直距离。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m distance to ground",
+      "explanation_zh": "到地面的米制距离；测量方向与传感器安装姿态有关。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m horizontal position uncertainty",
+      "explanation_zh": "以米表示的水平位置不确定性。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m local NED",
+      "explanation_zh": "本地 NED 坐标中的米制位置；x 向北、y 向东、z 向下为正。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m relative takeoff altitude",
+      "explanation_zh": "相对起飞点的米制高度。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m target radius",
+      "explanation_zh": "以米表示的目标半径。",
+      "audit_effect_zh": "这是米制目标半径；必须核对长度尺度、半径正负号是否另编码方向，以及零半径语义。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m/s",
+      "explanation_zh": "米每秒（metre per second，m/s）的速度，但此项未进一步指明方向。",
+      "audit_effect_zh": "必须核对速度或加速度的坐标轴、符号方向，以及记录的是带符号量还是幅值。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m/s NED down-positive",
+      "explanation_zh": "NED 坐标中向下为正的米每秒速度；正值表示下沉，负值表示上升。",
+      "audit_effect_zh": "这是 NED 坐标下向下为正的线速度；必须核对 m/s、z 轴方向和正负号，不能与向上为正的速度直接比较。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m/s actual horizontal ground speed",
+      "explanation_zh": "实际水平地速的米每秒大小，不包含竖直速度。",
+      "audit_effect_zh": "这是实际水平地速大小；必须核对 m/s、水平分量和采样时刻，不能混入竖直速度。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m/s down-rate magnitude",
+      "explanation_zh": "以米每秒表示的下行速度大小；记录的是非负幅值，方向已经固定为向下。",
+      "audit_effect_zh": "必须核对速度或加速度的坐标轴、符号方向，以及记录的是带符号量还是幅值。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m/s target tangential speed magnitude",
+      "explanation_zh": "以米每秒表示的目标切向速度大小；不含顺时针或逆时针方向。",
+      "audit_effect_zh": "必须核对速度或加速度的坐标轴、符号方向，以及记录的是带符号量还是幅值。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "m/s up-rate magnitude",
+      "explanation_zh": "以米每秒表示的上行速度大小；记录的是非负幅值，方向已经固定为向上。",
+      "audit_effect_zh": "必须核对速度或加速度的坐标轴、符号方向，以及记录的是带符号量还是幅值。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "microseconds since last horizontal aiding",
+      "explanation_zh": "自上次有效水平辅助信息以来经过的微秒数。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "microseconds since system start",
+      "explanation_zh": "自系统启动以来的微秒数，是启动时钟而非 Unix 世界时间。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "microseconds/PWM",
+      "explanation_zh": "微秒脉宽形式的 PWM 值；数值单位是微秒，但语义是脉宽调制命令。",
+      "audit_effect_zh": "这里的微秒用于 PWM 脉宽编码而非经过时间；必须核对通道校准、缩放和有效范围，不能当时间戳或计时上界。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "mm AMSL",
+      "explanation_zh": "相对 AMSL 的毫米制海拔；换算为米时需除以 1000。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "one common local tangent frame",
+      "explanation_zh": "同一个局部切平面坐标框架；该项表达参考系一致性，本身没有物理单位。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "param1 radius sign plus param2 m/s speed",
+      "explanation_zh": "`param1` 的半径符号编码环绕方向，`param2` 以米每秒表示速度；两个命令参数具有不同语义和单位。",
+      "audit_effect_zh": "必须分别审核：`param1` 的半径符号如何编码环绕方向，`param2` 是否为 m/s 线速度；两字段不能套用同一单位规则。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "rad/s (400 deg/s)",
+      "explanation_zh": "弧度每秒（radian per second，rad/s），数值对应每秒 400 度；弧度值等于 400×π/180。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "rad/s body roll setpoint",
+      "explanation_zh": "以弧度每秒表示的机体横滚角速度设定值；符号按机体 x 轴旋转方向解释。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "rad/s body x",
+      "explanation_zh": "机体坐标系 x 轴角速度，单位为弧度每秒。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "radians",
+      "explanation_zh": "弧度（radian），是无量纲角度表示；π 弧度等于 180 度。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "radians in NED tangent plane",
+      "explanation_zh": "NED 局部切平面中的弧度方向角；零方向和正向旋转需结合导航坐标约定。",
+      "audit_effect_zh": "空间比较前必须统一坐标系、海拔参考面、轴方向和尺度；参考系不同的值不能直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "radians, body attitude in navigation frame",
+      "explanation_zh": "以弧度表示的机体姿态，并相对于导航坐标框架定义。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "raw PWM",
+      "explanation_zh": "原始 PWM 编码值；未明确单位或标定关系，不能直接解释为角度或推力。",
+      "audit_effect_zh": "必须把原始编码、微秒脉宽和执行器物理效果分开；无校准证据时不得换算为角度或推力。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "raw PWM microseconds",
+      "explanation_zh": "以微秒表示的原始 PWM 脉宽。",
+      "audit_effect_zh": "这是以微秒表示的原始 PWM 脉宽；必须核对通道校准、缩放和哨兵值，不能当作经过时间。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "s",
+      "explanation_zh": "秒（second，s）的时间长度；具体采用哪一时钟仍需由时间来源字段确定。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "satellite count",
+      "explanation_zh": "卫星数量，是无量纲整数计数。",
+      "audit_effect_zh": "这是无量纲离散值或计数，应按代码表或计数语义比较，不能套用物理单位换算。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "signed target tangential velocity",
+      "explanation_zh": "带符号的目标切向速度；符号表示环绕方向，绝对值表示速度大小，具体单位由对应速度字段确定。",
+      "audit_effect_zh": "这是带符号目标切向速度；必须核对速度单位、符号对应的环绕方向，以及零值语义。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "us maximum inertial dead-reckoning time",
+      "explanation_zh": "以微秒表示的最大惯性航位推算持续时间。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    },
+    {
+      "category": "unit_coordinate",
+      "original": "枚举",
+      "explanation_zh": "枚举量，没有物理单位；数值必须按相应枚举代码表解释。",
+      "audit_effect_zh": "这是无量纲离散值或计数，应按代码表或计数语义比较，不能套用物理单位换算。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "",
+      "explanation_zh": "未填写当前输入类型；参数元数据没有提供可核验的类型。",
+      "audit_effect_zh": "类型未知时不能自动选择解码、合法范围、比较容差或溢出规则；必须补证或保持未解决。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "Float",
+      "explanation_zh": "`Float` 是作者数据或工具使用的浮点类型标签；按当前参数元数据应作为带小数的数值处理，但需以具体固件声明确认位宽。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "Int32",
+      "explanation_zh": "`Int32` 是有符号 32 位整数标签，理论范围为 −2147483648 至 2147483647。",
+      "audit_effect_zh": "必须按符号性和位宽检查范围、哨兵、缩放与溢出；有符号和无符号数不得混用。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "bitmask",
+      "explanation_zh": "`bitmask`（位掩码）是把多个独立开关编码到同一个整数的类型；每一位可单独表示一个选项。",
+      "audit_effect_zh": "必须给出可复算的真假或位掩码条件；还要说明置位、清除和组合规则。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "enum",
+      "explanation_zh": "`enum`（enumeration，枚举）表示有限离散选项集合；数值必须按参数元数据中的代码表解释。",
+      "audit_effect_zh": "必须与冻结提交的枚举代码表连接；未声明值、车型差异和版本差异不能自行解释。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "float",
+      "explanation_zh": "`float` 是浮点参数类型；在当前固件参数元数据中通常对应单精度数值，但审核仍以具体声明为准。",
+      "audit_effect_zh": "必须核对单位、缩放和符号，并考虑舍入、非数值与边界比较；不能默认按整数精确相等。"
+    },
+    {
+      "category": "current_input_type",
+      "original": "not_exposed_by_param_metadata_parser",
+      "explanation_zh": "`not_exposed_by_param_metadata_parser` 表示参数元数据解析器没有暴露该输入的类型；它是缺失状态标签，不是 C/C++ 类型。",
+      "audit_effect_zh": "该项不是已证实的当前源码基础类型，不能据此直接构造读写或比较；需保留缺失或历史状态。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "",
+      "explanation_zh": "未填写当前输入单位；参数元数据没有提供量纲或参考语义。",
+      "audit_effect_zh": "单位或参考系未知时禁止直接换算、比较或相减；必须补证或保持未解决。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "%",
+      "explanation_zh": "百分比（percent，%），通常以 0 至 100 表示相对比例；是否允许负值或超过 100 必须看参数范围。",
+      "audit_effect_zh": "必须核对无量纲数的编码范围、缩放和边界；百分比与归一化值不能直接混用。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "1/rad",
+      "explanation_zh": "每弧度（1/rad），表示某个量对角度的倒数增益；弧度是无量纲角度单位。",
+      "audit_effect_zh": "这是每弧度的倒数角度增益；必须核对控制公式中的乘除方向和角单位，不能按普通角度或时间处理。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "Hz",
+      "explanation_zh": "赫兹（hertz，Hz），每秒发生的周期或事件次数。",
+      "audit_effect_zh": "必须确认参数表示频率而非周期；若换算周期应使用 1/Hz，并核对零值边界。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "PWM",
+      "explanation_zh": "PWM（Pulse Width Modulation，脉宽调制）编码；该单位标签本身未说明是原始计数还是微秒脉宽。",
+      "audit_effect_zh": "必须把原始编码、微秒脉宽和执行器物理效果分开；无校准证据时不得换算为角度或推力。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "Pa",
+      "explanation_zh": "帕斯卡（pascal，Pa），压力单位，1 Pa 等于 1 牛顿每平方米。",
+      "audit_effect_zh": "必须保持物理量和比例系数的量纲，禁止把传感器原始值与工程单位值直接混用。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "V",
+      "explanation_zh": "伏特（volt，V），电压单位。",
+      "audit_effect_zh": "必须保持物理量和比例系数的量纲，禁止把传感器原始值与工程单位值直接混用。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "celcius",
+      "explanation_zh": "`celcius` 是作者或参数元数据中对 Celsius（摄氏度）的拼写形式，拼写不规范；数值语义仍按摄氏温度解释。",
+      "audit_effect_zh": "必须按摄氏度解释并保留原始拼写证据；不同温标比较前需要转换。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "deg",
+      "explanation_zh": "度（degree，deg），角度单位。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "deg/s",
+      "explanation_zh": "度每秒（deg/s），角速度单位。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "deg/s/s",
+      "explanation_zh": "度每二次方秒（deg/s/s，即 deg/s²），角加速度单位。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "degC",
+      "explanation_zh": "摄氏度（degree Celsius，degC），温度单位。",
+      "audit_effect_zh": "这是摄氏温度单位；必须核对温标、有效范围和传感器缩放，不能套用角度或角速度规则。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "gauss",
+      "explanation_zh": "高斯（gauss），磁感应强度单位；1 gauss 等于 10^-4 tesla（特斯拉）。",
+      "audit_effect_zh": "必须核对 gauss 与 mGauss 的 1000 倍比例，并区分磁场值与每安培校准系数。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "m",
+      "explanation_zh": "米（metre，m），长度或高度单位；参考点和方向仍需由参数说明确定。",
+      "audit_effect_zh": "必须核对米制比例、参考点和方向；同为米并不代表跨参考系可直接比较。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "m/V",
+      "explanation_zh": "米每伏特（m/V），把电压变化换算为长度变化的比例系数。",
+      "audit_effect_zh": "这是米每伏特的换算系数；必须核对控制公式中的乘除方向、电压输入和所得长度尺度。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "m/s",
+      "explanation_zh": "米每秒（m/s），线速度单位。",
+      "audit_effect_zh": "必须核对速度或加速度的坐标轴、符号方向，以及记录的是带符号量还是幅值。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "m/s/s",
+      "explanation_zh": "米每二次方秒（m/s/s，即 m/s²），线加速度单位。",
+      "audit_effect_zh": "必须核对速度或加速度的坐标轴、符号方向，以及记录的是带符号量还是幅值。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "mGauss",
+      "explanation_zh": "毫高斯（milligauss，mGauss），磁感应强度单位；1000 mGauss 等于 1 gauss。",
+      "audit_effect_zh": "这是毫高斯磁场单位；必须按 1000 mGauss = 1 gauss 核对比例，不能把前缀 m 解释为米。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "mGauss/A",
+      "explanation_zh": "毫高斯每安培（mGauss/A），电流引起的磁场变化比例。",
+      "audit_effect_zh": "这是毫高斯每安培的磁场校准系数；必须同时保留磁场与电流量纲，不能按米制长度处理。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "ms",
+      "explanation_zh": "毫秒（millisecond，ms），1 ms 等于 10^-3 秒。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "norm",
+      "explanation_zh": "`norm`（normalized value，归一化值），通常表示无量纲比例；具体范围如 [−1,1] 或 [0,1] 必须由参数定义确认。",
+      "audit_effect_zh": "必须核对无量纲数的编码范围、缩放和边界；百分比与归一化值不能直接混用。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "rad",
+      "explanation_zh": "弧度（radian，rad），角度单位；π rad 等于 180 deg。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "rad/s",
+      "explanation_zh": "弧度每秒（rad/s），角速度单位。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "rad/s/s",
+      "explanation_zh": "弧度每二次方秒（rad/s/s，即 rad/s²），角加速度单位。",
+      "audit_effect_zh": "必须核对度与弧度、角度与角速度或角加速度、旋转轴及正负方向，量纲不同不能混比。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "s",
+      "explanation_zh": "秒（second，s），时间长度单位。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "s/rad",
+      "explanation_zh": "秒每弧度（s/rad），表示时间随角度变化的比例系数。",
+      "audit_effect_zh": "这是秒每弧度的控制系数量纲；必须核对控制公式和角单位，不能把它当时间戳、持续时间或计时上界。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "s^2/rad",
+      "explanation_zh": "二次方秒每弧度（s^2/rad，即 s²/rad），通常是角加速度相关参数的倒数量纲。",
+      "audit_effect_zh": "这是二次方秒每弧度的控制系数量纲；必须核对与角加速度相关的公式，不能把它当普通秒值或超时上界。"
+    },
+    {
+      "category": "current_input_unit",
+      "original": "us",
+      "explanation_zh": "微秒（microsecond，us），1 us 等于 10^-6 秒；若用于 PWM，还表示脉冲宽度。",
+      "audit_effect_zh": "进入性质前必须统一单位和量纲，并明确时钟或系数语义；不同时间域不得直接相减。"
+    }
+  ]
+}

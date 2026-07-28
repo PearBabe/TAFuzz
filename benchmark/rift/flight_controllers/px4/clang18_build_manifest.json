@@ -1,0 +1,114 @@
+{
+  "schema_version": "rift-flight-controller-build/1.0.0",
+  "recorded_at": "2026-07-18T17:12:04+08:00",
+  "result": {
+    "status": "BUILD_BASELINE_SUCCESS",
+    "source_modified": false,
+    "clang18_configure": "PASS_AFTER_ISOLATED_PYTHON_DEPENDENCY_PROVISIONING",
+    "clang18_px4_sitl_default_build": "PASS",
+    "binary_help_smoke": "PASS",
+    "ap_binding_analysis": "NOT_RUN",
+    "influence_analysis": "NOT_RUN",
+    "recipe_validation": "NOT_RUN",
+    "fuzz_experiment": "NOT_RUN"
+  },
+  "source": {
+    "local_path": "/home/lqq/project/TAFuzz/baseline/px4",
+    "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "tree": "e773a3833b5c209466d775931ab8d7e82edeb794",
+    "commit_date": "2026-04-24T16:17:04-07:00",
+    "commit_subject": "Update NuttX fmu-v6x config use with Zenoh (#26213)",
+    "preexisting_status": "clean",
+    "post_build_status": "clean"
+  },
+  "toolchain": {
+    "cc": {
+      "path": "/usr/bin/clang-18",
+      "version": "18.1.8",
+      "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8"
+    },
+    "cxx": {
+      "path": "/usr/bin/clang++-18",
+      "version": "18.1.8",
+      "sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8"
+    },
+    "cmake": {
+      "path": "/usr/bin/cmake",
+      "version": "3.22.1",
+      "sha256": "fd22547781b64bb2db04370970b93db1f3fada1e41e60873b015ee0747009fc0"
+    },
+    "ninja": {
+      "path": "/usr/bin/ninja",
+      "version": "1.10.1",
+      "sha256": "a9ddfbf7e365a2e5026ed44f9173e498e37d8b71ec5e259b2c2a684f16cfa862"
+    },
+    "python": "3.10.12",
+    "isolated_python_path": "/tmp/rift-px4-clang-v1/python-min",
+    "isolated_python_packages": {
+      "kconfiglib": "14.1.0",
+      "empy": "3.3.4",
+      "pyros-genmsg": "0.5.8"
+    }
+  },
+  "build": {
+    "output_directory": "/tmp/rift-px4-clang-v1/build",
+    "generator": "Ninja",
+    "configuration": "px4_sitl_default",
+    "board": "px4_sitl",
+    "board_label": "default",
+    "platform": "posix",
+    "build_type": "RelWithDebInfo",
+    "ninja_completed_edges": 1108,
+    "elapsed_seconds": null,
+    "peak_rss_kib": null,
+    "measurement_note": "The successful build was observed through Ninja completion, but it was not wrapped by GNU time; no performance number is inferred.",
+    "dependency_retry_note": "Initial configure/build attempts exposed missing kconfiglib and pyros-genmsg. They were installed only under the isolated temporary Python path and the unchanged source build then completed."
+  },
+  "compile_database": {
+    "path": "/tmp/rift-px4-clang-v1/build/compile_commands.json",
+    "sha256": "94efc8163cc20160aa2912b813496d6a4e2c73d4990a01fba5235d3901b9d19b",
+    "size_bytes": 1926665,
+    "entries": 868,
+    "unique_files": 826,
+    "duplicate_entries": 42,
+    "missing_files": 0,
+    "missing_directories": 0,
+    "absolute_file_fields": 868,
+    "compilers": {
+      "/usr/bin/clang-18": 47,
+      "/usr/bin/clang++-18": 821
+    },
+    "languages": {
+      "c": 47,
+      "cpp": 821
+    }
+  },
+  "binary": {
+    "path": "/tmp/rift-px4-clang-v1/build/bin/px4",
+    "size_bytes": 34008032,
+    "sha256": "1ee7ed566a7a70b1bbfc9f693b609af6baf6fdcb2380e1c5f131ce8441af9fc7",
+    "elf_build_id": "71cc3c4ac8608b99180c8d7f0ac9d5df699934e7",
+    "format": "ELF 64-bit LSB PIE x86-64, dynamically linked, with debug_info, not stripped",
+    "help_smoke_argument": "-h",
+    "help_smoke_exit_code": 0
+  },
+  "selected_tu_probe": {
+    "scope_claim": "SELECTED_TRANSLATION_UNITS_ONLY",
+    "receipt": "selected_compile_db_receipt.json",
+    "selected_entries": 3,
+    "omitted_entries": 865,
+    "output_path": "/tmp/rift-flight-px4-clang18-selected-v1/compile_commands.json",
+    "output_sha256": "745a1c7e5686eb02259a959d0ae6d4b39aa35c1c173a32755e0493bc72bd3042"
+  },
+  "comparison_boundary": {
+    "this_is": "A frozen-source PX4 SITL build and complete Clang 18 compile-database baseline.",
+    "this_is_not": [
+      "an AP binding result",
+      "an influence-cone result",
+      "a mutation-direction result",
+      "a runtime AP flip",
+      "a fuzz campaign",
+      "a firmware conformance verdict"
+    ]
+  }
+}

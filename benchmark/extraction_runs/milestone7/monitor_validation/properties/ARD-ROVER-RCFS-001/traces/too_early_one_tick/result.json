@@ -1,0 +1,85 @@
+{
+  "boundary_region": "before",
+  "case_kind": "too_early_one_tick",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 3500,
+    "response_delta_ticks": 1499,
+    "threshold_ticks": 1500,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_DECISIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "Response occurs one exact monitor tick before the threshold.",
+    "tamonitor_infinite_prefix_verdict": "NEGATIVE",
+    "tamonitor_prefix_reason": "The prefix contains an irreversible pre-threshold/open-boundary safety violation."
+  },
+  "monitor_trace": {
+    "bytes": 233,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/monitor_trace.csv",
+    "sha256": "e234e3f69c351f8ad4a26f6457af9342eec08fc2bbb98f98f28bdcd7ea26f27e"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-ROVER-RCFS-001:trace:too_early_one_tick",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1549,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor/metadata.json",
+      "sha256": "294fba2c6004c6a4c24adc864dce03a32a77487f02956183b9c96e319a47e30a"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1053,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor.stdout.txt",
+      "sha256": "d1364e389a0668f2e6362378122cc789348cde0c32a621d458c255b60698aec4"
+    },
+    "steps": {
+      "bytes": 477,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/tamonitor/steps.csv",
+      "sha256": "97033bad6dcbcd65ce5e1f7188016e3a3dd89d04418ec4d084189233dcae2515"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 3500,
+      "monitor_advanced": false,
+      "negative_states": 3,
+      "positive_states": 0,
+      "step": 5,
+      "verdict": "NEGATIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "NEGATIVE"
+  },
+  "trace": {
+    "bytes": 2889,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/trace.json",
+    "sha256": "961173680ed8955378e1febc1e9dda45d08e4c481019394476ca2dc6bb7491f0"
+  },
+  "trace_id": "ARD-ROVER-RCFS-001--too_early_one_tick"
+}

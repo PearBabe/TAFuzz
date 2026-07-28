@@ -1,0 +1,76 @@
+{
+  "schema_version": "2.0.0",
+  "artifact_id": "rift.flight.ardupilot.ard-copter-gcs-001.ap-projection",
+  "property_id": "ARD-COPTER-GCS-001-RIFT-AP-PROJECTION",
+  "logic": "MITL",
+  "time_domain": "dense",
+  "formula_text": "gcs_failsafe_event",
+  "formula": {
+    "node_id": "formula.ard.gcs-failsafe-event",
+    "operator": "atom",
+    "ap_ref": "gcs_failsafe_event",
+    "operands": []
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "gcs_failsafe_event",
+      "roles": ["response", "state"],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      },
+      "predicate": {
+        "node_kind": "reference",
+        "operator": "decl_ref_or_member",
+        "value_type": {
+          "kind": "bool",
+          "canonical": "bool",
+          "bit_width": 8,
+          "signed": false
+        },
+        "referenced_selector_id": "selector.ard.gcs-failsafe-state-write",
+        "operands": []
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "group.ard.gcs-failsafe.response-write",
+          "role": "response",
+          "all_of": ["selector.ard.gcs-failsafe-state-write"]
+        },
+        {
+          "group_id": "group.ard.gcs-failsafe.state-write",
+          "role": "state",
+          "all_of": ["selector.ard.gcs-failsafe-state-write"]
+        }
+      ],
+      "description": "Static-analysis projection of the gcs_failsafe_event AP from ARD-COPTER-GCS-001. It seeds influence discovery at the canonical state commit; it is not a replacement for the full MITL property or a firmware-conformance verdict."
+    }
+  ],
+  "selectors": [
+    {
+      "selector_id": "selector.ard.gcs-failsafe-state-write",
+      "kind": "source_location",
+      "location": {
+        "file": "ArduCopter/AP_State.cpp",
+        "line": 75,
+        "column": 14,
+        "end_line": 75,
+        "end_column": 16,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      }
+    }
+  ],
+  "source_document": {
+    "document_id": "benchmark.ard-copter-gcs-001",
+    "digest": "9886f35993d88334455cad1de137ac43b6f79e36d8ee9c3c68f27614559a07c7",
+    "requirement_location": "benchmark/ArduPilot/properties/ARD-COPTER-GCS-001.json"
+  }
+}

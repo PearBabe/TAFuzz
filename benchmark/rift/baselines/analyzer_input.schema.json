@@ -1,0 +1,224 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.local/schemas/rift-analyzer-input-v1.json",
+  "title": "RIFT sanitized analyzer input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evaluation_track",
+    "binding_mode",
+    "controllability_mode",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "rift.analyzer-input.v1"
+    },
+    "evaluation_track": {
+      "const": "PAIR_CLASSIFICATION_DIAGNOSTIC"
+    },
+    "binding_mode": {
+      "const": "GIVEN_CANDIDATE_ANCHORS_NOT_SCORED"
+    },
+    "controllability_mode": {
+      "const": "GIVEN_CONTROLLABILITY_NOT_SCORED"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/case"
+      }
+    }
+  },
+  "definitions": {
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "line",
+        "column"
+      ],
+      "properties": {
+        "file": {
+          "type": "string",
+          "pattern": "^sources/case_[0-9]{3}\\.(c|cpp)$"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "source_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "symbol",
+        "marker",
+        "location"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^source_[a-z0-9_]+$"
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1
+        },
+        "marker": {
+          "type": "string",
+          "pattern": "^RIFT_SOURCE:source_[a-z0-9_]+$"
+        },
+        "location": {
+          "$ref": "#/definitions/location"
+        }
+      }
+    },
+    "ap_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "symbol",
+        "marker",
+        "location"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^ap_[a-z0-9_]+$"
+        },
+        "symbol": {
+          "type": "string",
+          "minLength": 1
+        },
+        "marker": {
+          "type": "string",
+          "pattern": "^RIFT_AP:ap_[a-z0-9_]+$"
+        },
+        "location": {
+          "$ref": "#/definitions/location"
+        }
+      }
+    },
+    "controllability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "classification"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^source_[a-z0-9_]+$"
+        },
+        "classification": {
+          "enum": [
+            "EXTERNAL",
+            "INTERNAL",
+            "MODELLED"
+          ]
+        }
+      }
+    },
+    "renamed_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file",
+        "sha256"
+      ],
+      "properties": {
+        "file": {
+          "type": "string",
+          "pattern": "^sources/case_[0-9]{3}\\.(c|cpp)$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "compile_command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "directory",
+        "file",
+        "arguments"
+      ],
+      "properties": {
+        "directory": {
+          "const": "."
+        },
+        "file": {
+          "type": "string",
+          "pattern": "^sources/case_[0-9]{3}\\.(c|cpp)$"
+        },
+        "arguments": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "source",
+        "compile_command",
+        "source_anchors",
+        "ap_anchors",
+        "controllability"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^case_[0-9]{3}$"
+        },
+        "source": {
+          "$ref": "#/definitions/renamed_source"
+        },
+        "compile_command": {
+          "$ref": "#/definitions/compile_command"
+        },
+        "source_anchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/source_anchor"
+          }
+        },
+        "ap_anchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/ap_anchor"
+          }
+        },
+        "controllability": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/controllability"
+          }
+        }
+      }
+    }
+  }
+}

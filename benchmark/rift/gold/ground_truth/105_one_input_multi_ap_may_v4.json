@@ -1,0 +1,300 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 26
+      },
+      "token": "ap_primary"
+    },
+    "ap_secondary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 28
+      },
+      "token": "ap_secondary"
+    },
+    "node_shared": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 24
+      },
+      "token": "node_shared"
+    },
+    "source_gate": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 22
+      },
+      "token": "source_gate"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "shared affine value crosses threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 26
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    },
+    {
+      "expression": "shared affine value satisfies parity/presence guard",
+      "id": "ap_secondary",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 28
+      },
+      "role": "GUARD",
+      "symbol": "ap_secondary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-105",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "one_input_multi_ap",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "One shared derived node feeds two independently declared APs; negative variants preserve the fan-out shape but root it at a constant.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "one_input_multi_ap",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "mutate one source against both AP boundaries",
+        "kind": "multi_ap_shared_input",
+        "relative_time_window": null,
+        "suggested_values": [
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "data",
+            "to": "node_shared"
+          },
+          {
+            "certainty": "may",
+            "from": "node_shared",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_shared",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_gate != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_secondary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "mutate one source against both AP boundaries",
+        "kind": "multi_ap_shared_input",
+        "relative_time_window": null,
+        "suggested_values": [
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "data",
+            "to": "node_shared"
+          },
+          {
+            "certainty": "may",
+            "from": "node_shared",
+            "kind": "data",
+            "to": "ap_secondary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_shared",
+          "ap_secondary"
+        ]
+      },
+      "preconditions": [
+        "source_gate != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "enable shared propagation",
+        "kind": "multi_ap_enable",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_gate",
+            "kind": "control",
+            "to": "node_shared"
+          },
+          {
+            "certainty": "may",
+            "from": "node_shared",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_gate",
+          "node_shared",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_gate"
+    },
+    {
+      "ap_id": "ap_secondary",
+      "channels": [
+        "control",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "enable shared propagation",
+        "kind": "multi_ap_enable",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_gate",
+            "kind": "control",
+            "to": "node_shared"
+          },
+          {
+            "certainty": "may",
+            "from": "node_shared",
+            "kind": "data",
+            "to": "ap_secondary"
+          }
+        ],
+        "nodes": [
+          "source_gate",
+          "node_shared",
+          "ap_secondary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_gate"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/105_one_input_multi_ap_may_v4.c",
+  "source_sha256": "6081908d3b909138f908ffa8f0e0a4c50cc44308e7818fbf20a481eb2ad6b511",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 20
+      },
+      "scope": "SESSION",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_gate",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/105_one_input_multi_ap_may_v4.c",
+        "line": 22
+      },
+      "scope": "SESSION",
+      "symbol": "source_gate"
+    }
+  ]
+}

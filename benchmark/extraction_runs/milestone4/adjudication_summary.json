@@ -1,0 +1,72 @@
+{
+  "ArduPilot重新审计": {
+    "候选总数": 19003,
+    "判断计数": {
+      "排除：不属于当前 ArduCopter 范围": 2522,
+      "排除：普通实现注释不能单独产生规范": 10348,
+      "接受：当前性质的直接来源证据": 21,
+      "证据不足：仅有参数元数据或缺少完整条件—义务关系": 724,
+      "证据不足：官方文本未形成独立可审计性质": 5388
+    },
+    "待上下文审核数": 0,
+    "接受性质来源候选数": 21,
+    "接受性质编号": [
+      "ARD-NEW-BATT-010",
+      "ARD-NEW-CHUTE-005",
+      "ARD-NEW-CRASH-006",
+      "ARD-NEW-EKF-007",
+      "ARD-NEW-GCS-008",
+      "ARD-NEW-GUID-012",
+      "ARD-NEW-GUIDWAIT-014",
+      "ARD-NEW-LOITER-013",
+      "ARD-NEW-RC-009",
+      "ARD-NEW-RTL-011",
+      "ARD-NEW-RUDDER-004",
+      "ARD-NEW-TERRAIN-003",
+      "ARD-NEW-VIBE-001",
+      "ARD-NEW-VIBE-002"
+    ],
+    "说明": "这是逐候选的确定性范围与证据闭合裁决；证据不足项未升级为性质，也未据源码控制流反推要求。"
+  },
+  "PX4重新审计": {
+    "候选总数": 17148,
+    "判断计数": {
+      "排除：不属于当前 PX4 多旋翼范围": 440,
+      "排除：普通实现注释不能单独产生规范": 10557,
+      "接受：当前性质的直接来源证据": 30,
+      "证据不足：仅参数元数据或缺少完整条件—义务关系": 329,
+      "证据不足：官方文本未形成独立可审计性质": 5792
+    },
+    "待上下文审核数": 0,
+    "接受性质来源候选数": 30,
+    "接受性质编号": [
+      "PX4-MC-AUTODISARM-004",
+      "PX4-MC-FLIGHTTIME-005",
+      "PX4-MC-GCSLOSS-002",
+      "PX4-MC-OFFBOARD-003",
+      "PX4-MC-RCLOSS-001",
+      "PX4-MC-RTLLOITER-006"
+    ],
+    "说明": "逐候选范围与证据闭合分类；证据不足项未升级为性质。"
+  },
+  "generated_at": "2026-07-18T06:25:00+08:00",
+  "selected_properties": 13,
+  "systems": {
+    "ArduPilot": {
+      "counts": {
+        "PENDING_CONTEXT_REVIEW": 18986,
+        "SELECTED_SOURCE_EVIDENCE": 17
+      },
+      "input": "benchmark/extraction_runs/milestone3/ArduPilot/prefilter_candidates.jsonl",
+      "output": "benchmark/extraction_runs/milestone4/ArduPilot_adjudication_ledger.jsonl"
+    },
+    "PX4": {
+      "counts": {
+        "PENDING_CONTEXT_REVIEW": 17118,
+        "SELECTED_SOURCE_EVIDENCE": 30
+      },
+      "input": "benchmark/extraction_runs/milestone3/PX4/prefilter_candidates.jsonl",
+      "output": "benchmark/extraction_runs/milestone4/PX4_adjudication_ledger.jsonl"
+    }
+  }
+}

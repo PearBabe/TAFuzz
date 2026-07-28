@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1200" viewBox="0 0 1900 1200">
+  <defs>
+    <style>
+      .title{font:700 41px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#102A43}
+      .subtitle{font:400 22px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#486581}
+      .layer{font:700 28px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#fff}
+      .head{font:700 25px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#102A43}
+      .body{font:400 21px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#243B53}
+      .small{font:400 18px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#486581}
+      .smallwhite{font:400 18px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#D9E2EC}
+      .math{font:italic 22px 'Cambria Math','Times New Roman',serif;fill:#102A43}
+      .box{stroke:#486581;stroke-width:2.1;rx:18;ry:18}
+      .arrow{fill:none;stroke:#334E68;stroke-width:3;marker-end:url(#arrow)}
+      .dual{fill:none;stroke:#7B61A8;stroke-width:3;marker-end:url(#arrowPurple)}
+    </style>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7.2" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#334E68"/></marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="7.2" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#7B61A8"/></marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#102A43" flood-opacity="0.14"/></filter>
+  </defs>
+  <rect width="1900" height="1200" fill="#FFFFFF"/>
+  <text x="950" y="58" text-anchor="middle" class="title">双层半符号化运行时验证方法框架图</text>
+  <text x="950" y="94" text-anchor="middle" class="subtitle">BDD 压缩离散命题条件，DBM 表示连续时间状态；正、负监视器协同形成三值结论</text>
+
+  <rect x="45" y="128" width="1810" height="520" rx="25" fill="#F2F7FC" stroke="#9CBBD3" stroke-width="2"/>
+  <rect x="45" y="675" width="1810" height="430" rx="25" fill="#F5FAF7" stroke="#9AC7A7" stroke-width="2"/>
+  <rect x="45" y="128" width="80" height="520" rx="25" fill="#2F6FA5"/>
+  <rect x="45" y="675" width="80" height="430" rx="25" fill="#2F855A"/>
+  <text x="85" y="388" text-anchor="middle" class="layer" transform="rotate(-90 85 388)">离线构造层</text>
+  <text x="85" y="890" text-anchor="middle" class="layer" transform="rotate(-90 85 890)">在线判定层</text>
+
+  <g filter="url(#shadow)">
+    <rect class="box" x="165" y="175" width="300" height="120" fill="#FFFFFF"/>
+    <text x="315" y="218" text-anchor="middle" class="head">MITL 安全规约</text>
+    <text x="315" y="255" text-anchor="middle" class="math">φ, AP = {p₁,…,pₘ}</text>
+    <text x="315" y="282" text-anchor="middle" class="small">语法与时间区间检查</text>
+
+    <rect class="box" x="565" y="175" width="350" height="120" fill="#FFFFFF"/>
+    <text x="740" y="218" text-anchor="middle" class="head">公式规范化与对偶构造</text>
+    <text x="740" y="255" text-anchor="middle" class="math">φₙ 与 ¬φₙ</text>
+    <text x="740" y="282" text-anchor="middle" class="small">显式拒绝不支持的输入</text>
+
+    <rect class="box" x="1015" y="175" width="355" height="120" fill="#FFFFFF"/>
+    <text x="1192" y="218" text-anchor="middle" class="head">正、负时间自动机</text>
+    <text x="1192" y="255" text-anchor="middle" class="math">A⁺ = BuildTA(φₙ), A⁻ = BuildTA(¬φₙ)</text>
+    <text x="1192" y="282" text-anchor="middle" class="small">位置、时钟、守卫与接受条件</text>
+
+    <rect class="box" x="1470" y="175" width="300" height="120" fill="#FFFFFF"/>
+    <text x="1620" y="218" text-anchor="middle" class="head">冻结命题位序</text>
+    <text x="1620" y="255" text-anchor="middle" class="math">π = (p₁,…,pₘ)</text>
+    <text x="1620" y="282" text-anchor="middle" class="small">正负自动机一致性检查</text>
+  </g>
+  <path class="arrow" d="M465 235 L565 235"/><path class="arrow" d="M915 235 L1015 235"/><path class="arrow" d="M1370 235 L1470 235"/>
+
+  <rect x="170" y="352" width="775" height="240" rx="22" fill="#EAF2FF" stroke="#5B8FC1" stroke-width="2.5" stroke-dasharray="10 7"/>
+  <text x="557" y="389" text-anchor="middle" class="head">第一层：BDD 离散半符号化</text>
+  <text x="557" y="421" text-anchor="middle" class="small">BDD（Binary Decision Diagram，二元决策图）共享布尔子函数</text>
+  <g filter="url(#shadow)">
+    <rect class="box" x="205" y="447" width="320" height="105" fill="#FFFFFF"/>
+    <text x="365" y="486" text-anchor="middle" class="head">BDD 边条件</text>
+    <text x="365" y="521" text-anchor="middle" class="body">合取、析取、取反与投影</text>
+    <rect class="box" x="590" y="447" width="320" height="105" fill="#FFFFFF"/>
+    <text x="750" y="486" text-anchor="middle" class="head">精确标签桥接</text>
+    <text x="750" y="521" text-anchor="middle" class="body">满足赋值 → bits:位串</text>
+  </g>
+  <path class="arrow" d="M525 500 L590 500"/>
+  <text x="557" y="577" text-anchor="middle" class="small">超过赋值资源门则显式失败，不抽样替代完整语义</text>
+
+  <rect x="1010" y="352" width="760" height="240" rx="22" fill="#F2ECFA" stroke="#8064A2" stroke-width="2.5" stroke-dasharray="10 7"/>
+  <text x="1390" y="389" text-anchor="middle" class="head">接受延伸空间：离线反向可达</text>
+  <text x="1390" y="421" text-anchor="middle" class="small">保留仍可扩展到接受运行的符号状态，提前排除必然失败分支</text>
+  <g filter="url(#shadow)">
+    <rect class="box" x="1050" y="447" width="315" height="105" fill="#FFFFFF"/>
+    <text x="1207" y="486" text-anchor="middle" class="head">正接受空间</text>
+    <text x="1207" y="521" text-anchor="middle" class="math">C⁺ = BackwardAccept(A⁺)</text>
+    <rect class="box" x="1420" y="447" width="315" height="105" fill="#FFFFFF"/>
+    <text x="1577" y="486" text-anchor="middle" class="head">负接受空间</text>
+    <text x="1577" y="521" text-anchor="middle" class="math">C⁻ = BackwardAccept(A⁻)</text>
+  </g>
+  <path class="arrow" d="M1620 295 L1620 328 L750 328 L750 447"/>
+  <path class="arrow" d="M1192 295 L1192 447"/>
+  <path class="arrow" d="M1192 328 L1577 328 L1577 447"/>
+
+  <g filter="url(#shadow)">
+    <rect class="box" x="165" y="735" width="315" height="145" fill="#FFFFFF"/>
+    <text x="322" y="780" text-anchor="middle" class="head">事件采集与命题估值</text>
+    <text x="322" y="817" text-anchor="middle" class="body">(Iᵢ, σᵢ), Iᵢ=[lᵢ,uᵢ]</text>
+    <text x="322" y="850" text-anchor="middle" class="small">事件来源、时钟域与单位固定</text>
+  </g>
+
+  <rect x="560" y="715" width="765" height="325" rx="22" fill="#EAF7EF" stroke="#43835D" stroke-width="2.5" stroke-dasharray="10 7"/>
+  <text x="942" y="755" text-anchor="middle" class="head">第二层：DBM 连续时间半符号化</text>
+  <text x="942" y="786" text-anchor="middle" class="small">DBM（Difference-Bound Matrix，差分约束矩阵）有限表示无限多个时钟估值</text>
+  <g filter="url(#shadow)">
+    <rect class="box" x="600" y="820" width="320" height="150" fill="#FFFFFF"/>
+    <text x="760" y="861" text-anchor="middle" class="head">正状态子集推进</text>
+    <text x="760" y="897" text-anchor="middle" class="math">S⁺ ← Post(A⁺,S⁺,Iᵢ,σᵢ) ∩ C⁺</text>
+    <text x="760" y="934" text-anchor="middle" class="small">时间推进、守卫、重置、不变式</text>
+    <rect class="box" x="965" y="820" width="320" height="150" fill="#FFFFFF"/>
+    <text x="1125" y="861" text-anchor="middle" class="head">负状态子集推进</text>
+    <text x="1125" y="897" text-anchor="middle" class="math">S⁻ ← Post(A⁻,S⁻,Iᵢ,σᵢ) ∩ C⁻</text>
+    <text x="1125" y="934" text-anchor="middle" class="small">保留非确定分支与非凸区域并集</text>
+  </g>
+  <path class="arrow" d="M480 807 L560 807 L560 895 L600 895"/>
+  <path class="arrow" d="M480 807 L535 807 L535 1000 L942 1000 L942 895 L965 895"/>
+  <path class="dual" d="M1207 552 L1207 685 L760 685 L760 820"/>
+  <path class="dual" d="M1577 552 L1577 660 L1125 660 L1125 820"/>
+
+  <g filter="url(#shadow)">
+    <rect class="box" x="1415" y="735" width="355" height="270" fill="#FFFFFF"/>
+    <text x="1592" y="779" text-anchor="middle" class="head">对偶状态判定</text>
+    <line x1="1455" y1="802" x2="1730" y2="802" stroke="#AAB7C4" stroke-width="1.5"/>
+    <text x="1592" y="842" text-anchor="middle" class="body">S⁺=∅, S⁻≠∅ → 违反</text>
+    <text x="1592" y="882" text-anchor="middle" class="body">S⁺≠∅, S⁻=∅ → 满足</text>
+    <text x="1592" y="922" text-anchor="middle" class="body">S⁺≠∅, S⁻≠∅ → 不确定</text>
+    <text x="1592" y="962" text-anchor="middle" class="small">构造失败或双空集 → 显式错误</text>
+  </g>
+  <path class="arrow" d="M1325 895 L1415 895"/>
+
+  <rect x="280" y="1090" width="1340" height="72" rx="18" fill="#102A43"/>
+  <text x="950" y="1122" text-anchor="middle" class="layer">结构化证据输出</text>
+  <text x="950" y="1151" text-anchor="middle" class="smallwhite">规范公式、命题位序、BDD/自动机规模、逐步 DBM 状态、结论、错误与运行配置</text>
+  <path class="arrow" d="M1592 1005 L1592 1060 L950 1060 L950 1090"/>
+</svg>

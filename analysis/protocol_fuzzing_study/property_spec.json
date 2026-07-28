@@ -1,0 +1,1909 @@
+{
+  "schema_version": 1,
+  "properties": [
+    {
+      "id": "SIP-TX-01",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer A initial schedule",
+      "category": "INVITE UAC retransmission",
+      "natural_language": "UDP INVITE 进入 Calling 后，Timer A 在 T1 前不得触发，并应在 T1 时触发或因事务停止而取消。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "standard_excerpt": "For unreliable transport the client transaction MUST start timer A with T1.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_invite_sent -> (G [0,500) (!timer_a_fired) && F [0,500] (timer_a_fired || invite_transaction_stopped)))",
+      "mightyppl_formula": "G* (udp_invite_sent -> (G [0,500) (!timer_a_fired) && F [0,500] (timer_a_fired || invite_transaction_stopped)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_invite_sent",
+        "timer_a_fired",
+        "invite_transaction_stopped"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_null",
+      "source_lines": "2505-2524",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2505",
+      "instrumentation_timing": "在首次 INVITE 发送和 tsx_schedule_timer(T1) 后原子记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_sent"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "timer_a_fired"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_sent"
+          ]
+        },
+        {
+          "time": 499,
+          "props": [
+            "timer_a_fired"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_invite_sent",
+        "timer_a_fired",
+        "invite_transaction_stopped"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 21,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-02",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer A causes the first INVITE retransmission",
+      "category": "INVITE UAC retransmission",
+      "natural_language": "未被响应或停止的 UDP INVITE 必须在首个 T1 周期结束前产生第一次重传。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "standard_excerpt": "When timer A fires, the client transaction MUST retransmit the request.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_invite_sent -> (G [0,500) (!invite_retransmitted) && F [0,500] (invite_retransmitted || invite_transaction_stopped)))",
+      "mightyppl_formula": "G* (udp_invite_sent -> (G [0,500) (!invite_retransmitted) && F [0,500] (invite_retransmitted || invite_transaction_stopped)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_invite_sent",
+        "invite_retransmitted",
+        "invite_transaction_stopped"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_calling",
+      "source_lines": "2540-2555",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+      "instrumentation_timing": "在 Timer 回调进入后、tsx_retransmit 返回成功时合并同一 microstep。",
+      "observability": "WHITEBOX",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_sent"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "invite_retransmitted"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_sent"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_invite_sent",
+        "invite_retransmitted",
+        "invite_transaction_stopped"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 33,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-03",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer A second interval doubles",
+      "category": "INVITE UAC retransmission",
+      "natural_language": "第一次 Timer A 周期完成后，下一次重传间隔必须为 2*T1，除非事务提前停止。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "standard_excerpt": "The request MUST be retransmitted and the timer reset to 2*T1; intervals continue doubling.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (timer_a_first_cycle_completed -> (G [0,1000) (!invite_retransmitted) && F [0,1000] (invite_retransmitted || invite_transaction_stopped)))",
+      "mightyppl_formula": "G* (timer_a_first_cycle_completed -> (G [0,1000) (!invite_retransmitted) && F [0,1000] (invite_retransmitted || invite_transaction_stopped)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "timer_a_first_cycle_completed",
+        "invite_retransmitted",
+        "invite_transaction_stopped"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_resched_retransmission",
+      "source_lines": "2336-2376",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2336",
+      "instrumentation_timing": "在计算 msec_time 并重新调度之后记录 derived AP；同时保留 old/new interval 字段。",
+      "observability": "WHITEBOX",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "timer_a_first_cycle_completed"
+          ]
+        },
+        {
+          "time": 1000,
+          "props": [
+            "invite_retransmitted"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "timer_a_first_cycle_completed"
+          ]
+        },
+        {
+          "time": 999,
+          "props": [
+            "invite_retransmitted"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "timer_a_first_cycle_completed",
+        "invite_retransmitted",
+        "invite_transaction_stopped"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 21,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-04",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer B transaction deadline",
+      "category": "INVITE UAC timeout",
+      "natural_language": "INVITE 客户事务在 64*T1 前不得 Timer B 超时，并应在该时刻前收到最终响应或 Timer B 触发。",
+      "normative_strength": "MUST/SHOULD",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "standard_excerpt": "For any transport the client transaction MUST start timer B with 64*T1.",
+      "time_value_ms": "32000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (invite_client_calling_entered -> (G [0,32000) (!timer_b_fired) && F [0,32000] (timer_b_fired || invite_final_response_received)))",
+      "mightyppl_formula": "G* (invite_client_calling_entered -> (G [0,32000) (!timer_b_fired) && F [0,32000] (timer_b_fired || invite_final_response_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "invite_client_calling_entered",
+        "timer_b_fired",
+        "invite_final_response_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_null/tsx_on_state_calling",
+      "source_lines": "2505-2512;2557-2570",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2505",
+      "instrumentation_timing": "在 timeout_timer 调度与回调处分开记录 start/fire；最终响应为替代终止事件。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "invite_client_calling_entered"
+          ]
+        },
+        {
+          "time": 32000,
+          "props": [
+            "timer_b_fired"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "invite_client_calling_entered"
+          ]
+        },
+        {
+          "time": 31999,
+          "props": [
+            "timer_b_fired"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "invite_client_calling_entered",
+        "timer_b_fired",
+        "invite_final_response_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 22,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-05",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Provisional response stops INVITE retransmission",
+      "category": "INVITE UAC state transition",
+      "natural_language": "同一 INVITE 事务收到 1xx 后不应继续重传 INVITE。",
+      "normative_strength": "SHOULD NOT",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "standard_excerpt": "In Proceeding, the client transaction SHOULD NOT retransmit the request any longer.",
+      "time_value_ms": "32000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (invite_provisional_received -> G* (!invite_retransmitted))",
+      "mightyppl_formula": "G* (invite_provisional_received -> G* (!invite_retransmitted))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "invite_provisional_received",
+        "invite_retransmitted"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_calling",
+      "source_lines": "2586-2623",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2586",
+      "instrumentation_timing": "收到 1xx、取消 INVITE retransmit timer 后记录；事务投影在结束前封闭。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "invite_provisional_received"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "invite_provisional_received"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "invite_retransmitted"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "SHOULD NOT 被用作异常 oracle；请确认是否作为论文主性质或降为软违反。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "invite_provisional_received",
+        "invite_retransmitted"
+      ],
+      "validation_positive_locations": 5,
+      "validation_positive_edges": 18,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 7,
+      "validation_negative_edges": 48,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 35,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-06",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer D minimum retention",
+      "category": "INVITE UAC completed retention",
+      "natural_language": "UDP INVITE 客户事务进入 Completed 后至少 32 秒内不得终止。",
+      "normative_strength": "SHOULD",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "standard_excerpt": "Timer D has a value of at least 32 seconds for unreliable transports.",
+      "time_value_ms": "32000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_invite_client_completed -> G [0,32000) (!transaction_terminated))",
+      "mightyppl_formula": "G* (udp_invite_client_completed -> G [0,32000) (!transaction_terminated))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_invite_client_completed",
+        "transaction_terminated"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_proceeding_uac",
+      "source_lines": "3131-3196",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3131",
+      "instrumentation_timing": "在 300--699 ACK 发送、Completed 进入和 Timer D 调度处记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_client_completed"
+          ]
+        },
+        {
+          "time": 32000,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_client_completed"
+          ]
+        },
+        {
+          "time": 31999,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 32000,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_invite_client_completed",
+        "transaction_terminated"
+      ],
+      "validation_positive_locations": 5,
+      "validation_positive_edges": 34,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 7,
+      "validation_negative_edges": 48,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 17,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-07",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer E initial schedule",
+      "category": "non-INVITE UAC retransmission",
+      "natural_language": "UDP non-INVITE 进入 Trying 后，Timer E 在 T1 前不得触发，并应在 T1 时触发或因最终响应停止。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "standard_excerpt": "For unreliable transport the client transaction MUST set timer E to fire in T1.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_noninvite_sent -> (G [0,500) (!timer_e_fired) && F [0,500] (timer_e_fired || noninvite_final_response_received)))",
+      "mightyppl_formula": "G* (udp_noninvite_sent -> (G [0,500) (!timer_e_fired) && F [0,500] (timer_e_fired || noninvite_final_response_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_noninvite_sent",
+        "timer_e_fired",
+        "noninvite_final_response_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_null",
+      "source_lines": "2514-2524",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2514",
+      "instrumentation_timing": "按 CSeq method 区分 E 与 A，在 T1 调度后记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_sent"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "timer_e_fired"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_sent"
+          ]
+        },
+        {
+          "time": 499,
+          "props": [
+            "timer_e_fired"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_noninvite_sent",
+        "timer_e_fired",
+        "noninvite_final_response_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 18,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-08",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer E causes the first non-INVITE retransmission",
+      "category": "non-INVITE UAC retransmission",
+      "natural_language": "未收到最终响应的 UDP non-INVITE 必须在首个 T1 周期结束前产生第一次重传。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "standard_excerpt": "If Timer E fires, the request MUST be passed to the transport layer for retransmission.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_noninvite_sent -> (G [0,500) (!noninvite_retransmitted) && F [0,500] (noninvite_retransmitted || noninvite_final_response_received)))",
+      "mightyppl_formula": "G* (udp_noninvite_sent -> (G [0,500) (!noninvite_retransmitted) && F [0,500] (noninvite_retransmitted || noninvite_final_response_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_noninvite_sent",
+        "noninvite_retransmitted",
+        "noninvite_final_response_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_calling",
+      "source_lines": "2546-2555",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2546",
+      "instrumentation_timing": "Timer 回调与成功发送在同一 microstep 合并。",
+      "observability": "WHITEBOX",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_sent"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "noninvite_retransmitted"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_sent"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_noninvite_sent",
+        "noninvite_retransmitted",
+        "noninvite_final_response_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 18,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-09",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer E second interval doubles",
+      "category": "non-INVITE UAC retransmission",
+      "natural_language": "第一次 Timer E 周期完成后，下一次重传间隔必须为 MIN(2*T1,T2)。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "standard_excerpt": "Timer E is reset to MIN(2*T1,T2), then MIN(4*T1,T2), capping at T2.",
+      "time_value_ms": "500/4000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (timer_e_first_cycle_completed -> (G [0,1000) (!noninvite_retransmitted) && F [0,1000] (noninvite_retransmitted || noninvite_final_response_received)))",
+      "mightyppl_formula": "G* (timer_e_first_cycle_completed -> (G [0,1000) (!noninvite_retransmitted) && F [0,1000] (noninvite_retransmitted || noninvite_final_response_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "timer_e_first_cycle_completed",
+        "noninvite_retransmitted",
+        "noninvite_final_response_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_resched_retransmission",
+      "source_lines": "2342-2354",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2342",
+      "instrumentation_timing": "比较 old/new interval，derived AP 仅在 new=min(2*old,T2) 时为真。",
+      "observability": "WHITEBOX",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "timer_e_first_cycle_completed"
+          ]
+        },
+        {
+          "time": 1000,
+          "props": [
+            "noninvite_retransmitted"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "timer_e_first_cycle_completed"
+          ]
+        },
+        {
+          "time": 999,
+          "props": [
+            "noninvite_retransmitted"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "timer_e_first_cycle_completed",
+        "noninvite_retransmitted",
+        "noninvite_final_response_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 18,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-10",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer E switches to T2 after provisional",
+      "category": "non-INVITE UAC proceeding",
+      "natural_language": "收到 non-INVITE 1xx 后，Timer E 应切换为 T2；在 T2 前不得触发，并在 T2 时触发或被最终响应取消。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "standard_excerpt": "In Proceeding, Timer E MUST be reset with a value of T2 seconds.",
+      "time_value_ms": "4000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (noninvite_provisional_received -> (G [0,4000) (!timer_e_fired) && F [0,4000] (timer_e_fired || noninvite_final_response_received)))",
+      "mightyppl_formula": "G* (noninvite_provisional_received -> (G [0,4000) (!timer_e_fired) && F [0,4000] (timer_e_fired || noninvite_final_response_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "noninvite_provisional_received",
+        "timer_e_fired",
+        "noninvite_final_response_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_calling",
+      "source_lines": "2600-2623",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2600",
+      "instrumentation_timing": "1xx 分支取消旧 retransmit timer 并以 t2_timer_val 重排后记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "noninvite_provisional_received"
+          ]
+        },
+        {
+          "time": 4000,
+          "props": [
+            "timer_e_fired"
+          ]
+        },
+        {
+          "time": 4001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "noninvite_provisional_received"
+          ]
+        },
+        {
+          "time": 3999,
+          "props": [
+            "timer_e_fired"
+          ]
+        },
+        {
+          "time": 4001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "noninvite_provisional_received",
+        "timer_e_fired",
+        "noninvite_final_response_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 29,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-11",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer F transaction deadline",
+      "category": "non-INVITE UAC timeout",
+      "natural_language": "non-INVITE 客户事务在 64*T1 前不得 Timer F 超时，并应在该时刻前收到最终响应或 Timer F 触发。",
+      "normative_strength": "SHOULD/MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "standard_excerpt": "The client transaction SHOULD set timer F to fire in 64*T1 seconds.",
+      "time_value_ms": "32000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (noninvite_trying_entered -> (G [0,32000) (!timer_f_fired) && F [0,32000] (timer_f_fired || noninvite_final_response_received)))",
+      "mightyppl_formula": "G* (noninvite_trying_entered -> (G [0,32000) (!timer_f_fired) && F [0,32000] (timer_f_fired || noninvite_final_response_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "noninvite_trying_entered",
+        "timer_f_fired",
+        "noninvite_final_response_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_null/tsx_on_state_calling",
+      "source_lines": "2505-2512;2557-2570",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2505",
+      "instrumentation_timing": "按 method 将 timeout_timer 解释为 F；最终响应是替代完成事件。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "noninvite_trying_entered"
+          ]
+        },
+        {
+          "time": 32000,
+          "props": [
+            "timer_f_fired"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "noninvite_trying_entered"
+          ]
+        },
+        {
+          "time": 31999,
+          "props": [
+            "timer_f_fired"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "noninvite_trying_entered",
+        "timer_f_fired",
+        "noninvite_final_response_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 20,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-12",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer K retention",
+      "category": "non-INVITE UAC completed retention",
+      "natural_language": "UDP non-INVITE 客户事务进入 Completed 后保持 T4，然后在 Timer K 触发时终止。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "standard_excerpt": "Timer K fires in T4 seconds for unreliable transport; then the transaction MUST terminate.",
+      "time_value_ms": "5000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_noninvite_client_completed -> (G [0,5000) (!transaction_terminated) && F [0,5000] transaction_terminated))",
+      "mightyppl_formula": "G* (udp_noninvite_client_completed -> (G [0,5000) (!transaction_terminated) && F [0,5000] transaction_terminated))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_noninvite_client_completed",
+        "transaction_terminated"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_proceeding_uac",
+      "source_lines": "3037-3069",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3037",
+      "instrumentation_timing": "在 Completed 状态调度 t4_timer_val 与 timeout 回调终止处记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_client_completed"
+          ]
+        },
+        {
+          "time": 5000,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_client_completed"
+          ]
+        },
+        {
+          "time": 4999,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_noninvite_client_completed",
+        "transaction_terminated"
+      ],
+      "validation_positive_locations": 9,
+      "validation_positive_edges": 64,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 74,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 19,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-13",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer G initial schedule",
+      "category": "INVITE UAS retransmission",
+      "natural_language": "UDP INVITE 服务事务发出 300--699 并进入 Completed 后，Timer G 在 T1 前不得触发。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "standard_excerpt": "For unreliable transports, timer G is set to fire in T1 seconds.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_invite_server_completed -> (G [0,500) (!timer_g_fired) && F [0,500] (timer_g_fired || ack_received)))",
+      "mightyppl_formula": "G* (udp_invite_server_completed -> (G [0,500) (!timer_g_fired) && F [0,500] (timer_g_fired || ack_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_invite_server_completed",
+        "timer_g_fired",
+        "ack_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_proceeding_uas",
+      "source_lines": "2865-2915",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2865",
+      "instrumentation_timing": "在 300--699 发送、Completed 进入和 T1 retransmit timer 调度后记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_server_completed"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "timer_g_fired"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_server_completed"
+          ]
+        },
+        {
+          "time": 499,
+          "props": [
+            "timer_g_fired"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_invite_server_completed",
+        "timer_g_fired",
+        "ack_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 18,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-14",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer G causes the first final-response retransmission",
+      "category": "INVITE UAS retransmission",
+      "natural_language": "未收到 ACK 的 UDP INVITE 服务事务必须在首个 T1 周期结束前重传 300--699 最终响应。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "standard_excerpt": "If timer G fires, the response is passed to the transport layer once more.",
+      "time_value_ms": "500",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_invite_server_completed -> (G [0,500) (!final_response_retransmitted) && F [0,500] (final_response_retransmitted || ack_received)))",
+      "mightyppl_formula": "G* (udp_invite_server_completed -> (G [0,500) (!final_response_retransmitted) && F [0,500] (final_response_retransmitted || ack_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_invite_server_completed",
+        "final_response_retransmitted",
+        "ack_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_proceeding_uas",
+      "source_lines": "2928-2944",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2928",
+      "instrumentation_timing": "Timer G 回调和 tsx_retransmit 成功发送合并为同一 microstep。",
+      "observability": "WHITEBOX",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_server_completed"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "final_response_retransmitted"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_server_completed"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_invite_server_completed",
+        "final_response_retransmitted",
+        "ack_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 23,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-15",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer G second interval doubles",
+      "category": "INVITE UAS retransmission",
+      "natural_language": "第一次 Timer G 周期完成后，下一次最终响应重传间隔必须为 MIN(2*T1,T2)。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "standard_excerpt": "Timer G is reset to MIN(2*T1,T2), then doubles unless exceeding T2.",
+      "time_value_ms": "500/4000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (timer_g_first_cycle_completed -> (G [0,1000) (!final_response_retransmitted) && F [0,1000] (final_response_retransmitted || ack_received)))",
+      "mightyppl_formula": "G* (timer_g_first_cycle_completed -> (G [0,1000) (!final_response_retransmitted) && F [0,1000] (final_response_retransmitted || ack_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "timer_g_first_cycle_completed",
+        "final_response_retransmitted",
+        "ack_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_resched_retransmission",
+      "source_lines": "2355-2367",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2355",
+      "instrumentation_timing": "记录 UAS old/new interval；只有 new=min(2*old,T2) 时 derived AP 为真。",
+      "observability": "WHITEBOX",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "timer_g_first_cycle_completed"
+          ]
+        },
+        {
+          "time": 1000,
+          "props": [
+            "final_response_retransmitted"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "timer_g_first_cycle_completed"
+          ]
+        },
+        {
+          "time": 999,
+          "props": [
+            "final_response_retransmitted"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "timer_g_first_cycle_completed",
+        "final_response_retransmitted",
+        "ack_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 18,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-16",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer H transaction deadline",
+      "category": "INVITE UAS timeout",
+      "natural_language": "INVITE 服务事务进入 Completed 后，Timer H 在 64*T1 前不得触发，并应在期限内收到 ACK 或 Timer H 触发。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "standard_excerpt": "When Completed is entered, timer H MUST be set to fire in 64*T1 seconds.",
+      "time_value_ms": "32000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (invite_server_completed -> (G [0,32000) (!timer_h_fired) && F [0,32000] (timer_h_fired || ack_received)))",
+      "mightyppl_formula": "G* (invite_server_completed -> (G [0,32000) (!timer_h_fired) && F [0,32000] (timer_h_fired || ack_received)))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "invite_server_completed",
+        "timer_h_fired",
+        "ack_received"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_proceeding_uas/tsx_on_state_completed_uas",
+      "source_lines": "2878-2888;3285-3295",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2878",
+      "instrumentation_timing": "在 Completed 状态调度 timeout_timer_val 与回调处区分 H。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "invite_server_completed"
+          ]
+        },
+        {
+          "time": 32000,
+          "props": [
+            "timer_h_fired"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "invite_server_completed"
+          ]
+        },
+        {
+          "time": 31999,
+          "props": [
+            "timer_h_fired"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "invite_server_completed",
+        "timer_h_fired",
+        "ack_received"
+      ],
+      "validation_positive_locations": 11,
+      "validation_positive_edges": 164,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 142,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 19,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-17",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "ACK stops Timer G retransmissions",
+      "category": "INVITE UAS confirmed transition",
+      "natural_language": "Completed 中收到匹配 ACK 后，最终响应重传必须停止。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "standard_excerpt": "On ACK, the transaction MUST enter Confirmed; Timer G is ignored and retransmissions cease.",
+      "time_value_ms": "5000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (ack_received -> G* (!final_response_retransmitted))",
+      "mightyppl_formula": "G* (ack_received -> G* (!final_response_retransmitted))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "ack_received",
+        "final_response_retransmitted"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_completed_uas",
+      "source_lines": "3232-3271",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3232",
+      "instrumentation_timing": "在 ACK 匹配、取消 retransmit timer、进入 Confirmed 后记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "ack_received"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "ack_received"
+          ]
+        },
+        {
+          "time": 500,
+          "props": [
+            "final_response_retransmitted"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "ack_received",
+        "final_response_retransmitted"
+      ],
+      "validation_positive_locations": 5,
+      "validation_positive_edges": 18,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 7,
+      "validation_negative_edges": 48,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 20,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-18",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer I retention",
+      "category": "INVITE UAS confirmed retention",
+      "natural_language": "UDP INVITE 服务事务进入 Confirmed 后保持 T4，并在 Timer I 触发时终止。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "standard_excerpt": "Timer I is T4 for unreliable transports; once it fires the server MUST terminate.",
+      "time_value_ms": "5000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_invite_server_confirmed -> (G [0,5000) (!transaction_terminated) && F [0,5000] transaction_terminated))",
+      "mightyppl_formula": "G* (udp_invite_server_confirmed -> (G [0,5000) (!transaction_terminated) && F [0,5000] transaction_terminated))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_invite_server_confirmed",
+        "transaction_terminated"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_completed_uas/tsx_on_state_confirmed",
+      "source_lines": "3251-3267;3399-3411",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3251",
+      "instrumentation_timing": "在 Confirmed 进入、T4 调度和 timeout 回调终止处记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_server_confirmed"
+          ]
+        },
+        {
+          "time": 5000,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_invite_server_confirmed"
+          ]
+        },
+        {
+          "time": 4999,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_invite_server_confirmed",
+        "transaction_terminated"
+      ],
+      "validation_positive_locations": 9,
+      "validation_positive_edges": 64,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 74,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 16,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-19",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer J retention",
+      "category": "non-INVITE UAS completed retention",
+      "natural_language": "UDP non-INVITE 服务事务进入 Completed 后保持 64*T1，并在 Timer J 触发时终止。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "17.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+      "standard_excerpt": "Timer J fires in 64*T1 for unreliable transports; then the transaction MUST terminate.",
+      "time_value_ms": "32000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (udp_noninvite_server_completed -> (G [0,32000) (!transaction_terminated) && F [0,32000] transaction_terminated))",
+      "mightyppl_formula": "G* (udp_noninvite_server_completed -> (G [0,32000) (!transaction_terminated) && F [0,32000] transaction_terminated))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "udp_noninvite_server_completed",
+        "transaction_terminated"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_symbol": "tsx_on_state_proceeding_uas/tsx_on_state_completed_uas",
+      "source_lines": "2889-2897;3299-3303",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2889",
+      "instrumentation_timing": "按 non-INVITE + UDP 区分 J，并在 timeout_timer 回调终止处记录。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "HIGH",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_server_completed"
+          ]
+        },
+        {
+          "time": 32000,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "udp_noninvite_server_completed"
+          ]
+        },
+        {
+          "time": 31999,
+          "props": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "time": 32001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "请确认该事务投影与 RFC 角色/传输条件一致。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "udp_noninvite_server_completed",
+        "transaction_terminated"
+      ],
+      "validation_positive_locations": 9,
+      "validation_positive_edges": 64,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 9,
+      "validation_negative_edges": 74,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 18,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    },
+    {
+      "id": "SIP-TX-20",
+      "protocol": "SIP",
+      "protocol_extension": "RFC 3261 transaction/proxy core",
+      "title": "Timer C exceeds three minutes",
+      "category": "stateful proxy INVITE timeout",
+      "natural_language": "有状态代理转发每个 INVITE 客户事务时必须设置 Timer C，且 3 分钟内（含边界）不得触发。",
+      "normative_strength": "MUST",
+      "standard": "RFC 3261",
+      "standard_section": "16.6",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-16.6",
+      "standard_excerpt": "Timer C MUST be set for each proxied INVITE and MUST be larger than 3 minutes.",
+      "time_value_ms": "180000",
+      "time_source": "RFC 3261 defaults: T1=500 ms, T2=4000 ms, T4=5000 ms",
+      "mathematical_mitl": "G* (proxy_invite_forwarded -> G [0,180000] (!timer_c_fired))",
+      "mightyppl_formula": "G* (proxy_invite_forwarded -> G [0,180000] (!timer_c_fired))",
+      "interval_class": "NON_PUNCTUAL",
+      "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+      "finite_end_semantics": "trace extends through the largest bounded obligation; G* is evaluated on the transaction projection",
+      "atomic_propositions": [
+        "proxy_invite_forwarded",
+        "timer_c_fired"
+      ],
+      "correlation_key": "session_id + Via branch + CSeq number/method; ACK additionally matches RFC 3261 transaction rules",
+      "projection_rule": "correlate first, then project one transaction; dynamic identifiers never enter AP names",
+      "source_repository": "kamailio/kamailio",
+      "source_commit": "2648eb330b133a20f1398d59a28c53532106cad3",
+      "source_path": "src/modules/tm/timer.h",
+      "source_symbol": "_set_fr_retr",
+      "source_lines": "171-200",
+      "source_url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/timer.h#L171",
+      "instrumentation_timing": "在建立分支事务并写入 fr_expire/end_of_life 后记录；配置值同时进入事件字段（默认常数见 config.h:61--68）。",
+      "observability": "HYBRID",
+      "oracle_value": "HIGH",
+      "triggerability": "MEDIUM",
+      "confidence": "HIGH",
+      "positive_trace": [
+        {
+          "time": 0,
+          "props": [
+            "proxy_invite_forwarded"
+          ]
+        },
+        {
+          "time": 180001,
+          "props": []
+        }
+      ],
+      "negative_trace": [
+        {
+          "time": 0,
+          "props": [
+            "proxy_invite_forwarded"
+          ]
+        },
+        {
+          "time": 180000,
+          "props": [
+            "timer_c_fired"
+          ]
+        },
+        {
+          "time": 180001,
+          "props": []
+        }
+      ],
+      "human_review_status": "PENDING",
+      "review_question": "RFC 要求严格大于 3 分钟；Kamailio 的 180000 ms 默认值需要人工判断为实现偏差、代理级 lifetime 近似或配置要求。",
+      "validation_build_ok": true,
+      "validation_positive_symbolic": "POSITIVE",
+      "validation_negative_symbolic": "NEGATIVE",
+      "validation_positive_concrete": "POSITIVE",
+      "validation_negative_concrete": "NEGATIVE",
+      "validation_expected_oracle_ok": true,
+      "validation_symbolic_concrete_consistent": true,
+      "validation_ap_order": [
+        "proxy_invite_forwarded",
+        "timer_c_fired"
+      ],
+      "validation_positive_locations": 5,
+      "validation_positive_edges": 34,
+      "validation_positive_clocks": 2,
+      "validation_negative_locations": 7,
+      "validation_negative_edges": 48,
+      "validation_negative_clocks": 2,
+      "validation_build_ms": 16,
+      "validation_monitor_ms_positive": 0,
+      "validation_monitor_ms_negative": 0,
+      "validation_status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,482 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-17T23:10:38.848182+00:00",
+  "captures": [
+    {
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "system": "PX4",
+      "vehicle": "multicopter",
+      "profile": "px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+      "runtime_status": "COMPLETE",
+      "launch_command": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc",
+      "connection": "udpout:127.0.0.1:18612 source=250:190 target=43:1",
+      "phases": [
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8146347386239,
+          "end_host_monotonic_ns": 8147663038940,
+          "traffic_origin": "PX4 startup and GCS discovery traffic",
+          "notes": "Pre-contract startup phase."
+        },
+        {
+          "name": "BASELINE",
+          "start_host_monotonic_ns": 8147663038940,
+          "end_host_monotonic_ns": 8159667030904,
+          "traffic_origin": "Default PX4 streams after GCS discovery; no PARAM or message request sent.",
+          "notes": "Duration 12.0s."
+        },
+        {
+          "name": "PARAMETER_DOWNLOAD",
+          "start_host_monotonic_ns": 8159667030904,
+          "end_host_monotonic_ns": 8176175644973,
+          "traffic_origin": "PARAM_REQUEST_LIST followed by explicit PARAM_REQUEST_READ for key parameters.",
+          "notes": "Runtime values only; no PARAM_SET is sent."
+        },
+        {
+          "name": "REQUEST_SWEEP",
+          "start_host_monotonic_ns": 8176175644973,
+          "end_host_monotonic_ns": 8184155993074,
+          "traffic_origin": "Sequential MAV_CMD_REQUEST_MESSAGE (512) plus default traffic that continued during windows.",
+          "notes": "Matching frames are temporal observations; default-stream presence is marked as causal ambiguity."
+        }
+      ],
+      "parameter_snapshot": {
+        "status": "COMPLETE",
+        "protocol": "PARAM",
+        "path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "expected_count": 900,
+        "received_count": 941,
+        "unique_parameter_count": 901,
+        "missing_indices": [],
+        "key_values": [
+          {
+            "name": "COM_RC_LOSS_T",
+            "wire_value": 0.5,
+            "decoded_value": 0.5,
+            "param_type": 9,
+            "param_index": 297,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162647408941
+          },
+          {
+            "name": "COM_RC_IN_MODE",
+            "wire_value": 1.401298464324817e-45,
+            "decoded_value": 1,
+            "param_type": 6,
+            "param_index": 296,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8163392894979
+          },
+          {
+            "name": "COM_RCL_EXCEPT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 294,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8164144049244
+          },
+          {
+            "name": "NAV_RCL_ACT",
+            "wire_value": 2.802596928649634e-45,
+            "decoded_value": 2,
+            "param_type": 6,
+            "param_index": 650,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8164899300356
+          },
+          {
+            "name": "COM_DL_LOSS_T",
+            "wire_value": 1.401298464324817e-44,
+            "decoded_value": 10,
+            "param_type": 6,
+            "param_index": 260,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8165649969385
+          },
+          {
+            "name": "COM_DLL_EXCEPT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 259,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8166402952904
+          },
+          {
+            "name": "NAV_DLL_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 642,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8167155244283
+          },
+          {
+            "name": "COM_OF_LOSS_T",
+            "wire_value": 1.0,
+            "decoded_value": 1.0,
+            "param_type": 9,
+            "param_index": 285,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8167905573358
+          },
+          {
+            "name": "COM_OBL_RC_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 284,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8168656138183
+          },
+          {
+            "name": "COM_DISARM_LAND",
+            "wire_value": 2.0,
+            "decoded_value": 2.0,
+            "param_type": 9,
+            "param_index": 256,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8169404521839
+          },
+          {
+            "name": "COM_DISARM_PRFLT",
+            "wire_value": 10.0,
+            "decoded_value": 10.0,
+            "param_type": 9,
+            "param_index": 258,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8170161575543
+          },
+          {
+            "name": "COM_FLT_TIME_MAX",
+            "wire_value": -1,
+            "decoded_value": -1,
+            "param_type": 6,
+            "param_index": 271,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8170913406680
+          },
+          {
+            "name": "RTL_LAND_DELAY",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 796,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8171664303047
+          },
+          {
+            "name": "RTL_TYPE",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 803,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8172411510209
+          },
+          {
+            "name": "RTL_DESCEND_ALT",
+            "wire_value": 10.0,
+            "decoded_value": 10.0,
+            "param_type": 9,
+            "param_index": 795,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8173167394566
+          },
+          {
+            "name": "MAV_SYS_ID",
+            "wire_value": 6.025583396596713e-44,
+            "decoded_value": 43,
+            "param_type": 6,
+            "param_index": 518,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8173921287111
+          },
+          {
+            "name": "MAV_TYPE",
+            "wire_value": 2.802596928649634e-45,
+            "decoded_value": 2,
+            "param_type": 6,
+            "param_index": 519,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8174669906722
+          },
+          {
+            "name": "SYS_AUTOSTART",
+            "wire_value": 1.4069036581821163e-41,
+            "decoded_value": 10040,
+            "param_type": 6,
+            "param_index": 866,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8175427841861
+          }
+        ]
+      },
+      "message_summary": {
+        "path": "benchmark/extraction_runs/milestone6/PX4/message_inventory.json",
+        "sha256": "e181dc337e7db3794aa1078bd4c2f4d343db81db09663c1933a34bfd7c9f00a9",
+        "total_message_count": 14748,
+        "distinct_message_count": 54,
+        "baseline_distinct_message_count": 33,
+        "host_clock": "CLOCK_MONOTONIC_NS"
+      },
+      "request_sweep": {
+        "status": "COMPLETE",
+        "path": "benchmark/extraction_runs/milestone6/PX4/message_request_sweep.json",
+        "sha256": "cea0d0eb996dd515a878a6977b31f035b32b0ce4a35ef35f1e66a85c01771b86",
+        "attempted": 243,
+        "message_observed": 47,
+        "unsupported": 0,
+        "no_response": 0
+      },
+      "clock_domains": [
+        "CLOCK_MONOTONIC_NS",
+        "HOST_UTC_WALL_FOR_TLOG_ONLY",
+        "PX4_BOOT_OR_UNIX_OR_PROTOCOL_SPECIFIC_ONBOARD_FIELDS_AS_NAMED"
+      ],
+      "process_cleanup": "pid=738719 pgid=738719 exit_code=0 cleanup_complete=True",
+      "artifacts": [
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/mavlink_messages.jsonl",
+          "sha256": "8c1d380f0df038a28645e76c5a6f607dab6d7526bf9f04058101324ad269b734",
+          "role": "Decoded MAVLink JSONL with raw frame hex and phase/timing metadata"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/mavlink_capture.tlog",
+          "sha256": "0ea098fbbb50e44093c33b5d1fa283c3284b5daf6ea2a17b7c48248eaac9f02e",
+          "role": "Raw MAVLink tlog"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/message_inventory.json",
+          "sha256": "e181dc337e7db3794aa1078bd4c2f4d343db81db09663c1933a34bfd7c9f00a9",
+          "role": "Message inventory and three-layer counts"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+          "sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+          "role": "Runtime parameter snapshot"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/message_request_sweep.json",
+          "sha256": "cea0d0eb996dd515a878a6977b31f035b32b0ce4a35ef35f1e66a85c01771b86",
+          "role": "Full dialect request sweep"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/px4.stdout.log",
+          "sha256": "6490bfbcb30c48cbb25c734960859cd7522d15617e97df1793573788e9e649b5",
+          "role": "PX4 stdout"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/px4.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "PX4 stderr"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/process_lifecycle.json",
+          "sha256": "30fe3452eea1727d56eeeef2863e45b00ac02460c0d8fa937a8204b0537ad350",
+          "role": "Process exit and cleanup evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/source_integrity.json",
+          "sha256": "43bf7d05669c26211e881c85c09e4c245fa6bef0a6b105edf06b03250c16acf4",
+          "role": "Frozen source/worktree verification"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/commands.json",
+          "sha256": "fec4d0fd52578477b72f1fdc6200d8ed6b8b35c99a5e47adec96dd0b7a7a3676",
+          "role": "Exact commands and protocol actions"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/capture_details.json",
+          "sha256": "acfe4d8b7dc8dd01f6ad896821b63777e18cc9420170e10f28d5a9704a835d45",
+          "role": "Extended capture facts"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/capture_driver.log",
+          "sha256": "44be40eb280215b0835737b7fd1ce4f9a2d28ef6560ca61deda2f8a0de755a70",
+          "role": "Capture-driver progress and errors"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/px4_development_v20.py",
+          "sha256": "ca4927eceb3db48675481867da92d41cb4dd603d17b2f6dbb8a6abe9b188c94f",
+          "role": "Generated frozen PX4 development dialect decoder"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/dialect_generation.log",
+          "sha256": "cadaf2a7bd727b40bfbd7ac9c8e0305cab16764ee538261536181567fbb147db",
+          "role": "Dialect generation log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/README.md",
+          "sha256": "f94cd87d0a7cecf5af9d30734c2456c51f3359a7d7259c6309068b5c2ed5d301",
+          "role": "Human-readable capture report"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/capture_px4_runtime.py",
+          "sha256": "d5f847f49d2b6f159758136057a1fcf927e5d7fda26978e18d39a2871f611530",
+          "role": "Reproduction script"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/dataman",
+          "sha256": "55cf902b00539fd43b45029e449392ebfab82acdda744f056fcbe3aa0b0c10c4",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/log/2026-07-17/23_10_00.ulg",
+          "sha256": "e8e21a0e6c3f729ce61bb5c5bc0df47361eb5e7fd5252ed4eeb60488f7e9abc1",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/parameters.bson",
+          "sha256": "c255c7ca21d2df8eb73a14169e924d202c0e27c185be11951bf53a0df654fe88",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/parameters_backup.bson",
+          "sha256": "c255c7ca21d2df8eb73a14169e924d202c0e27c185be11951bf53a0df654fe88",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/manifest.json",
+          "sha256": "e716bed71700a298cfae0ff5db944fbe96dc073053d2ac2199a6418a3e1c6c5e",
+          "role": "Preserved failed none_iris attempt manifest"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/px4.stdout.log",
+          "sha256": "02691315ba1b2e8b4e7a3a6199b947da9e5a4ac05c5cb3c97a723ef6c10fecff",
+          "role": "Preserved failed none_iris startup stdout"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/process_lifecycle.json",
+          "sha256": "81cba146659c7e005f8a11365e2774ba09e65b495177d30c10ef394b4e16e72d",
+          "role": "Preserved failed-attempt cleanup evidence"
+        }
+      ],
+      "limitations": [
+        "This is runtime acquisition only; implementation/property satisfaction is NOT_ASSESSED.",
+        "PX4 used the internal headless SIH multicopter airframe sihsim_quadx; no external graphical simulator, arming, takeoff command, or campaign flight path was used.",
+        "Host CLOCK_MONOTONIC_NS arrival time is not substituted for PX4 onboard time fields.",
+        "MAV_CMD_REQUEST_MESSAGE COMMAND_ACK identifies command 512 but not the requested message ID; correlation is sequential and temporal.",
+        "A matching frame after a request is not asserted causal when that message was already present in BASELINE.",
+        "No PARAM_SET, stream-interval change, arming command, mode command, or actuator command was sent.",
+        "For non-finite float32 carriers produced by PX4 bytewise integer PARAM encoding, parameters_runtime.json stores a string sentinel plus exact float32 hex; the manifest's numeric wire_value falls back to the decoded integer value.",
+        "PX4 emitted the special _HASH_CHECK record at index 65535 in addition to the complete indexed set 0 through param_count-1; it explains why unique parameter names exceed expected_count by one."
+      ]
+    }
+  ],
+  "property_parameters": [
+    {
+      "property_id": "PX4-MC-RCLOSS-001",
+      "parameter_id": "COM_RC_LOSS_T",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 0.5,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 297,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-GCSLOSS-002",
+      "parameter_id": "COM_DL_LOSS_T",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 10,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 260,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-OFFBOARD-003",
+      "parameter_id": "COM_OF_LOSS_T",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 1.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 285,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-AUTODISARM-004",
+      "parameter_id": "COM_DISARM_LAND",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 2.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 256,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-FLIGHTTIME-005",
+      "parameter_id": "COM_FLT_TIME_MAX",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": -1,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 271,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED_DISABLED_DOMAIN"
+    },
+    {
+      "property_id": "PX4-MC-RTLLOITER-006",
+      "parameter_id": "RTL_LAND_DELAY",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 0.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 796,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    }
+  ],
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

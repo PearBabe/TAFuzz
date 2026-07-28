@@ -1,0 +1,219 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 31
+      },
+      "token": "ap_primary"
+    },
+    "node_stage_one": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 27
+      },
+      "token": "node_stage_one"
+    },
+    "node_stage_two": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 29
+      },
+      "token": "node_stage_two"
+    },
+    "source_gate": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 25
+      },
+      "token": "source_gate"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 23
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_stage_two reaches generated affine threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 31
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-015",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "indirect_data",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "Two explicit helper stages mechanically define the interprocedural value path; negative variants use a separate constant-rooted helper chain.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "indirect_data",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "call",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross affine threshold under guard",
+        "kind": "affine_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "2",
+          "3",
+          "4"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "call",
+            "to": "node_stage_one"
+          },
+          {
+            "certainty": "may",
+            "from": "node_stage_one",
+            "kind": "call",
+            "to": "node_stage_two"
+          },
+          {
+            "certainty": "may",
+            "from": "node_stage_two",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_stage_one",
+          "node_stage_two",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_gate != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control",
+        "call",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "select transformed value",
+        "kind": "boolean_toggle",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_gate",
+            "kind": "control",
+            "to": "node_stage_one"
+          },
+          {
+            "certainty": "may",
+            "from": "node_stage_one",
+            "kind": "call",
+            "to": "node_stage_two"
+          },
+          {
+            "certainty": "may",
+            "from": "node_stage_two",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_gate",
+          "node_stage_one",
+          "node_stage_two",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_gate"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/015_indirect_data_may_v4.c",
+  "source_sha256": "9ec88e448f08ca9b6fbee50d5050c294697fbd6c5f1e1881e33936bfb9ba05e5",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 23
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_gate",
+      "kind": "external_argument",
+      "location": {
+        "column": 13,
+        "file": "cases/015_indirect_data_may_v4.c",
+        "line": 25
+      },
+      "scope": "PROCESS",
+      "symbol": "source_gate"
+    }
+  ]
+}

@@ -1,0 +1,1782 @@
+[
+  {
+    "id": "TCP-ACK-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 delayed acknowledgments",
+    "title": "Delayed ACK remains below 500 ms",
+    "category": "acknowledgment delay",
+    "natural_language": "对需要确认且采用 delayed ACK 的报文段，ACK 延迟必须严格小于 500 ms。",
+    "normative_strength": "MUST",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.8.6.3",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.3",
+    "standard_excerpt": "the delay MUST be less than 0.5 seconds",
+    "time_value_ms": "500 (strict upper bound)",
+    "time_parameter": "maximum delayed ACK",
+    "time_source": "RFC 9293 Section 3.8.6.3",
+    "instantiation_basis": "NORMATIVE_BOUND",
+    "mathematical_mitl": "G (tcp_delayed_ack_obligation_started -> F [0,500) (tcp_ack_sent))",
+    "mightyppl_formula": "G* (tcp_delayed_ack_obligation_started -> F [0,500) (tcp_ack_sent))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_delayed_ack_obligation_started",
+      "tcp_ack_sent"
+    ],
+    "ap_definitions": {
+      "tcp_delayed_ack_obligation_started": "A processed segment requires ACK and enters the delayed-ACK rather than immediate-ACK branch.",
+      "tcp_ack_sent": "An ACK covering the correlated receive sequence is handed to IP output."
+    },
+    "correlation_key": "socket cookie + receive-direction sequence interval",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "net/ipv4/tcp_output.c",
+    "source_symbol": "tcp_send_delayed_ack",
+    "source_lines": "4409-4463",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4409-L4463",
+    "instrumentation_timing": "Emit the trigger immediately before sk_reset_timer; emit ACK after tcp_send_ack/output using the same socket cookie.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_delayed_ack_obligation_started"
+        ]
+      },
+      {
+        "time": 499,
+        "props": [
+          "tcp_ack_sent"
+        ]
+      },
+      {
+        "time": 501,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_delayed_ack_obligation_started"
+        ]
+      },
+      {
+        "time": 500,
+        "props": [
+          "tcp_ack_sent"
+        ]
+      },
+      {
+        "time": 501,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "The Linux default cap is normally 200 ms, which is stricter; 500 ms remains the protocol oracle.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "APPROVE",
+    "independent_audit_note": "Independent standard/formula/source audit approved this card without a semantic correction.",
+    "primary_source_atomic_propositions": [
+      "tcp_delayed_ack_obligation_started"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "pure ACK construction and transmission handoff",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "__tcp_send_ack",
+        "lines": "4466-4506",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4466-L4506",
+        "atomic_propositions": [
+          "tcp_ack_sent"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "tcp_delayed_ack_obligation_started"
+          ]
+        },
+        {
+          "time": 501,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "pure ACK construction and transmission handoff",
+        "atomic_propositions": [
+          "tcp_ack_sent"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "__tcp_send_ack",
+        "lines": "4466-4506",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4466-L4506",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c; verified_symbols=['__tcp_send_ack']; failed_symbols=[]; cited_ranges=[(4466, 4506)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c; verified_symbols=['tcp_send_delayed_ack']; failed_symbols=[]; cited_ranges=[(4409, 4463)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "tcp_delayed_ack_obligation_started",
+      "tcp_ack_sent"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 40,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 54,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 15,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-KA-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 keep-alive",
+    "title": "Default keep-alive idle period is at least two hours",
+    "category": "keep-alive",
+    "natural_language": "应用显式启用 keep-alive 且使用默认参数时，空闲连接在两小时内不得发送 keep-alive probe。",
+    "normative_strength": "MUST",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.8.4",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.4",
+    "standard_excerpt": "MUST default to no less than two hours",
+    "time_value_ms": "7200000",
+    "time_parameter": "default keep-alive interval",
+    "time_source": "RFC 9293 Section 3.8.4 and Linux TCP_KEEPALIVE_TIME",
+    "instantiation_basis": "NORMATIVE_DEFAULT_AND_IMPLEMENTATION_DEFAULT",
+    "mathematical_mitl": "G (tcp_default_keepalive_enabled_on_idle_connection -> G [0,7200000) (!tcp_keepalive_probe_sent))",
+    "mightyppl_formula": "G* (tcp_default_keepalive_enabled_on_idle_connection -> G [0,7200000) (!tcp_keepalive_probe_sent))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_default_keepalive_enabled_on_idle_connection",
+      "tcp_keepalive_probe_sent"
+    ],
+    "ap_definitions": {
+      "tcp_default_keepalive_enabled_on_idle_connection": "SO_KEEPALIVE becomes active with no per-socket keepidle override and no outstanding data.",
+      "tcp_keepalive_probe_sent": "tcp_write_wakeup emits a keep-alive probe for the correlated socket."
+    },
+    "correlation_key": "network namespace + socket cookie",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "include/net/tcp.h",
+    "source_symbol": "TCP_KEEPALIVE_TIME",
+    "source_lines": "175-180",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L175-L180",
+    "instrumentation_timing": "Record enablement after tcp_set_keepalive arms the timer; emit probe only after tcp_write_wakeup succeeds.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_default_keepalive_enabled_on_idle_connection"
+        ]
+      },
+      {
+        "time": 7200000,
+        "props": [
+          "tcp_keepalive_probe_sent"
+        ]
+      },
+      {
+        "time": 7200001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_default_keepalive_enabled_on_idle_connection"
+        ]
+      },
+      {
+        "time": 7199999,
+        "props": [
+          "tcp_keepalive_probe_sent"
+        ]
+      },
+      {
+        "time": 7200001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Keep-alive is optional and disabled unless the application requests it; virtual time is needed for practical fuzzing.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "APPROVE",
+    "independent_audit_note": "Independent standard/formula/source audit approved this card without a semantic correction.",
+    "primary_source_atomic_propositions": [
+      "tcp_default_keepalive_enabled_on_idle_connection"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "SO_KEEPALIVE enable and default timer arm",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_set_keepalive",
+        "lines": "768-777",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L768-L777",
+        "atomic_propositions": [
+          "tcp_default_keepalive_enabled_on_idle_connection"
+        ]
+      },
+      {
+        "role": "keep-alive expiry and probe send attempt",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_keepalive_timer",
+        "lines": "779-866",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L779-L866",
+        "atomic_propositions": [
+          "tcp_keepalive_probe_sent"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "SO_KEEPALIVE enable and default timer arm",
+        "atomic_propositions": [
+          "tcp_default_keepalive_enabled_on_idle_connection"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_set_keepalive",
+        "lines": "768-777",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L768-L777",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_set_keepalive']; failed_symbols=[]; cited_ranges=[(768, 777)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "keep-alive expiry and probe send attempt",
+        "atomic_propositions": [
+          "tcp_keepalive_probe_sent"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_keepalive_timer",
+        "lines": "779-866",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L779-L866",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_keepalive_timer']; failed_symbols=[]; cited_ranges=[(779, 866)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h; verified_symbols=['TCP_KEEPALIVE_TIME']; failed_symbols=[]; cited_ranges=[(175, 180)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "tcp_default_keepalive_enabled_on_idle_connection",
+      "tcp_keepalive_probe_sent"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 15,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-R2-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 connection-failure thresholds",
+    "title": "Data retransmission R2 is at least 100 seconds",
+    "category": "connection failure timeout",
+    "natural_language": "已建立连接因同一数据持续重传进入默认 R2 计时时，在 100 秒前不应因 excessive retransmission 关闭。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.8.3",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.3",
+    "standard_excerpt": "The value of R2 SHOULD correspond to at least 100 seconds",
+    "time_value_ms": "100000",
+    "time_parameter": "established-data R2 lower bound",
+    "time_source": "RFC 9293 Section 3.8.3",
+    "instantiation_basis": "NORMATIVE_MINIMUM",
+    "mathematical_mitl": "G (tcp_data_r2_episode_started -> G [0,100000) (!tcp_closed_by_data_r2_expiry))",
+    "mightyppl_formula": "G* (tcp_data_r2_episode_started -> G [0,100000) (!tcp_closed_by_data_r2_expiry))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_data_r2_episode_started",
+      "tcp_closed_by_data_r2_expiry"
+    ],
+    "ap_definitions": {
+      "tcp_data_r2_episode_started": "First retransmission timestamp is established for data in an established connection using default R2 policy.",
+      "tcp_closed_by_data_r2_expiry": "tcp_write_timeout reports expired and tcp_write_err closes specifically because the data R2 threshold is reached."
+    },
+    "correlation_key": "network namespace + socket cookie + retransmission episode",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "net/ipv4/tcp_timer.c",
+    "source_symbol": "tcp_write_timeout",
+    "source_lines": "242-305",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L242-L305",
+    "instrumentation_timing": "Emit start when retrans_stamp is first set; emit expiry immediately before tcp_write_err with state outside SYN_SENT/SYN_RECV and expired=true.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_data_r2_episode_started"
+        ]
+      },
+      {
+        "time": 100000,
+        "props": [
+          "tcp_closed_by_data_r2_expiry"
+        ]
+      },
+      {
+        "time": 100001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_data_r2_episode_started"
+        ]
+      },
+      {
+        "time": 99999,
+        "props": [
+          "tcp_closed_by_data_r2_expiry"
+        ]
+      },
+      {
+        "time": 100001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "An application-selected TCP_USER_TIMEOUT, external RST/ICMP, resource pressure or application close is not `tcp_closed_by_data_r2_expiry`.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "APPROVE",
+    "independent_audit_note": "Independent standard/formula/source audit approved this card without a semantic correction.",
+    "primary_source_atomic_propositions": [
+      "tcp_closed_by_data_r2_expiry"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "first attempted data retransmission timestamp",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "tcp_retransmit_skb",
+        "lines": "3695-3717",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L3695-L3717",
+        "atomic_propositions": [
+          "tcp_data_r2_episode_started"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "first attempted data retransmission timestamp",
+        "atomic_propositions": [
+          "tcp_data_r2_episode_started"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "tcp_retransmit_skb",
+        "lines": "3695-3717",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L3695-L3717",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c; verified_symbols=['tcp_retransmit_skb']; failed_symbols=[]; cited_ranges=[(3695, 3717)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_write_timeout']; failed_symbols=[]; cited_ranges=[(242, 305)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "tcp_data_r2_episode_started",
+      "tcp_closed_by_data_r2_expiry"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 13,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-RTO-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 6298 retransmission timeout",
+    "title": "Linux RFC-recommended initial RTO profile arms 1000 ms",
+    "category": "retransmission timeout",
+    "natural_language": "Linux 未采用 3 秒 fallback、thin-stream 或自定义策略且实际按 1000 ms arm 初始 RTO 后，该 timer generation 不得提前到期，并须在 1000 ms 到期或被关联事件替换/取消。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 6298",
+    "standard_version": "RFC 6298",
+    "standard_section": "2.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6298.html#section-2.1",
+    "standard_excerpt": "the sender SHOULD set RTO <- 1 second",
+    "time_value_ms": "1000",
+    "time_parameter": "initial RTO",
+    "time_source": "RFC 6298 Section 2.1 recommended initial value",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_DEFAULT",
+    "mathematical_mitl": "G (tcp_initial_rto_armed_1000ms_profile -> (G [0,1000) (!tcp_initial_rto_deadline_reached) && F [0,1000] (tcp_initial_rto_deadline_reached || tcp_initial_rto_superseded)))",
+    "mightyppl_formula": "G* (tcp_initial_rto_armed_1000ms_profile -> (G [0,1000) (!tcp_initial_rto_deadline_reached) && F [0,1000] (tcp_initial_rto_deadline_reached || tcp_initial_rto_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_initial_rto_armed_1000ms_profile",
+      "tcp_initial_rto_deadline_reached",
+      "tcp_initial_rto_superseded"
+    ],
+    "ap_definitions": {
+      "tcp_initial_rto_armed_1000ms_profile": "ICSK_TIME_RETRANS is actually armed with a 1000 ms absolute deadline and fallback/override branches are false.",
+      "tcp_initial_rto_deadline_reached": "The absolute deadline of that exact retransmission-timer generation is reached.",
+      "tcp_initial_rto_superseded": "A correlated ACK, loss-state change, or explicit timer restart/cancel replaces that exact timer generation."
+    },
+    "correlation_key": "network namespace + socket cookie + 4-tuple; sequence numbers correlate ACKs but are fields, not AP names",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "include/net/tcp.h",
+    "source_symbol": "TCP_TIMEOUT_INIT",
+    "source_lines": "160-173",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L160-L173",
+    "instrumentation_timing": "Emit trigger from the timer-arm hook with deadline and generation; emit deadline independently of callback dispatch; emit superseded only when that generation is cancelled/rearmed.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_initial_rto_armed_1000ms_profile"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": [
+          "tcp_initial_rto_deadline_reached"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_initial_rto_armed_1000ms_profile"
+        ]
+      },
+      {
+        "time": 999,
+        "props": [
+          "tcp_initial_rto_deadline_reached"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Linux can switch to the RFC 6298 3-second fallback after SYN/SYN-ACK loss; that branch needs a separate profile and is excluded here.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "tcp_initial_rto_armed_1000ms_profile"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Trigger now binds the actual 1000 ms arm generation, excludes fallback, observes deadline rather than callback, and has early plus missing negatives.",
+    "primary_source_atomic_propositions": [
+      "tcp_initial_rto_armed_1000ms_profile"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "initial RTO timer arm after active-open send",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "tcp_connect",
+        "lines": "4393-4398",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4393-L4398",
+        "atomic_propositions": [
+          "tcp_initial_rto_armed_1000ms_profile"
+        ]
+      },
+      {
+        "role": "retransmission timer deadline dispatch",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_write_timer_handler",
+        "lines": "695-728",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+        "atomic_propositions": [
+          "tcp_initial_rto_deadline_reached"
+        ]
+      },
+      {
+        "role": "ACK-driven retransmission timer cancellation or replacement",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_input.c",
+        "symbol": "tcp_rearm_rto",
+        "lines": "3524-3550",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+        "atomic_propositions": [
+          "tcp_initial_rto_superseded"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "initial RTO timer arm after active-open send",
+        "atomic_propositions": [
+          "tcp_initial_rto_armed_1000ms_profile"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "tcp_connect",
+        "lines": "4393-4398",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4393-L4398",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c; verified_symbols=['tcp_connect']; failed_symbols=[]; cited_ranges=[(4393, 4398)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "retransmission timer deadline dispatch",
+        "atomic_propositions": [
+          "tcp_initial_rto_deadline_reached"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_write_timer_handler",
+        "lines": "695-728",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_write_timer_handler']; failed_symbols=[]; cited_ranges=[(695, 728)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "ACK-driven retransmission timer cancellation or replacement",
+        "atomic_propositions": [
+          "tcp_initial_rto_superseded"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_input.c",
+        "symbol": "tcp_rearm_rto",
+        "lines": "3524-3550",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c; verified_symbols=['tcp_rearm_rto']; failed_symbols=[]; cited_ranges=[(3524, 3550)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h; verified_symbols=['TCP_TIMEOUT_INIT']; failed_symbols=[]; cited_ranges=[(160, 173)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "tcp_initial_rto_armed_1000ms_profile",
+      "tcp_initial_rto_deadline_reached",
+      "tcp_initial_rto_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 23,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-RTO-03",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 6298 retransmission timeout",
+    "title": "RTO backs off by two after expiry",
+    "category": "retransmission backoff",
+    "natural_language": "正常指数退避分支实际按 2000 ms 重设第二个 RTO generation 后，不得提前到期，并须在 2000 ms 到期或被有效 ACK/重设取消。",
+    "normative_strength": "MUST",
+    "standard": "RFC 6298",
+    "standard_version": "RFC 6298",
+    "standard_section": "5.5-5.6",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6298.html#section-5",
+    "standard_excerpt": "The host MUST set RTO <- RTO * 2",
+    "time_value_ms": "2000",
+    "time_parameter": "second RTO after one backoff",
+    "time_source": "RFC 6298 Section 5.5 applied to initial RTO=1000 ms",
+    "instantiation_basis": "NORMATIVE_DERIVED",
+    "mathematical_mitl": "G (tcp_second_rto_armed_2000ms_normal_backoff -> (G [0,2000) (!tcp_second_rto_deadline_reached) && F [0,2000] (tcp_second_rto_deadline_reached || tcp_second_rto_superseded)))",
+    "mightyppl_formula": "G* (tcp_second_rto_armed_2000ms_normal_backoff -> (G [0,2000) (!tcp_second_rto_deadline_reached) && F [0,2000] (tcp_second_rto_deadline_reached || tcp_second_rto_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_second_rto_armed_2000ms_normal_backoff",
+      "tcp_second_rto_deadline_reached",
+      "tcp_second_rto_superseded"
+    ],
+    "ap_definitions": {
+      "tcp_second_rto_armed_2000ms_normal_backoff": "The normal non-linear, non-thin-stream branch doubles 1000 ms to 2000 ms and arms a new timer generation.",
+      "tcp_second_rto_deadline_reached": "The absolute deadline of that exact 2000 ms generation is reached.",
+      "tcp_second_rto_superseded": "A qualifying ACK or timer restart/cancel replaces that exact generation."
+    },
+    "correlation_key": "socket cookie + retransmission generation counter",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "net/ipv4/tcp_timer.c",
+    "source_symbol": "tcp_retransmit_timer",
+    "source_lines": "657-685",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L657-L685",
+    "instrumentation_timing": "After icsk_rto is doubled and tcp_reset_xmit_timer succeeds, emit the trigger with old/new RTO fields.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_second_rto_armed_2000ms_normal_backoff"
+        ]
+      },
+      {
+        "time": 2000,
+        "props": [
+          "tcp_second_rto_deadline_reached"
+        ]
+      },
+      {
+        "time": 2001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_second_rto_armed_2000ms_normal_backoff"
+        ]
+      },
+      {
+        "time": 1999,
+        "props": [
+          "tcp_second_rto_deadline_reached"
+        ]
+      },
+      {
+        "time": 2001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Linux thin-stream linear timeout mode is excluded; the adapter must require the normal exponential-backoff branch.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "tcp_second_rto_armed_2000ms_normal_backoff"
+          ]
+        },
+        {
+          "time": 2001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Encoded normal-backoff branch, correlated supersession, deadline event, and late/missing negative.",
+    "primary_source_atomic_propositions": [
+      "tcp_second_rto_armed_2000ms_normal_backoff"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "retransmission timer deadline dispatch",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_write_timer_handler",
+        "lines": "695-728",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+        "atomic_propositions": [
+          "tcp_second_rto_deadline_reached"
+        ]
+      },
+      {
+        "role": "ACK-driven retransmission timer cancellation or replacement",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_input.c",
+        "symbol": "tcp_rearm_rto",
+        "lines": "3524-3550",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+        "atomic_propositions": [
+          "tcp_second_rto_superseded"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "retransmission timer deadline dispatch",
+        "atomic_propositions": [
+          "tcp_second_rto_deadline_reached"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_write_timer_handler",
+        "lines": "695-728",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_write_timer_handler']; failed_symbols=[]; cited_ranges=[(695, 728)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "ACK-driven retransmission timer cancellation or replacement",
+        "atomic_propositions": [
+          "tcp_second_rto_superseded"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_input.c",
+        "symbol": "tcp_rearm_rto",
+        "lines": "3524-3550",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c; verified_symbols=['tcp_rearm_rto']; failed_symbols=[]; cited_ranges=[(3524, 3550)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_retransmit_timer']; failed_symbols=[]; cited_ranges=[(657, 685)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "tcp_second_rto_armed_2000ms_normal_backoff",
+      "tcp_second_rto_deadline_reached",
+      "tcp_second_rto_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 15,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-SYN-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 active-open failure threshold",
+    "title": "SYN retransmission R2 covers at least three minutes",
+    "category": "connection establishment timeout",
+    "natural_language": "主动打开在无 RST、ICMP 或应用取消时，不得在首个 SYN 后 180 秒内因 SYN excessive retransmission 的 R2 阈值失败。",
+    "normative_strength": "MUST",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.8.3",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.3",
+    "standard_excerpt": "R2 for a SYN segment MUST be set ... for at least 3 minutes",
+    "time_value_ms": "180000",
+    "time_parameter": "SYN R2 lower bound",
+    "time_source": "RFC 9293 Section 3.8.3",
+    "instantiation_basis": "NORMATIVE_MINIMUM",
+    "mathematical_mitl": "G (tcp_active_open_syn_r2_started -> G [0,180000) (!tcp_open_failed_by_syn_r2_expiry))",
+    "mightyppl_formula": "G* (tcp_active_open_syn_r2_started -> G [0,180000) (!tcp_open_failed_by_syn_r2_expiry))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_active_open_syn_r2_started",
+      "tcp_open_failed_by_syn_r2_expiry"
+    ],
+    "ap_definitions": {
+      "tcp_active_open_syn_r2_started": "Initial SYN is transmitted for an active open under the stack's default SYN-retry policy.",
+      "tcp_open_failed_by_syn_r2_expiry": "tcp_write_timeout closes SYN_SENT specifically because its retransmission R2 threshold expired."
+    },
+    "correlation_key": "network namespace + socket cookie + active-open attempt",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "net/ipv4/tcp_timer.c",
+    "source_symbol": "tcp_write_timeout",
+    "source_lines": "242-298",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L242-L298",
+    "instrumentation_timing": "Start at initial SYN output; emit failure immediately before tcp_write_err when SYN_SENT and expired is due to retry_until.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_active_open_syn_r2_started"
+        ]
+      },
+      {
+        "time": 180000,
+        "props": [
+          "tcp_open_failed_by_syn_r2_expiry"
+        ]
+      },
+      {
+        "time": 180001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_active_open_syn_r2_started"
+        ]
+      },
+      {
+        "time": 179999,
+        "props": [
+          "tcp_open_failed_by_syn_r2_expiry"
+        ]
+      },
+      {
+        "time": 180001,
+        "props": []
+      }
+    ],
+    "review_question": "Linux 源码注释称默认 TCP_SYN_RETRIES=6 约 63 秒，可能早于 RFC 180 秒；请把它作为待实测偏差，而非先验宣称 bug。",
+    "limitations": "The RFC allows the application to close sooner; RST, ICMP unreachable and application cancellation are deliberately separate terminal causes.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "APPROVE",
+    "independent_audit_note": "Independent standard/formula/source audit approved this card without a semantic correction.",
+    "primary_source_atomic_propositions": [
+      "tcp_open_failed_by_syn_r2_expiry"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "initial active-open SYN transmission and retransmission timer arm",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "tcp_connect",
+        "lines": "4360-4398",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4360-L4398",
+        "atomic_propositions": [
+          "tcp_active_open_syn_r2_started"
+        ]
+      },
+      {
+        "role": "locked Linux SYN retry-policy deviation evidence",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "include/net/tcp.h",
+        "symbol": "TCP_SYN_RETRIES",
+        "lines": "124-131",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L124-L131",
+        "atomic_propositions": [
+          "tcp_active_open_syn_r2_started",
+          "tcp_open_failed_by_syn_r2_expiry"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "initial active-open SYN transmission and retransmission timer arm",
+        "atomic_propositions": [
+          "tcp_active_open_syn_r2_started"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_output.c",
+        "symbol": "tcp_connect",
+        "lines": "4360-4398",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4360-L4398",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c; verified_symbols=['tcp_connect']; failed_symbols=[]; cited_ranges=[(4360, 4398)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "locked Linux SYN retry-policy deviation evidence",
+        "atomic_propositions": [
+          "tcp_active_open_syn_r2_started",
+          "tcp_open_failed_by_syn_r2_expiry"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "include/net/tcp.h",
+        "symbol": "TCP_SYN_RETRIES",
+        "lines": "124-131",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L124-L131",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h; verified_symbols=['TCP_SYN_RETRIES']; failed_symbols=[]; cited_ranges=[(124, 131)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_write_timeout']; failed_symbols=[]; cited_ranges=[(242, 298)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "tcp_active_open_syn_r2_started",
+      "tcp_open_failed_by_syn_r2_expiry"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 14,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-TW-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 TIME-WAIT",
+    "title": "Linux TIME-WAIT 60-second profile with guarded reopen",
+    "category": "connection close retention",
+    "natural_language": "Linux 60 秒 TIME-WAIT profile 中，若未发生 RFC 允许的 guarded reopen/reuse 或管理性清理，状态不得在 60000 ms 前因普通 TIME-WAIT expiry 被销毁。",
+    "normative_strength": "MUST",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.6.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.6.1",
+    "standard_excerpt": "it MUST linger in the TIME-WAIT state for a time 2xMSL",
+    "time_value_ms": "60000",
+    "time_parameter": "Linux TCP_TIMEWAIT_LEN",
+    "time_source": "Linux fixed profile TCP_TIMEWAIT_LEN=60 seconds; RFC 9293 supplies the linger contract but not this implementation value",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (tcp_time_wait_entered_linux_profile -> G [0,60000) ((!tcp_time_wait_state_destroyed) || tcp_valid_timewait_reopen_or_admin_cleanup))",
+    "mightyppl_formula": "G* (tcp_time_wait_entered_linux_profile -> G [0,60000) ((!tcp_time_wait_state_destroyed) || tcp_valid_timewait_reopen_or_admin_cleanup))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_time_wait_entered_linux_profile",
+      "tcp_time_wait_state_destroyed",
+      "tcp_valid_timewait_reopen_or_admin_cleanup"
+    ],
+    "ap_definitions": {
+      "tcp_time_wait_entered_linux_profile": "A TIME-WAIT bucket is created with Linux TCP_TIMEWAIT_LEN=60 seconds.",
+      "tcp_time_wait_state_destroyed": "The bucket is removed by the ordinary TIME-WAIT expiry path.",
+      "tcp_valid_timewait_reopen_or_admin_cleanup": "Guarded RFC reopen/reuse or explicit administrative cleanup causes early removal and is classified separately."
+    },
+    "correlation_key": "network namespace + 4-tuple + TIME-WAIT bucket cookie",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "include/net/tcp.h",
+    "source_symbol": "TCP_TIMEWAIT_LEN",
+    "source_lines": "140-148",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L140-L148",
+    "instrumentation_timing": "Emit entry at tcp_time_wait creation and destruction immediately before inet_twsk_kill/deschedule.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_time_wait_entered_linux_profile"
+        ]
+      },
+      {
+        "time": 60000,
+        "props": [
+          "tcp_time_wait_state_destroyed"
+        ]
+      },
+      {
+        "time": 60001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_time_wait_entered_linux_profile"
+        ]
+      },
+      {
+        "time": 59999,
+        "props": [
+          "tcp_time_wait_state_destroyed"
+        ]
+      },
+      {
+        "time": 60001,
+        "props": []
+      }
+    ],
+    "review_question": "Linux 固定源码使用 TCP_TIMEWAIT_LEN=60 秒；请把该标准—实现差异作为待实测候选，并单独处理 RFC 9293 允许的 guarded TIME-WAIT reuse 例外。",
+    "limitations": "Linux's 60-second constant is shorter than the RFC-derived 240 seconds. RFC 9293 also permits guarded direct reopen from TIME-WAIT under explicit sequence-number safeguards.",
+    "human_review_status": "PENDING",
+    "implementation_deviation": "Linux TCP_TIMEWAIT_LEN=60 seconds",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Restored the locked Linux 60 s profile and encoded RFC-permitted guarded reopen/administrative cleanup.",
+    "primary_source_atomic_propositions": [
+      "tcp_time_wait_entered_linux_profile"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "TIME-WAIT bucket creation and scheduling",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_minisocks.c",
+        "symbol": "tcp_time_wait",
+        "lines": "326-394",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L326-L394",
+        "atomic_propositions": [
+          "tcp_time_wait_entered_linux_profile"
+        ]
+      },
+      {
+        "role": "ordinary TIME-WAIT expiry destruction",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/inet_timewait_sock.c",
+        "symbol": "tw_timer_handler",
+        "lines": "161-166",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/inet_timewait_sock.c#L161-L166",
+        "atomic_propositions": [
+          "tcp_time_wait_state_destroyed"
+        ]
+      },
+      {
+        "role": "guarded direct reopen and exceptional early removal classification",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_minisocks.c",
+        "symbol": "tcp_timewait_state_process",
+        "lines": "186-261",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L186-L261",
+        "atomic_propositions": [
+          "tcp_valid_timewait_reopen_or_admin_cleanup"
+        ]
+      }
+    ],
+    "standard_supporting_references": [
+      {
+        "role": "RFC MSL provenance retained from the pre-audit card",
+        "url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.4.2"
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "TIME-WAIT bucket creation and scheduling",
+        "atomic_propositions": [
+          "tcp_time_wait_entered_linux_profile"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_minisocks.c",
+        "symbol": "tcp_time_wait",
+        "lines": "326-394",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L326-L394",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c; verified_symbols=['tcp_time_wait']; failed_symbols=[]; cited_ranges=[(326, 394)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "ordinary TIME-WAIT expiry destruction",
+        "atomic_propositions": [
+          "tcp_time_wait_state_destroyed"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/inet_timewait_sock.c",
+        "symbol": "tw_timer_handler",
+        "lines": "161-166",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/inet_timewait_sock.c#L161-L166",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/inet_timewait_sock.c; verified_symbols=['tw_timer_handler']; failed_symbols=[]; cited_ranges=[(161, 166)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "guarded direct reopen and exceptional early removal classification",
+        "atomic_propositions": [
+          "tcp_valid_timewait_reopen_or_admin_cleanup"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_minisocks.c",
+        "symbol": "tcp_timewait_state_process",
+        "lines": "186-261",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L186-L261",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c; verified_symbols=['tcp_timewait_state_process']; failed_symbols=[]; cited_ranges=[(186, 261)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h; verified_symbols=['TCP_TIMEWAIT_LEN']; failed_symbols=[]; cited_ranges=[(140, 148)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "tcp_time_wait_entered_linux_profile",
+      "tcp_time_wait_state_destroyed",
+      "tcp_valid_timewait_reopen_or_admin_cleanup"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 74,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 96,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 22,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-ZWP-01",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 zero-window probing",
+    "title": "First zero-window probe follows one RTO",
+    "category": "zero-window probe",
+    "natural_language": "发送窗口为零且当前 RTO=1000 ms 时，实际 arm 的首个 probe timer 不得提前到期，并须在 1000 ms 到期/尝试发送，或因窗口打开、连接终止而取消。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.8.6.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.1",
+    "standard_excerpt": "SHOULD send the first zero-window probe when a zero window has existed",
+    "time_value_ms": "1000",
+    "time_parameter": "first zero-window probe interval",
+    "time_source": "RFC 9293 Section 3.8.6.1 + RFC 6298 initial RTO",
+    "instantiation_basis": "NORMATIVE_DERIVED_PROFILE",
+    "mathematical_mitl": "G (tcp_probe0_timer_armed_1000ms -> (G [0,1000) (!tcp_probe0_deadline_or_attempt) && F [0,1000] (tcp_probe0_deadline_or_attempt || tcp_probe0_superseded)))",
+    "mightyppl_formula": "G* (tcp_probe0_timer_armed_1000ms -> (G [0,1000) (!tcp_probe0_deadline_or_attempt) && F [0,1000] (tcp_probe0_deadline_or_attempt || tcp_probe0_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_probe0_timer_armed_1000ms",
+      "tcp_probe0_deadline_or_attempt",
+      "tcp_probe0_superseded"
+    ],
+    "ap_definitions": {
+      "tcp_probe0_timer_armed_1000ms": "ICSK_TIME_PROBE0 is actually armed at a 1000 ms deadline for one zero-window generation.",
+      "tcp_probe0_deadline_or_attempt": "That generation reaches its deadline and enters the probe-attempt path, independent of local send success.",
+      "tcp_probe0_superseded": "Window-open, user-timeout, connection termination, or explicit timer replacement cancels that generation."
+    },
+    "correlation_key": "socket cookie + advertised-window update generation",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "include/net/tcp.h",
+    "source_symbol": "tcp_check_probe_timer",
+    "source_lines": "1640-1667",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L1640-L1667",
+    "instrumentation_timing": "Record the zero-window trigger when ICSK_TIME_PROBE0 is armed; record the probe at tcp_send_probe0/tcp_write_wakeup success.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_probe0_timer_armed_1000ms"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": [
+          "tcp_probe0_deadline_or_attempt"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_probe0_timer_armed_1000ms"
+        ]
+      },
+      {
+        "time": 999,
+        "props": [
+          "tcp_probe0_deadline_or_attempt"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Requires current icsk_rto=1000 ms and excludes an earlier RTT-derived RTO or local-resource failure.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "tcp_probe0_timer_armed_1000ms"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Separated timer/attempt correctness from successful local transmission and encoded correlated cancellation.",
+    "primary_source_atomic_propositions": [
+      "tcp_probe0_timer_armed_1000ms"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "PROBE0 deadline dispatch and attempt entry",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_write_timer_handler",
+        "lines": "695-728",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+        "atomic_propositions": [
+          "tcp_probe0_deadline_or_attempt"
+        ]
+      },
+      {
+        "role": "window-open clear or probe-timer rearm",
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_input.c",
+        "symbol": "tcp_ack_probe",
+        "lines": "3807-3828",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3807-L3828",
+        "atomic_propositions": [
+          "tcp_probe0_superseded"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "PROBE0 deadline dispatch and attempt entry",
+        "atomic_propositions": [
+          "tcp_probe0_deadline_or_attempt"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_timer.c",
+        "symbol": "tcp_write_timer_handler",
+        "lines": "695-728",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c; verified_symbols=['tcp_write_timer_handler']; failed_symbols=[]; cited_ranges=[(695, 728)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "window-open clear or probe-timer rearm",
+        "atomic_propositions": [
+          "tcp_probe0_superseded"
+        ],
+        "repository": "torvalds/linux",
+        "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+        "path": "net/ipv4/tcp_input.c",
+        "symbol": "tcp_ack_probe",
+        "lines": "3807-3828",
+        "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3807-L3828",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c; verified_symbols=['tcp_ack_probe']; failed_symbols=[]; cited_ranges=[(3807, 3828)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h; verified_symbols=['tcp_check_probe_timer']; failed_symbols=[]; cited_ranges=[(1640, 1667)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "tcp_probe0_timer_armed_1000ms",
+      "tcp_probe0_deadline_or_attempt",
+      "tcp_probe0_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 15,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "TCP-ZWP-02",
+    "protocol": "TCP",
+    "protocol_extension": "RFC 9293 zero-window probing",
+    "title": "Zero-window probes back off exponentially",
+    "category": "zero-window probe backoff",
+    "natural_language": "正常 probe 退避分支实际按 2000 ms arm 下一 generation 后，不得提前到期，并须在 2000 ms 到期/尝试发送，或被窗口打开、资源重调度、终止所替换。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 9293",
+    "standard_version": "RFC 9293",
+    "standard_section": "3.8.6.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.1",
+    "standard_excerpt": "increase exponentially the interval between successive probes",
+    "time_value_ms": "2000",
+    "time_parameter": "second zero-window probe interval",
+    "time_source": "RFC 9293 exponential-backoff requirement instantiated from initial RTO=1000 ms",
+    "instantiation_basis": "NORMATIVE_DERIVED_PROFILE",
+    "mathematical_mitl": "G (tcp_probe0_backoff_armed_2000ms -> (G [0,2000) (!tcp_probe0_second_deadline_or_attempt) && F [0,2000] (tcp_probe0_second_deadline_or_attempt || tcp_probe0_second_superseded)))",
+    "mightyppl_formula": "G* (tcp_probe0_backoff_armed_2000ms -> (G [0,2000) (!tcp_probe0_second_deadline_or_attempt) && F [0,2000] (tcp_probe0_second_deadline_or_attempt || tcp_probe0_second_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tcp_probe0_backoff_armed_2000ms",
+      "tcp_probe0_second_deadline_or_attempt",
+      "tcp_probe0_second_superseded"
+    ],
+    "ap_definitions": {
+      "tcp_probe0_backoff_armed_2000ms": "Normal zero-window backoff increments and arms the next timer generation at 2000 ms.",
+      "tcp_probe0_second_deadline_or_attempt": "That exact generation reaches deadline and enters its send-attempt path.",
+      "tcp_probe0_second_superseded": "Window-open, local-resource reschedule, user-timeout, termination, or explicit rearm replaces the generation."
+    },
+    "correlation_key": "socket cookie + zero-window probe generation",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "torvalds/linux",
+    "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+    "source_path": "net/ipv4/tcp_output.c",
+    "source_symbol": "tcp_send_probe0",
+    "source_lines": "4601-4635",
+    "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4601-L4635",
+    "instrumentation_timing": "After icsk_backoff increments and tcp_probe0_when computes the next timer, record old/new interval and probe generation.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_probe0_backoff_armed_2000ms"
+        ]
+      },
+      {
+        "time": 2000,
+        "props": [
+          "tcp_probe0_second_deadline_or_attempt"
+        ]
+      },
+      {
+        "time": 2001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tcp_probe0_backoff_armed_2000ms"
+        ]
+      },
+      {
+        "time": 1999,
+        "props": [
+          "tcp_probe0_second_deadline_or_attempt"
+        ]
+      },
+      {
+        "time": 2001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Only the first backoff step is instantiated; later steps are the same obligation and are not duplicated as properties.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "tcp_probe0_backoff_armed_2000ms"
+          ]
+        },
+        {
+          "time": 2001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Uses rearm/deadline/attempt and explicit resource/cancel supersession instead of send success.",
+    "primary_source_atomic_propositions": [
+      "tcp_probe0_backoff_armed_2000ms",
+      "tcp_probe0_second_deadline_or_attempt",
+      "tcp_probe0_second_superseded"
+    ],
+    "auxiliary_source_mappings": [],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "tcp",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/torvalds/linux/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c; verified_symbols=['tcp_send_probe0']; failed_symbols=[]; cited_ranges=[(4601, 4635)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "tcp_probe0_backoff_armed_2000ms",
+      "tcp_probe0_second_deadline_or_attempt",
+      "tcp_probe0_second_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 15,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  }
+]

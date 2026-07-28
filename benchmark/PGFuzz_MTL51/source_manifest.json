@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-07-18T20:46:45+08:00",
+  "dataset_id": "PGFUZZ_TABLE_XII_ARDUPILOT_PX4_51",
+  "dataset_role": "HISTORICAL_PROPERTY_SEED",
+  "implementation_satisfaction": "NOT_ASSESSED",
+  "scope": {
+    "paper_table": "PGFuzz Table XII",
+    "paper_page_one_based": 18,
+    "ardupilot_property_count": 30,
+    "px4_property_count": 21,
+    "included_property_count": 51,
+    "excluded_paparazzi_property_count": 5
+  },
+  "sources": {
+    "pgfuzz_pdf": {
+      "path": "baseline/pgfuzz/Kim 等 - 2021 - PGFUZZ Policy-guided fuzzing for robotic vehicles.pdf",
+      "page_count": 18,
+      "sha256": "bb057be0069e9e764c8fb4bf963b09311cc914f3fb60da0b121afa94c90d7fcd"
+    },
+    "pgfuzz_repository": {
+      "path": "baseline/pgfuzz",
+      "commit": "7eaebf21116087249b8329d4ba7337a24a34ecb9",
+      "relevant_tree_sha256": "1df1e26758e4e8b00b4230071d68a20831b6411f8dda1c253e65991325d23fd7",
+      "ardupilot_policy_directory_count": 28,
+      "px4_policy_directory_count": 21
+    },
+    "adgfuzz_pdf": {
+      "path": "/mnt/c/Users/PC-123/Zotero/storage/X8VTAKST/Wang 等 - 2026 - ADGFUZZ Assignment dependency-guided fuzzing for robotic vehicles.pdf",
+      "page_count": 19,
+      "sha256": "bb86bc3177c4e4bf2c8fe73e14e99760ab4dd662deb7902afafb502cfacaed72",
+      "last_page_content": "ARTIFACT_APPENDIX_NOT_MTL_TABLE"
+    },
+    "adgfuzz_repository": {
+      "path": "baseline/ADGFuzz",
+      "commit": "203fce3f4265241340ed62b9be90aec1da0afa37",
+      "relevant_tree_sha256": "a9dac1a15c30d266c924dadb9a1a6158341821ea0043d235beaf4ed08c078463"
+    },
+    "ardupilot": {
+      "path": "baseline/ardupilot",
+      "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "scope": ["Copter"]
+    },
+    "px4": {
+      "path": "baseline/px4",
+      "release": "v1.17.0",
+      "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "scope": ["multicopter SITL"]
+    }
+  },
+  "preservation": {
+    "ardupilot_preexisting_dirty_state": ["modules/CrashDebug"],
+    "pgfuzz_preexisting_untracked_state_preserved": true,
+    "adgfuzz_preexisting_runtime_artifacts_preserved": true,
+    "px4_clean_at_freeze": true
+  }
+}

@@ -1,0 +1,292 @@
+Monitoring Real-Time Systems Under
+Parametric Delay
+Martin Fränzle1 , Thomas M. Grosen2(B) , Kim G. Larsen2 , and Martin Zimmermann2
+1 Carl von Ossietzky Universität, Oldenburg, Germany martin.fraenzle@uol.de
+2 Aalborg University, Aalborg, Denmark {tmgr,kgl,mzi}@cs.aau.dk
+Abstract. Timed Büchi automata provide a very expressive formalism for expressing requirements of real-time systems. Online monitoring of embedded real-time systems can then be achieved by symbolic execution of such automata on the trace observed from the system. This direct construction however only is faithful if observation of the trace is immediate in the sense that the monitor can assign exact time stamps to the actions it observes, which is rarely true in practice due to the substantial and fluctuating parametric delays introduced by the circuitry connecting the observed system to its monitoring device. We present a purely zone-based online monitoring algorithm, which handles such parametric delays exactly without recurrence to costly verification procedures for parametric timed automata. We have implemented our monitoring algorithm on top of the real-time model checking tool Uppaal, and report on encouraging initial results.
+Keywords: Monitoring · Timing uncertainty · Timed Büchi Automata
+1 Introduction
+Online monitoring is an important tool to ensure functional correctness of safetycritical systems. It analyses the execution traces observed from the system during its runtime by determining in real-time whether the observed traces satisfy the system’s specification. Continuous online monitoring consequently is concerned with unbounded time horizons, unlike offline monitoring where a fixed finite trace is analysed after the execution has terminated. Hence, specifications for online monitoring are typically defined over infinite traces, with the most significant
+M. Fränzle has been funded by the State of Lower Saxony, Zukunftslabor Mobilität, and by Deutsche Forschungsgemeinschaft, grants FR 2715/5-1 and FR 2715/6-1. T. M. Grosen and K. G. Larsen have been funded by the VILLUM Investigator grant S4OS, and together with M. Zimmermann they have been supported by DIREC Digital Research Centre Denmark.
+c© The Author(s), under exclusive license to Springer Nature Switzerland AG 2025 N. Kosmatov and L. Kovács (Eds.): IFM 2024, LNCS 15234, pp. 194–213, 2025. https://doi.org/10.1007/978-3-031-76554-4_11
+
+
+Monitoring Real-Time Systems Under Parametric Delay 195
+Fig. 1. Monitoring under observation delay: at time t = 27.1 we can conclusively decide that the MITL property F[0,10]a ∧ G[0,20]¬b is violated irrespective of the latency of the observation channel, provided the jitter is less than 0.2.
+approach being temporal logics. As specifications often include real-time requirements, e.g., “every request is answered within 10 milliseconds (ms)”, we focus here on metric-time temporal logics over timed words. More precisely, we consider Metric Interval Temporal Logic (MITL) [2], which offers a good balance between expressiveness and algorithmic properties. For example, the request-response specification above is expressed by the MITL formula G≥0(req → F≤10resp). While the specifications classify infinite traces, the traces observed online and to be checked against the specification remain finite. Nevertheless, one can still return verdicts [7]: for example, every infinite extension of a finite trace with some request that is not answered within 10 ms violates the request-response specification above. Hence, violation of the specification is already witnessed by such a finite trace. Dually, consider the specification “system calibration is completed within 500 ms”, expressed by the formula F≤500cc with the proposition cc representing the completion of calibration. Every infinite extension of a finite trace on which the calibration is completed within 400 ms satisfies the specification. Hence, satisfaction of the specification is already witnessed by such a finite trace. However, there are also traces and specifications for which no verdict can currently be drawn, like in the situation where no calibration has been observed yet at current time of 350 ms. As usual, we capture these three situations with the three verdicts (satisfaction for every extension), ⊥ (violation for every extension), and ? (inconclusive). Online monitoring can be achieved by compiling the MITL specification into an equivalent timed Büchi automaton and then symbolically executing the automaton on the observed trace of the system [7,15]. However, this approach is correct only if the actions of the monitored system can be observed immediately by the monitor. In practice, there is usually a communication delay between the system and the monitor. This delay is induced by various types of circuitry at their interfaces, like technical sensors, conversion between analog and digital signals, and communication networks forwarding signals to the monitor. We follow the approach described in McGraw-Hill’s Encyclopedia of Networking and Telecommunications [24] where a communication delay consists of a constant part (latency) and varying part (jitter). Consequently, the monitored system and the symbolic execution are no longer synchronized but deviate by a delay, for which only bounds, yet not exact values tend to be known. But even then, one can still provide meaningful verdicts, see Fig. 1: The specification F≤10a ∧ G≤20¬b expresses that an a occurs within 10 ms and no b occurs within 20 ms. The observed trace shows the first a at 17.3 ms
+
+
+196 M. Fränzle et al.
+and the first b at 27.1 ms. This observation is only consistent with satisfaction of the constraint F≤10a if a’s observation delay exceeds 7.3 ms, while satisfaction of G≤20¬b requires a delay of at most 7.1 ms for b. Thus, if the jitter is strictly smaller than 0.2 ms, the specification is definitely violated. Note that the verdict “violated” is true independently of the actual value of the unknown, parametric communication latency. On the other hand, if the parametric latency is known to be in the range [4.5, 8] ms and the jitter is in [0, 0.3] ms, then we cannot give a definitive verdict: The a may have occurred at 10 ms and then has been observed with 7 ms latency plus 0.3 ms jitter at 17.3 = 10 + 7 + 0.3 ms, and the b may have occurred at 20.1 ms and then observed with the same latency (yet independent jitter) at 27.1 = 20.1 + 7 + 0 ms. In this case, the property would be satisfied. But the a may also have occurred at 10.3 ms, violating the property, and still be observed with the same latency at 17.3 = 10.3 + 7 + 0 ms. From the observations, we can nevertheless derive bounds on the parametric latency, as the property definitely is violated irrespective of the actual (unknown) value of the jitter whenever the actual latency is smaller than 7 ms or larger than 7.1 ms. It however cannot be guaranteed to be satisfied when the latency is in the range of [7, 7.1] ms, as satisfaction then depends on the exact value of the jitter, which is not detectable. Thus, one can determine information beyond the verdicts , ⊥, and ? in terms of bounds on the delay that imply definitive verdicts.
+Our Contribution. Based on previous work by Grosen et al. [15] on online monitoring of MITL specifications without delay via timed Büchi automata, we present a symbolic MITL monitoring algorithm that provides exact verdicts under unknown delay consisting of parametric (i.e. unknown within bounds) latency and jitter. While an unknown delay is a timing parameter, our construction avoids the semidecidability [3] of analysis for parameterized timed automata, and instead uses only classical clock zones [9]. In addition, our approach has the advantage that it is even more informative than typical monitoring algorithms, which only return a verdict in { , ⊥, ? }. Recall the example specification F≤10a ∧ G≤20¬b in the case where the jitter is constrained to [0, 0.3] ms. As argued above, this specification can, given this bound on the jitter, only be satisfied if 7 ≤ l ≤ 7.1, where l denotes the actual latency. Our algorithm, for which we also provide a prototype implementation and experimental evaluation, computes such parametric constraints on the set of potential latencies under which the specification can be satisfied as well as on the set of potential latencies under which the specification can be violated. The implementation is built on top of the real-time model checking tool Uppaal [19] using the difference-bounded matrix (DBM) data structure allowing for representation of convex polytopes called zones. Most importantly, the DBM data structure can be used for efficient implementation of various geometrical operations over zones needed for the symbolic analysis of timed automata, such as testing for emptiness, inclusion, equality, and computing projection and intersection of zones [9]. Our experiments show encouraging initial results on an industrial gear controller model from [20].
+
+
+Monitoring Real-Time Systems Under Parametric Delay 197
+All proofs omitted due to space restrictions can be found in the full version [14].
+Related Work. Our automata-based monitoring of finite traces against specifications over infinite words using the three verdicts { , ⊥, ? } follows the seminal work of Bauer et al. [7], who presented monitoring algorithms for LTL and timed LTL. Their algorithm for timed LTL is based on clock regions [1], while we follow the approach of Grosen et al. [15] and use clock zones [9], whose performance is an order of magnitude faster. Also, they translated timed LTL into event-clock automata, which are less expressive than the timed Büchi automata (TBA) used both by Grosen et al. [15] and here. More recently, the same approach has been used to monitor real-time properties under assumptions [11]. As our algorithms work with TBA, we also support MITL specifications, as these can be compiled into TBA. The monitoring problem for MITL (without delay) has been investigated before. Baldor et al. showed how to construct a monitor for dense-time MITL formulas by constructing a tree of timed transducers [5]. Ho et al. split unbounded and bounded parts of MITL formulas for monitoring, using traditional LTL monitoring for the unbounded parts and permitting a simpler construction for the (finite-word) bounded parts [16]. Bulychev et al. apply a technique of rewriting a given WMTL formula during monitoring as part of performing statistical model checking. None of the above works makes use of the efficient DBM datastructure or extends to the setting of TBA that provides the basis of our approach. Here we note, that as a specification formalism TBA exceeds the expressive power of MITL, which might be useful in certain applications (e.g. in the presence of counting properties). There is also a large body of work on monitoring with finite-word semantics. Roşu et al. focussed on discrete-time finite-word MTL [25], while Basin et al. proposed algorithms for monitoring real-time finite-word properties [6] and compared the differences between different time models. André et al. consider monitoring finite logs of parameterized timed and hybrid systems [29]. Finally, Ulus et al. described monitoring timed regular expressions over finite words using unions of two-dimensional zones [26,27]. The problem of monitoring trace properties under uncertain observation has been addressed before [12,13,17,23,28], most notably based on Signal Temporal Logic (STL), exploiting STL’s quantitative semantics [22] that characterizes robustness against variation in state variables. These approaches are mostly orthogonal to ours, as they tend to address uncertainty in the state observed at a time instant rather than uncertainty in the time stamps associated to state observations. It would consequently be interesting to combine the two approaches, thus permitting both state uncertainty due to inexact measurements and time uncertainty due to inexact clocks and fluctuating communication latencies. It should also be noted that robust STL monitoring comes in diverse variants representing different error models, starting from monitors that exploit the compositional realvalued robustness semantics [12,23]. This semantics however underapproximates the factual robustness of the verdict against state shifts in the observed trace such that monitoring algorithms based on this compositional semantics are sound and
+
+
+198 M. Fränzle et al.
+computationally efficient, yet incomplete. Due to the safe approximation, they may yield inconclusive verdicts in actually determined situations. Complete and thus optimally informed STL monitoring under uncertainty, which guarantees a verdict whenever the property is determined, has only recently been investigated. Visconti et al. in [28] developed sound and complete monitoring wrt. an interval model of state measurement error, where each single measurement features an independent displacement ranging over a bounded interval. Finkbeiner et al. in [13] address a refined model distinguishing between a constant, yet unknown up to bounds, offset and a time-varying, interval-bounded noise, as suggested by the pertinent ISO norm 5725 on measurement accuracy (there called “trueness” and “precision” of a measurement). We here adopt the latter, more refined model of measurement error and transfer it into the time domain, thus implementing sound and complete monitoring for the case when timestamps are affected by a parametric (unknown, yet constant) observation latency plus a fluctuating jitter that differs between observations. Closest to our approach is [18], which addresses a more confined model of observation delay comprising a fixed known (non-parametric) latency plus a varying jitter. It also covers clock drift, which is an additional source of (relative) jitter that we have excluded to simplify the exposition.
+2 Preliminaries
+The set of natural numbers (excluding zero) is N, we define N0 = N ∪ {0}, the set of rational numbers is Q, the set of non-negative rational numbers is Q≥0. the set of real numbers is R, and the set of non-negative real numbers is R≥0. The powerset of a set S is denoted by 2S.
+Timed Words. A timed word over a finite alphabet Σ is a pair ρ = (σ, τ ) where σ is a nonempty word over Σ and τ is a sequence of non-decreasing non-negative real numbers of the same length as σ. Timed words may be finite or infinite; in the latter case, we require lim sup τ = ∞, i.e., time diverges. The set of finite timed words is denoted by T Σ∗ and the set of infinite timed words by T Σω. We also represent a timed word as a sequence of pairs (σ1, τ1), (σ2, τ2), . . .. If ρ = (σ1, τ1), (σ2, τ2), . . . , (σn, τn) is a finite timed word, we denote by τ (ρ) the total time duration of ρ, i.e., τn.
+If ρ1 = (σ11, τ11), . . . , (σ1n, τn1) is a finite timed word, ρ2 = (σ12, τ12), (σ22, τ22), . . . is a finite or infinite timed word, and t ∈ Q≥0 then the timed word concatenation ρ1 ·t ρ2 is defined iff τ (ρ1) ≤ t. Then, ρ1 ·t ρ2 = (σ1, τ1), (σ2, τ2), . . . such that
+σi =
+{
+σi1 iff i ≤ n
+σi2−n else and τi =
+{
+τi1 iff i ≤ n
+τi2−n + t else.
+Timed Automata. A timed Büchi automaton (TBA) A = (Q, Q0, Σ, C, Δ, F ) consists of a finite alphabet Σ, a finite set Q of locations, a set Q0 ⊆ Q of initial locations, a finite set C of clocks, a finite set Δ ⊆ Q × Q × Σ × 2C × G(C) of transitions with G(C) being the set of clock constraints over C, and a set F ⊆ Q
+
+
+Monitoring Real-Time Systems Under Parametric Delay 199
+of accepting locations. A transition (q, q′, a, λ, g) is an edge from q to q′ on input symbol a, where λ is the set of clocks to reset and g is a clock constraint over C. A clock constraint is a conjunction of atomic constraints of the form x ∼ n, where x is a clock, n ∈ N0, and ∼ ∈ {<, ≤, =, ≥, >}. A state of A is a pair (q, v) where q is a location in Q and v : C → R≥0 is a valuation mapping clocks to their values. For any d ∈ R≥0, v + d is the valuation x → v(x) + d. A run of A from a state (q0, v0) over a timed word (σ1, τ1)(σ2, τ2) · · · is
+a sequence of steps (q0, v0) (σ1,τ1)
+−→ (q1, v1) (σ2,τ2)
+−→ (q2, v2) (σ3,τ3)
+−→ · · · where for all i ≥ 1 there is a transition (qi−1, qi, σi, λi, gi) such that vi(x) = 0 for all x in λi and vi(x) = vi−1(x) + (τi − τi−1) otherwise, and gi is satisfied by the valuation vi−1 + (τi − τi−1). Here, we use τ0 = 0. Given a run r, we denote the set of locations visited infinitely many times by r as Inf(r). A run r of A is accepting if Inf(r) ∩ F = ∅. The language of A from a starting state (q, v), denoted L(A, (q, v)), is the set of all infinite timed words with an accepting run in A starting from (q, v). We define the language of A, written L(A), to be
+⋃
+q L(A, (q, v0)), where q ranges over Q0 and where v0(x) = 0 for all x ∈ C.
+Logic. We use Metric Interval Temporal Logic (MITL) to express properties to be monitored; these are subsequently translated into equivalent TBA which we use in our monitoring algorithm. The syntax of MITL formulas over a finite alphabet Σ is defined as
+φ ::= p | ¬φ | φ ∨ φ | XI φ | φ UI φ
+where p ∈ Σ and I ranges over non-singular intervals over R≥0 with endpoints in N0 ∪ {∞}. We write ∼ n for I = {d ∈ R≥0 | d∼n} for ∼ ∈ {<, ≤, ≥, >} and n ∈ N. We also define the standard syntactic sugar: true = p ∨ ¬p, φ ∧ ψ = ¬(¬φ ∨ ¬ψ), FI φ = true UI φ, and GI φ = ¬FI ¬φ.
+The satisfaction relation ρ, i |= φ is defined for infinite timed words ρ = (σ1, τ1), (σ2, τ2), . . ., positions i ≥ 1, and an MITL formulas φ:
+– ρ, i |= p iff p = σi. – ρ, i |= ¬φ iff ρ, i |= φ. – ρ, i |= φ ∨ ψ if ρ, i |= φ or ρ, i |= ψ. – ρ, i |= XI φ iff ρ, (i + 1) |= φ and τi+1 − τi ∈ I.
+– ρ, i |= φ UI ψ iff there exists k ≥ i s.t. ρ, k |= ψ, τk − τi ∈ I, and ρ, j |= φ for all i ≤ j < k.
+We write ρ |= φ whenever ρ, 1 |= φ. The language L(φ) of an MITL formula φ is the set of all ρ ∈ T Σω such that ρ |= φ.
+Theorem 1 ([2,10]). For each MITL formula φ there exists a TBA A with L(φ) = L(A).
+Figure 2 illustrates Theorem 1 by providing TBA’s for the formula F[0,10]a ∧ G[0,20]¬b from the introduction and its negation.
+
+
+200 M. Fränzle et al.
+Fig. 2. An automaton for the language of the property φ = F[0,10]a ∧ G[0,20]¬b and its negation: If location φ is accepting then it accepts L(φ), if location ¬φ is accepting then it accepts L(¬φ).
+3 Monitoring Under Delayed Observation
+According to McGraw-Hill’s Encyclopedia of Networking and Telecommunications [24], a communication delay consists of a constant part (latency) and varying part (jitter). We describe the delay as a pair (δ, ε) ∈ R2≥0 where δ is the constant latency for all signals and ε is the bound on the jitter. Thus, all signals from the system are delayed within [δ, δ + ε] before they arrive at the monitor. In the simplest case, our obligation is to monitor violation of an MITL specification φ by a system while observing the events through a channel Chan featuring a constant, yet unknown (up to a given, but maybe trivial, lower bound l ∈ R≥0 and upper bound u ∈ R≥0) transportation latency δ ∈ [l, u] and a varying jitter bounded by ε ∈ R≥0. Figure 1 shows an example of a property and an observation that conclusively violates the specification at time 27.1, even if the channel latency δ ∈ [0, ∞[ is unknown, as long as the jitter is bounded by 0.2. Thus, we need to distinguish between observations (the timed word corresponding to the events as they are observed by the monitoring device, subject to delay) and the possible ground-truths, as they may have been emitted by the monitored system. We begin by formalizing the concept of observation, where the occurrence of observed events is constrained by a set D capturing known bounds on the delay. Obviously, under latency δ (and arbitrary jitter), the first observation can only be made after at least δ units of time.
+Definition 1. A delay set D is a nonempty subset of R2≥0 containing pairs of
+latencies and jitters. A D-observation, i.e. an observation that can in principle be made under delay in D, is a finite timed word ρ∗ = (σ1∗, τ1∗), . . . , (σ∗m, τ ∗m) with
+τ1∗ ≥ δ for some (δ, ε) ∈ D.
+As the ground-truth occurrence times of events in the system cannot be determined exactly from their delayed copies that the monitor receives through the communication channel, we have to consider all ground-truth timed words that the particular observation is consistent with, as follows.1
+1 Note that we simplify our definitions by assuming that jitter does not change the order of observations. Under the additional assumption that only a (uniformly) bounded number of events can be generated by the system in each unit of time, it is possible to take “overtaking” of events into account, by looking at all consistent permutations. However, this would lead to a severe overhead in the implementation.
+
+
+Monitoring Real-Time Systems Under Parametric Delay 201
+Definition 2 (Consistency). Let ρ∗ = (σ1∗, τ1∗), . . . , (σ∗m, τ ∗m) be a {(δ, ε)}observation and let ρ = (σ1, τ1), . . . , (σn, τn) be a finite timed word. We say that
+ρ is consistent with ρ∗ at observation time t ∈ R≥0 under latency δ and jitter ε iff
+1. τn ≤ t and τ ∗m ≤ t,
+2. n ≥ m, and σi = σi∗ and τi + δ − τi∗ ∈ [0, ε] for all i ∈ {1, . . . , m}, and
+3. if n > m then τm+1 ≥ t − (δ + ε).
+We denote the set of timed words ρ that are consistent with a {(δ, ε)}-observation ρ∗ at observation time t under latency δ and jitter ε by GT δ,ε(ρ∗, t).
+Then, we define GT D(ρ∗, t) = ⋃
+(δ,ε)∈D G T δ,ε(ρ∗, t).
+GT D(ρ∗, t) thus collects the possible ground-truths that are consistent with
+the observation ρ∗ when the time elapsed since the system has started is t, and the delay (δ, ε) is within the set D. Note that GT D(ρ∗, t) is always nonempty,
+if ρ∗ is a D-observation and t ≥ τ (ρ∗) (recall that τ (ρ∗) denotes the last time point of ρ∗).
+Example 1. Figure 3 shows a {(δ, ε)}-observation and a consistent ground-truth and illustrates how the delay shifts the timestamps of the events. The length of ρ is n = 9 and the length of ρ∗ is m = 4. Recall that t is the time of observation.
+Fig. 3. A {(δ, ε)}-observation ρ∗ and a consistent ground-truth ρ.
+In particular, notice the following:
+– No event can occur in the observation ρ∗ with a timestamp smaller than δ, as it takes at least δ units of time for an event to reach to be send from the system through the communication channel to the monitor. Obviously, at the system side (i.e., in the ground-truth ρ) events can happen at any timestamp, also before δ (e.g., the first a). – The difference τi∗ − τi for i ≤ 4 (i.e., the difference between the observation time and the time the event was emitted) must be in the interval [δ, δ + ε]. – The time elapsed between the b and the last a in the observation ρ∗ is larger than the time elapsed between the corresponding events in the ground-truth ρ. This means the jitter for the a is larger than the jitter for the b.
+
+
+202 M. Fränzle et al.
+– The last five events in ρ have not yet been observed in ρ∗. Such events can only have timestamps in the interval [t − (δ + ε), t], as all earlier events must necessarily have been observed. Said differently, there cannot be any events between timestamp τ4 (corresponding to the last observed event in ρ∗ with
+timestamp τ4∗) and timestamp t−(δ+ε), as any such event would have arrived at the monitor, even under the maximal possible delay of δ + ε. However, there can be an arbitrary number of events in ρ between timestamps t − (δ + ε) and t.
+A monitor obviously ought to supply a verdict iff that verdict applies across all possible ground-truth timed words that the observed word explains. To define our definition of monitor, we use the set B3 = { , ? , ⊥} of verdicts, as usual.
+Definition 3 (Monitor verdicts under delay). Given a language L ⊆ T Σω, a set of possible observation delays D, a D-observation ρ∗ ∈ T Σ∗, and an obser
+vation time t ≥ τ (ρ∗), the function VD : 2T Σω → T Σ∗ × R≥0 → B3 evaluates to the verdict
+VD(L)(ρ∗, t) =
+⎧⎪⎨
+⎪⎩
+if ρ ·t μ ∈ L for all ρ ∈ GT D(ρ∗, t) and all μ ∈ T Σω,
+⊥ if ρ ·t μ ∈/ L for all ρ ∈ GT D(ρ∗, t) and all μ ∈ T Σω,
+? otherwise.
+VD(L)(ρ∗, t) is undefined when t < τ (ρ∗).
+Example 2. Consider the property φ = F[0,10]a ∧ G[0,20]¬b and observed word
+ρ∗ = (a, 17.3), (b, 27.1) shown in Fig. 1, time point t = 27.1, and set of delays D = {(δ, ε) | ε = 0.2}. As the jitter is bounded by 0.2, in all ground truths either a occurred after time point 10, or b occurred before time point 20. Thus, all extensions of all possible ground truths satisfy ¬φ, i.e., VD(L(φ)))(ρ∗, t) = ⊥.
+Note that for the special case of D = {(0, 0)} we cover classical (i.e., delayfree) monitoring [15]. Before we turn our attention to computing V we study some properties of our definition. First, let us note that the ability to make firm verdicts increases with increased certainty of the observation channel delay.
+Lemma 1. Let L ⊆ T Σω, ρ∗ ∈ T Σ∗, let D ⊆ D′ be delay sets, let ρ∗ be a Dobservation, and let t ≥ τ (ρ∗). Then, VD′ (L)(ρ∗, t) = implies VD(L)(ρ∗, t) =
+and VD′ (L)(ρ∗, t) = ⊥ implies VD(L)(ρ∗, t) = ⊥.
+As a refinement of the verdict function in Definition 3, one may provide information about the delay parameters (δ, ε) that can explain an observation. Given L ⊆ T Σω, a finite timed word ρ∗ ∈ T Σ∗, and t ≥ τ (ρ∗), the set of delays Δ(L, ρ∗, t) that are consistent with the observation ρ∗ at t is defined as
+Δ(L, ρ∗, t) = {(δ, ε) | ∃ρ ∈ GT δ,ε(ρ∗, t) ∃μ ∈ T Σω s.t. ρ ·t μ ∈ L}.
+We denote by ΔD(L, ρ∗, t) the set Δ(L, ρ∗, t) ∩ D. Now we can characterize the conclusive monitoring verdicts via these delay sets.
+
+
+Monitoring Real-Time Systems Under Parametric Delay 203
+Lemma 2. Given L ⊆ T Σω, a set D of delays, a D-observation ρ∗ ∈ T Σ∗, and t ≥ τ (ρ∗), we have
+1. ΔD(L, ρ∗, t) = ∅ iff VD(L)(ρ∗, t) = ⊥, and
+2. ΔD(L, ρ∗, t) = ∅ iff VD(L)(ρ∗, t) = .
+But even in the case when both delay-sets are nonempty (i.e., the verdict is ? ), we can still provide useful information in terms of the sets Δ(L, ρ∗, t) and Δ(L, ρ∗, t) of consistent delays. In particular, the set of consistent delays is non-increasing during observations. To explain this, we first define a notion of extensions for finite timed words (w.r.t. current time instants t, t′). Formally, let ρ = (σ1, τ1), . . . , (σn, τn) and ρ′ = (σ′1, τ1′ ), . . . , (σ′n′ , τ ′n′ ) be two finite timed
+words. Also let t, t′ ∈ R≥0. Then, we define (ρ, t) (ρ′, t′), if n ≤ n′, σi = σi′
+and τi = τi′ for all i ≤ n, and either n = n′ and t ≤ t′ or n < n′ and t ≤ τ ′n+1. By extending the observations, we (potentially) reduce the set of consistent delays.
+Lemma 3. Let (ρ1∗, t1) (ρ2∗, t2) for finite timed words ρ1∗, ρ2∗ and t1 ≥ τ (ρ1∗)
+and t2 ≥ τ (ρ2∗). Then, Δ(L, ρ1∗, t1) ⊇ Δ(L, ρ2∗, t2).
+Another interesting point is that in some cases, no extension of the observed word will provide a definitive verdict.
+Example 3. Consider the language L(F≤10a), the observation ρ∗ = (a, 15), and
+the set D = {(δ, 0) | δ ∈ [0, 10]} of delays. For any given t ≥ τ (ρ∗) the sets of consistent delays are ΔD(L, ρ∗, t) = {(δ, 0) | δ ∈ [5, 10]} and ΔD(L, ρ∗, t) = {(δ, 0) | δ ∈ [0, 5)}, i.e., both sets of consistent delays are a strict subset of D. Further, due to Lemma 3, this will be the case, no matter what observations occur in the future, as the set of consistent delays can only shrink when further observations are made. So, the verdict is ? , even if additional observations occur.
+The following lemma formalizes this: as soon as the set of consistent delays w.r.t. L (L) is no longer equal to D, then the verdict can never become (⊥).
+Lemma 4. Let L ⊆ T Σω, D be a set of delays, and ρ∗ = (σ1∗, τ1∗), . . . , (σ∗m, τ ∗m)
+a nonempty D-observation. Then, for all t > τ (ρ∗)
+1. ΔD(L, ρ∗, t) D ∩ {(δ, ε) | δ ≤ τ1∗} implies there is no ρ1∗ ∈ T Σ∗ such that
+VD(L)(ρ∗ ·t ρ1∗, t′) = for any t′ ≥ t + τ (ρ1∗), and
+2. ΔD(L, ρ∗, t) D ∩ {(δ, ε) | δ ≤ τ1∗} implies there is no ρ1∗ ∈ T Σ∗ such that
+VD(L)(ρ∗ ·t ρ1∗, t′) = ⊥ for any t′ ≥ t + τ (ρ1∗).
+Note that ΔD(L, ρ∗, t) D ∩ {(δ, ε) | δ ≤ τ1∗} and ΔD(L, ρ∗, t) D ∩ {(δ, ε) |
+δ ≤ τ1∗} can both be true simultaneously (as in Example 3). In this situation, we will under no future observation reach a conclusive verdict.
+
+
+204 M. Fränzle et al.
+4 Towards an Algorithm
+Typically, monitoring algorithms rely on automata-based techniques. To this end, first the specification and its complement are translated into suitable automata. Then one computes the set of states reachable by processing the observation and then checks whether from one of these states the automaton can still accept an infinite continuation. If this is the case for both automata, then the verdict is ? , if it is only the case for the automaton for the specification, then the verdict is , and vice versa for the complement automaton and ⊥. We want to follow the same blueprint, but we need to make adjustments to handle delay. Intuitively, we need to compute all states that are reachable by possible ground-truths of a given observation. However, a ground-truth may contain more events than the observation, as some events may not yet have been observed due to delay. This complicates the construction of the set of reachable states, as an unbounded number of events may not yet have been observed. In the definition of GT D (Definition 2) there is an implicit universal quantification over all possible sequences of such events that have not yet been observed (e.g., the last five events in ρ in Fig. 3). We exploit the fact that the verdicts are defined with respect to all possible extensions μ of a possible ground-truth (i.e., also a universal quantification over the μ’s) to “merge” the universal quantification over events that have not yet been observed into the universal quantification of the extension μ. Then, a possible ground-truth has exactly the same number of events as the observation (i.e., ground-truth and observation have Equal Length). We begin defining this restricted notion of possible ground-truth by strengthening Definition 2.
+Definition 4 (EL-Consistency). Let ρ∗ = (σ1∗, τ1∗), . . . , (σ∗m, τ ∗m) be a {(δ, ε)}-observation and let ρ = (σ1, τ1), . . . , (σn, τn) be a finite timed word. We
+say that ρ is EL-consistent with ρ∗ at observation time t ∈ R≥0 under latency δ
+and jitter ε iff ρ is consistent with ρ∗ at t under δ and ε and m = n. We denote the set of timed words ρ that are EL-consistent with an {(δ, ε)}-observation ρ∗
+at observation time t under latency δ and jitter ε by GT el
+δ,ε(ρ∗, t) and define
+GT eDl (ρ∗, t) = ⋃
+(δ,ε)∈D G T el
+δ,ε(ρ∗, t).
+Example 4. Continuing Example 1, an EL-consistent ground-truth of the observation ρ∗ in Fig. 3 has exactly four events corresponding to the four events in the observation. Thus, there cannot be any unobserved events between t − (δ + ε) and t in an EL-consistent ground-truth (e.g., the last five events of ρ in Fig. 3).
+Now, we present the revised verdict function using only EL ground-truths. Note that merging the unobserved events from the possible ground-truth ρ into the extension μ requires changing the time instant at which we concatenate the ground-truth and the extension: t − (δ + ε) is the earliest time point at which an event can occur that may not yet have been observed at time t. Due to jitter however, there might also be events after t − (δ + ε) that have been observed, which are in the possible ground-truth ρ: the last such event happened at time τ (ρ). Hence, we need to concatenate at time point max(τ (ρ), t − (δ + ε)).
+
+
+Monitoring Real-Time Systems Under Parametric Delay 205
+Definition 5 (Monitor verdicts under delay – EL version). Given L ⊆ T Σω, a set D of delays, a D-observation ρ∗ ∈ T Σ∗, and t ≥ τ (ρ∗), the function
+VeDl : 2T Σω → T Σ∗ × R≥0 → B3 evaluates to the verdict
+VeDl(L)(ρ∗, t) =
+⎧⎪⎪⎪⎪⎪⎪⎨
+⎪⎪⎪⎪⎪⎪⎩
+if ρ ·max(τ(ρ),t−(δ+ε)) μ ∈ L for all (δ, ε) ∈ D,
+all ρ ∈ GT el
+δ,ε(ρ∗, t) and all μ ∈ T Σω,
+⊥ if ρ ·max(τ(ρ),t−(δ+ε)) μ ∈/ L for all (δ, ε) ∈ D, all ρ ∈ GT el
+δ,ε(ρ∗, t) and all μ ∈ T Σω,
+? otherwise.
+VeDl(L)(ρ∗, t) is undefined when t < τ (ρ∗).
+Next, we show that both verdict functions coincide.
+Lemma 5. VeDl(L)(ρ∗, t) = VD(L)(ρ∗, t) for all L ⊆ T Σω, all sets D of delays,
+all D-observations ρ∗, and all t ≥ τ (ρ∗).
+Next, we show that we can indeed make the definition of Vel effective using automata-theoretic constructions. First, we formally capture the set of states that can be reached by processing the possible EL ground-truths of an observation. Let A be a TBA. We write (q0, v0) −ρ→A (qn, vn) for a finite
+timed word ρ = (σ, τ ) ∈ T Σ∗ to denote the existence of a finite sequence of
+states (q0, v0) (σ1,τ1)
+−→ (q1, v1) (σ2,τ2)
+−→ · · · (σn,τn)
+−→ (qn, vn) of A where for all 1 ≤ i ≤ n there is a transition (qi−1, qi, σi, λi, gi) of A such that vi(x) = 0 for all x in λi and vi−1(x)+(ti −ti−1) otherwise, and g is satisfied by the valuation vi−1 +(ti −ti−1), where we use t0 = 0. Given a TBA A, a set D of delays, a finite observed timed
+word ρ∗ ∈ T Σ∗, and t ≥ τ (ρ∗), we define
+RDA(ρ∗, t) = {(q, v + max(0, (t − (τ (ρ) + δ + ε)))) | (q0, v0) −ρ→A (q, v) where
+(q0, v0) with q0 ∈ Q0, v0(x) = 0 for all x ∈ C, and
+ρ ∈ GT el
+δ,ε(ρ∗, t) for some (δ, ε) ∈ D}.
+We call this the reach-set of ρ in A at t w.r.t. D. Next, we define the set of states of a TBA from where it is possible to reach an accepting location infinitely many times in the future, i.e., those states from which an accepting run is possible. This is useful, because if processing a finite timed word leads to such a state, then the timed word can be extended to an infinite one in the language of the automaton, a notion that underlies the definitions of the verdict functions. Given a TBA A = (Q, Q0, Σ, C, Δ, F), the set of states with nonempty language is
+SnAe = {(q, v) | q ∈ Q, v ∈ C → R≥0 s.t. L(A, (q, v)) = ∅}.
+The set SnAe can be computed using a zone-based fixpoint algorithm [15]. Using these definitions, we can give an effective definition of the verdict functions, which we show to be equivalent to the previous definitions and implementable. In the following definition, A denotes the set of all TBA.
+
+
+206 M. Fränzle et al.
+Definition 6 (Monitoring TBA). Given a TBA A, a complement automaton A (i.e., with L(A) = T Σω \ L(A)), a set D of delays, a D-observation ρ∗ ∈ T Σ∗, and t ≥ τ (ρ), MD : A × A → T Σ∗ × R≥0 → B3 computes the verdict
+MD(A, A)(ρ∗, t) =
+⎧⎪⎨
+⎪⎩
+if RD
+A(ρ∗, t) ∩ Sne
+A = ∅,
+⊥ if RDA(ρ∗, t) ∩ SnAe = ∅,
+? otherwise.
+MD(A, A)(ρ∗, t) is undefined if t < τ (ρ).
+Next we show that this automata-based definition of monitoring is equal to the verdict functions defined above.
+Theorem 2. MD(A, A)(ρ∗, t) = VeDl(L(A))(ρ∗, t) for all sets D of delays, all
+TBA A (and complement automata A), all D-observations ρ∗, and all t ≥ τ (ρ∗).
+Recall that SnAe can be computed for any given TBA A. Therefore, in the
+next section, we show how to calculate RDA(ρ∗, t) for a given TBA A, set D of
+delays, observation ρ∗, and time point t using a zone-based algorithm. This will then allow us to compute verdicts effectively.
+5 A Zone-Based Online Monitoring Algorithm
+In this section, we demonstrate how to compute the reach-set of ρ∗ in A at t w.r.t. D. So far we have developed the theory with observations, latency, and jitter being reals. Now, we are concerned with algorithms and thus assume all these quantities to be rationals. For the monitoring algorithm, we use – as standard in analysing timed automata models – symbolic states being pairs (q, Z) of locations and zones. A zone is a finite conjunction of constraints of the form x ∼ t and x − x′ ∼ t for clocks x, x′, constants t ∈ Q≥0, and ∼ ∈ {<, ≤, =, ≥, >}. Given
+two zones Z and Z′ over a set C of clocks, and a set of clocks λ ⊆ C, we define the following operations on zones (which can be efficiently implemented using the DBM data-structure [9]):
+– Z[λ] = {v | ∃v′ |= Z s.t. v(x) = 0 if x ∈ λ, otherwise v(x) = v′(x)} – Z↗ = {v | ∃v′ |= Z s.t. v = v′ + d for some d ∈ R≥0}
+– Z ∧ Z′ = {v | v |= Z and v |= Z′}
+We can use these functions to compute the successor states after an input. Given a TBA A = (Q, Q0, Σ, C, Δ, F ), a symbolic state (q, Z), and a letter a ∈ Σ, we define
+Post((q, Z), a) = {(q′, Z′) | (q, q′, a, λ, g) ∈ Δ, Z′ = (Z↗ ∧ g)[λ]},
+as the set of states one can reach by taking an a-transition at some point in the future from (q, Z). Using Post we can compute the successor states of a timed
+
+
+Monitoring Real-Time Systems Under Parametric Delay 207
+input (a, τ ) ∈ Σ × Q≥0 by extending the zones with an additional clock time just recording time since system start. The successors of a symbolic state is
+Succ((q, Z), (a, τ )) = {(q′, Z′) | (q′, Z′′) ∈ Post((q, Z), a), Z′ = Z′′ ∧ time = τ }
+and the successors of a set of symbolic states S is
+Succ(S, (a, τ )) = ⋃
+(q′,Z′)∈S Succ((q′, Z′), (a, τ )).
+In handling delayed observations, we assume that the delay set D consists of pairs (δ, ε) where the latency δ is bounded by an interval [l, u] ⊆ R≥0 for given l, u ∈ Q≥0, and that the jitter is bounded by a given ε ∈ Q≥0. To represent the latency and thereby be able to reason about and indirectly store the latency bounds, we add a clock etime representing the “expected” real time that an event generated just now could be observed by the monitor after having been delayed according to the latency. This allows us
+1. to represent the actual latency as etime − time, 2. to represent the initial knowledge about latencies by initializing etime − time to the initially known bounds on latency, namely etime − time ∈ [l, u] by setting time to 0 and constraining etime to [l, u], and 3. to refine our knowledge about the actual latency after having observed an event (σ∗, τ ∗) by then setting etime to a value in [τ ∗ − ε, τ ∗].
+Consequently, we change the initial zones to include the latency bounds l and u as the differences between the clocks etime and time. This way, etime represents the expected time an event is observed at the monitor, given l and u, and time represents the actual time the event happened (at the system). The aforementioned refinement (see Item 3 above and Fig. 4) then permits to deduce actual latency ranges consistent with the specification (or its negation) from observation times of events. In detail, this refinement of the etime − time relation works as follows. Given a TBA A extended with the clocks time and etime, and an observation (σ, τ ∗) ∈ Σ × Q≥0, the successors of (q, Z) are
+Succd((q, Z), (σ, τ ∗)) = {(q′, Z′) | (q′, Z′′) ∈ Post((q, Z), σ),
+Z′ = Z′′ ∧ etime ≤ τ ∗ ∧ etime ≥ τ ∗ − ε}
+and the successors Succd(S, (σ, τ ∗)) of a set of symbolic states S is equal to
+∪(q,Z)∈SSuccd((q, Z), (σ, τ ∗)).
+The online monitoring algorithm will essentially apply Succd repeatedly to update the reach-set, once for each new observation. Note that there is a slight mismatch, as Succd is computed with the two auxiliary clocks time and etime, which are not clocks of A. The initial reach-set is given by the following zone Z0d requiring all ordinary clocks of the TBA A to be zero and with time and etime satisfying etime−time ∈ [l, u]. That is
+
+
+208 M. Fränzle et al.
+Z0d ≡ etime − time ≤ u ∧ time − etime ≤ −l } {{ }
+etime −time ∈[l,u]
+∧∧
+x∈C∪{time} x = 0
+} {{ }
+x1, . . . , x|C| = 0, time = 0
+.
+Given a fixed jitter bound ε, we can now compute the reach-set after a sequence of observations under delay, where the latency is bounded in [l, u].
+Theorem 3. Given a TBA A, a delay set D = {(δ, ε) | δ ∈ [l, u]} with l, u, ε ∈ Q≥0, a D-observation ρ∗ = (σ1, τ1∗), . . . , (σn, τn∗), and t ∈ Q≥0 with t ≥ τn∗, let
+S0 = {(q0, Z0d) | q0 ∈ Q0} and Si = Succd(Si−1, (σi, τi∗)) for i ∈ {1, . . . , n}.
+Then, the reach-set RDA(ρ∗, t) is the projection of
+{(q′, Z′) | (q′, Z′′) ∈ Sn, Z′ = Z′′↗ ∧ etime = t − ε}
+to the clocks of A (obtained by removing all constraints on time and etime).
+This theorem allows us to implement a monitoring algorithm by computing the reach-sets and intersecting them with the set of nonempty language states. The observation of events may lead to refinement of the difference between time and etime as depicted in Fig. 4.
+Lemma 6. Given A, D, ρ∗, t, and Sn as in Theorem 3, we can compute the set of consistent delays by looking at the bounds on etime − time: ΔD(L(A), ρ∗, t) = {(δ, ε) ∈ D | Sn |= etime − time = δ}.
+This information can be used to decorate the ? verdict, so that we can report a set of bounds on the latency for which we would provide a or ⊥ verdict.
+Example 5. Let us show an example of our algorithm for monitoring under delayed observation. Note that, for the sake of readability, we use sets of clock constraints instead of conjunction of clock constraints when specifying zones. Consider the property φ = F[0,10]a∧G[0,20]¬b from Fig. 1. The TBA’s accepting L(φ) and L(¬φ) are shown in Fig. 2. The nonempty language states for Aφ and A¬φ are SnAeφ = {(q0, {x ≤ 10}), (q1, true), (φ, true)} and SnAe¬φ = {(q0, true), (q1, {x ≤ 20}), (¬φ, true)}. Let us assume the latency is between 0 and 10, and the jitter is bounded by 0.2. Now we compute the reach-sets S0 (initial), S1 (after (a, 17.3)), and S2 (after (b, 27.5)) as
+S0 = {(q0, {x = 0, etime ≤ 10, (etime − x) ∈ [0, 10]})},
+S1 = {(q1, {x ∈ [7.1, 10], etime ∈ [17.1, 17.3], (etime − x) ∈ [7.1, 10]}),
+(¬φ, {x ∈ [10, 17.3], etime ∈ [17.1, 17.3], (etime − x) ≤ 7.3})}, and S2 = {(φ, {x ∈]20, 20.4], etime ∈ [27.3, 27.5[, (etime − x) ∈ [7.1, 7.5]}), (¬φ, {x ∈ [17.3, 27.5], etime ∈ [27.3, 27.5], (etime − x) ∈ [0, 10]})}.
+Note that we omit the clock time and only look at x and etime since time and x always have the same constraints.
+
+
+Monitoring Real-Time Systems Under Parametric Delay 209
+Fig. 4. Illustration of a single zone in the Succd computation (only time-etime plane depicted). Left: initial zone (in green) is diagonally extrapolated for time passage and then intersected with the guard of an edge. Middle: observing event σ at time τ . By restricting etime to [τ − ε, τ ], the clock time is restricted to when the event could have occurred at the system. Right: computing the future zone we see that the bound on time − etime is now stricter and thus the bounds for the consistent latencies are refined.
+All reach-sets intersect with both sets of nonempty language states; thus, the verdict is ? . However, we can refine this verdict with knowledge about the consistent delays that change after each observation. The jitter bound is fixed at 0.2, but the bounds on the latency can be found in the clock constraints on the difference between etime and x. For ⊥, the latency range remains [0, 10] in all reach-sets. For , the consistent latency range is [0, 10] in S0, [7.1, 10] in S1, and it is [7.1, 7.5[ in S2. This means that if the latency is outside [7.1, 7.5[, then the verdict is ⊥. On the other hand, for the observation ρ∗ = (a, 17.3), (b, 27.1) from Example 2 (and using the same latency and jitter bounds as above), we compute the reach-sets S0, S1, and S′2 where
+S′2 = {(¬φ, {x ∈ [16.9, 27.1], etime ∈ [26.9, 27.1], (etime − x) ∈ [0, 10]})}.
+As S′2 has an empty intersection with SnAeφ , the verdict is ⊥.
+6 Prototype Implementation
+We implemented the methods described in this paper in the tool MoniTAal2 written in C++. This includes the difference-bounded matrix data structure to handle clock-zones, parsing property automata modelled in Uppaal, computing the set of nonempty language states, computing the reach-sets in an online fashion over an observed word based on latency and jitter bounds in [0, ∞[, providing verdicts , ⊥ or ? and latency bounds consistent with and ⊥.
+2 https://github.com/DEIS-Tools/MoniTAal.
+
+
+210 M. Fränzle et al.
+Table 1. Results for simultaneously monitoring six response properties over a trace generated by the gear controller model from [21].
+# Observ. τ (ρ) Time (ms) Max. resp. time (μs) # Symbolic States
+Delay Delay-free Delay Delay-free Delay Delay-free
+1000 63112 76 42 182 143 39 12
+2000 124028 223 84 228 188 57 12
+3000 184743 418 116 382 86 78 12
+4000 244717 691 154 410 81 109 12
+5000 306015 1037 198 571 281 135 12
+6000 366814 1463 237 680 163 167 12
+7000 438799 1973 278 767 175 192 12
+8000 501070 2554 314 986 193 215 12
+9000 563296 3212 357 1159 175 238 12
+10000 624530 3929 384 1099 109 266 12
+We demonstrate MoniTAal on a trace generated by simulating the gear controller model from [21] in Uppaal [8]. The model, along with formal requirements, was created by the company Mecel. For the monitored properties, we replaced six error locations in the model with response properties on the form G[0,∞]a → F[0,b]c expressing that some signal a is followed by a response c within some bound b. For such a property, it is not possible to give a verdict, since it will always possible to violate it in the future. The six properties are all satisfied by the model, which means that we will never terminate with a verdict, no matter how long the trace observed. This allows us to test how arbitrarily long traces can affect the performance of our algorithm. We show results with and without delay consisting of a latency in [0, 100], and a jitter bounded by 5. The results in Table 1 show the number of observations, length (in time) of the observed word, the overall running time, the maximal response time (the time it takes to process a single observation and return the next verdict), and the maximal number of stored symbolic states. The running time, maximal response time and number of symbolic states over the number of observations are plotted in Fig. 5. Under delay we see that the state storage grows linearly with the number of observations, which in turn results in a growing response time. The reason for this is that the uncertainty of the delay increases the size of the reach-set. Nevertheless, the maximal response time is in all cases less than 1.2 ms. In the delay-free case, the memory usage is constant, thus the response time is also constant, although with tiny fluctuations. The total time in the delayed case has approximately a quadratic growth. This is not surprising, since it is the running sum of the response time which seems to grow linearly, but we do not have enough experiments here to conclude a precise relation between the state storage and response time. In general, the results show us that the tool in this case is able to handle multiple properties and long traces in terms of time horizon as well as number of observations.
+
+
+Monitoring Real-Time Systems Under Parametric Delay 211
+Fig. 5. Graph plotting the total time, maximal response time and number of symbolic states over the trace length (number of observations) from Table 1 of the delayed (left) and delay-free (right) case.
+7 Conclusion
+We have introduced a zone-based algorithm realizing optimal (in the sense of being anticipating [7]) online operational monitoring of embedded real-time systems when the communication between the monitor and the system is subject to unknown (up to bounds) delay. This situation is rather typical in practice as observations are mediated by sensors, may involve conversion between analog and digital, or pass communication networks and consequently are indirect in general, leading to delays and inexact time-stamping. Our constructions thus fill a gap in the pre-existing theories for monitoring hard real-time systems, which tend to assume full and exact temporal observability by immediate coupling or, equivalently, perfect synchrony between systems and their monitors. A notable point of our construction is that it applies a reduction to simple timed automata and is purely zone-based despite the unknown communication delay being a timing parameter. The construction thus not only avoids the complexities of property analysis for parameterized timed automata [4], but also provides an instance of monitoring under uncertainty where the underlying arithmetic constraint systems remain of fixed dimensionality (namely the number of clocks in the property automata plus two for monitoring) despite their history dependence. This is in stark contrast to direct constraint encodings growing linearly over history length as in [13]. In further research, we study the question of monitorability [7]: some properties will never give definitive verdicts (e.g., “infinitely often a”) and are therefore not useful for monitoring. We conjecture that our zone-based approach can be exploited to decide monitorability of real-time properties.
+
+
+212 M. Fränzle et al.
+References
+1. Alur, R., Dill, D.L.: A theory of timed automata. Theoret. Comput. Sci. 126(2), 183–235 (1994). https://doi.org/10.1016/0304-3975(94)90010-8 2. Alur, R., Feder, T., Henzinger, T.A.: The benefits of relaxing punctuality. J. ACM 43(1) (1996) 3. Alur, R., Henzinger, T.A., Vardi, M.Y.: Parametric real-time reasoning. In: Kosaraju, S.R., Johnson, D.S., Aggarwal, A. (eds.) Proceedings of the Twenty-Fifth Annual ACM Symposium on Theory of Computing, May 16–18, 1993, San Diego, CA, USA, pp. 592–601. ACM (1993). https://doi.org/10.1145/167088.167242 4. André, É., Lime, D., Roux, O.H.: Reachability and liveness in parametric timed automata. Log. Methods Comput. Sci. 18(1) (2022). https://doi.org/10.46298/ lmcs-18(1:31)2022 5. Baldor, K., Niu, J.: Monitoring dense-time, continuous-semantics, metric temporal logic. In: Qadeer, S., Tasiran, S. (eds.) RV 2012. LNCS, vol. 7687, pp. 245–259. Springer, Heidelberg (2013). https://doi.org/10.1007/978-3-642-35632-2_24 6. Basin, D., Klaedtke, F., Zălinescu, E.: Algorithms for monitoring real-time properties. In: Khurshid, S., Sen, K. (eds.) RV 2011. LNCS, vol. 7186, pp. 260–275. Springer, Heidelberg (2012). https://doi.org/10.1007/978-3-642-29860-8_20 7. Bauer, A., Leucker, M., Schallhart, C.: Monitoring of real-time properties. In: Arun-Kumar, S., Garg, N. (eds.) FSTTCS 2006. LNCS, vol. 4337, pp. 260–272. Springer, Heidelberg (2006). https://doi.org/10.1007/11944836_25 8. Behrmann, G., David, A., Larsen, K.G.: A tutorial on Uppaal. In: Bernardo, M., Corradini, F. (eds.) SFM-RT 2004. LNCS, vol. 3185, pp. 200–236. Springer, Heidelberg (2004). https://doi.org/10.1007/978-3-540-30080-9_7 9. Bengtsson, J., Yi, W.: Timed automata: semantics, algorithms and tools. In: Desel, J., Reisig, W., Rozenberg, G. (eds.) ACPN 2003. LNCS, vol. 3098, pp. 87–124. Springer, Heidelberg (2004). https://doi.org/10.1007/978-3-540-27755-2_3 10. Brihaye, T., Geeraerts, G., Ho, H.-M., Monmege, B.: MightyL: a compositional translation from MITL to timed automata. In: Majumdar, R., Kunčak, V. (eds.) CAV 2017. LNCS, vol. 10426, pp. 421–440. Springer, Cham (2017). https://doi. org/10.1007/978-3-319-63387-9_21 11. Cimatti, A., Grosen, T.M., Larsen, K.G., Tonetta, S., Zimmermann, M.: Exploiting assumptions for effective monitoring of real-time properties under partial observability. arXiv:2409.05456 (2024). https://doi.org/10.48550/arXiv.2409.05456 12. Donzé, A., Ferrère, T., Maler, O.: Efficient robust monitoring for STL. In: Sharygina, N., Veith, H. (eds.) CAV 2013. LNCS, vol. 8044, pp. 264–279. Springer, Heidelberg (2013). https://doi.org/10.1007/978-3-642-39799-8_19 13. Finkbeiner, B., Fränzle, M., Kohn, F., Kröger, P.: A truly robust signal temporal logic: monitoring safety properties of interacting cyber-physical systems under uncertain observation. Algorithms 15(4), 126 (2022). https://doi.org/10. 3390/a15040126 14. Fränzle, M., Grosen, T.M., Larsen, K.G., Zimmermann, M.: Monitoring realtime systems under parametric delay. arXiv:2404.18282 (2024). https://doi.org/ 10.48550/ARXIV.2404.18282 15. Grosen, T.M., Kauffman, S., Larsen, K.G., Zimmermann, M.: Monitoring timed properties (revisited). In: Bogomolov, S., Parker, D. (eds.) FORMATS 2022. LNCS, vol. 13465, pp. 43–62. Springer, Cham (2022). https://doi.org/10.1007/978-3-03115839-1_3
+
+
+Monitoring Real-Time Systems Under Parametric Delay 213
+16. Ho, H.-M., Ouaknine, J., Worrell, J.: Online monitoring of metric temporal logic. In: Bonakdarpour, B., Smolka, S.A. (eds.) RV 2014. LNCS, vol. 8734, pp. 178–192. Springer, Cham (2014). https://doi.org/10.1007/978-3-319-11164-3_15 17. Kallwies, H., Leucker, M., Sánchez, C.: Symbolic runtime verification for monitoring under uncertainties and assumptions. In: Bouajjani, A., Holík, L., Wu, Z. (eds.) ATVA 2022. LNCS, vol. 13505, pp. 117–134. Springer, Cham (2022). https://doi. org/10.1007/978-3-031-19992-9_8 18. Köhl, M.A., Hermanns, H.: Model-based diagnosis of real-time systems: Robustness against varying latency, clock drift, and out-of-order observations. ACM Trans. Embed. Comput. Syst. 22(4), 68:1–68:48 (2023). https://doi.org/10.1145/3597209 19. Larsen, K.G., Pettersson, P., Yi, W.: UPPAAL in a nutshell. Int. J. Softw. Tools Technol. Transf. 1(1-2), 134–152 (1997). https://doi.org/10.1007/S100090050010 20. Lindahl, M., Pettersson, P., Yi, W.: Formal design and analysis of a gear controller. In: Steffen, B. (ed.) Tools and Algorithms for Construction and Analysis of Systems (TACAS). LNCS, vol. 1384, pp. 281–297. Springer, Heidelberg (1998). https://doi. org/10.1007/BFb0054178 21. Lindahl, M., Pettersson, P., Yi, W.: Formal design and analysis of a gearbox controller. Springer Int. J. Software Tools Technol. Transfer (STTT) 3(3), 353–368 (2001) 22. Maler, O., Nickovic, D.: Monitoring temporal properties of continuous signals. In: Lakhnech, Y., Yovine, S. (eds.) FORMATS/FTRTFT -2004. LNCS, vol. 3253, pp. 152–166. Springer, Heidelberg (2004). https://doi.org/10.1007/978-3-540-302063_12 23. Ničković, D., Yamaguchi, T.: RTAMT: online robustness monitors from STL. In: Hung, D.V., Sokolsky, O. (eds.) ATVA 2020. LNCS, vol. 12302, pp. 564–571. Springer, Cham (2020). https://doi.org/10.1007/978-3-030-59152-6_34 24. Sheldon, T.: McGraw-Hill’s Encyclopedia of Networking and Telecommunications. McGraw-Hill Professional (2001) 25. Thati, P., Rosu, G.: Monitoring algorithms for metric temporal logic specifications. In: Havelund, K., Rosu, G. (eds.) Proceedings of the Fourth Workshop on Runtime Verification, RV@ETAPS 2004, Barcelona, Spain, April 3, 2004. Electronic Notes in Theoretical Computer Science, vol. 113, pp. 145–162. Elsevier (2004). https:// doi.org/10.1016/J.ENTCS.2004.01.029 26. Ulus, D., Ferrère, T., Asarin, E., Maler, O.: Timed pattern matching. In: Legay, A., Bozga, M. (eds.) FORMATS 2014. LNCS, vol. 8711, pp. 222–236. Springer, Cham (2014). https://doi.org/10.1007/978-3-319-10512-3_16 27. Ulus, D., Ferrère, T., Asarin, E., Maler, O.: Online timed pattern matching using derivatives. In: Chechik, M., Raskin, J.-F. (eds.) TACAS 2016. LNCS, vol. 9636, pp. 736–751. Springer, Heidelberg (2016). https://doi.org/10.1007/978-3-662-496749_47 28. Visconti, E., Bartocci, E., Loreti, M., Nenzi, L.: Online monitoring of spatiotemporal properties for imprecise signals. In: Arun-Kumar, S., Méry, D., Saha, I., Zhang, L. (eds.) MEMOCODE ’21: 19th ACM-IEEE International Conference on Formal Methods and Models for System Design, Virtual Event, China, November 20 - 22, 2021. pp. 78–88. ACM (2021). https://doi.org/10.1145/3487212.3487344 29. Waga, M., André, É., Hasuo, I.: Model-bounded monitoring of hybrid systems. ACM Trans. Cyber Phys. Syst. 6(4), 30:1–30:26 (2022). https://doi.org/10.1145/ 3529095

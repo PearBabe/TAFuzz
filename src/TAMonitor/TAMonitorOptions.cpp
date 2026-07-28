@@ -85,6 +85,10 @@ Options parse_options(int argc, const char** argv) {
     bool pta_max_reach_nodes_explicit = false;
     bool pta_max_reach_arcs_explicit = false;
     bool pta_timeout_explicit = false;
+    bool pta_prefix_query_timeout_explicit = false;
+    bool pta_prefix_max_regions_explicit = false;
+    bool pta_prefix_optimizer_explicit = false;
+    bool pta_prefix_benchmark_explicit = false;
 
     for (int i = 1; i < argc; ++i) {
         const std::string arg = argv[i];
@@ -99,7 +103,11 @@ Options parse_options(int argc, const char** argv) {
                 "[--pta-assume-lower-bounded] [--pta-verify-geometry] "
                 "[--pta-max-pieces n] "
                 "[--pta-max-reach-nodes n] [--pta-max-reach-arcs n] "
-                "[--pta-timeout-ms n]\n"
+                "[--pta-timeout-ms n] [--pta-prefix-cost] "
+                "[--pta-prefix-query-timeout-ms n] "
+                "[--pta-prefix-max-regions n] "
+                "[--pta-prefix-optimizer z3|romeo-dbm|crosscheck]\n"
+                "[--pta-prefix-benchmark-iterations n]\n"
                 "Note: compflatten is construction/statistics-only in TAMonitor v1; "
                 "runtime monitoring requires --build-mode flatten. "
                 "PTA analysis is optional and supports finite words only.");
@@ -179,6 +187,30 @@ Options parse_options(int argc, const char** argv) {
         } else if (arg == "--pta-timeout-ms") {
             options.pta_timeout_ms = parse_nonnegative_size(require_value(i, argc, argv, arg), arg);
             pta_timeout_explicit = true;
+        } else if (arg == "--pta-prefix-cost") {
+            options.pta_prefix_cost = true;
+        } else if (arg == "--pta-prefix-query-timeout-ms") {
+            options.pta_prefix_query_timeout_ms =
+                parse_nonnegative_size(require_value(i, argc, argv, arg), arg);
+            pta_prefix_query_timeout_explicit = true;
+        } else if (arg == "--pta-prefix-max-regions") {
+            options.pta_prefix_max_regions =
+                parse_positive_size(require_value(i, argc, argv, arg), arg);
+            pta_prefix_max_regions_explicit = true;
+        } else if (arg == "--pta-prefix-optimizer") {
+            options.pta_prefix_optimizer = require_value(i, argc, argv, arg);
+            if (options.pta_prefix_optimizer != "z3" &&
+                options.pta_prefix_optimizer != "romeo-dbm" &&
+                options.pta_prefix_optimizer != "crosscheck") {
+                throw std::invalid_argument(
+                    "Invalid --pta-prefix-optimizer: " +
+                    options.pta_prefix_optimizer);
+            }
+            pta_prefix_optimizer_explicit = true;
+        } else if (arg == "--pta-prefix-benchmark-iterations") {
+            options.pta_prefix_benchmark_iterations =
+                parse_positive_size(require_value(i, argc, argv, arg), arg);
+            pta_prefix_benchmark_explicit = true;
         } else if (arg == "--build-only") {
             options.build_only = true;
         } else {
@@ -203,7 +235,10 @@ Options parse_options(int argc, const char** argv) {
     } else if (options.pta_cost_model.has_value() || options.pta_assume_lower_bounded ||
                options.pta_verify_geometry ||
                pta_max_pieces_explicit || pta_max_reach_nodes_explicit ||
-               pta_max_reach_arcs_explicit || pta_timeout_explicit) {
+               pta_max_reach_arcs_explicit || pta_timeout_explicit ||
+               options.pta_prefix_cost || pta_prefix_query_timeout_explicit ||
+               pta_prefix_max_regions_explicit || pta_prefix_optimizer_explicit ||
+               pta_prefix_benchmark_explicit) {
         throw std::invalid_argument(
             "PTA cost options require --pta-analysis backward or mixed");
     }
@@ -211,6 +246,24 @@ Options parse_options(int argc, const char** argv) {
         (pta_max_reach_nodes_explicit || pta_max_reach_arcs_explicit)) {
         throw std::invalid_argument(
             "PTA reachability limits require --pta-analysis mixed");
+    }
+    if ((options.pta_prefix_cost || pta_prefix_query_timeout_explicit ||
+         pta_prefix_max_regions_explicit || pta_prefix_optimizer_explicit ||
+         pta_prefix_benchmark_explicit) &&
+        options.pta_analysis != PTAAnalysisMode::Mixed) {
+        throw std::invalid_argument(
+            "PTA prefix cost options require --pta-analysis mixed");
+    }
+    if (options.pta_prefix_cost && options.build_only) {
+        throw std::invalid_argument(
+            "--pta-prefix-cost cannot be combined with --build-only");
+    }
+    if (!options.pta_prefix_cost &&
+        (pta_prefix_query_timeout_explicit ||
+         pta_prefix_max_regions_explicit || pta_prefix_optimizer_explicit ||
+         pta_prefix_benchmark_explicit)) {
+        throw std::invalid_argument(
+            "PTA prefix query options require --pta-prefix-cost");
     }
     return options;
 }

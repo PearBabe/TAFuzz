@@ -1,0 +1,765 @@
+Page 1/30
+Systematic Review of Fuzzing in IoT: Evaluating Techniques, Vulnerabilities, and Research Gaps
+Asma Touqir
+Institute of Business Administration Karachi
+Faisal Iradat Institute of Business Administration Karachi
+Abdur Rakib Coventry University
+Nazim Taskin Boğaziçi University
+Hesam Jadidbonab Coventry University
+Zaheeruddin Asif Institute of Business Administration Karachi
+Olivier Haas Coventry University
+Research Article
+Keywords: Unauthorized data access, Effective cybersecurity measures, Valuable software testing technique, Advanced adaptive fuzzing techniques
+Posted Date: September 26th, 2024
+DOI: https://doi.org/10.21203/rs.3.rs-4963553/v1
+License:   This work is licensed under a Creative Commons Attribution 4.0 International License. Read Full License
+Additional Declarations: No competing interests reported.
+
+
+ Page 2/30
+Abstract
+As our dependence on the internet and digital platforms grows, the risk of cyber threats rises, making it essential to implement effective Measures to safeguard sensitive information through cybersecurity, ensure system integrity, and prevent unauthorized data access. Fuzz testing, commonly known as fuzzing, is a valuable for software testing as it uncovers vulnerabilities and defects in systems by introducing random data inputs, often leading to system crashes. In the Internet of Things domain, fuzzing is crucial for identifying vulnerabilities in networks, devices, and applications through automated tools that systematically inject malformed inputs into IoT systems. This research aims to comprehensively evaluate current fuzzing practices, emphasizing adaptive techniques tailored to IoT environments. A rigorous analysis of 30 recent academic articles was conducted to identify weaknesses, gaps, and challenges in existing approaches. The investigation revealed the need for novel fuzzing techniques that address rmware, hardware, and software vulnerabilities, as well as Denial of Service attacks in IoT systems. By exploring recent trends and identifying gaps and challenges, this research aims to advance IoT security, highlighting the need for improved fuzzing techniques and presenting future research directions to strengthen IoT cybersecurity.
+I. INTRODUCTION
+The Internet of Things (IoT) has become a paradigm that facilitates connectivity and data exchange among devices, sensors, and systems. It has profound implications for domains such as industrial automation, smart cities, healthcare, and transportation [1]. According to Yang et al. [2], the IoT could be one of the most important technologies of the twenty- rst century, as it offers chances for integrating the real world into computer systems. However, the complexity and diversity of IoT ecosystems pose notable security vulnerabilities and challenges. It is essential to address these challenges with innovative solutions to fully harness the potential of IoT.
+1.1 Motivation
+The Internet of Things (IoT) devices are equipped with various sensors, such as microphones, cameras, and thermometers, among others. These sensors continuously gather information about their surroundings, which may include personal and sensitive data. While smart devices offer features, convenience, and an improved lifestyle, they also result in the collection of a substantial amount of user data. This data is analyzed and subsequently transferred and stored across each of the IoT architecture layer [3], as illustrated in Figure 1. However, it is crucial to note that the IoT architecture’s layers are susceptible to various kinds of vulnerabilities, as demonstrated in Figure 2. To enhance their security, the vulnerabilities in IoT devices can be reduced before their deployment. However, this is not always possible.
+Fuzzing is generally used to discover and address security vulnerabilities in systems, including during operation. [6]. According to Manes et al. [7], fuzzing remains famous because of its simplicity, ease of implementation, and the availability of extensive experimental data for uncovering real-world software vulnerabilities. Yet, its implementation in the IoT environment lags behind due to the distinctive features of IoT ecosystems, which include a diverse array of devices with varying functionalities, operating systems, and protocols. This renders traditional fuzzing techniques ineffective or impractical. [6]. Abla El Bekkali et al. stated that research related to cybersecurity in IoT, particularly regarding fuzzing, is in its early stages [3], characterized by different approaches and frameworks aimed at addressing the heterogeneity of IoT.
+Existing studies primarily focus on adapting conventional fuzzing techniques to speci c IoT scenarios, which cannot be broadly applied across the diverse spectrum of IoT devices [6-211]. Specialized fuzzing techniques and tools tailored for embedded systems and IoT environments are essential, given that conventional security approaches may not adequately meet these unique challenges. Developing such techniques is crucial, as research on fuzzing for IoT cybersecurity is still in its early stages and characterized by different approaches aimed at addressing IoT's heterogeneity.
+1.2 Aims and Objectives
+This article seeks to advance fuzzing techniques for enhancing IoT security by systematically examining key contributions, highlighting challenges, evaluating the effectiveness and applicability of fuzzing methods in IoT contexts, identifying shortcomings and gaps in current approaches, and suggesting directions for future research. The objectives of this study are:
+1. To perform an in-depth review of current fuzzing techniques, expand the existing knowledge on fuzzing, and describe the various methodologies, frameworks, and tools utilized to identify vulnerabilities in IoT devices and networks.
+2. To explore and evaluate the effectiveness of existing fuzzing techniques in IoT systems.". It involves evaluation of the performance, scalability, and adaptability of these techniques in different IoT environments, considering factors such as resource constraints, device heterogeneity, and real-world applicability.
+3. To compare and contrast different fuzzing approaches in order to highlight their strengths and weaknesses. By examining variations in methodologies, their implementation strategies, and outcomes, this study aims to offer a thorough grasp of how different fuzzing techniques perform in speci c scenarios, assessing their suitability for diverse IoT devices and applications.
+4. To enhance IoT security through improved fuzzing techniques and strategies based on the literature review, the approach suggests developing automated tools, standardized benchmarks, and evaluation frameworks tailored to the speci c needs of IoT systems. These measures aim to improve the robustness and resilience of IoT devices against cyber threats.
+5. To offer guidance for future research directions, inspiring innovation and the development of advanced, e cient fuzzing methods capable of addressing the distinct challenges posed by IoT ecosystems.
+1.3 Limitations of Existing Fuzzing Techniques for IoT
+
+
+ Page 3/30
+Fuzzing involves repeatedly feeding malformed inputs into a target device or program, referred to as the System Under Test (SUT), to induce crashes and reveal potential vulnerabilities. It is a widely used and effective technique for detecting software aws through testing [8]. The concept of "fuzzing" was rst introduced by Miller et al. in 1990 [6], and since then, various enhancements have been proposed by integrating different techniques to improve performance and shorten the time needed to identify vulnerabilities.
+Existing studies [6-211] primarily focus on adapting conventional fuzzing techniques to speci c IoT scenarios. However, these approaches cannot be easily applied across the diverse spectrum of IoT devices. In [6], the author identi es the monitoring gap in fuzzing embedded systems, as early error detection is di cult due to the absence of hardware protection elements or operating systems. Most fuzzing techniques neglect these factors because it is usually developed for general-purpose systems. Hence, it is crucial to develop specialized fuzzing techniques and tools tailored to tackle the unique challenges presented by embedded systems in IoT environments. These challenges include the absence of hardware protection features or robust operating systems, which complicate early error detection.
+There are gaps in automatic con guration as well. For instance, Zhang et al. [10] identi ed gaps indicating the need for more automatic con guration and advanced fuzzing techniques for IoT devices. By highlighting these gaps, we argue that there is a need for a detailed analysis of existing research to identify critical IoT cybersecurity challenges, evaluate the effectiveness of current fuzzing techniques, and propose different methods or frameworks speci cally tailored for IoT environments.
+1.4 Main Contributions
+This article contributes signi cantly to advancing the eld of fuzzing for IoT cybersecurity. Firstly, it provides a detailed analysis of different fuzzing methods, techniques, approaches, or frameworks speci cally applied in the context of IoT ecosystems. By examining the essential elements, mechanisms, and attributes of these various fuzzing strategies, the paper provides a thorough understanding of the current landscape. Secondly, it develops a novel framework for classifying fuzzing methods in IoT into three distinct categories, enabling a systematic and organized approach to comprehending the various fuzzing techniques tailored for IoT environments. This classi cation framework aims to provide a thorough understanding of various fuzzing approaches and their effectiveness in addressing the speci c challenges posed by IoT systems.
+By critically evaluating the limitations of current methods, the paper paves the way for future advancements and innovations in this domain. Additionally, it outlines future research directions regarding fuzzing, cybersecurity, and IoT, offering valuable insights and guidance for researchers and practitioners alike. These contributions not only advance academic discourse but also provide practical solutions to protect the rapidly evolving IoT landscape against the everincreasing spectrum of cyber threats.
+Our goal is to offer valuable insights for researchers and practitioners, stimulate academic dialogue on IoT cybersecurity, and present practical solutions to safeguard the evolving IoT environment from a variety of emerging cyber threats.
+1.5 Organization of the Paper
+The remainder of the paper is organized as follows: Section II offers an overview of various existing fuzzing approaches, methods, techniques, and frameworks. Section III outlines the methods employed for selecting primary studies in this analysis. Section IV proposes a detailed framework for categorizing fuzz testing methods in IoT into three distinct categories. Section V summarizes and classi es the fuzzing methods discussed in the selected articles. Section VI presents an in-depth discussion of the classi cation of IoT fuzzing methods, including proposed techniques, their performance, and evaluation. Section VII reviews the limitations and gaps identi ed in the selected articles. Finally, Section VIII concludes the analysis and suggests future research directions based on the identi ed gaps.
+II. BACKGROUND
+2.1 Cybersecurity Challenges
+IoT technologies include diverse devices such as smartphones, smartwatches, smart homes, vehicles, and agricultural systems. These technologies generate substantial amounts of data, a volume that is anticipated to increase signi cantly in the coming years [3]. The expansive and intricate nature of IoT architecture renders it susceptible to exploitation and cyber-attacks. Hackers can compromise and disrupt IoT networks, impacting their functionality and misusing data [11]. Managing cybersecurity and privacy is essential for IoT platforms, services, and applications.
+2.2 Fuzzing Techniques for Vulnerability Discovery
+IoT attacks frequently exploit software vulnerabilities, which are security weaknesses that enable hackers to take control of systems. Methods for discovering these vulnerabilities include network discovery tools, machine learning, penetration testing tools, testbeds, and honeypots [12]. Fuzzing is considered the primary technique [6] for this task due to its simplicity, ease of deployment, and thorough veri cation capabilities. Also known as fuzz-testing, fuzzing involves injecting specially crafted inputs into a system, referred to as the System Under Test (SUT), to provoke unexpected behavior. This process helps identify bugs such as memory violations, faulty assertions, improper handling of null values, deadlocks, in nite loops, unde ned behaviors, or inadequate resource management. Compared to other vulnerability discovery methods like code inspection or reverse engineering, fuzzing offers the advantages of automation, scalability, and the ability to run extensively and unattended.
+2.3 Fuzzing Process and Importance
+The process of fuzzing generally comprises of the following phases:
+
+
+ Page 4/30
+1. Identi cation of the target system, focusing on specifying the SUT's input and output formats.
+2. Determining inputs based on identi ed input and output formats aims to minimize the generation of invalid fuzz data while creating accurate and valid inputs. [6].
+3. Generating fuzzed data entails altering an initial input (seed) to create new fuzz data. This step is crucial because the success of vulnerability detection is directly related to the quality of the inputs and the choice of seeds [7], [13], [14].
+4. Execution of tests with fuzzed data by sending the generated data to the SUT through speci c media (input les, communication packets, analog inputs, etc.) and monitoring the SUT's outputs and behavior for unexpected crashes or outputs that may trigger vulnerabilities [6].
+5. Analyzing system behavior involves examining crashes and inputs gathered during the monitoring phase to identify which test cases reveal vulnerabilities or induce abnormal behavior.
+6. Issue logging, where the discovered vulnerabilities and the test cases that triggered them are reported for further in-depth analysis and reproduction of crashes [6].
+In recent years, fuzzing techniques have garnered considerable attention as an effective method for discovering vulnerabilities and securing complex systems, especially within the fast-evolving realm of the IoT.
+2.4 Gaps and Future Directions
+The objective is to assess the current state of fuzzing practices and their applications in IoT environments. However, existing research has focused on speci c aspects while overlooking others, resulting in an incomplete picture. While some studies have highlighted real-world IoT attacks, they fail to specify generic and speci c IoT and cybersecurity attacks. Conversely, other studies have presented general-purpose fuzzing frameworks without considering IoTspeci c requirements or future research challenges.
+An assessment of selected articles from relevant literature reveals this gap as shown in Table 1. For instance, Eceiza et al. [6] highlighted real-world IoT attacks but did not specify generic and speci c IoT and cybersecurity attacks. In a similar vein, Zhang et al. [10] introduced a general-purpose Binary Fuzzing framework tailored for binary-only fuzzing contexts, without speci c insights into IoT and IoT attacks. On the other hand, Gui et al. [15] offered a comprehensive exploration of IoT, covering both generic and speci c cyber and IoT attacks, yet they did not address future research challenges in this domain.
+Likewise, Salazar et al. [16] investigated an ontology focused on network mutation, providing a scienti c basis for research and application methods, but it did not address the speci c needs of IoT. On the other hand, Fortino et al. [17] proposed a new methodology to accelerate security analyses by utilizing conventional security tools such as binary fuzzers on rmware, although they did not speci cally address the security requirements and challenges unique to IoT.
+Table 1: Comprehensive Overview of Cybersecurity in IoT, Its Deployment Based on Fuzzing, and How Fuzzing Methods are Augmented to Address Different IoT & Cyber Threats
+
+
+ Page 5/30
+Author & Date
+Generic and Speci c IoT & Cyber Threats
+IoT Security Requirements & Challenges Real World
+IoT Attacks Examples
+Gaps Identi ed
+Existing Fuzzing Methods
+O R C
+Salazar et al. (2023)
+Yes
+Interconnecting IoT devices means that if one device is improperly secured and connected, it can compromise the overall security and resilience of the network.
+5G Speci cally, mutationbased fuzzing techniques currently lack a uni ed formalism to describe the fuzzing process. Some progress has been made in the eld of software engineering to address this issue.
+Ontology is de ned for network mutation.
+D a o s a m c e n p p t i t p d s b d
+Fortino et al. (2022)
+No Not identi ed. Industrial Control System (ICS)
+Current methodologies are inadequate due to challenges encountered when applying binary analysis techniques that rely on numerous rapid executions, such as fuzzing.
+A novel methodology is proposed.
+I r f p s f d w p a a e v a m f
+Eceiza et al. (2021)
+No The constrained computing power and embedded nature of IoT devices present unique challenges distinct from those faced by general-purpose fuzzers designed for traditional IT environments.
+Embedded Systems
+Monitoring gap in fuzzing an embedded system.
+They listed all the embedded software fuzzer qualities and identi ed all the future research directions of the eld.
+E d d l p e o s
+Zhang et al. (2021)
+No i)The execution environment of the target and its fuzz con guration requirements which is caused due to the e implicit target product execution requirements.
+ii) The effectiveness of fuzzing is limited by mutating only the rst encountered content of the input.
+iii) During fuzzing, the executed basic block of information is dumped by BIFF for manual assessment.
+Industrial products More automatic con guration and advanced fuzzing techniques are needed.
+BIFF is presented. D a e r n i c c c
+Gui et al.
+(2020)
+Yes Silent Memory Corruption in the IoT devices. In the execution process, abnormal situations are also monitored and identi ed exceptions to determine that the executed program has crashed or not.
+Some IoT devices such as Dlink, TPLink, Ezviz and Dahua are used for experiments.
+Limitations on CPU architecture and operating system.
+FIRMCORN is presented. T o c i
+This assessment emphasizes the importance of adopting a comprehensive approach to fuzzing techniques in IoT environments. It should encompass various aspects of IoT security, including both generic and speci c attacks, future research challenges, and the unique system requirements of IoT. Therefore, we ask the following research question:
+RQ: WhataretheexistingfuzztestingmethodsforIoTNetwork,andwhataretheirstrengthsandweaknesses?
+Addressing this question will provide a clear understanding of the existing methods and approaches in this eld, recent advancements, as well as the gaps. By bridging these gaps, researchers can develop more effective and tailored fuzzing methodologies that enhance the overall cybersecurity posture of IoT ecosystems.
+III. RESEARCH METHODOLOGY
+The PRISMA (Preferred Reporting Items for Systematic Reviews and Meta-Analyses) [18] model provides a structured framework for conducting and reporting systematic reviews and meta-analyses. It guided the selection of relevant papers in this review, ensuring a thorough and transparent synthesis of
+
+
+ Page 6/30
+the literature.
+The study utilized a combination of academic databases to source publications from the recent three years (2020 to 2023). The databases included IEEE Xplore, Web of Science, and ScienceDirect. The selection of these databases was informed by their distinct characteristics: IEEE Xplore and ScienceDirect are publisher-speci c databases known for their technical and scienti c content, while Web of Science is a comprehensive scholarly database that aggregates publications from a multitude of publishers. This combination allowed for a broad yet focused retrieval of current literature, particularly important as the eld of fuzzing in IoT has seen signi cant advancements post-2020.
+A total of 201 articles were initially identi ed: 66 from IEEE Xplore, 10 from ScienceDirect, and 125 from Web of Science. The search employed speci c keywords ('Fuzz' OR 'Fuzzing' AND 'cyber security' AND 'Internet of things' OR 'Framework' OR 'Method') to ensure the inclusion of relevant fuzzing methods or frameworks applied to cybersecurity in IoT. Boolean operators were utilized to re ne the search, aligning it closely with the research objectives.
+The selection criteria were designed to ensure the relevance and currency of the information. They were divided into inclusion and exclusion criteria, which comprised:
+Inclusion Criteria: Articles must be published in journals, conferences, early access articles, or magazines indexed in IEEE Xplore, Web of Science, and ScienceDirect. They must be in English (even if the dataset is not in English) and published within the three years range (2020-2023), focusing on fuzzing, cybersecurity, and IoT approaches, frameworks, or methods.
+Exclusion Criteria: Excluded were publications in books, standards, courses, surveys, case studies, or interviews. Also excluded were articles focusing on Industrial IoT (IIoT), power, and communication sectors if not directly related to the primary focus of fuzzing in IoT.
+The quality assessment was critical to ensure the selected studies were both relevant and of high quality. From the initial pool of 201 articles, 30 were chosen based on a manual screening of titles and abstracts, with full texts reviewed in selected cases to con rm relevance. This phase was crucial in con rming the applicability of the studies to the research question and ensuring the integrity of the review process.
+The Quality Assessment phases, and the publications trend are illustrated below in Figures 3 and 4 respectively.
+These visual representations provide insights into the evolution of research focus over the selected period, highlighting the growing importance of cybersecurity measures in IoT through the lens of fuzzing techniques.
+This structured approach, guided by the PRISMA model, and executed through a meticulous search and selection strategy, ensures that the review comprehensively covers the state-of-the-art methods in IoT cybersecurity, particularly focusing on fuzzing techniques. The ndings from this systematic review are discussed in the later part of this paper.
+IV. CLASSIFICATION OF DIFFERENT FUZZING METHODS
+Based on our ndings, we introduce a comprehensive framework in this paper for classifying fuzzing methods in IoT in three categories: technique-based, target domain-based, and objective-based classi cation. This framework aims to develop an understanding of various fuzzing approaches and their applications to enhance IoT security.
+A)TechniqueBasedClassi cation
+The technique-based classi cation categorizes fuzzing methods according to the speci c techniques used in generating and managing test inputs. Understanding these categories is important for grasping the fundamental mechanisms of different fuzzing operations and the types of vulnerabilities they can uncover. The main categories of technique-based classi cation are:
+1. Mutation-Based Fuzzing: This technique involves taking valid inputs (seeds) and applying systematic modi cations to produce new test cases. Mutationbased fuzzing is effective for testing a large number of inputs with minimum knowledge about the internal working of the target systems [212].
+2.Generation-Based Fuzzing: This type of fuzzing creates inputs from scratch based on speci cations of the input format. Generation-based fuzzing requires complete knowledge about the system to produce accurate and relevant test cases, particularly for complex input structures [213].
+3.Evolutionary or Genetic Fuzzing:
+This technique applies evolutionary algorithm principles to generate test cases. It starts with an initial set of inputs and uses mechanisms like mutation and recombination guided by a tness function often based on code coverage or the discovery of new paths of execution to evolve inputs that are more likely to uncover vulnerabilities [6].
+4. Hybrid Fuzzing: Hybrid fuzzing combines aspects of both static and dynamic analysis, often merging generation-based and mutation-based techniques. It typically begins with generation-based fuzzing to create well-formed inputs and then applies mutation-based fuzzing to explore deeper routes of the software [214].
+5. Black-Box Fuzzing: In black-box fuzzing, the fuzzer operates without the source code access or internal SUT logic. Instead, it uses random mutation within prede ned rules to generate those inputs that are valid and the SUT can accept them. The key advantage of black-box fuzzing is its independence from
+
+
+ Page 7/30
+source code, allowing it to target any virtual system. However, assessing code coverage is challenging, and it may not effectively detect errors caused by complex attacks. [6].
+6. White-Box Fuzzing: White-box fuzzing uses internal logic information about the source code. The advantage of white-box fuzzing is that it covers the code fully because the fuzzer knows about the source code and internal logic, so it can be assumed which portion of the code executed. However, white-box fuzzing is more complex compared to black-box fuzzing due to the need for full source-code access [6].
+7. Grey-Box Fuzzing: Grey-box fuzzing involves gaining partial access of the internal SUT logic [6]. Its execution approach is same as that of black-box fuzzers, but it utilizes less information typically collected through arrangement of the SUT to enhance the coverage and performance [7]. Grey-box fuzzing is widely favored due to its ability to operate with partial source code access, which enhances its e ciency compared to black-box fuzzing.
+8. Protocol-based Fuzzing: This technique focuses on testing the network protocol implementation in IoT devices. It uses knowledge about the protocol speci cations to generate inputs, making it particularly relevant for IoT due to their wide range of communication protocols [215].
+9. Grammar-based Fuzzing:
+This approach uses a formal description of the input format (grammar) to generate test cases. It is especially effective for applications that require structured inputs, such as XML or JSON. Grammar-based fuzzers ensure that inputs conform to grammatical rules while also exploring potentially problematic scenarios [212].
+Each of these techniques has unique strengths and is suitable for various fuzzing scenarios. In the context of IoT, the selection of a fuzzing technique may depend on factors such as the computational resources of the device, the complexity of its interfaces, and the speci c security needs of its application domain.
+B)TargetDomainBasedClassi cation
+Target domain-based classi cation for fuzzing in IoT focuses on categorizing fuzzing techniques based on speci c components, layers, or systems within the Internet of Things ecosystem that they aim to test and secure. This classi cation helps tailor fuzzing approaches to the diverse and specialized components that make up IoT systems, each of which may have unique vulnerabilities and security requirements. The main categories within this classi cation can include:
+1. Device Firmware and Hardware: Fuzzing in this domain targets the rmware running on IoT devices or the hardware itself. It aims to uncover vulnerabilities that could allow unauthorized access, rmware manipulation, or physical tampering [216].
+2. Communication Protocols: Several IoT devices utilize dedicated protocols like MQTT, CoAP, ZigBee, and Bluetooth for communication. Testing these protocols using fuzzing techniques can uncover implementation weaknesses that may result in man-in-the-middle attacks, data breaches, or device malfunctions [217].
+3. IoT Platforms and Backend Systems: This includes the software platforms that manage IoT devices and the backend systems that process IoT data. Fuzzing in this domain focuses on identifying vulnerabilities in these complex systems, which could lead to unauthorized access, data leakage, or denial of service [218].
+4. Application Layer: IoT applications that run on devices or interact with devices remotely can also be the target of fuzzing. This includes both the software running on IoT devices and the applications on users' smartphones or computers that control these devices [219], [220].
+5. Network and Connectivity: Besides speci c communication protocols, fuzzing can target the broader network infrastructure and connectivity solutions used by IoT devices, including Wi-Fi, cellular networks, and internet gateways. This helps in identifying network-level vulnerabilities that could affect many devices simultaneously [221].
+6. Edge and Cloud Computing: Many IoT systems rely on edge or cloud computing for data processing and storage. Fuzzing can be employed on these components to reveal vulnerabilities that may jeopardize data integrity, privacy, or the availability of IoT services [222].
+7. APIs and Web Interfaces: APIs (Application Programming Interfaces) and web interfaces are often used for device con guration, management, and integration with other services. Fuzzing these interfaces can reveal security aws in how devices authenticate requests and manage data [223].
+By categorizing fuzzing techniques based on the target domain within the IoT ecosystem, researchers and security professionals can develop and apply tailored fuzzing approaches that effectively address the unique challenges and vulnerabilities associated with each component or layer. Each domain presents unique challenges and requires different fuzzing strategies and tools to effectively identify and mitigate potential vulnerabilities.
+C)ObjectiveBasedClassi cation
+Objective-based classi cation for fuzzing in IoT categorizes fuzzing methods according to the speci c goals or outcomes they aim to achieve within the IoT security landscape. This classi cation helps to align fuzzing efforts with the broader objectives of securing IoT devices and ecosystems, focusing on the types of vulnerabilities or issues that are of most concern. Here are the main categories within objective-based classi cation:
+1.Vulnerability Discovery: The primary goal of fuzzing is to systematically uncover software vulnerabilities exploitable by attackers. This includes identifying issues such as buffer over ows, memory leaks, input validation errors, and other software aws that could compromise the security of IoT devices [224].
+
+
+ Page 8/30
+2.Robustness and Stability Testing: Here, the goal is to pinpoint inputs or conditions capable of causing system crashes, hangs, or unpredictable behavior. This aims to enhance the overall stability and reliability of IoT systems, ensuring they can effectively handle unexpected inputs without encountering failures [81].
+3.Performance Benchmarking: Some fuzzing efforts aim to evaluate how IoT systems perform under stress or heavy loads, which might include handling large volumes or rapid sequences of inputs. The objective is to identify performance bottlenecks or degradation issues that could affect user experience or system functionality [225].
+4.Compliance and Security Policy Veri cation: Fuzzing can also be used to ensure that IoT devices and applications adhere to speci c security standards, protocols, or policies. This includes verifying the correct implementation of cryptographic protocols, authentication mechanisms, and data protection measures [226].
+5.Attack Surface Mapping: This objective involves leveraging fuzzing to methodically explore and document the attack surface of an IoT system. This includes identifying exposed interfaces, services, or APIs that might be targeted by attackers. The aim was to gain an in-depth understanding of the system's vulnerabilities and prioritize security efforts accordingly [6].
+6.Threat Simulation: In this context, fuzzing is applied to simulate speci c types of cyber-attacks or threat scenarios, evaluating the resilience of IoT systems against real-world threats. This assessment informs the development of more effective defense mechanisms and incident response strategies [227].
+By focusing fuzzing efforts on speci c objectives, researchers and practitioners can tailor their approaches to address the most pressing security challenges faced by IoT devices and systems. Each objective requires different fuzzing techniques, tools, and methodologies to effectively identify and mitigate potential risks, ultimately contributing to the development of more secure and resilient IoT ecosystems.
+V. COMPARISON & CLASSIFICATION OF THE FUZZING METHODS
+The reviewed articles selected for this paper were examined thoroughly and analyzed to answer the posed research question. This detailed analysis includes the classi cation of the paper according to the above framework, their proposed methods, their performance, and nally the gaps and limitations of the paper.
+Table 2 illustrates the summary of this analysis.
+
+
+ Page 9/30
+Table 2 Summary of Assessed Studies for RQ
+Author Classi cation Proposed methods Performance and Result Limitations & Gaps Identi ed in the paper
+Eceiza et al [6]
+Techniquebased
+Generation-based and Mutationbased for Embedded Systems.
+Future research directions were presented, and gaps were identi ed.
+Simulating rmware and low throughput of Firm-AFL are the two main problems. There is a monitoring gap in fuzzing embedded systems.
+Zhang et al [10]
+Objectivebased
+A general-purpose fuzzing framework for binaries, BIFF, is presented that supports binaryonly fuzzing situations.
+BIFF performs better compared to others, and server-like programs can also be fuzzed.
+More automatic con guration and advanced fuzzing techniques are needed.
+Gui et al [15]
+Target domainbased
+FIRMCORN utilizes optimized virtual execution technology to address the three primary challenges associated with IoT rmware fuzzing.
+FIRMCORN, by leveraging optimized virtual execution, signi cantly enhances throughput, accuracy, and stability compared to traditional virtual execution methods.
+Limitations exist on CPU architecture and operating system.
+Salazar et al [16]
+Techniquebased
+A mutation techniques-based ontology is presented for modelling cybersecurity attacks and their applications to 5G networks.
+Advances ontology design for mutation techniques by introducing conceptual categories for network protocols, mutation operators, network packets and their ow, and network tra c."
+The lack of a uni ed formalism to describe the process of fuzzing, particularly mutation-based fuzzing, was identi ed. Some work has been accomplished, but only in the software engineering eld, to address this issue.
+Kim et al [32]
+Target domainbased
+Proposes FIRM-COV, an emulationbased IoT fuzzing framework.
+FIRM-COV achieves superior coverage and throughput compared to other fuzzing frameworks. It was designed for eight real-world IoT devices.
+Current limitations in FIRM-COV's design and potential future research ideas include dictionary generation, crash veri cation, and scalability.
+Serpanos et al [19]
+Techniquebased
+Fuzz testing automates remote testing of cyber-physical and IoT systems, e ciently identifying vulnerabilities and weaknesses.
+White-box fuzzing for management and deployment of cyber-physical and IoT systems in the eld constitutes a promising direction.
+The results indicate signi cant growth potential and high improvement potential for effective and e cient fuzzers, as machine learning and arti cial intelligence have not made signi cant progress in testing and fuzzing.
+Jang et al [20]
+Techniquebased
+A dynamic analysis tool was designed and developed for directly performing on IoT devices, and a dynamic analysis framework was proposed.
+The results proved that vulnerabilities of IoT were analyzed e ciently.
+While much research is considered for performing fuzzing, there are limitations for IoT devices and services. Most analysis tools operate rmware in a virtual environment, which can lead to issues with data collection or rmware usage.
+Fortino et al [17]
+Techniquebased
+A new technique is presented to increase the security analyses and enable the application of traditional security rmware tools, such as binary fuzzers.
+Traditional analyses are performed on the rmware through emulation in a controlled environment. Which is also known as rmware re-hosting
+The limitations of current re-hosting methods become apparent when performing vulnerability assessments.
+Mao et al [21]
+Techniquebased
+Harmony-Fuzzer, a semantic fuzzing tool, is developed.
+The results were used for testing virtual assistants (VAs) and for designing malicious tactics to verify and discover the practicality of squatting attacks on Chinese Vas when attackers take advantage of linguistic phenomena.
+Previously, the tool for linguistic-modelguided fuzzing was not su cient to perform semantic analysis on Asian languages' virtual assistants.
+Salehi et al [22]
+Techniquebased
+Proposes a novel ground-truth benchmark for IoT fuzzers.
+Adhering to the proposed benchmark, the e cacy and e ciency of the instrumentation framework are assessed in combination with other IoT fuzzers.
+There is a lack of basic security mechanisms in Bare-metal devices like the Memory Management Unit. In fuzzing rmware binaries, discovery and identi cation remains open challenges.
+Gui et al [23]
+Techniquebased & Target domain-based
+FIRMNANO is a rmware fuzzing framework for IoT devices with microcontrollers at their core.
+The analysis shows that the rmware can be executed correctly through FIRMNANO and is useful for mining vulnerabilities in real-world rmware.
+The analysis of rmware security in IoT devices is crucial due to the presence of exploitable vulnerabilities, which allows the attackers to remotely access IoT devices.
+Păduraru et al [24]
+Objectivebased
+Presented a combined testing framework for IoT systems which is based on the open-source platform RIVER.
+The framework facilitates testing process interactions and dynamic connections at runtime.
+Testability of individual processes in isolation.
+Börsig et al [26]
+Techniquebased
+Investigated fuzzing on the ESP32 IoT architecture using a full-system emulator to enhance speed of the fuzzing process.
+The developed framework can aid in nding security issues in products that are launched and for conducting automated fuzzing tests even during progress.
+Security is often overlooked during IoT development in support of rapid time-tomarket and cost minimization. There has been little effort to improve the security tools supporting the most prevalent IoT architectures.
+
+
+ Page 10/30
+Author Classi cation Proposed methods Performance and Result Limitations & Gaps Identi ed in the paper
+He et al [28]
+Techniquebased
+The proposed method introduces a hash-based active synchronization fuzzing approach by investigating the Firm-AFL test mechanism. This method targets two inherent aws in synchronous test cases: passivity and duplication, particularly in AFL's parallel mode.
+It was observed, through experiments, that the proposed method triggers crashes more quickly compared to the traditional Firm-AFL parallel mode. Additionally, the method maintains a high-quality queue, optimizing overall fuzz testing and enhancing rmware vulnerability detection e ciency.
+The primary challenges revolve around the di culty in simulating rmware and achieving low throughput. While FirmAFL has mitigated the throughput issue to some extent, especially under rmware system-level simulation, by integrating Firmadyne and AFL, further enhancements in e ciency are still needed.
+Yun et al [228]
+Techniquebased
+Introduced fuzzing techniques for embedded systems. Highlighted distinctions between fuzzing in desktop and in embedded environments.
+The future research directions of embedded systems fuzzing are discussed and predicted.
+Various obstacles have hindered extensive research in embedded systems fuzzing. These include challenges such as limited support for multiple architectures, di culties in crash detection, and constraints related to resource availability.
+Du et al [80]
+Techniquebased
+Proposed A Iot. A coverageguided grey-box fuzzing framework for Linux-based IoT devices.
+Real-world IoT devices and benchmarks were used to evaluate A Iot.
+Even though A Iot proved to be a generic tool of fuzzing for the IoT devices based on the Linux with high e ciency and accuracy, the e ciency is yet to be determined.
+Zheng et al [218]
+Techniquebased
+Proposed EQUAFL. Automates the setup of execution environments, user-mode emulation, for running embedded applications.
+The results show that EQUAFL exceeds the current state-of-the-art in fuzzing e ciency. During testing, it identi ed ten vulnerabilities, including six CVEs, from the rmware images examination.
+Efforts were made to transform the application for user-mode emulation; however, existing techniques do not fully support the execution of these applications within the user-mode emulation.
+Feng et al [216]
+Techniquebased
+Proposed Snipuzz, an automated black box fuzzing tool designed speci cally for IoT rmware.
+The results demonstrated that Snipuzz detected ve zero-day vulnerabilities, with three of them being exclusively identi ed by Snipuzz.
+Due to the absence of feedback, effective mutation optimization mechanisms cannot be formed by the existing black box fuzzers to guide the testing processes. In the domain of IoT fuzzing, there is a pressing need for an e cient approach that incorporates syntax inference.
+Shu et al [29]
+Techniquebased
+IoTInfer is employed to balance exploration and exploitation through continuous monitoring, utilizing input message mutation to identify counterexamples that con ict with the current FSM prediction.
+Experimental results with numerous IoT devices demonstrate IoTInfer's e ciency in developing meaningful test cases. Some of these cases also uncover zero-day vulnerabilities or implementation variations from speci cations of protocol.
+The ubiquity of IoT devices underscores the necessity for effective and e cient approaches to evaluate their security and strength.
+Ma et al [229]
+Objectivebased
+Proposed a constant hub-based architecture without having to reverse engineer companion apps. The implemented system, named
+Evaluation demonstrated that HubFuzzer achieves superior coverage. Testing involved twenty-one IoT devices, leading to the discovery of twenty-three zero-day vulnerabilities and allocation of four CVEs
+Existing blackbox fuzzers for IoT require extensive time and effort for reverse engineering companion apps, hindering companion app fuzzing due to input sanitization and restrictions to manually discovered functions
+Kim et al [230]
+Techniquebased
+IoTFirmFuzz is proposed, aiming to uncover more paths, resolve constraints, and discover additional crashes. It achieves this by enhancing the mutation process, identifying vulnerabilities along diverse paths not previously detected by existing tools.
+IoTFirmFuzz excels in uncovering more paths, resolving constraints, and discovering additional crashes.
+Existing tools have primarily prioritized the speed of rmware fuzzing processing, inadvertently overlooking vulnerabilities across multiple paths. As a consequence, they have failed to identify vulnerabilities in various paths.
+Situ et al [30]
+Techniquebased
+FirmHybirdFuzzer, an innovative peripheral-independent hybrid fuzzing tool, was developed, and implemented.
+FirmHybirdFuzzer’s effectiveness and e ciency were demonstrated through a large-scale experimental evaluation.
+When applying fuzzing to IoT rmware, various challenges appear which includes the incapability of rmware to achieve properly in the peripheral’s absence, limitations on peripherals input spaces, instrumentation and feedback collection issues, and fault detection mechanisms absence.
+Cheng et al [225]
+Objectivebased
+IoTFuzzBench was formulated and implemented, which is a scalable, modular, metric-driven automation framework.
+Based on experimental results, IoTFuzzBench enables rapid, dependable, and reproducible experiments, effectively evaluating the fuzzer's capability to detect vulnerabilities and assessing its performance across multiple metrics.
+"Evaluating black-box protocol fuzzers is di cult because of the absence of standardized benchmark rmware images, comprehensive mutation seed sets, holistic performance metrics, and a uni ed evaluation framework.
+Meisel et al [231]
+Techniquebased
+Modi ed the open-source FPGAbased hardware RISC-V core for accelerated fuzzing system.
+This fuzzer demonstrated that the performance the proposed AFL + + is up to four times faster compared to
+Fuzzing faces challenges with small IoT processors that lacks on effective testing. To overcome these limitations, future IoT applications are expected to
+
+
+ Page 11/30
+Author Classi cation Proposed methods Performance and Result Limitations & Gaps Identi ed in the paper
+running it on the fastest x86, 4.95 Ghz processors.
+be dominated by advancements in RISCV-based IoT processors, primarily because they avoid ISA licensing costs.
+Zhang et al [232]
+Objectivebased
+A set of research questions was formulated, and keywords were extracted from these inquiries. Subsequently, these keywords were employed to conduct literature searches for relevant studies.
+This study provided guidance on enhancing the performance of fuzzing techniques through a comprehensive analysis of different methodologies. Recommendations derived from the review ndings were proposed aimed at further improving the e cacy of fuzzing methodologies.
+The proliferation of IoT devices, coupled with the increasing size, complexity, and diversity of rmware, poses signi cant challenges for current IoT rmware fuzzing methods.
+Ren et al [233]
+Techniquebased
+Z-Fuzzer is designed as a versatile fuzzing tool speci cally aimed at detecting security vulnerabilities in Zigbee protocols.
+Achieves maximum coverage of code in Z-Stack, commonly used Zigbee protocols. In comparison to BooFuzz and Peach, Z-Fuzzer uncovers a greater number of vulnerabilities using a smaller set of test cases.
+Detecting vulnerabilities in Zigbee protocol through fuzzing poses signi cant challenges, particularly due to low-level hardware events. Given Zigbee's reliance on radio channels for communication, the existing protocol fuzzing tools for protocol evaluation is limited to execution environment settings.
+Zeng et al [217]
+Techniquebased
+Proposed multiparty protocol fuzzer based on coverage, MultiFuzz.
+Comparative analysis between MultiFuzz, AFL, MOPT, and AFLNET revealed that MultiFuzz outperformed the latter in discovering more paths and crashes.
+Similar fuzzers may overlook certain paths with publish subscribe protocols due to the misconception that only two parties are involved. However, in reality, such protocols involve three parties: publisher, subscriber, and broker, highlighting the importance of accounting for all parties in the fuzzing process.
+Yin et al [234]
+Techniquebased
+Proposed FirmHunter, which is an automated state-aware, introspection-driven grey-box fuzzer for targeting images on emulations of Linux-based rmware.
+Evaluation results demonstrated that FirmHunter, leveraging the messagestate queue, effectively analyzes test case dependencies and uncovers realworld vulnerabilities undetected by other fuzzers. Additionally, the scheduler contributes to a 42% increase in vulnerability discovery.
+Limitation on IoT Firmware Emulation and Protocol Types for Fuzzing.
+Fan et al [235]
+Target domainbased
+Proposed ARM-AFL, an effective framework for coverage-guided fuzzing of IoT devices based on ARM.
+Combining ARM-AFL with lwHMCD, vulnerabilities ahead of potential attackers can be detected.
+Scarcity of current tools available to aid IoT developers in detecting vulnerabilities within the code.
+Pearson et al [31]
+Techniquebased
+Designed, implemented, and evaluated a fuzzing model for MQTT.
+When subjected to popular MQTT targets, this fuzzer exhibited favorable performance compared to other fuzzing frameworks like BooFuzz and AFLNet.
+While MQTT signi cantly in uences numerous devices, the software security of server implementations, namely broker implementations, is often overlooked.
+VI. DISCUSSION
+This section aims to assess the current state of fuzzing practices and their applications in IoT environments. The current state of fuzzing in IoT is characterized by a rich variety of techniques and tools, each addressing speci c challenges and vulnerabilities. The eld has seen signi cant advancements in terms of coverage, e ciency, and the ability to handle complex IoT environments. However, there are still gaps in terms of comprehensive solutions that can address the full spectrum of IoT security needs possibly by employing AI and machine learning tools. This assessment highlights the need for a comprehensive and holistic approach to fuzzing techniques in IoT environments, addressing diverse aspects of IoT security, including generic and speci c attacks, future research challenges, and the unique requirements of IoT systems. In this section, we classify various fuzzing methodologies applied in the context of IoT and embedded systems. The classi cations include technique-based, target domain-based, and objective-based approaches, each addressing different aspects and challenges of fuzzing in these environments.
+6.1 Technique-Based Classi cation
+The technique-based classi cation focuses on the development of unique fuzzing techniques for addressing unique challenges of IoT systems. Researchers have proposed a wide range of innovative approaches, including hybrid fuzzing, binary-only fuzzing frameworks, rmware re-hosting methodologies, semantic fuzzing, benchmark suites, hash-based synchronization methods, user-mode emulation, black-box fuzzing, and input message mutation techniques.
+One notable trend in this classi cation is the emphasis on improving various aspects of fuzzing, such as performance, exibility, crash triggering, queue quality, and vulnerability detection e ciency. For instance, Eceiza et al. [6] utilized hybrid fuzzing, combining generation-based and mutation-based methods, for embedded systems, employing techniques like full and partial emulation, source code availability, and sanitization.
+6.1.1 Frameworks
+
+
+ Page 12/30
+Frameworks like Harmony-Fuzzer [21] and EQUAFL [218] aim to enhance performance and support various architectures, while techniques like IoTInfer [29] and FirmHybirdFuzzer [30] focus on balancing exploration and exploitation, and enabling peripheral-independent rmware testing, respectively. IoTInfer continuously monitors how input message mutation guides to counterexamples that con ict with the current FSM prediction, while FirmHybirdFuzzer allows MCU rmware testing without relying on particular peripheral hardware.
+The focus of the work done by Mao et al. [21] closely aligned with technique-based classi cation of fuzzing in IoT. Nowadays, smart voice assistants (Vas) are most commonly used for providing control services through voice commands in IoT systems. Through semantic fuzzing, a systematic analysis is conducted for the evaluation of the misinterpretation attacks on voice to ascertain the feasibility to typical Asian language Vas. Harmony-Fuzzer is developed, Chinese corpus, which is the semantic tool employed in the fuzzing process for rules guidance that is abstracted from the speech errors, dis uency, or semantically similar expressions. The Bayesian networks were employed to formulate models of fuzzing statistically to control the fuzzing space. Hence, the results were used for testing VAs and in designing malicious tactics to verify the squatting attacks compatibility and discovered the impact when attackers in uence some linguistic phenomena cautiously.
+Zheng et al. [218] proposed EQUAFL, in which the execution environment is automatically con gured for the execution of the embedded applications under the emulation of user-mode. EQUAFL was evaluated on the seventy applications of network from various IoT devices series. The results showed that EQUAFL exceeds the state-of-the-art in fuzzing e ciency. Out of ten vulnerabilities, six CVEs were also discovered when the rmware images were tested. EQUAFL is classi ed under the technique-based classi cation of fuzzing in IoT due to its contribution to the method of combining full-system and user-mode emulation to address different challenges of fuzzing IoT device applications.
+Shu et al. [29] introduces IoTInfer which is used to balance exploration and exploitation by continuous monitoring, how input message mutation guides to counterexamples that con icts with the current FSM prediction. Experimental results with many IoT devices show the IoTInfer’s e ciency by generating the test cases meaningfully, few of them can also reveal the previous unknown vulnerabilities and the deviations from the speci cations in protocol implementations. IoTInfer was also compared with the other two IoT blackbox device tools of fuzzing and discovered that IoTInfer is better for extracting. The purpose of IoTInfer is to assess IoT devices security and resilience. The major contribution and focus of the work are the development and application of a novel fuzzing technique.
+FirmHybirdFuzzer was developed and implemented by Situ et al. [30], an innovative approach to fuzzing through peripheral-independent hybrid tool. This fuzzing tool allows MCU rmware testing without relying on a particular peripheral hardware. FirmHybirdFuzzer’s effectiveness and e ciency was demonstrated through a large-scale experimental evaluation. Therefore, technique-based classi cation describes FirmHybridFuzzer’s place in the fuzzing methodologies for IoT devices.
+Jang et al. [20] proposed technique-based classi cation. A dynamic analysis tool was designed and developed for directly performing on the IoT devices and a dynamic analysis framework was proposed that is based on STrace which works on the IoT architectures like MIPS and MIPSEL. Furthermore, the results proved that vulnerabilities of IoT analyzed e ciently.
+6.1.2 Accelerators
+Researchers have investigated hardware acceleration techniques aimed at enhancing the performance of fuzzing tools. Meisel et al. [231] adapted an opensource hardware accelerated FPGA-based RISC-V fuzzing system, showcasing enhanced performance compared to QEMU-based fuzzing tools such as AFL++.
+Fortino et al. [17] introduce a new methodology aimed at accelerating security analyses and enabling the adoption of conventional security rmware tools, such as binary fuzzers. They emphasize the importance of rmware re-hosting, which involves emulating rmware in a controlled environment.
+Börsig et al. [26] investigated fuzzing on the ESP32 IoT architecture. They proposed a full-system emulator that runs rmware images of ESP32 instead of directly fuzzing the target IoT system. The proposed emulator outperforms fuzzing than the actual system. Using this emulator, a sample commercial IoT device was fuzzed with over 300 requests per second in which the bugs were identi ed in a few moments. The proposed framework can be utilized for discovering on-the-shelf products security issues and assists fuzz testing during development.
+He et al. [28] proposed a hash-based active synchronization technique of fuzzing. Their research focused on the Firm-AFL test mechanism, addressing two defects in synchronous test cases: passivity and duplication in AFL parallel mode. Experimental results showed that this method triggers crashes more quickly than the legacy Firm-AFL parallel mode, and with the high queue quality optimizes overall fuzz testing, thereby increasing rmware vulnerability detection e ciency.
+6.1.3 Mutators
+Mutation-based fuzzing involves modifying or generating test inputs based on prede ned rules or models. This approach is well-represented in studies such as Salazar et al.'s work [16], and Kim et al. [230] process. By de ning rules or models based on domain knowledge or empirical observations, researchers can generate test inputs that are more likely to trigger vulnerabilities or expose edge cases.
+Salazar et al. [16] developed an ontology speci cally for modeling cybersecurity attacks using mutation techniques, with a focus on 5G applications. Their work improved ontology design by incorporating concept classes related to network protocols, mutation operators, and network tra c. In a separate study, Feng et al. [216] introduced Snipuzz, an automated black-box fuzzing tool for IoT rmware. Snipuzz functions as a client that interacts with devices, collecting message snippets for response-based mutation. When tested on twenty well-known IoT devices, Snipuzz discovered ve zero-day vulnerabilities,
+
+
+ Page 13/30
+three of which were uncovered exclusively by this tool.Kim et al. [230] introduced IoTFirmFuzz, which strengthens the mutation process to uncover more paths, resolve constraints, and discover more crashes, thereby identifying vulnerabilities in various paths not explored by existing tools.
+Pearson et al. [31] created, implemented, and evaluated a fuzzing model speci cally designed for the MQTT protocol. Their model combined generationguided and mutation-guided fuzzing techniques to thoroughly investigate the MQTT protocol for server vulnerabilities. They employed Markov chains to improve both fuzzing methods. The fuzzing process uncovered seven signi cant vulnerabilities, including six zero-day vulnerabilities and two CVEs, across nine different MQTT implementations. This fuzzer demonstrated superior performance compared to other frameworks like BooFuzz and AFLNet when testing well-known MQTT targets.
+6.1.4 Coverage-guided Fuzzers
+Coverage-guided fuzzing has become an effective method for enhancing the e ciency and success of fuzzing in IoT systems. By using code coverage as a guiding metric, these fuzzers explore a broader range of code paths and uncover vulnerabilities that traditional fuzzing techniques might overlook.
+Du et al. [80] introduced A Iot, a coverage-guided greybox fuzzing framework customized for IoT devices operating on the Linux platform. This framework represents a signi cant breakthrough as it provides the rst practical solution for fuzzing binary programs on such IoT devices. A Iot's effectiveness was validated through comprehensive evaluations involving benchmarking and real-world testing scenarios, demonstrating its capability to detect vulnerabilities effectively in IoT environments.
+Ren et al. [233] developed Z-Fuzzer, a versatile fuzzing tool for detecting security aws in Zigbee protocols across different devices. Their research revealed that Z-Fuzzer provides extensive code coverage for Z-Stack, a widely used Zigbee protocol implementation. Compared to other fuzzers such as BooFuzz and Peach, Z-Fuzzer demonstrated superior effectiveness in identifying vulnerabilities.
+Zeng et al. [217] introduced MultiFuzz, a novel coverage-based fuzzer designed for multiparty protocols. Built on the AFL framework, MultiFuzz was applied to fuzz two popular projects: Eclipse Mosquitto and libCoAP, uncovering real issues for these projects. Additionally, when compared to AFL and other contemporary fuzzers such as MOPT and AFLNET, MultiFuzz was found to detect a greater number of vulnerabilities and crashes.
+6.1.5 Advanced Techniques
+Several recent studies have explored innovative approaches to increase the effectiveness of fuzzing in IoT domains. Serpanos et al. [19] investigated whitebox fuzzing augmented with AI and machine learning to intelligently select test vector sequences, facilitating the remote and autonomous testing of cyberphysical and IoT systems. The method’s distributed nature allows remote testing effectively, similarly the generation of test sequence automation allows the independence of testing from other processes. Yun et al. [228] focused on the unique challenges of fuzzing embedded systems, contrasting them with desktop environments, and provided a detailed classi cation of state-of-the-art fuzzing tools, highlighting their respective strengths and weaknesses. Yin et al. [234] introduced FirmHunter, an automated grey-box fuzzer designed for rmware images based on Linux. FirmHunter applies a message-state queue to manage test case dependencies and a scheduler to collect execution data, signi cantly accelerating vulnerability discovery. The effectiveness of FirmHunter was assessed through emulations of eight rmware images, as well as routers and an IP camera, and compared with leading IoT fuzzers like FirmFuzz and ZAP.. The evaluation demonstrated that FirmHunter can identify real-world vulnerabilities which cannot be detected by the other fuzzers, thanks to its message-state queue for analyzing test case dependencies. The scheduler improved vulnerability discovery by an average of 42%.
+6.2 Target Domain-Based Classi cation
+The target domain-based classi cation encompasses fuzzing methodologies speci cally designed for speci c domains or target systems within the IoT ecosystem. Researchers have developed frameworks like FIRMCORN [15] and FIRM-COV [32], which are tailored for IoT device rmware, focusing on optimized virtual execution and mining real-world vulnerabilities.
+Gui et al. [15] developed FIRMCORN, a vulnerable-code search algorithm aimed at identifying fuzzing entry points in IoT device rmware to enhance vulnerability detection e ciency. This algorithm utilizes optimized virtual execution technology to address key issues in IoT rmware fuzzing, including high throughput, accuracy, and emulation stability. Conversely, FIRM-COV, introduced by Kim et al. [32], is the rst high greybox coverage-oriented fuzzer speci cally for IoT rmware. It targets IoT programs and exposes real-world vulnerabilities through optimized process emulation. FIRM-COV addresses IoT fuzzing challenges based on empirical analysis, achieving superior coverage and throughput compared to other fuzzing tools. Another signi cant contribution in this category is ARM-AFL, developed by Fan et al. [235], which is a powerful framework for coverage-guided fuzzing of ARM-based IoT devices. When paired with lwHMCD (lightweight hardware-assisted module containment and deployment), ARM-AFL enables developers to identify vulnerabilities in ARM-based IoT devices before they can be exploited by attackers. Researchers have also explored hybrid frameworks that combine elements of technique-based and target domain-based classi cations. Gui et al. [23] presented FIRMNANO, a rmware fuzzing framework for microcontroller-based IoT devices. FIRMNANO is based on augmented virtual execution and solves three main problems of microcontroller rmware emulation: high throughput, inaccuracy, and instability of emulation. The evaluation result shows that FIRMNANO can execute rmware in the correct manner, and it can be used for the vulnerability mining of real-world rmware.
+A key insight from this classi cation is the recognition that different IoT domains and target systems may have distinct requirements and challenges, necessitating the development of specialized fuzzing methodologies. For instance, ARM-based IoT devices may require different approaches compared to microcontroller-based systems, as exempli ed by frameworks like ARM-AFL and FIRMNANO, respectively.
+Additionally, the integration of technique-based and target domain-based classi cations, as demonstrated by FIRMNANO, underscores the potential bene ts of merging advanced techniques with domain-speci c factors. This approach leads to more effective and e cient fuzzing methods for IoT systems.
+
+
+ Page 14/30
+6.3 Objective-Based Classi cation
+The objective-based classi cation encompasses fuzzing methodologies designed to achieve speci c objectives related to security, reliability, and robustness testing of IoT systems. Examples include frameworks like HubFuzzer [Ma et al., 2017], IoTFuzzBench [Cheng et al., 2021], and the study by Zhang et al. [2022].
+Ma et al. [229] introduced HubFuzzer, a standardized hub-based framework for fuzz testing multiple IoT devices without needing to reverse-engineer companion apps. HubFuzzer facilitates device state-sensitive fuzzing, which proved effective in identifying IoT bugs. Their testing on twenty-one IoT devices uncovered twenty-three zero-day vulnerabilities and assigned four CVEs. The ndings highlighted HubFuzzer's superior coverage and the importance of adapting methodologies to speci c security and vulnerability assessment needs. By analyzing messages exchanged between a hub and an IoT device, HubFuzzer can automatically expose all device functions.
+Zhang et al. [10] reviewed various fuzzing methodologies, evaluating their advantages and limitations, and offered recommendations to enhance fuzzing performance and effectiveness through objective-based classi cation. They applied robustness and reliability testing to tackle challenges in fuzzing IoT and mobile applications. Additionally, they proposed BIFF, a general-purpose fuzzing framework for binary-only scenarios across major CPU architectures. BIFF demonstrated superior performance over existing tools, effectively fuzzing industrial products and identifying 24 unknown bugs, including those in server-like programs.Other notable contributions in this classi cation include the work of Păduraru et al. [24], which presented an integrated testing framework supporting guided fuzzing techniques with AI for end-to-end testing of deployed IoT applications, aiming to identify vulnerabilities and ensure system robustness.
+Their IoT systems integrated testing framework, based on the open-source platform RIVER, extends testing capabilities by isolating individual processes and enabling dynamic runtime connections crucial for testing process interactions during deployment. The emphasis on AI and concolic execution enhances comprehensive end-to-end testing, effectively achieving the goal of vulnerability identi cation and system robustness. This approach emphasizes the importance of tailored methodologies for security and vulnerability assessment.
+6.3.1 Benchmarks
+A key development in this area is the creation of benchmark suites and evaluation methods for assessing the performance of fuzzing tools. Salehi et al. [22] introduced the rst ground-truth benchmark suite for IoT fuzzers, providing a precise and standardized way to evaluate their effectiveness in detecting vulnerabilities. This benchmark allows for the assessment of both the effectiveness and e ciency of instrumentation frameworks when used with advanced IoT fuzzers. Meanwhile, Cheng et al. [225] developed IoTFuzzBench, a scalable and modular automation framework driven by metrics, designed for a thorough quantitative evaluation of black-box protocol fuzzers for IoT devices. IoTFuzzBench assesses how well fuzzing tools detect vulnerabilities and evaluates their performance across various metrics. Tested on seven prominent black-box protocol fuzzers, IoTFuzzBench included all benchmark rmware images and vulnerabilities, demonstrating its ability to conduct fast, reliable, and reproducible experiments while differentiating fuzzer performance.
+Researchers have acknowledged the diverse needs and goals of IoT systems, leading to the development of specialized fuzzing methods tailored to these requirements. These contributions highlight the research community's efforts to tackle the unique challenges of IoT systems, paving the way for more secure and reliable IoT environments.
+VII. LIMITATIONS & GAPS IDENTIFIED
+This section highlights various limitations and gaps identi ed in the existing research on fuzzing methods in IoT. These limitations encompass challenges faced by researchers and practitioners in effectively securing IoT ecosystems through fuzz testing. Below are the subsections based on the classi cation of different challenges.
+7.1 Challenges in Fuzzing Techniques
+Fuzzing techniques have various challenges when they are applied to IoT devices and rmware:
+Closed Sources and Signi cant Hardware Dependency:
+Eceiza et al. [6] highlighted several challenges in the eld of rmware vulnerability detection, including issues such as closed-source environments and high hardware dependencies, which negatively impact the performance of effective fuzzing techniques. The primary problems include the challenging simulation of rmware and the low throughput of Firm-AFL. Additionally, there is a notable monitoring gap in the fuzzing of embedded systems.Heterogeneous IoT Devices Architecture: Zhang et al. [10] highlighted that the architecture of IoT devices is heterogeneous, which have limited resources, and server-like programs are testing targets, so by applying the existing fuzz testing techniques they face many challenges. More automatic con guration and advanced fuzzing techniques are needed.
+Absence of Uni ed Formalism: Salazar et al. [16] pointed out the uni ed formalism absence that is used to describe the process of fuzzing, especially mutation-based fuzzing. Authors think that a formalism for describing the network-enabled fuzzing can enhance security of the network that allows automated test case creation and facilitates the complex test cases creation situation. Some works has been done to solve this issue, but in the software engineering eld only.
+Limitations of Linguistic Model: Mao et al. [21] pinpointed a research gap where tools designed for linguistic-model-guided fuzzing were unable to conduct semantic analysis on Vulnerability Assessments (VAs) of Asian languages. This issue arises from the differences in semantic structure between phonetic
+
+
+ Page 15/30
+languages like English and symbol-based languages such as Chinese.
+Execution of Applications in the User-Mode Emulation: Although the attempts were made for shifting the application towards user-mode emulation [218], but no existing technique supported for the execution of these applications in the user-mode emulation fully as speci ed by Zheng et al.
+Coverage-Based Fuzzers Assumptions: Zeng et al. [217] highlights that the current coverage-based fuzzers may overlook certain paths with publish subscribe protocols due to the misconception that only two parties are involved. However, in reality, such protocols involve three parties: publisher, subscriber, and broker, highlighting the importance of accounting for all parties in the fuzzing process.
+Lack of Effective Tools: Fan et al. [235] indicated that shortage of effective tools in order to assist the developers of IoT in discovering vulnerabilities in their codes.
+7.2 Scalability and E ciency
+Scalability and E ciency are the two main concerns in fuzzing IoT devices:
+Dictionary Generation and Crash Veri cation: Kim et al. [32] discovered the current limitations in dictionary generation, crash veri cation, and scalability in the FIRM-COV design and potential future research ideas.
+Blackbox Fuzzing: Jang et al. [20] noted that when performing fuzzing much research is considered but there are limitations for IoT devices and services. Firstly, blackbox fuzzing is performed and mostly results are unknown until and unless it’s a critical vulnerability like termination of device. Secondly, many devices do not have debugging port so analyzing through memory dump is di cult. That’s why nding IoT device vulnerability or analyzing the test case behavior causing the crash is di cult. Mostly analyzing tools operate rmware in a virtual environment that’s why there are many issues that rmware can be used for data collection or not.
+Development of Customized Fuzzers: Serpanos et al [19] disclosed that for the effectiveness of the white-box approach, which suggest developing an appropriate, customized fuzzers for various applications, protocols, and systems. As ML and AI lacks signi cant progress in testing and fuzzing, the results points to potential growth and improvement for effective and e cient fuzzers in this eld.
+Reverse Engineering Challenges: Ma et al. [229] highlighted that the existing blackbox fuzzers of IoT require more time and effort for reverse engineering the companion app for IoT of an individual IoT device, that is not scalable when analysing more devices. Further, a companion app fuzzing is hindered due to input sanitization within the app and thus restricted to the manually discovered functions.
+Individual Process Testing in Isolation: Păduraru et al. [24] noted about the testability of individual processes in isolation.
+Variant Fuzzing E ciency: Du et al. [80] noted that even though A Iot proved to be an e cient and accurate generic fuzzing tool for IoT devices based on Linux with few limitations. i.e. Variant Fuzzing E ciency on IoT devices.
+Lack of Standardized Evaluation: Cheng et al. [225] emphasized the challenges associated with black-box protocol fuzzers, noting the lack of standardized rmware images, comprehensive fuzzing mutation seeds, complete performance metrics, and a systematic evaluation framework.
+Lack of Vulnerability Detection: In [230], existing tools primarily focused on the processing speed of rmware fuzzing, which led to limitations in identifying vulnerabilities across various paths, as highlighted by Kim et al. Zhang et al. [232] emphasized the critical role of fuzz testing in detecting rmware vulnerabilities, which is increasingly vital for ensuring IoT device security and remains a prominent research area withing academia and industry. Despite all efforst current methods for fuzzing IoT rmware still face signi cant challenges.
+Limitations on IoT Firmware Emulation: Limitations on IoT Firmware Emulation and Protocol Types for Fuzzing were outlined by Yin et al [234].
+7.3 Security Assessment Limitations
+Assessing the IoT devices security presents unique challenges:
+Vulnerability Exposure: In [15], The IoT security is severe as many IoT devices are exposed to vulnerabilities identi ed by Gui et al. There are limitations on CPU architecture and operating system. Gui et al. [23] emphasized that the analysis of rmware security of the IoT devices is important. Many devices have exploitable vulnerabilities, which allows attackers to remotely access IoT devices.
+Lack of Security Focus: Börsig et al. [26] noted that security is mostly neglected during the development of IoT in garb of production time and costs. A minimal effort has been made to improve the security tools.
+Re-hosting Approaches: Fortino et al. [17] mentioned that when dealing with vulnerability assessment there is a limitation of the current re-hosting methods.
+Memory Management:
+Bare-metal devices often lack fundamental security mechanisms, such as the Memory Management Unit as noted in [22]. This de ciency makes them susceptible to silent memory corruptions, which fuzzing techniques can struggle to detect due to their subtle effects. Once a vulnerability is discovered, it is crucial to identify its type to apply appropriate mitigation. Salehi et al. highlight that the discovery and identi cation of vulnerabilities in fuzzing rmware binaries remain signi cant challenges.
+
+
+ Page 16/30
+IoT Devices Security and Resilience: The popularity of IoT devices requires effective and e cient methods for assessing the IoT devices security and resilience as disclosed by Shu et al. [29].
+Server Software Security: MQTT, most widely used communication protocol for interconnecting the devices with the considerable network restraints, like in IoT [31]. It directly impacts many devices, but the malware protection of the server, i.e., broker implementations is not considered as strong as detected by Pearson et al.
+7.4 Challenges in Embedded Systems Fuzzing
+Embedded Systems have speci c challenges for fuzzing techniques:
+Multi-Architecture Support: Yun et al. [228] identi ed different obstacles, not much study has been done for the Embedded systems fuzzing. Some of them are multi-architecture support, di culties in crash detection, and a smaller number of resources.
+Firmware Simulation Di culties: In the rmware vulnerability detection eld, there are different obstacles like closed sources, greater number of hardware dependency which makes effective fuzzing techniques perform very badly [28]. The main issues are di culty in rmware simulation and low throughput as observed by He et al. Firm-AFL solved the throughput issues in AFL to an extent of under rmware system-level simulation by combining Firmadyne and AFL, but further improvement in e ciency is still needed.
+Lack of Feedback Mechanism: Due to the lack of feedback [216], effective mutation optimization mechanisms cannot be formed by the existing black box fuzzers to guide the testing processes. Also, by using the available relational communication formats of messages in IoT devices, it is sometimes not possible to apply the strategies of the existing grammar-based fuzzing. In the IoT fuzzing domain, an e cient fuzzing approach is needed with the inference of syntax as revealed by Feng et al.
+Lack of Fault Detection Mechanism: When fuzzing is applied to the IoT rmware, there are several challenges that includes: the inability of rmware for the proper execution during the peripheral’s absence, the lack of support to explore the input spaces of multiple peripherals, di culties for the instrumentation and collection of feedback, and the fault detection mechanism absence as uncovered by Situ et al. [30].
+Lack of ISA Licensing Costs: In the context of fuzzing, a signi cant challenge arises from the limited observability of tiny IoT processors, which is crucial for effective testing on IoT devices [231]. Meisel et al. proposed addressing the limitations of RISC-V IoT processors to potentially dominate future IoT applications, due to no associated ISA licensing costs.
+Protocol Fuzzing Challenges: Ren et al. [233] disclosed that the application of the vulnerability detection techniques namely Zigbee protocol fuzzing is di cult. When dealing with hardware events of low-level, it is a major issue. As Zigbee protocol uses radio channels for communication, most of the current tools for protocol fuzzing need an adequate environment of execution.
+7.5 Analysis
+The analysis of the limitations and challenges identi ed in the above subsections reveals various issues:
+Complexity and Heterogeneity of IoT Devices: Limitations of legacy fuzzing techniques arise due to the complex nature and heterogeneity of IoT devices. Hence, there is a need for customized advanced fuzzers for speci c applications, protocols, and systems.
+Scalability and E ciency: There are critical issues of scalability and e ciency especially in blackbox fuzzing and reverse engineering processes. For effective fuzzing, enhancing the dictionary generation, crash veri cation, and scalability is important.
+Security Gaps: There are signi cant gaps in IoT devices security assessment, which includes the lack of basic security mechanisms and less focus on security during the development phase.
+Embedded Systems: The embedded systems need specialized fuzzing approaches because of their different architecture and resource constraints. To advance fuzzing in this domain, improved simulation techniques, feedback mechanisms, and multi-architecture support are required.
+Therefore, this research outlines the need for continuous development of advanced, scalable, and e cient fuzzing techniques according to the various challenges of IoT devices and embedded systems. Solving these limitations will enhance the IoT ecosystem’s security and resilience.
+VIII. CONCLUSION & FUTURE WORK
+The rising frequency of malicious attacks targeting IoT networks and devices underscores the importance of cybersecurity within the IoT domain. To address this issue, fuzzing has emerged as a prominent technique for vulnerability discovery because of its simplicity, ease of deployment, and effectiveness in uncovering real-world software vulnerabilities. This article presents a systematic exploration of extant fuzz testing methodologies, approaches, and techniques applicable to IoT networks. Through meticulous analysis, we illuminate prevailing gaps and challenges within the realm of fuzzing, thereby offering a comprehensive appraisal of its current state in bolstering IoT security.
+8.1 Research Gaps
+
+
+ Page 17/30
+There are several research gaps identi ed in the reviewed literature. The existing fuzzing techniques mostly struggle with the complexity and heterogeneity of IoT devices. Several IoT devices have limited resources and diverse architectures, creating signi cant obstacles for conventional fuzzing methodologies. Furthermore, the lack of a uni ed formalism for explaining fuzzing processes, especially in network-enabled fuzzing, hinders the development of automated test case creation and the execution of complex test scenarios.
+8.2 Emerging Trends and Technologies
+It pertains to the integration of AI and machine learning in fuzzing techniques. Although signi cant progress has yet to be made, these technologies hold great potential to enhance the e ciency and effectiveness of fuzzing by automating test case generation and improving vulnerability detection. Further, the advancements in re-hosting techniques and the multi-architecture support systems development are important for addressing the limitations of existing fuzzing approaches.
+8.3 Unexplored Topics and Methods
+There are many unexplored topics and methods which requires further work. For instance, there is a vast area of research in objective-based and target domain-based fuzzing approaches for researchers as there is not much research done. Although, they provide detailed insights into the application of fuzzing techniques within the speci c IoT contexts. In addition, the exploration of linguistic-model-guided fuzzing for non-English languages and the development in the areas of more sophisticated simulation environments for rmware testing are there for future work.
+8.4 Methodological Advancements
+Methodological Advancements are necessary to overcome the existing limitations. Future research should focus on improving the scalability and e ciency of fuzzing techniques. It includes improving dictionary generation, crash veri cation, and feedback mechanisms in the blackbox fuzzing process. To advance this eld, the standardized benchmarks for fuzzing protocols should be developed and comprehensive frameworks should be created for evaluating fuzzing performance.
+8.5 Practical Implications and Applications
+The practical implications of improved fuzzing techniques are extensive. The enhanced fuzzing methodologies generate more robust and secure IoT ecosystems which protects against a wide array of cyber threats. By developing the automated, e cient, and scalable fuzzing tools, it will facilitate the practitioners in the widespread use of fuzzing in IoT security assessments. In addition, the creation of standardized protocols and evaluation metrics will set a standard in comparison to the effectiveness of various fuzzing tools and techniques.
+8.6 Recommendations for Future Work
+The recommendations for future work based on the identi ed gaps, emerging trends, and practical implications are presented as follows:
+Objective-Based and Target Domain-Based Fuzzing: Should explore objective-based and target domain-based fuzzing methods to enhance the fuzzing techniques application in diverse IoT contexts.
+AI and ML Integration: Enhancing automation of test case generation and improve vulnerability detection of fuzzing processes.
+Uni ed Formalisms Development: To create formalized frameworks for the description and automation of network-enabled fuzzing, facilitate the complex test scenarios development.
+Linguistic-Model-Guided Fuzzing: The development of fuzzing tools that can perform semantic analysis on non-English languages and address the structural differences in linguistic models.
+Standardized Benchmarks: To establish standardized benchmarks and evaluation metrics for fuzzing protocols in order to enable consistent performance assessment.
+Enhanced Simulation Environment: Improvement in simulation environment for rmware testing to copy real-world conditions and enhance fuzzing e ciency.
+These recommendations will aid in signi cantly enhancing the state of fuzzing methodologies leading to more secure and resilient IoT ecosystems.
+Declarations
+Availability of Data and Materials
+All data and materials shall be made available upon request.
+Funding:
+No funding was received for conducting this study.
+Competing interests:
+The authors declare that they have no competing interests directly or indirectly related to the content of this article. There are no relevant interests within the last three years of conducting the research and preparing the manuscript that need to be disclosed. Additionally, there are no interests outside this timeframe
+
+
+ Page 18/30
+that could reasonably be perceived as in uencing the submitted work. This disclosure aims to ensure transparency and help readers assess potential biases. Any nancial relationships with organizations that sponsored the research or compensation received for consultancy work are not disclosed here if they do not affect the impartiality of the work.
+Authors Contribution:
+Asma Touqir performed the literature search, conducted the data analysis, and drafted the manuscript for this review article. The initial idea for the review was proposed by Faisal Iradat and later re ned and extended by Abdur Rakib. All authors contributed to the critical revision of the manuscript, including Olivier Haas, who facilitated institutional collaboration, Nazim Taskin and Zaheer Uddin Asif, who provided signi cant revisions, and Hesam Jadidbonab, who guided the inclusion of model-based fuzzing techniques. All authors read and approved the nal version of the manuscript.
+Acknowledgement:
+We gratefully acknowledge the support from Institute of Business Administration Karachi, Pakistan, Coventry University, UK, and Boğaziçi University, Turkiye. We also thank our colleagues Dr Shakeel Khoja, Dr Shahid Hussain, Dr Tariq Mahmood and Dr Syed Ali Raza for their support and encouragement.
+References
+1. Amiruddin, A., Ratna, A.A.P., Sari, R.F.: Systematic Review of Internet of Things Security. Int. J. Commun. Netw. Inf. Secur. IJCNIS. 11(2) (Apr. 2022). 10.17762/ijcnis.v11i2.3533
+2. Yang, Y., Wu, L., Yin, G., Li, L., Zhao, H.: A Survey on Security and Privacy Issues in Internet-of-Things, IEEEInternetThingsJ., vol. 4, no. 5, pp. 1250–1258, Oct. (2017). 10.1109/JIOT.2017.2694844
+3. Bekkali, A., Essaaidi, M., Boulmalf, M., Majdoubi, D.: Systematic Literature Review of Internet of Things (IoT) Security. Adv. Indynamical Syst. ApplADSA. 21, 25–39 (2022)
+4. Sikder, A., Petracca, G., Aksu, H., Jaeger, T., Uluagac, A.: A Survey on Sensor-based Threats to Internet-of-Things (IoT) Devices and Applications, ArXiv, Feb. Accessed: Mar. 06, 2024. [Online]. Available: (2018). https://www.semanticscholar.org/paper/A-Survey-on-Sensor-based-Threats-to-(IoT)-DevicesSikder-Petracca/70335f9b6d0a76533dfd5255cc3a5e313e76a398
+5. Bin Hulayyil, S., Li, S., Xu, L.: Machine-Learning-Based Vulnerability Detection and Classi cation in Internet of Things Device Security. Electronics. 12, 3927 (Sep. 2023). 10.3390/electronics12183927
+. Eceiza, M., Flores, J.L., Iturbe, M.: Fuzzing the Internet of Things: A Review on the Techniques and Challenges for E cient Vulnerability Discovery in Embedded Systems, IEEEInternetThingsJ., vol. 8, no. 13, pp. 10390–10411, Jul. (2021). 10.1109/JIOT.2021.3056179
+7. Manes, V., et al.: Fuzzing:Art,Science,andEngineering. (2018)
+. Bekrar, S., Bekrar, C., Groz, R., Mounier, L.: Finding Software Vulnerabilities by Smart Fuzzing, 2011FourthIEEEInt.Conf.Softw.Test.Veri cationValid., pp. 427–430, Mar. (2011). 10.1109/ICST.2011.48
+9. Wang, W., Chen, Z., Zheng, Z., Wang, H.: An adaptive fuzzing method based on transformer and protocol similarity mutation. Comput. Secur. 129, 103197 (Jun. 2023). 10.1016/j.cose.2023.103197
+10. Zhang, C., et al.: BIFF: Practical Binary Fuzzing Framework for Programs of IoT and Mobile Devices, in., 36thIEEE/ACMInternationalConferenceon AutomatedSoftwareEngineering(ASE), Nov. 2021, pp. 1161–1165. (2021). 10.1109/ASE51524.2021.9678910
+11. Alferidah, D.K., Jhanjhi, N.: A Review on Security and Privacy Issues and Challenges in Internet of Things, (2020)
+12. Anand, P., Singh, Y., Selwal, A., Alazab, M., Tanwar, S., Kumar, N., IoT Vulnerability Assessment for Sustainable Computing: Threats, Current Solutions, and, Challenges, O.: IEEEAccess, vol. 8, pp. 168825–168853, (2020). 10.1109/ACCESS.2020.3022842
+13. Fuzzing: a survey | Cybersecurity | Full Text. Accessed: Mar. 20, 2024. [Online]. Available: https://cybersecurity.springeropen.com/articles/10.1186/s42400-018-0002-y
+14. Wang, J., Chen, B., Wei, L., Liu, Y.: Sky re: Data-Driven Seed Generation for Fuzzing, in 2017IEEESymposiumonSecurityandPrivacy(SP), San Jose, CA, USA: IEEE, May pp. 579–594. (2017). 10.1109/SP.2017.23
+15. Gui, Z., Shu, H., Kang, F., Xiong, X.: Vulnerability-Oriented Fuzzing of IoT Firmware via Optimized Virtual Execution. IEEE Access. 8, 29826–29841 (2020). 10.1109/ACCESS.2020.2973043
+1 . A Network Tra c Mutation Based Ontology, and Its Application to 5G Networks | IEEE Journals & Magazine | IEEE Xplore. Accessed: Dec. 23, 2023. [Online]. Available: https://ieeexplore.ieee.org/document/10105914
+17. Fortino, G., Greco, C., Guzzo, A., Ianni, M.: Enabling Faster Security Assessment of Re-hosted Firmware, in IEEEIntlConfonDependable,Autonomicand SecureComputing,IntlConfonPervasiveIntelligenceandComputing,IntlConfonCloudandBigDataComputing,IntlConfonCyberScienceand TechnologyCongress(DASC/PiCom/CBDCom/CyberSciTech), Sep. 2022, pp. 1–6. (2022). 10.1109/DASC/PiCom/CBDCom/Cy55231.2022.9927780
+1 . Sohrabi, C., et al.: PRISMA : What’s new and the importance of reporting guidelines, Int.J.Surg., vol. 88, p. 105918, Apr. 2021, (2020). statement 10.1016/j.ijsu.2021.105918
+19. Serpanos, D., Katsigiannis, K.: Fuzzing: Cyberphysical System Testing for Security and Dependability, Computer, vol. 54, no. 9, pp. 86–89, Sep. (2021). 10.1109/MC.2021.3092479
+20. Jang, D., Kim, T., Kim, D.: Dynamic Analysis Tool for IoT Device, in 2020InternationalConferenceonInformationandCommunicationTechnology Convergence(ICTC), Oct. pp. 1864–1867. (2020). 10.1109/ICTC49870.2020.9289204
+
+
+ Page 19/30
+21. Mao, J., Liu, Z., Lin, Q., Liang, Z.: Semantic-Fuzzing-Based Empirical Analysis of Voice Assistant Systems of Asian Symbol Languages, IEEEInternet ThingsJ., vol. 9, no. 12, pp. 9151–9166, Jun. (2022). 10.1109/JIOT.2021.3113645
+22. Salehi, M., Degani, L., Roveri, M., Hughes, D., Crispo, B.: Discovery and Identi cation of Memory Corruption Vulnerabilities on Bare-Metal Embedded Devices, IEEETrans.DependableSecureComput., vol. 20, no. 2, pp. 1124–1138, Mar. (2023). 10.1109/TDSC.2022.3149371
+23. Gui, Z., Shu, H., Yang, J., FIRMNANO: Toward IoT Firmware Fuzzing Through Augmented Virtual Execution, in: IEEE11thInternationalConferenceon SoftwareEngineeringandServiceScience (ICSESS), Oct. 2020, pp. 290–294. (2020). 10.1109/ICSESS49938.2020.9237719
+24. Păduraru, C., Cristea, R., Stăniloiu, E.: RiverIoT - a Framework Proposal for Fuzzing IoT Applications, in 2021IEEE/ACM3rdInternationalWorkshopon SoftwareEngineeringResearchandPracticesfortheIoT(SERP4IoT), Jun. pp. 52–58. (2021). 10.1109/SERP4IoT52556.2021.00015
+25. Alagappan, A., Baptist Andrews, L.J., Kumar, S., Raj, V.R.A.: and S. D, Cybersecurity Risks Quanti cation in the Internet of Things, in IEEE7thInternational ConferenceonRecentAdvancesandInnovationsinEngineering(ICRAIE), Dec. 2022, pp. 154–159. (2022). 10.1109/ICRAIE56454.2022.10054330
+2 . Börsig, M., Nitzsche, S., Eisele, M., Gröll, R., Becker, J., Baumgart, I.: Fuzzing Framework for ESP32 Microcontrollers, in IEEEInternationalWorkshopon InformationForensicsandSecurity(WIFS), Dec. 2020, pp. 1–6. (2020). 10.1109/WIFS49906.2020.9360889
+27. Rohan, R., Funilkul, S., Pal, D., Chutimaskul, W.: Understanding of Human Factors in Cybersecurity: A Systematic Literature Review, in International ConferenceonComputationalPerformanceEvaluation(ComPE), Dec. 2021, pp. 133–140. (2021). 10.1109/ComPE53109.2021.9752358
+2 . He, J., Liu, Y., Xiao, J., Shen, Y., in, Research on Security Detection Technology of IoT Device Based on AFL:, IEEEInternationalConferenceonAdvancesin ElectricalEngineeringandComputerApplications(AEECA), Aug. 2021, pp. 1042–1047. (2021). 10.1109/AEECA52519.2021.9574301
+29. Shu, Z., Yan, G.: IoTInfer: Automated Blackbox Fuzz Testing of IoT Network Protocols Guided by Finite State Machine Inference, IEEEInternetThingsJ., vol. 9, no. 22, pp. 22737–22751, Nov. (2022). 10.1109/JIOT.2022.3182589
+30. Situ, L., et al.: Dec., Physical Devices-Agnostic Hybrid Fuzzing of IoT Firmware, IEEEInternetThingsJ., vol. 10, no. 23, pp. 20718–20734, (2023). 10.1109/JIOT.2023.3303780
+31. Pearson, B., Zhang, Y., Zou, C., Fu, X.: FUME: Fuzzing Message Queuing Telemetry Transport Brokers, in IEEEINFOCOM2022-IEEEConferenceon ComputerCommunications, May pp. 1699–1708. (2022). 10.1109/INFOCOM48880.2022.9796755
+32. Kim, J., Yu, J., Kim, H., Rustamov, F., Yun, J.: High-Coverage Greybox Fuzzing for IoT Firmware via Optimized Process Emulation. IEEE Access. 9, 101627101642 (2021). 10.1109/ACCESS.2021.3097807
+33. Feng, X., Zhu, X., Han, Q.-L., Zhou, W., Wen, S., Xiang, Y.: Detecting Vulnerability on IoT Device Firmware: A Survey. IEEECAA J. Autom. Sin. 10(1), 25–41 (Jan. 2023). 10.1109/JAS.2022.105860
+34. Mera, A., Feng, B., Lu, L., Kirda, E., DICE: Automatic Emulation of DMA Input Channels for Dynamic Firmware Analysis, presented at the 2021 IEEE Symposium on Security and Privacy (SP), Society, I.E.E.E.C.: May pp. 1938–1954. (2021). 10.1109/SP40001.2021.00018
+35. Zhang, Q., Wang, J., Gulzar, M.A., Padhye, R., Kim, M.: BigFuzz: E cient Fuzz Testing for Data Analytics Using Framework Abstraction, in 35thIEEE/ACM InternationalConferenceonAutomatedSoftwareEngineering(ASE), Sep. 2020, pp. 722–733. Accessed: Mar. 26, 2024. [Online]. Available: (2020). https://ieeexplore.ieee.org/document/9286115
+3 . Deng, X., Duan, Y., Deng, K.: A Fuzzing Method for Embedded Software, in IEEE5thInformationTechnology,Networking,ElectronicandAutomation ControlConference(ITNEC), Oct. 2021, pp. 1735–1738. (2021). 10.1109/ITNEC52019.2021.9587220
+37. Guo, X., Analysis between different types of smart contract fuzzing, in: 3rdInternationalConferenceonComputerVision,ImageandDeepLearning & InternationalConferenceonComputerEngineeringandApplications(CVIDL&ICCEA), May 2022, pp. 882–886. (2022). 10.1109/CVIDLICCEA56201.2022.9825021
+3 . Zhang, Q., Wang, J., Gulzar, M.A., Padhye, R., Kim, M.: E cient Fuzz Testing for Apache Spark Using Framework Abstraction, in IEEE/ACM43rd InternationalConferenceonSoftwareEngineering:CompanionProceedings(ICSE-Companion), May 2021, pp. 61–64. (2021). 10.1109/ICSECompanion52605.2021.00036
+39. Ivanova, M.E., Dushkin, A.V., Bryushinin, A.O.: Method of Fuzzing Testing of Firewalls Using the Gray Box Method, in IEEEConferenceofRussianYoung ResearchersinElectricalandElectronicEngineering(ElConRus), Jan. 2021, pp. 2340–2340. (2021). 10.1109/ElConRus51938.2021.9396544
+40. Luo, J., Liu, M., Luo, Y., Chen, Z., Zhang, Y.: A Runtime Monitoring Based Fuzzing Framework for Temporal Properties, in IEEEInternationalSymposiumon SoftwareReliabilityEngineeringWorkshops(ISSREW), Oct. 2021, pp. 300–301. (2021). 10.1109/ISSREW53611.2021.00089
+41. Wen, C., Liu, Y., Li, S.: A Routing Protocols Fuzzing Method based on MAN-IN-THE-MIDDLE, in 2ndInternationalConferenceonFrontiersofElectronics, InformationandComputationTechnologies(ICFEICT), Aug. 2022, pp. 491–496. (2022). 10.1109/ICFEICT57213.2022.00092
+42. Liu, Z., et al.: Rethinking Smart Contract Fuzzing: Fuzzing With Invocation Ordering and Important Branch Revisiting. IEEE Trans. Inf. Forensics Secur. 18, 1237–1251 (2023). 10.1109/TIFS.2023.3237370
+43. Li, Y., et al.: G-Fuzz: A Directed Fuzzing Framework for gVisor. IEEE Trans. Dependable Secure Comput. 21(1), 168–185 (Jan. 2024). 10.1109/TDSC.2023.3244825
+44. Honda, Y., Masuda, Y., Ishihara, T.: Feedback-Tuned Fuzzing for Accelerating Quality Veri cation of Approximate Computing Design, in IEEE29th InternationalSymposiumonOn-LineTestingandRobustSystemDesign(IOLTS), Jul. 2023, pp. 1–3. (2023). 10.1109/IOLTS59296.2023.10224891
+45. Mahmood, R., Pennington, J., Tsang, D., Tran, T., Bogle, A., A Framework for Automated API Fuzzing at Enterprise Scale, presented at the 2022 IEEE Conference on Software Testing, Veri cation and Validation (ICST), Computer Society, I.E.E.E.: Apr. pp. 377–388. (2022). 10.1109/ICST53961.2022.00018
+4 . Li, X., An Expert Knowledge Generation Model in Smart Contract Vulnerability Fuzzing:, IEEE9thIntlConferenceonBigDataSecurityonCloud (BigDataSecurity),IEEEIntlConferenceonHighPerformanceandSmartComputing,(HPSC)andIEEEIntlConferenceonIntelligentDataandSecurity
+
+
+ Page 20/30
+(IDS), May 2023, pp. 51–56. (2023). 10.1109/BigDataSecurity-HPSC-IDS58521.2023.00019
+47. Li, Y., Zhang, S., Wu, L., Lin, P., Zhou, Z.: A Binary Protocol Fuzzing Method Based on SeqGAN, in IEEE9thJointInternationalInformationTechnologyand Arti cialIntelligenceConference(ITAIC), Dec. 2020, pp. 290–296. (2020). 10.1109/ITAIC49862.2020.9339152
+4 . Yi, G., Yang, X., Huang, P., Wang, Y., A Coverage-Guided Fuzzing Framework based on Genetic Algorithm for Neural Networks, in: 8thInternational ConferenceonDependableSystemsandTheirApplications (DSA), Aug. 2021, pp. 352–358. (2021). 10.1109/DSA52907.2021.00054
+49. Lu, S., Kuang, X., Nie, Y., Lin, Z.: A Hybrid Interface Recovery Method for Android Kernels Fuzzing, in IEEE20thInternationalConferenceonSoftware Quality,ReliabilityandSecurity(QRS), Dec. 2020, pp. 335–346. (2020). 10.1109/QRS51102.2020.00052
+50. Ribeiro, S., Cassiano, J.P.D.L., Almeida, A., International Conference on Computational, Science, Intelligence, C. (CSCI), Computer Society, I.E.E.E.: CSecPrivAF - Cybersecurity, and Privacy Assessment Framework for IoT Systems, presented at the, Dec. 2022, pp. 1094–1095. (2022). 10.1109/CSCI58124.2022.00195
+51. Zhao, H., Silverajan, B., User-Centered Design to Enhance IoT Cybersecurity Awareness of Non-Experts in Smart Buildings, in: ThirteenthInternational ConferenceonUbiquitousandFutureNetworks (ICUFN), Jul. 2022, pp. 369–371. (2022). 10.1109/ICUFN55119.2022.9829563
+52. Gómez, G., Espina, E., Armas-Aguirre, J., Molina, J.M.M.: Cybersecurity architecture functional model for cyber risk reduction in IoT based wearable devices, in CongresoInternacionaldeInnovaciónyTendenciasenIngeniería(CONIITI), Sep. 2021, pp. 1–4. (2021). 10.1109/CONIITI53815.2021.9619624
+53. AlAali, A.M., AlAteeq, A., Elmedany, W.: Cybersecurity Threats and Solutions of IoT Network Layer, in InternationalConferenceonInnovationand IntelligenceforInformatics,Computing,andTechnologies(3ICT), Nov. 2022, pp. 250–257. (2022). 10.1109/3ICT56508.2022.9990734
+54. Kandhro, I.A., et al.: Detection of Real-Time Malicious Intrusions and Attacks in IoT Empowered Cybersecurity Infrastructures. IEEE Access. 11, 91369148 (2023). 10.1109/ACCESS.2023.3238664
+55. Rohan, R., Funilkul, S., Pal, D., Thapliyal, H.: Humans in the Loop: Cybersecurity Aspects in the Consumer IoT Context. IEEE Consum. Electron. Mag. 11(4), 78–84 (Jul. 2022). 10.1109/MCE.2021.3095385
+5 . Ding, Z., Cao, D., Liu, L., Yu, D., Ma, H., Wang, F.: A Method for Discovering Hidden Patterns of Cybersecurity Knowledge Based on Hierarchical Clustering, in IEEESixthInternationalConferenceonDataScienceinCyberspace(DSC), Oct. 2021, pp. 334–338. (2021). 10.1109/DSC53577.2021.00053
+57. Thembakazi, M., Kangapi, Chindenga, E.: Towards a Cybersecurity Culture Framework for Mobile Banking in South Africa, in IST-AfricaConference(ISTAfrica), May 2022, pp. 1–8. (2022). 10.23919/IST-Africa56635.2022.9845633
+5 . IoT to Structured Data (IoT2SD): A Big Data Information Extraction Framework | IEEE Conference Publication | IEEE Xplore. Accessed: Mar. 27, 2024. [Online]. Available: https://ieeexplore.ieee.org/document/9897030
+59. Alharbi, H.B., Baghanim, N.A., Munshi, A.: Cyber Risk in Internet of Things World, in 3rdInternationalConferenceonComputerApplications&Information Security(ICCAIS), Mar. 2020, pp. 1–5. (2020). 10.1109/ICCAIS48893.2020.9096720
+0. Li, R., Zhang, B., Wang, T., Tang, C., 8th International Conference on Intelligent Computing and, Processing, S. (ICSP), Computer Society, I.E.E.E.: A Heap Manipulation Diversity Fuzzing Method for Spatial Heap Vulnerabilities Exploitation, presented at the, Apr. 2023, pp. 200–204. (2023). 10.1109/ICSP58490.2023.10248640
+1. Wang, Q., et al.: FinFuzzer: One Step Further in Fuzzing Fintech Systems, in., 36thIEEE/ACMInternationalConferenceonAutomatedSoftware Engineering(ASE), Nov. 2021, pp. 1111–1115. (2021). 10.1109/ASE51524.2021.9678675
+2. GDL90fuzz: Fuzzing - GDL-90 Data Interface Speci cation Within Aviation Software and Avionics Devices–A Cybersecurity Pentesting Perspective | IEEE Journals & Magazine | IEEE Xplore. Accessed: Mar. 27, 2024. [Online]. Available: https://ieeexplore.ieee.org/document/9709804
+3. Fernandez, L., Karlsson, G.: Black-Box Fuzzing for Security in Managed Networks: An Outline, IEEENetw.Lett., vol. 5, no. 4, pp. 241–244, Dec. (2023). 10.1109/LNET.2023.3286443
+4. Chen, H., Yuan, B., Zou, D., Jin, H.: A Fuzzing-Based Method for Testing Rules in Intrusion Detection Systems in 6G Networks, IEEENetw., vol. 36, no. 4, pp. 150–158, Jul. (2022). 10.1109/MNET.002.2100655
+5. Biao, W., Chaojing, T., Bin, Z., FFUZZ: A Fast Fuzzing Test Method for Stateful Network Protocol Implementation, in: 2ndInternationalConferenceon ComputerCommunicationandNetworkSecurity (CCNS), Jul. 2021, pp. 75–79. (2021). 10.1109/CCNS53852.2021.00023
+. Hu, Z., Pan, Z.: A Systematic Review of Network Protocol Fuzzing Techniques, in IEEE4thAdvancedInformationManagement,Communicates,Electronic andAutomationControlConference(IMCEC), Jun. 2021, pp. 1000–1005. (2021). 10.1109/IMCEC51613.2021.9482063
+7. Aggarwal, V., Kaur, D., Mittal, S., Prasad, T.J.S., Batra, D., Garg, A., A Comparative Study of Directory Fuzzing Tools, in: InternationalConferenceonCircuit PowerandComputingTechnologies (ICCPCT), Aug. 2023, pp. 1368–1374. (2023). 10.1109/ICCPCT58313.2023.10245217
+. Pham, V.-T., Böhme, M., Roychoudhury, A.: AFLNET: A Greybox Fuzzer for Network Protocols, in IEEE13thInternationalConferenceonSoftwareTesting, ValidationandVeri cation(ICST), Oct. 2020, pp. 460–465. (2020). 10.1109/ICST46399.2020.00062
+9. Houda, Z.A.E., Brik, B., Khoukhi, L.: Why Should I Trust Your IDS?’: An Explainable Deep Learning Framework for Intrusion Detection Systems in Internet of Things Networks. IEEE Open. J. Commun. Soc. 3, 1164–1176 (2022). 10.1109/OJCOMS.2022.3188750
+70. Yu, Y., Chen, Z., Gan, S., Wang, X., SGPFuzzer:: A State-Driven Smart Graybox Protocol Fuzzer for Network Protocol Implementations. IEEE Access. 8, 198668–198678 (2020). 10.1109/ACCESS.2020.3025037
+71. Choi, G., Jeon, S., Cho, J., Moon, J.: A Seed Scheduling Method With a Reinforcement Learning for a Coverage Guided Fuzzing. IEEE Access. 11, 20482057 (2023). 10.1109/ACCESS.2022.3233875
+72. Pérez-Bueno, F., García, L., Maciá-Fernández, G., Molina, R.: Leveraging a Probabilistic PCA Model to Understand the Multivariate Statistical Network Monitoring Framework for Network Security Anomaly Detection, IEEEACMTrans.Netw., vol. 30, no. 3, pp. 1217–1229, Jun. (2022).
+
+
+ Page 21/30
+10.1109/TNET.2021.3138536
+73. Xiong, S., Sarwate, A.D., Mandayam, N.B.: Network Tra c Shaping for Enhancing Privacy in IoT Systems, IEEEACMTrans.Netw., vol. 30, no. 3, pp. 11621177, Jun. (2022). 10.1109/TNET.2021.3140174
+74. Wu, R., Ma, J., Tang, Z., Li, X., Choo, K.-K.R.: A Generic Secure Transmission Scheme Based on Random Linear Network Coding, IEEEACMTrans.Netw., vol. 30, no. 2, pp. 855–866, Apr. (2022). 10.1109/TNET.2021.3124890
+75. Zhao, L., Cao, P., Duan, Y., Yin, H., Xuan, J.: Probabilistic Path Prioritization for Hybrid Fuzzing. IEEE Trans. Dependable Secure Comput. 19(3), 1955–1973 (May 2022). 10.1109/TDSC.2020.3042259
+7 . Xue, K., He, P., Yang, J., Xia, Q., Wei, D.S.L.: SCD2: Secure Content Delivery and Deduplication With Multiple Content Providers in Information Centric Networking, IEEEACMTrans.Netw., vol. 30, no. 4, pp. 1849–1864, Aug. (2022). 10.1109/TNET.2022.3155110
+77. Yu, M., He, T., McDaniel, P., Burke, Q.K.: Flow Table Security in SDN: Adversarial Reconnaissance and Intelligent Attacks, in IEEEINFOCOM2020-IEEE ConferenceonComputerCommunications, Jul. pp. 1519–1528. (2020). 10.1109/INFOCOM41043.2020.9155538
+7 . Zhang, L., Zong, G., Zhao, X., Zhao, N.: Output Reachable Set Synthesis of Event-Triggered Control for Singular Markov Jump Systems Under Multiple Cyber-Attacks, IEEEACMTrans.Netw., vol. 30, no. 6, pp. 2849–2857, Dec. (2022). 10.1109/TNET.2022.3183862
+79. Ferrag, M.A., et al.: Edge Learning for 6G-Enabled Internet of Things: A Comprehensive Survey of Vulnerabilities, Datasets, and Defenses. IEEE Commun. Surv. Tutor. 25(4), 2654–2713 (2023). 10.1109/COMST.2023.3317242
+0. Du, X., Chen, A., He, B., Chen, H., Zhang, F., Chen, Y.: A Iot: Fuzzing on linux-based IoT device with binary-level instrumentation. Comput. Secur. 122, 102889 (Nov. 2022). 10.1016/j.cose.2022.102889
+1. Eceiza, M., Flores, J.L., Iturbe, M.: Improving fuzzing assessment methods through the analysis of metrics and experimental conditions. Comput. Secur. 124, 102946 (Jan. 2023). 10.1016/j.cose.2022.102946
+2. Heiding, F., Katsikeas, S., Lagerström, R.: Research communities in cyber security vulnerability assessments: A comprehensive literature review. Comput. Sci. Rev. 48, 100551 (May 2023). 10.1016/j.cosrev.2023.100551
+3. Yang, Z., et al.: A systematic literature review of methods and datasets for anomaly-based network intrusion detection. Comput. Secur. 116, 102675 (May 2022). 10.1016/j.cose.2022.102675
+4. Lonetti, F., Bertolino, A., Di Giandomenico, F.: Model-based security testing in IoT systems: A Rapid Review. Inf. Softw. Technol. 164, 107326 (Dec. 2023). 10.1016/j.infsof.2023.107326
+5. Araya, J.I.I., Rifà-Pous, H.: Anomaly-based cyberattacks detection for smart homes: A systematic literature review. Internet Things. 22, 100792 (Jul. 2023). 10.1016/j.iot.2023.100792
+. de Souza, C.A., Westphall, C.B., Machado, R.B., Lo , L., Westphall, C.M., Geronimo, G.A.: Intrusion detection and prevention in fog based IoT environments: A systematic literature review, Comput.Netw., vol. 214, p. 109154, Sep. (2022). 10.1016/j.comnet.2022.109154
+7. Hance, J., Straub, J.: Development of a Multi-purpose Fuzzer to Perform Assessment as Input to a Cybersecurity Risk Assessment and Analysis System. arXiv Jun. 07 (2023). 10.48550/arXiv.2306.04284
+. Liu, X., Cui, B., Fu, J., Ma, J.: HFuzz: Towards automatic fuzzing testing of NB-IoT core network protocols implementations. Future Gener Comput. Syst. 108, 390–400 (Jul. 2020). 10.1016/j.future.2019.12.032
+9. Yaacoub, J.-P.A., Salman, O., Noura, H.N., Kaaniche, N., Chehab, A., Malli, M.: Cyber-physical systems security: Limitations, issues and future trends. Microprocess Microsyst. 77, 103201 (Sep. 2020). 10.1016/j.micpro.2020.103201
+90. Ali, Y., Khan, H.U., Khalid, M.: Engineering the advances of the arti cial neural networks (ANNs) for the security requirements of Internet of Things: a systematic review. J. Big Data. 10(1), 128 (Aug. 2023). 10.1186/s40537-023-00805-5
+91. Alsou , M.A., et al.: Anomaly-Based Intrusion Detection Systems in IoT Using Deep Learning: A Systematic Literature Review. Appl. Sci. 11, 8383 (Jan. 2021). 10.3390/app11188383
+92. Bekkali, A., Essaaidi, M., Boulmalf, M., Majdoubi, D.: Systematic Literature Review of Internet of Things (IoT) Security. Adv. Indynamical Syst. ApplADSA. 21, 25–39 (2022)
+93. Albalawi, A.M., Almaiah, M.A., ASSESSING AND REVIEWING OF CYBER-SECURITY THREATS, A.T.T.A.C.K.S.: MITIGATION TECHNIQUES IN IOT ENVIRONMENT,. Vol., no. 9, (2022)
+94. Ahmadi-Assalemi, G., Al-Khateeb, H., Epiphaniou, G., Maple, C.: Cyber Resilience and Incident Response in Smart Cities: A Systematic Literature Review, SmartCities, vol. 3, no. 3, pp. 894–927, Sep. (2020). 10.3390/smartcities3030046
+95. Bahaa Farid, A., Abdelaziz, A., Sayed, A., Elfangary, L., Fahmy, H.: Monitoring Real Time Security Attacks for IoT Systems Using DevSecOps: A Systematic Literature Review, Information, vol. 12, p. 154, Apr. (2021). 10.3390/info12040154
+9 . Eisele, M., Maugeri, M., Shriwas, R., Huth, C., Bella, G.: Embedded fuzzing: a review of challenges, tools, and solutions. Cybersecurity. 5(1), 18 (Sep. 2022). 10.1186/s42400-022-00123-y
+97. Kim, H.-W., Kim, J.-H., Yun, J.: E cient Coverage Guided IoT Firmware Fuzzing Technique Using Combined Emulation. J. Korea Inst. Inf. Secur. Cryptol. 30(5), 847–857 (2020). 10.13089/JKIISC.2020.30.5.847
+9 . Cheng, Y., Chen, W., Fan, W., Huang, W., Yu, G., Liu, W.: IoTFuzzBench: A Pragmatic Benchmarking Framework for Evaluating IoT Black-Box Protocol Fuzzers. Electronics. 12(14), 3010 (Jan. 2023). 10.3390/electronics12143010
+99. Meisel, F., Volz, D., Spang, C., Tran, D., Koch, A.: TaPaFuzz - An FPGA-Accelerated Framework for RISC-V IoT Graybox Fuzzing. In: Chavarrías, M., Rodríguez, A. (eds.) in Design and Architecture for Signal and Image Processing. Lecture Notes in Computer Science, pp. 82–94. Springer Nature Switzerland, Cham (2023). 10.1007/978-3-031-29970-4_7
+
+
+ Page 22/30
+100. Zhang, Y., et al.: NDFuzz: a non-intrusive coverage-guided fuzzing framework for virtualized network devices. Cybersecurity. 5(1), 21 (Nov. 2022). 10.1186/s42400-022-00120-1
+101. Maier, D., Bittner, O., Beier, J., Munier, M.: FitM: Binary-Only Coverage-Guided Fuzzing for Stateful Network Protocols, in Proceedings2022Workshopon BinaryAnalysisResearch, San Diego, CA, USA: Internet Society, (2022). 10.14722/bar.2022.23008
+102. Ren, M., Ren, X., Feng, H., Ming, J., Lei, Y.: Security Analysis of Zigbee Protocol Implementation via Device-agnostic Fuzzing, Digit.ThreatsRes.Pract., vol. 4, no. 1, p. 9:1–9:24, Mar. (2023). 10.1145/3551894
+103. Zeng, Y., et al.: MultiFuzz: A Coverage-Based Multiparty-Protocol Fuzzer for IoT Publish/Subscribe Protocols. Sensors. 20, 5194 (Sep. 2020). 10.3390/s20185194
+104. Yin, Q., Zhou, X., Zhang, H.: FirmHunter: State-Aware and Introspection-Driven Grey-Box Fuzzing towards IoT Firmware. Appl. Sci. 11(19), 9094 (Jan. 2021). 10.3390/app11199094
+105. Fan, R., Pan, J., Huang, S.: Coverage-Guided Fuzzing Framework for ARM-Based IoT Devices. In: Zhou, J., Conti, M., Ahmed, C.M., Au, M.H., Batina, L., Li, Z., Lin, J., Losiouk, E., Luo, B., Majumdar, S., Meng, W., Ochoa, M., Picek, S., Portokalidis, G., Wang, C., Zhang, K. (eds.) in Applied Cryptography and Network Security Workshops. Lecture Notes in Computer Science, pp. 239–254. Springer International Publishing, Cham (2020). 10.1007/978-3-03061638-0_14
+10 . Zhang, Z., Zhang, H., Zhao, J., Yin, Y.: A Survey on the Development of Network Protocol Fuzzing Techniques. Electronics. 12(13), 2904 (Jan. 2023). 10.3390/electronics12132904
+107. Aggarwal, V., Kaur, D., Mittal, S., Prasad, T.J.S., Batra, D., Garg, A., A Comparative Study of Directory Fuzzing Tools, in: InternationalConferenceonCircuit PowerandComputingTechnologies (ICCPCT), Aug. 2023, pp. 1368–1374. (2023). 10.1109/ICCPCT58313.2023.10245217
+10 . Yu, M., Zhuge, J., Cao, M., Shi, Z., Jiang, L.: A Survey of Security Vulnerability Analysis, Discovery, Detection, and Mitigation on IoT Devices. Future Internet. 12(2), 27 (Feb. 2020). 10.3390/ 12020027
+109. Rodríguez, E., et al.: Transfer-Learning-Based Intrusion Detection Framework in IoT Networks. Sensors. 22, 5621 (Jan. 2022). 10.3390/s22155621
+110. Chan, S.: A Potentially Specious Cyber Security Offering for 5G/B5G/6G:
+111. Kulik, T., et al.: Jul., A Survey of Practical Formal Methods for Security, Form.Asp.Comput., vol. 34, no. 1, p. 5:1–5:39, (2022). 10.1145/3522582
+112. Staves, A., Gouglidis, A., Hutchison, D.: An Analysis of Adversary-Centric Security Testing within Information and Operational Technology Environments, Digit.ThreatsRes.Pract., vol. 4, no. 1, p. 14:1–14:29, Mar. (2023). 10.1145/3569958
+113. Göbel, T., Baier, H., Breitinger, F.: Data for Digital Forensics: Why a Discussion on ‘How Realistic is Synthetic Data’ is Dispensable, Digit.ThreatsRes. Pract., vol. 4, no. 3, p. 38:1–38:18, Oct. (2023). 10.1145/3609863
+114. Albasir, A., Naik, K., Manzano, R.: Toward Improving the Security of IoT and CPS Devices: An AI Approach, Digit.ThreatsRes.Pract., vol. 4, no. 2, p. 22:122:30, Aug. (2023). 10.1145/3497862
+115. Lalouani, W., Younis, M., Ebrahimabadi, M., Karimi, N.: Countering Modeling Attacks in PUF-based IoT Security Solutions, ACMJ.Emerg.Technol. Comput.Syst., vol. 18, no. 3, p. 46:1–46:28, Mar. (2022). 10.1145/3491221
+11 . Rabieinejad, E., Yazdinejad, A., Parizi, R.M., Dehghantanha, A.: Generative Adversarial Networks for Cyber Threat Hunting in Ethereum Blockchain, Distrib. LedgerTechnol.Res.Pract., vol. 2, no. 2, pp. 1–19, Jun. (2023). 10.1145/3584666
+117. Puche Rondon, L., Babun, L., Aris, A., Akkaya, K., Uluagac, A.S.: LGuard: Securing Enterprise-IoT Systems against Serial-Based Attacks via Proprietary Communication Buses, Digit.ThreatsRes.Pract., vol. 4, no. 1, p. 10:1–10:26, Mar. (2023). 10.1145/3555721
+11 . Fei, Y., Zhu, H., Yin, J.: FVF-AKA: A Formal Veri cation Framework of AKA Protocols for Multi-server IoT, Form.Asp.Comput., vol. 35, no. 4, p. 21:1–21:36, Nov. (2023). 10.1145/3599731
+119. Eren, M.E., et al.: Mar., General-purpose Unsupervised Cyber Anomaly Detection via Non-negative Tensor Factorization, Digit.ThreatsRes.Pract., vol. 4, no. 1, p. 6:1–6:28, (2023). 10.1145/3519602
+120. Sacher-Boldewin, D., Leverett, E.: The Intelligent Process Lifecycle of Active Cyber Defenders, Digit.ThreatsRes.Pract., vol. 3, no. 3, p. 22:1–22:17, Oct. (2022). 10.1145/3499427
+121. Hemberg, E., Turner, M.J., Rutar, N., O’reilly, U.-M.: Enhancements to Threat, Vulnerability, and Mitigation Knowledge for Cyber Analytics, Hunting, and Simulations, Digit.ThreatsRes.Pract., vol. 5, no. 1, p. 8:1–8:33, Mar. (2024). 10.1145/3615668
+122. Pundir, N., Aftabjahani, S., Cammarota, R., Tehranipoor, M., Farahmandi, F.: Analyzing Security Vulnerabilities Induced by High-level Synthesis, ACMJ. Emerg.Technol.Comput.Syst., vol. 18, no. 3, p. 47:1–47:22, Jan. (2022). 10.1145/3492345
+123. Rudo, D., Zeng, D.K.: Consumer UAV Cybersecurity Vulnerability Assessment Using Fuzzing Tests. Aug. (2020). 10.48550/arXiv.2008.03621
+124. Matheu, S.N., Hernández-Ramos, J.L., Skarmeta, A.F., Baldini, G.: A Survey of Cybersecurity Certi cation for the Internet of Things, ACMComput.Surv., vol. 53, no. 6, p. 115:1-115:36, Dec. (2020). 10.1145/3410160
+125. Yun, J., Rustamov, F., Kim, J., Shin, Y.: Fuzzing of Embedded Systems: A Survey, ACMComput.Surv., vol. 55, no. 7, p. 137:1-137:33, Dec. (2022). 10.1145/3538644
+12 . Zheng, Y., Li, Y., Zhang, C., Zhu, H., Liu, Y., Sun, L.: E cient greybox fuzzing of applications in Linux-based IoT devices via enhanced user-mode emulation, in Proceedingsofthe31stACMSIGSOFTInternationalSymposiumonSoftwareTestingandAnalysis, in ISSTA 2022. New York, NY, USA: Association for Computing Machinery, Jul. pp. 417–428. (2022). 10.1145/3533767.3534414
+127. No More Companion Apps Hacking but One Dongle: Hub-Based Blackbox Fuzzing of IoT Firmware | Proceedings of the 21st Annual International Conference on Mobile Systems, Applications and Services. Accessed: Dec. 23, 2023. [Online]. Available: https://dl.acm.org/doi/abs/10.1145/3581791.3596857
+
+
+ Page 23/30
+12 . Zhang, C., Wang, Y., Wang, L.: Firmware Fuzzing: The State of the Art, in Proceedingsofthe12thAsia-Paci cSymposiumonInternetware, in Internetware ’20. New York, NY, USA: Association for Computing Machinery, Jul. pp. 110–115. (2021). 10.1145/3457913.3457934
+129. Zhu, X., Wen, S., Camtepe, S., Xiang, Y., Fuzzing: A Survey for Roadmap, ACMComput.Surv., vol. 54, no. 11s, p. 230:1-230:36, Sep. (2022). 10.1145/3512345
+130. Feng, X., et al.: Snipuzz: Black-box Fuzzing of IoT Firmware via Message Snippet Inference. May. (2021). 10.48550/arXiv.2105.05445
+131. Schumilo, S., Aschermann, C., Jemmett, A., Abbasi, A., Holz, T.: Nyx-Net: Network Fuzzing with Incremental Snapshots, in ProceedingsoftheSeventeenth EuropeanConferenceonComputerSystems, Mar. pp. 166–180. (2022). 10.1145/3492321.3519591
+132. Natella, R., Pham, V.-T.: ProFuzzBench: a benchmark for stateful protocol fuzzing, in Proceedingsofthe30thACMSIGSOFTInternationalSymposiumon SoftwareTestingandAnalysis, in ISSTA New York, NY, USA: Association for Computing Machinery, Jul. 2021, pp. 662–665. (2021). 10.1145/3460319.3469077
+133. Salazar, Z., Nguyen, H.N., Mallouli, W., Cavalli, A.R., de Oca, E.M.: 5Greplay: a 5G Network Tra c Fuzzer -- Application to Attack Injection, in Proceedings ofthe16thInternationalConferenceonAvailability,ReliabilityandSecurity, Aug. pp. 1–8. (2021). 10.1145/3465481.3470079
+134. Chen, Y., Xuan, B., Poskitt, C.M., Sun, J., Zhang, F.: Active fuzzing for testing and securing cyber-physical systems, in Proceedingsofthe29thACM SIGSOFTInternationalSymposiumonSoftwareTestingandAnalysis, in ISSTA 2020. New York, NY, USA: Association for Computing Machinery, Jul. pp. 14–26. (2020). 10.1145/3395363.3397376
+135. Reen, G.S., Rossow, C.: DPIFuzz: A Differential Fuzzing Framework to Detect DPI Elusion Strategies for QUIC, in Proceedingsofthe36thAnnualComputer SecurityApplicationsConference, in ACSAC ’20. New York, NY, USA: Association for Computing Machinery, Dec. pp. 332–344. (2020). 10.1145/3427228.3427662
+13 . Nguyen, G.: A con gurable approach to cyber-physical systems fuzzing, in Proceedingsofthe27thACMInternationalSystemsandSoftwareProduct LineConference-VolumeB, in SPLC ’23, vol. B. New York, NY, USA: Association for Computing Machinery, Aug. pp. 1–5. (2023). 10.1145/3579028.3609005
+137. Chowdhury, M., Ray, B., Chowdhury, S., Rajasegarar, S.: A Novel Insider Attack and Machine Learning Based Detection for the Internet of Things, ACM Trans.InternetThings, vol. 2, no. 4, p. 26:1–26:23, Jul. (2021). 10.1145/3466721
+13 . Attar, H.: Joint IoT/ML Platforms for Smart Societies and Environments: A Review on Multimodal Information-Based Learning for Safety and Security, J. DataInf.Qual., vol. 15, no. 3, p. 35:1–35:26, Sep. (2023). 10.1145/3603713
+139. Liu, J., Tang, Y., Zhao, H., Wang, X., Li, F., Zhang, J.: CPS Attack Detection under Limited Local Information in Cyber Security: An Ensemble Multi-Node Multi-Class Classi cation Approach. ACM Trans. Sens. Netw. 20(2), 1 (2024). 33:27, Jan 10.1145/3585520
+140. Iwendi, C., Rehman, S.U., Javed, A.R., Khan, S., Srivastava, G.: Sustainable Security for the Internet of Things Using Arti cial Intelligence Architectures, ACMTrans.InternetTechnol., vol. 21, no. 3, p. 73:1–73:22, Jun. (2021). 10.1145/3448614
+141. Zoppi, T., Ceccarelli, A., Capecchi, T., Bondavalli, A.: Unsupervised Anomaly Detectors to Detect Intrusions in the Current Threat Landscape, ACMIMS Trans.DataSci., vol. 2, no. 2, p. 7:1–7:26, Apr. (2021). 10.1145/3441140
+142. Alhirabi, N., Rana, O., Perera, C.: Security and Privacy Requirements for the Internet of Things: A Survey, ACMTrans.InternetThings, vol. 2, no. 1, p. 6:16:37, Feb. (2021). 10.1145/3437537
+143. Alkhariji, L., Alhirabi, N., Alraja, M.N., Barhamgi, M., Rana, O., Perera, C.: Synthesising Privacy by Design Knowledge Toward Explainable Internet of Things Application Designing in Healthcare, ACMTrans.Multimed.Comput.Commun.Appl., vol. 17, no. 2s, p. 62:1–62:29, Jun. (2021). 10.1145/3434186
+144. Bendler, D., Felderer, M.: Competency Models for Information Security and Cybersecurity Professionals: Analysis of Existing Work and a New Model, ACM Trans.Comput.Educ., vol. 23, no. 2, p. 25:1–25:33, Jun. (2023). 10.1145/3573205
+145. Asiri, M., Saxena, N., Gjomemo, R., Burnap, P.: Understanding Indicators of Compromise against Cyber-attacks in Industrial Control Systems: A Security Perspective, ACMTrans.Cyber-Phys.Syst., vol. 7, no. 2, p. 15:1–15:33, Apr. (2023). 10.1145/3587255
+14 . Ghazal, T.M., Hasan, M.K., Abdallah, S.N.H., Abubakkar, K.A.: Secure IoMT Pattern Recognition and Exploitation for Multimedia Information Processing using Private Blockchain and Fuzzy Logic, ACMTrans.AsianLow-Resour.Lang.Inf.Process., Apr. (2022). 10.1145/3523283
+147. Naha, R.K., Garg, S.: Multi-Criteria-based Dynamic User Behaviour Aware Resource Allocation in Fog Computing. Dec. (2019). 10.48550/arXiv.1912.08319
+14 . Xu, W., Zhang, J., Huang, S., Luo, C., Li, W.: Key Generation for Internet of Things: A Contemporary Survey, ACMComput.Surv., vol. 54, no. 1, p. 14:114:37, Jan. (2021). 10.1145/3429740
+149. Corno, F., De Russis, L., Monge Roffarello, A.: From Users’ Intentions to IF-THEN Rules in the Internet of Things, ACMTrans.Inf.Syst., vol. 39, no. 4, p. 53:1–53:33, Aug. (2021). 10.1145/3447264
+150. Coppers, S., Vanacken, D., Luyten, K.: FortClash: Predicting and Mediating Unintended Behavior in Home Automation, Proc.ACMHum.-Comput.Interact., vol. 6, no. EICS, p. 154:1-154:20, Jun. (2022). 10.1145/3532204
+151. Rashid, A.N.M.B., Ahmed, M., Sikos, L.F., Haskell-Dowland, P.: Anomaly Detection in Cybersecurity Datasets via Cooperative Co-evolution-based Feature Selection. ACM Trans. Manag Inf. Syst. 13(3), 1 (2022). 29:39, Feb 10.1145/3495165
+152. Anagnostopoulos, N.A., Ahmad, S., Arul, T., Steinmetzer, D., Hollick, M., Katzenbeisser, S.: Low-cost Security for Next-generation IoT Networks, ACM Trans.InternetTechnol., vol. 20, no. 3, p. 30:1–30:31, Sep. (2020). 10.1145/3406280
+153. Giaretta, A., Dragoni, N., Massacci, F.: S×C4IoT: A Security-by-contract Framework for Dynamic Evolving IoT Devices, ACMTrans.Sens.Netw., vol. 18, no. 1, p. 12:1–12:51, Oct. (2021). 10.1145/3480462
+
+
+ Page 24/30
+154. Wang, D., Li, F., Liu, K., Zhang, X.: Real-time Cyber-Physical Security Solution Leveraging an Integrated Learning-Based Approach, ACMTrans.Sens.Netw., vol. 20, no. 2, p. 27:1–27:22, Jan. (2024). 10.1145/3582009
+155. Li, Y., Yu, Y., Wang, X.: Three-tier Storage Framework Based on TBchain and IPFS for Protecting IoT Security and Privacy, ACMTrans.InternetTechnol., vol. 23, no. 3, p. 37:1–37:28, Aug. (2023). 10.1145/3549910
+15 . Oser, P., van der Heijden, R.W., Lüders, S., Kargl, F.: Risk Prediction of IoT Devices Based on Vulnerability Analysis. ACM Trans. Priv. Secur., 25, 2, p. 14:114:36, May 2022, 10.1145/3510360
+157. Barrera, D., Bellman, C., Van Oorschot, P.: Security Best Practices: A Critical Analysis Using IoT as a Case Study, ACMTrans.Priv.Secur., vol. 26, no. 2, p. 13:1–13:30, Mar. (2023). 10.1145/3563392
+15 . Amro, A., Gkioulos, V., Katsikas, S.: Assessing Cyber Risk in Cyber-Physical Systems Using the ATT&CK Framework, ACMTrans.Priv.Secur., vol. 26, no. 2, p. 22:1–22:33, Mar. (2023). 10.1145/3571733
+159. Turner, S., Pattnaik, N., Nurse, J.R.C., Li, S.: ‘You Just Assume It Is In There, I Guess’: Understanding UK Families’ Application and Knowledge of Smart Home Cyber Security, Proc.ACMHum.-Comput.Interact., vol. 6, no. CSCW2, p. 269:1-269:34, Nov. (2022). 10.1145/3555159
+1 0. Alavizadeh, H., et al.: Dec., A Survey on Cyber Situation-awareness Systems: Framework, Techniques, and Insights, ACMComput.Surv., vol. 55, no. 5, p. 107:1-107:37, (2022). 10.1145/3530809
+1 1. Qin, S., Hu, F., Ma, Z., Zhao, B., Yin, T., Zhang, C.: NSFuzz: Towards E cient and State-Aware Network Service Fuzzing, ACMTrans.Softw.Eng.Methodol., vol. 32, no. 6, p. 160:1-160:26, Sep. (2023). 10.1145/3580598
+1 2. Adil, M., et al.: COVID-19: Secure Healthcare Internet of Things Networks, Current Trends and Challenges with Future Research Directions. ACM Trans. Sens. Netw., 19, 3, p. 54:1–54:25, May 2023, 10.1145/3558519
+1 3. Roy, S., Das, D., Sen, B.: Secure and Lightweight Authentication Protocol Using PUF for the IoT-based Wireless Sensor Network, ACMJ.Emerg.Technol. Comput.Syst., vol. 20, no. 1, p. 3:1–3:17, Nov. (2023). 10.1145/3624477
+1 4. Bhardwaj, A., Kaushik, K., Alshehri, M., Mohamed, A.A.-B., Keshta, I.: ISF: Security Analysis and Assessment of Smart Home IoT-based Firmware, ACM Trans.Sens.Netw., Jan. (2023). 10.1145/3578363
+1 5. Sun, Q., Lin, K., Si, C., Xu, Y., Li, S., Gope, P.: A Secure and Anonymous Communicate Scheme over the Internet of Things, ACMTrans.Sens.Netw., vol. 18, no. 3, p. 40:1–40:21, Apr. (2022). 10.1145/3508392
+1 . Sardar, A., Umer, S., Kr. Rout, R., Wang, S.-H., Tanveer, M.: A Secure Face Recognition for IoT-enabled Healthcare System, ACMTrans.Sens.Netw., vol. 19, no. 3, p. 52:1–52:23, Apr. (2023). 10.1145/3534122
+1 7. Wrana, M.M., Elsayed, M., Lounis, K., Mansour, Z., Ding, S., Zulkernine, M.: OD1NF1ST: True Skip Intrusion Detection and Avionics Network Cyber-attack Simulation. ACM Trans. Cyber-Phys Syst. 6(4), 1 (2022). 33:27, Dec 10.1145/3551893
+1 . Chen, H., Duncklee, A., Jajodia, S., Liu, R., Mcnamara, S., Subrahmanian, V.S.: PCAM: A Data-driven Probabilistic Cyber-alert Management Framework, ACMTrans.InternetTechnol., vol. 22, no. 3, p. 67:1–67:24, Jan. (2022). 10.1145/3511101
+1 9. Bahutair, M., Bouguettaya, A.: An End-to-end Trust Management Framework for Crowdsourced IoT Services, ACMTrans.InternetTechnol., vol. 23, no. 3, p. 46:1–46:32, Aug. (2023). 10.1145/3600232
+170. Blair, W., et al.: Jul., HotFuzz: Discovering Temporal and Spatial Denial-of-Service Vulnerabilities Through Guided Micro-Fuzzing, ACMTrans.Priv.Secur., vol. 25, no. 4, p. 33:1–33:35, (2022). 10.1145/3532184
+171. Wu, J.M.-T., Teng, Q., Huda, S., Chen, Y.-C., Chen, C.-M.: A Privacy Frequent Itemsets Mining Framework for Collaboration in IoT Using Federated Learning. ACM Trans. Sens. Netw. 19(2), 1 (2023). 27:15, Apr 10.1145/3532090
+172. Pattnaik, N., Li, S., Nurse, J.R.C.: A Survey of User Perspectives on Security and Privacy in a Home Networking Environment, ACMComput.Surv., vol. 55, no. 9, p. 180:1-180:38, Jan. (2023). 10.1145/3558095
+173. Lenders, M.S., Amsüss, C., Gündogan, C., Nawrocki, M., Schmidt, T.C., Wählisch, M.: Securing Name Resolution in the IoT: DNS over CoAP, Proc.ACM Netw., vol. 1, no. CoNEXT2, p. 6:1–6:25, Sep. (2023). 10.1145/3609423
+174. Wu, W.-C., Nongpoh, B., Nour, M., Marcozzi, M., Bardin, S., Hauser, C.: Fine-Grained Coverage-Based Fuzzing, ACMTrans.Softw.Eng.Methodol., Mar. (2023). 10.1145/3587158
+175. Alsirhani, A., et al.: Aug., Securing Low-Power Blockchain-enabled IoT Devices against Energy Depletion Attack, ACMTrans.InternetTechnol., vol. 23, no. 3, p. 43:1–43:17, (2023). 10.1145/3511903
+17 . Huang, J., et al.: Jan., Secure Data Sharing over Vehicular Networks Based on Multi-sharding Blockchain, ACMTrans.Sens.Netw., vol. 20, no. 2, p. 31:131:23, (2024). 10.1145/3579035
+177. Rahman, M.S., Khalil, I., Yi, X., Atiquzzaman, M., Bertino, E.: A Lossless Data-Hiding based IoT Data Authenticity Model in Edge-AI for Connected Living. ACM Trans. Internet Technol. 22(3), 1–57 (2021). :25, Dec 10.1145/3453171
+17 . Zhu, H., Chau, S.C.-K.: Integrating IoT-sensing and crowdsensing for privacy-preserving parking monitoring, in Proceedingsofthe8thACMInternational ConferenceonSystemsforEnergy-E cientBuildings,Cities,andTransportation, in BuildSys ’21. New York, NY, USA: Association for Computing Machinery, Nov. pp. 226–227. (2021). 10.1145/3486611.3492229
+179. Deng, X., et al.: Sep., Resilient Deployment of Smart Nodes for Improving Con dent Information Coverage in 5G IoT, ACMTrans.Sens.Netw., vol. 18, no. 3, p. 44:1–44:21, (2022). 10.1145/3526196
+1 0. Attkan, A., Ranga, V., Ahlawat, P.: A Rubik’s Cube Cryptosystem-based Authentication and Session Key Generation Model Driven in Blockchain Environment for IoT Security. ACM Trans. Internet Things, 4, 2, p. 14:1–14:39, May 2023, 10.1145/3586578
+
+
+ Page 25/30
+1 1. Alex, S.: D. K. J., and D. P. P., Energy E cient and Secure Neural Network–based Disease Detection Framework for Mobile Healthcare Network, ACM Trans.Priv.Secur., vol. 26, no. 3, p. 29:1–29:27, Apr. (2023). 10.1145/3585536
+1 2. Distler, V., et al.: Dec., A Systematic Literature Review of Empirical Methods and Risk Representation in Usable Privacy and Security Research, ACM Trans.Comput.-Hum.Interact., vol. 28, no. 6, p. 43:1–43:50, (2021). 10.1145/3469845
+1 3. Shcherbakov, M., Sai, C.: A Hybrid Deep Learning Framework for Intelligent Predictive Maintenance of Cyber-physical Systems, ACMTrans.Cyber-Phys. Syst., vol. 6, no. 2, p. 17:1–17:22, May (2022). 10.1145/3486252
+1 4. Almohri, H., Watson, L., Evans, D., Billups, S.: Dynamic System Diversi cation for Securing Cloud-based IoT Subnetworks, ACMTrans.Auton.Adapt.Syst., vol. 17, no. 1–2, p. 2:1–2:23, Sep. (2022). 10.1145/3547350
+1 5. Dong, G., et al.: Apr., Graph Neural Networks in IoT: A Survey, ACMTrans.Sens.Netw., vol. 19, no. 2, p. 47:1–47:50, (2023). 10.1145/3565973
+1 . Kumar, G., Bakshi, S., Sangaiah, A.K., Sa, P.K.: Experimental Evaluation of Covariates Effects on Periocular Biometrics: A Robust Security Assessment Framework. J. Data Inf. Qual. 15(2), 1–24 (2023). :25, Jun 10.1145/3579029
+1 7. Zhou, C., et al.: Oct., Towards Better Semantics Exploration for Browser Fuzzing, Proc.ACMProgram.Lang., vol. 7, no. OOPSLA2, p. 243:604 – 243:631, (2023). 10.1145/3622819
+1 . Liu, J., Shen, Y., Xu, Y., Sun, H., Jiang, Y.: Horus: Accelerating Kernel Fuzzing through E cient Host-VM Memory Access Procedures, ACMTrans.Softw. Eng.Methodol., vol. 33, no. 1, p. 11:1–11:25, Nov. (2023). 10.1145/3611665
+1 9. Moqurrab, S.A., Anjum, A., Khan, A., Ahmed, M., Ahmad, A., Jeon, G.: Deep-Con dentiality: An IoT-Enabled Privacy-Preserving Framework for Unstructured Big Biomedical Data, ACMTrans.InternetTechnol., vol. 22, no. 2, p. 42:1–42:21, Nov. (2021). 10.1145/3421509
+190. Patooghy, A., Hasanzadeh, M., Sarihi, A., Abdelrehim, M., Badawy, A.-H.A.: Securing Network-on-chips Against Fault-injection and Crypto-analysis Attacks via Stochastic Anonymous Routing, ACMJ.Emerg.Technol.Comput.Syst., vol. 19, no. 3, p. 22:1–22:21, Jun. (2023). 10.1145/3592798
+191. Ebrahimi, M., Tadayon, M.H., Haghighi, M.S., Jolfaei, A.: A Quantitative Comparative Study of Data-oriented Trust Management Schemes in Internet of Things. ACM Trans. Manag Inf. Syst. 13(3), 1–24 (2022). :30, Apr 10.1145/3476248
+192. Liu, J., et al.: Generation-based Differential Fuzzing for Deep Learning Libraries. ACM Trans. Softw. Eng. Methodol. 33(2), 1 (2023). 50:28, Dec 10.1145/3628159
+193. Zdun, U., et al.: Feb., Microservice Security Metrics for Secure Communication, Identity Management, and Observability, ACMTrans.Softw.Eng. Methodol., vol. 32, no. 1, p. 16:1–16:34, (2023). 10.1145/3532183
+194. Zhang, Q., Cui, J., Zhong, H., Liu, L.: Toward Data Transmission Security Based on Proxy Broadcast Re-encryption in Edge Collaboration, ACMTrans.Sens. Netw., vol. 18, no. 3, p. 48:1–48:27, Aug. (2022). 10.1145/3529510
+195. Wang, X., et al.: Nov., Deep Learning-Based Network Tra c Prediction for Secure Backbone Networks in Internet of Vehicles, ACMTrans.Internet Technol., vol. 22, no. 4, p. 87:1–87:20, (2022). 10.1145/3433548
+19 . Zhang, Z., Klees, G., Wang, E., Hicks, M., Wei, S.: Fuzzing Con gurations of Program Options, ACMTrans.Softw.Eng.Methodol., vol. 32, no. 2, p. 53:153:21, Mar. (2023). 10.1145/3580597
+197. Li, S., Su, Z.: Accelerating Fuzzing through Pre x-Guided Execution, Proc.ACMProgram.Lang., vol. 7, no. OOPSLA1, p. 75:1–75:27, Apr. (2023). 10.1145/3586027
+19 . Zhou, Y., Ma, F., Chen, Y., Ren, M., Jiang, Y.: CLFuzz: Vulnerability Detection of Cryptographic Algorithm Implementation via Semantic-aware Fuzzing. ACM Trans. Softw. Eng. Methodol. 33(2), 1 (2023). 45:28, Dec 10.1145/3628160
+199. Martins, C., Medeiros, I.: Generating Quality Threat Intelligence Leveraging OSINT and a Cyber Threat Uni ed Taxonomy. ACM Trans. Priv. Secur., 25, 3, p. 19:1–19:39, May 2022, 10.1145/3530977
+200. Golmaryami, M., Taheri, R., Pooranian, Z., Shojafar, M., Xiao, P., SETTI: Oct., : A Self-supervised AdvErsarial Malware DeTection ArchiTecture in an IoT Environment, ACMTrans.Multimed.Comput.Commun.Appl., vol. 18, no. 2s, p. 122:1-122:21, (2022). 10.1145/3536425
+201. Norris, M., et al.: Jul., IoTRepair: Flexible Fault Handling in Diverse IoT Deployments, ACMTrans.InternetThings, vol. 3, no. 3, p. 22:1–22:33, (2022). 10.1145/3532194
+202. Michala, A.L., Vourganas, I., Coraddu, A.: Vibration Edge Computing in Maritime IoT, ACMTrans.InternetThings, vol. 3, no. 1, p. 6:1–6:18, Oct. (2021). 10.1145/3484717
+203. Wu, Y., Cao, H., Yang, G., Lu, T., Wan, S.: Digital Twin of Intelligent Small Surface Defect Detection with Cyber-manufacturing Systems, ACMTrans.Internet Technol., vol. 23, no. 4, p. 51:1–51:20, Nov. (2023). 10.1145/3571734
+204. Proc.ACMProgram.Lang., vol. 6, no. OOPSLA2, p. 169:1236 – 169:1263, Oct. 2022, doi: 10.1145/3563332
+205. ACMTrans.Softw.Eng.Methodol., vol. 32, no. 3, p. 60:1–60:31, Apr. 2023, doi: 10.1145/3561383
+20 . Gunnarsson, M., Malarski, K.M., Höglund, R., Tiloca, M.: Performance Evaluation of Group OSCORE for Secure Group Communication in the Internet of Things, ACMTrans.InternetThings, vol. 3, no. 3, p. 19:1–19:31, Jul. (2022). 10.1145/3523064
+207. Ren, J., et al.: Sep., Protection Window Based Security-Aware Scheduling against Schedule-Based Attacks, ACMTrans.Embed.Comput.Syst., vol. 22, no. 5s, p. 103:1-103:22, (2023). 10.1145/3609098
+20 . Yang, Y., Bai, F., Yu, Z., Shen, T., Liu, Y., Gong, B.: An Anonymous and Supervisory Cross-chain Privacy Protection Protocol for Zero-trust IoT Application, ACMTrans.Sens.Netw., vol. 20, no. 2, p. 32:1–32:20, Jan. (2024). 10.1145/3583073
+209. van Bolhuis, W.M., Bernsteiner, R., Hall, M., Fruhling, A.: Enhancing IoT Project Success through Agile Best Practices, ACMTrans.InternetThings, vol. 4, no. 1, p. 5:1–5:31, Feb. (2023). 10.1145/3568170
+
+
+ Page 26/30
+210. Mishra, A.K., Singh, O., Kumar, A., Puthal, D., Sharma, P.K., Pradhan, B.: Hybrid Mode of Operation Schemes for P2P Communication to Analyze End-Point Individual Behaviour in IoT. ACM Trans. Sens. Netw. 19(2), 1 (2022). 31:23, Dec 10.1145/3548686
+211. Zhang, N., Ebrahimi, M., Li, W., Chen, H.: Counteracting Dark Web Text-Based CAPTCHA with Generative Adversarial Learning for Proactive Cyber Threat Intelligence, ACMTrans.Manag.Inf.Syst., vol. 13, no. 2, p. 21:1–21:21, Mar. (2022). 10.1145/3505226
+212. Mallissery, S., Wu, Y.-S.: Demystify the Fuzzing Methods: A Comprehensive Survey, ACMComput.Surv., vol. 56, no. 3, p. 71:1–71:38, Oct. (2023). 10.1145/3623375
+213. Pang, C., Liu, H., Wang, Y., Gong, N.Z., Mao, B., Xu, J.: Generation-based fuzzing? Don’t build a new generator, reuse! Comput. Secur. 129, 103178 (Jun. 2023). 10.1016/j.cose.2023.103178
+214. Jiang, L., Yuan, H., Wu, M., Zhang, L., Zhang, Y.: Evaluating and Improving Hybrid Fuzzing, in Proceedingsofthe45thInternationalConferenceon SoftwareEngineering, in ICSE ’23. Melbourne, Victoria, Australia: IEEE Press, Jul. pp. 410–422. (2023). 10.1109/ICSE48619.2023.00045
+215. Zhang, X., et al.: A Survey of Protocol Fuzzing. arXiv, Jan. 03, 2024. Accessed: Mar. 19, 2024. [Online]. Available: http://arxiv.org/abs/2401.01568
+21 . Feng, X., et al.: Snipuzz: Black-box Fuzzing of IoT Firmware via Message Snippet Inference. arXiv, May 21, (2021). 10.48550/arXiv.2105.05445
+217. Zeng, Y., et al.: MultiFuzz: A Coverage-Based Multiparty-Protocol Fuzzer for IoT Publish/Subscribe Protocols. Sensors. 20, 5194 (Sep. 2020). 10.3390/s20185194
+21 . Zheng, Y., Li, Y., Zhang, C., Zhu, H., Liu, Y., Sun, L.: E cient greybox fuzzing of applications in Linux-based IoT devices via enhanced user-mode emulation, in Proceedingsofthe31stACMSIGSOFTInternationalSymposiumonSoftwareTestingandAnalysis, in ISSTA 2022. New York, NY, USA: Association for Computing Machinery, Jul. pp. 417–428. (2022). 10.1145/3533767.3534414
+219. Luo, J.-Z., Shan, C., Cai, J., Liu, Y.: IoT Application-Layer Protocol Vulnerability Detection using Reverse Engineering. Symmetry. 10 (Nov. 2018). 11, Art. 11 10.3390/sym10110561
+220. Munea, T.L., Luk Kim, I., Shon, T.: Design and Implementation of Fuzzing Framework Based on IoT Applications. Wirel. Pers. Commun. 93(2), 365–382 (Mar. 2017). 10.1007/s11277-016-3322-9
+221. Securing 5G and IoT With Fuzzing
+222. Xiao, Y., Jia, Y., Liu, C., Cheng, X., Yu, J., Lv, W.: Edge Computing Security: State of the Art and Challenges, Proc.IEEE, vol. 107, no. 8, pp. 1608–1631, Aug. (2019). 10.1109/JPROC.2019.2918437
+223. Gao, Y., Zhou, X., Xie, W., Wang, B., Wang, E., Wang, Z.: Optimizing IoT Web Fuzzing by Firmware Infomation Mining. Appl. Sci. 12 (Jan. 2022). 13, Art. 13 10.3390/app12136429
+224. Casteur, G., et al.: Jun., Fuzzing attacks for vulnerability discovery within MQTT protocol, in 2020InternationalWirelessCommunicationsandMobile Computing(IWCMC), pp. 420–425. (2020). 10.1109/IWCMC48107.2020.9148320
+225. Cheng, Y., Chen, W., Fan, W., Huang, W., Yu, G., Liu, W.: IoTFuzzBench: A Pragmatic Benchmarking Framework for Evaluating IoT Black-Box Protocol Fuzzers. Electronics. 12 (Jan. 2023). 14, Art. 14 10.3390/electronics12143010
+22 . Kagita, M.K., Bojja, G.R., Kaosar, M.: A framework for intelligent IoT rmware compliance testing. Internet Things Cyber-Phys Syst. 1, 1–7 (Jan. 2021). 10.1016/j.iotcps.2021.07.001
+227. Zhang, F., Cui, B., Chen, C., Sun, Y., Gong, K., Ma, J.: Simulation-Based Fuzzing for Smart IoT Devices, pp. 304–313. (2022). 10.1007/978-3-030-797287_30
+22 . Yun, J., Rustamov, F., Kim, J., Shin, Y.: Fuzzing of Embedded Systems: A Survey, ACMComput.Surv., vol. 55, no. 7, p. 137:1-137:33, Dec. (2022). 10.1145/3538644
+229. No More Companion Apps Hacking but One Dongle: Hub-Based Blackbox Fuzzing of IoT Firmware | Proceedings of the 21st Annual International Conference on Mobile Systems, Applications and Services. Accessed: Dec. 23, 2023. [Online]. Available: https://dl.acm.org/doi/abs/10.1145/3581791.3596857
+230. Kim, H.-W., Kim, J.-H., Yun, J.: E cient Coverage Guided IoT Firmware Fuzzing Technique Using Combined Emulation. J. Korea Inst. Inf. Secur. Cryptol. 30(5), 847–857 (2020). 10.13089/JKIISC.2020.30.5.847
+231. Meisel, F., Volz, D., Spang, C., Tran, D., Koch, A.: TaPaFuzz - An FPGA-Accelerated Framework for RISC-V IoT Graybox Fuzzing. In: Chavarrías, M., Rodríguez, A. (eds.) in Design and Architecture for Signal and Image Processing. Lecture Notes in Computer Science, pp. 82–94. Springer Nature Switzerland, Cham (2023). 10.1007/978-3-031-29970-4_7
+232. Zhang, C., Wang, Y., Wang, L.: Firmware Fuzzing: The State of the Art, in Proceedingsofthe12thAsia-Paci cSymposiumonInternetware, in Internetware ’20. New York, NY, USA: Association for Computing Machinery, Jul. pp. 110–115. (2021). 10.1145/3457913.3457934
+233. Ren, M., Ren, X., Feng, H., Ming, J., Lei, Y.: Security Analysis of Zigbee Protocol Implementation via Device-agnostic Fuzzing, Digit.ThreatsRes.Pract., vol. 4, no. 1, p. 9:1–9:24, Mar. (2023). 10.1145/3551894
+234. Yin, Q., Zhou, X., Zhang, H.: FirmHunter: State-Aware and Introspection-Driven Grey-Box Fuzzing towards IoT Firmware, Appl.Sci., vol. 11, no. 19, Art. no. 19, Jan. (2021). 10.3390/app11199094
+235. Fan, R., Pan, J., Huang, S.: Coverage-Guided Fuzzing Framework for ARM-Based IoT Devices. In: Zhou, J., Conti, M., Ahmed, C.M., Au, M.H., Batina, L., Li, Z., Lin, J., Losiouk, E., Luo, B., Majumdar, S., Meng, W., Ochoa, M., Picek, S., Portokalidis, G., Wang, C., Zhang, K. (eds.) in Applied Cryptography and Network Security Workshops. Lecture Notes in Computer Science, pp. 239–254. Springer International Publishing, Cham (2020). 10.1007/978-3-03061638-0_14
+Figures
+
+
+ Page 27/30
+Figure 1
+Architecture of IoT [4]
+
+
+ Page 28/30
+Figure 2
+Vulnerabilities in IoT on the architecture of IoT [5]
+
+
+ Page 29/30
+Figure 3
+Paper Selection Strategy
+Figure 4
+
+
+ Page 30/30
+Distribution of Papers on Yearly Basis
+Supplementary Files
+This is a list of supplementary les associated with this preprint. Click to download.
+SupplementaryMaterial.docx

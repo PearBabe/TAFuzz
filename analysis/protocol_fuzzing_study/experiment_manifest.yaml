@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "DESIGN_ONLY",
+  "sut_commit": "2648eb330b133a20f1398d59a28c53532106cad3",
+  "baseline_commits": {
+    "AFLNet": "96032f86d0005dfeeb41ea7b31103f1d1ff8f168",
+    "StateAFL": "d923e22f7b2688db45b08f3fa3a29a566e7ff3a4",
+    "ProFuzzBench": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074"
+  },
+  "budgets": {
+    "smoke": "1h x1",
+    "pilot": "2h24m x3",
+    "full": "24h x4"
+  },
+  "controls": [
+    "same SUT",
+    "same seeds",
+    "same reset",
+    "same hardware",
+    "same wall-clock",
+    "same coverage collector"
+  ],
+  "not_executed": true
+}

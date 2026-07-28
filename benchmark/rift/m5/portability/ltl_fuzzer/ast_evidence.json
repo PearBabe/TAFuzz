@@ -1,0 +1,108 @@
+{
+  "clang_command": [
+    "/usr/bin/clang++-18",
+    "-I/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/include",
+    "-O2",
+    "-g",
+    "-DNDEBUG",
+    "-Wall",
+    "-g",
+    "-MMD",
+    "-MP",
+    "-pedantic",
+    "-std=gnu++17",
+    "-fsyntax-only",
+    "-Xclang",
+    "-ast-dump=json",
+    "-Xclang",
+    "-ast-dump-filter=main",
+    "/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/src/main.cc"
+  ],
+  "clang_exit_code": 0,
+  "clang_stderr_line_count": 20,
+  "clang_stderr_sha256": "585cb92f6a5cda13ae4a1e987957c7d234208d7c1411b4733454ad193c60a9f5",
+  "clang_warning_count": 5,
+  "compile_database": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.json",
+  "compile_database_entries": 13,
+  "compile_database_sha256": "acee244a4817ab8a29d907372c07f4a0502dfbfca666857ce7043f5337bd9b04",
+  "frozen_source": {
+    "commit": "716ac301fa3a8ea39814bc80eeebba49c19c1378",
+    "repository": "/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer",
+    "tracked_worktree_clean": true,
+    "tree": "ee7f4a651abf3e7f6104be92751e4880385ead85",
+    "untracked_files_ignored": true
+  },
+  "main_signature": "int (int, char **)",
+  "nodes": [
+    {
+      "begin": {"column": 5, "line": 10},
+      "canonical_type": null,
+      "end": {"column": 5, "line": 15},
+      "kind": "IfStmt",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": null
+    },
+    {
+      "begin": {"column": 8, "line": 10},
+      "canonical_type": "bool",
+      "end": {"column": 15, "line": 10},
+      "kind": "BinaryOperator",
+      "opcode": "<",
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {"column": 8, "line": 10},
+      "canonical_type": "int",
+      "end": {"column": 11, "line": 10},
+      "kind": "ImplicitCastExpr",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {"column": 8, "line": 10},
+      "canonical_type": "int",
+      "end": {"column": 11, "line": 10},
+      "kind": "DeclRefExpr",
+      "opcode": null,
+      "referenced_decl": {
+        "canonical_type": "int",
+        "kind": "ParmVarDecl",
+        "name": "argc"
+      },
+      "value_category": "lvalue"
+    },
+    {
+      "begin": {"column": 15, "line": 10},
+      "canonical_type": "int",
+      "end": {"column": 15, "line": 10},
+      "kind": "IntegerLiteral",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": "prvalue"
+    },
+    {
+      "begin": {"column": 17, "line": 10},
+      "canonical_type": null,
+      "end": {"column": 5, "line": 15},
+      "kind": "CompoundStmt",
+      "opcode": null,
+      "referenced_decl": null,
+      "value_category": null
+    }
+  ],
+  "property_selector_usr": {
+    "evidence_boundary": "The detached probe verifier must match this exact selector against the emitted Clang semantic index; JSON AST itself does not expose USRs.",
+    "expected": "c:main.cc@156@F@main#I#**C#@argc"
+  },
+  "schema_version": "rift.portability.ltl-fuzzer.ast-evidence.v1",
+  "single_tu_compile_database": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.main.sealed.json",
+  "single_tu_compile_database_sha256": "b555404ed35a28fd8a6378db1b99ea2fe340ec8fb5b3dcc5b74e854646ba2fa2",
+  "source": "/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/src/main.cc",
+  "source_sha256": "521ecb48f403f81ec6da54180fb8bb49a6ab277ab8997d7080c71e85ea849ec6",
+  "status": "PORTABILITY_PROBE_NOT_REQUIREMENT",
+  "translation_unit_entry_sha256": "1e5a11dabdf92969a8daba4ff51dd4ce2387280d9f122abf3c01fd899c069a9f",
+  "wall_seconds": 1.706193
+}

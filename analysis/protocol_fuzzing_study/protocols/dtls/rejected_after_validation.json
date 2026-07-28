@@ -1,0 +1,117 @@
+[
+  {
+    "id": "DTLS12-FINAL-01",
+    "protocol": "DTLS",
+    "protocol_extension": "DTLS 1.2 final-flight recovery",
+    "title": "Final-flight sender responds to duplicates for twice TCP MSL",
+    "category": "final flight retention",
+    "natural_language": "发送最后一个 handshake flight 的端点在 2*TCP MSL（RFC 793 默认 MSL=2 分钟，即 4 分钟）内收到对端前一 flight 重传时必须重传最后 flight。",
+    "normative_strength": "MUST",
+    "standard": "RFC 6347",
+    "standard_version": "RFC 6347 (DTLS 1.2)",
+    "standard_section": "4.2.4",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6347.html#section-4.2.4",
+    "standard_excerpt": "for at least twice the default MSL defined for TCP",
+    "time_value_ms": "240000",
+    "time_parameter": "2 * TCP default MSL",
+    "time_source": "RFC 6347 references the TCP default MSL; RFC 793 Section 3.3 defines MSL as 2 minutes",
+    "instantiation_basis": "NORMATIVE_REFERENCED_DEFAULT",
+    "mathematical_mitl": "G (dtls_final_flight_sent -> G [0,240000] (dtls_peer_previous_flight_duplicate -> dtls_final_flight_retransmitted))",
+    "mightyppl_formula": "G* (dtls_final_flight_sent -> G [0,240000] (dtls_peer_previous_flight_duplicate -> dtls_final_flight_retransmitted))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "dtls_final_flight_sent",
+      "dtls_peer_previous_flight_duplicate",
+      "dtls_final_flight_retransmitted"
+    ],
+    "ap_definitions": {
+      "dtls_final_flight_sent": "Endpoint successfully sends the last flight and retains its buffered messages.",
+      "dtls_peer_previous_flight_duplicate": "A complete duplicate of the peer's prior handshake flight is recognized.",
+      "dtls_final_flight_retransmitted": "Buffered final flight is retransmitted in response in the same processing microstep."
+    },
+    "correlation_key": "SSL object + epoch + handshake generation + message_seq range",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "openssl/openssl",
+    "source_commit": "0437435a960123be1ced766d18d715f939698345",
+    "source_path": "ssl/record/rec_layer_d1.c",
+    "source_symbol": "dtls1_read_bytes",
+    "source_lines": "662-679",
+    "source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/record/rec_layer_d1.c#L662-L679",
+    "instrumentation_timing": "At final-flight send retain a generation marker; on repeated Finished emit duplicate and retransmission APs after retransmit succeeds.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls_final_flight_sent"
+        ]
+      },
+      {
+        "time": 240000,
+        "props": [
+          "dtls_peer_previous_flight_duplicate",
+          "dtls_final_flight_retransmitted"
+        ]
+      },
+      {
+        "time": 240001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls_final_flight_sent"
+        ]
+      },
+      {
+        "time": 120000,
+        "props": [
+          "dtls_peer_previous_flight_duplicate"
+        ]
+      },
+      {
+        "time": 240001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认沿用 RFC 6347 对 RFC 793 默认 MSL 的规范引用得到 240000 ms，并在论文中声明该历史版本依赖。",
+    "limitations": "RFC 9293 no longer supplies a numeric MSL; this property intentionally follows RFC 6347's contemporaneous RFC 793 reference.",
+    "human_review_status": "PENDING",
+    "time_source_url": "https://www.rfc-editor.org/rfc/rfc793.html#section-3.3",
+    "independent_audit_status": "REJECT_OR_FIX",
+    "independent_audit_note": "Rejected and deliberately left without fabricated AP mappings: rec_layer_d1.c proves a repeated-Finished retransmission path, but the locked implementation source does not prove that the final-flight buffer is retained for 240000 ms, and the same-position formula invented an unsupported zero-delay response bound.",
+    "protocol_slug": "dtls",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "auxiliary_source_mappings": [],
+    "primary_source_atomic_propositions": [],
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/openssl/openssl/0437435a960123be1ced766d18d715f939698345/ssl/record/rec_layer_d1.c; verified_symbols=['dtls1_read_bytes']; failed_symbols=[]; cited_ranges=[(662, 679)]; uncovered_ranges=[]",
+    "mapping_audit_status": "REJECTED_MAPPING_GAP",
+    "standard_url_verification_note": "HTTP 200",
+    "rejection_reasons": [
+      "AP_WITHOUT_SOURCE_MAPPING:dtls_final_flight_retransmitted,dtls_final_flight_sent,dtls_peer_previous_flight_duplicate",
+      "INDEPENDENT_AUDIT_REJECT",
+      "PRIMARY_SOURCE_APS_MISSING_OR_EMPTY",
+      "UNKNOWN_OR_UNAPPROVED_AUDIT_STATUS:REJECT_OR_FIX",
+      "UNSTRUCTURED_SOURCE_URLS:https://www.rfc-editor.org/rfc/rfc793.html#section-3.3"
+    ]
+  }
+]

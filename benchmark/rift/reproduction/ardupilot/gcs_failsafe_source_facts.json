@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "source_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+  "status": "READ_ONLY_SOURCE_FACTS_NOT_RIFT_ANALYSIS",
+  "scope": "ArduCopter GCS failsafe state and action chain",
+  "source_files": [
+    {
+      "path": "ArduCopter/events.cpp",
+      "sha256": "a15c60b435e5290f85ad4336194e0232eef4943c835ddb2e4faafb8e418d917e"
+    },
+    {
+      "path": "ArduCopter/Copter.cpp",
+      "sha256": "5e3c5f10838ee7d1588cc11a7559374259b58c842562051b96473e3719682032"
+    },
+    {
+      "path": "ArduCopter/Copter.h",
+      "sha256": "c8e14e887fedebc09c16a3aed9663c0a2e65f311648072330be7b7f5d183a32f"
+    },
+    {
+      "path": "ArduCopter/AP_State.cpp",
+      "sha256": "543926438d3b8fe3066edb350846f58073cef6ee4efd534028dda212dfa8bf02"
+    },
+    {
+      "path": "ArduCopter/Parameters.cpp",
+      "sha256": "ef28e89a26fe2baa8e9ed55b6c145c79726d6d7805d53e82ad4626da1401a0e6"
+    },
+    {
+      "path": "libraries/GCS_MAVLink/GCS_Common.cpp",
+      "sha256": "99c62b27c0291d4b2785c43584c5527237a1c5af0d806f5e565d669d192c20c8"
+    },
+    {
+      "path": "libraries/GCS_MAVLink/GCS.cpp",
+      "sha256": "4aaa59275ef79caf1448a9bbbc1d266ccd4e90d960e8d27fbd624cdd7fa3bf0e"
+    },
+    {
+      "path": "libraries/GCS_MAVLink/GCS.h",
+      "sha256": "a527120f085c2fe7b0279e434911438fc95bfe604266b451f6a1cdb18ad9b486"
+    },
+    {
+      "path": "Tools/autotest/arducopter.py",
+      "sha256": "84f6ec4f97c32d36c076e9549e727fc5852802218f47dfd54438deafc89a68dd"
+    }
+  ],
+  "observed_chain": [
+    {
+      "order": 1,
+      "fact": "The Copter scheduler registers three_hz_loop at 3 Hz, and three_hz_loop calls failsafe_gcs_check.",
+      "evidence": [
+        "ArduCopter/Copter.cpp:184",
+        "ArduCopter/Copter.cpp:738"
+      ]
+    },
+    {
+      "order": 2,
+      "fact": "failsafe_gcs_check returns when FS_GCS_ENABLE is disabled or when no designated GCS traffic has ever been recorded.",
+      "evidence": [
+        "ArduCopter/events.cpp:128"
+      ]
+    },
+    {
+      "order": 3,
+      "fact": "The check computes unsigned elapsed milliseconds from the recorded GCS timestamp and converts FS_GCS_TIMEOUT seconds to a clamped uint32 millisecond threshold.",
+      "evidence": [
+        "ArduCopter/events.cpp:133",
+        "ArduCopter/events.cpp:138"
+      ]
+    },
+    {
+      "order": 4,
+      "fact": "State recovery uses elapsed < timeout and state activation uses elapsed > timeout; the equality case has no explicit transition branch.",
+      "evidence": [
+        "ArduCopter/events.cpp:143"
+      ]
+    },
+    {
+      "order": 5,
+      "fact": "set_failsafe_gcs writes both failsafe.gcs and AP_Notify::flags.failsafe_gcs.",
+      "evidence": [
+        "ArduCopter/AP_State.cpp:73"
+      ]
+    },
+    {
+      "order": 6,
+      "fact": "An accepted MAVLink HEARTBEAT refreshes the designated-GCS timestamp through sysid_mygcs_seen.",
+      "evidence": [
+        "libraries/GCS_MAVLink/GCS_Common.cpp:4357",
+        "libraries/GCS_MAVLink/GCS.h:1181"
+      ]
+    },
+    {
+      "order": 7,
+      "fact": "The accepted GCS system-ID predicate is parameterized by MAV_GCS_SYSID and MAV_GCS_SYSID_HI, supporting either one ID or an inclusive range.",
+      "evidence": [
+        "libraries/GCS_MAVLink/GCS.cpp:45",
+        "libraries/GCS_MAVLink/GCS.cpp:724"
+      ]
+    },
+    {
+      "order": 8,
+      "fact": "Accepted RC override and MANUAL_CONTROL traffic can also refresh the GCS timestamp; heartbeat absence alone is therefore not equivalent to timestamp staleness in every execution.",
+      "evidence": [
+        "libraries/GCS_MAVLink/GCS_Common.cpp:4190",
+        "libraries/GCS_MAVLink/GCS_Common.cpp:7630"
+      ]
+    },
+    {
+      "order": 9,
+      "fact": "The failsafe state transition and the resulting vehicle action are distinct: action selection additionally consults FS_GCS_ENABLE, armed/landed state, flight mode, battery state, and FS_OPTIONS.",
+      "evidence": [
+        "ArduCopter/events.cpp:162",
+        "ArduCopter/Parameters.cpp:782"
+      ]
+    },
+    {
+      "order": 10,
+      "fact": "The existing GCSFailsafe autotest changes MAV_GCS_SYSID, FS_GCS_ENABLE, FS_OPTIONS, FS_GCS_TIMEOUT, and heartbeat rate, providing future behavioral-oracle candidates but no result was executed in this task.",
+      "evidence": [
+        "Tools/autotest/arducopter.py:1190"
+      ]
+    }
+  ],
+  "controllable_input_candidates": [
+    {
+      "name": "FS_GCS_ENABLE",
+      "candidate_effect": [
+        "failsafe eligibility",
+        "action selection"
+      ],
+      "validation": "NOT_EXECUTED"
+    },
+    {
+      "name": "FS_GCS_TIMEOUT",
+      "candidate_effect": [
+        "timeout boundary",
+        "activation and recovery timing"
+      ],
+      "validation": "NOT_EXECUTED"
+    },
+    {
+      "name": "MAV_GCS_SYSID and MAV_GCS_SYSID_HI",
+      "candidate_effect": [
+        "accepted source-ID set",
+        "whether traffic refreshes last-seen state"
+      ],
+      "validation": "NOT_EXECUTED"
+    },
+    {
+      "name": "MAVLink HEARTBEAT timing and source system ID",
+      "candidate_effect": [
+        "last-seen timestamp",
+        "precondition that a GCS has been seen"
+      ],
+      "validation": "NOT_EXECUTED"
+    },
+    {
+      "name": "accepted RC_CHANNELS_OVERRIDE and MANUAL_CONTROL timing",
+      "candidate_effect": [
+        "alternative last-seen refresh paths"
+      ],
+      "validation": "NOT_EXECUTED"
+    },
+    {
+      "name": "FS_OPTIONS, flight mode, armed/landed state, and battery failsafe state",
+      "candidate_effect": [
+        "post-trigger action only"
+      ],
+      "validation": "NOT_EXECUTED"
+    },
+    {
+      "name": "scheduler progress and AP_HAL millisecond clock",
+      "candidate_effect": [
+        "observation delay",
+        "elapsed-time boundary"
+      ],
+      "validation": "REQUIRES_HARNESS_AND_CLOCK_MODEL"
+    }
+  ],
+  "portability_classification": {
+    "core_static_facts": [
+      "assignments, comparisons, calls, guards, field accesses, parameter metadata, and scheduler macro arguments visible in the translation units"
+    ],
+    "project_model_facts": [
+      "SCHED_TASK frequency semantics",
+      "AP_HAL::millis clock and wrap semantics",
+      "AP_Param names, units, persistence, and external parameter-update channel",
+      "MAVLink dispatch and accepted-source semantics",
+      "which asynchronous traffic types semantically refresh the GCS lifecycle timestamp",
+      "SITL reset, process epoch, and simulated-time semantics"
+    ],
+    "harness_facts": [
+      "set_parameter and set_heartbeat_rate controllability",
+      "test setup needed to arm, enter a mode, and observe a mode or status-text outcome"
+    ],
+    "must_not_be_hardcoded_in_rift_core": [
+      "ArduPilot file paths or symbol names",
+      "3 Hz scheduler frequency",
+      "FS_GCS parameter names or default values",
+      "MAVLink message IDs or GCS system-ID policy",
+      "strict timeout comparison choices",
+      "failsafe.gcs or AP_Notify field identities",
+      "autotest helper names",
+      "SITL build directories"
+    ]
+  }
+}

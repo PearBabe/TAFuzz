@@ -1,0 +1,193 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 29
+      },
+      "token": "ap_primary"
+    },
+    "node_value": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 24
+      },
+      "token": "node_value"
+    },
+    "source_gate": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 22
+      },
+      "token": "source_gate"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_value > 10",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 29
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-006",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "direct_data",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "A direct assignment template fixes whether the primary external value reaches the AP expression on every path, on a guarded path, or on no path.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "direct_data",
+    "variant": 5
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross comparison threshold when enabled",
+        "kind": "boundary_crossing",
+        "relative_time_window": null,
+        "suggested_values": [
+          "9",
+          "11"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "data",
+            "to": "node_value"
+          },
+          {
+            "certainty": "may",
+            "from": "node_value",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_value",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_gate != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "toggle enabling guard",
+        "kind": "boolean_toggle",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_gate",
+            "kind": "control",
+            "to": "node_value"
+          },
+          {
+            "certainty": "may",
+            "from": "node_value",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_gate",
+          "node_value",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_gate"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/006_direct_data_may_v5.cpp",
+  "source_sha256": "c630a6f69d8fe3ceccd098c13f57b16308a70703594168ba07c0c663d93d5e7d",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 20
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_gate",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/006_direct_data_may_v5.cpp",
+        "line": 22
+      },
+      "scope": "PROCESS",
+      "symbol": "source_gate"
+    }
+  ]
+}

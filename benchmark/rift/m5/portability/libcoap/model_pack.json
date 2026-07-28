@@ -1,0 +1,183 @@
+{
+  "schema_version": "2.0.0",
+  "model_pack_id": "pack.adapter.libcoap-public-api",
+  "model_pack_version": "1.0.0",
+  "layer": "project_adapter",
+  "property_independent": true,
+  "target": {
+    "target_version": "libcoap-94bacc8939dd6711169cd2332a002a361ec62531",
+    "target_abi": "linux-gnu-lp64",
+    "evidence_id": "evidence.libcoap-public-api-94bacc89",
+    "digest_policy": "freeze_before_property"
+  },
+  "resource_limits": {
+    "max_selector_matches": 100000,
+    "max_capture_values": 100000,
+    "max_join_assignments": 100000,
+    "max_emitted_facts": 100000
+  },
+  "selectors": [
+    {
+      "selector_id": "selector.libcoap.set-ack-timeout",
+      "kind": "exact_qualified_signature",
+      "exact_value": "coap_session_set_ack_timeout:void (struct coap_session_t *, struct coap_fixed_point_t)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.libcoap.set-ack-random-factor",
+      "kind": "exact_qualified_signature",
+      "exact_value": "coap_session_set_ack_random_factor:void (struct coap_session_t *, struct coap_fixed_point_t)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.libcoap.set-pdu-type",
+      "kind": "exact_qualified_signature",
+      "exact_value": "coap_pdu_set_type:void (struct coap_pdu_t *, enum coap_pdu_type_t)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.libcoap.set-pdu-mid",
+      "kind": "exact_qualified_signature",
+      "exact_value": "coap_pdu_set_mid:void (struct coap_pdu_t *, int)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.libcoap.send",
+      "kind": "exact_qualified_signature",
+      "exact_value": "coap_send:int (struct coap_session_t *, struct coap_pdu_t *)",
+      "application_private": false
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "rule.libcoap.ack-timeout",
+      "matches": [{"match_id": "match.libcoap.ack-timeout", "selector_ref": "selector.libcoap.set-ack-timeout"}],
+      "captures": [{"capture_id": "capture.libcoap.ack-timeout", "match_ref": "match.libcoap.ack-timeout", "projection": "formal_parameter", "index": 1}],
+      "joins": [],
+      "emits": [{
+        "emit_id": "emit.libcoap.ack-timeout",
+        "fact_kind": "external_boundary",
+        "source_capture_ref": "capture.libcoap.ack-timeout",
+        "certainty": "modelled",
+        "transfer_relation": "public_api_argument",
+        "external_action": {
+          "action_schema_id": "action.libcoap.ack-timeout",
+          "action_class": "configuration_parameter",
+          "channel": "public_c_api",
+          "operation": "set_ack_timeout",
+          "payload_type": {"kind": "record", "canonical": "struct coap_fixed_point_t"},
+          "payload_slot": "value",
+          "scope_schema": "session",
+          "generation_schema": "session_epoch",
+          "timing_capability": "before_send_or_between_attempts",
+          "required_capability": "direct"
+        }
+      }],
+      "evidence_note": "The public libcoap API accepts the retransmission ACK timeout as its second formal parameter."
+    },
+    {
+      "rule_id": "rule.libcoap.ack-random-factor",
+      "matches": [{"match_id": "match.libcoap.ack-random-factor", "selector_ref": "selector.libcoap.set-ack-random-factor"}],
+      "captures": [{"capture_id": "capture.libcoap.ack-random-factor", "match_ref": "match.libcoap.ack-random-factor", "projection": "formal_parameter", "index": 1}],
+      "joins": [],
+      "emits": [{
+        "emit_id": "emit.libcoap.ack-random-factor",
+        "fact_kind": "external_boundary",
+        "source_capture_ref": "capture.libcoap.ack-random-factor",
+        "certainty": "modelled",
+        "transfer_relation": "public_api_argument",
+        "external_action": {
+          "action_schema_id": "action.libcoap.ack-random-factor",
+          "action_class": "configuration_parameter",
+          "channel": "public_c_api",
+          "operation": "set_ack_random_factor",
+          "payload_type": {"kind": "record", "canonical": "struct coap_fixed_point_t"},
+          "payload_slot": "value",
+          "scope_schema": "session",
+          "generation_schema": "session_epoch",
+          "timing_capability": "before_send_or_between_attempts",
+          "required_capability": "direct"
+        }
+      }],
+      "evidence_note": "The public libcoap API accepts the ACK random factor as its second formal parameter."
+    },
+    {
+      "rule_id": "rule.libcoap.pdu-type",
+      "matches": [{"match_id": "match.libcoap.pdu-type", "selector_ref": "selector.libcoap.set-pdu-type"}],
+      "captures": [{"capture_id": "capture.libcoap.pdu-type", "match_ref": "match.libcoap.pdu-type", "projection": "formal_parameter", "index": 1}],
+      "joins": [],
+      "emits": [{
+        "emit_id": "emit.libcoap.pdu-type",
+        "fact_kind": "external_boundary",
+        "source_capture_ref": "capture.libcoap.pdu-type",
+        "certainty": "modelled",
+        "transfer_relation": "public_api_argument",
+        "external_action": {
+          "action_schema_id": "action.libcoap.pdu-type",
+          "action_class": "protocol_message_field",
+          "channel": "public_c_api",
+          "operation": "set_pdu_type",
+          "payload_type": {"kind": "enum", "canonical": "enum coap_pdu_type_t", "bit_width": 32, "signed": false},
+          "payload_slot": "type",
+          "scope_schema": "pdu",
+          "generation_schema": "pdu_allocation",
+          "timing_capability": "before_send",
+          "required_capability": "direct"
+        }
+      }],
+      "evidence_note": "The public libcoap PDU API accepts the message type as its second formal parameter."
+    },
+    {
+      "rule_id": "rule.libcoap.pdu-mid",
+      "matches": [{"match_id": "match.libcoap.pdu-mid", "selector_ref": "selector.libcoap.set-pdu-mid"}],
+      "captures": [{"capture_id": "capture.libcoap.pdu-mid", "match_ref": "match.libcoap.pdu-mid", "projection": "formal_parameter", "index": 1}],
+      "joins": [],
+      "emits": [{
+        "emit_id": "emit.libcoap.pdu-mid",
+        "fact_kind": "external_boundary",
+        "source_capture_ref": "capture.libcoap.pdu-mid",
+        "certainty": "modelled",
+        "transfer_relation": "public_api_argument",
+        "external_action": {
+          "action_schema_id": "action.libcoap.pdu-mid",
+          "action_class": "protocol_message_field",
+          "channel": "public_c_api",
+          "operation": "set_pdu_mid",
+          "payload_type": {"kind": "integer", "canonical": "int", "bit_width": 32, "signed": true},
+          "payload_slot": "mid",
+          "scope_schema": "exchange",
+          "generation_schema": "pdu_allocation",
+          "timing_capability": "before_send",
+          "required_capability": "direct"
+        }
+      }],
+      "evidence_note": "The public libcoap PDU API accepts the message identifier as its second formal parameter."
+    },
+    {
+      "rule_id": "rule.libcoap.send-pdu",
+      "matches": [{"match_id": "match.libcoap.send-pdu", "selector_ref": "selector.libcoap.send"}],
+      "captures": [{"capture_id": "capture.libcoap.send-pdu", "match_ref": "match.libcoap.send-pdu", "projection": "formal_parameter", "index": 1}],
+      "joins": [],
+      "emits": [{
+        "emit_id": "emit.libcoap.send-pdu",
+        "fact_kind": "external_boundary",
+        "source_capture_ref": "capture.libcoap.send-pdu",
+        "certainty": "modelled",
+        "transfer_relation": "public_api_object_argument",
+        "external_action": {
+          "action_schema_id": "action.libcoap.send-pdu",
+          "action_class": "operation_sequence",
+          "channel": "public_c_api",
+          "operation": "send_pdu",
+          "payload_type": {"kind": "pointer", "canonical": "struct coap_pdu_t *", "bit_width": 64},
+          "payload_slot": "pdu",
+          "scope_schema": "session_exchange",
+          "generation_schema": "pdu_allocation",
+          "timing_capability": "operation_time",
+          "required_capability": "sequence"
+        }
+      }],
+      "evidence_note": "The public libcoap send API consumes a caller-constructed PDU through its second formal parameter."
+    }
+  ]
+}

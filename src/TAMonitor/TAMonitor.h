@@ -13,6 +13,10 @@
 
 namespace tamonitor {
 
+namespace pta {
+class PrefixRuntimeObserver;
+}
+
 enum class BuildMode { Flatten, Compflatten };
 enum class WordMode { Finite, Infinite };
 enum class StateMode { Symbolic, Concrete };
@@ -41,6 +45,11 @@ struct Options {
     size_t pta_max_reach_nodes = 100000;
     size_t pta_max_reach_arcs = 1000000;
     size_t pta_timeout_ms = 300000;
+    bool pta_prefix_cost = false;
+    size_t pta_prefix_query_timeout_ms = 10;
+    size_t pta_prefix_max_regions = 100000;
+    std::string pta_prefix_optimizer = "z3";
+    size_t pta_prefix_benchmark_iterations = 0;
 };
 
 struct TimedEvent {
@@ -99,6 +108,11 @@ std::string read_formula(const Options& options);
 BuildPair build_automata_pair(const std::string& formula, const Options& options);
 std::vector<TimedEvent> parse_trace(const Options& options, const std::vector<std::string>& proposition_order);
 RunResult run_monitor(const BuildPair& build, const std::vector<TimedEvent>& trace, const Options& options);
+RunResult run_monitor(
+    const BuildPair& build,
+    const std::vector<TimedEvent>& trace,
+    const Options& options,
+    pta::PrefixRuntimeObserver* prefix_observer);
 void write_report(const Options& options, const std::string& formula, const BuildPair& build, const std::vector<TimedEvent>& trace, const RunResult& run);
 std::filesystem::path default_output_dir();
 

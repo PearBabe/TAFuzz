@@ -1,0 +1,62 @@
+{
+  "protocol": "DDS 1.4 / DDSI-RTPS 2.5",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+  "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+  "scope": "Official OMG reference/default timing relationships instantiated on locked Fast-DDS and CycloneDDS commits. Harness configuration differences are explicit trigger preconditions.",
+  "proposal_summary": {
+    "emitted": 5,
+    "approve": 0,
+    "fix_applied": 5,
+    "rejected": 0
+  },
+  "standards": [
+    {
+      "title": "The Real-time Publish-Subscribe Protocol DDS Interoperability Wire Protocol Specification",
+      "version": "DDSI-RTPS 2.5 formal/2022-04-01",
+      "url": "https://www.omg.org/spec/DDSI-RTPS/2.5/PDF",
+      "sha256": "c362eaa590c9c95fc6223359ce1ebfa57776cf7ea1e47824f58d48dc16907088",
+      "sections_reviewed": [
+        "8.4.7.1",
+        "8.4.9.2.11",
+        "8.4.10.1",
+        "8.4.12.2.5",
+        "8.5.3.2.3",
+        "8.5.5.2",
+        "9.6.2.4",
+        "9.6.3 Table 9.18"
+      ]
+    },
+    {
+      "title": "Data Distribution Service",
+      "version": "DDS 1.4 formal/2015-04-10",
+      "url": "https://www.omg.org/spec/DDS/1.4/PDF",
+      "sha256": "16d6f8385c2ba79f7346dc18c867b624bc6dcc8fcf7c2ec52c55b7ae3dc113f2",
+      "sections_reviewed": [
+        "2.2.2.4.2.11",
+        "2.2.3.14"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "repository": "eProsima/Fast-DDS",
+      "version": "v3.3.0",
+      "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+      "url": "https://github.com/eProsima/Fast-DDS"
+    },
+    {
+      "repository": "eclipse-cyclonedds/cyclonedds",
+      "version": "0.10.5",
+      "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+      "url": "https://github.com/eclipse-cyclonedds/cyclonedds"
+    }
+  ],
+  "profile_differences": [
+    "Fast-DDS stock writer/reader response delays are 5 ms; reference-profile tests set 200/500 ms.",
+    "Fast-DDS stock SPDP period/lease are 3 s/20 s; the SPDP card sets the 30 s RTPS reference rate.",
+    "Fast-DDS writer nack response timer is writer-wide, so pending-reader set plus timer generation is the correlation unit.",
+    "CycloneDDS can postpone dependent proxy participants; those cases are trigger-false for the 100 s safety card."
+  ],
+  "rejected_candidates": []
+}

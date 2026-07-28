@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schemas/candidate.schema.json",
+  "title": "TAFuzz deterministic prefilter candidate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id", "system", "source_class", "authority", "document_id", "node_id", "path", "url",
+    "commit", "file_sha256", "section_path", "anchor", "line_start", "line_end", "exact_text",
+    "text_sha256", "keyword_hits", "prefilter_score", "scan_decision", "review_status",
+    "implementation_satisfaction"
+  ],
+  "properties": {
+    "candidate_id": {"type": "string"},
+    "system": {"enum": ["ArduPilot", "PX4"]},
+    "source_class": {"enum": ["OFFICIAL_BEHAVIOR", "PARAM_METADATA", "SOURCE_COMMENT"]},
+    "authority": {"enum": ["HIGH", "MEDIUM", "LOW", "AUXILIARY"]},
+    "document_id": {"type": "string"},
+    "node_id": {"type": "string"},
+    "path": {"type": "string"},
+    "url": {"type": "string"},
+    "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "file_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "section_path": {"type": "array", "items": {"type": "string"}},
+    "anchor": {"type": ["string", "null"]},
+    "line_start": {"type": "integer", "minimum": 1},
+    "line_end": {"type": "integer", "minimum": 1},
+    "exact_text": {"type": "string"},
+    "text_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "keyword_hits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["normative", "temporal", "state", "condition", "parameter"],
+      "properties": {
+        "normative": {"type": "array", "items": {"type": "string"}},
+        "temporal": {"type": "array", "items": {"type": "string"}},
+        "state": {"type": "array", "items": {"type": "string"}},
+        "condition": {"type": "array", "items": {"type": "string"}},
+        "parameter": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "prefilter_score": {"type": "integer", "minimum": 0},
+    "scan_decision": {"const": "PREFILTER_HIT"},
+    "review_status": {"enum": ["PENDING_CONTEXT_REVIEW", "REVIEWED_CANDIDATE", "REVIEWED_EXCLUDED", "PROMOTED_TO_PROPERTY"]},
+    "implementation_satisfaction": {"const": "NOT_ASSESSED"}
+  }
+}

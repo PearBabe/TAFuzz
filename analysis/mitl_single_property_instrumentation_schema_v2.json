@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schema/mitl-single-property-instrumentation-v2.json",
+  "title": "TAFuzz MITL single-property instrumentation schema v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "system_freeze",
+    "property",
+    "clock_domain",
+    "sampling_contract",
+    "capture_contract",
+    "atomic_propositions",
+    "message_contract"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "tafuzz.mitl-single-property-instrumentation.v2"
+    },
+    "system_freeze": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "commit", "build_profile", "parameter_snapshot_hash"],
+      "properties": {
+        "system": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "build_profile": {"type": "string", "minLength": 1},
+        "parameter_snapshot_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "compile_database_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "property": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "property_id",
+        "formula",
+        "formula_hash",
+        "proposition_order",
+        "implementation_satisfaction"
+      ],
+      "properties": {
+        "property_id": {"type": "string", "minLength": 1},
+        "formula": {"type": "string", "minLength": 1},
+        "formula_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "proposition_order": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"}
+        },
+        "implementation_satisfaction": {"const": "未评估"}
+      }
+    },
+    "clock_domain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clock_id", "meaning", "unit", "source_expression"],
+      "properties": {
+        "clock_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "meaning": {"type": "string", "minLength": 1},
+        "unit": {"enum": ["us", "ms", "s"]},
+        "source_expression": {"type": "string", "minLength": 1},
+        "wrap_semantics": {"type": "string"},
+        "reset_semantics": {"type": "string"}
+      }
+    },
+    "sampling_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sampling_mode",
+        "period_symbol",
+        "period_source",
+        "period_is_normative",
+        "sample_all_propositions",
+        "use_actual_source_timestamp",
+        "instantaneous_event_policy",
+        "deployment_mode"
+      ],
+      "properties": {
+        "sampling_mode": {"const": "单性质周期完整采样"},
+        "period_symbol": {"type": "string", "minLength": 1},
+        "period_value_us": {"type": ["integer", "null"], "minimum": 1},
+        "period_source": {"type": "string", "minLength": 1},
+        "period_is_normative": {"const": false},
+        "maximum_observed_jitter_us": {"type": ["integer", "null"], "minimum": 0},
+        "measurement_error_budget_us": {"type": ["integer", "null"], "minimum": 0},
+        "sample_all_propositions": {"const": true},
+        "use_actual_source_timestamp": {"const": true},
+        "instantaneous_event_policy": {
+          "enum": ["锁存至成功采样", "有界事件队列", "当前性质无瞬时事件"]
+        },
+        "deployment_mode": {
+          "enum": ["单性质专用构建", "单性质运行时激活"]
+        }
+      }
+    },
+    "capture_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheduler_domain", "capture_strategy"],
+      "properties": {
+        "scheduler_domain": {"type": "string", "minLength": 1},
+        "capture_strategy": {
+          "enum": ["共同采集点", "版本化多点快照", "人工指定"]
+        },
+        "preferred_anchor": {"$ref": "#/$defs/source_anchor"},
+        "cross_source_time_interval_required": {"type": "boolean"}
+      }
+    },
+    "atomic_propositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/atomic_proposition"}
+    },
+    "message_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "message_name",
+        "session_manifest_fields",
+        "periodic_sample_fields",
+        "raw_values_in_default_message"
+      ],
+      "properties": {
+        "message_name": {"const": "TAFUZZ_PROPERTY_SAMPLE"},
+        "session_manifest_fields": {
+          "const": [
+            "property_id",
+            "formula_hash",
+            "schema_hash",
+            "proposition_order",
+            "sample_period_us",
+            "source_commit",
+            "parameter_snapshot_hash"
+          ]
+        },
+        "periodic_sample_fields": {
+          "const": [
+            "session_id",
+            "sequence",
+            "source_time_us",
+            "truth_bits",
+            "known_bits"
+          ]
+        },
+        "raw_values_in_default_message": {"const": false},
+        "maximum_supported_propositions": {"type": "integer", "minimum": 1}
+      }
+    }
+  },
+  "$defs": {
+    "source_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "line",
+        "function",
+        "symbol",
+        "binding_role",
+        "binding_status"
+      ],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "line": {"type": "integer", "minimum": 1},
+        "function": {"type": "string", "minLength": 1},
+        "symbol": {"type": "string", "minLength": 1},
+        "binding_role": {
+          "enum": ["定义", "更新", "消费", "有效性", "采集候选", "消息发送"]
+        },
+        "binding_status": {
+          "enum": ["精确对应", "计算得到", "建模对应", "无法确认"]
+        },
+        "evidence": {"type": "string"}
+      }
+    },
+    "operand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operand_id",
+        "value_type",
+        "unit",
+        "coordinate_frame",
+        "access_expression",
+        "validity_expression",
+        "source_anchors"
+      ],
+      "properties": {
+        "operand_id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*$"},
+        "value_type": {
+          "enum": [
+            "bool",
+            "int8",
+            "uint8",
+            "int16",
+            "uint16",
+            "int32",
+            "uint32",
+            "int64",
+            "uint64",
+            "float32",
+            "float64",
+            "enum"
+          ]
+        },
+        "unit": {"type": ["string", "null"]},
+        "coordinate_frame": {"type": ["string", "null"]},
+        "access_expression": {"type": "string", "minLength": 1},
+        "validity_expression": {"type": "string", "minLength": 1},
+        "freshness_bound": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["symbolic_value", "source"],
+          "properties": {
+            "symbolic_value": {"type": "string", "minLength": 1},
+            "source": {"type": "string", "minLength": 1}
+          }
+        },
+        "source_anchors": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/source_anchor"}
+        }
+      }
+    },
+    "atomic_proposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ap_id",
+        "human_meaning_zh",
+        "proposition_kind",
+        "truth_expression",
+        "validity_expression",
+        "binding_status",
+        "instantaneous_storage",
+        "operands"
+      ],
+      "properties": {
+        "ap_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+        "human_meaning_zh": {"type": "string", "minLength": 1},
+        "proposition_kind": {"enum": ["持续状态", "瞬时事件"]},
+        "truth_expression": {"type": "string", "minLength": 1},
+        "validity_expression": {"type": "string", "minLength": 1},
+        "binding_status": {
+          "enum": ["精确对应", "计算得到", "建模对应", "无法确认"]
+        },
+        "instantaneous_storage": {
+          "enum": ["不适用", "锁存位", "事件计数器", "有界事件队列"]
+        },
+        "operands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/operand"}
+        },
+        "scope_reset_events": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

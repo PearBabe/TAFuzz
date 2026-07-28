@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "continuity_critical_parameter_prefixes": [
+    "BRD_",
+    "FORMAT_VERSION",
+    "MAV_GCS_SYSID",
+    "SERIAL",
+    "SYSID_"
+  ],
+  "disruptive_commands": [
+    "MAV_CMD_DEBUG_TRAP",
+    "MAV_CMD_DO_FLIGHTTERMINATION",
+    "MAV_CMD_FLASH_BOOTLOADER",
+    "MAV_CMD_POWER_OFF_INITIATED",
+    "MAV_CMD_PREFLIGHT_REBOOT_SHUTDOWN",
+    "MAV_CMD_PREFLIGHT_STORAGE",
+    "MAV_CMD_SET_FACTORY_TEST_MODE",
+    "MAV_CMD_STORAGE_FORMAT"
+  ],
+  "ready_command_recipes": [
+    "MAV_CMD_COMPONENT_ARM_DISARM",
+    "MAV_CMD_DO_SEND_BANNER"
+  ],
+  "legacy_parameter_aliases": {
+    "RTL_ALT": ["RTL_ALT_M"],
+    "SIM_GPS_ALT_OFS": ["SIM_GPS1_ALT_OFS"],
+    "SIM_GPS_BYTELOSS": ["SIM_GPS1_BYTELOS"],
+    "SIM_GPS_DELAY": ["SIM_GPS1_LAG_MS"],
+    "SIM_GPS_DISABLE": ["SIM_GPS1_ENABLE"],
+    "SIM_GPS_DRIFTALT": ["SIM_GPS1_DRFTALT"],
+    "SIM_GPS_GLITCH_X": ["SIM_GPS1_GLTCH_X"],
+    "SIM_GPS_GLITCH_Y": ["SIM_GPS1_GLTCH_Y"],
+    "SIM_GPS_GLITCH_Z": ["SIM_GPS1_GLTCH_Z"],
+    "SIM_GPS_HZ": ["SIM_GPS1_HZ"],
+    "SIM_GPS_LOCKTIME": ["SIM_GPS1_LCKTIME"],
+    "SIM_GPS_NOISE": ["SIM_GPS1_NOISE"],
+    "SIM_GPS_NUMSATS": ["SIM_GPS1_NUMSATS"],
+    "SIM_GPS_POS_X": ["SIM_GPS1_POS_X"],
+    "SIM_GPS_POS_Y": ["SIM_GPS1_POS_Y"],
+    "SIM_GPS_POS_Z": ["SIM_GPS1_POS_Z"],
+    "SIM_GPS_TYPE": ["SIM_GPS1_TYPE"]
+  }
+}

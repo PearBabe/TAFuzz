@@ -1,0 +1,117 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   http://www"
+  },
+  {
+    "section": "1.1.  FETCH",
+    "keyword": "MAY",
+    "text": "However, there is no intention to limit FETCH to search-type\n   operations, and the resulting properties may not be the same as those\n   of HTTP SEARCH"
+  },
+  {
+    "section": "1.2.  PATCH and iPATCH",
+    "keyword": "MAY",
+    "text": "When using\n   PUT for partial changes, proxies and caches, and even clients and\n   servers, may get confused as to the result of the operation"
+  },
+  {
+    "section": "2.  FETCH Method",
+    "keyword": "MAY",
+    "text": "With the FETCH method,\n   implementations may submit a request body of any media type that is\n   defined with the semantics of selecting information from a resource\n   in such a FETCH request; it is outside the scope of this document how\n   information about media types admissible for the specific resource is\n   obtained by the client (although we can hint that form relations\n   [CORE-APP] might be a preferred way)"
+  },
+  {
+    "section": "2.2.  Error Handling",
+    "keyword": "MAY",
+    "text": "A FETCH request may fail under certain known conditions"
+  },
+  {
+    "section": "2.2.  Error Handling",
+    "keyword": "SHOULD",
+    "text": "If there are more specific errors that\n      provide additional insight into the problem, then those should be\n      used"
+  },
+  {
+    "section": "2.3.1.  The Content-Format Option",
+    "keyword": "MUST",
+    "text": "A FETCH request MUST include a Content-Format option (see\n   Section 5"
+  },
+  {
+    "section": "2.6.  Building FETCH Requests",
+    "keyword": "MAY",
+    "text": "One property of FETCH that may be non-obvious is that a FETCH request\n   cannot be generated from a link alone; the client also needs a way to\n   generate the request payload"
+  },
+  {
+    "section": "3.  PATCH and iPATCH Methods",
+    "keyword": "MAY",
+    "text": "If the Request-URI does not point to an existing\n   resource, the server MAY create a new resource with that URI,\n   depending on the PATCH document type (whether it can logically modify\n   a null resource) and permissions, as well as other conditions such as\n   the degree of control the server gives clients in creating new\n\n\n\n\n\nvan der Stok, et al"
+  },
+  {
+    "section": "3.  PATCH and iPATCH Methods",
+    "keyword": "MAY",
+    "text": "The indication of idempotence may enable the server to keep\n   less state about the interaction; some constrained servers may only\n   implement the iPATCH variant for this reason"
+  },
+  {
+    "section": "3.  PATCH and iPATCH Methods",
+    "keyword": "MUST",
+    "text": "The server MUST apply the entire\n   set of changes atomically and never provide a partially modified\n   representation to a concurrently executed GET request"
+  },
+  {
+    "section": "3.  PATCH and iPATCH Methods",
+    "keyword": "MUST",
+    "text": "In other words, modifications\n   MUST NOT be applied to the server state when an error occurs or when\n   only a partial execution is possible on the resources present in the\n   server"
+  },
+  {
+    "section": "3.  PATCH and iPATCH Methods",
+    "keyword": "MUST",
+    "text": "Servers MUST ensure that a received PATCH body is\n   appropriate for the type of resource identified by the target\n   resource of the request"
+  },
+  {
+    "section": "3.  PATCH and iPATCH Methods",
+    "keyword": "MAY",
+    "text": "This is inexpensive to do, as, for iPATCH, there is no requirement on\n   the server to check that the client's intention that the request be\n   idempotent is fulfilled (although there is diagnostic value in that\n   check, so a less-constrained implementation may want to perform it)"
+  },
+  {
+    "section": "3.4.  Error Handling",
+    "keyword": "MAY",
+    "text": "A PATCH or iPATCH request may fail under certain known conditions"
+  },
+  {
+    "section": "3.4.  Error Handling",
+    "keyword": "SHOULD",
+    "text": "These situations should be dealt with as expressed below"
+  },
+  {
+    "section": "3.4.  Error Handling",
+    "keyword": "SHOULD",
+    "text": "In case there are more specific errors that provide additional\n      insight into the problem, then those should be used"
+  },
+  {
+    "section": "3.4.  Error Handling",
+    "keyword": "SHOULD",
+    "text": "04 (Not Found) error should be returned if\n      the payload of a PATCH request cannot be applied to a non-existent\n      resource"
+  },
+  {
+    "section": "3.4.  Error Handling",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD generate a payload\n      that includes enough information for a user to recognize the\n      source of the conflict"
+  },
+  {
+    "section": "3.4.  Error Handling",
+    "keyword": "MAY",
+    "text": "The server MAY return the actual resource\n      state to provide the client with the means to create a new\n      consistent resource state"
+  },
+  {
+    "section": "4.  The New Set of CoAP Methods",
+    "keyword": "MAY",
+    "text": "Adding three new methods to CoAP's existing four may seem like a\n   major change"
+  },
+  {
+    "section": "5.  Security Considerations",
+    "keyword": "MAY",
+    "text": "Specifically, the security considerations for FETCH are\n   closest to those of GET, except that the FETCH request carries a\n   payload that may need additional protection"
+  },
+  {
+    "section": "5.  Security Considerations",
+    "keyword": "MAY",
+    "text": "The payload of a FETCH\n   request may reveal more detailed information about the specific\n   portions of a resource of interest to the requester than a GET\n   request for the entire resource would; this may mean that\n   confidentiality protection of the request by Datagram Transport Layer\n   Security (DTLS) or other means is needed for FETCH where it wouldn't\n   be needed for GET"
+  }
+]

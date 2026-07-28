@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "validator": "validate_local_links.py",
+  "result": "PASS",
+  "failures": [],
+  "counts": {
+    "markdown_files": 65,
+    "local_file_links": 16366,
+    "links_with_source_lines": 16054,
+    "unique_local_targets": 406,
+    "unique_line_target_files": 270
+  },
+  "status_definitions_zh": {
+    "PASS": "自动链接检查通过；只表示本地目标存在且所写行号有效。",
+    "FAIL": "至少一个本地目标不存在，或者带行号链接越界或倒置。"
+  },
+  "scope_note_zh": "本验证不访问外部网页，也不判断链接内容是否能证明语义等价；即使 PASS，也不能证明论文公式正确、源码绑定等价或固件符合性质。"
+}

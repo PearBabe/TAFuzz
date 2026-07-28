@@ -1,0 +1,95 @@
+{
+  "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+  "dropped_event_count": 0,
+  "epoch": "synthetic_zero_integer_milliseconds",
+  "events": [
+    {
+      "correlation_id": "ARD-COPTER-RTL-003--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-RTL-003",
+      "seq": 0,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 0,
+      "values": {
+        "begin_final_descent": false,
+        "enter_loiter_at_home": false,
+        "rtl_loiter_eligible": false
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-RTL-003--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-RTL-003",
+      "seq": 1,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 1000,
+      "values": {
+        "begin_final_descent": false,
+        "enter_loiter_at_home": true,
+        "rtl_loiter_eligible": true
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-RTL-003--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-RTL-003",
+      "seq": 2,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 5999,
+      "values": {
+        "begin_final_descent": false,
+        "enter_loiter_at_home": false,
+        "rtl_loiter_eligible": true
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-RTL-003--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-RTL-003",
+      "seq": 3,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 6000,
+      "values": {
+        "begin_final_descent": false,
+        "enter_loiter_at_home": false,
+        "rtl_loiter_eligible": true
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-RTL-003--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-RTL-003",
+      "seq": 4,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 7000,
+      "values": {
+        "begin_final_descent": true,
+        "enter_loiter_at_home": false,
+        "rtl_loiter_eligible": true
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-RTL-003--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-RTL-003",
+      "seq": 5,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 8000,
+      "values": {
+        "begin_final_descent": false,
+        "enter_loiter_at_home": false,
+        "rtl_loiter_eligible": true
+      }
+    }
+  ],
+  "notes": "Response occurs strictly after the lower threshold and no response occurs before it. No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+  "property_id": "ARD-COPTER-RTL-003",
+  "schema_version": "1.0",
+  "trace_id": "ARD-COPTER-RTL-003--positive_after_threshold"
+}

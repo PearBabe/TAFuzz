@@ -1,0 +1,377 @@
+{
+  "schema_version": "rift.m1.aggregate-manifest.v1",
+  "captured_at": "2026-07-18T06:54:26+08:00",
+  "milestone": "RIFT-M1",
+  "purpose": "Freeze the benchmark-first, pre-core reproduction gate before any RIFT implementation is added under src/StaticAnalysis.",
+  "status_vocabulary": {
+    "PASS": "The bounded claim and its oracle were executed and verified.",
+    "PARTIAL": "A useful bounded subset or data import passed, but the complete published method was not executed.",
+    "BLOCKED": "The intended execution could not be completed because an upstream artifact or required environment component was unavailable.",
+    "NOT_RUN": "The activity is outside this gate or is deliberately deferred; it supplies no positive evidence."
+  },
+  "gate_policy": {
+    "published_artifact_rule": "At least one original published artifact component must execute on a public artifact case. An unavailable second artifact remains BLOCKED and is never converted to PASS.",
+    "required_pass_steps": [
+      "ltl_original_automata_component",
+      "ltl_public_problem1",
+      "libcoap_clang18_three_run",
+      "ardupilot_clang18_build",
+      "svf_official_wpa_smoke",
+      "portability_contract_pre_core",
+      "static_analysis_empty"
+    ],
+    "non_blocking_evidence_steps": [
+      "ltl_full_instrumented_campaign",
+      "ltl_ap_target_import",
+      "pgfuzz_policy_maps",
+      "moonshine_rw_dependency",
+      "fgs_original_artifact"
+    ],
+    "overall_status": "PASS",
+    "decision": "All seven required steps are PASS. The original-artifact rule is satisfied only by the original LTL-Fuzzer Automata component plus the public Problem1 execution. FGS remains BLOCKED, while PGFuzz and MoonShine remain PARTIAL.",
+    "does_not_mean": "This gate does not establish that RIFT exists, that any RIFT accuracy or performance target is met, or that a fuzz campaign changed an AP."
+  },
+  "steps": [
+    {
+      "id": "ltl_original_automata_component",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "LTL-Fuzzer ICSE 2022 original Automata component",
+      "claim_boundary": "The unmodified artifact Automata library was built and executed on the artifact's public Problem1 property and consumed the saved iH,oZ,iB,oZ event sequence. This is not the LLVM-instrumented end-to-end fuzz campaign.",
+      "observed": {
+        "artifact_commit": "716ac301fa3a8ea39814bc80eeebba49c19c1378",
+        "compile_exit_code": 0,
+        "run_exit_code": 0,
+        "binary_sha256": "5c4fd18734fa25c9fcd14ad8df2d8f97f5f732072bf7d9725fc25c971fc6ae62",
+        "stdout_sha256": "c4360800972379af4d5ed3482929520bf702036981f799631a9a8229c41888ae"
+      },
+      "evidence": [
+        "literature_baselines/reproduction_manifest.json",
+        "literature_baselines/results/ltl_fuzzer/automata_smoke.tsv",
+        "literature_baselines/results/ltl_fuzzer/automata_smoke_receipt.txt"
+      ]
+    },
+    {
+      "id": "ltl_public_problem1",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "LTL-Fuzzer public RERS Problem1 program",
+      "claim_boundary": "The public Problem1 C program was compiled with Clang 18 and run once on its shipped 1000-byte input. This confirms deterministic artifact-case execution, not target-directed fuzz effectiveness.",
+      "observed": {
+        "input_bytes": 1000,
+        "stdout_lines": 107,
+        "stderr_lines": 894,
+        "exit_code": 0,
+        "stdout_sha256": "c36b41a3c5084091e8ec091a5e3bf24dc16f3833f6214984564ba8bf152c342b",
+        "stderr_sha256": "a09af258a5afb4752bc8e92b98ed5552135b2be8dcf259854685b3ce4b22d840"
+      },
+      "evidence": [
+        "literature_baselines/results/ltl_fuzzer/problem1.stdout",
+        "literature_baselines/results/ltl_fuzzer/problem1.stderr"
+      ]
+    },
+    {
+      "id": "ltl_full_instrumented_campaign",
+      "status": "NOT_RUN",
+      "gate_required": false,
+      "subject": "LTL-Fuzzer complete LLVM-instrumented fuzz campaign",
+      "claim_boundary": "The artifact pins LLVM 11 and its instrumentation does not build with the available LLVM 14 APIs. The failure is preserved; no campaign, reachability, or time-to-target result is claimed.",
+      "evidence": [
+        "literature_baselines/results/ltl_fuzzer/llvm14_instrumentation_build.log",
+        "literature_baselines/results/ltl_fuzzer/llvm14_instrumentation_build.exit_code"
+      ]
+    },
+    {
+      "id": "ltl_ap_target_import",
+      "status": "PARTIAL",
+      "gate_required": false,
+      "subject": "LTL-Fuzzer public AP target tuples",
+      "claim_boundary": "Forty-nine tuples were imported: 46 RERS tuples resolve exactly and three Telnet tuples remain unresolved because the source gitlink is unavailable. Imported tuples are comparison inputs, not causal influence gold.",
+      "observed": {
+        "total": 49,
+        "exact": 46,
+        "unresolved": 3,
+        "manifest_sha256": "389ade92bb8a268da4ef466664411d3f66b4c6892547de41b068aee8f03e90a5"
+      },
+      "evidence": [
+        "literature_baselines/ltl_fuzzer_ap_targets.json"
+      ]
+    },
+    {
+      "id": "pgfuzz_policy_maps",
+      "status": "PARTIAL",
+      "gate_required": false,
+      "subject": "PGFuzz NDSS 2021 policy/input maps",
+      "claim_boundary": "The 56 paper policies were reconciled with 51 public policy maps; five Paparazzi maps are absent. The result is explicitly SILVER_STANDARD_NOT_GROUND_TRUTH and no PGFuzz campaign is claimed.",
+      "observed": {
+        "paper_policies": 56,
+        "public_maps": 51,
+        "missing_maps": 5,
+        "manifest_sha256": "98918c3f421e11b11a635c254a96eaef8a219beb3dc4d28e64370b93cac09970"
+      },
+      "evidence": [
+        "literature_baselines/pgfuzz_56_policy_silver.json"
+      ]
+    },
+    {
+      "id": "moonshine_rw_dependency",
+      "status": "PARTIAL",
+      "gate_required": false,
+      "subject": "MoonShine read/write implicit dependency",
+      "claim_boundary": "The official precomputed dependency map contains mlockall to msync, and a faithful Clang micro-reproduction validates W(mlockall) intersection R_cond(msync). The unpublished Smatch extraction hooks and original extractor were not executed.",
+      "observed": {
+        "official_map_sha256": "9410603d383da0ddbbbf277be0e7e4b8a6c24771db82119e94788a7393db8f06",
+        "official_unique_edges": 9891,
+        "intersection": [
+          "vm_area_struct.vm_flags"
+        ],
+        "negative_control_intersection": []
+      },
+      "evidence": [
+        "literature_baselines/results/moonshine/moonshine_rw_result.json",
+        "literature_baselines/reproduction_manifest.json"
+      ]
+    },
+    {
+      "id": "fgs_original_artifact",
+      "status": "BLOCKED",
+      "gate_required": false,
+      "subject": "FGS FSE 2024 original artifact",
+      "claim_boundary": "Zenodo exposes only a README that points to rmrepo/fgs:latest; that image is unavailable. No FGS executable, smoke, NIST case, graph-reduction, time, memory, or precision result was reproduced, and no substitute implementation was created.",
+      "observed": {
+        "child_status": "BLOCKED_UPSTREAM_ARTIFACT_UNAVAILABLE",
+        "artifact_reproduced": false,
+        "smoke_reproduced": false,
+        "nist_reproduced": false,
+        "implementation_recreated": false,
+        "official_readme_sha256": "bcb3f26337e3cb265f00041ef991dd0beec3d08f3275c9c01f9735c25656823a"
+      },
+      "evidence": [
+        "fgs/artifact_manifest.json",
+        "fgs/raw/"
+      ]
+    },
+    {
+      "id": "libcoap_clang18_three_run",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "libcoap deterministic Clang/LLVM 18 compilation baseline",
+      "claim_boundary": "At frozen commit 94bacc8939dd6711169cd2332a002a361ec62531, three isolated compilation runs produced identical compilation databases, static archives, and linked bitcode; LLVM MemorySSA completed. DTLS, examples, and tests were disabled, so this is compilation evidence only.",
+      "observed": {
+        "runs": 3,
+        "translation_units_per_run": 38,
+        "compile_database_sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+        "static_archive_sha256": "efc44ed2ab109029494a2c56fb99cb5f6374cf05a3a8e7b4c5e5c52dbfe676c2",
+        "linked_bitcode_sha256": "08ead6a83ce230fab63eb028c9eec21fb0b2e23e79dd6270c8ee78e43b12c61d",
+        "linked_bitcode_bytes": 2743756,
+        "memoryssa": "PASS",
+        "memoryssa_printed_lines": 117955
+      },
+      "evidence": [
+        "libcoap/observed_results.json"
+      ]
+    },
+    {
+      "id": "ardupilot_clang18_build",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "ArduPilot Copter Clang 18 build baseline",
+      "claim_boundary": "The frozen ArduPilot commit built Copter with Clang 18 in an isolated directory, emitted a 1336-entry compilation database, and passed the ArduCopter help smoke without modifying source. AP binding, SITL GCS-failsafe execution, and fuzzing are NOT_RUN.",
+      "observed": {
+        "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+        "compile_database_entries": 1336,
+        "compile_database_sha256": "e3bde40c679fb01db8b16b22f75e225c50804fcf8ddf9b05b132fc159e0d9083",
+        "binary_sha256": "ad040e179db3acfb21cec966d5fb2a75b026b746c0cc6e50c0cb50df654ac4f4",
+        "configure": "PASS",
+        "build": "PASS",
+        "help_smoke": "PASS",
+        "ap_binding_analysis": "NOT_RUN",
+        "sitl_scenario": "NOT_RUN",
+        "fuzz_experiment": "NOT_RUN"
+      },
+      "evidence": [
+        "ardupilot/build_manifest.json",
+        "ardupilot/gcs_failsafe_source_facts.json"
+      ]
+    },
+    {
+      "id": "svf_official_wpa_smoke",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "SVF 3.2 official WPA/SVFG smoke",
+      "claim_boundary": "The clean official SVF-3.2 tag built 124/124 targets on LLVM 18 without source patches. Official wpa passed one MAYALIAS and one NOALIAS oracle and constructed MemorySSA plus a 78-node/75-edge SVFG. No upstream Test-Suite, large-project accuracy, AP binding, controllability, async semantics, or RIFT result is claimed; the ad-hoc API runtime diagnostic is excluded from acceptance.",
+      "observed": {
+        "commit": "197a6590bd9c695a9c3daf52622dea912ef9a002",
+        "targets_completed": 124,
+        "source_patches": [],
+        "oracles": {
+          "MAYALIAS": "PASS",
+          "NOALIAS": "PASS"
+        },
+        "memory_regions": 8,
+        "svfg_nodes": 78,
+        "svfg_edges": 75,
+        "wpa_sha256": "4d9c0b7d7f9c5176f304b03edb5a8a90e2abaf011c9db4110d1920f1e76f49f5",
+        "bitcode_sha256": "28b104330de3fa0e7952ea00c391c47a7f3ea5640f7985ac3450fbfbd7e444d6"
+      },
+      "evidence": [
+        "svf/artifact_manifest.json",
+        "svf/raw/wpa-smoke.log",
+        "svf/results/alias_valueflow_smoke.bc"
+      ]
+    },
+    {
+      "id": "portability_contract_pre_core",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "Frozen RIFT portability contract",
+      "claim_boundary": "The pre-core contract validates project-neutral core interfaces and forces all libcoap, MQTT, MAVLink, and ArduPilot knowledge into versioned external model packs. This is a design gate, not evidence that three-project runtime portability has already passed.",
+      "observed": {
+        "contract_id": "RIFT-PORTABILITY-1",
+        "contract_sha256": "e6ba3339f507ce241c3147238b141879b5dd541c53b328cbbf6fcc4fec735962",
+        "phase": "pre-core",
+        "generic_core_files": 0,
+        "evaluation_minimum_projects": 3,
+        "evaluation_status": "NOT_RUN"
+      },
+      "evidence": [
+        "../portability_contract.json",
+        "../validate_portability_contract.py"
+      ]
+    },
+    {
+      "id": "static_analysis_empty",
+      "status": "PASS",
+      "gate_required": true,
+      "subject": "Pre-core implementation boundary",
+      "claim_boundary": "src/StaticAnalysis contained zero entries when this aggregate gate was captured. This validator is intentionally a historical pre-core gate and must fail after implementation begins.",
+      "observed": {
+        "path": "src/StaticAnalysis",
+        "entries": 0
+      },
+      "evidence": []
+    },
+    {
+      "id": "m2_gold_benchmark",
+      "status": "NOT_RUN",
+      "gate_required": false,
+      "subject": "RIFT-M2 mechanically checkable influence benchmark",
+      "claim_boundary": "M2 starts only after this aggregate validator passes. No M2 accuracy or RIFT implementation result is part of M1.",
+      "evidence": []
+    }
+  ],
+  "integrity_anchors": [
+    {
+      "path": "literature_baselines/reproduction_manifest.json",
+      "sha256": "e841cf9db0875992dcdd5d11fbcfb0bb459f1cb2ce7044302c2411917d8126d2",
+      "role": "literature aggregate facts"
+    },
+    {
+      "path": "literature_baselines/REPORT_zh.md",
+      "sha256": "f5aaa20d680be042f3b500d4869f3c4511e41f760a2bdd67767fa17d28d5bba5",
+      "role": "literature claim-boundary report"
+    },
+    {
+      "path": "literature_baselines/validate_literature_baselines.py",
+      "sha256": "17b7e618cee8dcdb81123b5999096b91838dd6d564d4fbd8961e222eea146a95",
+      "role": "literature validator"
+    },
+    {
+      "path": "fgs/artifact_manifest.json",
+      "sha256": "bba948bd1838a2dc60451ea69fd47f38ba692dd2cf5f848c11bf09bb48232899",
+      "role": "FGS blocked-attempt facts"
+    },
+    {
+      "path": "fgs/README.md",
+      "sha256": "21f3c54eb73cd01e9900fc287d58bac93219c0ded8c27683b3f005b6994996fb",
+      "role": "FGS claim-boundary report"
+    },
+    {
+      "path": "fgs/SHA256SUMS",
+      "sha256": "1825b4af9da561a4191b97e469a97950f615d0b788bfea7e0b0a913cad1fb475",
+      "role": "FGS evidence checksum list"
+    },
+    {
+      "path": "libcoap/observed_results.json",
+      "sha256": "0eabcc8a7c985e257e8df81fe3a6dfba1210bf5d60191877ff39d3605e816825",
+      "role": "libcoap deterministic build facts"
+    },
+    {
+      "path": "libcoap/README.md",
+      "sha256": "c647f7a5786699cdeeede7f800afdde39374f0024fc5815cdd3e65c65b1a8fd2",
+      "role": "libcoap claim-boundary report"
+    },
+    {
+      "path": "libcoap/reproduce_clang18.py",
+      "sha256": "ba6418b39525200112019cd67805ccfe785d7c8557b9b6c3b1e261ece1299c4b",
+      "role": "libcoap reproduction script"
+    },
+    {
+      "path": "ardupilot/build_manifest.json",
+      "sha256": "3a4cd80681b5b6705540da8bc4108cfdbaf0e170154057bbca2ecd5f2d8e6fc1",
+      "role": "ArduPilot build facts"
+    },
+    {
+      "path": "ardupilot/gcs_failsafe_source_facts.json",
+      "sha256": "a85ce14d9451083c3b9e5bf252a236730de28b95225bf271d405b8a4c5ee7a0f",
+      "role": "ArduPilot read-only portability boundary facts"
+    },
+    {
+      "path": "ardupilot/README.md",
+      "sha256": "e87ff3c66276ee1f2dcafd17119e531bc69c49017a551ecd18a3c71dbbd3f896",
+      "role": "ArduPilot claim-boundary report"
+    },
+    {
+      "path": "ardupilot/validate.py",
+      "sha256": "98d69f60749e246f953aa2d26a363559bc89728e5a1f597c2afaf2bc26f4258e",
+      "role": "ArduPilot validator"
+    },
+    {
+      "path": "svf/artifact_manifest.json",
+      "sha256": "44f012d1397b414b2da3750a788cf02245918aa5160a1d9b83d8abd418402a11",
+      "role": "SVF build and WPA smoke facts"
+    },
+    {
+      "path": "svf/README.md",
+      "sha256": "c139f626c38e99abef54e77ba3a5273f52402466c79445e75051f0fbe3fcdab2",
+      "role": "SVF claim-boundary report"
+    },
+    {
+      "path": "svf/validate_reproduction.py",
+      "sha256": "c22e953417d1e23b591f703f91eee2accd8f8f45e12e8013bca7798fbb8f0b44",
+      "role": "SVF live smoke validator"
+    },
+    {
+      "path": "../portability_contract.json",
+      "sha256": "e6ba3339f507ce241c3147238b141879b5dd541c53b328cbbf6fcc4fec735962",
+      "role": "frozen portability contract"
+    },
+    {
+      "path": "../validate_portability_contract.py",
+      "sha256": "319e1f7b5b46f974e3f53c4001f7e9437914a74fe8b03e1f2d264bf8d2f72eca",
+      "role": "portability validator"
+    },
+    {
+      "path": "../README.md",
+      "sha256": "dbbfaebf3dc1ecf0d28e21190ac1c7340aa67c1e8ce8865aca314c0fd481524f",
+      "role": "benchmark-first and portability policy"
+    }
+  ],
+  "overall_claim_boundary": {
+    "supported": [
+      "The pre-core M1 gate has an original published component execution, deterministic libcoap LLVM input, a frozen ArduPilot Clang 18 build, and an executable SVF value-flow substrate.",
+      "Unavailable and incomplete artifacts remain visibly BLOCKED, PARTIAL, or NOT_RUN.",
+      "The project-neutral core/model-pack boundary was frozen before implementation."
+    ],
+    "not_supported": [
+      "No RIFT analyzer, AP influence cone, fuzzable frontier, mutation recipe, or residual ranking has been implemented or evaluated.",
+      "No static accuracy, runtime, memory, fuzz utility, AP flip, or comparative superiority claim is supported by M1.",
+      "No FGS runtime result, complete LTL-Fuzzer campaign, original MoonShine extractor run, PGFuzz campaign, ArduPilot SITL scenario, or libcoap protocol test is claimed."
+    ]
+  },
+  "next_milestone": {
+    "id": "RIFT-M2",
+    "entry_condition": "validate_m1.py reports TOTAL PASS while src/StaticAnalysis is still empty.",
+    "first_work": "Freeze the common result schema and mechanically generated gold cases before implementing weak baselines or the RIFT core."
+  }
+}

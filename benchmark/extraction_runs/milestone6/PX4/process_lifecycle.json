@@ -1,0 +1,114 @@
+{
+  "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+  "spawn_requested_at_utc": "2026-07-17T23:09:59.885832+00:00",
+  "spawn_requested_host_monotonic_ns": 8146347835770,
+  "command": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc",
+  "cwd": "/home/lqq/project/TAFuzz/benchmark/extraction_runs/milestone6/PX4/runtime_state",
+  "environment_overrides": {
+    "PX4_SIM_MODEL": "sihsim_quadx",
+    "PX4_SIMULATOR": "sihsim",
+    "PX4_SIM_HOST_ADDR": "127.0.0.1",
+    "PX4_SIM_HOSTNAME": "127.0.0.1"
+  },
+  "preexisting_px4_processes": {
+    "command": "pgrep -a -x px4",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "preexisting_instance_tmp": {
+    "lock": {
+      "path": "/tmp/px4_lock-42",
+      "exists": false,
+      "stat": null
+    },
+    "daemon_socket": {
+      "path": "/tmp/px4-sock-42",
+      "exists": false,
+      "stat": null
+    }
+  },
+  "signals": [
+    {
+      "signal": "SIGINT",
+      "sent_host_monotonic_ns": 8184156086072
+    }
+  ],
+  "pid": 738719,
+  "pgid": 738719,
+  "spawned_identity": {
+    "pid": 738719,
+    "exists": true,
+    "process_group": 738719,
+    "session": 738719,
+    "starttime_clock_ticks": 814635,
+    "cmdline": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc"
+  },
+  "process_group_members_after_spawn": [
+    {
+      "pid": 738719,
+      "exists": true,
+      "process_group": 738719,
+      "session": 738719,
+      "starttime_clock_ticks": 814635,
+      "cmdline": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc"
+    }
+  ],
+  "collector_udp_local": [
+    "0.0.0.0",
+    0
+  ],
+  "pre_shutdown_poll": null,
+  "exit_code": 0,
+  "post_shutdown_identity": {
+    "pid": 738719,
+    "exists": false
+  },
+  "process_group_members_after_shutdown": [],
+  "external_tmp_cleanup": [
+    {
+      "label": "lock",
+      "path": "/tmp/px4_lock-42",
+      "preexisting": false,
+      "removed": false,
+      "exists_after_cleanup": false
+    },
+    {
+      "label": "daemon_socket",
+      "path": "/tmp/px4-sock-42",
+      "preexisting": false,
+      "removed": true,
+      "exists_after_cleanup": false
+    }
+  ],
+  "post_cleanup_ports": {
+    "gcs_local": {
+      "port": 18612,
+      "available": true,
+      "error": null
+    },
+    "offboard_local": {
+      "port": 14622,
+      "available": true,
+      "error": null
+    },
+    "onboard_payload_local": {
+      "port": 14322,
+      "available": true,
+      "error": null
+    },
+    "onboard_gimbal_local": {
+      "port": 13072,
+      "available": true,
+      "error": null
+    },
+    "sih_mavlink_local": {
+      "port": 19492,
+      "available": true,
+      "error": null
+    }
+  },
+  "cleanup_complete": true,
+  "finished_at_utc": "2026-07-17T23:10:38.662349+00:00",
+  "finished_host_monotonic_ns": 8184206028598
+}

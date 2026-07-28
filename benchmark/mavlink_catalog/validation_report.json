@@ -1,0 +1,95 @@
+{
+  "checks": [
+    "all JSON and CSV files parse",
+    "all manifest-listed output SHA-256 values match",
+    "validator and documentation SHA-256 values match",
+    "SUT/MAVLink commits and every XML input hash match",
+    "message IDs/names unique; CSV/JSON field counts and payload offsets agree",
+    "ArduPilot generated SITL headers corroborate every message length and field offset",
+    "MAV_CMD IDs/names unique and every command has param1..param7",
+    "configuration parameter keys unique within system/scope and CSV/JSON agree",
+    "static support matrix separates definition/static evidence and makes no runtime claim",
+    "runtime overlay rebuilds byte-identically and validates 4 profiles, 1307+3 rows, provenance, auxiliary dialects, and NOT_ASSESSED",
+    "every time row resolves to a catalog row and ambiguous clocks carry a reason",
+    "manifest entity counts recompute from output files"
+  ],
+  "failures": [],
+  "generated_header_crosscheck": {
+    "failure_count": 0,
+    "field_offsets_checked": 2708,
+    "messages_checked": 352,
+    "status": "PASS"
+  },
+  "recomputed_counts": {
+    "ArduPilot": {
+      "command_param_slots": 1512,
+      "commands": 216,
+      "configuration_parameter_rows": 16904,
+      "message_fields": 2708,
+      "messages": 352,
+      "runtime_observed_entities": 0,
+      "time_catalog_rows": 2628
+    },
+    "PX4": {
+      "command_param_slots": 1232,
+      "commands": 176,
+      "configuration_parameter_rows": 1418,
+      "message_fields": 2018,
+      "messages": 251,
+      "runtime_observed_entities": 0,
+      "time_catalog_rows": 463
+    }
+  },
+  "runtime_execution_or_capture_performed": false,
+  "runtime_overlay_summary": {
+    "catalog_definition_status_counts": {
+      "DEFINED_IN_STATIC_ENTRYPOINT_CLOSURE": 1307,
+      "NOT_DEFINED_IN_STATIC_CATALOG": 3
+    },
+    "primary_rows": 1307,
+    "profiles": 4,
+    "request_ack_result_counts": {
+      "MAV_RESULT_ACCEPTED": 290,
+      "MAV_RESULT_DENIED": 196,
+      "MAV_RESULT_FAILED": 813,
+      "NOT_ATTEMPTED": 8
+    },
+    "request_dialect_definition_status_counts": {
+      "DEFINED_IN_PRIMARY_REQUEST_DIALECT": 1299,
+      "DEFINED_ONLY_IN_AUXILIARY_DIALECT": 8
+    },
+    "request_sweep_membership_status_counts": {
+      "AUXILIARY_DIALECT_NOT_IN_REQUEST_SWEEP": 8,
+      "REQUEST_ATTEMPTED": 1299
+    },
+    "row_scope_counts": {
+      "PROFILE_STATIC_MESSAGE_DEFINITION": 1307,
+      "RUNTIME_NON_CATALOG_OBSERVATION": 3
+    },
+    "runtime_observation_class_counts": {
+      "DEFAULT_STREAM_OBSERVED": 94,
+      "NOT_IN_REQUEST_SWEEP_AND_NOT_OBSERVED": 8,
+      "REQUEST_ACK_ACCEPTED_NO_MATCHING_FRAME": 114,
+      "REQUEST_ACK_DENIED": 189,
+      "REQUEST_ACK_FAILED": 805,
+      "REQUEST_WINDOW_MESSAGE_OBSERVED": 97
+    },
+    "static_direction_evidence_status_counts": {
+      "NO_TX_OR_RX_REFERENCE_FOUND_BY_HEURISTIC_SCAN": 566,
+      "OTHER_STATIC_REFERENCES_ONLY": 15,
+      "RX_OR_HANDLER_REFERENCES_ONLY": 225,
+      "TX_AND_RX_OR_HANDLER_REFERENCES": 155,
+      "TX_REFERENCES_ONLY": 346
+    },
+    "static_supported_evidence_status_counts": {
+      "NO_REFERENCE_FOUND_BY_HEURISTIC_SCAN": 566,
+      "STATIC_REFERENCE_FOUND": 741
+    },
+    "status": "PASS",
+    "supplemental_rows": 3,
+    "total_rows": 1310
+  },
+  "saved_runtime_overlay_validated": true,
+  "schema_version": "1.0",
+  "status": "PASS"
+}

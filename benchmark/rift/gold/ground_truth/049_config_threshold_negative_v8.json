@@ -1,0 +1,173 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 29
+      },
+      "token": "ap_primary"
+    },
+    "node_observed": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 27
+      },
+      "token": "node_observed"
+    },
+    "node_threshold": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 25
+      },
+      "token": "node_threshold"
+    },
+    "source_configuration": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 20
+      },
+      "token": "source_configuration"
+    },
+    "source_observation": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 23
+      },
+      "token": "source_observation"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_observed >= node_threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 29
+      },
+      "role": "BOUND",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-049",
+  "case_relation": "NO_INFLUENCE",
+  "category": "config_threshold",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The generated comparison explicitly separates the configurable bound from the observed value; negative variants replace only the bound with a constant.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "config_threshold",
+    "variant": 8
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The configuration-like input is shadowed by a fixed threshold; only the observation reaches the AP.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_configuration"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross active threshold",
+        "kind": "observation_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "17",
+          "18",
+          "19"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_observation",
+            "kind": "data",
+            "to": "node_observed"
+          },
+          {
+            "certainty": "must",
+            "from": "node_observed",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_observation",
+          "node_observed",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_observation"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/049_config_threshold_negative_v8.c",
+  "source_sha256": "c83ba29e26c25acce0d5348ff56bdd7703d47e150e0bc68bb130f2fafe7e9183",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_configuration",
+      "kind": "configuration",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 20
+      },
+      "scope": "SESSION",
+      "symbol": "source_configuration"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_observation",
+      "kind": "sensor_value",
+      "location": {
+        "column": 9,
+        "file": "cases/049_config_threshold_negative_v8.c",
+        "line": 23
+      },
+      "scope": "SESSION",
+      "symbol": "source_observation"
+    }
+  ]
+}

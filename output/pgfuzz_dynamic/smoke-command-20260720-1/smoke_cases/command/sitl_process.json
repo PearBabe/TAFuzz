@@ -1,0 +1,97 @@
+{
+  "command": [
+    "/home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arducopter",
+    "--wipe",
+    "--model",
+    "quad",
+    "--home",
+    "-35.363261,149.165230,584,353",
+    "--speedup",
+    "1",
+    "--base-port",
+    "22500",
+    "--rc-in-port",
+    "23501",
+    "--sim-port-in",
+    "24501",
+    "--sim-port-out",
+    "24502",
+    "--irlock-port",
+    "25501",
+    "--serial0",
+    "udpclient:127.0.0.1:19611",
+    "--sysid",
+    "151",
+    "--autotest-dir",
+    "/home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest"
+  ],
+  "outbound_records": [
+    {
+      "fields": {
+        "custom_mode": 0,
+        "source_component": 1,
+        "source_system": 151
+      },
+      "host_monotonic_ns": 25673937794578,
+      "host_wall_utc": "2026-07-20T15:45:20.097301+00:00",
+      "kind": "TARGET_HEARTBEAT"
+    },
+    {
+      "fields": {
+        "rate_hz": 10
+      },
+      "host_monotonic_ns": 25673937970414,
+      "host_wall_utc": "2026-07-20T15:45:20.097471+00:00",
+      "kind": "REQUEST_DATA_STREAM_ALL"
+    },
+    {
+      "fields": {
+        "custom_mode": 4
+      },
+      "host_monotonic_ns": 25681938950489,
+      "host_wall_utc": "2026-07-20T15:45:27.358368+00:00",
+      "kind": "SET_MODE"
+    },
+    {
+      "fields": {
+        "command": 400,
+        "params": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "host_monotonic_ns": 25681940958761,
+      "host_wall_utc": "2026-07-20T15:45:27.360371+00:00",
+      "kind": "COMMAND_LONG"
+    },
+    {
+      "fields": {
+        "command": 400,
+        "params": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "host_monotonic_ns": 25689947647480,
+      "host_wall_utc": "2026-07-20T15:45:35.367065+00:00",
+      "kind": "COMMAND_LONG"
+    },
+    {
+      "fields": {},
+      "host_monotonic_ns": 25689951686643,
+      "host_wall_utc": "2026-07-20T15:45:35.371100+00:00",
+      "kind": "RC_CHANNELS_OVERRIDE_RELEASE"
+    }
+  ],
+  "return_code": 0
+}

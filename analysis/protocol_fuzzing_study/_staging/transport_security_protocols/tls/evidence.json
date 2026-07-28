@@ -1,0 +1,32 @@
+{
+  "protocol": "TLS",
+  "access_date": "2026-07-13",
+  "status": "SCREENED_NO_ADMITTED_MITL_AFTER_INDEPENDENT_AUDIT",
+  "standards": [
+    {
+      "id": "RFC8446",
+      "title": "The Transport Layer Security (TLS) Protocol Version 1.3",
+      "url": "https://www.rfc-editor.org/rfc/rfc8446.html",
+      "sections": [
+        "4.6.1"
+      ],
+      "source_type": "IETF Standards Track"
+    }
+  ],
+  "sources": [
+    {
+      "repository": "openssl/openssl",
+      "commit": "0437435a960123be1ced766d18d715f939698345",
+      "url": "https://github.com/openssl/openssl/tree/0437435a960123be1ced766d18d715f939698345",
+      "role": "ProFuzzBench-pinned TLS implementation"
+    },
+    {
+      "repository": "ProFuzzBench/ProFuzzBench",
+      "commit": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+      "url": "https://github.com/ProFuzzBench/ProFuzzBench/blob/8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074/subjects/TLS/OpenSSL/Dockerfile#L73-L88",
+      "role": "benchmark pin evidence"
+    }
+  ],
+  "method": "Screened handshake, KeyUpdate, tickets/PSK, close and record limits. The only numeric-time candidate was rejected because its adapter-derived expiry AP was self-fulfilling and no fixed source transition proved the lifetime oracle.",
+  "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md"
+}

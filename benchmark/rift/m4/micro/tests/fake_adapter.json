@@ -1,0 +1,27 @@
+{
+  "schema_version": "rift.m4.command-adapter.v1",
+  "stages": [
+    {
+      "argv": [
+        "{analyzer}",
+        "../tests/fake_analyzer.py",
+        "influence",
+        "--compile-db",
+        "{compile_database}",
+        "--property",
+        "{property_ir}",
+        "--output-dir",
+        "{output_directory}",
+        "--schema-dir",
+        "../../../../../src/StaticAnalysis/schema"
+      ],
+      "name": "influence",
+      "produces": [
+        "semantic_index",
+        "ap_bindings",
+        "contextual_influence_graph",
+        "ap_influence_cones"
+      ]
+    }
+  ]
+}

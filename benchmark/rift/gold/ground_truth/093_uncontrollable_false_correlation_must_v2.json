@@ -1,0 +1,155 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 27
+      },
+      "token": "ap_primary"
+    },
+    "node_internal_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 25
+      },
+      "token": "node_internal_state"
+    },
+    "source_external_similar": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 22
+      },
+      "token": "source_external_similar"
+    },
+    "source_internal": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 20
+      },
+      "token": "source_internal"
+    }
+  },
+  "aps": [
+    {
+      "expression": "internal state > 0",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 27
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-093",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "uncontrollable_false_correlation",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The template deliberately separates a true but uncontrollable internal influencer from a similarly named controllable decoy, making controllability and false correlation independently testable.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "uncontrollable_false_correlation",
+    "variant": 2
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_internal",
+            "kind": "data",
+            "to": "node_internal_state"
+          },
+          {
+            "certainty": "must",
+            "from": "node_internal_state",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_internal",
+          "node_internal_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_internal"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The external source has a correlated name and value but no program-dependence path to the AP.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_external_similar"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+  "source_sha256": "4f078dbf766cae558efd29ea4148f1679336415deed1a7669124f65cb327c66e",
+  "sources": [
+    {
+      "controllability": "INTERNAL",
+      "fuzzable_frontier": false,
+      "id": "source_internal",
+      "kind": "internal_state",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 20
+      },
+      "scope": "OBJECT",
+      "symbol": "source_internal"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_external_similar",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/093_uncontrollable_false_correlation_must_v2.c",
+        "line": 22
+      },
+      "scope": "OBJECT",
+      "symbol": "source_external_similar"
+    }
+  ]
+}

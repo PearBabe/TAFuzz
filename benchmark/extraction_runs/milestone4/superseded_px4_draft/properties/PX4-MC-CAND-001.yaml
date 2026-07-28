@@ -1,0 +1,40 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-001
+title: Failsafe delayed action through Hold
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 17-21
+    original_text: "When a failsafe is triggered, the default behavior (for most failsafes) is to enter Hold for COM_FAIL_ACT_T seconds before performing an associated failsafe action."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 295-311
+    original_text: "Before entering failsafe (RTL, Land, Hold), wait COM_FAIL_ACT_T seconds in Hold mode. A zero value disables the delay."
+normalized_requirement:
+  context: an armed multicopter and a failsafe type for which the reaction delay applies
+  trigger: an applicable failsafe condition becomes active
+  obligation: enter Hold during the configured reaction window, then perform the associated configured action unless recovery or an allowed override cancels it
+  exclusions: Disarm, Terminate, Hold-only and other non-delay-applicable actions need an authoritative applicability matrix
+time_constraint:
+  expression: T_fail = runtime(COM_FAIL_ACT_T) seconds
+  compiled_default_instance: 5.0 seconds
+  default_source: src/modules/commander/commander_params.c:295-311
+  epoch: first activation of the applicable failsafe condition
+  clock: PX4 HRT in an internal trace; one host-monotonic receive clock in a pure wire trace
+  boundary: NEEDS_OBSERVER_TOLERANCE
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G((failsafe_trigger & delay_applicable & T_fail>0) -> (mode_hold U_[T_fail,T_fail+EPS_OBS] configured_action))"
+  note: EPS_OBS is symbolic and unassigned; the formula must be split for recovery and user-override cases
+atomic_propositions:
+  - AP-PX4-FAILSAFE-TRIGGER
+  - AP-PX4-DELAY-APPLICABLE
+  - AP-PX4-MODE-HOLD
+  - AP-PX4-CONFIGURED-ACTION
+mavlink_observation_refs: [OBS-PX4-PARAM, OBS-PX4-MODE, OBS-PX4-EVENT]
+blockers: [NEEDS_APPLICABILITY_MATRIX, NEEDS_RECOVERY_SEMANTICS, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

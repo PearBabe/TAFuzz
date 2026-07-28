@@ -1,0 +1,77 @@
+{
+  "ast": {
+    "args": [
+      {
+        "args": [
+          {
+            "args": [
+              {
+                "name": "data_link_loss_gap_start",
+                "op": "ATOM"
+              },
+              {
+                "name": "dl_loss_applicable",
+                "op": "ATOM"
+              }
+            ],
+            "op": "AND"
+          },
+          {
+            "args": [
+              {
+                "args": [
+                  {
+                    "args": [
+                      {
+                        "name": "gcs_connection_lost",
+                        "op": "ATOM"
+                      }
+                    ],
+                    "op": "NOT"
+                  }
+                ],
+                "interval": {
+                  "lower": 0,
+                  "lower_closed": true,
+                  "unit": "ms",
+                  "upper": 10000,
+                  "upper_closed": false
+                },
+                "op": "G"
+              },
+              {
+                "args": [
+                  {
+                    "name": "gcs_connection_lost",
+                    "op": "ATOM"
+                  }
+                ],
+                "interval": {
+                  "lower": 10000,
+                  "lower_closed": true,
+                  "unit": "ms",
+                  "upper": null,
+                  "upper_closed": false
+                },
+                "op": "F"
+              }
+            ],
+            "op": "AND"
+          }
+        ],
+        "op": "IMPLIES"
+      }
+    ],
+    "interval": {
+      "lower": 0,
+      "lower_closed": true,
+      "unit": "ms",
+      "upper": null,
+      "upper_closed": false
+    },
+    "op": "G"
+  },
+  "oracle_identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+  "semantics": "pointwise finite timed word; intervals use their recorded open/closed endpoints; the word is complete",
+  "time_unit": "ms"
+}

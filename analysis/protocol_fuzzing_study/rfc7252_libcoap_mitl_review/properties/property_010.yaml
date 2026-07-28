@@ -1,0 +1,59 @@
+property_id: RFC7252-MITL-010
+title: 未 ACK 的 CON request 在 EXCHANGE_LIFETIME 后停止期待 response
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.7"
+    - "4.8.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1453
+      end: 1468
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1618
+      end: 1641
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: 对未收到 ACK 的 Confirmable request，client 在 EXCHANGE_LIFETIME 后停止期待 response。
+  normative_keyword: normative statement
+mitl: |
+  G( CON_REQUEST_SENT && !ACK_MATCHED_WITHIN_EXCHANGE ->
+     G[EXCHANGE_LIFETIME, *] !CLIENT_EXPECTS_RESPONSE )
+informal_semantics: >
+  client 发送 CON request 后，如果在该 exchange 内没有收到 ACK，
+  到达 EXCHANGE_LIFETIME 后必须不再保持“仍期待 response”的状态。
+role: client
+temporal_pattern: timed_state
+events:
+  start_event: CON_REQUEST_SENT
+  state_after_bound: CLIENT_EXPECTS_RESPONSE
+atomic_propositions:
+  - name: CON_REQUEST_SENT
+    semantic: client 发送承载 request 的 Confirmable message。
+    fields: [session, peer, message.type, message.id, token, method]
+    future_source_mapping: [message field, internal state, function event]
+  - name: ACK_MATCHED_WITHIN_EXCHANGE
+    semantic: 在该 exchange 生命周期内收到匹配 ACK。
+    fields: [session, peer, message.id]
+    future_source_mapping: [message field, timer, internal state]
+  - name: CLIENT_EXPECTS_RESPONSE
+    semantic: client 状态中仍保留对该 request response 的期待。
+    fields: [session, peer, token, message.id, request_state]
+    future_source_mapping: [internal state, timer, data structure]
+correlation_key:
+  key: [session, peer, message_id, token]
+  reason: ACK 期待按 message_id 关联；response 期待按 token 关联，因此需要同时保存 message-layer 和 request-layer key。
+time_parameters:
+  bound_kind: nonzero_bounded
+  start: CON_REQUEST_SENT
+  end: no longer expecting response
+  rfc_parameters:
+    - EXCHANGE_LIFETIME
+  default_values:
+    EXCHANGE_LIFETIME: 247 seconds
+  derived_formula:
+    EXCHANGE_LIFETIME: MAX_TRANSMIT_SPAN + (2 * MAX_LATENCY) + PROCESSING_DELAY
+confidence: medium
+verification_notes:
+  - RFC 对已 ACK 的 CON request 或 NON request 的 stop-expecting algorithm 不做具体定义，本性质只覆盖未收到 ACK 的 CON request。
+  - 后续实现需要暴露 client request expectation state。

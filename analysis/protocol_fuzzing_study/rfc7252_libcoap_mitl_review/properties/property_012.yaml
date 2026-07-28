@@ -1,0 +1,47 @@
+property_id: RFC7252-MITL-012
+title: Empty ACK 后 separate response 必须保持 separate
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "5.2.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1837
+      end: 1865
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: server 发送 Empty ACK 选择 separate response 后，不得再把 response 放进另一个 ACK；若收到相同 request 重传，response 仍必须 separate。
+  normative_keyword: MUST NOT/MUST
+mitl: |
+  G( EMPTY_ACK_FOR_REQUEST ->
+     G !PIGGYBACKED_RESPONSE_FOR_SAME_REQUEST )
+informal_semantics: >
+  对某个 CON request，一旦 server 用 Empty ACK 表示选择 separate response，
+  后续同一 request 的实际 response 不能再以 piggybacked ACK 形式发送。
+role: server
+temporal_pattern: unbounded_order_core
+events:
+  start_event: EMPTY_ACK_FOR_REQUEST
+  forbidden_event: PIGGYBACKED_RESPONSE_FOR_SAME_REQUEST
+atomic_propositions:
+  - name: EMPTY_ACK_FOR_REQUEST
+    semantic: server 对某 CON request 发送 Empty ACK。
+    fields: [session, peer, request.message_id, request.token, ack.type, ack.code]
+    future_source_mapping: [message field, internal state, function event]
+  - name: PIGGYBACKED_RESPONSE_FOR_SAME_REQUEST
+    semantic: server 后续把同一 request 的实际 response 放入 ACK。
+    fields: [session, peer, request.token, request.method, request.uri_key, response.code, ack.message_id]
+    future_source_mapping: [message field, internal state, function event]
+correlation_key:
+  key: [session, peer, request_token, request_method, request_uri_key]
+  reason: separate response 是 request-layer 义务，不能只用最近 MID；token 和 request identity 用于识别同一 request，MID 只辅助识别原 CON。
+time_parameters:
+  bound_kind: unbounded
+  start: EMPTY_ACK_FOR_REQUEST
+  end: exchange/request terminal state
+  rfc_parameters: []
+  default_values: {}
+confidence: medium
+verification_notes:
+  - 这是唯一保留的无界主性质，因为它是 RFC7252 separate response 核心时序义务。
+  - 后续实现应定义 request terminal state，否则 monitor 需要以 trace end 作为审阅 horizon。

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "main_sut": {
+    "name": "Kamailio",
+    "commit": "2648eb330b133a20f1398d59a28c53532106cad3",
+    "role": "stateful SIP proxy/server",
+    "benchmark": "ProFuzzBench SIP/Kamailio",
+    "build_status": "NOT_BUILT_BY_DESIGN"
+  },
+  "driver": {
+    "name": "PJSIP/pjproject",
+    "commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+    "role": "benchmark endpoint/traffic driver"
+  },
+  "benchmark": {
+    "name": "ProFuzzBench",
+    "commit": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074"
+  },
+  "source_checkout": "/tmp/tafuzz_protocol_sources (ephemeral shallow read-only inspection)"
+}

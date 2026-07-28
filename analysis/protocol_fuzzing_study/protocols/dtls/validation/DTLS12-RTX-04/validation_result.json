@@ -1,0 +1,34 @@
+{
+  "id": "DTLS12-RTX-04",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {},
+  "additional_negative_results": {
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "dtls12_timer_rearmed_60000ms_cap",
+    "dtls12_capped_deadline_reached",
+    "dtls12_capped_timer_superseded"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 11,
+  "positive_edges": 164,
+  "positive_clocks": 2,
+  "negative_locations": 9,
+  "negative_edges": 142,
+  "negative_clocks": 2,
+  "build_ms": 16,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

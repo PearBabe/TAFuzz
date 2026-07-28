@@ -1,0 +1,1165 @@
+{
+  "protocol": "OPC UA",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "publish_request_queued_timeout_hint_5000": {
+      "definition": "Service_Publish queues a request whose RequestHeader.timeoutHint equals 5000 ms.",
+      "properties": [
+        "OPCUA-PUB-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-PUB-01",
+          "mapping": "auxiliary:1",
+          "role": "Publish timeoutHint deadline and queue",
+          "event_predicate": "Service_Publish queues a request whose RequestHeader.timeoutHint equals 5000 ms.",
+          "instrumentation_timing": "Record queue time/maxTime at the fixed Service_Publish producer; emit Bad_Timeout immediately before sendResponse at lines 441-447 using actual monotonic time.",
+          "atomic_propositions": [
+            "publish_request_queued_timeout_hint_5000"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_Publish",
+          "lines": "304-315",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L304-L315",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "publish_bad_timeout": {
+      "definition": "The server sends a PublishResponse with serviceResult Bad_Timeout for that requestId.",
+      "properties": [
+        "OPCUA-PUB-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-PUB-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The server sends a PublishResponse with serviceResult Bad_Timeout for that requestId.",
+          "instrumentation_timing": "Record queue time/maxTime at the fixed Service_Publish producer; emit Bad_Timeout immediately before sendResponse at lines 441-447 using actual monotonic time.",
+          "atomic_propositions": [
+            "publish_bad_timeout"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "427-452",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L452",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "security_token_issued_default_lifetime": {
+      "definition": "OpenSecureChannel response installs a token whose revisedLifetime is 600000 ms.",
+      "properties": [
+        "OPCUA-SC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "OpenSecureChannel response installs a token whose revisedLifetime is 600000 ms.",
+          "instrumentation_timing": "Record token installation and nextChannelRenewal at lines 560-565; record RENEW only after UA_SecureChannel_sendAsymmetricOPNMessage succeeds at lines 625-640. Store logical threshold/expiry and actual send time separately.",
+          "atomic_propositions": [
+            "security_token_issued_default_lifetime",
+            "security_token_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "processOPNResponse",
+          "lines": "495-589",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SC-01",
+          "mapping": "auxiliary:3",
+          "role": "600000 ms client lifetime profile",
+          "event_predicate": "OpenSecureChannel response installs a token whose revisedLifetime is 600000 ms.",
+          "instrumentation_timing": "Record token installation and nextChannelRenewal at lines 560-565; record RENEW only after UA_SecureChannel_sendAsymmetricOPNMessage succeeds at lines 625-640. Store logical threshold/expiry and actual send time separately.",
+          "atomic_propositions": [
+            "security_token_issued_default_lifetime"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "plugins/ua_config_default.c",
+          "symbol": "UA_ClientConfig_setDefault",
+          "lines": "1115-1118",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "secure_channel_renew_requested": {
+      "definition": "An OpenSecureChannelRequest with requestType=RENEW is handed to the channel send path.",
+      "properties": [
+        "OPCUA-SC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-01",
+          "mapping": "auxiliary:1",
+          "role": "RENEW OpenSecureChannelRequest send",
+          "event_predicate": "An OpenSecureChannelRequest with requestType=RENEW is handed to the channel send path.",
+          "instrumentation_timing": "Record token installation and nextChannelRenewal at lines 560-565; record RENEW only after UA_SecureChannel_sendAsymmetricOPNMessage succeeds at lines 625-640. Store logical threshold/expiry and actual send time separately.",
+          "atomic_propositions": [
+            "secure_channel_renew_requested"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "sendOPNAsync",
+          "lines": "593-646",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L593-L646",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "secure_channel_closed": {
+      "definition": "The correlated SecureChannel closes before renewal and discharges this window.",
+      "properties": [
+        "OPCUA-SC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-01",
+          "mapping": "auxiliary:2",
+          "role": "SecureChannel close lifecycle",
+          "event_predicate": "The correlated SecureChannel closes before renewal and discharges this window.",
+          "instrumentation_timing": "Record token installation and nextChannelRenewal at lines 560-565; record RENEW only after UA_SecureChannel_sendAsymmetricOPNMessage succeeds at lines 625-640. Store logical threshold/expiry and actual send time separately.",
+          "atomic_propositions": [
+            "secure_channel_closed"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "closeSecureChannel",
+          "lines": "2198-2236",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L2198-L2236",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "security_token_generation_cancelled": {
+      "definition": "A later successful processOPNResponse replaces the correlated current token with a new token before this generation's renewal-request observation; the adapter closes the old token generation at that replacement.",
+      "properties": [
+        "OPCUA-SC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A later successful processOPNResponse replaces the correlated current token with a new token before this generation's renewal-request observation; the adapter closes the old token generation at that replacement.",
+          "instrumentation_timing": "Record token installation and nextChannelRenewal at lines 560-565; record RENEW only after UA_SecureChannel_sendAsymmetricOPNMessage succeeds at lines 625-640. Store logical threshold/expiry and actual send time separately.",
+          "atomic_propositions": [
+            "security_token_issued_default_lifetime",
+            "security_token_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "processOPNResponse",
+          "lines": "495-589",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "old_security_token_expired_default_lifetime": {
+      "definition": "The old token reaches createdAt+600000 ms while it remains the alternate token after renewal.",
+      "properties": [
+        "OPCUA-SC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-02",
+          "mapping": "auxiliary:1",
+          "role": "old-token installation and expiry-field snapshot",
+          "event_predicate": "The old token reaches createdAt+600000 ms while it remains the alternate token after renewal.",
+          "instrumentation_timing": "Emit received on entry with tokenId matching altSecurityToken; merge accepted into the same timestamp only if checkSymHeader returns GOOD. End the token projection on explicit channel close or old-token rollover.",
+          "atomic_propositions": [
+            "old_security_token_expired_default_lifetime"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "processOPNResponse",
+          "lines": "495-589",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SC-02",
+          "mapping": "auxiliary:2",
+          "role": "600000 ms client lifetime profile",
+          "event_predicate": "The old token reaches createdAt+600000 ms while it remains the alternate token after renewal.",
+          "instrumentation_timing": "Emit received on entry with tokenId matching altSecurityToken; merge accepted into the same timestamp only if checkSymHeader returns GOOD. End the token projection on explicit channel close or old-token rollover.",
+          "atomic_propositions": [
+            "old_security_token_expired_default_lifetime"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "plugins/ua_config_default.c",
+          "symbol": "UA_ClientConfig_setDefault",
+          "lines": "1115-1118",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "old_token_message_received": {
+      "definition": "A message with the correlated old tokenId reaches checkSymHeader and passes framing/cryptographic preconditions.",
+      "properties": [
+        "OPCUA-SC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A message with the correlated old tokenId reaches checkSymHeader and passes framing/cryptographic preconditions.",
+          "instrumentation_timing": "Emit received on entry with tokenId matching altSecurityToken; merge accepted into the same timestamp only if checkSymHeader returns GOOD. End the token projection on explicit channel close or old-token rollover.",
+          "atomic_propositions": [
+            "old_token_message_received",
+            "old_token_message_accepted"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/ua_securechannel_crypto.c",
+          "symbol": "checkSymHeader",
+          "lines": "506-569",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/ua_securechannel_crypto.c#L506-L569",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "old_token_message_accepted": {
+      "definition": "checkSymHeader returns GOOD for that old-token message in the same merged callback valuation.",
+      "properties": [
+        "OPCUA-SC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SC-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "checkSymHeader returns GOOD for that old-token message in the same merged callback valuation.",
+          "instrumentation_timing": "Emit received on entry with tokenId matching altSecurityToken; merge accepted into the same timestamp only if checkSymHeader returns GOOD. End the token projection on explicit channel close or old-token rollover.",
+          "atomic_propositions": [
+            "old_token_message_received",
+            "old_token_message_accepted"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/ua_securechannel_crypto.c",
+          "symbol": "checkSymHeader",
+          "lines": "506-569",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/ua_securechannel_crypto.c#L506-L569",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "session_idle_window_started_1200000": {
+      "definition": "After UA_Session_updateLifetime for a Session whose revised timeout is 1200000 ms, the adapter opens a fresh idle window.",
+      "properties": [
+        "OPCUA-SESS-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "auxiliary:1",
+          "role": "Session logical idle deadline",
+          "event_predicate": "After UA_Session_updateLifetime for a Session whose revised timeout is 1200000 ms, the adapter opens a fresh idle window.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000",
+            "session_service_activity"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_session.c",
+          "symbol": "UA_Session_updateLifetime",
+          "lines": "125-131",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_session.c#L125-L131",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "auxiliary:3",
+          "role": "revised Session timeout creation",
+          "event_predicate": "After UA_Session_updateLifetime for a Session whose revised timeout is 1200000 ms, the adapter opens a fresh idle window.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_session.c",
+          "symbol": "UA_Server_createSession / Service_CreateSession",
+          "lines": "224-260;263-393",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L224-L260",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "auxiliary:5",
+          "role": "1200000 ms requested client profile",
+          "event_predicate": "After UA_Session_updateLifetime for a Session whose revised timeout is 1200000 ms, the adapter opens a fresh idle window.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "plugins/ua_config_default.c",
+          "symbol": "UA_ClientConfig_setDefault",
+          "lines": "1173-1174",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1173-L1174",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "session_timeout_terminated": {
+      "definition": "UA_Server_cleanupSessions removes that Session with shutdown reason TIMEOUT.",
+      "properties": [
+        "OPCUA-SESS-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "UA_Server_cleanupSessions removes that Session with shutdown reason TIMEOUT.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_timeout_terminated"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_session.c",
+          "symbol": "UA_Server_cleanupSessions",
+          "lines": "115-126",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L115-L126",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "session_service_activity": {
+      "definition": "A valid correlated Service request updates the Session lifetime before expiry.",
+      "properties": [
+        "OPCUA-SESS-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "auxiliary:1",
+          "role": "Session logical idle deadline",
+          "event_predicate": "A valid correlated Service request updates the Session lifetime before expiry.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000",
+            "session_service_activity"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_session.c",
+          "symbol": "UA_Session_updateLifetime",
+          "lines": "125-131",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_session.c#L125-L131",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "auxiliary:2",
+          "role": "valid Service activity refresh",
+          "event_predicate": "A valid correlated Service request updates the Session lifetime before expiry.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_service_activity"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_server_binary.c",
+          "symbol": "processMSGDecoded",
+          "lines": "716-865",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_server_binary.c#L716-L865",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "session_idle_generation_cancelled": {
+      "definition": "Service_CloseSession removes the correlated Session with CLOSE rather than TIMEOUT, or an equivalent server purge/removal lifecycle ends it before the idle deadline.",
+      "properties": [
+        "OPCUA-SESS-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SESS-01",
+          "mapping": "auxiliary:4",
+          "role": "explicit CloseSession and removal",
+          "event_predicate": "Service_CloseSession removes the correlated Session with CLOSE rather than TIMEOUT, or an equivalent server purge/removal lifecycle ends it before the idle deadline.",
+          "instrumentation_timing": "Open/reset from UA_Session_updateLifetime and the valid Service dispatch hook; emit timeout immediately before UA_Server_removeSession. Store session.validTill as the logical deadline and cleanup callback time separately.",
+          "atomic_propositions": [
+            "session_idle_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_session.c",
+          "symbol": "Service_CloseSession / UA_Server_removeSession",
+          "lines": "29-98;918-960",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L29-L98",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "default_subscription_first_cycle_started": {
+      "definition": "CreateSubscription succeeds with revisedPublishingInterval=500 ms and at least one Publish request is queued before the first cycle.",
+      "properties": [
+        "OPCUA-SUB-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "CreateSubscription succeeds with revisedPublishingInterval=500 ms and at least one Publish request is queued before the first cycle.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "Subscription_setState",
+          "lines": "730-759",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L730-L759",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "auxiliary:1",
+          "role": "CreateSubscription revised values",
+          "event_predicate": "CreateSubscription succeeds with revisedPublishingInterval=500 ms and at least one Publish request is queued before the first cycle.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_CreateSubscription",
+          "lines": "55-127",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L55-L127",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "auxiliary:2",
+          "role": "Publish request queue prerequisite",
+          "event_predicate": "CreateSubscription succeeds with revisedPublishingInterval=500 ms and at least one Publish request is queued before the first cycle.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_Publish",
+          "lines": "236-355",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L236-L355",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "auxiliary:6",
+          "role": "500 ms client request profile",
+          "event_predicate": "CreateSubscription succeeds with revisedPublishingInterval=500 ms and at least one Publish request is queued before the first cycle.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "first_publish_response": {
+      "definition": "The first correlated PublishResponse is sent, containing either notifications or an empty keep-alive message.",
+      "properties": [
+        "OPCUA-SUB-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "auxiliary:3",
+          "role": "first notification or keep-alive response",
+          "event_predicate": "The first correlated PublishResponse is sent, containing either notifications or an empty keep-alive message.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "first_publish_response"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "427-648",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L648",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "first_cycle_generation_cancelled": {
+      "definition": "The correlated Subscription is deleted, its revised interval is changed by ModifySubscription, or its Session-close path deletes the Subscription before the first-cycle response.",
+      "properties": [
+        "OPCUA-SUB-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "auxiliary:4",
+          "role": "Subscription deletion or setting change",
+          "event_predicate": "The correlated Subscription is deleted, its revised interval is changed by ModifySubscription, or its Session-close path deletes the Subscription before the first-cycle response.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "first_cycle_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-01",
+          "mapping": "auxiliary:5",
+          "role": "revised interval change",
+          "event_predicate": "The correlated Subscription is deleted, its revised interval is changed by ModifySubscription, or its Session-close path deletes the Subscription before the first-cycle response.",
+          "instrumentation_timing": "Start only after CreateSubscription returns revisedPublishingInterval=500, callback registration succeeds, and a Publish request is queued. Record the scheduled first-cycle deadline; emit response at the actual sendResponse handoff and keep callback time separately.",
+          "atomic_propositions": [
+            "first_cycle_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription",
+          "lines": "130-193",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "default_keepalive_window_started": {
+      "definition": "After a prior message/reset, the adapter observes revised interval=500, maxKeepAliveCount=10, no queued notifications, and a Publish request remains available.",
+      "properties": [
+        "OPCUA-SUB-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "After a prior message/reset, the adapter observes revised interval=500, maxKeepAliveCount=10, no queued notifications, and a Publish request remains available.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "default_keepalive_window_started",
+            "keepalive_response",
+            "notification_response"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "477-610",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "auxiliary:1",
+          "role": "revised keep-alive settings",
+          "event_predicate": "After a prior message/reset, the adapter observes revised interval=500, maxKeepAliveCount=10, no queued notifications, and a Publish request remains available.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "default_keepalive_window_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+          "lines": "26-52;55-127",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "auxiliary:4",
+          "role": "default 500 ms by 10 client profile",
+          "event_predicate": "After a prior message/reset, the adapter observes revised interval=500, maxKeepAliveCount=10, no queued notifications, and a Publish request remains available.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "default_keepalive_window_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "keepalive_response": {
+      "definition": "A correlated PublishResponse with zero notifications is sent as keep-alive.",
+      "properties": [
+        "OPCUA-SUB-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A correlated PublishResponse with zero notifications is sent as keep-alive.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "default_keepalive_window_started",
+            "keepalive_response",
+            "notification_response"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "477-610",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "notification_response": {
+      "definition": "A correlated PublishResponse containing at least one notification ends this no-notification window.",
+      "properties": [
+        "OPCUA-SUB-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A correlated PublishResponse containing at least one notification ends this no-notification window.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "default_keepalive_window_started",
+            "keepalive_response",
+            "notification_response"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "477-610",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "keepalive_generation_cancelled": {
+      "definition": "The correlated Subscription is deleted, ModifySubscription changes its revised interval/count, or its Session-close path deletes the Subscription before this keep-alive generation completes.",
+      "properties": [
+        "OPCUA-SUB-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "auxiliary:2",
+          "role": "Subscription deletion",
+          "event_predicate": "The correlated Subscription is deleted, ModifySubscription changes its revised interval/count, or its Session-close path deletes the Subscription before this keep-alive generation completes.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "keepalive_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-02",
+          "mapping": "auxiliary:3",
+          "role": "revised interval/count change",
+          "event_predicate": "The correlated Subscription is deleted, ModifySubscription changes its revised interval/count, or its Session-close path deletes the Subscription before this keep-alive generation completes.",
+          "instrumentation_timing": "Emit a new generation after lines 609-610 reset currentKeepAliveCount and preconditions are rechecked. Store the tenth publishing-cycle deadline; emit keepalive/notification at sendResponse and retain callback time separately.",
+          "atomic_propositions": [
+            "keepalive_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription",
+          "lines": "130-193",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "default_subscription_no_publish_window_started": {
+      "definition": "No Publish request is available immediately after a lifetime reset for a subscription with revised 500 ms and lifetimeCount 10000.",
+      "properties": [
+        "OPCUA-SUB-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "No Publish request is available immediately after a lifetime reset for a subscription with revised 500 ms and lifetimeCount 10000.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_no_publish_window_started",
+            "subscription_timeout_closed"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "455-474",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L455-L474",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "auxiliary:4",
+          "role": "default revised-value source",
+          "event_predicate": "No Publish request is available immediately after a lifetime reset for a subscription with revised 500 ms and lifetimeCount 10000.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_no_publish_window_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+          "lines": "26-52;55-127",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "auxiliary:5",
+          "role": "500 ms and 10000-count client profile",
+          "event_predicate": "No Publish request is available immediately after a lifetime reset for a subscription with revised 500 ms and lifetimeCount 10000.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_no_publish_window_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "subscription_timeout_closed": {
+      "definition": "The server marks Bad_Timeout and executes the timeout-close/delete path for the correlated subscription.",
+      "properties": [
+        "OPCUA-SUB-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The server marks Bad_Timeout and executes the timeout-close/delete path for the correlated subscription.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "default_subscription_no_publish_window_started",
+            "subscription_timeout_closed"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "455-474",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L455-L474",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "subscription_lifetime_reset": {
+      "definition": "A qualifying Subscription service or processed Publish response resets the lifetime counter.",
+      "properties": [
+        "OPCUA-SUB-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "auxiliary:1",
+          "role": "Subscription lifetime reset",
+          "event_predicate": "A qualifying Subscription service or processed Publish response resets the lifetime counter.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "subscription_lifetime_reset"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "Subscription_resetLifetime",
+          "lines": "118-120",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L118-L120",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "auxiliary:3",
+          "role": "service reset or revised-setting change",
+          "event_predicate": "A qualifying Subscription service or processed Publish response resets the lifetime counter.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "subscription_lifetime_reset",
+            "subscription_lifetime_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription / Service_Republish",
+          "lines": "130-193;393-433",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "subscription_lifetime_generation_cancelled": {
+      "definition": "Manual UA_Subscription_delete or a ModifySubscription revised-setting change ends the correlated lifetime generation without the Bad_Timeout cause.",
+      "properties": [
+        "OPCUA-SUB-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "auxiliary:2",
+          "role": "manual Subscription deletion",
+          "event_predicate": "Manual UA_Subscription_delete or a ModifySubscription revised-setting change ends the correlated lifetime generation without the Bad_Timeout cause.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "subscription_lifetime_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-03",
+          "mapping": "auxiliary:3",
+          "role": "service reset or revised-setting change",
+          "event_predicate": "Manual UA_Subscription_delete or a ModifySubscription revised-setting change ends the correlated lifetime generation without the Bad_Timeout cause.",
+          "instrumentation_timing": "Start immediately after Subscription_resetLifetime when the Publish queue is empty and revised values are 500/10000. Store the 10000th-cycle logical deadline; emit timeout-close when statusChange becomes BADTIMEOUT and record callback time separately.",
+          "atomic_propositions": [
+            "subscription_lifetime_reset",
+            "subscription_lifetime_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription / Service_Republish",
+          "lines": "130-193;393-433",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "disabled_keepalive_window_started": {
+      "definition": "Adapter observes publishing disabled at a keep-alive counter reset/boundary, revised interval=500, count=10, and queued Publish availability.",
+      "properties": [
+        "OPCUA-SUB-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "auxiliary:1",
+          "role": "disable/re-enable and lifetime reset",
+          "event_predicate": "Adapter observes publishing disabled at a keep-alive counter reset/boundary, revised interval=500, count=10, and queued Publish availability.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started",
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Operation_SetPublishingMode",
+          "lines": "196-214",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L196-L214",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "auxiliary:4",
+          "role": "default revised-value source",
+          "event_predicate": "Adapter observes publishing disabled at a keep-alive counter reset/boundary, revised interval=500, count=10, and queued Publish availability.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+          "lines": "26-52;55-127",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "auxiliary:5",
+          "role": "500 ms by 10 client profile",
+          "event_predicate": "Adapter observes publishing disabled at a keep-alive counter reset/boundary, revised interval=500, count=10, and queued Publish availability.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "notification_response_while_disabled": {
+      "definition": "A PublishResponse for this disabled subscription contains any notification.",
+      "properties": [
+        "OPCUA-SUB-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A PublishResponse for this disabled subscription contains any notification.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "notification_response_while_disabled",
+            "keepalive_response_while_disabled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "477-610",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "keepalive_response_while_disabled": {
+      "definition": "A zero-notification keep-alive PublishResponse is sent while publishing remains disabled.",
+      "properties": [
+        "OPCUA-SUB-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A zero-notification keep-alive PublishResponse is sent while publishing remains disabled.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "notification_response_while_disabled",
+            "keepalive_response_while_disabled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "477-610",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "disabled_keepalive_generation_cancelled": {
+      "definition": "Operation_SetPublishingMode re-enables the Subscription, it is deleted, or ModifySubscription changes the revised interval/count before the disabled keep-alive generation completes.",
+      "properties": [
+        "OPCUA-SUB-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "auxiliary:1",
+          "role": "disable/re-enable and lifetime reset",
+          "event_predicate": "Operation_SetPublishingMode re-enables the Subscription, it is deleted, or ModifySubscription changes the revised interval/count before the disabled keep-alive generation completes.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started",
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Operation_SetPublishingMode",
+          "lines": "196-214",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L196-L214",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "auxiliary:2",
+          "role": "Subscription deletion",
+          "event_predicate": "Operation_SetPublishingMode re-enables the Subscription, it is deleted, or ModifySubscription changes the revised interval/count before the disabled keep-alive generation completes.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "OPCUA-SUB-04",
+          "mapping": "auxiliary:3",
+          "role": "revised interval/count change",
+          "event_predicate": "Operation_SetPublishingMode re-enables the Subscription, it is deleted, or ModifySubscription changes the revised interval/count before the disabled keep-alive generation completes.",
+          "instrumentation_timing": "Read disabled state and notifications=0 at lines 477-479; store the tenth-cycle logical deadline and emit keepalive at sendResponse. Emit cancellation atomically before a re-enable/delete/settings/queue transition and record callback time separately.",
+          "atomic_propositions": [
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "repository": "open62541/open62541",
+          "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription",
+          "lines": "130-193",
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

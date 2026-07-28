@@ -1,0 +1,85 @@
+{
+  "boundary_region": "after",
+  "case_kind": "boundary_first_grid_point_legal",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 12001,
+    "response_delta_ticks": 10001,
+    "threshold_ticks": 10000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "An open dense-time lower boundary has no least legal instant; T+1 ms is an exact grid witness, not epsilon.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 225,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/monitor_trace.csv",
+    "sha256": "9fb4767f393997af283f4667b51e435b4f9d8b33fff5175948006bd1b72cec09"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-SHARED-BATT-001:trace:boundary_first_grid_point_legal",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1450,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor/metadata.json",
+      "sha256": "effef0d62a43c1fef3d57f687687feb9c2a5d98b743edc9fd90a709e661eedd0"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1187,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor.stdout.txt",
+      "sha256": "d009d6e4bb4c55527732da434cdd5aab684fb4f90dfcbc63ecfec402362a303b"
+    },
+    "steps": {
+      "bytes": 507,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/tamonitor/steps.csv",
+      "sha256": "1ce42d66fc74be3c4f2ae3fb13ca59de21b477e29d5fb49c7e220fc2c7705856"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 12001,
+      "monitor_advanced": true,
+      "negative_states": 3,
+      "positive_states": 2,
+      "step": 6,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 3316,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-SHARED-BATT-001/traces/boundary_first_grid_point_legal/trace.json",
+    "sha256": "6dc423d3013ae502bed667e8a3eec0cbcf8ebc3985cd66a5fa55832c8e483250"
+  },
+  "trace_id": "ARD-SHARED-BATT-001--boundary_first_grid_point_legal"
+}

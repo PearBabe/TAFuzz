@@ -1,0 +1,43 @@
+{
+  "protocol": "OPC UA",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+  "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+  "scope": "OPC 10000-4 v1.05.07 relationships instantiated only after checking server-revised values on open62541 v1.4.14.",
+  "proposal_summary": {
+    "emitted": 8,
+    "approve": 2,
+    "fix_applied": 6,
+    "rejected": 0
+  },
+  "standards": [
+    {
+      "title": "OPC 10000-4: Services",
+      "version": "1.05.07",
+      "url": "https://reference.opcfoundation.org/Core/Part4/v105/docs/",
+      "sections_reviewed": [
+        "5.6.2.1",
+        "5.7.2.2",
+        "5.14.1.1",
+        "5.14.1.2",
+        "5.14.2.2",
+        "7.32"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "repository": "open62541/open62541",
+      "version": "v1.4.14",
+      "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "url": "https://github.com/open62541/open62541"
+    }
+  ],
+  "profile_differences": [
+    "Client requested defaults are never treated as revised values; every trigger checks the server-returned value.",
+    "SecureChannel renewal is an after-75% SHOULD interval, not an exact action at 75%.",
+    "Session cleanup and Subscription lifetime source use strict/greater-than checks that may expose exact-bound discrepancies.",
+    "Subscription queue loss, re-enable, transfer/deletion, setting change, and normal close are explicit generation boundaries."
+  ],
+  "rejected_candidates": []
+}

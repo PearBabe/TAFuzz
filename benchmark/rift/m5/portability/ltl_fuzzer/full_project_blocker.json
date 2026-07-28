@@ -1,0 +1,147 @@
+{
+  "schema_version": "rift.portability.ltl-fuzzer.blocker.v1",
+  "status": "HISTORICAL_CORE_BUG_RESOLVED_FULL_PROJECT_RUN_PASS",
+  "claim": "PORTABILITY_PROBE_NOT_REQUIREMENT",
+  "frozen_source": {
+    "commit": "716ac301fa3a8ea39814bc80eeebba49c19c1378",
+    "tree": "ee7f4a651abf3e7f6104be92751e4880385ead85",
+    "tracked_worktree_clean": true,
+    "untracked_files_ignored": true
+  },
+  "historical_failing_analyzer": {
+    "binary_sha256": "d8a7e74a8a06de47280501086fb3d0f1b00a85e5ac0d12f3338dffe11104d5de",
+    "production_core_sha256": "3a9a6154b5eef1822b37fdac3f27585d6ff62b1b9a19d73ae87c489371147599",
+    "schema_bundle_sha256": "4e170722f4b981faf54c7bc561cd6ac710856808d95c0c5c4f0549f53c15f9aa"
+  },
+  "compile_database": {
+    "path": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.json",
+    "sha256": "acee244a4817ab8a29d907372c07f4a0502dfbfca666857ce7043f5337bd9b04",
+    "entries": 13,
+    "compiler": "Clang 18.1.8",
+    "configure_command": [
+      "cmake",
+      "-S", "/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer",
+      "-B", "/tmp/rift-m5-ltl-fuzzer-clang18",
+      "-G", "Ninja",
+      "-DCMAKE_C_COMPILER=/usr/bin/clang-18",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++-18",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+    ]
+  },
+  "full_13_translation_unit_run": {
+    "command": "tafuzz-sa recipes with the frozen analyzer, full compile_commands.json, this probe property/executor, and only posix_lp64_v1.json",
+    "exit_code": 1,
+    "wall_seconds": 12.74,
+    "peak_rss_kib": 345624,
+    "address_space_limit_bytes": 12884901888,
+    "output_bundle_created": false,
+    "time_receipt_sha256": "4fc9ee08755aaa6c6c2f10047bbf11b55c3ce73d30b8956e8ebf620e4790055f",
+    "error": "semantic index validation failed; semantic node access path references unknown field entity: std::ios_base::end; semantic node access path references unknown field entity: std::ios_base::beg"
+  },
+  "minimal_reproducer": {
+    "translation_unit": "src/utils.cc",
+    "source_sha256": "27244a031056ba59eaa27ddeed6f3d0de58d930b37e2e867b894fb1b95085cd2",
+    "single_entry_compile_database": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.utils.cc.json",
+    "single_entry_compile_database_sha256": "b1985294f9e05c025a33559f1614b41a14b7894135b0fe6664106b148d3d6d4b",
+    "command": "tafuzz-sa index with only compile_commands.utils.cc.json",
+    "exit_code": 1,
+    "wall_seconds": 0.77,
+    "peak_rss_kib": 181164,
+    "output_artifact_created": false,
+    "time_receipt_sha256": "d51b2aa0b67c06b30acb57bf1194600e8c7b2e8f1247b778fc4af426d6d85010",
+    "error": "semantic index validation failed; semantic node access path references unknown field entity: std::ios_base::end; semantic node access path references unknown field entity: std::ios_base::beg"
+  },
+  "clang_ast_evidence": [
+    {
+      "source_range": "src/utils.cc:82:26-30",
+      "source_expression": "ifs.end",
+      "kind": "MemberExpr",
+      "member": "end",
+      "canonical_type": "const std::ios_base::seekdir",
+      "value_category": "lvalue",
+      "clang_annotation": "non_odr_use_constant",
+      "base_kind": "DeclRefExpr",
+      "base_type": "std::ifstream"
+    },
+    {
+      "source_range": "src/utils.cc:84:25-29",
+      "source_expression": "ifs.beg",
+      "kind": "MemberExpr",
+      "member": "beg",
+      "canonical_type": "const std::ios_base::seekdir",
+      "value_category": "lvalue",
+      "clang_annotation": "non_odr_use_constant",
+      "base_kind": "DeclRefExpr",
+      "base_type": "std::ifstream"
+    }
+  ],
+  "diagnosis": {
+    "classification": "STATIC_MEMBER_CONSTANT_MISCLASSIFIED_AS_INSTANCE_FIELD_ACCESS_PATH",
+    "evidence_based_inference": "Clang resolves end and beg as static std::ios_base seekdir constants reached by MemberExpr syntax. The semantic index emits field-style access-path references but does not emit matching field entities, so its own validator rejects the index.",
+    "scope": "generic C++ AST/index validation; not property-specific and not LTL-Fuzzer-specific",
+    "probe_task_modified_core": false,
+    "resolved_by_parent_core_change": true
+  },
+  "twelve_translation_unit_diagnostic": {
+    "excluded_translation_unit": "src/utils.cc",
+    "compile_database_sha256": "af7b71ac2b5279bb3f3c8b9eaf91d8354c0607f5a85ad4b61aa3fbc13703e671",
+    "translation_units": 12,
+    "exit_code": 0,
+    "wall_seconds": 20.23,
+    "peak_rss_kib": 371344,
+    "pipeline_status": "CONSERVATIVE_INCOMPLETE",
+    "graph_nodes": 3585,
+    "frontier_candidates": 12,
+    "actionable_candidates": 1,
+    "recipes": 1,
+    "probe_verifier": {"checks": 33, "failures": 0, "verdict": "PASS"},
+    "detached_certificate_verifier": {
+      "checks": 82,
+      "failures": 18,
+      "verdict": "FAIL",
+      "failure_scope": "Nine additional non-actionable candidates each differ in reconstructed evidence and uncertainty_reasons; all schema, byte, stage-DAG, occurrence, argc frontier, recipe, and projection checks pass.",
+      "report_sha256": "c70915fc03a9151836edfa16cb488a7a248315673db8fc83028c580369e540a1"
+    },
+    "claim_boundary": "This is a localization diagnostic, not a full-project portability pass, because one real translation unit was omitted and detached semantic reconstruction is not fully closed."
+  },
+  "resolution": {
+    "final_analyzer_sha256": "75cc7f4d74d8507dacd4e2919393406d15e867d8422efec2519c89a344327f0a",
+    "final_production_core_sha256": "be454d86de57170968a9758ab349620685e2b69ef4f467c05e3df6026c41a6d8",
+    "schema_bundle_sha256": "4e170722f4b981faf54c7bc561cd6ac710856808d95c0c5c4f0549f53c15f9aa",
+    "fix_scope": "Generic C++ semantic indexing of static data members reached through MemberExpr syntax; no LTL-Fuzzer symbol or property branch was added.",
+    "full_13_translation_unit_rerun": {
+      "output_root": "/tmp/rift-m5-ltl-fuzzer-schema3-full-fixed-sealed",
+      "exit_code": 0,
+      "wall_seconds": 20.64,
+      "peak_rss_kib": 370892,
+      "translation_units": 13,
+      "graph_nodes": 4036,
+      "frontier_candidates": 12,
+      "actionable_candidates": 1,
+      "recipes": 1,
+      "probe_verifier": {"checks": 33, "failures": 0, "verdict": "PASS"}
+    },
+    "historical_detached_verifier_diagnostic": {
+      "checks": 82,
+      "failures": 18,
+      "verdict": "FAIL",
+      "physical_files_rehashed": 2161,
+      "failure_scope": "Nine rejected non-actionable candidates retain 'call context is truncated' in emitted evidence and uncertainty_reasons, while the old detached reconstruction omitted that reason; all physical, schema, stage-DAG, occurrence, ledger, actionable projection, recipe and replay checks passed.",
+      "root_cause": "The old verifier pruned reverse state zero without requiring reverse-cone enumeration_complete; production prunes only when enumeration_complete and zero."
+    },
+    "final_detached_certificate_status": {
+      "checks": 65,
+      "failures": 0,
+      "verdict": "PASS",
+      "physical_files_rehashed": 2161,
+      "frontier_reconstruction": "4036 nodes, 7196 graph/model arcs, 12 candidates and every compact ledger",
+      "report_sha256": "7cc26c0a6717841f32a8380f0c246eea01b19400fe5bf77f7f18e9f5730464d6"
+    }
+  },
+  "retest_gate": [
+    "SATISFIED: all 13 translation units complete with the unchanged full compile database and generic POSIX model.",
+    "SATISFIED: the probe verifier reports zero failures on the full-project bundle.",
+    "SATISFIED: the independent detached certificate verifier reconstructs all candidate reason ledgers and reports zero failures."
+  ]
+}

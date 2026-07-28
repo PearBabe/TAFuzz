@@ -1,0 +1,100 @@
+{
+  "protocol": "DICOM",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/transport_security_protocols/dicom/evidence.json",
+      "record": {
+        "protocol": "DICOM",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_PROFILE_CAVEAT",
+        "standards": [
+          {
+            "id": "DICOM-PS3.8-2026c",
+            "title": "Network Communication Support for Message Exchange",
+            "url": "https://dicom.nema.org/medical/dicom/current/output/chtml/part08/chapter_9.html",
+            "sections": [
+              "9.1.5",
+              "9.2.2"
+            ],
+            "source_type": "NEMA DICOM formal standard"
+          }
+        ],
+        "sources": [
+          {
+            "repository": "DCMTK/dcmtk",
+            "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+            "url": "https://github.com/DCMTK/dcmtk/tree/7f8564cf11e5531689dd329523fb16023aeda3ed",
+            "role": "ProFuzzBench-pinned DICOM implementation/profile"
+          },
+          {
+            "repository": "ProFuzzBench/ProFuzzBench",
+            "commit": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+            "url": "https://github.com/ProFuzzBench/ProFuzzBench/blob/8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074/subjects/DICOM/Dcmtk/Dockerfile#L75-L88",
+            "role": "benchmark pin evidence"
+          }
+        ],
+        "profile_caveat": "DICOM mandates a configurable ARTIM timer but no numeric value; 30 seconds is the locked DCMTK profile only.",
+        "method": "Screened all ARTIM start/stop/expiry actions and DCMTK ACSE/DIMSE defaults; independent audit corrected the role to storescp acceptor and retained only its locked 30-second profile.",
+        "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md"
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "DICOM-ARTIM-01",
+      "protocol": "DICOM",
+      "standard": "DICOM PS3.8",
+      "standard_version": "DICOM PS3.8 2026c",
+      "section": "9.1.5, 9.2.2 AE-5/AA-2T",
+      "standard_url": "https://dicom.nema.org/medical/dicom/current/output/chtml/part08/chapter_9.html#sect_9.1.5",
+      "source_repository": "DCMTK/dcmtk",
+      "source_commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+      "source_path": "dcmnet/libsrc/dul.cc",
+      "source_lines": "687-707",
+      "source_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dul.cc#L687-L707",
+      "auxiliary_source_mappings": [
+        {
+          "role": "storescp ACSE timeout profile constant",
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/apps/storescp.cc",
+          "symbol": "opt_acse_timeout",
+          "lines": "173",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L173",
+          "legacy_exact_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L165-L175",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        },
+        {
+          "role": "storescp passes the 30-second ACSE profile into the acceptor network",
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/apps/storescp.cc",
+          "symbol": "main",
+          "lines": "928-940",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L928-L940",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        },
+        {
+          "role": "DUL FSM transport-connection response transition",
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dulfsm.cc",
+          "symbol": "AE_5_TransportConnectResponse",
+          "lines": "1118-1127",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dulfsm.cc#L1118-L1127",
+          "legacy_exact_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dulfsm.cc#L1096-L1127",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

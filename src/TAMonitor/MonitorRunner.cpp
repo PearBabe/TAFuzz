@@ -1,4 +1,5 @@
 #include "TAMonitor.h"
+#include "PTA/PrefixRuntime.h"
 
 #include "Fixpoint.h"
 #include "Monitor.h"
@@ -6,6 +7,7 @@
 
 #include <chrono>
 #include <stdexcept>
+#include <type_traits>
 #include <vector>
 
 namespace tamonitor {
@@ -93,6 +95,10 @@ public:
         return status_;
     }
 
+    const std::vector<state_t>& states() const noexcept {
+        return states_;
+    }
+
 private:
     void add_if_alive(state_t& state, std::vector<state_t>& next_states) {
         state.intersection(accepting_space_);
@@ -139,14 +145,50 @@ RunResult run_infinite_typed(const BuildPair& build, const std::vector<TimedEven
     return result;
 }
 
+std::optional<pta::PrefixTimestamp> prefix_timestamp(
+    const std::optional<TimedEvent>& event) {
+    if (!event.has_value()) return pta::PrefixTimestamp{};
+    return pta::PrefixTimestamp{
+        pta::BigRational(pta::BigInt(event->time.first)),
+        pta::BigRational(pta::BigInt(event->time.second))};
+}
+
 template<class state_t>
-RunResult run_finite_typed(const BuildPair& build, const std::vector<TimedEvent>& trace) {
+void observe_prefix(
+    pta::PrefixRuntimeObserver* observer,
+    std::uint64_t prefix_index,
+    std::optional<std::uint64_t> input_index,
+    const std::optional<TimedEvent>& event,
+    bool monitor_advanced,
+    const FiniteSingleMonitor<state_t>& pos,
+    const FiniteSingleMonitor<state_t>& neg) {
+    if (observer == nullptr) return;
+    if constexpr (std::is_same_v<state_t, monitaal::symbolic_state_t>) {
+        observer->observe_symbolic(
+            prefix_index, input_index, prefix_timestamp(event), monitor_advanced,
+            pos.states(), neg.states());
+    } else {
+        observer->observe_concrete(
+            prefix_index, input_index, prefix_timestamp(event), monitor_advanced,
+            pos.states(), neg.states());
+    }
+}
+
+template<class state_t>
+RunResult run_finite_typed(
+    const BuildPair& build,
+    const std::vector<TimedEvent>& trace,
+    pta::PrefixRuntimeObserver* prefix_observer) {
     FiniteSingleMonitor<state_t> pos(build.positive.automaton);
     FiniteSingleMonitor<state_t> neg(build.negative.automaton);
     RunResult result;
     std::string verdict = finite_status_to_verdict(pos.status(), neg.status());
     size_t positive_states = pos.state_count();
     size_t negative_states = neg.state_count();
+    observe_prefix(prefix_observer, 0, std::nullopt, std::nullopt, true, pos, neg);
+    if (verdict == "POSITIVE" || verdict == "NEGATIVE") {
+        if (prefix_observer != nullptr) prefix_observer->mark_monitor_terminal(0);
+    }
 
     for (const auto& event : trace) {
         const bool advance_monitor = verdict != "POSITIVE" && verdict != "NEGATIVE";
@@ -157,6 +199,14 @@ RunResult run_finite_typed(const BuildPair& build, const std::vector<TimedEvent>
             verdict = finite_status_to_verdict(pos_status, neg_status);
             positive_states = pos.state_count();
             negative_states = neg.state_count();
+        }
+
+        const auto prefix_index = static_cast<std::uint64_t>(result.steps.size() + 1);
+        observe_prefix(prefix_observer, prefix_index, prefix_index, event,
+                       advance_monitor, pos, neg);
+        if (advance_monitor && (verdict == "POSITIVE" || verdict == "NEGATIVE") &&
+            prefix_observer != nullptr) {
+            prefix_observer->mark_monitor_terminal(prefix_index);
         }
 
         StepResult step;
@@ -192,23 +242,40 @@ RunResult run_finite_typed(const BuildPair& build, const std::vector<TimedEvent>
 
 }
 
-RunResult run_monitor(const BuildPair& build, const std::vector<TimedEvent>& trace, const Options& options) {
+RunResult run_monitor(
+    const BuildPair& build,
+    const std::vector<TimedEvent>& trace,
+    const Options& options,
+    pta::PrefixRuntimeObserver* prefix_observer) {
     const auto start = std::chrono::steady_clock::now();
     RunResult result;
 
     if (options.word_mode == WordMode::Infinite) {
+        if (prefix_observer != nullptr) {
+            throw std::invalid_argument(
+                "prefix cost observer is supported only for finite words");
+        }
         result = options.state_mode == StateMode::Symbolic
             ? run_infinite_typed<monitaal::symbolic_state_t>(build, trace)
             : run_infinite_typed<monitaal::concrete_state_t>(build, trace);
     } else {
         result = options.state_mode == StateMode::Symbolic
-            ? run_finite_typed<monitaal::symbolic_state_t>(build, trace)
-            : run_finite_typed<monitaal::concrete_state_t>(build, trace);
+            ? run_finite_typed<monitaal::symbolic_state_t>(
+                  build, trace, prefix_observer)
+            : run_finite_typed<monitaal::concrete_state_t>(
+                  build, trace, prefix_observer);
     }
 
     const auto end = std::chrono::steady_clock::now();
     result.monitor_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     return result;
+}
+
+RunResult run_monitor(
+    const BuildPair& build,
+    const std::vector<TimedEvent>& trace,
+    const Options& options) {
+    return run_monitor(build, trace, options, nullptr);
 }
 
 }

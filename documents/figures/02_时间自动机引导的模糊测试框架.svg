@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1120" viewBox="0 0 1900 1120">
+  <defs>
+    <style>
+      .title{font:700 42px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#102A43}
+      .subtitle{font:400 23px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#486581}
+      .lane{font:700 27px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#243B53}
+      .head{font:700 27px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#102A43}
+      .body{font:400 22px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#243B53}
+      .small{font:400 19px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#486581}
+      .tag{font:700 18px 'Microsoft YaHei','Noto Sans CJK SC','SimHei',sans-serif;fill:#fff;letter-spacing:1px}
+      .box{stroke:#486581;stroke-width:2.2;rx:18;ry:18}
+      .arrow{fill:none;stroke:#334E68;stroke-width:3;marker-end:url(#arrow)}
+      .feedback{fill:none;stroke:#D97706;stroke-width:4;stroke-dasharray:12 8;marker-end:url(#arrowOrange)}
+    </style>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#334E68"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 z" fill="#D97706"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#102A43" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+
+  <rect width="1900" height="1120" fill="#FFFFFF"/>
+  <text x="950" y="64" text-anchor="middle" class="title">基于时间自动机引导的模糊测试框架</text>
+  <text x="950" y="102" text-anchor="middle" class="subtitle">性质驱动输入生成—系统执行—带时轨迹监测—语义反馈的闭环</text>
+
+  <rect x="55" y="145" width="1790" height="220" rx="24" fill="#F0F7FF" stroke="#9CC3E6" stroke-width="2"/>
+  <rect x="55" y="392" width="1790" height="380" rx="24" fill="#F4FBF7" stroke="#9AC7A7" stroke-width="2"/>
+  <rect x="55" y="798" width="1790" height="235" rx="24" fill="#FFF8EC" stroke="#E8B86C" stroke-width="2"/>
+
+  <rect x="76" y="169" width="150" height="40" rx="20" fill="#2F6FA5"/><text x="151" y="197" text-anchor="middle" class="tag">输入与约束</text>
+  <rect x="76" y="416" width="150" height="40" rx="20" fill="#2F855A"/><text x="151" y="444" text-anchor="middle" class="tag">执行与监测</text>
+  <rect x="76" y="822" width="150" height="40" rx="20" fill="#C56A13"/><text x="151" y="850" text-anchor="middle" class="tag">反馈与演化</text>
+
+  <g filter="url(#shadow)">
+    <rect class="box" x="260" y="205" width="355" height="118" fill="#FFFFFF"/>
+    <text x="438" y="244" text-anchor="middle" class="head">初始种子与接口模型</text>
+    <text x="438" y="278" text-anchor="middle" class="body">消息、参数、环境与操作序列</text>
+    <text x="438" y="306" text-anchor="middle" class="small">字段类型、取值边界、依赖关系</text>
+
+    <rect class="box" x="720" y="205" width="460" height="118" fill="#FFFFFF"/>
+    <text x="950" y="244" text-anchor="middle" class="head">安全性质与时间自动机</text>
+    <text x="950" y="278" text-anchor="middle" class="body">MITL 规约 → 正、负时间自动机</text>
+    <text x="950" y="306" text-anchor="middle" class="small">位置、守卫、时钟重置、接受条件</text>
+
+    <rect class="box" x="1285" y="205" width="355" height="118" fill="#FFFFFF"/>
+    <text x="1462" y="244" text-anchor="middle" class="head">测试预算与运行配置</text>
+    <text x="1462" y="278" text-anchor="middle" class="body">批次、时限、资源上限</text>
+    <text x="1462" y="306" text-anchor="middle" class="small">版本、时钟单位、复现信息</text>
+  </g>
+
+  <path class="arrow" d="M438 323 L438 480"/>
+  <path class="arrow" d="M950 323 L950 480"/>
+  <path class="arrow" d="M1462 323 L1462 480"/>
+
+  <g filter="url(#shadow)">
+    <rect class="box" x="210" y="480" width="360" height="190" fill="#FFFFFF"/>
+    <text x="390" y="525" text-anchor="middle" class="head">性质引导调度与变异</text>
+    <text x="390" y="564" text-anchor="middle" class="body">选择种子与操作序列</text>
+    <text x="390" y="598" text-anchor="middle" class="body">变异字段、顺序与时间间隔</text>
+    <text x="390" y="632" text-anchor="middle" class="small">保持可复现的测试用例身份</text>
+
+    <rect class="box" x="665" y="480" width="300" height="190" fill="#FFFFFF"/>
+    <text x="815" y="525" text-anchor="middle" class="head">被测系统执行</text>
+    <text x="815" y="564" text-anchor="middle" class="body">注入输入并推进运行</text>
+    <text x="815" y="598" text-anchor="middle" class="body">记录退出、异常与资源状态</text>
+    <text x="815" y="632" text-anchor="middle" class="small">隔离单次运行和批次状态</text>
+
+    <rect class="box" x="1060" y="480" width="300" height="190" fill="#FFFFFF"/>
+    <text x="1210" y="525" text-anchor="middle" class="head">事件抽象与时间标注</text>
+    <text x="1210" y="564" text-anchor="middle" class="body">观测量 → 原子命题赋值</text>
+    <text x="1210" y="598" text-anchor="middle" class="body">形成区间时间戳事件</text>
+    <text x="1210" y="632" text-anchor="middle" class="small">绑定事件来源与时钟域</text>
+
+    <rect class="box" x="1455" y="480" width="270" height="190" fill="#FFFFFF"/>
+    <text x="1590" y="525" text-anchor="middle" class="head">TAMonitor</text>
+    <text x="1590" y="564" text-anchor="middle" class="body">在线状态推进</text>
+    <text x="1590" y="598" text-anchor="middle" class="body">三值前缀判定</text>
+    <text x="1590" y="632" text-anchor="middle" class="small">输出状态证据</text>
+  </g>
+
+  <path class="arrow" d="M570 575 L665 575"/>
+  <path class="arrow" d="M965 575 L1060 575"/>
+  <path class="arrow" d="M1360 575 L1455 575"/>
+  <text x="1012" y="555" text-anchor="middle" class="small">运行观测</text>
+  <text x="1408" y="555" text-anchor="middle" class="small">带时轨迹</text>
+
+  <g filter="url(#shadow)">
+    <rect class="box" x="235" y="875" width="385" height="115" fill="#FFFFFF"/>
+    <text x="428" y="915" text-anchor="middle" class="head">结构覆盖反馈</text>
+    <text x="428" y="952" text-anchor="middle" class="body">位置、迁移与区域覆盖</text>
+    <text x="428" y="980" text-anchor="middle" class="small">识别未探索自动机前沿</text>
+
+    <rect class="box" x="755" y="875" width="390" height="115" fill="#FFFFFF"/>
+    <text x="950" y="915" text-anchor="middle" class="head">语义距离反馈</text>
+    <text x="950" y="952" text-anchor="middle" class="body">到违反接受空间的剩余距离</text>
+    <text x="950" y="980" text-anchor="middle" class="small">区分接近、远离与不可达前缀</text>
+
+    <rect class="box" x="1280" y="875" width="385" height="115" fill="#FFFFFF"/>
+    <text x="1472" y="915" text-anchor="middle" class="head">语料库更新</text>
+    <text x="1472" y="952" text-anchor="middle" class="body">保留新覆盖和新状态种子</text>
+    <text x="1472" y="980" text-anchor="middle" class="small">保存轨迹、判定与复现配置</text>
+  </g>
+
+  <path class="arrow" d="M1590 670 L1590 810 L1472 810 L1472 875"/>
+  <path class="arrow" d="M1590 720 L950 720 L950 875"/>
+  <path class="arrow" d="M1590 745 L428 745 L428 875"/>
+  <path class="feedback" d="M1280 932 L150 932 L150 575 L210 575"/>
+  <text x="167" y="760" transform="rotate(-90 167 760)" text-anchor="middle" class="body" fill="#C56A13">反馈驱动下一轮调度与变异</text>
+
+  <text x="950" y="1082" text-anchor="middle" class="small">框架边界：本阶段给出组件、数据流和反馈接口；具体变异策略与模糊测试实验在后续阶段展开。</text>
+</svg>

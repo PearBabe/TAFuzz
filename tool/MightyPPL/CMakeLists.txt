@@ -134,14 +134,18 @@ add_library(TAMonitorPTA STATIC
             ${TAMONITOR_PTA_SOURCE_DIR}/PTATypes.cpp
             ${TAMONITOR_PTA_SOURCE_DIR}/PricedDBMOps.cpp
             ${TAMONITOR_PTA_SOURCE_DIR}/ExactDominance.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/AffineOptimizer.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/RomeoDBMOptimizer.cpp
             ${TAMONITOR_PTA_SOURCE_DIR}/BackwardPricedSolver.cpp
             ${TAMONITOR_PTA_SOURCE_DIR}/ReachableZoneGraph.cpp
-            ${TAMONITOR_PTA_SOURCE_DIR}/MixedPricedSolver.cpp)
+            ${TAMONITOR_PTA_SOURCE_DIR}/MixedPricedSolver.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/PrefixCostAnalyzer.cpp
+            ${TAMONITOR_PTA_SOURCE_DIR}/PrefixCostOutput.cpp)
 target_include_directories(TAMonitorPTA PUBLIC
                            ${TAMONITOR_SOURCE_DIR}
                            ${TAMONITOR_PTA_SOURCE_DIR})
 target_compile_features(TAMonitorPTA PUBLIC cxx_std_17)
-target_compile_options(TAMonitorPTA PRIVATE -Wall -Wextra -Wpedantic)
+target_compile_options(TAMonitorPTA PRIVATE -Wall -Wextra -Wpedantic -Werror)
 target_link_libraries(TAMonitorPTA PUBLIC pardibaal PkgConfig::Z3)
 add_dependencies(TAMonitorPTA monitaal)
 
@@ -175,6 +179,69 @@ if(BUILD_TESTING)
                           TAMonitorPTA MoniTAal pardibaal PkgConfig::Z3)
     add_dependencies(TAMonitorPTAMixedTests monitaal)
     add_test(NAME TAMonitorPTAMixedTests COMMAND TAMonitorPTAMixedTests)
+
+    add_executable(TAMonitorPTAAffineTests
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/AffineOptimizerTests.cpp)
+    target_compile_features(TAMonitorPTAAffineTests PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTAAffineTests PRIVATE
+                           -Wall -Wextra -Wpedantic -Werror)
+    target_link_libraries(TAMonitorPTAAffineTests PRIVATE
+                          TAMonitorPTA pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTAAffineTests monitaal)
+    add_test(NAME TAMonitorPTAAffineTests COMMAND TAMonitorPTAAffineTests)
+
+    add_executable(TAMonitorPTAPrefixTests
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/PrefixCostAnalyzerTests.cpp)
+    target_compile_features(TAMonitorPTAPrefixTests PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTAPrefixTests PRIVATE
+                           -Wall -Wextra -Wpedantic -Werror)
+    target_link_libraries(TAMonitorPTAPrefixTests PRIVATE
+                          TAMonitorPTA MoniTAal pugixml pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTAPrefixTests monitaal)
+    add_test(NAME TAMonitorPTAPrefixTests COMMAND TAMonitorPTAPrefixTests)
+
+    add_executable(TAMonitorPTARomeoDifferential
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/RomeoDBMOptimizerTests.cpp)
+    target_compile_features(TAMonitorPTARomeoDifferential PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTARomeoDifferential PRIVATE
+                           -Wall -Wextra -Wpedantic -Werror)
+    target_link_libraries(TAMonitorPTARomeoDifferential PRIVATE
+                          TAMonitorPTA pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTARomeoDifferential monitaal)
+    add_test(NAME TAMonitorPTARomeoTests
+             COMMAND TAMonitorPTARomeoDifferential --cases 500)
+
+    set(TAMONITOR_ROMEO_SOURCE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Romeo/romeo-cli)
+    add_executable(TAMonitorPTARomeoOriginalTests
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/RomeoOriginalComparison.cpp
+                   ${TAMONITOR_ROMEO_SOURCE_DIR}/dbm.cc
+                   ${TAMONITOR_ROMEO_SOURCE_DIR}/avalue.cc
+                   ${TAMONITOR_ROMEO_SOURCE_DIR}/timebounds.cc
+                   ${TAMONITOR_ROMEO_SOURCE_DIR}/valuation.cc
+                   ${TAMONITOR_ROMEO_SOURCE_DIR}/printable.cc
+                   ${TAMONITOR_ROMEO_SOURCE_DIR}/color_output.cc)
+    target_include_directories(TAMonitorPTARomeoOriginalTests PRIVATE
+                               ${TAMONITOR_ROMEO_SOURCE_DIR})
+    target_compile_features(TAMonitorPTARomeoOriginalTests PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTARomeoOriginalTests PRIVATE
+                           -ffunction-sections -fdata-sections)
+    target_link_options(TAMonitorPTARomeoOriginalTests PRIVATE
+                        -Wl,--gc-sections)
+    target_link_libraries(TAMonitorPTARomeoOriginalTests PRIVATE
+                          TAMonitorPTA pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTARomeoOriginalTests monitaal)
+    add_test(NAME TAMonitorPTARomeoOriginalTests
+             COMMAND TAMonitorPTARomeoOriginalTests)
+
+    add_executable(TAMonitorPTAPrefixBenchmark
+                   ${TAMONITOR_PTA_SOURCE_DIR}/tests/PrefixPerformanceBenchmark.cpp)
+    target_compile_features(TAMonitorPTAPrefixBenchmark PRIVATE cxx_std_17)
+    target_compile_options(TAMonitorPTAPrefixBenchmark PRIVATE
+                           -Wall -Wextra -Wpedantic -Werror)
+    target_link_libraries(TAMonitorPTAPrefixBenchmark PRIVATE
+                          TAMonitorPTA pardibaal PkgConfig::Z3)
+    add_dependencies(TAMonitorPTAPrefixBenchmark monitaal)
 endif()
 
 add_executable(TAMonitor
@@ -185,6 +252,7 @@ add_executable(TAMonitor
                ${TAMONITOR_SOURCE_DIR}/MonitorRunner.cpp
                ${TAMONITOR_SOURCE_DIR}/ReportWriter.cpp
                ${TAMONITOR_PTA_SOURCE_DIR}/PTAAnalysis.cpp
+               ${TAMONITOR_PTA_SOURCE_DIR}/PrefixRuntime.cpp
                MitlFormulaVisitor.cpp
                MitlTypingVisitor.cpp
                MitlCheckNNFVisitor.cpp
@@ -213,6 +281,15 @@ add_executable(TAMonitor
                MightyPPLRuntimeOptions.cpp
                ${ANTLR_MitlGrammar_CXX_OUTPUTS})
 
+# 只把本次维护的适配文件提升为 Werror；MightyPPL 上游仍有既有的
+# non-void visitor warning，不能把无关历史告警混入本功能验收。
+set_source_files_properties(
+    ${TAMONITOR_SOURCE_DIR}/TAMonitorMain.cpp
+    ${TAMONITOR_SOURCE_DIR}/TAMonitorOptions.cpp
+    ${TAMONITOR_SOURCE_DIR}/MonitorRunner.cpp
+    ${TAMONITOR_PTA_SOURCE_DIR}/PrefixRuntime.cpp
+    PROPERTIES COMPILE_OPTIONS "-Wall;-Wextra;-Wpedantic;-Werror")
+
 target_include_directories(TAMonitor PRIVATE ${TAMONITOR_SOURCE_DIR})
 target_compile_definitions(TAMonitor PRIVATE
     TAMONITOR_REPO_ROOT="${CMAKE_CURRENT_SOURCE_DIR}/../.."
@@ -238,6 +315,14 @@ if(BUILD_TESTING)
                 --tamonitor $<TARGET_FILE:TAMonitor>
                 --repo-root ${CMAKE_CURRENT_SOURCE_DIR}/../..)
     set_tests_properties(TAMonitorPTAMixedIntegration PROPERTIES TIMEOUT 180)
+
+    add_test(
+        NAME TAMonitorPTAPrefixIntegration
+        COMMAND ${PYTHON_EXECUTABLE}
+                ${TAMONITOR_PTA_SOURCE_DIR}/tests/PTAPrefixIntegrationTest.py
+                --tamonitor $<TARGET_FILE:TAMonitor>
+                --repo-root ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+    set_tests_properties(TAMonitorPTAPrefixIntegration PROPERTIES TIMEOUT 180)
 endif()
 
 

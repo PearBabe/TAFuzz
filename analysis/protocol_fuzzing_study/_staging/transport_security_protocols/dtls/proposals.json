@@ -1,0 +1,395 @@
+[
+  {
+    "id": "DTLS12-RTX-01",
+    "protocol": "DTLS",
+    "protocol_extension": "DTLS 1.2 handshake retransmission",
+    "title": "Initial handshake retransmission timer is one second",
+    "category": "handshake retransmission timer",
+    "natural_language": "OpenSSL DTLS 1.2 datagram、无 timer_cb override 的默认分支实际按 1000 ms arm 后，不得提前到期，并须在期限到达或被期望 flight/重设取消。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 6347",
+    "standard_version": "RFC 6347 (DTLS 1.2)",
+    "standard_section": "4.2.4.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6347.html#section-4.2.4.1",
+    "standard_excerpt": "Implementations SHOULD use an initial timer value of 1 second",
+    "time_value_ms": "1000",
+    "time_parameter": "initial retransmit timer",
+    "time_source": "RFC 6347 Section 4.2.4.1 recommended initial value",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_DEFAULT",
+    "mathematical_mitl": "G* (dtls12_timer_armed_1000ms_default_profile -> (G [0,1000) (!dtls12_timer_deadline_reached) && F [0,1000] (dtls12_timer_deadline_reached || dtls12_timer_superseded)))",
+    "mightyppl_formula": "G* (dtls12_timer_armed_1000ms_default_profile -> (G [0,1000) (!dtls12_timer_deadline_reached) && F [0,1000] (dtls12_timer_deadline_reached || dtls12_timer_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+    "finite_end_semantics": "trace extends beyond the largest bounded obligation; missing AP=false",
+    "atomic_propositions": [
+      "dtls12_timer_armed_1000ms_default_profile",
+      "dtls12_timer_deadline_reached",
+      "dtls12_timer_superseded"
+    ],
+    "ap_definitions": {
+      "dtls12_timer_armed_1000ms_default_profile": "A non-SCTP DTLS 1.2 flight actually arms the default 1-second timer with no timer_cb override.",
+      "dtls12_timer_deadline_reached": "The absolute deadline for that timer generation is reached.",
+      "dtls12_timer_superseded": "Expected peer flight, stop_timer, or a valid duplicate-flight timer restart replaces that generation."
+    },
+    "correlation_key": "SSL object + handshake generation + message_seq range/epoch as fields",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "openssl/openssl",
+    "source_commit": "0437435a960123be1ced766d18d715f939698345",
+    "source_path": "ssl/d1_lib.c",
+    "source_symbol": "dtls1_start_timer",
+    "source_lines": "242-284",
+    "source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L242-L284",
+    "instrumentation_timing": "Emit trigger after next_timeout is programmed; emit fire in dtls1_handle_timeout or stop when the full expected flight advances state.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls12_timer_armed_1000ms_default_profile"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": [
+          "dtls12_timer_deadline_reached"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls12_timer_armed_1000ms_default_profile"
+        ]
+      },
+      {
+        "time": 999,
+        "props": [
+          "dtls12_timer_deadline_reached"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "ProFuzzBench's pinned TinyDTLS fork uses 2000 ms, so it is a known conformance-divergence target and is not the source oracle for this property.",
+    "human_review_status": "PENDING",
+    "benchmark_version_mismatch": "assist-project/tinydtls-fuzz@06995d43e9eba892aa7db604b3879b5f91872328 sets 2*DTLS_TICKS_PER_SECOND",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "dtls12_timer_armed_1000ms_default_profile"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Restricted to datagram/no-callback default arm and replaced callback dispatch with deadline/supersession events."
+  },
+  {
+    "id": "DTLS12-RTX-03",
+    "protocol": "DTLS",
+    "protocol_extension": "DTLS 1.2 handshake retransmission",
+    "title": "First retransmission doubles the next timer to two seconds",
+    "category": "retransmission backoff",
+    "natural_language": "第一次重传后实际按 2000 ms arm 的 DTLS generation 不得提前到期，并须在期限到达或因期望/重复 flight 重启而失效。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 6347",
+    "standard_version": "RFC 6347 (DTLS 1.2)",
+    "standard_section": "4.2.4.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6347.html#section-4.2.4.1",
+    "standard_excerpt": "double the value at each retransmission",
+    "time_value_ms": "2000",
+    "time_parameter": "second retransmit interval",
+    "time_source": "RFC 6347 backoff applied to initial timer=1000 ms",
+    "instantiation_basis": "NORMATIVE_DERIVED",
+    "mathematical_mitl": "G* (dtls12_timer_rearmed_2000ms -> (G [0,2000) (!dtls12_second_deadline_reached) && F [0,2000] (dtls12_second_deadline_reached || dtls12_second_timer_superseded)))",
+    "mightyppl_formula": "G* (dtls12_timer_rearmed_2000ms -> (G [0,2000) (!dtls12_second_deadline_reached) && F [0,2000] (dtls12_second_deadline_reached || dtls12_second_timer_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+    "finite_end_semantics": "trace extends beyond the largest bounded obligation; missing AP=false",
+    "atomic_propositions": [
+      "dtls12_timer_rearmed_2000ms",
+      "dtls12_second_deadline_reached",
+      "dtls12_second_timer_superseded"
+    ],
+    "ap_definitions": {
+      "dtls12_timer_rearmed_2000ms": "The first retransmission doubles the timeout and actually arms the next timer generation at 2000 ms.",
+      "dtls12_second_deadline_reached": "That exact generation reaches its absolute deadline.",
+      "dtls12_second_timer_superseded": "Expected next flight, duplicate previous flight, stop_timer, or explicit restart replaces the generation."
+    },
+    "correlation_key": "SSL object + handshake generation + retransmission count",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "openssl/openssl",
+    "source_commit": "0437435a960123be1ced766d18d715f939698345",
+    "source_path": "ssl/d1_lib.c",
+    "source_symbol": "dtls1_double_timeout",
+    "source_lines": "344-350",
+    "source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L344-L350",
+    "instrumentation_timing": "Emit trigger after timeout_duration_us doubles and dtls1_start_timer programs next_timeout.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls12_timer_rearmed_2000ms"
+        ]
+      },
+      {
+        "time": 2000,
+        "props": [
+          "dtls12_second_deadline_reached"
+        ]
+      },
+      {
+        "time": 2001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls12_timer_rearmed_2000ms"
+        ]
+      },
+      {
+        "time": 1999,
+        "props": [
+          "dtls12_second_deadline_reached"
+        ]
+      },
+      {
+        "time": 2001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Only one representative doubling is a catalog property; 4/8/16/32-second copies are duplicate obligations.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "dtls12_timer_rearmed_2000ms"
+          ]
+        },
+        {
+          "time": 2001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Added duplicate-flight restart/supersession and an explicit late/missing oracle."
+  },
+  {
+    "id": "DTLS12-RTX-04",
+    "protocol": "DTLS",
+    "protocol_extension": "DTLS 1.2 handshake retransmission",
+    "title": "Retransmission timer caps at 60 seconds",
+    "category": "retransmission cap",
+    "natural_language": "OpenSSL profile 达到并实际按 60000 ms arm 的 capped generation 不得提前到期，并须到期或因期望/重复 flight 重启而失效。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 6347",
+    "standard_version": "RFC 6347 (DTLS 1.2)",
+    "standard_section": "4.2.4.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6347.html#section-4.2.4.1",
+    "standard_excerpt": "up to no less than the RFC 6298 maximum of 60 seconds",
+    "time_value_ms": "60000",
+    "time_parameter": "retransmission timer cap",
+    "time_source": "RFC 6347 Section 4.2.4.1 and RFC 6298 minimum permitted maximum",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_CAP_PROFILE",
+    "mathematical_mitl": "G* (dtls12_timer_rearmed_60000ms_cap -> (G [0,60000) (!dtls12_capped_deadline_reached) && F [0,60000] (dtls12_capped_deadline_reached || dtls12_capped_timer_superseded)))",
+    "mightyppl_formula": "G* (dtls12_timer_rearmed_60000ms_cap -> (G [0,60000) (!dtls12_capped_deadline_reached) && F [0,60000] (dtls12_capped_deadline_reached || dtls12_capped_timer_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+    "finite_end_semantics": "trace extends beyond the largest bounded obligation; missing AP=false",
+    "atomic_propositions": [
+      "dtls12_timer_rearmed_60000ms_cap",
+      "dtls12_capped_deadline_reached",
+      "dtls12_capped_timer_superseded"
+    ],
+    "ap_definitions": {
+      "dtls12_timer_rearmed_60000ms_cap": "OpenSSL clamps and actually arms the next DTLS timer generation at its 60-second profile cap.",
+      "dtls12_capped_deadline_reached": "That exact capped generation reaches its absolute deadline.",
+      "dtls12_capped_timer_superseded": "Expected/duplicate flight, stop_timer, or explicit restart replaces the generation."
+    },
+    "correlation_key": "SSL object + handshake generation + retransmission count",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "openssl/openssl",
+    "source_commit": "0437435a960123be1ced766d18d715f939698345",
+    "source_path": "ssl/d1_lib.c",
+    "source_symbol": "dtls1_double_timeout",
+    "source_lines": "344-350",
+    "source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L344-L350",
+    "instrumentation_timing": "Record the clamp result after timeout_duration_us is limited to 60000000 and the next timer is started.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls12_timer_rearmed_60000ms_cap"
+        ]
+      },
+      {
+        "time": 60000,
+        "props": [
+          "dtls12_capped_deadline_reached"
+        ]
+      },
+      {
+        "time": 60001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls12_timer_rearmed_60000ms_cap"
+        ]
+      },
+      {
+        "time": 59999,
+        "props": [
+          "dtls12_capped_deadline_reached"
+        ]
+      },
+      {
+        "time": 60001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "The RFC wording permits a larger implementation maximum; this exact 60-second property is the OpenSSL profile, not a universal maximum.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "dtls12_timer_rearmed_60000ms_cap"
+          ]
+        },
+        {
+          "time": 60001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Bound to actual 60 s rearm and added duplicate-flight/stop supersession plus missing negative."
+  },
+  {
+    "id": "DTLS12-FINAL-01",
+    "protocol": "DTLS",
+    "protocol_extension": "DTLS 1.2 final-flight recovery",
+    "title": "Final-flight sender responds to duplicates for twice TCP MSL",
+    "category": "final flight retention",
+    "natural_language": "发送最后一个 handshake flight 的端点在 2*TCP MSL（RFC 793 默认 MSL=2 分钟，即 4 分钟）内收到对端前一 flight 重传时必须重传最后 flight。",
+    "normative_strength": "MUST",
+    "standard": "RFC 6347",
+    "standard_version": "RFC 6347 (DTLS 1.2)",
+    "standard_section": "4.2.4",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc6347.html#section-4.2.4",
+    "standard_excerpt": "for at least twice the default MSL defined for TCP",
+    "time_value_ms": "240000",
+    "time_parameter": "2 * TCP default MSL",
+    "time_source": "RFC 6347 references the TCP default MSL; RFC 793 Section 3.3 defines MSL as 2 minutes",
+    "instantiation_basis": "NORMATIVE_REFERENCED_DEFAULT",
+    "mathematical_mitl": "G* (dtls_final_flight_sent -> G [0,240000] (dtls_peer_previous_flight_duplicate -> dtls_final_flight_retransmitted))",
+    "mightyppl_formula": "G* (dtls_final_flight_sent -> G [0,240000] (dtls_peer_previous_flight_duplicate -> dtls_final_flight_retransmitted))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+    "finite_end_semantics": "trace extends beyond the largest bounded obligation; missing AP=false",
+    "atomic_propositions": [
+      "dtls_final_flight_sent",
+      "dtls_peer_previous_flight_duplicate",
+      "dtls_final_flight_retransmitted"
+    ],
+    "ap_definitions": {
+      "dtls_final_flight_sent": "Endpoint successfully sends the last flight and retains its buffered messages.",
+      "dtls_peer_previous_flight_duplicate": "A complete duplicate of the peer's prior handshake flight is recognized.",
+      "dtls_final_flight_retransmitted": "Buffered final flight is retransmitted in response in the same processing microstep."
+    },
+    "correlation_key": "SSL object + epoch + handshake generation + message_seq range",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "openssl/openssl",
+    "source_commit": "0437435a960123be1ced766d18d715f939698345",
+    "source_path": "ssl/record/rec_layer_d1.c",
+    "source_symbol": "dtls1_read_bytes",
+    "source_lines": "662-679",
+    "source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/record/rec_layer_d1.c#L662-L679",
+    "instrumentation_timing": "At final-flight send retain a generation marker; on repeated Finished emit duplicate and retransmission APs after retransmit succeeds.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls_final_flight_sent"
+        ]
+      },
+      {
+        "time": 240000,
+        "props": [
+          "dtls_peer_previous_flight_duplicate",
+          "dtls_final_flight_retransmitted"
+        ]
+      },
+      {
+        "time": 240001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dtls_final_flight_sent"
+        ]
+      },
+      {
+        "time": 120000,
+        "props": [
+          "dtls_peer_previous_flight_duplicate"
+        ]
+      },
+      {
+        "time": 240001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认沿用 RFC 6347 对 RFC 793 默认 MSL 的规范引用得到 240000 ms，并在论文中声明该历史版本依赖。",
+    "limitations": "RFC 9293 no longer supplies a numeric MSL; this property intentionally follows RFC 6347's contemporaneous RFC 793 reference.",
+    "human_review_status": "PENDING",
+    "time_source_url": "https://www.rfc-editor.org/rfc/rfc793.html#section-3.3",
+    "independent_audit_status": "REJECT_OR_FIX",
+    "independent_audit_note": "Rejected: same-position retransmission invented a zero-delay requirement and source did not prove 240 s state retention."
+  }
+]

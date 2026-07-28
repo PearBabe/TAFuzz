@@ -1,0 +1,43 @@
+{
+  "id": "SIP-TX-12",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {
+    "transport_abort_and_termination": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    }
+  },
+  "additional_negative_results": {
+    "abort_without_termination": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "udp_noninvite_completed_timer_k_armed",
+    "transaction_terminated",
+    "client_transport_abort"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 11,
+  "positive_edges": 182,
+  "positive_clocks": 2,
+  "negative_locations": 9,
+  "negative_edges": 148,
+  "negative_clocks": 2,
+  "build_ms": 27,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

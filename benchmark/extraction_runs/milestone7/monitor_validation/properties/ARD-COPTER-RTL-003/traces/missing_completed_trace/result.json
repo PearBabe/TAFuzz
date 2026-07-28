@@ -1,0 +1,70 @@
+{
+  "boundary_region": "missing",
+  "case_kind": "missing_completed_trace",
+  "classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 7000,
+    "response_delta_ticks": null,
+    "threshold_ticks": 5000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "comparison_status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "The independent oracle treats this synthetic finite word as complete and no required response occurs.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 144,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/monitor_trace.csv",
+    "sha256": "4c812e540a1609e1be8f377c7e3bf8d73031fcae48b06eae6b73d1d3d0185c72"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 0,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-COPTER-RTL-003:trace:missing_completed_trace",
+    "error_excerpt": "TAMonitor error: BDD projection valuation limit exceeded",
+    "exit_code": 1,
+    "metadata": null,
+    "runtime_classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+    "status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+    "stderr": {
+      "bytes": 57,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/tamonitor.stderr.txt",
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/tamonitor.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "steps": null,
+    "terminal_step": null,
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": null
+  },
+  "trace": {
+    "bytes": 2770,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/missing_completed_trace/trace.json",
+    "sha256": "8cb5220b75bcb17c8d338f15950b7faa488eec434e223a324238455417c3e0d9"
+  },
+  "trace_id": "ARD-COPTER-RTL-003--missing_completed_trace"
+}

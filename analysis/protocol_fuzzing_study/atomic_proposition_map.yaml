@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "time_unit": "integer_millisecond",
+  "correlation_before_projection": true,
+  "missing_ap_value": false,
+  "atomic_propositions": {
+    "udp_invite_sent": {
+      "type": "boolean",
+      "definition": "udp invite sent",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-01",
+        "SIP-TX-02"
+      ]
+    },
+    "timer_a_fired": {
+      "type": "boolean",
+      "definition": "timer a fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-01"
+      ]
+    },
+    "invite_transaction_stopped": {
+      "type": "boolean",
+      "definition": "invite transaction stopped",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-01",
+        "SIP-TX-02",
+        "SIP-TX-03"
+      ]
+    },
+    "invite_retransmitted": {
+      "type": "boolean",
+      "definition": "invite retransmitted",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-02",
+        "SIP-TX-03",
+        "SIP-TX-05"
+      ]
+    },
+    "timer_a_first_cycle_completed": {
+      "type": "boolean",
+      "definition": "timer a first cycle completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-03"
+      ]
+    },
+    "invite_client_calling_entered": {
+      "type": "boolean",
+      "definition": "invite client calling entered",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-04"
+      ]
+    },
+    "timer_b_fired": {
+      "type": "boolean",
+      "definition": "timer b fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-04"
+      ]
+    },
+    "invite_final_response_received": {
+      "type": "boolean",
+      "definition": "invite final response received",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-04"
+      ]
+    },
+    "invite_provisional_received": {
+      "type": "boolean",
+      "definition": "invite provisional received",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-05"
+      ]
+    },
+    "udp_invite_client_completed": {
+      "type": "boolean",
+      "definition": "udp invite client completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-06"
+      ]
+    },
+    "transaction_terminated": {
+      "type": "boolean",
+      "definition": "transaction terminated",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-06",
+        "SIP-TX-12",
+        "SIP-TX-18",
+        "SIP-TX-19"
+      ]
+    },
+    "udp_noninvite_sent": {
+      "type": "boolean",
+      "definition": "udp noninvite sent",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-07",
+        "SIP-TX-08"
+      ]
+    },
+    "timer_e_fired": {
+      "type": "boolean",
+      "definition": "timer e fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-07",
+        "SIP-TX-10"
+      ]
+    },
+    "noninvite_final_response_received": {
+      "type": "boolean",
+      "definition": "noninvite final response received",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-07",
+        "SIP-TX-08",
+        "SIP-TX-09",
+        "SIP-TX-10",
+        "SIP-TX-11"
+      ]
+    },
+    "noninvite_retransmitted": {
+      "type": "boolean",
+      "definition": "noninvite retransmitted",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-08",
+        "SIP-TX-09"
+      ]
+    },
+    "timer_e_first_cycle_completed": {
+      "type": "boolean",
+      "definition": "timer e first cycle completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-09"
+      ]
+    },
+    "noninvite_provisional_received": {
+      "type": "boolean",
+      "definition": "noninvite provisional received",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-10"
+      ]
+    },
+    "noninvite_trying_entered": {
+      "type": "boolean",
+      "definition": "noninvite trying entered",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-11"
+      ]
+    },
+    "timer_f_fired": {
+      "type": "boolean",
+      "definition": "timer f fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-11"
+      ]
+    },
+    "udp_noninvite_client_completed": {
+      "type": "boolean",
+      "definition": "udp noninvite client completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-12"
+      ]
+    },
+    "udp_invite_server_completed": {
+      "type": "boolean",
+      "definition": "udp invite server completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-13",
+        "SIP-TX-14"
+      ]
+    },
+    "timer_g_fired": {
+      "type": "boolean",
+      "definition": "timer g fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-13"
+      ]
+    },
+    "ack_received": {
+      "type": "boolean",
+      "definition": "ack received",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-13",
+        "SIP-TX-14",
+        "SIP-TX-15",
+        "SIP-TX-16",
+        "SIP-TX-17"
+      ]
+    },
+    "final_response_retransmitted": {
+      "type": "boolean",
+      "definition": "final response retransmitted",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-14",
+        "SIP-TX-15",
+        "SIP-TX-17"
+      ]
+    },
+    "timer_g_first_cycle_completed": {
+      "type": "boolean",
+      "definition": "timer g first cycle completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-15"
+      ]
+    },
+    "invite_server_completed": {
+      "type": "boolean",
+      "definition": "invite server completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-16"
+      ]
+    },
+    "timer_h_fired": {
+      "type": "boolean",
+      "definition": "timer h fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-16"
+      ]
+    },
+    "udp_invite_server_confirmed": {
+      "type": "boolean",
+      "definition": "udp invite server confirmed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-18"
+      ]
+    },
+    "udp_noninvite_server_completed": {
+      "type": "boolean",
+      "definition": "udp noninvite server completed",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-19"
+      ]
+    },
+    "proxy_invite_forwarded": {
+      "type": "boolean",
+      "definition": "proxy invite forwarded",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-20"
+      ]
+    },
+    "timer_c_fired": {
+      "type": "boolean",
+      "definition": "timer c fired",
+      "complete_valuation": "false when absent at a timed-word position",
+      "source_properties": [
+        "SIP-TX-20"
+      ]
+    }
+  }
+}

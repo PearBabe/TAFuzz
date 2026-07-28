@@ -1,0 +1,108 @@
+[
+  {
+    "id": "DICOM-ARTIM-01",
+    "protocol": "DICOM",
+    "protocol_extension": "DICOM Upper Layer Protocol for TCP/IP",
+    "title": "DCMTK profile expires ARTIM after 30 seconds awaiting A-ASSOCIATE-RQ",
+    "category": "association request timer",
+    "natural_language": "DCMTK storescp 30 秒 acceptor profile 中，接受 TCP 后 ARTIM 不得提前 expiry；须在 30000 ms expiry，或此前收到 A-ASSOCIATE-RQ、连接关闭/解析终止。",
+    "normative_strength": "SHALL timer; duration IMPLEMENTATION_PROFILE",
+    "standard": "DICOM PS3.8",
+    "standard_version": "DICOM PS3.8 2026c",
+    "standard_section": "9.1.5, 9.2.2 AE-5/AA-2T",
+    "standard_url": "https://dicom.nema.org/medical/dicom/current/output/chtml/part08/chapter_9.html#sect_9.1.5",
+    "standard_excerpt": "a timer ARTIM (Association Request/Reject/Release Timer) shall be set",
+    "time_value_ms": "30000",
+    "time_parameter": "ARTIM/ACSE timeout",
+    "time_source": "DICOM requires configurability; DCMTK DcmSCU/dcmnet application profile defaults ACSE timeout to 30 seconds",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G* (dicom_tcp_connection_accepted_dcmtk_30s_profile -> (G [0,30000) (!dicom_artim_expired) && F [0,30000] (dicom_artim_expired || dicom_associate_rq_received || dicom_transport_closed_or_parse_abort)))",
+    "mightyppl_formula": "G* (dicom_tcp_connection_accepted_dcmtk_30s_profile -> (G [0,30000) (!dicom_artim_expired) && F [0,30000] (dicom_artim_expired || dicom_associate_rq_received || dicom_transport_closed_or_parse_abort)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "strict pointwise; finite word; absolute integer milliseconds",
+    "finite_end_semantics": "trace extends beyond the largest bounded obligation; missing AP=false",
+    "atomic_propositions": [
+      "dicom_tcp_connection_accepted_dcmtk_30s_profile",
+      "dicom_artim_expired",
+      "dicom_associate_rq_received",
+      "dicom_transport_closed_or_parse_abort"
+    ],
+    "ap_definitions": {
+      "dicom_tcp_connection_accepted_dcmtk_30s_profile": "storescp acceptor passes opt_acse_timeout=30 and DUL receives the TCP transport connection.",
+      "dicom_artim_expired": "PRV_NextPDUType returns DUL_READTIMEOUT and dispatches ARTIM_TIMER_EXPIRED.",
+      "dicom_associate_rq_received": "A valid A-ASSOCIATE-RQ PDU is recognized for this association.",
+      "dicom_transport_closed_or_parse_abort": "Peer transport close or terminal malformed-PDU/abort branch ends this waiting generation."
+    },
+    "correlation_key": "DUL association pointer + TCP 4-tuple; presentation-context IDs stay fields",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "DCMTK/dcmtk",
+    "source_commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+    "source_path": "dcmnet/libsrc/dul.cc",
+    "source_symbol": "DUL_ReceiveAssociationRQ",
+    "source_lines": "687-707",
+    "source_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dul.cc#L687-L707",
+    "instrumentation_timing": "Emit start after receiveTransportConnection/TRANS_CONN_INDICATION; emit expiry on DUL_READTIMEOUT before state-machine dispatch.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+        ]
+      },
+      {
+        "time": 30000,
+        "props": [
+          "dicom_artim_expired"
+        ]
+      },
+      {
+        "time": 30001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+        ]
+      },
+      {
+        "time": 29999,
+        "props": [
+          "dicom_artim_expired"
+        ]
+      },
+      {
+        "time": 30001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认把 30 秒严格标作 DCMTK profile；DICOM PS3.8 只要求 ARTIM 可配置，不给出协议通用数值。",
+    "limitations": "The 2020 DCMTK source predates PS3.8 2026c, but the cited ARTIM actions are unchanged; this is a source/profile mapping, not a claim that 30 seconds is standardized.",
+    "human_review_status": "PENDING",
+    "profile_source_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L165-L175",
+    "fsm_action_source_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dulfsm.cc#L1096-L1127",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        },
+        {
+          "time": 30001,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Added early close/parse-abort outcomes and corrected the 30 s acceptor profile to storescp, not DcmSCU.",
+    "profile_use_source_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L928-L940"
+  }
+]

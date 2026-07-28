@@ -1,0 +1,34 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-013
+title: Concurrent failsafes select the more severe action
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 23-42
+    original_text: "If multiple failsafes are triggered, the more severe action is taken."
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 26-34
+    original_text: "The actions are ordered None, Warning, Hold, Return, Land, Disarm, Flight termination."
+normalized_requirement:
+  context: two or more currently active failsafe causes have supported configured actions
+  trigger: the active cause set or one configured action changes
+  obligation: the selected action equals the most severe applicable action in the documented ordering
+  caveat: documentation says individual failsafes may not support all actions; ties and unsupported mappings need explicit normalization
+time_constraint:
+  expression: no numeric response deadline is stated
+  epoch: concurrent active-cause snapshot
+  clock: same-sample ordering in an internal trace or a host-monotonic event/mode reconstruction
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G(multiple_failsafes -> selected_action_is_max_supported_severity)"
+atomic_propositions:
+  - AP-PX4-ACTIVE-FAILSAFE-SET
+  - AP-PX4-SELECTED-FAILSAFE-ACTION
+mavlink_observation_refs: [OBS-PX4-EVENT, OBS-PX4-MODE, OBS-PX4-FAILSAFE-INTERNAL]
+blockers: [NEEDS_CAUSE_SET_OBSERVATION, NEEDS_TIE_AND_APPLICABILITY_RULES, NEEDS_ACTION_TRANSITION_SEMANTICS]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

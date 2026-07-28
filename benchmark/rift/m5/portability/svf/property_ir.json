@@ -1,0 +1,405 @@
+{
+  "schema_version": "2.0.0",
+  "artifact_id": "artifact.property.svf.ae.portability_probe",
+  "property_id": "property.svf.ae.portability_probe",
+  "logic": "MITL",
+  "time_domain": "dense",
+  "formula_text": "PORTABILITY_PROBE_NOT_REQUIREMENT: (arg_num < argc) and bool(arg_value[arg_num] = argv[arg_num])",
+  "formula": {
+    "node_id": "formula.svf.ae.portability_probe",
+    "operator": "and",
+    "operands": [
+      {
+        "node_id": "formula.svf.ae.loop_guard",
+        "operator": "atom",
+        "ap_ref": "ap_loop_guard",
+        "operands": []
+      },
+      {
+        "node_id": "formula.svf.ae.argv_copy",
+        "operator": "atom",
+        "ap_ref": "ap_argv_copy_value",
+        "operands": []
+      }
+    ]
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_loop_guard",
+      "roles": [
+        "guard",
+        "state"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      },
+      "predicate": {
+        "node_kind": "comparison",
+        "operator": "<",
+        "value_type": {
+          "kind": "bool",
+          "canonical": "bool",
+          "bit_width": 8,
+          "signed": false
+        },
+        "operands": [
+          {
+            "node_kind": "cast",
+            "operator": "LValueToRValue",
+            "value_type": {
+              "kind": "integer",
+              "canonical": "int",
+              "bit_width": 32,
+              "signed": true
+            },
+            "operands": [
+              {
+                "node_kind": "reference",
+                "operator": "decl_ref",
+                "value_type": {
+                  "kind": "integer",
+                  "canonical": "int",
+                  "bit_width": 32,
+                  "signed": true
+                },
+                "referenced_selector_id": "sel.svf.ae.guard.arg_num",
+                "operands": []
+              }
+            ]
+          },
+          {
+            "node_kind": "cast",
+            "operator": "LValueToRValue",
+            "value_type": {
+              "kind": "integer",
+              "canonical": "int",
+              "bit_width": 32,
+              "signed": true
+            },
+            "operands": [
+              {
+                "node_kind": "reference",
+                "operator": "decl_ref",
+                "value_type": {
+                  "kind": "integer",
+                  "canonical": "int",
+                  "bit_width": 32,
+                  "signed": true
+                },
+                "referenced_selector_id": "sel.svf.ae.guard.argc",
+                "operands": []
+              }
+            ]
+          }
+        ]
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "grp.svf.ae.loop_guard.site",
+          "role": "guard",
+          "all_of": [
+            "sel.svf.ae.loop_guard.site"
+          ]
+        },
+        {
+          "group_id": "grp.svf.ae.loop_guard.state_arg_num",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.guard.arg_num"
+          ]
+        },
+        {
+          "group_id": "grp.svf.ae.loop_guard.state_argc",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.guard.argc"
+          ]
+        }
+      ],
+      "description": "PORTABILITY_PROBE_NOT_REQUIREMENT: the real SVF AE loop guard at ae.cpp:848:12-25."
+    },
+    {
+      "ap_id": "ap_argv_copy_value",
+      "roles": [
+        "state"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      },
+      "predicate": {
+        "node_kind": "cast",
+        "operator": "PointerToBoolean",
+        "value_type": {
+          "kind": "bool",
+          "canonical": "bool",
+          "bit_width": 8,
+          "signed": false
+        },
+        "operands": [
+          {
+            "node_kind": "binary",
+            "operator": "=",
+            "value_type": {
+              "kind": "pointer",
+              "canonical": "char *",
+              "bit_width": 64,
+              "signed": false
+            },
+            "operands": [
+              {
+                "node_kind": "index",
+                "operator": "ArraySubscriptExpr",
+                "value_type": {
+                  "kind": "pointer",
+                  "canonical": "char *",
+                  "bit_width": 64,
+                  "signed": false
+                },
+                "operands": [
+                  {
+                    "node_kind": "reference",
+                    "operator": "decl_ref",
+                    "value_type": {
+                      "kind": "pointer",
+                      "canonical": "char **",
+                      "bit_width": 64,
+                      "signed": false
+                    },
+                    "referenced_selector_id": "sel.svf.ae.copy.arg_value",
+                    "operands": []
+                  },
+                  {
+                    "node_kind": "reference",
+                    "operator": "decl_ref",
+                    "value_type": {
+                      "kind": "integer",
+                      "canonical": "int",
+                      "bit_width": 32,
+                      "signed": true
+                    },
+                    "referenced_selector_id": "sel.svf.ae.copy.lhs.arg_num",
+                    "operands": []
+                  }
+                ]
+              },
+              {
+                "node_kind": "index",
+                "operator": "ArraySubscriptExpr",
+                "value_type": {
+                  "kind": "pointer",
+                  "canonical": "char *",
+                  "bit_width": 64,
+                  "signed": false
+                },
+                "operands": [
+                  {
+                    "node_kind": "reference",
+                    "operator": "decl_ref",
+                    "value_type": {
+                      "kind": "pointer",
+                      "canonical": "char **",
+                      "bit_width": 64,
+                      "signed": false
+                    },
+                    "referenced_selector_id": "sel.svf.ae.copy.argv",
+                    "operands": []
+                  },
+                  {
+                    "node_kind": "reference",
+                    "operator": "decl_ref",
+                    "value_type": {
+                      "kind": "integer",
+                      "canonical": "int",
+                      "bit_width": 32,
+                      "signed": true
+                    },
+                    "referenced_selector_id": "sel.svf.ae.copy.rhs.arg_num",
+                    "operands": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "grp.svf.ae.argv_copy.site",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.argv_copy.site"
+          ]
+        },
+        {
+          "group_id": "grp.svf.ae.argv_copy.arg_value",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.copy.arg_value"
+          ]
+        },
+        {
+          "group_id": "grp.svf.ae.argv_copy.lhs_arg_num",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.copy.lhs.arg_num"
+          ]
+        },
+        {
+          "group_id": "grp.svf.ae.argv_copy.argv",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.copy.argv"
+          ]
+        },
+        {
+          "group_id": "grp.svf.ae.argv_copy.rhs_arg_num",
+          "role": "state",
+          "all_of": [
+            "sel.svf.ae.copy.rhs.arg_num"
+          ]
+        }
+      ],
+      "description": "PORTABILITY_PROBE_NOT_REQUIREMENT: truthiness of the real argv copy assignment expression at ae.cpp:850:9-42; index and assignment recipe semantics are expected to remain UNKNOWN unless proved."
+    }
+  ],
+  "selectors": [
+    {
+      "selector_id": "sel.svf.ae.loop_guard.site",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 848,
+        "column": 12,
+        "end_line": 848,
+        "end_column": 25,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.guard.arg_num",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 848,
+        "column": 12,
+        "end_line": 848,
+        "end_column": 18,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "bit_width": 32,
+        "signed": true
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.guard.argc",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 848,
+        "column": 22,
+        "end_line": 848,
+        "end_column": 25,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "bit_width": 32,
+        "signed": true
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.argv_copy.site",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 850,
+        "column": 9,
+        "end_line": 850,
+        "end_column": 42,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.copy.arg_value",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 850,
+        "column": 9,
+        "end_line": 850,
+        "end_column": 17,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "pointer",
+        "canonical": "char **",
+        "bit_width": 64,
+        "signed": false
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.copy.lhs.arg_num",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 850,
+        "column": 19,
+        "end_line": 850,
+        "end_column": 25,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "bit_width": 32,
+        "signed": true
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.copy.argv",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 850,
+        "column": 30,
+        "end_line": 850,
+        "end_column": 33,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "pointer",
+        "canonical": "char **",
+        "bit_width": 64,
+        "signed": false
+      }
+    },
+    {
+      "selector_id": "sel.svf.ae.copy.rhs.arg_num",
+      "kind": "source_location",
+      "location": {
+        "file": "svf-llvm/tools/AE/ae.cpp",
+        "line": 850,
+        "column": 35,
+        "end_line": 850,
+        "end_column": 41,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "bit_width": 32,
+        "signed": true
+      }
+    }
+  ]
+}

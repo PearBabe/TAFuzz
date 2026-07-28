@@ -1,0 +1,127 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 54
+      },
+      "token": "ap_primary"
+    },
+    "node_callback_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 52
+      },
+      "token": "node_callback_state"
+    },
+    "node_dequeued": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 43
+      },
+      "token": "node_dequeued"
+    },
+    "node_queue": {
+      "kind": "NODE",
+      "location": {
+        "column": 29,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 40
+      },
+      "token": "node_queue"
+    },
+    "node_timer": {
+      "kind": "NODE",
+      "location": {
+        "column": 29,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 46
+      },
+      "token": "node_timer"
+    },
+    "source_payload": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 38
+      },
+      "token": "source_payload"
+    }
+  },
+  "aps": [
+    {
+      "expression": "callback-committed state >= 6",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 54
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-069",
+  "case_relation": "NO_INFLUENCE",
+  "category": "async_timer_callback_queue",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The template models enqueue, dequeue, timer fire, callback invocation, and state commit as distinct mechanically known stages; the negative path drops before commit.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "async_timer_callback_queue",
+    "variant": 8
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The queue rejects the payload and the AP observes an independently initialized callback state.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_payload"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/069_async_timer_callback_queue_negative_v8.c",
+  "source_sha256": "780c4aedc8e03941e364eb57163f236735941c1cf3c72c1a0c116eda52f142ba",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_payload",
+      "kind": "callback_payload",
+      "location": {
+        "column": 13,
+        "file": "cases/069_async_timer_callback_queue_negative_v8.c",
+        "line": 38
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_payload"
+    }
+  ]
+}

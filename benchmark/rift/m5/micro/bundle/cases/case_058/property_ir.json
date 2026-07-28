@@ -1,0 +1,200 @@
+{
+  "artifact_id": "artifact.property.case_058.m5.typed_predicate",
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_primary",
+      "description": "public source declaration: ap_primary = (v_0beed49e != 0)",
+      "predicate": {
+        "node_kind": "cast",
+        "operands": [
+          {
+            "node_kind": "comparison",
+            "operands": [
+              {
+                "node_kind": "cast",
+                "operands": [
+                  {
+                    "node_kind": "reference",
+                    "operands": [],
+                    "operator": "decl_ref",
+                    "referenced_selector_id": "sel.case_058.ap_primary.ref000.DeclRefExpr",
+                    "value_type": {
+                      "bit_width": 32,
+                      "canonical": "int",
+                      "kind": "integer",
+                      "signed": true
+                    }
+                  }
+                ],
+                "operator": "LValueToRValue",
+                "value_type": {
+                  "bit_width": 32,
+                  "canonical": "int",
+                  "kind": "integer",
+                  "signed": true
+                }
+              },
+              {
+                "literal": 0,
+                "node_kind": "literal",
+                "operands": [],
+                "operator": "IntegerLiteral",
+                "value_type": {
+                  "bit_width": 32,
+                  "canonical": "int",
+                  "kind": "integer",
+                  "signed": true
+                }
+              }
+            ],
+            "operator": "!=",
+            "value_type": {
+              "bit_width": 8,
+              "canonical": "bool",
+              "kind": "bool",
+              "signed": false
+            }
+          }
+        ],
+        "operator": "IntegralCast",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "role_selector_groups": [
+        {
+          "all_of": [
+            "sel.case_058.ap_primary.location"
+          ],
+          "group_id": "grp.case_058.ap_primary.guard.ap_site",
+          "role": "guard"
+        },
+        {
+          "all_of": [
+            "sel.case_058.ap_primary.ref000.DeclRefExpr"
+          ],
+          "group_id": "grp.case_058.ap_primary.state.ref000",
+          "role": "state"
+        }
+      ],
+      "roles": [
+        "guard",
+        "state"
+      ],
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "formula": {
+    "ap_ref": "ap_primary",
+    "node_id": "formula.case_058.ap_primary",
+    "operands": [],
+    "operator": "atom"
+  },
+  "formula_text": "ap_primary := ((v_0beed49e != 0))",
+  "logic": "MITL",
+  "property_id": "property.case_058",
+  "schema_version": "2.0.0",
+  "selectors": [
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 17,
+        "file": "sources/case_058.cpp",
+        "line": 33,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_058.ap_primary.location"
+    },
+    {
+      "expression_structure": {
+        "node_kind": "cast",
+        "operands": [
+          {
+            "node_kind": "comparison",
+            "operands": [
+              {
+                "node_kind": "cast",
+                "operands": [
+                  {
+                    "node_kind": "reference",
+                    "operands": [],
+                    "operator": "decl_ref",
+                    "referenced_selector_id": "sel.case_058.ap_primary.ref000.DeclRefExpr",
+                    "value_type": {
+                      "bit_width": 32,
+                      "canonical": "int",
+                      "kind": "integer",
+                      "signed": true
+                    }
+                  }
+                ],
+                "operator": "LValueToRValue",
+                "value_type": {
+                  "bit_width": 32,
+                  "canonical": "int",
+                  "kind": "integer",
+                  "signed": true
+                }
+              },
+              {
+                "literal": 0,
+                "node_kind": "literal",
+                "operands": [],
+                "operator": "IntegerLiteral",
+                "value_type": {
+                  "bit_width": 32,
+                  "canonical": "int",
+                  "kind": "integer",
+                  "signed": true
+                }
+              }
+            ],
+            "operator": "!=",
+            "value_type": {
+              "bit_width": 8,
+              "canonical": "bool",
+              "kind": "bool",
+              "signed": false
+            }
+          }
+        ],
+        "operator": "IntegralCast",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "kind": "expression_structure",
+      "selector_id": "sel.case_058.ap_primary.expression"
+    },
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 31,
+        "end_column": 40,
+        "end_line": 33,
+        "file": "sources/case_058.cpp",
+        "line": 33,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_058.ap_primary.ref000.DeclRefExpr",
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "time_domain": "dense"
+}

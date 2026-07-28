@@ -1,0 +1,11 @@
+make: Entering directory '/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/AFLGo'
+[*] Checking for the ability to compile x86 code...
+[+] Everything seems to be working, ready to compile.
+[*] Testing the CC wrapper and instrumentation output...
+unset AFL_USE_ASAN AFL_USE_MSAN; AFL_QUIET=1 AFL_INST_RATIO=100 AFL_PATH=. ./afl-gcc -O3 -funroll-loops -Wall -D_FORTIFY_SOURCE=2 -g -Wno-pointer-sign -DAFL_PATH=\"/usr/local/lib/afl\" -DDOC_PATH=\"/usr/local/share/doc/afl\" -DBIN_PATH=\"/usr/local/bin\" test-instr.c -o test-instr -ldl -lm
+echo 0 | ./afl-showmap -m none -q -o .test-instr0 ./test-instr
+echo 1 | ./afl-showmap -m none -q -o .test-instr1 ./test-instr
+[+] All right, the instrumentation seems to be working!
+[+] LLVM users: see llvm_mode/README.llvm for a faster alternative to afl-gcc.
+[+] All done! Be sure to review README - it's pretty short and useful.
+make: Leaving directory '/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/AFLGo'

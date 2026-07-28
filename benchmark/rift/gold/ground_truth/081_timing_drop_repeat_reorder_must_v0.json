@@ -1,0 +1,145 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+        "line": 31
+      },
+      "token": "ap_primary"
+    },
+    "node_event_value": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+        "line": 29
+      },
+      "token": "node_event_value"
+    },
+    "node_timeline": {
+      "kind": "NODE",
+      "location": {
+        "column": 32,
+        "file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+        "line": 26
+      },
+      "token": "node_timeline"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+        "line": 22
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_event_value <= 5",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+        "line": 31
+      },
+      "role": "TIMING",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-081",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "timing_drop_repeat_reorder",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The delay variant maps one explicit event-sequence operation to one timeline field and AP; negative variants overwrite that field independently.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "timing_drop_repeat_reorder",
+    "variant": 0
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "timing",
+        "field"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross relative deadline",
+        "kind": "delay",
+        "relative_time_window": "relative to generated deadline",
+        "suggested_values": [
+          "4",
+          "5",
+          "6"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "timing",
+            "to": "node_timeline"
+          },
+          {
+            "certainty": "must",
+            "from": "node_timeline",
+            "kind": "field",
+            "to": "node_event_value"
+          },
+          {
+            "certainty": "must",
+            "from": "node_event_value",
+            "kind": "timing",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_timeline",
+          "node_event_value",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+  "source_sha256": "742a36dcbd3c3ba9c77290727ac9a928ab5cd208a7d9b4f0d838f04fe0ae5eea",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "time_input",
+      "location": {
+        "column": 13,
+        "file": "cases/081_timing_drop_repeat_reorder_must_v0.c",
+        "line": 22
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_primary"
+    }
+  ]
+}

@@ -1,0 +1,923 @@
+{
+  "schema_version": "1.0",
+  "property_id": "PX4-MC-FLIGHTTIME-005",
+  "title_zh": "PX4 最大飞行时间",
+  "title_en": "PX4 maximum flight-time warning and Return",
+  "system_scope": {
+    "system": "PX4",
+    "vehicles": [
+      "multicopter SITL"
+    ],
+    "firmware_release": "v1.17.0",
+    "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "PX4 multicopter SITL；已检测 takeoff；无更高优先级 mode override；运行时参数已归档。"
+  },
+  "status": "NEEDS_CONTEXT",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Safety: Flight Time Failsafes",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/config/safety.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "82b627ef4c4d323ef5e524c5630903c31570e103a9701b65a5f4b8fb33ee4db3",
+      "locator": {
+        "page": null,
+        "section": "Flight Time Failsafes",
+        "anchor": null,
+        "line_start": 96,
+        "line_end": 110,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+      "context_summary_zh": "定义 takeoff 后最大飞行时间、90% warning、Return 和 -1 禁用。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-FLIGHTTIME-005-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "PX4 COM_FLT_TIME_MAX metadata",
+      "version": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "path_or_url": "baseline/px4/src/modules/commander/commander_params.c",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "4e83db4e821aac5fb5ad96aa7755bac8dffac0714581d0895688198c8e41902a",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 884,
+        "line_end": 897,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "* the time since takeoff is above this value. It is not possible to resume the\n * mission or switch to any auto mode other than RTL or Land. Taking over in any manual\n * mode is still possible.\n *\n * Starting from 90% of the maximum flight time, a warning message will be sent\n * every 1 minute with the remaining time until automatic RTL.\n *\n * Set to -1 to disable.\n *\n * @unit s\n * @min -1\n * @group Commander\n */\nPARAM_DEFINE_INT32(COM_FLT_TIME_MAX, -1);",
+      "context_summary_zh": "冻结提交中的秒单位、范围、默认/禁用值。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "PX4-MC-FLIGHTTIME-005-S1",
+      "PX4-MC-FLIGHTTIME-005-S2"
+    ],
+    "edges": [
+      {
+        "from": "PX4-MC-FLIGHTTIME-005-S1",
+        "relation": "parameterizes",
+        "to": "PX4-MC-FLIGHTTIME-005-S2",
+        "evidence_source_id": "PX4-MC-FLIGHTTIME-005-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "warning 需要与固件匹配的 Events metadata 或内部 event 观测。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "PX4 Commander flight-time check",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+          "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "飞控检测到 takeoff，且 COM_FLT_TIME_MAX 启用。",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+          "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "COM_FLT_TIME_MAX > 0。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "takeoff epoch 来自 detected takeoff，而非 arm time 或 GCS command time。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "0.9*T 时发出 warning；T 时进入 Return。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在相应边界前不得仅由最大飞行时间机制产生 warning/Return。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "-1/非正配置禁用。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "disarm 终止本次 flight-time scope。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "detected takeoff",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+          "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "disarm、run 结束或完成本次 flight scope",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+          "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "detected_takeoff",
+        "relation": "BEFORE",
+        "right": "flight_time_warning",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "flight_time_warning",
+        "relation": "BEFORE",
+        "right": "enter_return",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "warning 需要与固件匹配的 Events metadata 或内部 event 观测。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_flight_max",
+      "semantic_start_event": "detected_takeoff",
+      "semantic_end_event": "enter_return",
+      "cancel_event": "disarm_or_run_end",
+      "reset_event": null,
+      "raw_expression": "runtime(COM_FLT_TIME_MAX)",
+      "lower": "runtime(COM_FLT_TIME_MAX)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "PX4-MC-FLIGHTTIME-005-S2",
+      "source_span": {
+        "source_id": "PX4-MC-FLIGHTTIME-005-S2",
+        "quote": "* the time since takeoff is above this value. It is not possible to resume the\n * mission or switch to any auto mode other than RTL or Land. Taking over in any manual\n * mode is still possible.\n *\n * Starting from 90% of the maximum flight time, a warning message will be sent\n * every 1 minute with the remaining time until automatic RTL.\n *\n * Set to -1 to disable.\n *\n * @unit s\n * @min -1\n * @group Commander\n */\nPARAM_DEFINE_INT32(COM_FLT_TIME_MAX, -1);",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "COM_FLT_TIME_MAX",
+      "formula": "T_warning = 0.9 * runtime(COM_FLT_TIME_MAX); T_flight_max = runtime(COM_FLT_TIME_MAX)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": -1,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/PX4-MC-FLIGHTTIME-005"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": -1,
+          "unit": "s",
+          "source_id": "PX4-MC-FLIGHTTIME-005-S2"
+        },
+        {
+          "name": "warning_fraction",
+          "value": 0.9,
+          "unit": "ratio",
+          "source_id": "PX4-MC-FLIGHTTIME-005-S1"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "PX4 vehicle_status.takeoff_time HRT",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((detected_takeoff & max_flight_time_enabled) -> ((G_[0,0.9*T_flight_max) !flight_time_warning & F_[0.9*T_flight_max,infty) flight_time_warning) & (G_[0,T_flight_max) !mode_return & F_[T_flight_max,infty) mode_return)))",
+    "concrete": null,
+    "concrete_instances": [
+      {
+        "profile": "PX4/multicopter — px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+        "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+        "parameter_id": "COM_FLT_TIME_MAX",
+        "raw_value": -1,
+        "raw_unit": "s",
+        "normalized_value": -1.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: -1 s = -1 s",
+        "formula": null,
+        "status": "DISABLED_BY_RUNTIME_CONFIGURATION",
+        "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "source_param_index": 271,
+        "source_param_count": 900,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "运行时参数值落在官方定义的禁用域；保留数值与来源，但不构造零/负区间公式，当前 profile 没有激活该时间义务。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((detected_takeoff & max_flight_time_enabled) -> ((G_[0,0.9*T_flight_max) !flight_time_warning & F_[0.9*T_flight_max,infty) flight_time_warning) & (G_[0,T_flight_max) !mode_return & F_[T_flight_max,infty) mode_return)))",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-FLIGHTTIME-005-S1",
+            "quote": "### Flight Time Failsafes\n\nThere are several other \"battery related\" failsafe mechanisms that may be configured using parameters:\n\n- The \"remaining flight time for safe return\" failsafe ([COM_FLTT_LOW_ACT](#COM_FLTT_LOW_ACT)) is engaged when PX4 estimates that the vehicle has just enough battery remaining for a return mode landing.\n  You can configure this to ignore the failsafe, warn, or engage Return mode.\n- The \"maximum flight time failsafe\" ([COM_FLT_TIME_MAX](#COM_FLT_TIME_MAX)) allows you to set a maximum flight time after takeoff, at which the vehicle will automatically enter return mode (it will also \"warn\" at 90% of this time). This is like a \"hard coded\" estimate of the total flight time in a battery. The feature is disabled by default.\n- The \"minimum battery\" for arming parameter ([COM_ARM_BAT_MIN](#COM_ARM_BAT_MIN)) prevents arming in the first place if the battery level is below the specified value.\n\nThe settings and underlying parameters are shown below.\n\n| Setting                                                              | Parameter                                                                      | Description                                                                                                                     |\n| -------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"COM_FLTT_LOW_ACT\"></a> Low flight time for safe return action | [COM_FLTT_LOW_ACT](../advanced_config/parameter_reference.md#COM_FLTT_LOW_ACT) | Action when return mode can only just reach safety with remaining battery. `0`: None, `1`: Warning, `3`: Return mode (default). |\n| <a id=\"COM_FLT_TIME_MAX\"></a> Maximum flight time failsafe level     | [COM_FLT_TIME_MAX](../advanced_config/parameter_reference.md#COM_FLT_TIME_MAX) | Maximum allowed flight time before Return mode will be engaged, in seconds. `-1`: Disabled (default).                           |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "NEEDS_CONTEXT"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-01",
+      "name": "detected_takeoff",
+      "controlled_natural_language": "Commander 记录本次 takeoff epoch。",
+      "truth_condition": "landed true->false while armed 的 takeoff event。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-01-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 8,
+          "column": 1,
+          "symbol": "takeoff_time",
+          "semantic_identity": "Commander-recorded takeoff epoch in vehicle boot microseconds.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint64",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The field stores the detected takeoff timestamp used by flight-time checks. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L8"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-01-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2124,
+          "column": 6,
+          "symbol": "Commander::landDetectorUpdate",
+          "semantic_identity": "Commander consumer for vehicle_land_detected transitions.",
+          "entity_kind": "FUNCTION",
+          "function": "Commander::landDetectorUpdate",
+          "role": "CONSUMER",
+          "type": "void()",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The function copies the land-detector topic and compares previous/current landed state. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2124"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-01-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2136,
+          "column": 4,
+          "symbol": "was_landed",
+          "semantic_identity": "Armed landed-to-air transition guard for takeoff detection.",
+          "entity_kind": "OTHER",
+          "function": "Commander::landDetectorUpdate",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The enclosing armed guard and this previous/current comparison identify detected takeoff. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2136"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-01-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2138,
+          "column": 5,
+          "symbol": "commander_takeoff_detected",
+          "semantic_identity": "Named event emitted at the detected takeoff transition.",
+          "entity_kind": "EVENT",
+          "function": "Commander::landDetectorUpdate",
+          "role": "PRODUCER",
+          "type": "events::ID",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The event is generated immediately before takeoff_time is written. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2138"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-01-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2139,
+          "column": 5,
+          "symbol": "_vehicle_status.takeoff_time",
+          "semantic_identity": "Assignment of the detected takeoff epoch to VehicleStatus.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::landDetectorUpdate",
+          "role": "WRITE",
+          "type": "uint64_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The vehicle's hrt clock is sampled at the transition. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2139"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "EXTENDED_SYS_STATE",
+          "message_id": 245,
+          "field": "landed_state",
+          "direction": "OUTGOING",
+          "derivation": "MAV_LANDED_STATE_ON_GROUND directly reports state; message has no timestamp, so the transition epoch needs EVENT/internal HRT for strict timing.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry takeoff-detected event with vehicle boot timestamp. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-02",
+      "name": "max_flight_time_enabled",
+      "controlled_natural_language": "运行时 COM_FLT_TIME_MAX 为正。",
+      "truth_condition": "PARAM_VALUE(COM_FLT_TIME_MAX)>0。",
+      "kind": "VALUE_COMPARISON",
+      "value_type": "float",
+      "unit": "s",
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-02-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/commander_params.c",
+          "line": 897,
+          "column": 1,
+          "symbol": "COM_FLT_TIME_MAX",
+          "semantic_identity": "Runtime maximum flight-time parameter in seconds; positive means enabled in the normalized AP.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "int32",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The source defines identity and default -1; only captured runtime value is used by the AP. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/commander_params.c#L897"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-02-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.hpp",
+          "line": 50,
+          "column": 7,
+          "symbol": "COM_FLT_TIME_MAX",
+          "semantic_identity": "Typed Commander parameter wrapper consumed by FlightTimeChecks.",
+          "entity_kind": "PARAMETER",
+          "function": "FlightTimeChecks::checkAndReport",
+          "role": "READ",
+          "type": "ParamInt<px4::params::COM_FLT_TIME_MAX>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The wrapper supplies the runtime value to flight-time logic. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.hpp#L50"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-02-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp",
+          "line": 63,
+          "column": 6,
+          "symbol": "_param_com_flt_time_max",
+          "semantic_identity": "Positive-value guard enabling warning-time calculation.",
+          "entity_kind": "OTHER",
+          "function": "FlightTimeChecks::checkAndReport",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The check compares the runtime parameter to zero. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp#L63"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-02-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_parameters.cpp",
+          "line": 549,
+          "column": 3,
+          "symbol": "mavlink_msg_param_value_send_struct",
+          "semantic_identity": "MAVLink PARAM_VALUE producer used to return runtime parameter values.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkParametersManager::send_param",
+          "role": "PRODUCER",
+          "type": "mavlink_param_value_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "param_id is populated at line 525 and the typed value is sent here. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_parameters.cpp#L549"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_FLT_TIME_MAX; enabled iff >0",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-03",
+      "name": "flight_time_warning",
+      "controlled_natural_language": "90% flight-time warning 发生。",
+      "truth_condition": "与当前 takeoff epoch/COM_FLT_TIME_MAX 关联的 warning event。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-03-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp",
+          "line": 65,
+          "column": 3,
+          "symbol": "remaining_flight_time_sec",
+          "semantic_identity": "Remaining-flight-time derivation from takeoff_time and COM_FLT_TIME_MAX.",
+          "entity_kind": "VARIABLE",
+          "function": "FlightTimeChecks::checkAndReport",
+          "role": "DERIVATION",
+          "type": "const float",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The following lines subtract elapsed flight time from the runtime limit. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp#L65"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-03-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp",
+          "line": 69,
+          "column": 3,
+          "symbol": "remaining_flight_time_sec",
+          "semantic_identity": "Implementation last-ten-percent guard.",
+          "entity_kind": "OTHER",
+          "function": "FlightTimeChecks::checkAndReport",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The guard compares remaining time with 0.1 times the configured maximum. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp#L69"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-03-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp",
+          "line": 86,
+          "column": 5,
+          "symbol": "commander_max_flight_time_warning_seconds",
+          "semantic_identity": "Seconds-form warning event identity for the final minute.",
+          "entity_kind": "EVENT",
+          "function": "FlightTimeChecks::checkAndReport",
+          "role": "PRODUCER",
+          "type": "events::ID with int16 argument",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The event argument is floored remaining seconds. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp#L86"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-03-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp",
+          "line": 103,
+          "column": 5,
+          "symbol": "commander_max_flight_time_warning_minutes",
+          "semantic_identity": "Minutes-form warning event identity for earlier whole-minute warnings.",
+          "entity_kind": "EVENT",
+          "function": "FlightTimeChecks::checkAndReport",
+          "role": "PRODUCER",
+          "type": "events::ID with int16 argument",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The event is emitted on the guarded whole-minute schedule. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp#L103"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-03-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_events.cpp",
+          "line": 209,
+          "column": 6,
+          "symbol": "SendProtocol::send_event",
+          "semantic_identity": "MAVLink EVENT producer preserving PX4 warning event ID, arguments, and vehicle time.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "SendProtocol::send_event",
+          "role": "PRODUCER",
+          "type": "void(const Event &)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "event_time_boot_ms, ID, and arguments are sent by this function. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_events.cpp#L209"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "Carries maximum-flight-time warning when emitted. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-04",
+      "name": "mode_return",
+      "controlled_natural_language": "PX4 进入 Return。",
+      "truth_condition": "current navigation mode/custom mode 为 RTL/Return。",
+      "kind": "STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-04-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/FailsafeFlags.msg",
+          "line": 52,
+          "column": 1,
+          "symbol": "flight_time_limit_exceeded",
+          "semantic_identity": "Internal maximum-flight-time-exceeded cause flag.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This cause is upstream of the nondeferable RTL action. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/FailsafeFlags.msg#L52"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-04-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 544,
+          "column": 31,
+          "symbol": "flight_time_limit_exceeded",
+          "semantic_identity": "Failsafe invocation mapping the flight-time limit cause to a nondeferable RTL action.",
+          "entity_kind": "OTHER",
+          "function": "Failsafe::update",
+          "role": "DERIVATION",
+          "type": "CHECK_FAILSAFE invocation",
+          "macro_spelling_location": "src/modules/commander/failsafe/framework.h:44",
+          "macro_expansion_location": "src/modules/commander/failsafe/failsafe.cpp:544",
+          "confidence": "EXACT",
+          "evidence": "The macro call identifies the cause-to-action mapping; it does not assess whether the cause occurs. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L544"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-04-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/framework.cpp",
+          "line": 682,
+          "column": 7,
+          "symbol": "Action::RTL",
+          "semantic_identity": "Failsafe action-to-VehicleStatus AUTO_RTL mode mapping.",
+          "entity_kind": "RETURN",
+          "function": "FailsafeBase::modeFromAction",
+          "role": "DERIVATION",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Action::RTL returns NAVIGATION_STATE_AUTO_RTL. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/framework.cpp#L682"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-04-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2371,
+          "column": 2,
+          "symbol": "_vehicle_status.nav_state",
+          "semantic_identity": "Commander assignment of the selected and available failsafe mode to current nav_state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::Run",
+          "role": "WRITE",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Mode management may replace an unavailable requested state before this write. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2371"
+        },
+        {
+          "binding_id": "PX4-MC-FLIGHTTIME-005-AP-04-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 41,
+          "column": 1,
+          "symbol": "NAVIGATION_STATE_AUTO_RTL",
+          "semantic_identity": "VehicleStatus enum constant for Return/RTL mode.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8 constant",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the direct internal mode identity for the AP. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L41"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode AUTO_RTL/Return. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "CURRENT_MODE",
+          "message_id": 436,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Direct current mode; no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone7-monitor-and-independent-audit-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/extraction_runs/milestone4/superseded_px4_draft/properties/*.yaml (SUPERSEDED_NON_CANONICAL_DRAFT; immutable historical input only)",
+      "benchmark/extraction_runs/milestone5/px4_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "benchmark/extraction_runs/milestone7/independent_review.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction. Milestone 7 recorded a non-human independent rollback recommendation and synthetic monitor evidence; neither was used as a firmware-conformance or human-acceptance decision."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "satisfiable": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_tautology": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_vacuity": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "independent_review": {
+      "status": "INCONCLUSIVE",
+      "command": null,
+      "evidence": "Automated non-human audit completed 9 gates and recommends NEEDS_CONTEXT; blockers=symbolic formula weakens boundary/repetition semantics; current runtime disabled; EVENT IDs not demonstrated; no concrete monitor formula. No human reviewer or arbitration was claimed."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Automated independent evidence audit recommends NEEDS_CONTEXT and records unresolved gates in benchmark/extraction_runs/milestone7/independent_review.json (SHA-256 5241806569500e593552cf50667d6de9e7e409961bd6ea131ff255571c98ec5c). It is not a human review or arbitration; decision remains PENDING.",
+    "conflicts": [
+      "默认 -1 表示 disabled；不得生成默认 concrete 公式。",
+      "M7 automated independent audit: symbolic formula weakens boundary/repetition semantics",
+      "M7 automated independent audit: current runtime disabled",
+      "M7 automated independent audit: EVENT IDs not demonstrated",
+      "M7 automated independent audit: no concrete monitor formula"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

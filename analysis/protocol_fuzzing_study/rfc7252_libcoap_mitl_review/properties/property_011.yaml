@@ -1,0 +1,68 @@
+property_id: RFC7252-MITL-011
+title: Response token echo 与 request/response matching
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "5.3.1"
+    - "5.3.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1896
+      end: 1902
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1947
+      end: 1970
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: server 必须 echo request token；response source endpoint 必须匹配 request destination；piggybacked response 还要求 ACK MID 匹配 CON request MID。
+  normative_keyword: MUST
+mitl: |
+  G( RESPONSE_FOR_REQUEST ->
+     F[0,0] (TOKEN_ECHOED && RESPONSE_ENDPOINT_MATCHED
+             && (PIGGYBACKED_RESPONSE -> ACK_MID_MATCHED_REQUEST_MID)) )
+informal_semantics: >
+  任意 response 与原 request 的匹配必须在 response 事件处即时成立：
+  token echo、endpoint 匹配；若是 piggybacked response，还必须匹配 request MID。
+role: client/server/both
+temporal_pattern: immediate_matching
+events:
+  start_event: RESPONSE_FOR_REQUEST
+  required_events:
+    - TOKEN_ECHOED
+    - RESPONSE_ENDPOINT_MATCHED
+    - ACK_MID_MATCHED_REQUEST_MID
+atomic_propositions:
+  - name: RESPONSE_FOR_REQUEST
+    semantic: 发送或接收一个被归因于先前 request 的 response。
+    fields: [session, endpoint, token, response.code, message.type, message.id]
+    future_source_mapping: [message field, internal state, function event]
+  - name: TOKEN_ECHOED
+    semantic: response token 与原 request token 完全一致。
+    fields: [request.token, response.token]
+    future_source_mapping: [message field, data structure]
+  - name: RESPONSE_ENDPOINT_MATCHED
+    semantic: response source endpoint 等于原 request destination endpoint。
+    fields: [request.destination_endpoint, response.source_endpoint, session]
+    future_source_mapping: [endpoint state, data structure]
+  - name: PIGGYBACKED_RESPONSE
+    semantic: response 被携带在 ACK 中。
+    fields: [message.type, response.code]
+    future_source_mapping: [message field]
+  - name: ACK_MID_MATCHED_REQUEST_MID
+    semantic: piggybacked ACK 的 Message ID 与 CON request Message ID 相同。
+    fields: [request.message_id, ack.message_id]
+    future_source_mapping: [message field, data structure]
+correlation_key:
+  key: [session, endpoint, token]
+  reason: RFC7252 request/response layer 使用 token 匹配 response；endpoint 参与 exact matching；piggybacked case 额外检查 message_id。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: RESPONSE_FOR_REQUEST
+  end: matching decision
+  interval: "[0,0]"
+  rfc_parameters: []
+  default_values: {}
+confidence: high
+verification_notes:
+  - token bytes 和 MID 必须作为事件属性，不应编码进 AP 名称。
+  - 对 unexpected response，应在候选表中作为 response rejected 行为另行处理；本性质只检查 accepted/matched response。

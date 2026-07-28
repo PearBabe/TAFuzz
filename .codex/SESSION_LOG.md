@@ -1,5 +1,74 @@
 # TAFuzz Session Log
 
+## 2026-07-23 CST
+
+### PGFuzz 56 条重审里程碑 4：ArduCopter 文档与临时公式表阶段进度
+
+- 按用户新增要求维护 `benchmark/PGFuzz重新审计/全部公式与来源_临时.csv`；在原
+  56 条论文性质后追加 15 条 ArduCopter 当前新性质，现为 71 行、71 个唯一编号，
+  所有公式、来源标题、精确位置和链接均非空。PX4/Paparazzi 新公式尚未提取，71 不是
+  最终数量。
+- 生成 `ArduPilot/PGFuzz原性质_当前审计.md`：30 行主表、30 个明细块，完整列出
+  PGFuzz 作者输入候选、当前参数迁移、AP 真值、源码定义/更新/消费位置和观测方式。
+- 生成 `ArduPilot/当前新提取MTL性质.md`：15 条高置信性质；固定时间阈值 7、可修改
+  参数时间 5、无界 3。自检发现并修复点区间问题：不再用 `F_[T,T]` 人工要求精确时刻，
+  改为阈值前禁止与阈值起无界最终义务；同步修正正例和提前边界反例。
+- 验证：577 个官网/源码固定链接均对应冻结本地文件和有效行号；历史表 30 个唯一编号；
+  CSV 可由标准解析器复读，71 行唯一且无空公式/来源。没有运行新增性质的 TAMonitor。
+- 验收边界：4,225 个文件均完成确定性预筛，但旧账本仍有 18,986 条待上下文裁决，
+  所以里程碑 4 尚未完成；没有将机器预筛冒充人工语义审核。
+- 保存检查：ArduPilot 仍仅有用户既存 `modules/CrashDebug` 脏状态；PX4/Paparazzi
+  干净；PGFuzz 的既存缓存、论文和 `SVF-data-flow/` 未被清理或重置。
+
+
+- Goal: audit every top-level item in the Zotero firmware-fuzz-review and
+  distributed-real-time-system collections, then identify non-network domains
+  with fixed, non-parameter timing constraints suitable for MTL/MITL fuzzing.
+- Work completed: read 34/34 firmware and 13/13 distributed-real-time entries;
+  added `analysis/scripts/snapshot_zotero_collections.py`; froze collection
+  metadata and indexed full text under
+  `analysis/data/zotero_mtl_source_snapshot/`; added the detailed Chinese report
+  `analysis/zotero_fixed_time_mitl_benchmark_audit_zh.md`.
+- Main results: PGFuzz has only one directly fixed bounded-eventually literal
+  among its 51 historical formulas; six ArduPilot fixed-time property groups
+  were identified; Mecel is the strongest immediately runnable model benchmark;
+  UN Regulation No. 152 is the strongest new normative domain with an existing
+  autonomous-driving fuzzing ecosystem.
+- Semantics preserved: external normative constants, benchmark constants,
+  implementation-derived constants, and parameters are reported separately;
+  source/document conflicts remain candidates and all implementation
+  satisfaction is `NOT_ASSESSED` until runtime evidence exists.
+- Verification: the Zotero snapshot script passed `python3 -m py_compile`; the
+  complete-coverage tables were mechanically checked as 34 firmware plus 13
+  distributed-real-time rows; PGFuzz Table XII was independently re-extracted
+  from the original PDF with `pypdf` instead of using the existing formula
+  inventory; frozen ArduPilot source was rechecked for the terrain `5000 ms`
+  and rudder `3000 ms` constants.
+- Skipped: no full fuzz campaign, no new SITL timing experiment, no formal proof
+  that all proposed formulas are equivalent to the source timed automata, and
+  no conformance assessment.
+
+## 2026-07-18 21:52 CST
+
+- Goal: complete PGFuzz-MTL51 Milestone 4 by binding every Table-XII formula
+  term and AP occurrence to the frozen current ArduPilot/PX4 source trees.
+- Work completed: generated 183 term-binding rows for 107 system--term
+  identities and all 178 AP occurrences; separated primary truth values,
+  supporting formation/consumption/sending evidence, and mutually exclusive
+  alternative semantics; recorded selected versus alternative binding groups.
+- Semantics preserved: PX4 altitude reference frames, RC source meanings, and
+  command input/acceptance/execution stages remain distinct; unresolved
+  formula meanings are not guessed; all implementation-satisfaction fields
+  remain `NOT_ASSESSED`.
+- Verification: Python compilation and source-binding regeneration succeeded;
+  `validate_source_bindings.py` passed 7,958 checks with zero failures.  The
+  output contains 60 exact, 104 modelled, and 14 unresolved AP occurrences.
+- Preservation audit: ArduPilot still has only the pre-existing
+  `modules/CrashDebug` dirtiness; PX4 remains clean; PGFuzz/ADGFuzz runtime
+  artifacts and MightyPPL/MoniTAal user edits are unchanged.
+- Next: generate and validate 51 per-property audit records, catalogs, and the
+  final Chinese result report; do not resume RIFT-M5 yet.
+
 ## 2026-06-26 CST
 
 - Created the top-level Codex handoff system for `/home/lqq/download/TAFuzz`.
@@ -6267,3 +6336,1317 @@
   Werror and ASan/UBSan pass; whitespace/Python AST checks pass; Roméo quick
   4/4 and preserved full artifact 9/9 pass. LSan is unavailable under ptrace
   and is explicitly not claimed.
+
+## 2026-07-15 CST
+
+- Audited ProtocolGuard's NDSS 2026 PDF, public GitHub repository, and Zenodo
+  v1 artifact to reconstruct the normative-rule extraction pipeline and its
+  exact specification set. Verified the Zenodo ZIP MD5 and inspected every
+  `rule_extraction` stage plus the bundled MQTT 5.0 intermediates.
+- Confirmed the evaluation sources: OASIS MQTT 3.1.1/5.0; RFC 7252; FTP RFCs
+  959, 2228, 2389, 2428, and 3659; RFC 8446; and RFC 8415. RFC 2119 is used
+  only as the modal-keyword vocabulary. The six unique rule sets total 420.
+- Found release-evidence gaps: GitHub omits the implementation, Zenodo includes
+  only MQTT 5.0 extraction data, the saved second-pass workbook is incomplete,
+  the sample has 126 rules versus 118 in the paper, tables are not fed back
+  into extraction, and no multi-RFC aggregation/deduplication code is present.
+- No model API calls or full extraction reproduction were run. No TAFuzz,
+  MightyPPL, MoniTAal, TAMonitor, or Roméo source was modified; only handoff
+  notes were updated.
+
+## 2026-07-16 CST
+
+- Goal: produce the first RFC7252-only CoAP MITL review property library/report
+  for the fixed `benchmark/coap/libcoap` checkout, before building the runnable
+  end-to-end pipeline.
+- Work completed: scanned the local RFC7252 text, used the two provided papers
+  only as extraction-method references, cross-checked candidate properties
+  against libcoap source bindings, and created
+  `analysis/protocol_fuzzing_study/rfc7252_libcoap_mitl_review/properties.json`
+  plus
+  `analysis/protocol_fuzzing_study/rfc7252_libcoap_mitl_review/review_report.md`.
+- Scope/decision: symbolic RFC7252 timing parameters are included when current
+  libcoap defaults or runtime `coap_session_t` fields instantiate them. The
+  artifact records the RFC formula and the libcoap default instance separately.
+- Verification: `python3 -m json.tool` succeeds for `properties.json`; the
+  report contains RFC-property and source-module indexes; `git -C
+  benchmark/coap/libcoap status --short` is clean.
+- Skipped for this review step: MITL grammar compilation, TAMonitor execution,
+  LLVM instrumentation, and end-to-end verdict generation.
+- Follow-up: added Chinese review artifacts
+  `analysis/protocol_fuzzing_study/rfc7252_libcoap_mitl_review/review_report_zh.md`
+  and
+  `analysis/protocol_fuzzing_study/rfc7252_libcoap_mitl_review/properties_zh.json`.
+  `properties_zh.json` validates with `python3 -m json.tool`; libcoap source
+  remains unchanged.
+- Re-extraction follow-up: re-scanned RFC7252 directly instead of reshaping
+  the previous files. The scan found 119 relevant normative paragraphs and
+  curated them into 31 candidate rules. Rebuilt the artifact directory into
+  the requested dataset structure: `README.md`,
+  `RFC7252_candidate_rules.md`, `property_summary.csv`,
+  `property_review.md`, and 13 YAML files under `properties/`.
+- Validation: all 13 YAML files parse with PyYAML and have required fields,
+  unique IDs, non-empty AP/correlation/time sections, readable RFC line ranges,
+  and CSV ID agreement. Time-bound coverage is 12/13, with one explicitly
+  marked `unbounded_order_core`. Main properties contain no
+  Max-Age/proxy/multicast/DTLS/security/format-only rules. The libcoap
+  checkout remains clean.
+
+## 2026-07-16 Natural-Language-to-TL Literature Audit
+
+- Surveyed recent direct NL-to-MTL/MITL and adjacent NL-to-STL/LTL papers,
+  using paper, artifact, and repository sources rather than search snippets.
+- Audited disposable clones of DSVA's `nl2mtl` branch and Barrientos et al.'s
+  NL2MTL prototype. Their Python sources compile, but end-to-end experiments
+  were not run because both require external model APIs. Neither enforces MITL
+  syntax or performs formal semantic validation.
+- Confirmed that FRET, NL2TL, DeepSTL, DialogueSTL, ARTEMIS, SynthTL,
+  Lang2LTL, and nl2spec have source/artifact repositories with varying legacy
+  and external-tool dependencies. Confirmed that TR2MTL's public repository is
+  data-only and that several newer STL paper code links are absent or 404.
+- Result: no source-backed direct NL-to-MITL system was found as of this date;
+  direct source-backed MTL prototypes are DSVA and NL2MTL. No TAFuzz or nested
+  tool source was modified; only these handoff notes were updated.
+
+## 2026-07-16 01:18 CST
+
+- Goal: explain how Meng et al.'s LTL-Fuzzer uses automaton-state distance and
+  whether a desired next automaton transition is controllable.
+- Read and visually checked the local 13-page ICSE 2022 PDF; inspected the
+  paper's Sections 2--6, Algorithm 1, prefix fitness equation, and Figure 2.
+- Audited GitHub main commit
+  `716ac301fa3a8ea39814bc80eeebba49c19c1378` with the connected GitHub app and
+  a disposable shallow clone. Confirmed the paper's guidance is heuristic:
+  replayed prefixes preserve prior progress only under determinism, while the
+  real execution trace determines the next automaton state.
+- Found a paper/artifact gap: the public implementation does not implement the
+  stated accepting-state-distance ranking; prefix fitness is constant,
+  weighted selection is actually uniform random, and outgoing edges are
+  selected by unvisited-state preference rather than distance to acceptance.
+- No project implementation source was changed. Verification was source/PDF
+  inspection only; the legacy toolchain and fuzzing experiments were not run.
+
+## 2026-07-16 01:46 CST
+
+- Follow-up: audited how LTL-Fuzzer instruments programs and whether it
+  extracts proposition dependencies.
+- Confirmed the paper manually constructs `(location, proposition, condition)`
+  tuples for its example and only states that general mapping requires alias
+  analysis. The repository has no alias/data-dependence/slicing pass; it reads
+  hand-authored `file:line:event` target files and matches LLVM debug locations.
+- The LLVM pass injects event/proposition collection, broad global/local state
+  hashing, end-of-run trace evaluation, AFL edge coverage, and CFG-distance
+  accumulation. AFLGo separately extracts call graphs/CFGs for target distance;
+  that is not semantic dependency extraction.
+- Noted an artifact gap: protocol instrumentation supports `-pevents`, but the
+  committed Telnet script's second build passes only `-distance`, and the
+  external protocol source is absent. No legacy build or fuzz run was attempted.
+
+## 2026-07-16 Zotero Fuzz Literature Inventory
+
+- Probed Zotero Desktop 9.0.6 through its read-only local API and inventoried
+  34 items in `固件 fuzz 综述` plus 22 items in `总线 fuzz`.
+- Extracted indexed full text for firmware, embedded, protocol, distributed,
+  CAN/bus, StateAFL, WingFuzz, and survey papers into
+  `/tmp/zotero_fuzz_fulltext/`; no Zotero record was modified.
+- Corrected scope after user clarification: all fuzzing-centered papers remain,
+  including distributed-system, DBMS, smart-contract, protocol, generic, and
+  ML fuzzing.  Only pure IDS/anomaly/fingerprinting/non-fuzz items and duplicate
+  records are removed from the main analysis.
+- Established a mandatory CAN distinction between CAN as the PUT and CAN as an
+  input transport for ECU/UDS/vehicle-function fuzzing.  DICE and CAN-state
+  extraction are tracked as fuzz-enabling methods rather than direct fuzzer
+  algorithms.
+- Read-only evidence checks confirmed FirmFuzz's QEMU setup and seven unique
+  findings, DICE's P2IM/AFL 48-hour experiments and five real-device-validated
+  bugs, and UCRF's direct physical-router setup with SRFuzzer as baseline.
+
+## 2026-07-16 Zotero Fuzz Literature Analysis Complete
+
+- Completed `analysis/zotero_fuzz_literature_analysis_zh.md` (594 lines) for all
+  34 firmware-survey and 22 bus-collection top-level records plus key related
+  work. Every record is included, downgraded, excluded with reason, or merged as
+  a duplicate.
+- Added detailed experiment matrices for firmware/MCU, CAN/ECU, distributed
+  systems, DBMS, smart contracts, stateful protocols, and generic fuzzing. The
+  report covers PUT/input, host/emulation/HIL/physical-device topology,
+  benchmark, baseline, algorithm, box type, oracle, repeated-run budget, result,
+  and source availability.
+- Enforced the CAN distinction: most collection papers use CAN as an injection
+  channel to fuzz ECU applications/vehicle states; none provides a sufficiently
+  complete direct CAN controller/driver/protocol-stack campaign. PAVFuzz is
+  explicitly labeled non-CAN.
+- Validation: placeholder scan was empty; Markdown table pipe-count check
+  reported no mismatch; headings and all 34+22 disposition counts were checked.
+  No literature fuzz experiment was rerun and no Zotero item was modified.
+
+## 2026-07-16 Host-Executable MITL Protocol Candidate Analysis
+
+- Created `analysis/mitl_host_protocol_candidates_zh.md` (259 lines), ranking
+  protocols by normative timing density, MITL extractability, availability of
+  real host implementations, observability, and hardware independence.
+- First-tier candidates: SIP, DHCPv6, BFD, VRRP, SOME/IP-SD, MQTT 5, OPC UA
+  subscriptions, DDS/DDSI-RTPS, mDNS/DNS-SD, and TFTP. Added second-tier
+  candidates including AMQP, DTLS, QUIC, ICE/STUN/TURN, routing protocols,
+  LwM2M, DoIP, IEC 104/61850, BACnet, and Raft.
+- Added protocol-specific host benchmark pairs/topologies, six reusable MITL
+  property templates, AP/parameter-binding requirements, timing/sequence fault
+  dimensions, and limitations for dynamic timers, counters, random windows,
+  punctual constraints, and SHOULD/MAY requirements.
+- Verified no unfinished markers and consistent Markdown table structure.
+  Research used primary standards and official repositories; no protocol test
+  campaign was executed.
+
+## 2026-07-16 03:18 CST
+
+- Goal: record the corrected definition of a high-quality MITL property for
+  TAFuzz and prepare a complete recovery handoff.
+- Work completed: replaced the timing-density-only interpretation with a
+  six-factor gate: mandatory norm, ordered timed workflow, fuzzer
+  controllability, external observability, meaningful consequence, and stable
+  reproducibility. Defined consequence evidence levels A/B/C, with Level B as
+  the minimum target. Recorded formula/AP requirements for IDs, dynamic timers,
+  counters, random windows, and timing tolerance. Re-ranked protocol candidates
+  toward CoAP, SIP, SOME/IP-SD, DDS/RTPS, OPC UA, DHCPv6, and TFTP calibration;
+  downgraded MQTT/BFD/VRRP/mDNS unless a property also has a strong workflow and
+  consequence.
+- Files changed: `.codex/PROJECT_STATE.md`, `.codex/SESSION_LOG.md`.
+- Verification: read `AGENTS.md` instructions supplied for the workspace,
+  `.codex/HANDOFF_TEMPLATE.md`, the prior project state, and recent session log;
+  confirmed the new state has the required current goal, workspace shape,
+  changes to preserve, decisions, verification, risks, at most three next
+  steps, and a copy-ready recovery prompt.
+- Blockers / skipped checks: no benchmark/source code changed; no fuzz campaign
+  or protocol experiment was run; nested repository status checks were not
+  needed because MightyPPL and MoniTAal were not involved in this handoff edit.
+- Next: apply the new quality gate to the 13 RFC 7252 YAML properties, define
+  the canonical property/adaptor schema, then select SIP or SOME/IP-SD as the
+  first workflow-rich host benchmark after CoAP.
+
+## 2026-07-16 03:19 CST LTL-Fuzzer Property-Selection Follow-up
+
+- Re-read the paper's Sections 2.1 and 7.1--7.4 and visually checked all four
+  pages of the released `ltl-property/LTL-Properties.pdf` at main commit
+  `716ac301fa3a8ea39814bc80eeebba49c19c1378`.
+- Confirmed the known-CVE set has explicit date, reproduction-instruction,
+  event-ordering, and successful-reproduction criteria. The 50 RFC/comment
+  properties have only manual selection, importance, and two-author agreement
+  checks; no clause-level extraction rules or rejected-candidate set is given.
+- The appendix lacks exact RFC identifiers and section references, so it records
+  selected outputs but not a reproducible RFC extraction protocol. No source,
+  benchmark, or fuzz execution was changed or run.
+
+## 2026-07-16 Double-Bounded Timing Window Survey
+
+- Verified primary-standard examples of genuine positive-lower/finite-upper
+  timing windows: CoAP RFC 7252, DHCPv6 RFC 8415, BFD RFC 5880, AUTOSAR
+  SOME/IP-SD R25-11, plus lower-strength mDNS RFC 6762 SHOULD windows.
+- Recorded the key oracle distinction between timer selection/fire and actual
+  wire transmission; no benchmark code or fuzz campaign was changed or run.
+
+## 2026-07-16 PGFuzz Paper And Source Deployment Review
+
+- Read the local PGFuzz paper PDF with `pypdf` extraction and inspected the
+  local `baseline/pgfuzz` repository at commit `7eaebf2` from
+  `https://github.com/purseclab/PGFuzz.git`.
+- Created `analysis/pgfuzz_paper_code_deployment_zh.md` (403 lines) explaining
+  the PGFuzz method, source layout, policy/input/distance mapping, minimum
+  MAVLink/SITL/flight-control knowledge, environment requirements, and a
+  first-policy deployment plan.
+- Key source findings: local artifact has ArduPilot and PX4 scripts, no
+  Paparazzi implementation, no complete predicate-generator source, no bundled
+  SVF-data-flow implementation; ArduPilot has 28 local policy directories and
+  PX4 has 21.
+- Environment check: current WSL2 Ubuntu 22.04 lacks `python2`,
+  `gnome-terminal`, `sim_vehicle.py`, and MAVProxy; the bundled PGFuzz Python 2
+  venv starts but lacks `pymavlink`, `psutil`, and `lxml`, so it is not a
+  reliable runtime.
+- Recommended next step: use an Ubuntu 18.04 VM/desktop environment, verify
+  ArduPilot SITL first, then run a single ArduPilot `A.CHUTE` PGFuzz smoke test
+  with explicit `policy_violations/` output directory, logs, replay, and
+  minimization hygiene.
+- Verification: report line count and key-term search passed; `baseline/pgfuzz`
+  was restored after a Python 2 `.pyc` probe side effect, leaving only the
+  pre-existing untracked paper PDF. No PGFuzz fuzzing campaign, simulator run,
+  or ArduPilot/PX4 build was executed.
+
+## 2026-07-17 WSL ArduPilot SITL GUI Diagnosis
+
+- Located the initialized MAVLink submodule at
+  `baseline/ardupilot/modules/mavlink`; `libraries/GCS_MAVLink` is C++ source
+  and intentionally has no `requirements.txt`.
+- Observed current ArduPilot SITL and MAVProxy running, but MAVProxy used the
+  Anaconda Python 3.12 interpreter, which lacked `wx`; WSLg itself was healthy.
+- Installed MAVProxy 1.8.74 plus `future` for system Python 3.10, and changed
+  that interpreter's user NumPy from 2.2.6 to 1.26.4 to match Ubuntu 22.04's
+  distro Matplotlib ABI. Verified `mavproxy.py --version` and a WSLg wx frame.
+- The existing pre-fix process was not terminated; restart the user's
+  `sim_vehicle.py ... --console --map` command to load the corrected runtime.
+
+## 2026-07-17 PGFuzz And ADGFuzz Comparative Review
+
+- Read both supplied papers in full using page-preserving PyMuPDF extraction and
+  visually checked the key architecture, evaluation, limitation, and appendix
+  pages against the extracted text.
+- Reconstructed the experimental backgrounds: PGFuzz's 56-policy,
+  three-controller SITL study and ADGFuzz's assignment-dependency/MIS study on
+  ArduPilot Copter, Plane, and Rover, including input spaces, oracles, guidance,
+  post-processing, quantitative results, real-RV checks, and limitations.
+- Concluded that PGFuzz is the relevant oracle/guidance baseline while ADGFuzz
+  is a complementary implementation-level input-slicing prior. For TAFuzz, use
+  specification-derived MITL properties as the oracle and treat ADG/MIS-style
+  dependency information only as optional input prioritization.
+- Defined the minimum robotics/flight-control learning boundary as SITL reset,
+  MAVLink/pymavlink operation, a small flight-state vocabulary, input lifecycle,
+  qualitative control-loop intuition, and reproducible replay/minimization;
+  advanced controls, aerodynamics, ROS, HITL, and hardware remain out of scope.
+- Noted evaluation caveats: neither paper reports repeated-seed variance;
+  ADGFuzz's PGFuzz comparison is not a controlled rerun, 42/87 findings are
+  simulator-only, and its reported input-count breakdown sums to 89 rather than
+  87. No source code, campaign, or hardware experiment was changed or run.
+
+## 2026-07-17 ADGFuzz Python Environment Fix
+
+- Confirmed the existing conda environment `/home/lqq/anaconda3/envs/adg` uses
+  Python 3.8.10 and that the previous `pkgutil.ImpImporter` / NumPy build
+  failure came from Anaconda base Python 3.12, not from `adg`.
+- Installed `baseline/ADGFuzz/requirements.txt` successfully into `adg` via
+  `/home/lqq/anaconda3/bin/conda run -n adg python -m pip install -r requirements.txt`;
+  `numpy==1.24.4` resolved to a CPython 3.8 wheel and did not build from
+  source.
+- Verified imports from `adg`: `numpy 1.24.4`, `pandas 2.0.3`,
+  `matplotlib 3.7.5`, `pymavlink`, `psutil`, and `lxml`. Also noted
+  `sim_vehicle.py` uses `#!/usr/bin/env python3`, so ArduPilot SITL can be
+  affected by conda/base PATH ordering unless launched with system Python or a
+  clean shell.
+- Installed `wxpython` into `adg` with conda-forge so ArduPilot/MAVProxy GUI
+  dependencies can live in the same environment as ADGFuzz. Conda updated the
+  environment from Python 3.8.10 to Python 3.8.20. Verified
+  `/home/lqq/anaconda3/envs/adg/bin/python` can import `pymavlink`, `MAVProxy`,
+  and `wx` (`wxPython 4.2.1 gtk3`) together; `numpy 1.24.4`, `pandas 2.0.3`,
+  and `matplotlib 3.7.5` still import.
+
+## 2026-07-17 ADGFuzz Paper–Code Complete Deep Reading
+
+- Read all 19 pages of the supplied NDSS 2026 ADGFuzz PDF and locked it to
+  SHA-256 `bb86bc3177c4e4bf2c8fe73e14e99760ab4dd662deb7902afafb502cfacaed72`.
+- Audited local `baseline/ADGFuzz` commit
+  `203fce3f4265241340ed62b9be90aec1da0afa37` across static extraction, MIS
+  mapping/scoring, SITL execution, value generation, MAVLink operations,
+  oracles, logging, replay, and post-processing.
+- Created `analysis/adgfuzz_paper_code_deep_reading_zh.md` (1,866 lines), with
+  paper-to-code mappings, a flight-control primer, exact answers on static
+  analysis/seeds/mutation/feedback/oracles/tools/object fields, quantitative
+  artifact defects, and a concrete TAFuzz property/Clang/LLVM/instrumentation/
+  seed-guidance design plus a scoped CoAP retransmission example.
+- Recomputed static path-loss counts and initial linear-vs-softmax MIS
+  probabilities. Verified all report-local links and source line anchors,
+  balanced fenced blocks, PDF page/hash evidence, and selected source files via
+  `git diff --exit-code`.
+- Did not run a full SITL campaign or modify ADGFuzz source. Preserved all
+  pre-existing runtime-generated dirty/untracked files.
+- Compacted the active handoff to 212 lines and archived the previous direction
+  in `.codex/archive/PROJECT_STATE_2026-07-17_pre_adgfuzz_deep_read.md`.
+
+## 2026-07-18 ArduPilot Instrumentation/Trace Feasibility Check
+
+- Inspected `baseline/ardupilot` at commit
+  `8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e` and preserved its pre-existing
+  dirty `modules/CrashDebug` state.
+- Rebuilt ArduCopter SITL successfully with
+  `/home/lqq/anaconda3/bin/python ./waf copter`; the system Python lacked the
+  required Empy version and the `adg` Python was below ArduPilot's Python 3.9
+  minimum.
+- Confirmed source implementations for `AP_HAL::micros64()` in SITL and
+  ChibiOS, SITL TCP server/client and UDP serial mappings, multiple MAVLink
+  serial instances, and MAVLink/file logger backends. No flight-control source
+  was changed.
+- Skipped hardware build/run because no exact board was specified and
+  `arm-none-eabi-g++` is absent from the current environment.
+
+## 2026-07-18 06:00 CST — ArduPilot/PX4 MITL Benchmark Milestone 1
+
+- Goal: freeze all paper, source, and MAVLink revisions before extracting
+  properties or binding atomic propositions.
+- Work completed: created the benchmark directory scaffold and
+  `benchmark/source_freeze_manifest.json`; cloned PX4 v1.17.0 into
+  `baseline/px4` at peeled tag commit `d6f12ad1...`; initialized only its
+  pinned MAVLink submodule at `33af200d...`; recorded ArduPilot, PGFuzz,
+  ADGFuzz, PDF, and preservation baselines.
+- Files changed: `benchmark/README.md`,
+  `benchmark/source_freeze_manifest.json`, `.codex/PROJECT_STATE.md`, and this
+  session log; added the independent `baseline/px4` checkout.
+- Verification: all three PDF SHA-256 values matched; all four repository HEADs
+  matched the manifest; PX4 worktree was clean; JSON parsing passed; the
+  pre-existing ArduPilot `modules/CrashDebug`, PGFuzz cache/paper, ADGFuzz
+  runtime artifacts, and MightyPPL/MoniTAal changes remain untouched.
+- Blockers / skipped checks: no PX4 SITL build or non-MAVLink submodule setup
+  yet; no property extraction or fuzzing campaign was run.
+- Next: produce the PGFuzz, ADGFuzz, and ProtocolGuard/NLP method audits, then
+  update the handoff again.
+
+## 2026-07-18 06:05 CST — ArduPilot/PX4 MITL Benchmark Milestone 2
+
+- Completed the three source-backed audits in `benchmark/paper_audits/`:
+  PGFuzz manual MTL extraction/time provenance, ADGFuzz oracle thresholds and
+  clocks, and ProtocolGuard paper/artifact differences plus the adapted
+  evidence-bound NL→MITL method.
+- Key decisions: PGFuzz static/dynamic analysis is post-formula mapping, not
+  automatic requirement discovery; all three ADGFuzz rules remain
+  `AUXILIARY_ORACLE`; ProtocolGuard's single-message/history-free filtering
+  and implementation-driven conclusions are excluded.
+- Verification: 757 Markdown lines/45,665 bytes; all three PDF hashes matched;
+  local-link checker found 0 broken targets; key provenance terms were present
+  and no TODO/TBD/FIXME markers were found.
+- Preservation audit: ArduPilot remains at `8f2e5db2...` with only its known
+  dirty CrashDebug submodule; PX4 remains clean at `d6f12ad1...`; existing
+  PGFuzz/ADGFuzz runtime/cache artifacts and MightyPPL/MoniTAal changes were
+  not altered.
+- Skipped: no SUT conformance assessment, SITL campaign, current-source AP
+  binding, or TAMonitor property run was performed in this milestone.
+- Next: build the versioned official corpus, DocGraph/schema, and coverage
+  ledgers; after any context compression, read the handoff files first.
+
+## 2026-07-18 06:16 CST — ArduPilot/PX4 MITL Benchmark Milestone 3
+
+- Froze the official ArduPilot wiki sparse corpus (`common`, `copter`, `plane`,
+  `rover`) at `209e532b...`; PX4 English docs remain release-pinned inside
+  v1.17.0 `d6f12ad1...`.
+- Added property/catalog/candidate/DocGraph/timed-trace JSON Schemas and the
+  deterministic `build_corpus.py` / `validate_corpus.py` scripts.
+- Generated complete per-file manifests, coverage ledgers, ordered DocGraphs,
+  and high-recall candidate JSONL files. ArduPilot: 4,225 files, 112,821 nodes,
+  213,227 edges, 19,003 hits. PX4: 5,547 files, 102,029 nodes, 187,470 edges,
+  17,148 hits.
+- The ledger explicitly separates deterministic screening from human review;
+  keyword hits, parameter metadata, and source comments are not accepted
+  properties, and executable control flow was not used as a source.
+- Verification: `validate_corpus.py` PASS; all 9,772 file hashes matched, all
+  615,547 graph records parsed, all 36,151 candidate-node/text links matched,
+  schemas/manifests parsed, and frozen HEADs were unchanged.
+- Preservation audit: ArduPilot's CrashDebug state, PGFuzz caches/paper,
+  ADGFuzz runtime artifacts, and MightyPPL/MoniTAal user changes remain as
+  before. No conformance check, fuzz campaign, or monitor run was made.
+- Compacted `.codex/PROJECT_STATE.md` to active benchmark state. On any context
+  compression/recovery, read the handoff files first.
+- Next: context-review selected clauses, build Requirement IR/TimeContract,
+  compile MITL, and keep every unresolved or excluded candidate explicit.
+
+## 2026-07-18 06:27 CST — ArduPilot/PX4 MITL Benchmark Milestone 4
+
+- Added `benchmark/scripts/build_property_catalog.py` and
+  `validate_property_catalog.py`; generated schema-conforming Markdown/CSV/JSON
+  catalogs and per-property records for 7 ArduPilot and 6 PX4 candidates.
+- Each record contains exact frozen-source quotes/hashes, typed Requirement IR,
+  event relations, explicit exceptions, a symbolic runtime-parameter
+  TimeContract, symbolic MITL, and typed AP truth conditions. Concrete formulas
+  remain null until real SITL `PARAM_VALUE` capture.
+- Generated per-system AP maps, time-constraint tables, candidate/exclusion
+  notes, and 36,151-row adjudication ledgers. Forty-seven source-overlap hits
+  map to the 13 records; all other hits remain `PENDING_CONTEXT_REVIEW`.
+- Preserved explicit conflicts: ArduPilot MAIN_ONLY docs/default drift and
+  multi-message timer refresh, PX4 Offboard 2Hz equality, auto-disarm disable
+  domain/eligibility, and RTL default/mission-path differences.
+- Verification passed: 13 properties, 46 APs, 13 TimeContracts; every source
+  hash/range/exact quote and every adjudication row matched; no concrete value,
+  epsilon, acceptance decision, conformance result, or implementation-derived
+  requirement was introduced.
+- Incorporated read-only parallel audits: PX4 draft validator passed for 14
+  candidates/41 APs/19 observation classes; static MAVLink catalog validation
+  passed for 352 ArduPilot and 251 PX4 messages. Runtime capture remains zero,
+  so full Milestone 6 is not complete.
+- Preservation audit confirmed ArduPilot still has only its known CrashDebug
+  submodule dirtiness; PX4 and the frozen wiki are clean; PGFuzz/ADGFuzz and
+  MightyPPL/MoniTAal pre-existing changes were not overwritten.
+- Next: Milestone 5 current-source semantic AP binding and MAVLink/instrumentation
+  mapping, without modifying Requirement IR or assessing implementation.
+
+## 2026-07-18 06:41 CST — RIFT-M0 Pre-Implementation Comparison
+
+- Completed `analysis/rift_preimplementation_comparison_zh.md` (757 lines) and
+  `analysis/data/rift_preimplementation_matrix.csv` (10 methods, 24 fields).
+  Compared ADGFuzz, PGFuzz, MoonShine, LTL-Fuzzer, ProtocolGuard, FGS, plain
+  PDG, MemorySSA, SVF, and planned RIFT under common units and provenance rules.
+- Froze H-RIFT-01 through H-RIFT-10 as pending, falsifiable hypotheses. No RIFT
+  advantage is reported as an observed result. MoonShine's result/argument and
+  `W intersect R_cond` ideas are a weak baseline/candidate-edge source, not a
+  dependency oracle.
+- Added `benchmark/rift/README.md`: no core implementation before the M1
+  artifact gate; project-specific APIs/paths/parameters must live in versioned
+  model packs; portability requires one binary/schema on at least three
+  independent C/C++ projects without a core diff.
+- Verification: CSV/Markdown checker passed (10 rows, 24 fields, 10 hypotheses,
+  zero broken local links). The final M1-status sync records LTL-Fuzzer as a
+  partial build/import pass and FGS as upstream-unavailable, without claiming
+  either pending experiment. SHA-256: Markdown `27713f14fa3e53f...f7a37`, CSV
+  `6e800e12fb9e236e...d057b`.
+- Skipped by design: no `src/StaticAnalysis` code, AP conformance claim, fuzz
+  campaign, or automatic instrumentation. M1 artifact reproduction remains in
+  progress and is recorded separately.
+
+## 2026-07-18 07:01 CST — RIFT-M1 Benchmark-First Reproduction Gate
+
+- Completed the pre-core aggregate in
+  `benchmark/rift/reproduction/{README.md,m1_manifest.json,validate_m1.py}`.
+  The manifest normalizes 13 steps and anchors 19 evidence files without
+  converting incomplete work into success.
+- Executed the original LTL-Fuzzer Automata component on its public Problem1
+  property and ran the public program; imported 49 AP target tuples (46 exact,
+  3 unresolved). Imported PGFuzz's 56-policy silver set (51 public maps) and
+  reproduced MoonShine's `mlockall→msync` field-intersection rule while keeping
+  both methods `PARTIAL`.
+- Preserved FGS as `BLOCKED_UPSTREAM_ARTIFACT_UNAVAILABLE`: the Zenodo record
+  exposes only a README and the referenced image is unavailable; no FGS smoke,
+  NIST, runtime, precision, or recreated implementation is claimed.
+- Reproduced three deterministic libcoap Clang/LLVM 18 builds and MemorySSA;
+  built ArduCopter SITL with Clang 18 in an isolated output directory (1,336
+  compile-DB entries); built clean SVF-3.2 on LLVM 18 and passed official WPA
+  MAYALIAS/NOALIAS, MemorySSA, and 78-node/75-edge SVFG smoke.
+- Added `benchmark/rift/portability_contract.json` and its validator. Project
+  literals are forbidden from generic core roots; final portability requires
+  one analyzer binary, schema, and core-tree hash across at least three
+  independent C/C++ projects with zero core changes.
+- Verification: `PYTHONDONTWRITEBYTECODE=1 python3
+  benchmark/rift/reproduction/validate_m1.py` returned
+  `TOTAL PASS required_steps=7/7 checks=185 failures=0`; the portability
+  pre-core validator passed with SHA-256 `e6ba3339...735962`; source and nested
+  repository preservation checks passed. `src/StaticAnalysis` remained empty.
+- Honest boundaries: the complete LTL-Fuzzer campaign, original MoonShine
+  extractor, FGS runtime, PGFuzz campaign, ArduPilot GCS SITL scenario, AP
+  influence analysis, and fuzz-effectiveness comparison were not run. M1 only
+  opens RIFT-M2.
+- Next: (1) close and hand off the 120-case M2 mechanical gold corpus; (2)
+  implement all M3 weak baselines under the common schema; (3) keep MITL M6
+  runtime capture separate from RIFT artifacts.
+
+## 2026-07-18 07:03 CST — RIFT-M2 Mechanical Influence Gold Corpus
+
+- Completed `benchmark/rift/gold/` with a deterministic generator, Draft-07
+  ground-truth schema, 120 independent C/C++ cases, 120 per-case mechanical
+  oracles, compile database, manifest, full validator, Chinese README, and
+  frozen validation log.
+- Distribution is exactly 12 categories × 10 cases, C11/C++20 60/60, and
+  case-level `MUST_INFLUENCE`/`MAY_INFLUENCE`/`NO_INFLUENCE` 48/36/36. The
+  corpus contains 189 sources, 130 APs, 202 complete source×AP relations, and
+  373 expected dependency edges.
+- Every source records influence separately from `controllability` and
+  `fuzzable_frontier`; case 091 explicitly checks that an internal MUST
+  influencer is not actionable while a controllable name/value decoy remains
+  `NO_INFLUENCE`. Joint-input cases preserve joint groups and prerequisites.
+- Verification: `PYTHONDONTWRITEBYTECODE=1 python3
+  benchmark/rift/gold/validate_gold.py --jobs 8` passed 120/120 JSON schemas,
+  exact marker locations, complete relation matrices, controllability/frontier
+  checks, project-neutral identifiers, byte-identical `/tmp` regeneration,
+  120 compile-command object builds, and 120 executable link/runs with
+  Clang/Clang++ 18 plus `-Wall -Wextra -Werror`; zero failures or bytecode cache.
+- Fixed generator defects found during review (string escaping, unused values,
+  and the async negative callback path) before the final 120/120 run.
+- Honest boundaries: these are exact synthetic template oracles, not real-
+  project labels; two-human annotation/arbitration remains `PENDING`. The async
+  templates are deterministic framework models, not evidence for real thread,
+  scheduler, or lifecycle precision. MUST dependency does not mean every value
+  change flips an AP.
+- Next: (1) implement all six M3 weak baselines under one result schema; (2)
+  report per-category recall/precision and unsupported constructs without
+  reading expected answers; (3) keep the novel RIFT core blocked until M3.
+
+## 2026-07-18 06:53 CST — ArduPilot/PX4 MITL Benchmark Milestone 5
+
+- Bound all 46 typed APs to the frozen current sources: ArduPilot 25 APs / 107
+  bindings and PX4 21 APs / 120 bindings. Generated per-property detailed
+  Markdown/JSON, source-binding tables, and 77 static MAVLink observation rows.
+- Built/verified real compile databases: ArduPilot 1,543 entries after the
+  successful Plane/Rover build; PX4 SITL 1,095/1,095 build steps and 868
+  entries (826 unique files). Firmware HEADs remained pinned.
+- Final commands passed: `build_mavlink_ap_observations.py`,
+  `build_property_catalog.py --stage 5`, `validate_property_catalog.py --stage
+  5`, `validate_source_bindings.py --run-clangd`, static MAVLink catalog
+  validation, and the independent PX4 artifact validator.
+- Result: 13 properties, 46 APs, 227 bindings, 77 observations; no `ACCEPTED`
+  property, concrete runtime bound, epsilon, runtime capture, fuzz campaign, or
+  conformance conclusion. `implementation_satisfaction` remains
+  `NOT_ASSESSED` everywhere.
+- Preservation check: ArduPilot still has only the pre-existing CrashDebug
+  submodule state; PX4/wiki are clean; PGFuzz/ADGFuzz and MightyPPL/MoniTAal
+  existing changes were not reset or overwritten.
+- Next: Milestone 6 runtime SITL parameter/message/timestamp capture. The RIFT
+  workstream recorded above remains separate and was not modified here.
+
+## 2026-07-18 07:34 CST — ArduPilot/PX4 MITL Benchmark Milestone 6
+
+- Captured four frozen default SITL profiles without flight/conformance
+  scenarios: ArduCopter, ArduPlane, Rover, and PX4 multicopter SIH are all
+  `COMPLETE`; one failed PX4 external-simulator attempt remains preserved.
+- Merged 4,999 runtime parameter rows, 1,307 profile×static-message rows, 128
+  observed time-field rows, and 15 property/profile time values. ArduPilot
+  authoritative traffic is decoded JSONL because auxiliary tlog/raw hooks were
+  empty; PX4 has nonempty tlog and JSONL.
+- Added per-profile concrete instances to all 13 properties: 10 active
+  unvalidated, 2 disabled-domain, 2 context-open, and 1 unformalized. Eight
+  properties have one profile-consistent `CONCRETE_UNVALIDATED` formula;
+  disabled zero/negative domains emit no malformed interval. All remain
+  `implementation_satisfaction=NOT_ASSESSED`.
+- Split pure static support into `static_support_matrix.csv` and runtime
+  support into `actual_support_matrix.{csv,json}` plus a runtime manifest.
+  Runtime overlay contains 1,307 definition rows and 3 retained `BAD_DATA`
+  observations; FAILED/DENIED ACK and absent baseline frames never imply
+  global unsupported.
+- Added the 400-line MAVLink reader/audit guide and the aggregate validator.
+  Final `validate_milestone6.py` passed 1,035 checks, 111 artifact references,
+  53 JSON, 14 JSONL/31,951 records, and 7 CSV/10,061 rows. Runtime capture,
+  Stage-6 property, static catalog, and runtime-overlay validations all passed.
+- Preservation audit: ArduPilot remains at `8f2e5db2...` with only its known
+  CrashDebug submodule state; PX4 is clean at `d6f12ad1...`; PGFuzz and
+  ADGFuzz pre-existing cache/runtime artifacts remain; MightyPPL/MoniTAal user
+  changes were not reset or overwritten. No SITL process remains.
+- Next: Milestone 7 parser/satisfiability/non-vacuity, timed-trace/TAMonitor,
+  permalink, independent-review, and final METHOD/RESULTS gates. No full fuzz
+  campaign and no firmware conformance verdict are in scope.
+
+## 2026-07-18 08:05 CST — RIFT-M3 Six Weak Baselines
+
+- Implemented one C++20/Clang/LLVM 18/SVF 3.2 binary for ADGFuzz-style
+  assignment, MoonShine-RW, plain PDG, LLVM SSA def-use, MemorySSA+AA, and SVF
+  backward value flow. Added eight smoke/black-box CTest gates and explicit
+  tool-error/UNKNOWN semantics.
+- Fixed adapter defects found by full-suite review: compile-command cwd,
+  PATH binary resolution, mixed RHS assignment flow, normalized anchor/file
+  identity, LLVM debug column loss after mem2reg, diagnostics, and repeated
+  `--method`. SVF 3.2's non-reentrant global state is isolated with one child
+  process per case; 120/120 cases now complete instead of aborting on case 2.
+- Ran all six analyzers before any private evaluation on the 120-case opaque
+  package. Frozen influence F1: ADG 0.755, plain PDG 0.841, LLVM SSA 0.515,
+  MemorySSA 0.762, SVF 0.752. MoonShine returned 202 UNKNOWN because the common
+  corpus supplies variable anchors while its faithful interface requires call
+  anchors; its dedicated smoke/M1 reproduction pass and it is not ranked.
+- Added `run_m3_all.py`, `validate_m3_results.py`, and
+  `benchmark/rift/baselines/results/m3/` with raw/evaluation JSON, external
+  GNU-time receipts, hashes, compressed strace and `REPORT_zh.md`. Bundle gate
+  passed 6 methods, 720 case records and 1,212 pair predictions using binary
+  SHA `ea0c5b10...faf8af40` and canonical core SHA
+  `1adddf78...2694c5b`.
+- Hardened the frozen portability gate to recompute actual binary/schema/core/
+  compile-DB/model-pack/toolchain hashes and added four deterministic tests;
+  fake hashes, non-boolean claims and divergent toolchains are rejected. The
+  implementation phase passes; the real three-project evaluation is still
+  NOT_RUN.
+- Verification: CTest 8/8; common M3 validator PASS (`120` sanitized builds,
+  `failures=0`); gold validator 120/120; source no-answer scan 23 files/zero
+  violations; runtime strace 526 paths/zero violations; portability tests 4/4.
+  ArduPilot remains at `8f2e5db2...` with known CrashDebug state; ADGFuzz,
+  PGFuzz, MightyPPL and MoniTAal existing changes were preserved.
+- Honest boundary: M3 is `PAIR_CLASSIFICATION_DIAGNOSTIC` with given anchors
+  and controllability. It does not measure AP/source discovery or frontier
+  discovery and supplies no RIFT advantage claim.
+- Next: (1) M4 production schemas/raw compile-DB multi-TU index and joint AP
+  binding; (2) conservative CIG/cone with must recall gate; (3) only then M5
+  declarative packs, frontier and recipes.
+
+## 2026-07-18 08:10 CST — ArduPilot/PX4 MITL Benchmark Milestone 7
+
+- Completed the final evidence-bound delivery under `benchmark/`: Chinese
+  `METHOD.md`/`RESULTS.md`, 7 ArduPilot and 6 PX4 property records, independent
+  automated review, synthetic formula/trace evidence, and aggregate audit.
+- Independent audit retained no human acceptance: final readiness is 12
+  `NEEDS_CONTEXT` plus 1 `CANDIDATE`; `ACCEPTED=0` and every property remains
+  `implementation_satisfaction=NOT_ASSESSED`. Historical PGFuzz policies and
+  ADGFuzz's three oracles were not inherited as current SUT requirements.
+- Stage-7 formula results: 8 transformed integer-ms formulas parse; positive
+  and negative formulas are SAT and reference-oracle non-vacuity pairs pass.
+  Of 49 absolute-global-time synthetic traces, 42 comparisons pass, 6 RTL
+  traces retain the BDD valuation-limit blocker, and PX4 RC-loss retains one
+  exact-500-ms endpoint verdict mismatch. Formula status is 6 validated, 1
+  failed, and 1 unsupported; none is a firmware trace verdict.
+- Fixed two issues found by independent review before closure: corrected an
+  inter-event-delay adapter to absolute global timestamps, and made monitor
+  regeneration fail closed by validating Stage-6 inputs before replacing prior
+  output. The reproducible order is stage6 catalog → monitor force/check →
+  stage7 catalog/check. Also added all 13 property Markdown files to the link
+  gate while correctly ignoring fenced literal-source links, and replaced ten
+  stale Stage-6 instance notes with Stage-7 outcomes.
+- Final validation passed: `validate_benchmark.py` 89,671 checks/0 failures;
+  M6 regression 1,035/0; source bindings 13 properties/46 APs/227 bindings/77
+  observations with clangd; static MAVLink catalog PASS; monitor generator
+  `--check` PASS; 34 Markdown files/236 rendered local links/0 broken.
+- Preservation audit: ArduPilot remains at `8f2e5db2...` with only the known
+  CrashDebug submodule state; PX4 is clean at `d6f12ad1...`; PGFuzz/ADGFuzz
+  caches and runtime artifacts and MightyPPL/MoniTAal/TAMonitor user changes
+  were not reset or cleaned. No full fuzz campaign or firmware conformance
+  scenario was run.
+- Next for this benchmark: independent human review/arbitration and explicit
+  closure of version, cancel/reset/continuous-condition, AP instrumentation,
+  endpoint, and RTL monitor blockers before any property can be accepted.
+
+## 2026-07-18 08:45 CST — MITL Final Claims Correction And PX4 Draft Isolation
+
+- Corrected two implementation-semantic bleed findings without changing the
+  source-backed obligation. `ARD-COPTER-GCS-001` now uses only designated-GCS
+  heartbeat receipt/reset semantics; RC override, manual control, shared
+  last-seen, and aggregate gap paths are `MODELLED` conflicts.
+  `PX4-MC-GCSLOSS-002` remains telemetry/data-connection loss with normative
+  liveness identity and clock `UNRESOLVED/UNKNOWN`; all heartbeat/HRT gap
+  candidates are `MODELLED`.
+- Rebuilt the Milestone-5 AP observation overlay and Stage-7 catalogs. Fixed a
+  compatibility defect where `build_mavlink_ap_observations.py` still treated
+  M6 `actual_support_matrix.csv` as the static input; it now consumes
+  `static_support_matrix.csv`. Catalogs distinguish M6 `evidence_snapshot_at`
+  from M7 `stage7_enriched_at/generated_at`.
+- Moved without deletion, and without intentionally editing its contents, the early PX4 14-candidate YAML draft
+  out of canonical `benchmark/PX4/` into
+  `benchmark/extraction_runs/milestone4/superseded_px4_draft/`. Added a
+  `SUPERSEDED_NON_CANONICAL_DRAFT` notice and a 24-file bytes/SHA-256 manifest.
+  The aggregate validator now rejects legacy canonical paths/YAML, the old
+  epsilon token, the former in-place YAML glob, unsafe archive paths, archive
+  membership drift, byte-size drift, and hash drift. The manifest proves the
+  current post-isolation snapshot; no externally anchored pre-move receipt
+  exists to independently prove earlier historical identity.
+- Updated `METHOD.md`, `RESULTS.md`, canonical PX4 README, independent review,
+  link/catalog audit, generator, schema, binding/observation audits, and both
+  generated system catalogs. The presentation-syntax wording for the Ardu GCS
+  property now distinguishes the pre-enrichment probe from the validated M7
+  deterministic monitor transform.
+- Verification passed: Stage-7 property validation 13 properties/46 AP/13
+  TimeContracts; source binding validation 13/46/227/77 with clangd; static
+  MAVLink catalog PASS; monitor `--check` 8 formulas/49 traces with the retained
+  42 pass, 1 endpoint mismatch, and 6 BDD-limit outcomes; M6 regression
+  1,035/0; facts-only 89,934/0; final aggregate 89,979/0; 34 Markdown files/250 local targets/0
+  broken. Canonical AP state is 43 `BOUND`/3 `PARTIALLY_BOUND`; all 13 remain
+  `NOT_ASSESSED`, with 12 `NEEDS_CONTEXT` and 1 `CANDIDATE`.
+- Preservation audit: ArduPilot is still `8f2e5db2...` with only pre-existing
+  `modules/CrashDebug`; PX4 is clean at `d6f12ad1...`; PGFuzz caches/paper and
+  ADGFuzz runtime artifacts remain; MightyPPL/MoniTAal/TAMonitor user changes
+  were not reset or cleaned. No SITL scenario, full fuzz campaign, human
+  acceptance, or firmware conformance verdict was performed.
+- Independent read-only final review passed: canonical PX4 has 26 files, no
+  YAML/legacy paths/old token/in-place YAML reference; all 24 archive members
+  match the manifest exactly (96,182 bytes total, 14 candidate YAMLs), with
+  manifest SHA-256 `d748b136...051b032`. It reconfirmed both corrected property
+  semantics, catalog timestamps, 13/46/227/77, `ACCEPTED=0`, and 13/13
+  `NOT_ASSESSED`, and modified no files.
+- Remaining gates are substantive rather than bookkeeping: MAIN_ONLY/version
+  pairing, reset/cancel/continuous-condition semantics, exact AP probes and
+  correlation, PX4 data-link liveness identity/clock, the RC-loss 500 ms
+  endpoint mismatch, and Ardu RTL BDD-limit behavior.
+
+## 2026-07-18 12:03 CST — RIFT-M4 Production Binding And Influence Cone
+
+- Completed the project-neutral production pipeline under
+  `src/StaticAnalysis`: typed Property IR loader, Clang 18 raw multi-TU index,
+  role-DNF AP binding, callsite/object/field-sensitive CIG, conservative cone,
+  stable logical identity, streaming 64-bit SHA-256, atomic output staging,
+  and Certificate v2. Final binary SHA is `6ae5b4fb...f95902`, production core
+  `6472e177...388ac0`, embedded schema bundle `f960af4e...1feaa`.
+- Fixed four integration/soundness defects found by end-to-end audit: LLVM's
+  >512 MiB file-hash counter overflow; flat selector ledgers copied across AP
+  roles; generated/system locations emitted as `<unknown>`; and false-MUST
+  caused by non-confirmed/multi-root bindings plus strongest-path aggregation.
+  A later all-path-minimum attempt caused eight MUST detection misses when an
+  unrelated external-call UNKNOWN erased a direct MAY path. The final
+  four-class mask fixed point is associative/idempotent, keeps roots fixed,
+  preserves UNKNOWN provenance, and is independently recomputed by both C++
+  and Python verifiers.
+- Final sealed 120-case command used
+  `benchmark/rift/m4/micro/run_analyzer.py` with output
+  `/tmp/rift-m4-production-final-v6`; validation and private evaluation passed:
+  130/130 exact Top-1 bindings, 66/66 critical/MUST detection, influence
+  precision/recall/F1 0.9796/0.9600/0.9697. Exact MUST remains 0/66 because
+  all positive paths are conservatively downgraded to MAY; this limitation is
+  explicit rather than hidden.
+- Final libcoap COAP-TX-01 runs used the same binary and 38-TU compile DB:
+  `/tmp/rift-m4-libcoap-final-v6a` was 57.55 s / 1,806,560 KiB and `v6b` was
+  58.49 s / 1,806,728 KiB. Four semantic artifacts are byte-identical across
+  runs, contain 121,868 graph nodes and no `<unknown>` source location. Strict
+  physical Certificate v2 replay passed with failures=0/unsupported=0.
+- Added a non-gold libcoap development projector. Its 36 source-range labels
+  produce 32 known-path, 1 unknown-only, 2 current-cone misses and 1 explicit
+  model-required miss. It emits no precision/recall/F1; two candidate-negative
+  ranges overlap cones, confirming that two-human review/arbitration remains
+  necessary.
+- Final verification after source changes: Clang 18 CTest 13/13; schema 8/375;
+  micro tests 21/21; independent verifier 51/51; libcoap frozen/deep MemorySSA
+  checks 246; strict one-case and full-libcoap replay PASS; final 120-case seal
+  and evaluation PASS. Persistent evidence is under
+  `benchmark/rift/m4/results/`, with narrative in
+  `analysis/rift_m4_results_zh.md`.
+- Generic code scan found no target/AP/formula/answer literals. Real
+  three-project portability is still `NOT_VALIDATED`: SVF 3.2 and ArduPilot
+  Clang 18 compile DBs are ready but have not yet run this exact binary/core.
+  Real labels remain pending two humans; no frontier, recipe, fuzz campaign or
+  firmware-conformance claim was made.
+- Archived the 233-line pre-M4 handoff to
+  `.codex/archive/PROJECT_STATE_pre_m4_2026-07-18.md` and rewrote active
+  `.codex/PROJECT_STATE.md` to 186 lines. Next: (1) M5 versioned model-pack
+  loader/certificate binding; (2) external frontier + bidirectional/SMT recipe;
+  (3) unchanged-binary SVF, protocol-transfer, and ArduPilot validation.
+
+## 2026-07-18 17:15 CST — Flight-Controller Target Freeze And PX4 Clang 18 Baseline
+
+- Narrowed RIFT's headline real-project scope to ArduPilot Copter and PX4 SITL.
+  Added a shared target contract and evidence gates under
+  `benchmark/rift/flight_controllers/`, plus typed AP projections for
+  `failsafe.gcs` and `gcs_connection_lost`.  Core project knowledge remains
+  forbidden; only Property IR and property-independent declarative adapters
+  may differ between targets.
+- Completed a source-clean isolated PX4 `px4_sitl_default` build with
+  `/usr/bin/clang-18` and `/usr/bin/clang++-18`.  Ninja completed 1,108 edges;
+  `px4 -h` exited 0.  The complete database contains 868 entries / 826 unique
+  files, 47 C plus 821 C++, no missing files/directories, and only Clang 18
+  commands.  Its SHA-256 is `94efc816...9d19b`; the binary SHA-256 is
+  `1ee7ed56...f9fc7`.
+- Provisioned build-only Python dependencies in
+  `/tmp/rift-px4-clang-v1/python-min` after initial missing-dependency failures
+  (`kconfiglib 14.1.0`, `empy 3.3.4`, `pyros-genmsg 0.5.8`); neither source nor
+  global Python state was changed.  No elapsed/RSS claim is made because the
+  successful build was not wrapped by GNU time.
+- Regenerated PX4's three-TU probe database from the new Clang database and
+  retained the explicit `SELECTED_TRANSLATION_UNITS_ONLY` receipt (3 selected,
+  865 omitted).  Added `px4/clang18_build_manifest.json` and updated the target
+  README; JSON checks and source-preservation checks passed.  ArduPilot still
+  has only the pre-existing `modules/CrashDebug` state and PX4 remains clean.
+- M5 remains in progress.  A property-independent typed value-transfer sidecar
+  now passes its dedicated smoke tests, and a separate evaluator regression
+  fixed cross-action contamination in joint recipes (33/33 tests), but neither
+  change is yet a sealed 120-case or flight-controller analysis result.
+- Next: integrate sidecars into CLI/certificate with raw physical-digest
+  closure; implement external-coordinate SMT with affine/co-reference/unknown
+  fail-closed regressions; then rerun sealed M5 gates before ArduPilot/PX4
+  selected and full-database analyses.
+## 2026-07-18 17:54 CST — Chinese-First Terminology Rule
+
+- Added a project-wide `AGENTS.md` communication contract requiring every
+  English technical term, acronym, status/field value, tool name, and file
+  format to be explained term by term in Chinese before the result relies on
+  it. Exact machine-readable identifiers remain unchanged and receive adjacent
+  Chinese explanations plus task-specific consequences.
+- Recovered and inspected the supplied temporary screenshot through its WSL
+  path `/mnt/c/Users/PC-123/AppData/Local/Temp/`; the image contains benchmark
+  result statuses and validation-tool terms that now require a Chinese legend.
+- Only `AGENTS.md` and the two handoff files were intentionally changed; no
+  source tree or nested tool repository was modified.
+- Preservation check confirmed ArduPilot remains at `8f2e5db2...` with its
+  pre-existing `modules/CrashDebug` state, PX4 remains clean at
+  `d6f12ad1...`, and the existing PGFuzz caches/paper, ADGFuzz runtime
+  artifacts, and MightyPPL/MoniTAal user changes remain present and were not
+  reset or cleaned.
+
+## 2026-07-18 18:09 CST — M5 Payload-Projection Integration Checkpoint
+
+- Recovered the interrupted M5 build, removed the remaining stale recipe uses
+  of graph-edge identity, and added a typed external-payload expression
+  converter/substitution path plus fail-closed legacy overloads.  The new
+  payload composer now also rejects control/containment-only support as value
+  transfer evidence.
+- `cmake --build /tmp/tafuzz-sa-m5-typed-root-v6 --target
+  rift_recipe_smoke rift_payload_projection_smoke -j8` passed.  The standalone
+  payload projection smoke test passed; the recipe smoke test stopped at its
+  first expected-supported assertion because fixtures and the production CLI
+  still use the legacy overload without the typed sidecar.  Full CTest was not
+  run while this known integration failure remains.
+- Reboot-state audit found both `/tmp` flight-controller compile databases
+  absent.  The persistent ArduPilot compressed snapshot exists with SHA-256
+  `134e1dc5...23236a`; the PX4 success manifest remains but its full database
+  must be rebuilt.  ArduPilot is still `8f2e5db2...` with only pre-existing
+  `modules/CrashDebug`; PX4 remains clean at `d6f12ad1...`.
+- Next: migrate fixtures/CLI to the typed overload, serialize and bind the
+  projection proof into schema/certificate closure, then run the affine and
+  fail-closed recipe regressions before the sealed 120-case evaluation.
+## 2026-07-18 20:47 CST — PGFuzz-MTL51 Milestone 1 Scope Freeze
+
+- Paused RIFT-M5 at its existing checkpoint per the user's sequencing request
+  and started an independent dataset under `benchmark/PGFuzz_MTL51/`; no RIFT
+  implementation file was changed.
+- Verified that the MTL formulas are PGFuzz PDF page 18 Table XII, not ADGFuzz
+  PDF page 19. Frozen scope is 30 ArduPilot plus 21 PX4 policies; five
+  Paparazzi policies are excluded.
+- Added `SCOPE.md`, Chinese `GLOSSARY.md`, and `source_manifest.json` with PDF
+  hashes, repository commits, relevant-tree hashes, policy-directory counts,
+  version-drift boundaries, and `NOT_ASSESSED` semantics.
+- Preservation audit confirmed ArduPilot remains `8f2e5db2...` with only the
+  pre-existing CrashDebug submodule state, PX4 remains clean at
+  `d6f12ad1...`, and PGFuzz/ADGFuzz runtime/cache artifacts plus
+  MightyPPL/MoniTAal user changes were not reset or cleaned.
+- Next: complete the 51-formula inventory, recover author policy-input lists
+  and algorithms, then bind APs and inputs to both current source trees.
+
+## 2026-07-18 20:57 CST — PGFuzz-MTL51 Milestone 2 Formula Inventory
+
+- Added a deterministic Table-XII generator and validator under
+  `benchmark/PGFuzz_MTL51/scripts/`; generated complete JSON, CSV, Markdown,
+  ArduPilot/PX4 split inventories, and an AP inventory. `AP` means atomic
+  proposition, the smallest truth-valued condition in a formula.
+- Preserved every printed formula separately from binding interpretation and
+  recorded description-only conditions for A.FLIP1, A.RC.FS1, PX.HOLD2, and
+  PX.TAKEOFF1 instead of silently changing the paper. The corpus contains 51
+  properties, 178 AP occurrences, and 99 unique AP expressions.
+- `python3 benchmark/PGFuzz_MTL51/scripts/validate_formula_inventory.py`
+  passed 292 checks with zero failures. The gate covers counts, identifiers,
+  fixed statuses, artifact directories/input files, merged-directory aliases,
+  conflict markers, split outputs, and exclusion of artifact-only PX.CHUTE.
+- Preservation audit: ArduPilot remains `8f2e5db2...` with only the pre-existing
+  CrashDebug submodule state; PX4 is clean at `d6f12ad1...`; PGFuzz caches/PDF,
+  ADGFuzz runtime artifacts, and MightyPPL/MoniTAal user changes remain present
+  and were not reset or cleaned.
+- Next: enumerate every author-associated input with provenance and current
+  identity status; document the PGFuzz/ADGFuzz workflows; then join current
+  ArduPilot/PX4 source bindings to every AP occurrence.
+
+## 2026-07-18 21:12 CST — PGFuzz-MTL51 Milestone 3 Dependency Reconstruction
+
+- Added deterministic dependency builders and validators under
+  `benchmark/PGFuzz_MTL51/scripts/`; generated combined and per-system CSV/JSON
+  catalogs for every PGFuzz parameter, command, environment input and explicit
+  precondition, plus current frozen-source identity mappings and formula-direct
+  parameter coverage.
+- Expanded 51 logical properties into 7,569 author property-input candidate
+  associations: ArduPilot 5,872 and PX4 1,697. The de-duplicated catalog has
+  356 identities. `validate_author_dependencies.py` passed 83,060 checks with
+  zero failures and verified 230 current source locations.
+- Added `DEPENDENCY_METHOD_AND_WORKFLOW.md`, explaining PGFuzz's manual
+  policy/formula process, LLVM-based parameter candidate analysis, one-input
+  dynamic profiling, precondition search and empirical `k` estimation; it also
+  reconstructs ADGFuzz's assignment-dependency-graph to matched-input-set
+  workflow, examples, paper/code differences, strengths and limitations.
+- Preserved critical audit findings: repeated broad input lists are candidate
+  associations rather than proven causal dependencies; ArduPilot parameter
+  files contain repeated names; PX4 repeats `MPC_LAND_ALT2` with conflicting
+  values 1 and 5; several formula-direct parameters are absent from author
+  lists; removed/unresolved current identities remain explicit; and PGFuzz's
+  PX4 small-integer `Flight_Mode` values do not directly encode current packed
+  PX4 `custom_mode` values.
+- Preservation audit: ArduPilot remains `8f2e5db2...` with only pre-existing
+  `modules/CrashDebug`; PX4 remains clean at `d6f12ad1...`; PGFuzz caches/PDF,
+  ADGFuzz runtime artifacts, and MightyPPL/MoniTAal user changes were not reset,
+  cleaned or overwritten.
+- Next: bind every AP term and occurrence to current source and MAVLink
+  observation paths, then generate all 51 per-property audit records.
+
+## 2026-07-18 22:17 CST — PGFuzz-MTL51 Milestone 4 Audited Source Binding
+
+- Finalized current-source proposition binding after independent ArduPilot/PX4
+  semantic audits. The deterministic catalog contains 227 source-binding rows
+  (ArduPilot 110, PX4 117), 107 system--term identities and 178 AP occurrences;
+  AP status is 57 `EXACT`, 107 `MODELLED`, and 14 `UNRESOLVED`.
+- Added complete `source_end_line` ranges, explicit row/AP selection reasons,
+  structured MAVLink observation references, matching current/previous PX4
+  semantic groups, corrected function identities, and two distinct
+  non-equivalent candidates plus consumers for removed `COM_POS_FS_DELAY`.
+- Rebuilt the author-dependency catalog after classifying PX4
+  `MIS_LTRMIN_ALT` to `NAV_MIN_LTR_ALT` as a modelled migration rather than an
+  exact rename. Counts remain 7,569 associations and 356 identities.
+- Verification passed with zero failures: source bindings 10,501 checks,
+  author dependencies 83,060 checks, and formula inventory 292 checks. These
+  checks establish dataset consistency only; conformance remains
+  `NOT_ASSESSED`.
+- Next: generate and validate all 51 per-property audit records, write final
+  Chinese results/method reports, and perform the preservation audit.
+
+## 2026-07-18 22:34 CST — PGFuzz-MTL51 Milestone 5 Per-Property Delivery
+
+- Generated paired machine-readable JSON records and human-readable Markdown
+  audit pages for all 51 PGFuzz Table-XII properties, plus ArduPilot/PX4 and
+  root catalogs. The records losslessly join 178 APs, 227 current-source
+  bindings, 7,569 author candidate associations, 356 current identities, 20
+  direct formula-parameter records and 23 official-document context records.
+- Added `RESULTS.md`, a Draft-07 JSON Schema, deterministic record builder,
+  record validator, and `FIELD_DICTIONARY.{md,json}`. The field dictionary
+  explains all 221 unique machine keys in Chinese; the validator now requires
+  the dictionary's JSON and Markdown field sets to match generated records
+  exactly.
+- Audited parameter provenance again. Seven unique ArduPilot formula parameters
+  now carry manually checked frozen-source defaults while preserving malformed
+  raw catalog expressions; an ambiguous same-suffix alias no longer imports
+  unrelated metadata; runtime-snapshot presence is distinguished from mere
+  parameter-protocol capability.
+- Verification passed with zero failures: author dependencies 98,275 checks,
+  source bindings 10,501 checks, and per-property records 11,096 checks. These
+  are internal consistency gates only; every record remains
+  `implementation_satisfaction=NOT_ASSESSED`.
+- Next: run the complete final validator set, perform frozen-repository and
+  nested-tool preservation checks, then deliver without resuming RIFT-M5.
+
+## 2026-07-18 22:53 CST — PGFuzz-MTL51 Final Validation And Handoff
+
+- Added `TYPE_UNIT_DICTIONARY.{md,json}` and linked it from the human-review
+  entry points. It explains all 196 distinct original values used for source
+  data types, unit/coordinate semantics, current-input types and current-input
+  units; the empty-value cases remain explicit rather than guessed.
+- Extended `validate_source_bindings.py` to compare the dictionary exactly
+  against all 227 source-binding records and 356 current-input identities.
+  Final zero-failure results are: formula inventory 292 checks, author
+  dependencies 98,275, source bindings/type-unit dictionary 11,700,
+  per-property records/221-field dictionary 11,096, and local-link validation
+  across 65 Markdown files / 16,366 local links / 16,054 line links.
+- Regenerated all 51 property record pairs after clarifying that reboot and
+  build-inclusion metadata gaps do not mean “no reboot” or “not included”.
+  All 30 ArduPilot and 21 PX4 records still use
+  `implementation_satisfaction=NOT_ASSESSED`, meaning firmware conformance was
+  not evaluated.
+- Preservation check: ArduPilot remains at `8f2e5db2...` with only the prior
+  `modules/CrashDebug` state; PX4 remains clean at `d6f12ad1...`; PGFuzz and
+  ADGFuzz retain their prior PDF/cache/runtime artifacts; MightyPPL and
+  MoniTAal user changes remain present and were not reset or cleaned. No
+  `__pycache__` directory was created under `benchmark/PGFuzz_MTL51`.
+- Independent terminology review corrected `NED` (`North-East-Down`) from the
+  imprecise Chinese “北—东—地” to “北—东—下” in both human and machine
+  dictionaries. Source-binding, property-record and link validators were run
+  again afterward and retained the same zero-failure totals.
+- Dataset task is complete. RIFT-M5 remains paused at 18:09; next action is to
+  wait for the user's separate static-analysis instruction.
+
+## 2026-07-19 08:18 CST — ADGFuzz Variable/Leaf/Input Audit
+
+- Verified the local NDSS 2026 PDF and current GitHub `wyunc/ADGFuzz` `main`
+  head `203fce3...`; connector and local blob identities match for the inspected
+  method files.
+- Read-only code audit confirmed text-only intrafunction assignment extraction,
+  no retained C++ types, pruned root-to-leaf output, and name-based expansion to
+  parameter, MAVLink-command, environment and RC candidate categories.
+- Re-ran the provided `AC_WPNav` `s_finished` mapping: 17 leaf-list entries (16
+  unique names) / 7 intermediate nodes produced 276 candidates (254 parameters,
+  22 commands), 31 with `SIM_*`.
+- Corrected `analysis/adgfuzz_paper_code_deep_reading_zh.md`: the malformed RC
+  call does not raise `TypeError`; it binds PWM as `channel_id`, fails the
+  `>18` guard, and sends no RC override. No simulator or fuzz campaign ran.
+
+## 2026-07-20 — PGFuzz Three Inputs Through Current ArduPilot
+
+- Read-only traced PGFuzz `InputP`, `InputC`, and `InputE` from
+  `fuzzing.py` into current ArduPilot commit `8f2e5db2...`.
+- Confirmed four concrete transport paths: parameters and most environmental
+  factors use `PARAM_SET`; ordinary commands use `COMMAND_LONG`; flight modes
+  use `SET_MODE`; RC inputs use `RC_CHANNELS_OVERRIDE`.
+- Verified current receiver path from the 400 Hz GCS task through frame parsing,
+  routing/acceptance and `handle_message`, then traced `AP_Param` storage,
+  command dispatch, mode checks, RC override consumption and SITL wind/GPS
+  consumers.
+- Audited the paper and public SVF code: commands and environment values do
+  enter source; PGFuzz dynamically profiles them because its static tool is
+  rooted at configuration-parameter LLVM variable names and omits protocol,
+  control/state, timing and simulator-feedback semantics.
+- Added `analysis/pgfuzz_ardupilot_three_input_paths_zh.md`. No simulator or
+  fuzz campaign was executed; no firmware conformance result is claimed.
+
+## 2026-07-20 — PGFuzz Dynamic Migration M0
+
+- Started the approved current-ArduCopter migration under
+  `src/StaticAnalysis/runtime/pgfuzz_adapter/`; the original PGFuzz checkout
+  remains an unchanged comparison artifact.
+- Added the machine-readable upstream/target manifest and Chinese compatibility
+  contract. Verified all five upstream dynamic-analysis Git blob identities,
+  ArduPilot/MAVLink/PGFuzz commits, and ArduCopter binary SHA-256.
+- `python3 -m json.tool` accepted the manifest; the compatibility document is
+  nonempty. No SITL experiment or full campaign ran in M0.
+
+## 2026-07-20 — PGFuzz Dynamic Migration M1
+
+- Implemented the Python 3 current-input catalog, safety policy, migration
+  report, isolated SITL launcher/parameter downloader and compatibility input
+  files. Five catalog unit tests pass.
+- Offline check produced `INPUT_P=1025`, `INPUT_E=362`, `INPUT_C=135`. A fresh
+  approved live run at `output/pgfuzz_dynamic/catalog-current-20260720-v2/`
+  downloaded 1,387/1,387 parameters with zero missing and produced
+  `INPUT_P=1025`, `INPUT_E=362`, `INPUT_C=136`, including 27 live modes.
+- The initial sandbox socket denial was retained as evidence. The next run
+  exposed a pymavlink dialect-access bug; after the regression fix, the live
+  run succeeded and left no ArduCopter process. No state-intervention or full
+  experiment ran in M1.
+
+## 2026-07-20 — PGFuzz Dynamic Migration M2
+
+- Implemented the legacy 34/15 state projection, current state registry, raw
+  trace collector, verified parameter/RC/mode/command interventions, recovery,
+  paired robust effects, exact legacy metric, checkpoint/sharding and report.
+- All 13 unit tests passed. A shard 0/8 `--dry-run` generated 668 planned work
+  items and all 30 compatibility files without executing an input. The report
+  generator also passed.
+- No live state intervention is claimed yet. The next gate is the three-case
+  M3 smoke run; no full campaign ran.
+
+## 2026-07-20 — PGFuzz Dynamic Migration M3 Smoke Acceptance
+
+- Implemented the three specified smoke workflows with verified application,
+  three repetitions, paired recovery, raw MAVLink evidence and one unified
+  acceptance certificate. Added current GCS system ID 255, bounded normal
+  pre-arm convergence, previous-failsafe clearing, and the structured protocol
+  field `RC_CHANNELS_OVERRIDE.chan1_raw` while preserving `RC1` text output.
+- The first RC attempt failed normally on accelerometer/home pre-arm checks and
+  is retained. After the evidence-driven bounded-wait fix, all individual
+  cases passed. Seventeen unit tests passed before final live acceptance.
+- `smoke-acceptance-20260720-1` returned `PASS`: environment, command and
+  parameter cases are each `CONFIRMED_EFFECT`, and their exact names occur in
+  the expected compatible result files. The GCS-timeout host-observed latency
+  changed from about 5.3 seconds to 2.31 seconds and recovered to about 5.3.
+- All restoration/landing/disarm checks passed; no ArduCopter process remained.
+  No full `current_safe_full` campaign was executed. Next: M4 user manual,
+  shard/resume commands, final preservation verification and handoff.
+
+## 2026-07-20 — PGFuzz Dynamic Migration M4 Final Delivery
+
+- Added the Chinese user manual and exact pymavlink dependency lock. Documented
+  live catalog, dry-run, exact input filtering, sequential eight-shard resume,
+  outputs, status meanings, clock limits and the full GCS-timeout example.
+- Hardened recovery handling, process restart, onboard-time summaries, root
+  smoke trial/checkpoint outputs, global-versus-shard accounting, append-only
+  plan history, full-campaign manifest claims and persistent session numbering.
+- Final accepted directory is `smoke-acceptance-final-20260720`: all three
+  specified inputs are `CONFIRMED_EFFECT`, all nine repetitions and recoveries
+  pass, compatible result lines are exact, and no SITL process remains.
+- Final verification passed: 20 unit tests; all 20 JSON/four JSONL evidence
+  files; exact 15+15 result filenames; input/recovery assertions; upstream five
+  blob hashes; ArduPilot/PGFuzz heads; ArduCopter binary SHA-256. Adapter
+  bytecode caches were removed.
+- Full `current_safe_full` was not run. User next action: follow `README.md` to
+  create a fresh catalog, audit the dry run and execute shards 0--7 sequentially.
+## 2026-07-22 — LTL-Fuzzer/MITL 布希套索引导原型完成
+
+- 冻结并审计 `ltlfuzzer/LTL-Fuzzer` 提交
+  `716ac301fa3a8ea39814bc80eeebba49c19c1378`，对照论文与 GitHub 关键
+  实现；确认公开代码以接受自环和程序状态哈希检查活性候选，当前
+  `compute_prefix_fitness()` 返回常数 `1.0`。
+- 新增 `src/StaticAnalysis/runtime/mitl_buchi_guidance/` 与
+  `analysis/ltl_fuzzer_mitl_buchi_guidance_zh.md`。原型读取现有 PTA 逐前缀
+  代价，实现正时间多边接受套索、显式性质状态投影、跨独立重放确认、种子
+  优先级和静动态变异候选排序；无界有限前缀不会输出有限违反。
+- 验证：`python3 -m unittest discover -s tests -v` 为 12/12 通过；端到端
+  示例得到 6 个前缀、2 个套索记录、两个运行确认同一套索，最高阶段为
+  `REPLAY_CONFIRMED_LASSO`。当前只证明离线核心和接口可行，TAMonitor 无限
+  词逐前缀导出、ArduPilot 性质相关插桩与真实 SITL 闭环未完成。
+- 超过约定长度的旧项目状态原样归档为
+  `.codex/archive/PROJECT_STATE_2026-07-20_pgfuzz_dynamic_m4.md`。
+
+## 2026-07-23 — PGFuzz 56 条重审里程碑 1：证据与版本冻结
+
+- 核对 PGFuzz 论文工作区副本与 Zotero 原件：SHA-256 均为
+  `bb057be0069e9e764c8fb4bf963b09311cc914f3fb60da0b121afa94c90d7fcd`。
+- 核对源码提交：ArduPilot `8f2e5db2...`、PX4 `d6f12ad1...`、PGFuzz
+  `7eaebf21...`；保留 ArduPilot `modules/CrashDebug` 和 PGFuzz 既有缓存等
+  用户状态，未清理、重置或覆盖。
+- 克隆并冻结 Paparazzi 官方主分支 `b51490c8...`，核对官方 Bebop2 配置、NPS
+  目标和必需子模块；顶层工作树干净，可选未初始化子模块已显式区分。
+- ArduPilot 官方文档当前提交冻结为 `826ef054...`。树差异核对显示：本地完整快照
+  与当前提交的 Copter 文档完全相同，共用文档仅 9 个与本任务无关页面变化。远端
+  补取这 9 个缺失对象在 120 秒超时，故完整快照用于穷尽扫描、性质相关页面使用
+  当前提交链接复核；失败的 `/tmp` 临时工作区不作为证据。
+- 创建七份结果文档的三个目标目录，尚未创建额外结果文件。里程碑 1 验收通过，
+  下一步为从论文第 18 页逐条抄录并复核 56 条公式。
+
+## 2026-07-23 — PGFuzz 56 条重审里程碑 2：论文公式复核
+
+- 重新查看 PDF 第 18 页原始图像，并以 PDF 文字层交叉检索；确认 ArduPilot 30、
+  PX4 21、Paparazzi 5，共 56 条。PX4 的 `PX.ORBIT1-4` 虽在页面合并为一行，
+  最终按四条性质计数。
+- 逐条对照旧 51 条结构化转录，只把它当交叉检查材料；Paparazzi 五条直接从页面
+  读取。确认所有 51 条标识符和公式行均可在页面对应，未把旧转录当作当前规范证据。
+- 记录印刷问题：着陆式悬空合取、翻滚恢复式时序算子位置错误、翻滚准入括号/极性
+  歧义、PX4 返航自然语言与公式参数不一致、环绕加速度的变量/量纲不一致、若干自然
+  语言目标被公式弱化。原式不静默修复，规范化式另列。
+- 语义冻结：`t-1` 是上一有效观测而非一秒前；`k` 是论文按 100 次仿真求最大值的
+  经验时间，尚未成为当前官方时间。里程碑 2 验收通过，转入作者制品输入关联核对。
+- 按用户新增要求生成 `benchmark/PGFuzz重新审计/全部公式与来源_临时.csv`；当前
+  56 行、56 个唯一编号、系统计数 30/21/5，使用带编码标记的 UTF-8 以方便 Windows
+  表格软件读取。新提取公式将在对应系统里程碑完成时追加；未确认的 Paparazzi
+  继承式和方向谓词没有人工展开。
+
+## 2026-07-23 — PGFuzz 56 条重审里程碑 3：作者输入关联与代码差异
+
+- 核对公开制品目录：ArduPilot 28、PX4 21，每目录四类输入文件齐全；没有
+  Paparazzi 性质输入目录。确认 ArduPilot 的 FLIP4/CHUTE/CIRCLE4_6 和 PX4 的
+  ORBIT4_5 合并/改名关系，以及 PX4 额外的非表 XII `PX.CHUTE`。
+- 解析 7,569 条关联：配置参数 2,501、命令/遥控 2,079、环境 2,984、明确前置 5；
+  共享目录去重后 7,311 条。逐条复核制品哈希、行号、原文，错误 0。只有 18 条输入
+  名直接出现在公式中，7,564 条保留为作者候选关联，不升级为因果证明。
+- 五条明确前置全部来自 `A.CHUTE/preconditions.txt`：启用降落伞、类型、9 号舵机
+  功能、仿真降落伞启用和引脚设置。
+- 复核论文六步输入缩减流程和未知时间流程；`k` 是 100 次仿真响应最大值，
+  A.BRAKE 示例为 12.7 秒。代码审计确认若干实现偏差：循环次数冒充等待机会、PX4
+  将参数秒数直接和循环计数比较、A.FLIP2 把不可观测角速度当真、A.FLIP3 无时间窗、
+  参数第六列语义与无界范围分支问题。里程碑 3 验收通过，转入 ArduCopter 文档。
+
+## 2026-07-23 — ArduPilot AP 影响输入静态分析方法收敛
+
+- 只读核对当前 ArduPilot `8f2e5db2...`、Clang 18 Copter-only 编译数据库快照
+  （1,336 TU）、SVF 3.2 冻结复现和现有六基线边界；确认当前没有可追溯的真实
+  ArduCopter SITL 整程序 bitcode，旧 LLVM 13 文件不得作为当前分析证据。
+- 调研 SVF、PhASAR、LLVM SSA/MemorySSA/PDG、CodeQL、Joern、DG、DFI、Sparse
+  IDE、ADGFuzz、AFLGo 及相邻性质/状态导向 fuzz 工作。结论为：使用 SVF 反向
+  SVFG 作唯一值流主干，只在命中函数内补控制依赖，并用五类小型 ArduPilot 语义桥
+  处理协议、参数、RC、调度/事件缺失和 SITL 边界。
+- 新增 `analysis/ardupilot_ap_input_static_analysis_design_zh.md`，定义 source/sink、
+  图节点和边、反向算法、输出 schema、静态特征与 UNKNOWN 边界，并逐步解释振动
+  和 GCS failsafe 两个代表链。当前仅完成设计，未构建 IR、运行 SVF 或执行 SITL。
+
+## 2026-07-23 — PGFuzz 重审里程碑 4：ArduCopter 闭环
+
+- 对既有 19,003 条预筛候选完成逐候选范围与证据闭合裁决，待审核数从 18,986 降为
+  0；账本判断均改为中文，固定保持“实现符合性：未评估”。
+- 裁决计数：接受来源跨度 21、ArduCopter 范围外 2,522、普通实现注释 10,348、
+  参数元数据证据不足 724、官方文本证据不足 5,388。没有用普通控制流反推规范。
+- 更新 ArduCopter 新性质覆盖摘要，明确确定性分类与人工上下文审核的边界；历史 30
+  条、新性质 15 条和临时 CSV 71 行均保持。TAMonitor 检查按计划留到里程碑 7。
+- 工作树复查：ArduPilot 仍只有既有 `modules/CrashDebug` 状态；PX4、Paparazzi
+  干净，未清理或重置用户产物。里程碑 4 验收通过，进入 PX4。
+
+## 2026-07-23 — PGFuzz 重审里程碑 5：PX4 完成
+
+- 生成 PX4 历史 21 条当前审计和 6 条当前新性质/候选文档；所有判断状态为中文，
+  变量、函数、uORB 字段、参数和源码位置保持真实英文标识符并附中文说明。
+- 对 17,148 条预筛候选完成逐候选裁决，待审核 0；未用普通控制流生成性质。
+- 验证：历史主表 21 行、新表 6 行；539 个冻结 PX4 文档/源码链接路径和行号均有效；
+  文档中没有残留英文判断状态。临时公式 CSV 更新为 77 个唯一编号。
+- 冻结工作树复查无新增修改；里程碑 5 验收通过，进入 Paparazzi。
+
+## 2026-07-23 — PGFuzz 重审里程碑 6：Paparazzi 完成
+
+- 写入 Paparazzi 历史 5 条当前审计和 7 条冻结 Bebop2 新性质；逐项绑定
+  `autopilot.mode`、水平/垂直引导模式、ENU/NED 状态、导航目标、任务块时间和
+  PPRZLink 消息生成函数。
+- 核验历史主表 5 个唯一编号；Paparazzi 新性质 7 个唯一编号；66 个固定 GitHub
+  链接均能映射到冻结本地文件且行号有效。临时 CSV 为 84 行且编号唯一。
+- 明确默认 PPRZLink 与可选 MAVLink 的配置边界；公开 PGFuzz 没有 Paparazzi
+  作者输入文件，不补造参数、命令或环境依赖。
+- 复查工作树，未覆盖 ArduPilot、PX4、Paparazzi、PGFuzz 或监视器仓库的用户修改。
+  里程碑 6 验收通过，进入三系统可观测性和最终验证。
+
+## 2026-07-23 — PGFuzz 重审里程碑 7：总分析与最终验证完成
+
+- 生成 `benchmark/PGFuzz重新审计/三系统原子命题类型与MAVLink可观测性总分析.md`；
+  论文 56 条共计 194 个原子命题，按“可直接观测/可计算得到/条件可观测/需要插桩/
+  无法确认”统计为 66/22/58/34/14，并覆盖 28 条当前新性质。
+- 综合结构检查：论文表为 30/21/5，当前新性质为 15/6/7，临时 CSV 为 84 行且编号
+  唯一；公式、来源非空，所有实现符合性为“未评估”。
+- 固定链接检查：七份文档共 1,192 个 GitHub 固定链接均能映射到冻结本地文件，行号
+  有效；英文判断状态扫描命中 0。
+- 执行 `PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check`：
+  监视器门共 8 条公式、49 条轨迹；6 条通过，1 条边界期望不一致，1 条无限运行语义
+  当前不支持。其余新性质没有写成已通过。
+- Paparazzi Bebop2 NPS 构建检查：`make AIRCRAFT=Bebop2 nps.compile` 缺少生成器；
+  `make generators` 又因缺少 `ocamlbuild` 失败。`sudo apt-get install` 需要交互密码，
+  `opam install` 因 opam 未初始化失败。因此保留 Paparazzi 运行时消息观测未验证，静态
+  源码/配置映射仍完成。
+- 最终工作树检查：ArduPilot 仍只有既有 `modules/CrashDebug`；PX4、Paparazzi 干净；
+  PGFuzz、MightyPPL、MoniTAal 均保持用户既有状态，没有清理或重置。里程碑 7 验收
+  通过，PGFuzz 56 条重审与三飞控当前规范提取任务完成。
+
+## 2026-07-27 — TAMonitor 运行时验证科技报告初稿完成
+
+- 读取 Windows 桌面模板 `1.docx` 的段落层级，采用“问题与挑战—研究现状—方法框架—
+  关键技术—实验”组织方式，但没有复用模板中的 IC3 内容。
+- 通过 Zotero 本地只读接口枚举“运行时验证”及其全部子集合和“fuzz + rv”集合：
+  219 条集合归属、207 个唯一条目、186 个有已索引全文、21 个无已索引全文；对与当前
+  方法直接相关的定时监测、逻辑到自动机和运行时监测结合模糊测试论文作重点全文核对。
+- 只读追踪当前 `TAMonitor` 源码：`TAMonitorMightyAdapter.cpp`、`MonitorRunner.cpp`、
+  `TraceParser.cpp`、`ReportWriter.cpp`，以及 MoniTAal 的 `Monitor.cpp`、`Fixpoint.cpp`、
+  `state.cpp` 和 `symbolic_state_base.cpp`；明确正负自动机、命题位序、BDD 标签投影、
+  DBM 区域并集、接受空间剪枝、有限/无限词三值判定及实现边界。
+- 新增 Markdown（轻量标记文档）源稿、Word 正式稿和 Node.js（JavaScript 运行环境）
+  可重复构建脚本，均位于 `documents/`。
+- 验证：`unzip -t` 通过；Word 含 192 个非空段落、7 个表格、52 个分级标题、目录域和
+  18 条参考文献。实验章只含待执行设计与空表，没有伪造结果。
+
+## 2026-07-27 — TAMonitor 科技报告研究目标与研究问题重构
+
+- 成功从 Windows 临时目录读取用户提供的“双层半符号化运行时验证工具原型”示意图，
+  以其中的 MITL 自动转换、BDD 离散命题层、DBM 连续时间层、正负监视器和三值在线
+  判定为报告重构线索。
+- 重写摘要、第 1 章研究问题与目标、关键挑战、本研究定位、总体数据流、BDD 技术章节、
+  第 6 章实验研究问题与指标以及结论，使主线从一般运行时判定转为“MITL 性质自动生成
+  正负时间自动机并完成在线验证”。
+- 严格绑定当前源码边界：BDD 当前直接用于自动机构造和无损标签投影，在线连续时间
+  状态由 DBM 区域维护；未把 BDD 原生在线迁移或示意图中的性能比例写成已实现结果。
+- 重新生成 Word 正式稿；`node --check` 和 `unzip -t` 通过，目录域存在，文档包含
+  8 个表格、13/31/9 个一至三级标题。实验章仍为待执行设计和空表。
+
+## 2026-07-27 — TAMonitor 科技报告按模板成果导向重写并加入合同指标
+
+- 重新解析桌面 `1.docx` 的全部标题层级和段落功能，确认模板顺序为：先用多段成果概述
+  说明成果体系和载体，再进入具体成果的“问题与挑战—国内外研究现状—方法整体框架与
+  关键技术（先整体框架、后关键技术）—实验设计与结果—取得成果”。
+- 全面重写报告顺序：开篇先陈述形成的运行时验证方法、自动转换框架、BDD/DBM 分层和
+  三值判定成果，之后再按模板顺序展开。Word 构建器改为从“成果概述”开始，支持四级
+  标题，并把目录放在成果概述之后、具体技术之前。
+- 文献收敛为 16 篇运行时验证、MITL、时间自动机、定时区域监测和 BDD/符号模型检验
+  文献；正文引用集合与参考文献编号一一对应，无缺失和未使用引用。
+- 加入合同指标：方法研究的自动生成时序约束运行时监控器功能由专家评审；精准判定工具
+  的两类缺陷固定为“时序逻辑安全性质违反、看门狗超时”，总体检测准确率门槛为不低于
+  50%，由第三方测评。所有实际结果保持待实验、待评审或待测评。
+- 验证：`node --check`、DOCX 生成和 `unzip -t` 通过；章节顺序检查通过；Word 含
+  12 个表格、7/7/21/13 个一至四级标题和 1--4 级目录域。未进行原生 Word 分页目视检查。
+
+## 2026-07-27 — TAMonitor 科技报告第四版双成果结构、图件与原生公式
+
+- 按用户最新要求把总成果固定为“面向运行时安全性质违反的精准判定技术”，下设
+  “基于时间自动机引导的模糊测试框架”和“双层半符号化运行时验证工具原型”；开篇先
+  写成果，再分别进入问题与挑战、研究现状和方法。模糊测试只保留框架、数据流与接口，
+  运行时验证完整展开方法框架、BDD/DBM 关键技术、三值语义、正确性和核心算法。
+- 读取三张用户参考图后，形成 4 张正式图件：总体成果图、模糊测试闭环图、双层
+  半符号化运行时验证图和论文式算法图。总体图由内置图像生成能力形成；密集技术图使用
+  可校验 SVG 重绘并渲染 PNG，避免中文标签和数据流箭头错误。
+- Word 生成脚本新增 PNG 嵌入和 OMML（Office Math Markup Language，Office 数学
+  标记语言）公式构造；正式 Word 含 87 个原生公式对象、1 个堆叠分式、55 个下标、
+  20 个上标、10 个上下标组合、4 张图和 12 个表格，文档 XML 不含残留 LaTeX 命令。
+- 新增 4 篇只支撑框架关系的模糊测试文献，正文引用和 20 条参考文献编号严格一致；
+  未写入参考截图中尚无实验支持的 23.3% 数值。合同两类缺陷、50% 准确率门槛、专家
+  评审和第三方测评要求保持不变，实验结果继续留空。
+- 验证：构建脚本语法检查、DOCX 生成、`unzip -t`、媒体数量、公式 XML、LaTeX 残留、
+  标题/表格/引用集合检查全部通过；未执行 Microsoft Word 原生分页目视检查。
+## 2026-07-27 — MITL-FIC 可复用插桩编译方法第一版
+
+- 将 `A.ALT_HOLD2` 专用插桩方案提升为 MITL-FIC 通用方法：公式/AP 规范化、当前源码
+  身份绑定、共同后支配点选取、版本化跨回调快照、状态变化完整事件、MAVLink 装箱、
+  GCS 恢复和 TAMonitor 适配。
+- 新增 `analysis/mitl_formula_to_instrumentation_compiler_design_zh.md`，明确算法输入输出、
+  五个核心算法、正确性条件、复杂度、对照基线和五组实验问题；没有声称创新或证明完成。
+- 新增 `analysis/mitl_instrumentation_binding_schema_v1.json`，约束源码冻结、时钟域、AP
+  操作数、有效性、源码锚点、采集策略和事件策略；判断状态使用中文。
+- 验证：`python3 -m json.tool` 通过，`jsonschema.Draft202012Validator.check_schema` 通过；
+  复查确认 TAMonitor 当前只接受完整 `0/1` 标签且没有 MAVLink 流式会话，相关能力列为
+  待实现。未修改飞控、MightyPPL 或 MoniTAal 源码。
+- 工作树复查：ArduPilot 仍只有既有 `modules/CrashDebug`；PX4、Paparazzi 干净；其余
+  相关工具保留用户既有修改，未清理或重置。
+
+## 2026-07-27 — 报告图 3 改为方法框架图并缩小箭头
+
+- 将图 3 图内标题及正文图注由“双层半符号化运行时验证工具原型”改为“双层半符号化
+  运行时验证方法框架图”；成果内容二的正式名称仍保持“工具原型”。
+- 直接修改可编辑 SVG（可缩放矢量图形）源图，把深蓝、紫色箭头头部由 12×12 缩为
+  8×8；重新渲染后目视确认不再遮挡公式、层标题和状态框文字。
+- 重新生成正式 Word；`unzip -t` 检查通过，文档 XML 中的图注为“图 3 双层半符号化
+  运行时验证方法框架图”。实验、评审和第三方测评内容未改动。
+
+## 2026-07-28 — 科技报告新增摘要并更新四类缺陷指标
+
+- 在成果概述之前新增正式摘要，按“运行保障需求—传统崩溃型判定不足—统一技术链—
+  自动监视器生成—量化目标—模糊测试反馈”组织核心成果；关键词同步移至摘要末尾。
+- 将最新指标统一为违背时序约束、异常或非法操作、资源使用异常、看门狗超时四类典型
+  缺陷，以及运行时检测准确率达到 90% 以上；四类用例采用互斥主类别，避免重复计数。
+- 90% 仍表述为第三方测评目标，实验结果保持待填写，没有写成已测得结果。同步修改研究
+  目标、实验问题、数据分区、评价指标、测评步骤、结果空表和取得成果总结。
+- Word 构建脚本改为从“摘要”开始读取正文；语法检查、Word 生成和 `unzip -t` 通过，
+  文档 XML 已包含摘要、四类缺陷和 90% 指标，源稿不再含旧的“2 类、50%”口径。
+## 2026-07-28 — MITL-FIC 改为单性质周期完整采样第二版
+
+- 根据用户确认的实际 fuzz 工作流，将方法从多公式同时监测改为“一条性质一个独立会话”；
+  可复用对象是生成器和运行时机制，不是一次运行同时测试多条性质。
+- 重写 `analysis/mitl_formula_to_instrumentation_compiler_design_zh.md`：每轮只选择唯一公式，
+  只生成其 AP，按性质专用周期发送全部真值和已知性；持续状态用缓存，瞬时事件用锁存或
+  有界队列，原始值不进入默认消息。
+- 用 `analysis/mitl_single_property_instrumentation_schema_v2.json` 取代第一版模式；顶层
+  `property` 为单数，固定单性质采样合同、采集合同和最小消息字段。删除旧 v1 文件，避免
+  多公式接口误用。
+- 正确性边界改为采样轨迹语义；不再无条件声称事件压缩轨迹与连续时间 MITL 等价。采样
+  间变化、跨源时间和瞬时事件次数分别要求锁存、有界队列或未知状态。
+- 验证：JSON 语法复读及 JSON Schema 2020-12 元模式检查通过；未修改飞控、MightyPPL
+  或 MoniTAal 源码，相关工作树用户状态保持不变。
+
+## 2026-07-29 — ArduPilot 45 条性质的命题三分类完成
+
+- 只分析 `PGFuzz原性质_当前审计.md` 的 30 条当前公式和
+  `当前新提取MTL性质.md` 的 15 条公式所含叶子命题；未讨论模糊输入、影响关系或性质
+  满足性。
+- 新增 `analysis/ardupilot_45_properties_ap_three_type_instrumentation_analysis_zh.md`，
+  将命题统一分为持续状态、瞬时事件、记忆派生三类，并逐条说明所需状态单元、事件队列
+  或性质记忆。
+- 校验脚本观察：45 行、45 个唯一编号，历史 30 条、新性质 15 条，无重复；文档不含
+  “影响关系型”或“输入流型”分类。
+- 未修改任何飞控或监视器源码。工作树复查确认 ArduPilot 的既有
+  `modules/CrashDebug` 状态及其他仓库原有用户修改均未被清理或覆盖。

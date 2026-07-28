@@ -1,0 +1,1916 @@
+{
+  "protocol": "SIP",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "evidence_manifest.yaml",
+      "record": {
+        "schema_version": 1,
+        "access_date": "2026-07-13",
+        "sources": [
+          {
+            "id": "E01",
+            "type": "standard",
+            "title": "RFC 3261 SIP",
+            "url": "https://www.rfc-editor.org/rfc/rfc3261.html",
+            "version": "RFC 3261",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E02",
+            "type": "standard_update",
+            "title": "RFC 4320 Actions Addressing Issues Identified with SIP Non-INVITE Transaction",
+            "url": "https://www.rfc-editor.org/rfc/rfc4320.html",
+            "version": "RFC 4320",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E03",
+            "type": "standard_update",
+            "title": "RFC 6026 Correct Transaction Handling for 2xx Responses",
+            "url": "https://www.rfc-editor.org/rfc/rfc6026.html",
+            "version": "RFC 6026",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E04",
+            "type": "benchmark",
+            "title": "ProFuzzBench",
+            "url": "https://github.com/profuzzbench/profuzzbench",
+            "version": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E05",
+            "type": "source",
+            "title": "Kamailio benchmark SUT",
+            "url": "https://github.com/kamailio/kamailio/tree/2648eb330b133a20f1398d59a28c53532106cad3",
+            "version": "2648eb330b133a20f1398d59a28c53532106cad3",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E06",
+            "type": "source",
+            "title": "PJSIP benchmark driver/reference endpoint",
+            "url": "https://github.com/pjsip/pjproject/tree/bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+            "version": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E07",
+            "type": "paper_artifact",
+            "title": "AFLNet",
+            "url": "https://github.com/aflnet/aflnet",
+            "version": "96032f86d0005dfeeb41ea7b31103f1d1ff8f168",
+            "doi": "10.1109/ICST46399.2020.00062",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E08",
+            "type": "paper_artifact",
+            "title": "StateAFL",
+            "url": "https://github.com/stateafl/stateafl",
+            "version": "d923e22f7b2688db45b08f3fa3a29a566e7ff3a4",
+            "doi": "10.1007/s10664-022-10233-3",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E09",
+            "type": "paper",
+            "title": "NSFuzz",
+            "url": "https://doi.org/10.1145/3580598",
+            "version": "TOSEM 2023",
+            "doi": "10.1145/3580598",
+            "accessed": "2026-07-13"
+          },
+          {
+            "id": "E10",
+            "type": "artifact",
+            "title": "ChatAFL artifact",
+            "url": "https://zenodo.org/records/10115151",
+            "version": "Zenodo 10115151",
+            "accessed": "2026-07-13"
+          }
+        ],
+        "ccfa_search_result": "NO_UNIQUE_PROTOCOL_FUZZING_PAPER_RESOLVED"
+      },
+      "role": "previously audited RFC 3261 base-catalog evidence"
+    },
+    {
+      "file": "_staging/root_sip_extensions/sip/evidence.json",
+      "record": {
+        "protocol": "SIP",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_REPAIRS",
+        "human_review_status": "PENDING",
+        "independent_audit": {
+          "report": "analysis/protocol_fuzzing_study/_audit/sip_catalog_audit.md",
+          "scope": "SIP-TX-01..26",
+          "original_dispositions": {
+            "FIX": 23,
+            "REJECT": 3
+          },
+          "implemented_override_status": {
+            "FIXED_AFTER_AUDIT": 23,
+            "REJECT": 3
+          },
+          "human_approval": "PENDING",
+          "semantic_repairs": [
+            "Timer arm, stored logical deadline, scheduler callback, protocol action, and state termination are distinct events and timestamps.",
+            "Mathematical formulas use standard G; executable MightyPPL formulas use weak finite-word G* under an explicitly closed one-generation projection.",
+            "Every bounded eventual property has an early counterexample and a negative_late_or_missing counterexample; every legal supersession has a positive trace.",
+            "Every admitted AP is assigned to at least one fixed primary or auxiliary source mapping; mappings carry only their source-specific AP subsets.",
+            "Every re-arm/reset creates a new timer_generation and a fresh monitor; overlapping trigger generations are excluded from one finite word."
+          ]
+        },
+        "screened_documents": [
+          {
+            "standard": "RFC 3261",
+            "url": "https://www.rfc-editor.org/rfc/rfc3261.html",
+            "sections": [
+              "16.6",
+              "17.1.1.2",
+              "17.1.2.2",
+              "17.2.1",
+              "17.2.2"
+            ],
+            "accessed": "2026-07-13",
+            "use": "Timer A--K, Timer C strict bound, transaction state and supersession rules"
+          },
+          {
+            "standard": "RFC 6026",
+            "url": "https://www.rfc-editor.org/rfc/rfc6026.html",
+            "sections": [
+              "7.1",
+              "7.2",
+              "8.1",
+              "8.4",
+              "8.7"
+            ],
+            "accessed": "2026-07-13",
+            "use": "Accepted states, Timer D/L/M, UAS-core 2xx retransmission schedule"
+          }
+        ],
+        "fixed_implementations": [
+          {
+            "repository": "pjsip/pjproject",
+            "commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+            "paths": [
+              "pjsip/src/pjsip/sip_transaction.c",
+              "pjsip/include/pjsip/sip_config.h"
+            ],
+            "property_scope": "SIP-TX-01..19 plus rejected callback assertions 02/08/14"
+          },
+          {
+            "repository": "kamailio/kamailio",
+            "commit": "2648eb330b133a20f1398d59a28c53532106cad3",
+            "paths": [
+              "src/modules/tm/t_lookup.c",
+              "src/modules/tm/t_reply.c",
+              "src/modules/tm/timer.h",
+              "src/modules/tm/config.h",
+              "src/modules/tm/config.c"
+            ],
+            "property_scope": "SIP-TX-20 Timer C initial/reset generation and lifetime interaction"
+          },
+          {
+            "repository": "DoubangoTelecom/doubango",
+            "commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+            "paths": [
+              "tinySIP/src/transactions/tsip_transac_ist.c",
+              "tinySIP/src/transactions/tsip_transac_ict.c",
+              "tinySIP/src/tsip_timers.c"
+            ],
+            "property_scope": "SIP-TX-21..26 RFC 6026 extensions"
+          }
+        ],
+        "known_deviation_profiles": [
+          {
+            "id": "KAMAILIO_TIMER_C_DEFAULT",
+            "property": "SIP-TX-20",
+            "finding": "fr_inv_timeout defaults to 120000 ms and max_inv_lifetime to exactly 180000 ms, while RFC 3261 requires Timer C strictly greater than 180000 ms.",
+            "catalog_treatment": "NORMATIVE strict-bound oracle; fixed default profile is EXPECTED_VIOLATION unless configuration is pinned above the bound."
+          },
+          {
+            "id": "DOUBANGO_TIMER_X_SECOND_INTERVAL",
+            "property": "SIP-TX-22",
+            "finding": "The initial handler shifts 500 to 1000 after scheduling; the first callback shifts again before scheduling, producing a 2000-ms next interval rather than 1000 ms.",
+            "catalog_treatment": "NORMATIVE_EXPECTED_VIOLATION_PROFILE with an explicit source-realistic negative trace."
+          },
+          {
+            "id": "DOUBANGO_TIMER_X_NO_T2_CAP",
+            "property": "SIP-TX-23",
+            "finding": "Timer X uses timeout <<= 1 without min(...,T2), permitting 8000-ms and longer intervals.",
+            "catalog_treatment": "One fresh 4000-ms monitor per post-cap generation; 8000-ms source behavior is an explicit negative trace."
+          },
+          {
+            "id": "DOUBANGO_TIMER_L_EARLY_TRANSPORT_TERMINATION",
+            "property": "SIP-TX-25",
+            "finding": "The FSM registers Any transport error -> Terminated although the RFC 6026 server-side retention property has no such early-discard exception.",
+            "catalog_treatment": "All termination paths must emit the AP; the early transport path is an explicit known-deviation negative."
+          }
+        ],
+        "deduplication": {
+          "rejected_timed_properties": [
+            "SIP-TX-02",
+            "SIP-TX-08",
+            "SIP-TX-14"
+          ],
+          "replacement_assertions": [
+            "timer_a_callback -> invite_retransmit_requested",
+            "timer_e_callback -> noninvite_retransmit_requested",
+            "timer_g_callback -> final_response_retransmit_requested"
+          ],
+          "reason": "The RFC gives a causal callback action but no non-punctual callback/send latency bound measured from the earlier arm; the timing obligations duplicate TX-01/TX-07/TX-13."
+        },
+        "scope_note": "This staging evidence repairs the earlier immutable catalog through audit_overrides.json. It does not modify the formal protocols output and does not constitute user signoff or observed runtime conformance."
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "SIP-TX-01",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2460-2533",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2460",
+      "auxiliary_source_mappings": [
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "timer_a_armed_t1",
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_a_armed_t1",
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_a_armed_t1",
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "Calling response/cancel/timeout paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_calling",
+          "lines": "2540-2651",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+          "atomic_propositions": [
+            "invite_transaction_stopped"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "invite_transaction_stopped"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-03",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2336-2378",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2336",
+      "auxiliary_source_mappings": [
+        {
+          "role": "re-arm and protocol retransmission path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_retransmit",
+          "lines": "2383-2425",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2383",
+          "atomic_propositions": [
+            "timer_a_rearmed_2t1",
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "Calling response/cancel/timeout paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_calling",
+          "lines": "2540-2651",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+          "atomic_propositions": [
+            "invite_transaction_stopped"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "invite_transaction_stopped"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_a_rearmed_2t1",
+            "timer_a_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_a_rearmed_2t1",
+            "timer_a_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-04",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2460-2533",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2460",
+      "auxiliary_source_mappings": [
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "timer_b_armed_64t1",
+            "timer_b_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_b_deadline"
+          ]
+        },
+        {
+          "role": "Calling response/cancel/timeout paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_calling",
+          "lines": "2540-2651",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+          "atomic_propositions": [
+            "invite_provisional_received",
+            "invite_final_response_received"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "invite_transport_error"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_b_armed_64t1",
+            "timer_b_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_b_armed_64t1",
+            "timer_b_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-05",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.1.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.1.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2540-2651",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Proceeding UAC timer/response paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_proceeding_uac",
+          "lines": "2973-3205",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2973",
+          "atomic_propositions": [
+            "invite_entered_proceeding_after_1xx"
+          ]
+        },
+        {
+          "role": "re-arm and protocol retransmission path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_retransmit",
+          "lines": "2383-2425",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2383",
+          "atomic_propositions": [
+            "invite_retransmitted"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "invite_entered_proceeding_after_1xx"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-06",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026",
+      "section": "8.4",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.4",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2973-3205",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2973",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Completed UAC timeout path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_completed_uac",
+          "lines": "3322-3371",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3322",
+          "atomic_propositions": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "client_transport_abort",
+            "transaction_terminated"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "udp_invite_completed_timer_d_armed"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "udp_invite_completed_timer_d_armed"
+          ]
+        },
+        {
+          "role": "Timer-D default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_TD_TIMEOUT",
+          "lines": "1089-1092",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1089",
+          "atomic_propositions": [
+            "udp_invite_completed_timer_d_armed"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-07",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2460-2533",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2460",
+      "auxiliary_source_mappings": [
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "timer_e_armed_t1",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "Calling response/cancel/timeout paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_calling",
+          "lines": "2540-2651",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+          "atomic_propositions": [
+            "timer_e_rearmed_on_first_1xx",
+            "noninvite_final_response_received"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "noninvite_transport_error"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_e_armed_t1",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_e_armed_t1",
+            "timer_e_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-09",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2336-2378",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2336",
+      "auxiliary_source_mappings": [
+        {
+          "role": "re-arm and protocol retransmission path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_retransmit",
+          "lines": "2383-2425",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2383",
+          "atomic_propositions": [
+            "timer_e_rearmed_2t1",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "Calling response/cancel/timeout paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_calling",
+          "lines": "2540-2651",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+          "atomic_propositions": [
+            "timer_e_rearmed_on_first_1xx",
+            "noninvite_final_response_received"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "noninvite_transport_error"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_e_rearmed_2t1",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_e_rearmed_2t1",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "T2 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T2_TIMEOUT",
+          "lines": "1079-1082",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1079",
+          "atomic_propositions": [
+            "timer_e_rearmed_2t1",
+            "timer_e_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-10",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2973-3205",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2973",
+      "auxiliary_source_mappings": [
+        {
+          "role": "doubling/cap computation",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_resched_retransmission",
+          "lines": "2336-2378",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2336",
+          "atomic_propositions": [
+            "timer_e_fired_in_proceeding_and_rearmed_t2",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "re-arm and protocol retransmission path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_retransmit",
+          "lines": "2383-2425",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2383",
+          "atomic_propositions": [
+            "timer_e_fired_in_proceeding_and_rearmed_t2",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "noninvite_transport_error"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_e_fired_in_proceeding_and_rearmed_t2",
+            "timer_e_deadline"
+          ]
+        },
+        {
+          "role": "T2 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T2_TIMEOUT",
+          "lines": "1079-1082",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1079",
+          "atomic_propositions": [
+            "timer_e_fired_in_proceeding_and_rearmed_t2",
+            "timer_e_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-11",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2460-2533",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2460",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Calling response/cancel/timeout paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_calling",
+          "lines": "2540-2651",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2540",
+          "atomic_propositions": [
+            "noninvite_final_response_received"
+          ]
+        },
+        {
+          "role": "Proceeding UAC timer/response paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_proceeding_uac",
+          "lines": "2973-3205",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2973",
+          "atomic_propositions": [
+            "noninvite_final_response_received"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "noninvite_transport_error"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "timer_f_armed_64t1",
+            "timer_f_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_f_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_f_armed_64t1",
+            "timer_f_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_f_armed_64t1",
+            "timer_f_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-12",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.1.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.1.2.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2973-3205",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2973",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Completed UAC timeout path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_completed_uac",
+          "lines": "3322-3371",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3322",
+          "atomic_propositions": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "client_transport_abort",
+            "transaction_terminated"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "udp_noninvite_completed_timer_k_armed"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "transaction_terminated"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "udp_noninvite_completed_timer_k_armed"
+          ]
+        },
+        {
+          "role": "T4 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T4_TIMEOUT",
+          "lines": "1084-1087",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1084",
+          "atomic_propositions": [
+            "udp_noninvite_completed_timer_k_armed"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-13",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2701-2965",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2701",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Completed UAS ACK/timer paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_completed_uas",
+          "lines": "3211-3316",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3211",
+          "atomic_propositions": [
+            "matched_non2xx_ack",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "server_transport_error"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "timer_g_armed_t1",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_g_armed_t1",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_g_armed_t1",
+            "timer_g_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-15",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2336-2378",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2336",
+      "auxiliary_source_mappings": [
+        {
+          "role": "re-arm and protocol retransmission path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_retransmit",
+          "lines": "2383-2425",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2383",
+          "atomic_propositions": [
+            "timer_g_rearmed_min_2old_t2",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "Completed UAS ACK/timer paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_completed_uas",
+          "lines": "3211-3316",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3211",
+          "atomic_propositions": [
+            "matched_non2xx_ack",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "server_transport_error"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_g_rearmed_min_2old_t2",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_g_rearmed_min_2old_t2",
+            "timer_g_deadline"
+          ]
+        },
+        {
+          "role": "T2 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T2_TIMEOUT",
+          "lines": "1079-1082",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1079",
+          "atomic_propositions": [
+            "timer_g_rearmed_min_2old_t2",
+            "timer_g_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-16",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2701-2965",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2701",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Completed UAS ACK/timer paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_completed_uas",
+          "lines": "3211-3316",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3211",
+          "atomic_propositions": [
+            "matched_non2xx_ack",
+            "timer_h_deadline"
+          ]
+        },
+        {
+          "role": "transport error/completion paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_tp_state_callback",
+          "lines": "2110-2137",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2110",
+          "atomic_propositions": [
+            "server_transport_error"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "timer_h_armed_64t1",
+            "timer_h_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_h_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "timer_h_armed_64t1",
+            "timer_h_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "timer_h_armed_64t1",
+            "timer_h_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-17",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "3211-3316",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3211",
+      "auxiliary_source_mappings": [
+        {
+          "role": "re-arm and protocol retransmission path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_retransmit",
+          "lines": "2383-2425",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2383",
+          "atomic_propositions": [
+            "final_response_retransmitted"
+          ]
+        },
+        {
+          "role": "Confirmed Timer-I callback path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_confirmed",
+          "lines": "3377-3422",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3377",
+          "atomic_propositions": [
+            "matched_non2xx_ack_post_timer_g_cancel"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-18",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "3211-3316",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3211",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Confirmed Timer-I callback path",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_confirmed",
+          "lines": "3377-3422",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3377",
+          "atomic_propositions": [
+            "timer_i_deadline"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "udp_confirmed_timer_i_armed",
+            "timer_i_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_i_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "udp_confirmed_timer_i_armed",
+            "timer_i_deadline"
+          ]
+        },
+        {
+          "role": "T4 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T4_TIMEOUT",
+          "lines": "1084-1087",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1084",
+          "atomic_propositions": [
+            "udp_confirmed_timer_i_armed",
+            "timer_i_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-19",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "17.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+      "source_repository": "pjsip/pjproject",
+      "source_commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "source_path": "pjsip/src/pjsip/sip_transaction.c",
+      "source_lines": "2701-2965",
+      "source_url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L2701",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Completed UAS ACK/timer paths",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_on_state_completed_uas",
+          "lines": "3211-3316",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L3211",
+          "atomic_propositions": [
+            "timer_j_deadline"
+          ]
+        },
+        {
+          "role": "timer scheduling primitive",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_schedule_timer",
+          "lines": "972-987",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L972",
+          "atomic_propositions": [
+            "udp_noninvite_completed_timer_j_armed",
+            "timer_j_deadline"
+          ]
+        },
+        {
+          "role": "timer callback dispatch",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "tsx_timer_callback",
+          "lines": "1116-1195",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L1116",
+          "atomic_propositions": [
+            "timer_j_deadline"
+          ]
+        },
+        {
+          "role": "runtime timer values",
+          "path": "pjsip/src/pjsip/sip_transaction.c",
+          "symbol": "pjsip_tsx_layer_init_module",
+          "lines": "432-454",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/src/pjsip/sip_transaction.c#L432",
+          "atomic_propositions": [
+            "udp_noninvite_completed_timer_j_armed",
+            "timer_j_deadline"
+          ]
+        },
+        {
+          "role": "T1 default constant",
+          "path": "pjsip/include/pjsip/sip_config.h",
+          "symbol": "PJSIP_T1_TIMEOUT",
+          "lines": "1075-1077",
+          "url": "https://github.com/pjsip/pjproject/blob/bba95b8a95c0a9e8c1939166fd20083ae9e3e956/pjsip/include/pjsip/sip_config.h#L1075",
+          "atomic_propositions": [
+            "udp_noninvite_completed_timer_j_armed",
+            "timer_j_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-20",
+      "protocol": "SIP",
+      "standard": "RFC 3261",
+      "standard_version": "RFC 3261",
+      "section": "16.6",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-16.6",
+      "source_repository": "kamailio/kamailio",
+      "source_commit": "2648eb330b133a20f1398d59a28c53532106cad3",
+      "source_path": "src/modules/tm/timer.h",
+      "source_lines": "159-220",
+      "source_url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/timer.h#L159",
+      "auxiliary_source_mappings": [
+        {
+          "role": "transaction chooses fr_inv_timeout and max lifetime",
+          "path": "src/modules/tm/t_lookup.c",
+          "symbol": "init_new_t",
+          "lines": "1185-1264",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/t_lookup.c#L1185",
+          "atomic_propositions": [
+            "proxy_timer_c_generation_started",
+            "timer_c_armed_gt_180000"
+          ]
+        },
+        {
+          "role": "101-199 reset path",
+          "path": "src/modules/tm/t_reply.c",
+          "symbol": "reply_received",
+          "lines": "2293-2721",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/t_reply.c#L2293",
+          "atomic_propositions": [
+            "proxy_timer_c_generation_started"
+          ]
+        },
+        {
+          "role": "fresh provisional deadline",
+          "path": "src/modules/tm/timer.h",
+          "symbol": "restart_rb_fr",
+          "lines": "247-259",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/timer.h#L247",
+          "atomic_propositions": [
+            "proxy_timer_c_generation_started",
+            "timer_c_armed_gt_180000",
+            "timer_c_deadline"
+          ]
+        },
+        {
+          "role": "lifetime cap interaction",
+          "path": "src/modules/tm/timer.h",
+          "symbol": "change_end_of_life",
+          "lines": "331-343",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/timer.h#L331",
+          "atomic_propositions": [
+            "timer_c_armed_gt_180000",
+            "timer_c_deadline"
+          ]
+        },
+        {
+          "role": "120000 default",
+          "path": "src/modules/tm/config.h",
+          "symbol": "INV_FR_TIME_OUT",
+          "lines": "47-49",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/config.h#L47",
+          "atomic_propositions": [
+            "timer_c_armed_gt_180000"
+          ]
+        },
+        {
+          "role": "180000 max lifetime default",
+          "path": "src/modules/tm/config.h",
+          "symbol": "MAX_INV_LIFETIME",
+          "lines": "61-68",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/config.h#L61",
+          "atomic_propositions": [
+            "timer_c_armed_gt_180000"
+          ]
+        },
+        {
+          "role": "default profile record",
+          "path": "src/modules/tm/config.c",
+          "symbol": "default_tm_cfg",
+          "lines": "36-98",
+          "url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src/modules/tm/config.c#L36",
+          "atomic_propositions": [
+            "timer_c_armed_gt_180000"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-21",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026 with RFC 3261 default T1",
+      "section": "8.1; RFC 3261 17.1.1.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.1",
+      "source_repository": "DoubangoTelecom/doubango",
+      "source_commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "source_path": "tinySIP/src/transactions/tsip_transac_ist.c",
+      "source_lines": "472-512",
+      "source_url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L472",
+      "auxiliary_source_mappings": [
+        {
+          "role": "FSM and Timer-X initialization",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_init",
+          "lines": "233-320",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L233",
+          "atomic_propositions": [
+            "timer_x_armed_t1",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "Timer-X callback/send/re-arm",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Accepted_timerX",
+          "lines": "649-659",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L649",
+          "atomic_propositions": [
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "matching ACK cancellation",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Accepted_iACK",
+          "lines": "664-671",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L664",
+          "atomic_propositions": [
+            "matched_2xx_ack"
+          ]
+        },
+        {
+          "role": "T1 constant",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "TIMER_T1",
+          "lines": "80",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L80",
+          "atomic_propositions": [
+            "timer_x_armed_t1",
+            "timer_x_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-22",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026 with RFC 3261 default T1",
+      "section": "8.1; RFC 3261 17.1.1.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.1",
+      "source_repository": "DoubangoTelecom/doubango",
+      "source_commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "source_path": "tinySIP/src/transactions/tsip_transac_ist.c",
+      "source_lines": "649-659",
+      "source_url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L649",
+      "auxiliary_source_mappings": [
+        {
+          "role": "FSM and Timer-X initialization",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_init",
+          "lines": "233-320",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L233",
+          "atomic_propositions": [
+            "timer_x_rearmed_expected_2t1",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "initial schedule then first shift",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Proceeding_2_Accepted_X_2xx",
+          "lines": "472-512",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L472",
+          "atomic_propositions": [
+            "timer_x_rearmed_expected_2t1",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "matching ACK cancellation",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Accepted_iACK",
+          "lines": "664-671",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L664",
+          "atomic_propositions": [
+            "matched_2xx_ack"
+          ]
+        },
+        {
+          "role": "T1 constant",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "TIMER_T1",
+          "lines": "80",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L80",
+          "atomic_propositions": [
+            "timer_x_rearmed_expected_2t1",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "T2 value",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "T2",
+          "lines": "102",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L102",
+          "atomic_propositions": [
+            "timer_x_rearmed_expected_2t1",
+            "timer_x_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-23",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026 with RFC 3261 default T2",
+      "section": "8.1; RFC 3261 17.1.1.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.1",
+      "source_repository": "DoubangoTelecom/doubango",
+      "source_commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "source_path": "tinySIP/src/transactions/tsip_transac_ist.c",
+      "source_lines": "649-659",
+      "source_url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L649",
+      "auxiliary_source_mappings": [
+        {
+          "role": "FSM and Timer-X initialization",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_init",
+          "lines": "233-320",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L233",
+          "atomic_propositions": [
+            "timer_x_capped_generation_expected_t2",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "initial schedule/shift",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Proceeding_2_Accepted_X_2xx",
+          "lines": "472-512",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L472",
+          "atomic_propositions": [
+            "timer_x_capped_generation_expected_t2",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "matching ACK cancellation",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Accepted_iACK",
+          "lines": "664-671",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L664",
+          "atomic_propositions": [
+            "matched_2xx_ack"
+          ]
+        },
+        {
+          "role": "T1 constant",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "TIMER_T1",
+          "lines": "80",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L80",
+          "atomic_propositions": [
+            "timer_x_capped_generation_expected_t2",
+            "timer_x_deadline"
+          ]
+        },
+        {
+          "role": "T2 value",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "T2",
+          "lines": "102",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L102",
+          "atomic_propositions": [
+            "timer_x_capped_generation_expected_t2",
+            "timer_x_deadline"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-24",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026",
+      "section": "8.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.1",
+      "source_repository": "DoubangoTelecom/doubango",
+      "source_commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "source_path": "tinySIP/src/transactions/tsip_transac_ist.c",
+      "source_lines": "664-671",
+      "source_url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L664",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Timer-X callback/send/re-arm",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Accepted_timerX",
+          "lines": "649-659",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L649",
+          "atomic_propositions": [
+            "uas_2xx_retransmitted"
+          ]
+        },
+        {
+          "role": "Timer-L close",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Terminated_timerL",
+          "lines": "675-690",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L675",
+          "atomic_propositions": [
+            "matched_2xx_ack_post_timer_x_cancel"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-25",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026 with RFC 3261 default T1",
+      "section": "7.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-7.1",
+      "source_repository": "DoubangoTelecom/doubango",
+      "source_commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "source_path": "tinySIP/src/transactions/tsip_transac_ist.c",
+      "source_lines": "472-512",
+      "source_url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L472",
+      "auxiliary_source_mappings": [
+        {
+          "role": "FSM and Timer-X initialization",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_init",
+          "lines": "233-320",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L233",
+          "atomic_propositions": [
+            "server_accepted_timer_l_armed",
+            "server_transaction_terminated"
+          ]
+        },
+        {
+          "role": "Timer-L callback",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Accepted_2_Terminated_timerL",
+          "lines": "675-690",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L675",
+          "atomic_propositions": [
+            "server_transaction_terminated"
+          ]
+        },
+        {
+          "role": "Any transport error termination",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_Any_2_Terminated_X_transportError",
+          "lines": "709-720",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L709",
+          "atomic_propositions": [
+            "server_transaction_terminated"
+          ]
+        },
+        {
+          "role": "actual removal",
+          "path": "tinySIP/src/transactions/tsip_transac_ist.c",
+          "symbol": "tsip_transac_ist_OnTerminated",
+          "lines": "747-753",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ist.c#L747",
+          "atomic_propositions": [
+            "server_transaction_terminated"
+          ]
+        },
+        {
+          "role": "T1 constant",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "TIMER_T1",
+          "lines": "80",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L80",
+          "atomic_propositions": [
+            "server_accepted_timer_l_armed"
+          ]
+        },
+        {
+          "role": "Timer L value",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "L",
+          "lines": "115",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L115",
+          "atomic_propositions": [
+            "server_accepted_timer_l_armed"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "SIP-TX-26",
+      "protocol": "SIP",
+      "standard": "RFC 6026",
+      "standard_version": "RFC 6026 with RFC 3261 default T1",
+      "section": "7.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-7.2",
+      "source_repository": "DoubangoTelecom/doubango",
+      "source_commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "source_path": "tinySIP/src/transactions/tsip_transac_ict.c",
+      "source_lines": "621-646",
+      "source_url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ict.c#L621",
+      "auxiliary_source_mappings": [
+        {
+          "role": "FSM and Timer-M initialization",
+          "path": "tinySIP/src/transactions/tsip_transac_ict.c",
+          "symbol": "tsip_transac_ict_init",
+          "lines": "234-315",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ict.c#L234",
+          "atomic_propositions": [
+            "client_accepted_timer_m_armed",
+            "client_transaction_terminated",
+            "client_transport_abort"
+          ]
+        },
+        {
+          "role": "Timer-M callback",
+          "path": "tinySIP/src/transactions/tsip_transac_ict.c",
+          "symbol": "tsip_transac_ict_Accepted_2_Terminated_X_timerM",
+          "lines": "701-708",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ict.c#L701",
+          "atomic_propositions": [
+            "client_transaction_terminated"
+          ]
+        },
+        {
+          "role": "transport-error termination",
+          "path": "tinySIP/src/transactions/tsip_transac_ict.c",
+          "symbol": "tsip_transac_ict_Any_2_Terminated_X_transportError",
+          "lines": "712-723",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ict.c#L712",
+          "atomic_propositions": [
+            "client_transaction_terminated",
+            "client_transport_abort"
+          ]
+        },
+        {
+          "role": "actual removal",
+          "path": "tinySIP/src/transactions/tsip_transac_ict.c",
+          "symbol": "tsip_transac_ict_OnTerminated",
+          "lines": "837-846",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/transactions/tsip_transac_ict.c#L837",
+          "atomic_propositions": [
+            "client_transaction_terminated"
+          ]
+        },
+        {
+          "role": "T1 constant",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "TIMER_T1",
+          "lines": "80",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L80",
+          "atomic_propositions": [
+            "client_accepted_timer_m_armed"
+          ]
+        },
+        {
+          "role": "Timer M value",
+          "path": "tinySIP/src/tsip_timers.c",
+          "symbol": "M",
+          "lines": "116",
+          "url": "https://github.com/DoubangoTelecom/doubango/blob/7604ae6761534d2efdc862bc9961623abc98b9a5/tinySIP/src/tsip_timers.c#L116",
+          "atomic_propositions": [
+            "client_accepted_timer_m_armed"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

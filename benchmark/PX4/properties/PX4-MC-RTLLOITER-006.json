@@ -1,0 +1,870 @@
+{
+  "schema_version": "1.0",
+  "property_id": "PX4-MC-RTLLOITER-006",
+  "title_zh": "PX4 RTL 目的地等待后着陆",
+  "title_en": "PX4 RTL destination loiter before landing",
+  "system_scope": {
+    "system": "PX4",
+    "vehicles": [
+      "multicopter SITL"
+    ],
+    "firmware_release": "v1.17.0",
+    "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "PX4 multicopter SITL；direct Return path、destination、mission state 和 runtime RTL_LAND_DELAY 已归档。"
+  },
+  "status": "NEEDS_CONTEXT",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "PX4-MC-RTLLOITER-006-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Return Mode",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/flight_modes/return.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "691fd37e377e26dc2ec7bf4b92ebdc733d52f3278a5ec5167739ca1eefef9f22",
+      "locator": {
+        "page": null,
+        "section": "Loiter/Landing at Destination",
+        "anchor": null,
+        "line_start": 183,
+        "line_end": 194,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+      "context_summary_zh": "定义非 mission landing 时到达目的地、RTL_DESCEND_ALT、等待与 landing。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-RTLLOITER-006-S2",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Return Mode Parameters",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/flight_modes/return.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "691fd37e377e26dc2ec7bf4b92ebdc733d52f3278a5ec5167739ca1eefef9f22",
+      "locator": {
+        "page": null,
+        "section": "Parameters",
+        "anchor": null,
+        "line_start": 204,
+        "line_end": 218,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "## Parameters\n\nThe RTL parameters are listed in [Parameter Reference > Return Mode](../advanced_config/parameter_reference.md#return-mode) (and summarised below).\n\n| Parameter                                                                                                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |\n| ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| <a id=\"RTL_TYPE\"></a>[RTL_TYPE](../advanced_config/parameter_reference.md#RTL_TYPE)                         | Return mechanism (path and destination).<br>`0`: Return to a rally point or home (whichever is closest) via direct path.<br>`1`: Return to a rally point or the mission landing pattern start point (whichever is closest), via direct path. If neither mission landing or rally points are defined return home via a direct path. If the destination is a mission landing pattern, follow the pattern to land.<br>`2`: Use mission path fast-forward to landing if a landing pattern is defined, otherwise fast-reverse to home. Ignore rally points. Fly direct to home if no mission plan is defined.<br>`3`: Return via direct path to closest destination: home, start of mission landing pattern or safe point. If the destination is a mission landing pattern, follow the pattern to land. |\n| <a id=\"RTL_RETURN_ALT\"></a>[RTL_RETURN_ALT](../advanced_config/parameter_reference.md#RTL_RETURN_ALT)       | Return altitude in meters (default: 60m) when [RTL_CONE_ANG](../advanced_config/parameter_reference.md#RTL_CONE_ANG) is 0. If already above this value the vehicle will return at its current altitude.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |\n| <a id=\"RTL_DESCEND_ALT\"></a>[RTL_DESCEND_ALT](../advanced_config/parameter_reference.md#RTL_DESCEND_ALT)    | Minimum return altitude and altitude at which the vehicle will slow or stop its initial descent from a higher return altitude (default: 30m)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |\n| <a id=\"RTL_LAND_DELAY\"></a>[RTL_LAND_DELAY](../advanced_config/parameter_reference.md#RTL_LAND_DELAY)       | Time to wait at `RTL_DESCEND_ALT` before landing (default: 0.5s) -by default this period is short so that the vehicle will simply slow and then land immediately. If set to -1 the system will loiter at `RTL_DESCEND_ALT` rather than landing. The delay is provided to allow you to configure time for landing gear to be deployed (triggered automatically).                                                                                                                                                                                                                                                                                                                                                                                                                                    |\n| <a id=\"RTL_MIN_DIST\"></a>[RTL_MIN_DIST](../advanced_config/parameter_reference.md#RTL_MIN_DIST)             | Minimum horizontal distance from home position to trigger ascent to the return altitude specified by the \"cone\". If the vehicle is horizontally closer than this distance to home, it will return at its current altitude or `RTL_DESCEND_ALT` (whichever is higher) instead of first ascending to RTL_RETURN_ALT.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |\n| <a id=\"RTL_CONE_ANG\"></a>[RTL_CONE_ANG](../advanced_config/parameter_reference.md#RTL_CONE_ANG)             | Half-angle of the cone that defines the vehicle RTL return altitude. Values (in degrees): 0, 25, 45, 65, 80, 90. Note that 0 is \"no cone\" (always return at `RTL_RETURN_ALT` or higher), while 90 indicates that the vehicle must return at the current altitude or `RTL_DESCEND_ALT` (whichever is higher).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |\n| <a id=\"COM_RC_OVERRIDE\"></a>[COM_RC_OVERRIDE](../advanced_config/parameter_reference.md#COM_RC_OVERRIDE)    | Controls whether stick movement on a multicopter (or VTOL in MC mode) causes a mode change to [Position mode](../flight_modes_mc/position.md) (except when vehicle is handling a critical battery failsafe). This can be separately enabled for auto modes and for offboard mode, and is enabled in auto modes by default.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |\n| <a id=\"COM_RC_STICK_OV\"></a>[COM_RC_STICK_OV](../advanced_config/parameter_reference.md#COM_RC_STICK_OV)    | The amount of stick movement that causes a transition to [Position mode](../flight_modes_mc/position.md) (if [COM_RC_OVERRIDE](#COM_RC_OVERRIDE) is enabled).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |\n| <a id=\"RTL_LOITER_RAD\"></a>[RTL_LOITER_RAD](../advanced_config/parameter_reference.md#RTL_LOITER_RAD)       | [Fixed-wing Only] The radius of the loiter circle (at [RTL_LAND_DELAY](#RTL_LAND_DELAY)).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |",
+      "context_summary_zh": "参数表给出 RTL_LAND_DELAY 文档默认 0.5s 和 -1 indefinite。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-RTLLOITER-006-S3",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "PX4 RTL parameter metadata",
+      "version": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "path_or_url": "baseline/px4/src/modules/navigator/rtl_params.c",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "22c2a14bc18a04f5ac0efad16ddcca0ca723cc8d8579277fc60de858f4805fc0",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 63,
+        "line_end": 89,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "* Return mode loiter altitude\n *\n * Descend to this altitude (above destination position) after return, and wait for time defined in RTL_LAND_DELAY.\n * Land (i.e. slowly descend) from this altitude if autolanding allowed.\n * VTOLs do transition to hover in this altitdue above the landing point.\n *\n * @unit m\n * @min 0\n * @decimal 1\n * @increment 0.5\n * @group Return Mode\n */\nPARAM_DEFINE_FLOAT(RTL_DESCEND_ALT, 30.f);\n\n/**\n * Return mode delay\n *\n * Delay before landing (after initial descent) in Return mode.\n * If set to -1 the system will not land but loiter at RTL_DESCEND_ALT.\n *\n * @unit s\n * @min -1\n * @decimal 1\n * @increment 0.5\n * @group Return Mode\n */\nPARAM_DEFINE_FLOAT(RTL_LAND_DELAY, 0.0f);",
+      "context_summary_zh": "冻结提交元数据默认 0.0s，与文档默认 0.5s 冲突；运行时值优先。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "PX4-MC-RTLLOITER-006-S1",
+      "PX4-MC-RTLLOITER-006-S2",
+      "PX4-MC-RTLLOITER-006-S3"
+    ],
+    "edges": [
+      {
+        "from": "PX4-MC-RTLLOITER-006-S1",
+        "relation": "refers_to",
+        "to": "PX4-MC-RTLLOITER-006-S2",
+        "evidence_source_id": "PX4-MC-RTLLOITER-006-S2",
+        "confidence": "REVIEWED"
+      },
+      {
+        "from": "PX4-MC-RTLLOITER-006-S1",
+        "relation": "parameterizes",
+        "to": "PX4-MC-RTLLOITER-006-S3",
+        "evidence_source_id": "PX4-MC-RTLLOITER-006-S3",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "文档默认 0.5s 与冻结参数元数据默认 0.0s 冲突；只使用 PARAM_VALUE。",
+      "标准 MAVLink 只能派生 phase，精确 phase 需要内部探针。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "PX4 Navigator direct Return",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-RTLLOITER-006-S1",
+          "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "非 mission landing 的 Return 到达目的地 RTL_DESCEND_ALT 并进入等待阶段。",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-RTLLOITER-006-S1",
+          "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "使用适用的 direct-return landing path。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "RTL_LAND_DELAY >= 0；-1 的 indefinite 变体单独处理。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "等待运行时 RTL_LAND_DELAY 后开始 Land。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "等待期间不得在配置时间结束前进入 Land。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "mission landing pattern 不使用此直接等待义务。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "RTL_LAND_DELAY=-1 表示 indefinite，合法 mode transition 可结束。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "进入目的地 RTL_DESCEND_ALT loiter phase",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-RTLLOITER-006-S1",
+          "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "Land、离开 Return、indefinite override 或 run 结束",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-RTLLOITER-006-S1",
+          "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "enter_rtl_loiter_phase",
+        "relation": "BEFORE",
+        "right": "enter_land",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "leave_return",
+        "relation": "CANCELS",
+        "right": "rtl_land_delay",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "文档默认 0.5s 与冻结参数元数据默认 0.0s 冲突；只使用 PARAM_VALUE。",
+      "标准 MAVLink 只能派生 phase，精确 phase 需要内部探针。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_rtl_land",
+      "semantic_start_event": "enter_rtl_destination_loiter",
+      "semantic_end_event": "enter_land",
+      "cancel_event": "leave_return_or_indefinite_override",
+      "reset_event": null,
+      "raw_expression": "runtime(RTL_LAND_DELAY)",
+      "lower": "runtime(RTL_LAND_DELAY)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "PX4-MC-RTLLOITER-006-S3",
+      "source_span": {
+        "source_id": "PX4-MC-RTLLOITER-006-S3",
+        "quote": "* Return mode loiter altitude\n *\n * Descend to this altitude (above destination position) after return, and wait for time defined in RTL_LAND_DELAY.\n * Land (i.e. slowly descend) from this altitude if autolanding allowed.\n * VTOLs do transition to hover in this altitdue above the landing point.\n *\n * @unit m\n * @min 0\n * @decimal 1\n * @increment 0.5\n * @group Return Mode\n */\nPARAM_DEFINE_FLOAT(RTL_DESCEND_ALT, 30.f);\n\n/**\n * Return mode delay\n *\n * Delay before landing (after initial descent) in Return mode.\n * If set to -1 the system will not land but loiter at RTL_DESCEND_ALT.\n *\n * @unit s\n * @min -1\n * @decimal 1\n * @increment 0.5\n * @group Return Mode\n */\nPARAM_DEFINE_FLOAT(RTL_LAND_DELAY, 0.0f);",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "RTL_LAND_DELAY",
+      "formula": "T_rtl_land = runtime(RTL_LAND_DELAY)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 0.0,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/PX4-MC-RTLLOITER-006"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 0.0,
+          "unit": "s",
+          "source_id": "PX4-MC-RTLLOITER-006-S3"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "PX4 Navigator HRT phase entry",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((enter_rtl_destination_loiter & direct_return_landing_path) -> (G_[0,T_rtl_land) !mode_land & F_[T_rtl_land,infty) mode_land))",
+    "concrete": null,
+    "concrete_instances": [
+      {
+        "profile": "PX4/multicopter — px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+        "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+        "parameter_id": "RTL_LAND_DELAY",
+        "raw_value": 0.0,
+        "raw_unit": "s",
+        "normalized_value": 0.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 0 s = 0 s",
+        "formula": "G((enter_rtl_destination_loiter & direct_return_landing_path) -> (G_[0,0) !mode_land & F_[0,infty) mode_land))",
+        "status": "NEEDS_CONTEXT",
+        "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "source_param_index": 796,
+        "source_param_count": 900,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "数值代换可复现，但例外/eligibility/phase 上下文尚未闭合；不能进入监视器门禁。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((enter_rtl_destination_loiter & direct_return_landing_path) -> (G_[0,T_rtl_land) !mode_land & F_[T_rtl_land,infty) mode_land))",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-RTLLOITER-006-S1",
+            "quote": "## Loiter/Landing at Destination\n\nUnless executing a [mission landing pattern](#mission-landing-pattern) as part of the return mode, the vehicle will arrive at its destination, and rapidly descend to the [RTL_DESCEND_ALT](#RTL_DESCEND_ALT) altitude, where it will loiter for [RTL_LAND_DELAY](#RTL_LAND_DELAY) before landing.\nIf `RTL_LAND_DELAY=-1` it will loiter indefinitely.\n\nThe default landing configuration is vehicle dependent:\n\n- Multicopters are configured to hover for a short while, deploying landing gear if needed, and then land.\n- Fixed-wing vehicles use a return mode with a [mission landing pattern](#mission-landing-pattern), as this enables automated landing.\n  If not using a mission landing, the default configuration is to loiter indefinitely, so the user can take over and manually land.\n- VTOLs in MC mode fly and land exactly as a multicopter.\n- VTOLS in FW mode head towards the landing point, transition to MC mode, and then land on the destination.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "NEEDS_CONTEXT"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-01",
+      "name": "enter_rtl_destination_loiter",
+      "controlled_natural_language": "direct RTL 到达目的地下降高度并进入等待 phase。",
+      "truth_condition": "Navigator RTL phase entry event；纯 wire 推导必须同时满足 mode/target/position freshness。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-01-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_direct.h",
+          "line": 124,
+          "column": 3,
+          "symbol": "LOITER_HOLD",
+          "semantic_identity": "Direct-RTL state-machine phase for destination loiter hold.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "RtlDirect::RTLState",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The AP's internal phase identity is this enum value. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_direct.h#L124"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-01-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_direct.cpp",
+          "line": 187,
+          "column": 3,
+          "symbol": "RTLState::LOITER_HOLD",
+          "semantic_identity": "State-machine transition target after LOITER_DOWN reaches its mission item.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "RtlDirect::_updateRtlState",
+          "role": "WRITE",
+          "type": "RtlDirect::RTLState",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "new_state is set to LOITER_HOLD in the LOITER_DOWN branch. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_direct.cpp#L187"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-01-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_direct.cpp",
+          "line": 223,
+          "column": 2,
+          "symbol": "_rtl_state",
+          "semantic_identity": "Commit of the computed direct-RTL phase transition.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "RtlDirect::_updateRtlState",
+          "role": "WRITE",
+          "type": "RtlDirect::RTLState",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Instrumentation at this assignment gives the exact phase-entry event. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_direct.cpp#L223"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-01-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_direct.cpp",
+          "line": 601,
+          "column": 2,
+          "symbol": "navigator_mission_item.sequence_current",
+          "semantic_identity": "Logging projection of current direct-RTL enum value into navigator_mission_item.sequence_current.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "RtlDirect::publish_rtl_direct_navigator_mission_item",
+          "role": "OBSERVATION_SITE",
+          "type": "uint16_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The projection is exact only when interpreted in the direct-RTL producer context; the field has other semantics in other Navigator paths. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_direct.cpp#L601"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-01-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_direct.cpp",
+          "line": 623,
+          "column": 2,
+          "symbol": "_navigator_mission_item_pub.publish",
+          "semantic_identity": "uORB/log producer for the current direct-RTL phase projection and vehicle timestamp.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "RtlDirect::publish_rtl_direct_navigator_mission_item",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<navigator_mission_item_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Use only with direct-RTL context and sequence_current enum mapping. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_direct.cpp#L623"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms Return mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-02",
+      "name": "direct_return_landing_path",
+      "controlled_natural_language": "当前 Return 不使用 mission landing pattern。",
+      "truth_condition": "runtime RTL_TYPE/mission state 选择 direct landing path。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-02-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_params.c",
+          "line": 118,
+          "column": 1,
+          "symbol": "RTL_TYPE",
+          "semantic_identity": "Runtime RTL path-preference parameter.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "int32",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The parameter influences but does not alone determine the selected runtime RtlType. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_params.c#L118"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-02-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl.cpp",
+          "line": 311,
+          "column": 6,
+          "symbol": "RTL::setRtlTypeAndDestination",
+          "semantic_identity": "Runtime path-selection function combining RTL_TYPE, mission landing availability, safe points, and destination choice.",
+          "entity_kind": "FUNCTION",
+          "function": "RTL::setRtlTypeAndDestination",
+          "role": "DERIVATION",
+          "type": "void()",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This function resolves the actual RTL type rather than copying RTL_TYPE directly. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl.cpp#L311"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-02-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl.cpp",
+          "line": 327,
+          "column": 4,
+          "symbol": "RTL_DIRECT_MISSION_LAND",
+          "semantic_identity": "Selection of direct travel to a mission landing pattern, which is excluded by the normalized direct-landing-path AP.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "RTL::setRtlTypeAndDestination",
+          "role": "WRITE",
+          "type": "RTL::RtlType",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Destination type MISSION_LAND selects the distinct runtime type. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl.cpp#L327"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-02-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl.cpp",
+          "line": 348,
+          "column": 4,
+          "symbol": "RtlType::RTL_DIRECT",
+          "semantic_identity": "Selection of direct safe-point/home landing path.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "RTL::setRtlTypeAndDestination",
+          "role": "WRITE",
+          "type": "RTL::RtlType",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the runtime type matching the normalized direct path. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl.cpp#L348"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-02-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl.cpp",
+          "line": 362,
+          "column": 2,
+          "symbol": "rtl_type",
+          "semantic_identity": "uORB rtl_status field assignment exposing the resolved runtime RTL type.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "RTL::setRtlTypeAndDestination",
+          "role": "PRODUCER",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "RtlType::RTL_DIRECT maps to RtlStatus direct safe-point value 1 and is published at line 365. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl.cpp#L362"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects RTL_TYPE, RTL_LAND_DELAY; combine with mission snapshot",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current Return mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DERIVED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-03",
+      "name": "mode_land",
+      "controlled_natural_language": "PX4 进入 Land/明确约定的 descend outcome。",
+      "truth_condition": "current navigation mode 为 AUTO_LAND；是否计入 DESCEND 必须在 campaign 前固定。",
+      "kind": "STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-03-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 35,
+          "column": 1,
+          "symbol": "nav_state",
+          "semantic_identity": "Current active navigation-state field used for exact internal Land-mode identity.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The exact catalog default compares this field with NAVIGATION_STATE_AUTO_LAND. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L35"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-03-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 54,
+          "column": 1,
+          "symbol": "NAVIGATION_STATE_AUTO_LAND",
+          "semantic_identity": "VehicleStatus enum constant for Auto Land mode.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8 constant",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the exact internal mode identity specified by the catalog default. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L54"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-03-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 48,
+          "column": 1,
+          "symbol": "NAVIGATION_STATE_DESCEND",
+          "semantic_identity": "Distinct internal Descend navigation state whose inclusion is a campaign-level choice.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8 constant",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "It is not AUTO_LAND internally even though PX4 custom-mode mapping conflates them. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L48"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-03-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/navigator/rtl_direct.cpp",
+          "line": 365,
+          "column": 7,
+          "symbol": "RTLState::LAND",
+          "semantic_identity": "Direct-RTL internal phase that builds a land mission item; it is related path evidence, not identical to VehicleStatus AUTO_LAND.",
+          "entity_kind": "OTHER",
+          "function": "RtlDirect::set_rtl_item",
+          "role": "DERIVATION",
+          "type": "RtlDirect::RTLState",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MAY",
+          "evidence": "Navigator LAND phase can execute while coarse vehicle mode remains RTL; do not substitute it for nav_state. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/navigator/rtl_direct.cpp#L365"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-03-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 1945,
+          "column": 4,
+          "symbol": "_vehicle_status_pub.publish",
+          "semantic_identity": "uORB producer for exact current nav_state and vehicle timestamp.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "Commander::Run",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<vehicle_status_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Internal vehicle_status instrumentation distinguishes AUTO_LAND from DESCEND. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L1945"
+        },
+        {
+          "binding_id": "PX4-MC-RTLLOITER-006-AP-03-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/px4_custom_mode.h",
+          "line": 148,
+          "column": 2,
+          "symbol": "NAVIGATION_STATE_DESCEND",
+          "semantic_identity": "Custom-mode mapping branch that maps internal DESCEND to PX4 AUTO_LAND wire submode.",
+          "entity_kind": "OTHER",
+          "function": "get_px4_custom_mode",
+          "role": "DERIVATION",
+          "type": "switch case",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "AUTO_LAND is also mapped to the same wire submode at lines 170-172, creating a wire ambiguity. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/px4_custom_mode.h#L148"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode AUTO_LAND; no timestamp. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "CURRENT_MODE",
+          "message_id": 436,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Direct current mode; no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone7-monitor-and-independent-audit-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/extraction_runs/milestone4/superseded_px4_draft/properties/*.yaml (SUPERSEDED_NON_CANONICAL_DRAFT; immutable historical input only)",
+      "benchmark/extraction_runs/milestone5/px4_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "benchmark/extraction_runs/milestone7/independent_review.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction. Milestone 7 recorded a non-human independent rollback recommendation and synthetic monitor evidence; neither was used as a firmware-conformance or human-acceptance decision."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "satisfiable": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_tautology": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_vacuity": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "independent_review": {
+      "status": "INCONCLUSIVE",
+      "command": null,
+      "evidence": "Automated non-human audit completed 9 gates and recommends NEEDS_CONTEXT; blockers=default conflict and essential path context; mission snapshot missing; phase/cancel/indefinite semantics unresolved; exact phase not MAVLink-observable; no concrete formula. No human reviewer or arbitration was claimed."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Automated independent evidence audit recommends NEEDS_CONTEXT and records unresolved gates in benchmark/extraction_runs/milestone7/independent_review.json (SHA-256 5241806569500e593552cf50667d6de9e7e409961bd6ea131ff255571c98ec5c). It is not a human review or arbitration; decision remains PENDING.",
+    "conflicts": [
+      "docs default 0.5s vs source metadata default 0.0s。",
+      "mission landing exclusion 和 exact phase 需要绑定。",
+      "M7 automated independent audit: default conflict and essential path context",
+      "M7 automated independent audit: mission snapshot missing",
+      "M7 automated independent audit: phase/cancel/indefinite semantics unresolved",
+      "M7 automated independent audit: exact phase not MAVLink-observable",
+      "M7 automated independent audit: no concrete formula"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

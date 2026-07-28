@@ -1,0 +1,1245 @@
+{
+  "schema_version": "1.0",
+  "scope": "Milestone-5 static observability audit; no runtime capture",
+  "runtime_observation_status": "NOT_RUN_NO_CAPTURE",
+  "clock_policy": "Embedded timestamps retain their documented sender/vehicle/GPS epoch; host arrival time is never substituted.",
+  "counts": {
+    "CONDITIONAL": 12,
+    "DERIVED": 6,
+    "DIRECT": 9,
+    "INSTRUMENTATION_REQUIRED": 16,
+    "UNRESOLVED": 3
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-01",
+      "system": "ArduPilot",
+      "name": "gcs_heartbeat_gap_start",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "The normative AP is the designated-GCS heartbeat-gap start. Exact vehicle-receipt timing requires instrumentation at GCS_MAVLINK::handle_heartbeat; the shared aggregate last-seen clock is not heartbeat-exclusive.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": null,
+          "direction": "INCOMING",
+          "derivation": "Harness controls the normative designated-GCS heartbeat input, but HEARTBEAT has no embedded receipt timestamp. The current shared last-seen state is also refreshed by accepted MANUAL_CONTROL/RC_CHANNELS_OVERRIDE; those paths are an implementation conflict, not alternative normative heartbeat events.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-02",
+      "system": "ArduPilot",
+      "name": "gcs_heartbeat_seen_before",
+      "observability": "CONDITIONAL",
+      "rationale": "Heartbeat history is derivable only from a complete controlled designated-GCS input trace or heartbeat-handler instrumentation; the aggregate current-source seen state is not heartbeat-exclusive.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": null,
+          "direction": "INCOMING",
+          "derivation": "Harness controls the normative designated-GCS heartbeat input, but HEARTBEAT has no embedded receipt timestamp. The current shared last-seen state is also refreshed by accepted MANUAL_CONTROL/RC_CHANNELS_OVERRIDE; those paths are an implementation conflict, not alternative normative heartbeat events.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-03",
+      "system": "ArduPilot",
+      "name": "gcs_fs_enabled",
+      "observability": "DERIVED",
+      "rationale": "Requires archived parameters plus current mode; no single MAVLink bit represents applicability.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_GCS_ENABLE, FS_OPTIONS, MAV_GCS_SYSID(_HI); combine with target HEARTBEAT mode/armed state",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode current vehicle mode and system identity. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-04",
+      "system": "ArduPilot",
+      "name": "gcs_failsafe_event",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "STATUSTEXT/system_status are lossy consequences and cannot identify the exact GCS-specific internal flag.",
+      "observations": [
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May contain a GCS failsafe notice; queueing/loss and no timestamp prevent exact event timing.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "system_status",
+          "direction": "OUTGOING",
+          "derivation": "MAV_STATE_CRITICAL is not GCS-cause-specific and has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-GUID-002-AP-01",
+      "system": "ArduPilot",
+      "name": "guided_gap_start",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Transmitted commands are direct inputs, but the timeout starts at accepted vehicle receipt.",
+      "observations": [
+        {
+          "message": "SET_ATTITUDE_TARGET",
+          "message_id": 82,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Attitude/rate Guided input; time_boot_ms belongs to the sender and is not the vehicle receipt clock.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_POSITION_TARGET_LOCAL_NED",
+          "message_id": 84,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Local position/velocity/acceleration input; acceptance depends on mask/frame/mode.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_POSITION_TARGET_GLOBAL_INT",
+          "message_id": 86,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Global position/velocity/acceleration input; acceptance depends on mask/frame/mode.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-GUID-002-AP-02",
+      "system": "ArduPilot",
+      "name": "guided_variant_active",
+      "observability": "CONDITIONAL",
+      "rationale": "The command family/type_mask gives a candidate variant; exact active internal variant needs current mode/submode binding.",
+      "observations": [
+        {
+          "message": "SET_ATTITUDE_TARGET",
+          "message_id": 82,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Attitude/rate Guided input; time_boot_ms belongs to the sender and is not the vehicle receipt clock.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_POSITION_TARGET_LOCAL_NED",
+          "message_id": 84,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Local position/velocity/acceleration input; acceptance depends on mask/frame/mode.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_POSITION_TARGET_GLOBAL_INT",
+          "message_id": 86,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Global position/velocity/acceleration input; acceptance depends on mask/frame/mode.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-GUID-002-AP-03",
+      "system": "ArduPilot",
+      "name": "timeout_response_started",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Target streams can show commanded response but not the exact timeout-response-start flag.",
+      "observations": [
+        {
+          "message": "ATTITUDE_TARGET",
+          "message_id": 83,
+          "field": "type_mask",
+          "direction": "OUTGOING",
+          "derivation": "Reports current commanded attitude/rates with vehicle boot timestamp; does not identify why targets changed.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "POSITION_TARGET_LOCAL_NED",
+          "message_id": 85,
+          "field": "type_mask",
+          "direction": "OUTGOING",
+          "derivation": "Reports current position/velocity/acceleration target when streamed; does not expose timeout flag.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-01",
+      "system": "ArduPilot",
+      "name": "enter_loiter_at_home",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "HEARTBEAT only identifies RTL, not LOITER_AT_HOME entry.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms coarse RTL mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-02",
+      "system": "ArduPilot",
+      "name": "rtl_loiter_eligible",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Eligibility depends on internal RTL substate/path and cancellation history.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms coarse RTL mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-03",
+      "system": "ArduPilot",
+      "name": "begin_final_descent",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Final-descent substate has no exact standard MAVLink field.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms coarse RTL mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-01",
+      "system": "ArduPilot",
+      "name": "automatic_takeoff_start",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "No standard message carries the internal automatic-takeoff start epoch.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Can confirm coarse TAKEOFF/AUTO mode, without the start epoch. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-02",
+      "system": "ArduPilot",
+      "name": "timeout_enabled",
+      "observability": "DIRECT",
+      "rationale": "Runtime parameter is directly readable through the parameter protocol during setup, not an event stream.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects TKOFF_TIMEOUT; truth is param_value > 0; PARAM_VALUE has no timestamp",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-03",
+      "system": "ArduPilot",
+      "name": "speed_below_4mps",
+      "observability": "CONDITIONAL",
+      "rationale": "GPS_RAW_INT.vel is the closest raw-GPS speed observation; freshness/fix validity and cm/s scaling are required.",
+      "observations": [
+        {
+          "message": "GPS_RAW_INT",
+          "message_id": 24,
+          "field": "vel",
+          "direction": "OUTGOING",
+          "derivation": "Ground speed in cm/s; predicate is vel < 400 with valid fresh fix. time_usec may be UNIX epoch or system boot per XML.",
+          "time_field": "time_usec (ambiguous UNIX epoch or system boot; GPS fix time)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-04",
+      "system": "ArduPilot",
+      "name": "takeoff_aborted",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "STATUSTEXT can mention timeout but cannot uniquely timestamp/correlate the internal abort event.",
+      "observations": [
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May contain Takeoff timeout text; no timestamp and delivery may be delayed/lost.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-05",
+      "system": "ArduPilot",
+      "name": "disarmed",
+      "observability": "DIRECT",
+      "rationale": "Disarmed state is directly visible, but the message has no embedded event timestamp or disarm reason.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "base_mode",
+          "direction": "OUTGOING",
+          "derivation": "MAV_MODE_FLAG_SAFETY_ARMED clear means disarmed for the target autopilot.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-01",
+      "system": "ArduPilot",
+      "name": "crash_condition_start",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "The conjunction spans VFR_HUD without timestamp and ATTITUDE with boot timestamp; strict same-sample truth requires one vehicle-side probe.",
+      "observations": [
+        {
+          "message": "VFR_HUD",
+          "message_id": 74,
+          "field": "groundspeed",
+          "direction": "OUTGOING",
+          "derivation": "Groundspeed and throttle fields approximate two conjuncts; VFR_HUD has no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "VFR_HUD",
+          "message_id": 74,
+          "field": "throttle",
+          "direction": "OUTGOING",
+          "derivation": "Demanded throttle for Rover; VFR_HUD has no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "ATTITUDE",
+          "message_id": 30,
+          "field": "yawspeed",
+          "direction": "OUTGOING",
+          "derivation": "Yaw rate with vehicle boot timestamp; cannot be strictly aligned to VFR_HUD from embedded fields.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Mode/armed are coarse state inputs. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-02",
+      "system": "ArduPilot",
+      "name": "crash_check_enabled",
+      "observability": "DERIVED",
+      "rationale": "Derive from archived crash parameters and isolation setting.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_CRASH_CHECK, CRASH_ANGLE, CRASH_THR_MIN, CRASH_VEL_MIN, CRASH_TRAT_MIN; configuration snapshot",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-03",
+      "system": "ArduPilot",
+      "name": "crash_action",
+      "observability": "CONDITIONAL",
+      "rationale": "Hold/disarm outcome is visible; exact crash-cause correlation remains internal.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Observe Hold custom_mode and armed bit. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May contain Crash: Going to HOLD; no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-01",
+      "system": "ArduPilot",
+      "name": "low_throttle_start",
+      "observability": "CONDITIONAL",
+      "rationale": "Direct PWM observation after runtime channel mapping; exact threshold crossing is derived from sampled output.",
+      "observations": [
+        {
+          "message": "RC_CHANNELS",
+          "message_id": 65,
+          "field": "chan3_raw",
+          "direction": "OUTGOING",
+          "derivation": "Use chanN_raw where N=runtime(RCMAP_THROTTLE), not hard-coded channel 3; time_boot_ms is vehicle boot time.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects RCMAP_THROTTLE, FS_THR_VALUE; select chanN_raw and threshold",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-02",
+      "system": "ArduPilot",
+      "name": "valid_rc_frames",
+      "observability": "CONDITIONAL",
+      "rationale": "RC_CHANNELS freshness shows reported frames but exact receiver acceptance path may need instrumentation.",
+      "observations": [
+        {
+          "message": "RC_CHANNELS",
+          "message_id": 65,
+          "field": "chan3_raw",
+          "direction": "OUTGOING",
+          "derivation": "Use chanN_raw where N=runtime(RCMAP_THROTTLE), not hard-coded channel 3; time_boot_ms is vehicle boot time.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-03",
+      "system": "ArduPilot",
+      "name": "throttle_fs_enabled",
+      "observability": "DERIVED",
+      "rationale": "Derive from runtime FS_THR_ENABLE and current mode.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_THR_ENABLE; combine with mode exceptions",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-04",
+      "system": "ArduPilot",
+      "name": "configured_failsafe_action",
+      "observability": "CONDITIONAL",
+      "rationale": "Resulting mode/disarm can be observed after resolving FS_ACTION; exact failsafe.triggered cause needs instrumentation.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_ACTION; maps expected action",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Observe resulting mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May announce failsafe but has no timestamp/cause-complete guarantee.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-01",
+      "system": "ArduPilot",
+      "name": "low_voltage_start",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "BATTERY_STATUS can report raw cell/pack voltage, but not the sag-corrected resting estimate and has no event timestamp.",
+      "observations": [
+        {
+          "message": "BATTERY_STATUS",
+          "message_id": 147,
+          "field": "voltages",
+          "direction": "OUTGOING",
+          "derivation": "Per-instance voltage array; select by id and interpret invalid sentinel. No embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SYS_STATUS",
+          "message_id": 1,
+          "field": "voltage_battery",
+          "direction": "OUTGOING",
+          "derivation": "Aggregate voltage only; not per-instance and no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects BATTx_FS_VOLTSRC, BATTx_LOW_VOLT; select voltage source and threshold",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-02",
+      "system": "ArduPilot",
+      "name": "voltage_threshold_enabled",
+      "observability": "DIRECT",
+      "rationale": "Threshold enablement is directly derivable from the captured parameter value.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects BATTx_LOW_VOLT; enabled iff >0; correlate instance by param_id",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-03",
+      "system": "ArduPilot",
+      "name": "battery_failsafe_event",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Standard telemetry lacks the exact AP_BattMonitor instance/severity transition with a unified timestamp.",
+      "observations": [
+        {
+          "message": "BATTERY_STATUS",
+          "message_id": 147,
+          "field": "charge_state",
+          "direction": "OUTGOING",
+          "derivation": "May expose a battery charge state per id, but does not prove the exact internal low-voltage path.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May report battery failsafe; no timestamp and lossy correlation.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-01",
+      "system": "PX4",
+      "name": "landed_start",
+      "observability": "CONDITIONAL",
+      "rationale": "Landed state is direct; exact transition timestamp is not.",
+      "observations": [
+        {
+          "message": "EXTENDED_SYS_STATE",
+          "message_id": 245,
+          "field": "landed_state",
+          "direction": "OUTGOING",
+          "derivation": "MAV_LANDED_STATE_ON_GROUND directly reports state; message has no timestamp, so the transition epoch needs EVENT/internal HRT for strict timing.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-02",
+      "system": "PX4",
+      "name": "auto_disarm_eligible",
+      "observability": "UNRESOLVED",
+      "rationale": "Official exception/disable context is incomplete; parameters/mode alone cannot close eligibility.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_DISARM_LAND; capture value and disable-domain conflict",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-03",
+      "system": "PX4",
+      "name": "armed",
+      "observability": "DIRECT",
+      "rationale": "Armed state is directly visible, without event timestamp.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "base_mode",
+          "direction": "OUTGOING",
+          "derivation": "MAV_MODE_FLAG_SAFETY_ARMED reports state; no timestamp or disarm reason.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-04",
+      "system": "PX4",
+      "name": "disarmed",
+      "observability": "DIRECT",
+      "rationale": "Disarmed state is the clear armed bit; automatic reason needs event/internal evidence.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "base_mode",
+          "direction": "OUTGOING",
+          "derivation": "MAV_MODE_FLAG_SAFETY_ARMED reports state; no timestamp or disarm reason.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry automatic-disarm reason and event timestamp. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-01",
+      "system": "PX4",
+      "name": "detected_takeoff",
+      "observability": "CONDITIONAL",
+      "rationale": "A landed->airborne transition is derivable but EXTENDED_SYS_STATE has no timestamp; exact takeoff_time is internal/Event.",
+      "observations": [
+        {
+          "message": "EXTENDED_SYS_STATE",
+          "message_id": 245,
+          "field": "landed_state",
+          "direction": "OUTGOING",
+          "derivation": "MAV_LANDED_STATE_ON_GROUND directly reports state; message has no timestamp, so the transition epoch needs EVENT/internal HRT for strict timing.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry takeoff-detected event with vehicle boot timestamp. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-02",
+      "system": "PX4",
+      "name": "max_flight_time_enabled",
+      "observability": "DIRECT",
+      "rationale": "Enablement is direct from setup parameter capture.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_FLT_TIME_MAX; enabled iff >0",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-03",
+      "system": "PX4",
+      "name": "flight_time_warning",
+      "observability": "CONDITIONAL",
+      "rationale": "PX4 EVENT provides a timestamp but requires exact firmware component metadata and matching warning ID.",
+      "observations": [
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "Carries maximum-flight-time warning when emitted. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-FLIGHTTIME-005-AP-04",
+      "system": "PX4",
+      "name": "mode_return",
+      "observability": "DIRECT",
+      "rationale": "Return mode is encoded in custom_mode; transition time requires observation clock or Event.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode AUTO_RTL/Return. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "CURRENT_MODE",
+          "message_id": 436,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Direct current mode; no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-01",
+      "system": "PX4",
+      "name": "data_link_loss_gap_start",
+      "observability": "UNRESOLVED",
+      "rationale": "The official data-link-loss predicate, correlation key, event carrier, and clock are unresolved. PX4 heartbeat/HRT locations remain MODELLED implementation candidates and cannot define this normative AP.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "type",
+          "direction": "INCOMING",
+          "derivation": "Harness can exercise the current PX4 MAV_TYPE_GCS-heartbeat realization, but the official v1.17 source does not equate that flow with the normative telemetry/data-connection liveness event. HEARTBEAT has no embedded receipt timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-02",
+      "system": "PX4",
+      "name": "dl_loss_applicable",
+      "observability": "DERIVED",
+      "rationale": "Combine data-link action/exception parameters with current mode.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects NAV_DLL_ACT, COM_DLL_EXCEPT; derive configured applicability",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-03",
+      "system": "PX4",
+      "name": "gcs_connection_lost",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Standard HEARTBEAT does not expose gcs_connection_lost; Events are metadata-dependent.",
+      "observations": [
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry GCS/data-link lost event. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-01",
+      "system": "PX4",
+      "name": "offboard_proof",
+      "observability": "CONDITIONAL",
+      "rationale": "Messages are direct inputs, while accepted offboard_control_mode publication requires source validation.",
+      "observations": [
+        {
+          "message": "SET_POSITION_TARGET_LOCAL_NED",
+          "message_id": 84,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential proof/setpoint; time_boot_ms is sender boot time and does not prove PX4 acceptance.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_ATTITUDE_TARGET",
+          "message_id": 82,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential attitude/rate proof; acceptance depends on supported fields and estimates.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-02",
+      "system": "PX4",
+      "name": "offboard_proof_qualified",
+      "observability": "UNRESOLVED",
+      "rationale": "No standard field proves the one-second rate qualification, and the normative 2Hz equality boundary is unresolved.",
+      "observations": [
+        {
+          "message": "SET_POSITION_TARGET_LOCAL_NED",
+          "message_id": 84,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential proof/setpoint; time_boot_ms is sender boot time and does not prove PX4 acceptance.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "SET_ATTITUDE_TARGET",
+          "message_id": 82,
+          "field": "type_mask",
+          "direction": "INCOMING",
+          "derivation": "Potential attitude/rate proof; acceptance depends on supported fields and estimates.",
+          "time_field": "time_boot_ms (sender boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-03",
+      "system": "PX4",
+      "name": "mode_offboard",
+      "observability": "DIRECT",
+      "rationale": "Offboard current mode is directly encoded; HEARTBEAT/CURRENT_MODE timestamps are absent.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode PX4 custom OFFBOARD mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "CURRENT_MODE",
+          "message_id": 436,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Direct current custom mode with no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-OFFBOARD-003-AP-04",
+      "system": "PX4",
+      "name": "offboard_loss_action",
+      "observability": "CONDITIONAL",
+      "rationale": "Resulting mode is visible after resolving COM_OBL_RC_ACT and RC availability; exact cause remains internal.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_OBL_RC_ACT, COM_OF_LOSS_T; expected action and timeout",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Observe resulting mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May identify Offboard-control-loss cause/action. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-RCLOSS-001-AP-01",
+      "system": "PX4",
+      "name": "manual_gap_start",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Exact gap starts at the selected ManualControlSetpoint timestamp, not at host send/arrival time.",
+      "observations": [
+        {
+          "message": "MANUAL_CONTROL",
+          "message_id": 69,
+          "field": null,
+          "direction": "INCOMING",
+          "derivation": "Directly controls a MAVLink manual input, but the message has no timestamp and does not prove selector acceptance/selection.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-RCLOSS-001-AP-02",
+      "system": "PX4",
+      "name": "rc_loss_applicable",
+      "observability": "DERIVED",
+      "rationale": "Combine archived parameters and current mode; some selector/arming history remains internal.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_RCL_EXCEPT, COM_RC_IN_MODE, NAV_RCL_ACT; derive configured applicability",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current custom mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-RCLOSS-001-AP-03",
+      "system": "PX4",
+      "name": "manual_control_lost",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "EVENT can identify the classification only with matching component metadata; internal failsafe flag is authoritative.",
+      "observations": [
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry manual-control-lost event with vehicle event timestamp. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-01",
+      "system": "PX4",
+      "name": "enter_rtl_destination_loiter",
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "rationale": "Mode/position/target can only model the phase; exact Navigator phase entry is not in standard MAVLink.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms Return mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-02",
+      "system": "PX4",
+      "name": "direct_return_landing_path",
+      "observability": "DERIVED",
+      "rationale": "Derive direct-return versus mission-landing path from archived parameters/mission and current mode; exact Navigator choice may need instrumentation.",
+      "observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects RTL_TYPE, RTL_LAND_DELAY; combine with mission snapshot",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current Return mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    },
+    {
+      "ap_id": "PX4-MC-RTLLOITER-006-AP-03",
+      "system": "PX4",
+      "name": "mode_land",
+      "observability": "DIRECT",
+      "rationale": "AUTO_LAND current mode is directly visible; campaign must decide whether DESCEND counts.",
+      "observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode AUTO_LAND; no timestamp. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "CURRENT_MODE",
+          "message_id": 436,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Direct current mode; no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "runtime_observation_status": "NOT_RUN_NO_CAPTURE"
+    }
+  ]
+}
