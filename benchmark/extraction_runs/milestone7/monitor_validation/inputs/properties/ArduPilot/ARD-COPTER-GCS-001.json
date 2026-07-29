@@ -1,0 +1,871 @@
+{
+  "schema_version": "1.0",
+  "property_id": "ARD-COPTER-GCS-001",
+  "title_zh": "Copter 指定 GCS heartbeat 超时",
+  "title_en": "Copter designated-GCS heartbeat timeout",
+  "system_scope": {
+    "system": "ArduPilot",
+    "vehicles": [
+      "Copter"
+    ],
+    "firmware_release": null,
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "SITL Copter；指定 GCS 已被识别；failsafe 参数、模式和消息源已归档。"
+  },
+  "status": "REVIEW_READY",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "ARD-COPTER-GCS-001-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "Copter GCS Failsafe",
+      "version": "209e532bc97e5a41966f8c9ab483323c264cae08",
+      "path_or_url": "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/gcs-failsafe.rst",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "b9c449a90cafd6db10844acdb74202a1a510fb82e96d9e94ab82082ff00f4120",
+      "locator": {
+        "page": null,
+        "section": "GCS Failsafe",
+        "anchor": null,
+        "line_start": 8,
+        "line_end": 8,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+      "context_summary_zh": "说明 GCS heartbeat 间隔达到 FS_GCS_TIMEOUT 后触发事件，且从未连接时不激活。",
+      "language": "en",
+      "document_status": "MAIN_ONLY"
+    },
+    {
+      "source_id": "ARD-COPTER-GCS-001-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "ArduCopter FS_GCS_TIMEOUT metadata",
+      "version": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "path_or_url": "baseline/ardupilot/ArduCopter/Parameters.cpp",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "ef28e89a26fe2baa8e9ed55b6c145c79726d6d7805d53e82ad4626da1401a0e6",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 828,
+        "line_end": 835,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "// @Param: FS_GCS_TIMEOUT\n    // @DisplayName: GCS failsafe timeout\n    // @Description: Timeout before triggering the GCS failsafe\n    // @Units: s\n    // @Range: 2 120\n    // @Increment: 1\n    // @User: Standard\n    AP_GROUPINFO(\"FS_GCS_TIMEOUT\", 42, ParametersG2, fs_gcs_timeout, 5),",
+      "context_summary_zh": "冻结源码中的参数说明、单位、范围和默认值；不作为实现满足证据。",
+      "language": "en",
+      "document_status": "CURRENT"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "ARD-COPTER-GCS-001-S1",
+      "ARD-COPTER-GCS-001-S2"
+    ],
+    "edges": [
+      {
+        "from": "ARD-COPTER-GCS-001-S1",
+        "relation": "parameterizes",
+        "to": "ARD-COPTER-GCS-001-S2",
+        "evidence_source_id": "ARD-COPTER-GCS-001-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "当前源码的共享 last-seen 还可由 MANUAL_CONTROL/RC_CHANNELS_OVERRIDE 刷新；这是实现映射冲突，不是规范 heartbeat 的替代定义。",
+      "配置取消和模式例外需要额外的当前版本官方证据。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "ArduCopter GCS failsafe",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-GCS-001-S1",
+          "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "此前已收到过指定 GCS 的 MAVLink heartbeat，随后不再收到该 heartbeat。",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-GCS-001-S1",
+          "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "本 run 中指定 GCS 至少有一个 heartbeat 已被飞控收到。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "归档的参数设置要求本次 GCS failsafe event 生效；精确 enable/例外规则仍需版本化官方证据。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "自最后一个指定 GCS heartbeat 起没有收到新 heartbeat 达运行时 FS_GCS_TIMEOUT 后，产生 GCS failsafe event。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在该 heartbeat 缺失区间达到 FS_GCS_TIMEOUT 前，不得仅因该缺失产生 GCS failsafe event。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "从未连接过 GCS（本 run 从未收到 GCS heartbeat）时，该 failsafe 保持 inactive。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "最后一个被飞控收到的指定 GCS MAVLink heartbeat",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-GCS-001-S1",
+          "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "下一个指定 GCS heartbeat 或 run 结束；配置变化的取消语义尚未闭合",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-GCS-001-S1",
+          "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "designated_gcs_heartbeat",
+        "relation": "RESETS",
+        "right": "gcs_heartbeat_gap",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "gcs_heartbeat_gap",
+        "relation": "TRIGGERS",
+        "right": "gcs_failsafe_event",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "当前源码的共享 last-seen 还可由 MANUAL_CONTROL/RC_CHANNELS_OVERRIDE 刷新；这是实现映射冲突，不是规范 heartbeat 的替代定义。",
+      "配置取消和模式例外需要额外的当前版本官方证据。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_gcs",
+      "semantic_start_event": "last_designated_gcs_heartbeat_receipt",
+      "semantic_end_event": "gcs_failsafe_event",
+      "cancel_event": "run_end_or_applicability_ceases",
+      "reset_event": "designated_gcs_heartbeat",
+      "raw_expression": "runtime(FS_GCS_TIMEOUT)",
+      "lower": "runtime(FS_GCS_TIMEOUT)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "ARD-COPTER-GCS-001-S2",
+      "source_span": {
+        "source_id": "ARD-COPTER-GCS-001-S2",
+        "quote": "// @Param: FS_GCS_TIMEOUT\n    // @DisplayName: GCS failsafe timeout\n    // @Description: Timeout before triggering the GCS failsafe\n    // @Units: s\n    // @Range: 2 120\n    // @Increment: 1\n    // @User: Standard\n    AP_GROUPINFO(\"FS_GCS_TIMEOUT\", 42, ParametersG2, fs_gcs_timeout, 5),",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "FS_GCS_TIMEOUT",
+      "formula": "T_gcs = runtime(FS_GCS_TIMEOUT)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 5.0,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/ARD-COPTER-GCS-001"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 5,
+          "unit": "s",
+          "source_id": "ARD-COPTER-GCS-001-S2"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "Normative event: designated-GCS heartbeat receipt; current-source exact handler carrier: AP_HAL::millis() at GCS_MAVLINK::handle_heartbeat. The aggregate last-seen timestamp is shared and only MODELLED for this normative event.",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((gcs_heartbeat_gap_start & gcs_heartbeat_seen_before & gcs_fs_enabled) -> (G_[0,T_gcs) !gcs_failsafe_event & F_[T_gcs,infty) gcs_failsafe_event))",
+    "concrete": "G((gcs_heartbeat_gap_start & gcs_heartbeat_seen_before & gcs_fs_enabled) -> (G_[0,5) !gcs_failsafe_event & F_[5,infty) gcs_failsafe_event))",
+    "concrete_instances": [
+      {
+        "profile": "ArduPilot/ArduCopter — quad",
+        "capture_id": "ardupilot-copter-m6",
+        "parameter_id": "FS_GCS_TIMEOUT",
+        "raw_value": 5.0,
+        "raw_unit": "s",
+        "normalized_value": 5.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 5 s = 5 s",
+        "formula": "G((gcs_heartbeat_gap_start & gcs_heartbeat_seen_before & gcs_fs_enabled) -> (G_[0,5) !gcs_failsafe_event & F_[5,infty) gcs_failsafe_event))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+        "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+        "source_param_index": 1200,
+        "source_param_count": 1387,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((gcs_heartbeat_gap_start & gcs_heartbeat_seen_before & gcs_fs_enabled) -> (G_[0,T_gcs) !gcs_failsafe_event & F_[T_gcs,infty) gcs_failsafe_event))",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-GCS-001-S1",
+            "quote": "The Ground Station Control (GCS) failsafe controls how Copter will behave if contact with the GCS is lost.  The GCS failsafe monitors the time since the last MAVLink heartbeat from the GCS.  If no heartbeat is received :ref:`FS_GCS_TIMEOUT<FS_GCS_TIMEOUT>` seconds (Default is 5 seconds), the GCS failsafe event will trigger based on your parameter settings. Note that if no GCS is ever connected, the GCS failsafe will remain inactive regardless of parameter settings.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "CONCRETE_UNVALIDATED"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-01",
+      "name": "gcs_heartbeat_gap_start",
+      "controlled_natural_language": "指定 GCS heartbeat 的缺失区间开始。",
+      "truth_condition": "最后一个被飞控收到的 designated_gcs_heartbeat 之后，在该连接范围内不再收到新 heartbeat 的边沿事件。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-01-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp",
+          "line": 4357,
+          "column": null,
+          "symbol": "GCS_MAVLINK::handle_heartbeat",
+          "semantic_identity": "Accepted HEARTBEAT from a configured GCS system ID refreshes designated-GCS last-seen time.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "GCS_MAVLINK::handle_heartbeat",
+          "role": "CONSUMER",
+          "type": "void(const mavlink_message_t&)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 4359-4363 test sysid_is_gcs and call sysid_mygcs_seen(AP_HAL::millis()). Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS_Common.cpp#L4357"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-01-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp",
+          "line": 4243,
+          "column": null,
+          "symbol": "MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE -> sysid_mygcs_seen",
+          "semantic_identity": "Current implementation conflict: accepted RC_CHANNELS_OVERRIDE refreshes the shared last-seen clock, but it is not a normative designated-GCS heartbeat event.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "GCS_MAVLINK::handle_rc_channels_override",
+          "role": "CONSUMER",
+          "type": "mavlink_rc_channels_override_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "After GCS sysid validation and override application, line 4243 calls sysid_mygcs_seen(tnow). This path is retained to expose non-heartbeat interference, not as AP truth. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS_Common.cpp#L4243"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-01-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp",
+          "line": 7655,
+          "column": null,
+          "symbol": "MAVLINK_MSG_ID_MANUAL_CONTROL -> sysid_mygcs_seen",
+          "semantic_identity": "Current implementation conflict: accepted MANUAL_CONTROL refreshes the shared last-seen clock, but it is not a normative designated-GCS heartbeat event.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "GCS_MAVLINK::handle_manual_control",
+          "role": "CONSUMER",
+          "type": "mavlink_manual_control_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Lines 7638-7647 validate GCS sysid and target; line 7655 records tnow as seen. This path is retained to expose non-heartbeat interference, not as AP truth. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS_Common.cpp#L7655"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-01-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp",
+          "line": 7660,
+          "column": null,
+          "symbol": "GCS_MAVLINK::sysid_mygcs_seen",
+          "semantic_identity": "Shared implementation sink for aggregate GCS last-seen timestamps; it is not heartbeat-exclusive and therefore only models the normative heartbeat receipt state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "GCS_MAVLINK::sysid_mygcs_seen",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Lines 7662-7663 write GCS::_sysid_gcs_last_seen_time_ms and GCS_MAVLINK::_sysid_gcs_last_seen_time_ms for heartbeat and non-heartbeat producers. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS_Common.cpp#L7660"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-01-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 140,
+          "column": null,
+          "symbol": "last_gcs_update_ms = millis() - gcs_last_seen_ms",
+          "semantic_identity": "Elapsed interval since the shared implementation last-seen state; it can model but cannot exactly prove the normative designated-heartbeat gap.",
+          "entity_kind": "VARIABLE",
+          "function": "Copter::failsafe_gcs_check",
+          "role": "DERIVATION",
+          "type": "const uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Lines 133-141 read the aggregate timestamp and derive elapsed time and runtime timeout; the aggregate can include non-heartbeat refreshes. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L140"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": null,
+          "direction": "INCOMING",
+          "derivation": "Harness controls the normative designated-GCS heartbeat input, but HEARTBEAT has no embedded receipt timestamp. The current shared last-seen state is also refreshed by accepted MANUAL_CONTROL/RC_CHANNELS_OVERRIDE; those paths are an implementation conflict, not alternative normative heartbeat events.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-02",
+      "name": "gcs_heartbeat_seen_before",
+      "controlled_natural_language": "本 run 中指定 GCS 之前至少有一个 heartbeat 被飞控收到。",
+      "truth_condition": "count(designated_gcs_heartbeat_receipt)>0。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-02-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS.h",
+          "line": 1359,
+          "column": null,
+          "symbol": "GCS::_sysid_gcs_last_seen_time_ms",
+          "semantic_identity": "Aggregate current-source last-seen field. It is not heartbeat-exclusive, so nonzero only models designated-heartbeat history.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "GCS.h lines 1356-1359 define the aggregate field; heartbeat, RC override, and manual-control paths can write it. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS.h#L1359"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-02-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 134,
+          "column": null,
+          "symbol": "gcs_last_seen_ms == 0",
+          "semantic_identity": "Aggregate implementation sentinel for no shared GCS refresh; it is not an exact sentinel for no designated heartbeat.",
+          "entity_kind": "OTHER",
+          "function": "Copter::failsafe_gcs_check",
+          "role": "GUARD",
+          "type": "bool over uint32_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Lines 133-136 return when the aggregate last-seen timestamp is zero; non-heartbeat refreshes can make it nonzero. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L134"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-02-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp",
+          "line": 7662,
+          "column": null,
+          "symbol": "gcs().sysid_mygcs_seen(seen_time_ms)",
+          "semantic_identity": "Shared aggregate write sink reached by the normative heartbeat handler and non-normative refresh paths; only a model for heartbeat-seen history.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "GCS_MAVLINK::sysid_mygcs_seen",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This is the common sink reached by HEARTBEAT, RC_CHANNELS_OVERRIDE, and MANUAL_CONTROL consumers; exact heartbeat history must be separated upstream. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/GCS_MAVLink/GCS_Common.cpp#L7662"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": null,
+          "direction": "INCOMING",
+          "derivation": "Harness controls the normative designated-GCS heartbeat input, but HEARTBEAT has no embedded receipt timestamp. The current shared last-seen state is also refreshed by accepted MANUAL_CONTROL/RC_CHANNELS_OVERRIDE; those paths are an implementation conflict, not alternative normative heartbeat events.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-03",
+      "name": "gcs_fs_enabled",
+      "controlled_natural_language": "GCS failsafe 对当前归档配置生效。",
+      "truth_condition": "已归档的参数/模式组合要求本次 GCS failsafe event 生效；精确规则仍需版本化官方证据。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-03-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/Parameters.cpp",
+          "line": 102,
+          "column": null,
+          "symbol": "FS_GCS_ENABLE / Parameters::failsafe_gcs",
+          "semantic_identity": "Runtime enum selecting disabled or a GCS failsafe response class.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Enum<Parameters::FS_GCS_Action>",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:173",
+          "macro_expansion_location": "baseline/ardupilot/ArduCopter/Parameters.cpp:102",
+          "confidence": "EXACT",
+          "evidence": "GSCALAR registers FS_GCS_ENABLE; enum and field are declared at Parameters.h:407-418. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/Parameters.cpp#L102"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-03-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 129,
+          "column": null,
+          "symbol": "g.failsafe_gcs == FS_GCS_Action::DISABLED",
+          "semantic_identity": "Direct event-enable guard; disabled bypasses GCS failsafe evaluation.",
+          "entity_kind": "OTHER",
+          "function": "Copter::failsafe_gcs_check",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 128-135 bypass when disabled or never connected. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L129"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-03-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/Parameters.cpp",
+          "line": 787,
+          "column": null,
+          "symbol": "FS_OPTIONS / ParametersG2::fs_options",
+          "semantic_identity": "Bitmask used to allow continuation in landing, Auto, or pilot-controlled modes after a failsafe event.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Int32",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:152",
+          "macro_expansion_location": "baseline/ardupilot/ArduCopter/Parameters.cpp:787",
+          "confidence": "EXACT",
+          "evidence": "AP_GROUPINFO registers FS_OPTIONS; option use is at events.cpp:213-226. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/Parameters.cpp#L787"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-03-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 170,
+          "column": null,
+          "symbol": "switch ((FS_GCS_Action)g.failsafe_gcs)",
+          "semantic_identity": "Maps FS_GCS_ENABLE to the candidate FailsafeAction.",
+          "entity_kind": "FUNCTION",
+          "function": "Copter::failsafe_gcs_on_event",
+          "role": "DERIVATION",
+          "type": "FailsafeAction",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 170-195 map enum values to RTL, SmartRTL, Land, Auto land-start, or Brake/Land actions. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L170"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-03-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 197,
+          "column": null,
+          "symbol": "GCS failsafe response deviation conditions",
+          "semantic_identity": "Armed, ground, landing, Auto, pilot-control, battery-failsafe, and FS_OPTIONS state can replace or suppress the selected response.",
+          "entity_kind": "FUNCTION",
+          "function": "Copter::failsafe_gcs_on_event",
+          "role": "DERIVATION",
+          "type": "FailsafeAction",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 197-232 derive the final desired_action and call do_failsafe_action. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L197"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_GCS_ENABLE, FS_OPTIONS, MAV_GCS_SYSID(_HI); combine with target HEARTBEAT mode/armed state",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Decode current vehicle mode and system identity. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DERIVED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-04",
+      "name": "gcs_failsafe_event",
+      "controlled_natural_language": "飞控将 GCS failsafe event 标为 active。",
+      "truth_condition": "GCS-specific failsafe state 从 false 变 true。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-04-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 155,
+          "column": null,
+          "symbol": "new GCS failsafe branch",
+          "semantic_identity": "Detects elapsed time above timeout while the GCS failsafe flag is false and initiates the event.",
+          "entity_kind": "EVENT",
+          "function": "Copter::failsafe_gcs_check",
+          "role": "PRODUCER",
+          "type": "bool edge",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 155-158 call set_failsafe_gcs(true) then failsafe_gcs_on_event(). Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L155"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-04-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/AP_State.cpp",
+          "line": 75,
+          "column": null,
+          "symbol": "Copter::failsafe.gcs = b",
+          "semantic_identity": "Canonical vehicle-local GCS failsafe state write.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Copter::set_failsafe_gcs",
+          "role": "WRITE",
+          "type": "uint8_t bit-field interpreted as bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Copter.h:403 declares the bit; AP_State.cpp:73-79 writes it and its AP_Notify mirror. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/AP_State.cpp#L75"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-04-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/AP_State.cpp",
+          "line": 78,
+          "column": null,
+          "symbol": "AP_Notify::flags.failsafe_gcs = b",
+          "semantic_identity": "Global notification mirror of the vehicle-local GCS failsafe state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Copter::set_failsafe_gcs",
+          "role": "OBSERVATION_SITE",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MAY",
+          "evidence": "The mirror is exact for this setter but is a shared notification surface, not the canonical Copter field. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/AP_State.cpp#L78"
+        },
+        {
+          "binding_id": "ARD-COPTER-GCS-001-AP-04-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/events.cpp",
+          "line": 165,
+          "column": null,
+          "symbol": "LOGGER_WRITE_ERROR(FAILSAFE_GCS, FAILSAFE_OCCURRED)",
+          "semantic_identity": "DataFlash log producer for occurrence of the GCS failsafe response handler.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "Copter::failsafe_gcs_on_event",
+          "role": "PRODUCER",
+          "type": "LogErrorSubsystem/LogErrorCode",
+          "macro_spelling_location": "baseline/ardupilot/ArduCopter/events.cpp:165",
+          "macro_expansion_location": "baseline/ardupilot/ArduCopter/events.cpp:165",
+          "confidence": "EXACT",
+          "evidence": "The first operation in failsafe_gcs_on_event records FAILSAFE_GCS/FAILSAFE_OCCURRED. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/events.cpp#L165"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May contain a GCS failsafe notice; queueing/loss and no timestamp prevent exact event timing.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "system_status",
+          "direction": "OUTGOING",
+          "derivation": "MAV_STATE_CRITICAL is not GCS-cause-specific and has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone6-runtime-instantiation-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/PX4/properties/*.yaml",
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Concrete mathematical substitution exists where enabled/context-closed, but parser and monitor syntax validation remain Milestone 7 gates."
+    },
+    "satisfiable": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_tautology": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_vacuity": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete traces are generated."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "No TAMonitor result is claimed in Milestone 4."
+    },
+    "independent_review": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Independent review is a Milestone 7 gate and does not replace human acceptance."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Milestone 6 runtime parameter evidence is bound. Final parser, trace, context-conflict, and independent-review gates remain open.",
+    "conflicts": [
+      "ArduPilot wiki 为 MAIN_ONLY，未与冻结固件 release 配对。",
+      "当前实现的 aggregate last-seen 可由非 heartbeat 消息刷新；该实现行为只作 MODELLED binding/conflict。",
+      "FS_GCS_ENABLE 的旧参数文案写死 5s；该性质只使用运行时 FS_GCS_TIMEOUT。"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

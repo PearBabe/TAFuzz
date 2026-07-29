@@ -1,0 +1,967 @@
+{
+  "protocol": "SMTP",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "smtp_waiting_initial_220": {
+      "definition": "smtp_connect returns a valid socket in smtp_setup_conn, opening one correlated initial-220 obligation before the later smtp_read_response call",
+      "properties": [
+        "SMTP-TIMEOUT-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "smtp_connect returns a valid socket in smtp_setup_conn, opening one correlated initial-220 obligation before the later smtp_read_response call",
+          "instrumentation_timing": "emit start once after successful smtp_connect; after the initial smtp_read_response returns false, inspect errno and emit timeout only for ETIMEDOUT before the RESPONSE_FAILED jump; use smtp_transport_option_defaults:222 as profile evidence",
+          "atomic_propositions": [
+            "smtp_waiting_initial_220"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_setup_conn",
+          "lines": "1544-1643;2095-2099",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L1544-L1643",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-01",
+          "mapping": "auxiliary:4",
+          "role": "fixed timeout profile",
+          "event_predicate": "smtp_connect returns a valid socket in smtp_setup_conn, opening one correlated initial-220 obligation before the later smtp_read_response call",
+          "instrumentation_timing": "emit start once after successful smtp_connect; after the initial smtp_read_response returns false, inspect errno and emit timeout only for ETIMEDOUT before the RESPONSE_FAILED jump; use smtp_transport_option_defaults:222 as profile evidence",
+          "atomic_propositions": [
+            "smtp_waiting_initial_220"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_transport_option_defaults",
+          "lines": "189-225",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_initial_220_timeout": {
+      "definition": "the initial-greeting smtp_read_response returns false with errno==ETIMEDOUT for that same connection before a valid initial 220 response",
+      "properties": [
+        "SMTP-TIMEOUT-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-01",
+          "mapping": "auxiliary:1",
+          "role": "response reader and errno propagation",
+          "event_predicate": "the initial-greeting smtp_read_response returns false with errno==ETIMEDOUT for that same connection before a valid initial 220 response",
+          "instrumentation_timing": "emit start once after successful smtp_connect; after the initial smtp_read_response returns false, inspect errno and emit timeout only for ETIMEDOUT before the RESPONSE_FAILED jump; use smtp_transport_option_defaults:222 as profile evidence",
+          "atomic_propositions": [
+            "smtp_initial_220_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "read_response_line/smtp_read_response",
+          "lines": "457-520;548-608",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-01",
+          "mapping": "auxiliary:2",
+          "role": "absolute read deadline and ETIMEDOUT",
+          "event_predicate": "the initial-greeting smtp_read_response returns false with errno==ETIMEDOUT for that same connection before a valid initial 220 response",
+          "instrumentation_timing": "emit start once after successful smtp_connect; after the initial smtp_read_response returns false, inspect errno and emit timeout only for ETIMEDOUT before the RESPONSE_FAILED jump; use smtp_transport_option_defaults:222 as profile evidence",
+          "atomic_propositions": [
+            "smtp_initial_220_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/ip.c",
+          "symbol": "fd_ready/ip_recv",
+          "lines": "478-524;548-570",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-01",
+          "mapping": "auxiliary:3",
+          "role": "SMTP timeout classification",
+          "event_predicate": "the initial-greeting smtp_read_response returns false with errno==ETIMEDOUT for that same connection before a valid initial 220 response",
+          "instrumentation_timing": "emit start once after successful smtp_connect; after the initial smtp_read_response returns false, inspect errno and emit timeout only for ETIMEDOUT before the RESPONSE_FAILED jump; use smtp_transport_option_defaults:222 as profile evidence",
+          "atomic_propositions": [
+            "smtp_initial_220_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "check_response",
+          "lines": "508-525",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_mail_response_wait_started": {
+      "definition": "flush_buffer successfully transmits a buffer containing the correlated MAIL FROM command; the adapter assigns that command a transaction-generation ordinal before response projection",
+      "properties": [
+        "SMTP-TIMEOUT-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated MAIL FROM command; the adapter assigns that command a transaction-generation ordinal before response projection",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "flush_buffer",
+          "lines": "326-349",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L326-L349",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:1",
+          "role": "pipelined MAIL response slot",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated MAIL FROM command; the adapter assigns that command a transaction-generation ordinal before response projection",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_wait_started",
+            "smtp_mail_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "sync_responses",
+          "lines": "742-782",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L742-L782",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:2",
+          "role": "MAIL command and direct response path",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated MAIL FROM command; the adapter assigns that command a transaction-generation ordinal before response projection",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_write_mail_and_rcpt_cmds",
+          "lines": "2340-2406",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2340-L2406",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:6",
+          "role": "fixed timeout profile",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated MAIL FROM command; the adapter assigns that command a transaction-generation ordinal before response projection",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_transport_option_defaults",
+          "lines": "189-225",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_mail_response_timeout": {
+      "definition": "the response read associated with that pending MAIL generation returns false with errno==ETIMEDOUT",
+      "properties": [
+        "SMTP-TIMEOUT-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:1",
+          "role": "pipelined MAIL response slot",
+          "event_predicate": "the response read associated with that pending MAIL generation returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_wait_started",
+            "smtp_mail_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "sync_responses",
+          "lines": "742-782",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L742-L782",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:3",
+          "role": "response reader and errno propagation",
+          "event_predicate": "the response read associated with that pending MAIL generation returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "read_response_line/smtp_read_response",
+          "lines": "457-520;548-608",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:4",
+          "role": "absolute read deadline and ETIMEDOUT",
+          "event_predicate": "the response read associated with that pending MAIL generation returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/ip.c",
+          "symbol": "fd_ready/ip_recv",
+          "lines": "478-524;548-570",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-02",
+          "mapping": "auxiliary:5",
+          "role": "SMTP timeout classification",
+          "event_predicate": "the response read associated with that pending MAIL generation returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "at successful flush_buffer return, parse the just-sent command buffer and emit one start for its MAIL ordinal; emit timeout only when that pending MAIL response read returns false with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_mail_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "check_response",
+          "lines": "508-525",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_rcpt_response_wait_started": {
+      "definition": "flush_buffer successfully transmits a buffer containing the correlated RCPT command and assigns it a transaction-local RCPT ordinal",
+      "properties": [
+        "SMTP-TIMEOUT-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated RCPT command and assigns it a transaction-local RCPT ordinal",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_wait_started",
+            "smtp_rcpt_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "sync_responses",
+          "lines": "786-825",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L786-L825",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "auxiliary:1",
+          "role": "RCPT command enqueue/flush and sync invocation",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated RCPT command and assigns it a transaction-local RCPT ordinal",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_write_mail_and_rcpt_cmds",
+          "lines": "2440-2480",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2440-L2480",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "auxiliary:2",
+          "role": "actual pipelined command-buffer flush",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated RCPT command and assigns it a transaction-local RCPT ordinal",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "flush_buffer",
+          "lines": "326-349",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L326-L349",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "auxiliary:5",
+          "role": "fixed timeout profile",
+          "event_predicate": "flush_buffer successfully transmits a buffer containing the correlated RCPT command and assigns it a transaction-local RCPT ordinal",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_transport_option_defaults",
+          "lines": "189-225",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_rcpt_response_timeout": {
+      "definition": "sync_responses maps the pending response slot to that RCPT ordinal and its smtp_read_response returns false with errno==ETIMEDOUT",
+      "properties": [
+        "SMTP-TIMEOUT-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "sync_responses maps the pending response slot to that RCPT ordinal and its smtp_read_response returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_wait_started",
+            "smtp_rcpt_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "sync_responses",
+          "lines": "786-825",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L786-L825",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "auxiliary:3",
+          "role": "response reader and errno propagation",
+          "event_predicate": "sync_responses maps the pending response slot to that RCPT ordinal and its smtp_read_response returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "read_response_line/smtp_read_response",
+          "lines": "457-520;548-608",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-03",
+          "mapping": "auxiliary:4",
+          "role": "absolute read deadline and ETIMEDOUT",
+          "event_predicate": "sync_responses maps the pending response slot to that RCPT ordinal and its smtp_read_response returns false with errno==ETIMEDOUT",
+          "instrumentation_timing": "emit start after the successful command-buffer flush for this RCPT ordinal; in sync_responses emit timeout only after ordinal correlation and only on the complete errno==ETIMEDOUT branch at lines 816-825",
+          "atomic_propositions": [
+            "smtp_rcpt_response_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/ip.c",
+          "symbol": "fd_ready/ip_recv",
+          "lines": "478-524;548-570",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_data_354_wait_started": {
+      "definition": "smtp_write_command(..., FALSE, DATA) successfully flushes the correlated classic-DATA command and opens one 354-wait generation",
+      "properties": [
+        "SMTP-TIMEOUT-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "smtp_write_command(..., FALSE, DATA) successfully flushes the correlated classic-DATA command and opens one 354-wait generation",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_deliver",
+          "lines": "2659-2665",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2659-L2665",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:1",
+          "role": "pending DATA response slot",
+          "event_predicate": "smtp_write_command(..., FALSE, DATA) successfully flushes the correlated classic-DATA command and opens one 354-wait generation",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_wait_started",
+            "smtp_data_354_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "sync_responses",
+          "lines": "911-930",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L911-L930",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:2",
+          "role": "actual command-buffer flush",
+          "event_predicate": "smtp_write_command(..., FALSE, DATA) successfully flushes the correlated classic-DATA command and opens one 354-wait generation",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "smtp_write_command/flush_buffer",
+          "lines": "326-349;373-430",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L326-L349",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:6",
+          "role": "fixed timeout profile",
+          "event_predicate": "smtp_write_command(..., FALSE, DATA) successfully flushes the correlated classic-DATA command and opens one 354-wait generation",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_transport_option_defaults",
+          "lines": "189-225",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_data_354_timeout": {
+      "definition": "the pending-DATA response slot correlated by sync_responses returns false with errno==ETIMEDOUT before a 354 reply",
+      "properties": [
+        "SMTP-TIMEOUT-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:1",
+          "role": "pending DATA response slot",
+          "event_predicate": "the pending-DATA response slot correlated by sync_responses returns false with errno==ETIMEDOUT before a 354 reply",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_wait_started",
+            "smtp_data_354_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "sync_responses",
+          "lines": "911-930",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L911-L930",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:3",
+          "role": "response reader and errno propagation",
+          "event_predicate": "the pending-DATA response slot correlated by sync_responses returns false with errno==ETIMEDOUT before a 354 reply",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "read_response_line/smtp_read_response",
+          "lines": "457-520;548-608",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:4",
+          "role": "absolute read deadline and ETIMEDOUT",
+          "event_predicate": "the pending-DATA response slot correlated by sync_responses returns false with errno==ETIMEDOUT before a 354 reply",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/ip.c",
+          "symbol": "fd_ready/ip_recv",
+          "lines": "478-524;548-570",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-04",
+          "mapping": "auxiliary:5",
+          "role": "SMTP timeout classification",
+          "event_predicate": "the pending-DATA response slot correlated by sync_responses returns false with errno==ETIMEDOUT before a 354 reply",
+          "instrumentation_timing": "emit start after the DATA command's successful forced flush; when sync_responses reaches that pending_DATA slot, emit timeout only for false return with errno==ETIMEDOUT",
+          "atomic_propositions": [
+            "smtp_data_354_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "check_response",
+          "lines": "508-525",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_data_block_send_wait_started": {
+      "definition": "one SMTP-guarded transport_write_block invocation starts with transport_write_timeout copied from smtp_deliver's data_timeout; the event does not assert that the first write is already known to block",
+      "properties": [
+        "SMTP-TIMEOUT-05"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-05",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "one SMTP-guarded transport_write_block invocation starts with transport_write_timeout copied from smtp_deliver's data_timeout; the event does not assert that the first write is already known to block",
+          "instrumentation_timing": "after verifying the SMTP outbound data guard, emit one start per transport_write_block invocation before its first timed write; do not re-emit inside the retry loop; emit timeout only at the two ETIMEDOUT returns; smtp_deliver:2736-2738 proves the selected data_timeout profile",
+          "atomic_propositions": [
+            "smtp_data_block_send_wait_started",
+            "smtp_data_block_send_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transport.c",
+          "symbol": "transport_write_block",
+          "lines": "216-306",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transport.c#L216-L306",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-05",
+          "mapping": "auxiliary:1",
+          "role": "SMTP data-timeout selection and outbound message write",
+          "event_predicate": "one SMTP-guarded transport_write_block invocation starts with transport_write_timeout copied from smtp_deliver's data_timeout; the event does not assert that the first write is already known to block",
+          "instrumentation_timing": "after verifying the SMTP outbound data guard, emit one start per transport_write_block invocation before its first timed write; do not re-emit inside the retry loop; emit timeout only at the two ETIMEDOUT returns; smtp_deliver:2736-2738 proves the selected data_timeout profile",
+          "atomic_propositions": [
+            "smtp_data_block_send_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_deliver",
+          "lines": "2682-2750",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2682-L2750",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-05",
+          "mapping": "auxiliary:2",
+          "role": "buffer flushes that invoke the primary hook",
+          "event_predicate": "one SMTP-guarded transport_write_block invocation starts with transport_write_timeout copied from smtp_deliver's data_timeout; the event does not assert that the first write is already known to block",
+          "instrumentation_timing": "after verifying the SMTP outbound data guard, emit one start per transport_write_block invocation before its first timed write; do not re-emit inside the retry loop; emit timeout only at the two ETIMEDOUT returns; smtp_deliver:2736-2738 proves the selected data_timeout profile",
+          "atomic_propositions": [
+            "smtp_data_block_send_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transport.c",
+          "symbol": "write_chunk",
+          "lines": "425-447",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transport.c#L425-L447",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-05",
+          "mapping": "auxiliary:3",
+          "role": "fixed timeout profile",
+          "event_predicate": "one SMTP-guarded transport_write_block invocation starts with transport_write_timeout copied from smtp_deliver's data_timeout; the event does not assert that the first write is already known to block",
+          "instrumentation_timing": "after verifying the SMTP outbound data guard, emit one start per transport_write_block invocation before its first timed write; do not re-emit inside the retry loop; emit timeout only at the two ETIMEDOUT returns; smtp_deliver:2736-2738 proves the selected data_timeout profile",
+          "atomic_propositions": [
+            "smtp_data_block_send_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_transport_option_defaults",
+          "lines": "189-225",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_data_block_send_timeout": {
+      "definition": "that same invocation returns false with errno==ETIMEDOUT through sigalrm_seen or exhausted local_timeout",
+      "properties": [
+        "SMTP-TIMEOUT-05"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-05",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "that same invocation returns false with errno==ETIMEDOUT through sigalrm_seen or exhausted local_timeout",
+          "instrumentation_timing": "after verifying the SMTP outbound data guard, emit one start per transport_write_block invocation before its first timed write; do not re-emit inside the retry loop; emit timeout only at the two ETIMEDOUT returns; smtp_deliver:2736-2738 proves the selected data_timeout profile",
+          "atomic_propositions": [
+            "smtp_data_block_send_wait_started",
+            "smtp_data_block_send_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transport.c",
+          "symbol": "transport_write_block",
+          "lines": "216-306",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transport.c#L216-L306",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_final_250_wait_started": {
+      "definition": "non-CHUNKING smtp_deliver successfully transmits the final data buffer containing the terminating period and enters the non-LMTP final-response phase",
+      "properties": [
+        "SMTP-TIMEOUT-06"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-06",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "non-CHUNKING smtp_deliver successfully transmits the final data buffer containing the terminating period and enters the non-LMTP final-response phase",
+          "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+          "atomic_propositions": [
+            "smtp_final_250_wait_started",
+            "smtp_final_250_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_deliver",
+          "lines": "2736-2750;2766-2772;2815-2827",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2736-L2827",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-06",
+          "mapping": "auxiliary:4",
+          "role": "fixed timeout profile",
+          "event_predicate": "non-CHUNKING smtp_deliver successfully transmits the final data buffer containing the terminating period and enters the non-LMTP final-response phase",
+          "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+          "atomic_propositions": [
+            "smtp_final_250_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_transport_option_defaults",
+          "lines": "189-225",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L189-L225",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_final_250_timeout": {
+      "definition": "the corresponding non-PRDR, non-LMTP smtp_read_response expecting 2xx returns false with errno==ETIMEDOUT before a 250 response",
+      "properties": [
+        "SMTP-TIMEOUT-06"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-06",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "the corresponding non-PRDR, non-LMTP smtp_read_response expecting 2xx returns false with errno==ETIMEDOUT before a 250 response",
+          "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+          "atomic_propositions": [
+            "smtp_final_250_wait_started",
+            "smtp_final_250_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "smtp_deliver",
+          "lines": "2736-2750;2766-2772;2815-2827",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L2736-L2827",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-06",
+          "mapping": "auxiliary:1",
+          "role": "response reader and errno propagation",
+          "event_predicate": "the corresponding non-PRDR, non-LMTP smtp_read_response expecting 2xx returns false with errno==ETIMEDOUT before a 250 response",
+          "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+          "atomic_propositions": [
+            "smtp_final_250_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_out.c",
+          "symbol": "read_response_line/smtp_read_response",
+          "lines": "457-520;548-608",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_out.c#L457-L520",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-06",
+          "mapping": "auxiliary:2",
+          "role": "absolute read deadline and ETIMEDOUT",
+          "event_predicate": "the corresponding non-PRDR, non-LMTP smtp_read_response expecting 2xx returns false with errno==ETIMEDOUT before a 250 response",
+          "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+          "atomic_propositions": [
+            "smtp_final_250_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/ip.c",
+          "symbol": "fd_ready/ip_recv",
+          "lines": "478-524;548-570",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/ip.c#L478-L524",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-06",
+          "mapping": "auxiliary:3",
+          "role": "SMTP timeout classification",
+          "event_predicate": "the corresponding non-PRDR, non-LMTP smtp_read_response expecting 2xx returns false with errno==ETIMEDOUT before a 250 response",
+          "instrumentation_timing": "guard classic DATA/non-CHUNKING/non-LMTP/non-PRDR context; emit start once after the terminating-period write succeeds and before the final read; emit timeout only for that read's ETIMEDOUT outcome",
+          "atomic_propositions": [
+            "smtp_final_250_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/transports/smtp.c",
+          "symbol": "check_response",
+          "lines": "508-525",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/transports/smtp.c#L508-L525",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_server_command_wait_started": {
+      "definition": "while smtp_read_command has command_timeout_handler installed, plaintext smtp_getc finds its input buffer empty and arms smtp_receive_timeout immediately before read",
+      "properties": [
+        "SMTP-TIMEOUT-07"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-07",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "while smtp_read_command has command_timeout_handler installed, plaintext smtp_getc finds its input buffer empty and arms smtp_receive_timeout immediately before read",
+          "instrumentation_timing": "emit start only when plaintext smtp_getc arms the receive alarm while smtp_read_command has installed command_timeout_handler; emit timeout only inside that handler and correlate by accepted connection/read generation",
+          "atomic_propositions": [
+            "smtp_server_command_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_in.c",
+          "symbol": "smtp_getc",
+          "lines": "416-430",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_in.c#L416-L430",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-07",
+          "mapping": "auxiliary:1",
+          "role": "command-phase signal-handler installation and read loop",
+          "event_predicate": "while smtp_read_command has command_timeout_handler installed, plaintext smtp_getc finds its input buffer empty and arms smtp_receive_timeout immediately before read",
+          "instrumentation_timing": "emit start only when plaintext smtp_getc arms the receive alarm while smtp_read_command has installed command_timeout_handler; emit timeout only inside that handler and correlate by accepted connection/read generation",
+          "atomic_propositions": [
+            "smtp_server_command_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_in.c",
+          "symbol": "smtp_read_command",
+          "lines": "1424-1450",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_in.c#L1424-L1450",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-07",
+          "mapping": "auxiliary:3",
+          "role": "default timeout profile",
+          "event_predicate": "while smtp_read_command has command_timeout_handler installed, plaintext smtp_getc finds its input buffer empty and arms smtp_receive_timeout immediately before read",
+          "instrumentation_timing": "emit start only when plaintext smtp_getc arms the receive alarm while smtp_read_command has installed command_timeout_handler; emit timeout only inside that handler and correlate by accepted connection/read generation",
+          "atomic_propositions": [
+            "smtp_server_command_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/globals.c",
+          "symbol": "smtp_receive_timeout",
+          "lines": "1325-1326",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/globals.c#L1325-L1326",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "SMTP-TIMEOUT-07",
+          "mapping": "auxiliary:4",
+          "role": "fixed timeout profile",
+          "event_predicate": "while smtp_read_command has command_timeout_handler installed, plaintext smtp_getc finds its input buffer empty and arms smtp_receive_timeout immediately before read",
+          "instrumentation_timing": "emit start only when plaintext smtp_getc arms the receive alarm while smtp_read_command has installed command_timeout_handler; emit timeout only inside that handler and correlate by accepted connection/read generation",
+          "atomic_propositions": [
+            "smtp_server_command_wait_started"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/globals.c",
+          "symbol": "smtp_receive_timeout",
+          "lines": "1325",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/globals.c#L1325",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "smtp_server_command_idle_timeout": {
+      "definition": "that same command-read generation reaches command_timeout_handler because the armed receive alarm expires and closes the correlated connection",
+      "properties": [
+        "SMTP-TIMEOUT-07"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "SMTP-TIMEOUT-07",
+          "mapping": "auxiliary:2",
+          "role": "command timeout outcome and connection close",
+          "event_predicate": "that same command-read generation reaches command_timeout_handler because the armed receive alarm expires and closes the correlated connection",
+          "instrumentation_timing": "emit start only when plaintext smtp_getc arms the receive alarm while smtp_read_command has installed command_timeout_handler; emit timeout only inside that handler and correlate by accepted connection/read generation",
+          "atomic_propositions": [
+            "smtp_server_command_idle_timeout"
+          ],
+          "repository": "Exim/exim",
+          "commit": "38903fb5b864ee99904d035337c66891604d9678",
+          "path": "src/src/smtp_in.c",
+          "symbol": "command_timeout_handler",
+          "lines": "838-850",
+          "url": "https://github.com/Exim/exim/blob/38903fb5b864ee99904d035337c66891604d9678/src/src/smtp_in.c#L838-L850",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

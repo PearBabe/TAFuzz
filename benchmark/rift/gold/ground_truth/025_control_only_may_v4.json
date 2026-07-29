@@ -1,0 +1,169 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/025_control_only_may_v4.c",
+        "line": 26
+      },
+      "token": "ap_primary"
+    },
+    "source_gate": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/025_control_only_may_v4.c",
+        "line": 22
+      },
+      "token": "source_gate"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/025_control_only_may_v4.c",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "branch-selected Boolean",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/025_control_only_may_v4.c",
+        "line": 26
+      },
+      "role": "GUARD",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-025",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "control_only",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The positive templates place the source only in a branch predicate, never in the assigned AP data value; negative variants remove that predicate dependence.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "control_only",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross guarded boundary",
+        "kind": "guard_flip",
+        "relative_time_window": null,
+        "suggested_values": [
+          "7",
+          "8"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "control",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_gate != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "enable guarded assignment",
+        "kind": "boolean_toggle",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_gate",
+            "kind": "control",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_gate",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_gate"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/025_control_only_may_v4.c",
+  "source_sha256": "c2960fdbb8e8de5ba4859695ef5014e5b41fdd85777ee85cb518af297cc4cd59",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/025_control_only_may_v4.c",
+        "line": 20
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_gate",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/025_control_only_may_v4.c",
+        "line": 22
+      },
+      "scope": "PROCESS",
+      "symbol": "source_gate"
+    }
+  ]
+}

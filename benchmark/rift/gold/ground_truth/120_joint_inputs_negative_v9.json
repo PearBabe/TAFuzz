@@ -1,0 +1,136 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 28
+      },
+      "token": "ap_primary"
+    },
+    "node_joint_guard": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 26
+      },
+      "token": "node_joint_guard"
+    },
+    "source_left": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 20
+      },
+      "token": "source_left"
+    },
+    "source_right": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 22
+      },
+      "token": "source_right"
+    }
+  },
+  "aps": [
+    {
+      "expression": "source_left > 12 and source_right < 18",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 28
+      },
+      "role": "GUARD",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-120",
+  "case_relation": "NO_INFLUENCE",
+  "category": "joint_inputs",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "The AP is a conjunction whose truth-change requires satisfying regions for both inputs; the oracle records the joint group instead of pretending either mutation is sufficient alone.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "joint_inputs",
+    "variant": 9
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The joint guard is constant and ignores both externally supplied operands.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_left"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The joint guard is constant and ignores both externally supplied operands.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_right"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/120_joint_inputs_negative_v9.cpp",
+  "source_sha256": "bc651ee7a66dec0dc1c8c120dc1838d530f95178e3fa3179dab2c3d1975a76a8",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_left",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 20
+      },
+      "scope": "SESSION",
+      "symbol": "source_left"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_right",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/120_joint_inputs_negative_v9.cpp",
+        "line": 22
+      },
+      "scope": "SESSION",
+      "symbol": "source_right"
+    }
+  ]
+}

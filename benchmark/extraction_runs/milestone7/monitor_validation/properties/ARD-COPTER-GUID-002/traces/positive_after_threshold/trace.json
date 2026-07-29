@@ -1,0 +1,95 @@
+{
+  "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+  "dropped_event_count": 0,
+  "epoch": "synthetic_zero_integer_milliseconds",
+  "events": [
+    {
+      "correlation_id": "ARD-COPTER-GUID-002--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-GUID-002",
+      "seq": 0,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 0,
+      "values": {
+        "guided_gap_start": false,
+        "guided_variant_active": false,
+        "timeout_response_started": false
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-GUID-002--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-GUID-002",
+      "seq": 1,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 1000,
+      "values": {
+        "guided_gap_start": true,
+        "guided_variant_active": true,
+        "timeout_response_started": false
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-GUID-002--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-GUID-002",
+      "seq": 2,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 3999,
+      "values": {
+        "guided_gap_start": false,
+        "guided_variant_active": true,
+        "timeout_response_started": false
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-GUID-002--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-GUID-002",
+      "seq": 3,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 4000,
+      "values": {
+        "guided_gap_start": false,
+        "guided_variant_active": true,
+        "timeout_response_started": false
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-GUID-002--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-GUID-002",
+      "seq": 4,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 5000,
+      "values": {
+        "guided_gap_start": false,
+        "guided_variant_active": true,
+        "timeout_response_started": true
+      }
+    },
+    {
+      "correlation_id": "ARD-COPTER-GUID-002--positive_after_threshold",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-COPTER-GUID-002",
+      "seq": 5,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 6000,
+      "values": {
+        "guided_gap_start": false,
+        "guided_variant_active": true,
+        "timeout_response_started": false
+      }
+    }
+  ],
+  "notes": "Response occurs strictly after the lower threshold and no response occurs before it. No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+  "property_id": "ARD-COPTER-GUID-002",
+  "schema_version": "1.0",
+  "trace_id": "ARD-COPTER-GUID-002--positive_after_threshold"
+}

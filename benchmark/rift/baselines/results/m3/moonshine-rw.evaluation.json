@@ -1,0 +1,6459 @@
+{
+  "analysis_status": "UNSUPPORTED",
+  "analyzer": {
+    "artifact_sha256": "ea0c5b10b787f4370ad1e8f00e970d7f87b35332de98dba38bcee762faf8af40",
+    "command": [
+      "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+      "baseline",
+      "--method",
+      "moonshine-rw",
+      "--input",
+      "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+      "--output",
+      "/tmp/rift-m3-final-20260718/moonshine-rw.result.json"
+    ],
+    "configuration": {
+      "candidate_binding_mode": "GIVEN_CANDIDATE_ANCHORS_NOT_SCORED",
+      "controllability_mode": "GIVEN_CONTROLLABILITY_NOT_SCORED",
+      "evaluation_track": "PAIR_CLASSIFICATION_DIAGNOSTIC",
+      "execution_receipt_scope": "PROCESS_START_THROUGH_PREFLIGHT_SERIALIZATION",
+      "headline_performance_source": "EXTERNAL_PROCESS_RUNNER_REQUIRED",
+      "method": "moonshine-rw"
+    },
+    "id": "moonshine-rw",
+    "implementation": "TAFuzz project-neutral Clang AST weak baseline",
+    "version": "0.1.0-m3"
+  },
+  "by_category": {
+    "alias_object_field": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 7,
+            "fp": 0,
+            "gold": 7,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "async_timer_callback_queue": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.1875,
+        "f1": 0.0,
+        "fn": 13,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 16,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 13,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 9
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 9,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 9,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 16,
+        "unknown": 16
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": 0.0,
+            "fn": 13,
+            "fp": 0,
+            "gold": 13,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": 0.0,
+            "fn": 7,
+            "fp": 0,
+            "gold": 7,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": 0.0,
+            "fn": 13,
+            "fp": 0,
+            "gold": 13,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "timer": {
+            "f1": 0.0,
+            "fn": 13,
+            "fp": 0,
+            "gold": 13,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 59,
+          "fp": 0,
+          "gold": 59,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 59,
+          "fp": 0,
+          "gold": 59,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 13,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 16,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 16,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 16
+      }
+    },
+    "config_threshold": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.13043478260869565,
+        "f1": 0.0,
+        "fn": 20,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 23,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 20,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 14
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 14,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 14,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 23,
+        "unknown": 23
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 20,
+            "fp": 0,
+            "gold": 20,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 23,
+          "fp": 0,
+          "gold": 23,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 40,
+          "fp": 0,
+          "gold": 40,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 20,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 23,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 14,
+        "predicted_must": 0,
+        "unresolved": 14,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 23,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 23
+      }
+    },
+    "control_only": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "direct_data": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 13,
+          "fp": 0,
+          "gold": 13,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 20,
+          "fp": 0,
+          "gold": 20,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "indirect_data": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 23,
+          "fp": 0,
+          "gold": 23,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "joint_inputs": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.2608695652173913,
+        "f1": 0.0,
+        "fn": 17,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 6,
+        "total": 23,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 17,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 9
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 8
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 9,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 9,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 8,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 8,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          }
+        },
+        "total": 23,
+        "unknown": 23
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 17,
+            "fp": 0,
+            "gold": 17,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 17,
+            "fp": 0,
+            "gold": 17,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 34,
+          "fp": 0,
+          "gold": 34,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 34,
+          "fp": 0,
+          "gold": 34,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 17,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 23,
+        "tp": 0,
+        "unknown_on_negative": 6
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 8,
+        "predicted_must": 0,
+        "unresolved": 8,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 23,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 23
+      }
+    },
+    "message_parser_state": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "parse": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": 0.0,
+            "fn": 7,
+            "fp": 0,
+            "gold": 7,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "one_input_multi_ap": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 20,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 6,
+        "total": 26,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 20,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 12
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 8
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 12,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 12,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 8,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 8,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          }
+        },
+        "total": 26,
+        "unknown": 26
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "gold": 6,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 20,
+            "fp": 0,
+            "gold": 20,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 26,
+          "fp": 0,
+          "gold": 26,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 40,
+          "fp": 0,
+          "gold": 40,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 20,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 26,
+        "tp": 0,
+        "unknown_on_negative": 6
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 8,
+        "predicted_must": 0,
+        "unresolved": 8,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 20,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 20,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 26,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 26
+      }
+    },
+    "setup_mode_prerequisite": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": 0.0,
+            "fn": 7,
+            "fp": 0,
+            "gold": 7,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "timing_drop_repeat_reorder": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.23076923076923078,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 3,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 3
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 3,
+            "tp": 0
+          }
+        },
+        "total": 13,
+        "unknown": 13
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": 0.0,
+            "fn": 7,
+            "fp": 0,
+            "gold": 7,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "field": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 23,
+          "fp": 0,
+          "gold": 23,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 13,
+        "tp": 0,
+        "unknown_on_negative": 3
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 13,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 13
+      }
+    },
+    "uncontrollable_false_correlation": {
+      "actionable_derived": {
+        "accuracy_unknown_is_wrong": 0.8695652173913043,
+        "f1": 0.0,
+        "fn": 3,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 20,
+        "total": 23,
+        "tp": 0,
+        "unknown_on_negative": 0
+      },
+      "candidate_inflation_pair_classification_diagnostic": {
+        "candidate_precision": null,
+        "candidate_set_size_ratio": 0.0,
+        "false_candidate_inflation_per_gold_positive": 0.0,
+        "false_candidate_pairs": 0,
+        "gold_positive_pairs": 10,
+        "predicted_candidate_pairs": 0,
+        "true_candidate_pairs": 0
+      },
+      "classification": {
+        "confusion_matrix_gold_rows": {
+          "MAY": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 6
+          },
+          "MUST": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 4
+          },
+          "NO": {
+            "MAY": 0,
+            "MUST": 0,
+            "NO": 0,
+            "UNKNOWN": 13
+          }
+        },
+        "exact": 0,
+        "exact_accuracy_unknown_is_wrong": 0.0,
+        "macro_f1_undefined_as_zero": 0.0,
+        "per_class": {
+          "MAY": {
+            "f1": 0.0,
+            "fn": 6,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 6,
+            "tp": 0
+          },
+          "MUST": {
+            "f1": 0.0,
+            "fn": 4,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 4,
+            "tp": 0
+          },
+          "NO": {
+            "f1": 0.0,
+            "fn": 13,
+            "fp": 0,
+            "precision": null,
+            "recall": 0.0,
+            "support": 13,
+            "tp": 0
+          }
+        },
+        "total": 23,
+        "unknown": 23
+      },
+      "edges": {
+        "by_kind": {
+          "alias": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "call": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "callback": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "control": {
+            "f1": 0.0,
+            "fn": 3,
+            "fp": 0,
+            "gold": 3,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "data": {
+            "f1": 0.0,
+            "fn": 10,
+            "fp": 0,
+            "gold": 10,
+            "precision": null,
+            "predicted": 0,
+            "recall": 0.0,
+            "status": "PRESENT",
+            "tp": 0
+          },
+          "dequeue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "enqueue": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "event_order": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "field": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "parse": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "return": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "setup": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "state_commit": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timer": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          },
+          "timing": {
+            "f1": null,
+            "fn": 0,
+            "fp": 0,
+            "gold": 0,
+            "precision": null,
+            "predicted": 0,
+            "recall": null,
+            "status": "NOT_PRESENT_IN_GOLD",
+            "tp": 0
+          }
+        },
+        "primary_pair_edge_kind": {
+          "f1": 0.0,
+          "fn": 13,
+          "fp": 0,
+          "gold": 13,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "tp": 0
+        },
+        "unprojected_exact_endpoint_diagnostic": {
+          "f1": 0.0,
+          "fn": 20,
+          "fp": 0,
+          "gold": 20,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+          "tp": 0
+        }
+      },
+      "influence": {
+        "accuracy_unknown_is_wrong": 0.0,
+        "f1": 0.0,
+        "fn": 10,
+        "fp": 0,
+        "precision": null,
+        "recall": 0.0,
+        "tn": 0,
+        "total": 23,
+        "tp": 0,
+        "unknown_on_negative": 13
+      },
+      "must": {
+        "detected_as_influence": 0,
+        "detection_recall": 0.0,
+        "downgrade_rate": 0.0,
+        "downgraded_to_may": 0,
+        "exact_must": 0,
+        "exact_precision": null,
+        "exact_recall": 0.0,
+        "gold_must": 4,
+        "predicted_must": 0,
+        "unresolved": 4,
+        "unresolved_rate": 1.0
+      },
+      "unsupported": {
+        "ap_queries": 10,
+        "error_pairs": 0,
+        "fully_resolved_ap_queries": 0,
+        "fully_resolved_ap_query_coverage": 0.0,
+        "fully_unknown_ap_queries": 10,
+        "partially_resolved_ap_queries": 0,
+        "unknown_pairs": 23,
+        "unknown_rate": 1.0,
+        "unsupported_pairs": 23
+      }
+    }
+  },
+  "diagnostics": {
+    "actionable_derived_errors": [
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_001",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_001",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_003",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_004",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_006",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_006",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_setup_mode"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_007",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_007",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_008",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_009",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_009",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_010",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_011",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_012",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_014",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_014",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_014",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_015",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_017",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_018",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_018",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_019",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_019",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_queue_accept"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_019",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_timer_fire"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_021",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_021",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_022",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_022",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_queue_accept"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_022",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_timer_fire"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_024",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_024",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_kind"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_025",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_025",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_027",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_028",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_029",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_030",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_030",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_031",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_032",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_032",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_sequence_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_034",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_034",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_kind"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_035",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_037",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_038",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_039",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_039",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_040",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_040",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_040",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_041",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_041",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_045",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_045",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_045",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_045",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_046",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_046",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_046",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_047",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_047",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_kind"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_048",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_048",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_049",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_049",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_setup_mode"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_050",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_051",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_052",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_053",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_057",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_057",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_058",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_058",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_059",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_059",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_059",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_060",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_060",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_060",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_063",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_066",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_066",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_066",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_067",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_068",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_068",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_069",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_070",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_070",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_072",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_074",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_074",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_sequence_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_076",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_077",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_077",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_077",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_077",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_078",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_079",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_081",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_082",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_082",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_083",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_083",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_087",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_088",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_089",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_089",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_090",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_090",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_091",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_091",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_091",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_091",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_094",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_095",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_096",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_097",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_097",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_099",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_099",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_queue_accept"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_099",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_timer_fire"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_101",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_102",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_102",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_103",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_103",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_104",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_105",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_106",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_107",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_107",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_110",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_114",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_114",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_116",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_116",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_setup_mode"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_118",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_118",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_sequence_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_119",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_119",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_120",
+        "gold": "YES",
+        "prediction": "NO",
+        "source_id": "source_primary"
+      }
+    ],
+    "misclassified_pairs": [
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_001",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_001",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_002",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_002",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_003",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_004",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_005",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_006",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_006",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_setup_mode"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_007",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_007",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_008",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_009",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_009",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_010",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_011",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_011",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_012",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_013",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_013",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_014",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_014",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_014",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_015",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_016",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_017",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_018",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_018",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_019",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_019",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_queue_accept"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_019",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_timer_fire"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_020",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_021",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_021",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_022",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_022",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_queue_accept"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_022",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_timer_fire"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_023",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_024",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_024",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_kind"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_025",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_025",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_026",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_026",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_027",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_028",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_029",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_030",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_030",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_031",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_032",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_032",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_sequence_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_033",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_034",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_034",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_kind"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_035",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_036",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_036",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_037",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_038",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_039",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_039",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_040",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_040",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_040",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_041",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_041",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_042",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_042",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_043",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_044",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_045",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_045",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_045",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_045",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_046",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_046",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_046",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_047",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_047",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_kind"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_048",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_048",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_049",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_049",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_setup_mode"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_050",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_050",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_050",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_051",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_052",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_053",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_054",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_054",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_055",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_056",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_057",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_057",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_058",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_058",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_059",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_059",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_059",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_060",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_060",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_060",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_061",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_061",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_062",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_062",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_063",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_064",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_065",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_065",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_066",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_066",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_066",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_067",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_067",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_068",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_068",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_069",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_070",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_070",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_071",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_071",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_072",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_073",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_074",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_074",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_sequence_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_075",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_076",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_077",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_077",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_077",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_077",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_078",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_079",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_080",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_081",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_082",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_082",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_083",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_083",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_084",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_084",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_085",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_086",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_087",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_088",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_088",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_088",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_089",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_089",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_090",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_090",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_091",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_091",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_091",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_091",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_092",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_093",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_094",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_094",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_095",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_095",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_095",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_096",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_097",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_097",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_098",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_099",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_099",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_queue_accept"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_099",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_timer_fire"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_100",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_101",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_102",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_102",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_103",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_left"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_103",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_right"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_104",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_message_value"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_105",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_106",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_107",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_107",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_108",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_109",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_secondary",
+        "case_id": "case_109",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_110",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_111",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_112",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_113",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_payload"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_114",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_114",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_115",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_116",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_116",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_setup_mode"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_117",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_internal"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_117",
+        "gold": "NO",
+        "prediction": "UNKNOWN",
+        "source_id": "source_external_similar"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_118",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_118",
+        "gold": "MAY",
+        "prediction": "UNKNOWN",
+        "source_id": "source_sequence_gate"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_119",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_configuration"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_119",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_observation"
+      },
+      {
+        "ap_id": "ap_primary",
+        "case_id": "case_120",
+        "gold": "MUST",
+        "prediction": "UNKNOWN",
+        "source_id": "source_primary"
+      }
+    ]
+  },
+  "evidence_identity": {
+    "case_count": 120,
+    "gold_manifest_sha256": "d1c4cb44094416d7ac814e80f5abce0f056cb3ec353ee0d60728fab584ee6452",
+    "input_manifest_sha256": "076e1f4d333be3e729391d5de0857dbaeee43b7ebef6ef17e2f42fec1257a229",
+    "pair_count": 202,
+    "result_sha256": "2530e4bbb34bbe110ee2dd5e9173301db81b6a6c81b39c27a5fe80f7c78d81a9"
+  },
+  "execution": {
+    "analyzed_units": 120,
+    "exit_code": 0,
+    "peak_rss_bytes": 110895104,
+    "toolchain": [
+      {
+        "name": "LLVM",
+        "version": "18.1.8"
+      },
+      {
+        "name": "Clang",
+        "version": "Ubuntu clang version 18.1.8 (++20240731024944+3b5b5c1ec4a3-1~exp1~20240731145000.144)"
+      }
+    ],
+    "wall_seconds": 0.910472733
+  },
+  "limitation_counts": {
+    "NO means no matching W/R_cond fact in this abstraction, not proof of semantic non-influence": 323,
+    "indirect calls and external side effects are unsupported": 323,
+    "lexical producer-before-consumer order is not CFG or loop reachability": 323,
+    "path values and branch feasibility are not represented": 323,
+    "pointer aliasing can under-approximate writes and reads": 323,
+    "record-field summaries are object-insensitive": 323,
+    "thread/process producer ordering is unsupported": 323
+  },
+  "metric_definitions": {
+    "actionable_derived": "predicted positive relation AND provided controllability is EXTERNAL/MODELLED; this is a pair-classification diagnostic, not frontier discovery",
+    "candidate_set_size_ratio": "within the supplied source\u00d7AP universe, predicted MUST/MAY pair count divided by gold MUST/MAY pair count; this is not open source-discovery candidate burden",
+    "edge_kind": "headline cross-method edge metric is set membership of (opaque case, given source, given AP, edge kind)",
+    "exact_edge_boundary": "raw AST/LLVM/SVF entities are not projected to gold node IDs; exact endpoints are UNPROJECTED_DIAGNOSTIC and never headline",
+    "false_candidate_inflation": "within the supplied source\u00d7AP universe, predicted-positive/gold-NO pairs divided by gold-positive pairs",
+    "must_detection_recall": "gold MUST predicted as MUST or MAY",
+    "must_exact_recall": "gold MUST predicted exactly as MUST",
+    "positive_influence": "gold/predicted MUST or MAY",
+    "unknown": "UNKNOWN is an abstention: it is never counted as NO or as a true negative; on positive gold it is a false negative"
+  },
+  "overall": {
+    "actionable_derived": {
+      "accuracy_unknown_is_wrong": 0.29207920792079206,
+      "f1": 0.0,
+      "fn": 143,
+      "fp": 0,
+      "precision": null,
+      "recall": 0.0,
+      "tn": 59,
+      "total": 202,
+      "tp": 0,
+      "unknown_on_negative": 0
+    },
+    "candidate_inflation_pair_classification_diagnostic": {
+      "candidate_precision": null,
+      "candidate_set_size_ratio": 0.0,
+      "false_candidate_inflation_per_gold_positive": 0.0,
+      "false_candidate_pairs": 0,
+      "gold_positive_pairs": 150,
+      "predicted_candidate_pairs": 0,
+      "true_candidate_pairs": 0
+    },
+    "classification": {
+      "confusion_matrix_gold_rows": {
+        "MAY": {
+          "MAY": 0,
+          "MUST": 0,
+          "NO": 0,
+          "UNKNOWN": 84
+        },
+        "MUST": {
+          "MAY": 0,
+          "MUST": 0,
+          "NO": 0,
+          "UNKNOWN": 66
+        },
+        "NO": {
+          "MAY": 0,
+          "MUST": 0,
+          "NO": 0,
+          "UNKNOWN": 52
+        }
+      },
+      "exact": 0,
+      "exact_accuracy_unknown_is_wrong": 0.0,
+      "macro_f1_undefined_as_zero": 0.0,
+      "per_class": {
+        "MAY": {
+          "f1": 0.0,
+          "fn": 84,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "support": 84,
+          "tp": 0
+        },
+        "MUST": {
+          "f1": 0.0,
+          "fn": 66,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "support": 66,
+          "tp": 0
+        },
+        "NO": {
+          "f1": 0.0,
+          "fn": 52,
+          "fp": 0,
+          "precision": null,
+          "recall": 0.0,
+          "support": 52,
+          "tp": 0
+        }
+      },
+      "total": 202,
+      "unknown": 202
+    },
+    "edges": {
+      "by_kind": {
+        "alias": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "call": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "callback": {
+          "f1": 0.0,
+          "fn": 13,
+          "fp": 0,
+          "gold": 13,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "control": {
+          "f1": 0.0,
+          "fn": 60,
+          "fp": 0,
+          "gold": 60,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "data": {
+          "f1": 0.0,
+          "fn": 104,
+          "fp": 0,
+          "gold": 104,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "dequeue": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "enqueue": {
+          "f1": 0.0,
+          "fn": 7,
+          "fp": 0,
+          "gold": 7,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "event_order": {
+          "f1": 0.0,
+          "fn": 7,
+          "fp": 0,
+          "gold": 7,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "field": {
+          "f1": 0.0,
+          "fn": 30,
+          "fp": 0,
+          "gold": 30,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "parse": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "return": {
+          "f1": null,
+          "fn": 0,
+          "fp": 0,
+          "gold": 0,
+          "precision": null,
+          "predicted": 0,
+          "recall": null,
+          "status": "NOT_PRESENT_IN_GOLD",
+          "tp": 0
+        },
+        "setup": {
+          "f1": 0.0,
+          "fn": 10,
+          "fp": 0,
+          "gold": 10,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "state_commit": {
+          "f1": 0.0,
+          "fn": 27,
+          "fp": 0,
+          "gold": 27,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "timer": {
+          "f1": 0.0,
+          "fn": 13,
+          "fp": 0,
+          "gold": 13,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        },
+        "timing": {
+          "f1": 0.0,
+          "fn": 3,
+          "fp": 0,
+          "gold": 3,
+          "precision": null,
+          "predicted": 0,
+          "recall": 0.0,
+          "status": "PRESENT",
+          "tp": 0
+        }
+      },
+      "primary_pair_edge_kind": {
+        "f1": 0.0,
+        "fn": 314,
+        "fp": 0,
+        "gold": 314,
+        "precision": null,
+        "predicted": 0,
+        "recall": 0.0,
+        "tp": 0
+      },
+      "unprojected_exact_endpoint_diagnostic": {
+        "f1": 0.0,
+        "fn": 373,
+        "fp": 0,
+        "gold": 373,
+        "precision": null,
+        "predicted": 0,
+        "recall": 0.0,
+        "status": "UNPROJECTED_DIAGNOSTIC_NOT_HEADLINE",
+        "tp": 0
+      }
+    },
+    "influence": {
+      "accuracy_unknown_is_wrong": 0.0,
+      "f1": 0.0,
+      "fn": 150,
+      "fp": 0,
+      "precision": null,
+      "recall": 0.0,
+      "tn": 0,
+      "total": 202,
+      "tp": 0,
+      "unknown_on_negative": 52
+    },
+    "must": {
+      "detected_as_influence": 0,
+      "detection_recall": 0.0,
+      "downgrade_rate": 0.0,
+      "downgraded_to_may": 0,
+      "exact_must": 0,
+      "exact_precision": null,
+      "exact_recall": 0.0,
+      "gold_must": 66,
+      "predicted_must": 0,
+      "unresolved": 66,
+      "unresolved_rate": 1.0
+    },
+    "unsupported": {
+      "ap_queries": 130,
+      "error_pairs": 0,
+      "fully_resolved_ap_queries": 0,
+      "fully_resolved_ap_query_coverage": 0.0,
+      "fully_unknown_ap_queries": 130,
+      "partially_resolved_ap_queries": 0,
+      "unknown_pairs": 202,
+      "unknown_rate": 1.0,
+      "unsupported_pairs": 202
+    }
+  },
+  "schema_version": "rift.baseline-evaluation.v1"
+}

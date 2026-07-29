@@ -1,0 +1,85 @@
+{
+  "boundary_region": "vacuous",
+  "case_kind": "vacuous_trigger_control",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 4000,
+    "response_delta_ticks": 1999,
+    "threshold_ticks": 2000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Control trace disables the trigger while retaining the early response; it is paired with the non-vacuous counterexample.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 136,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/monitor_trace.csv",
+    "sha256": "65a914efa02b497876368145588fc2d0a01d8234472e2f5ce5d394fe697d85fc"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 0,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-ROVER-CRASH-002:trace:vacuous_trigger_control",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1342,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor/metadata.json",
+      "sha256": "27026fafe022d68876f68390828feccd75e0947562f442562fc40933cb44acbc"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 971,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor.stdout.txt",
+      "sha256": "12304c7ede29ce595aea82ec5f9bd7c8162d4c9075cbeda0a0b43c00d47cbefb"
+    },
+    "steps": {
+      "bytes": 385,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/tamonitor/steps.csv",
+      "sha256": "44bedc3e5b2b45c6453df790cf6b9d692e77affdc71616230048de1b449039b1"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 4000,
+      "monitor_advanced": true,
+      "negative_states": 1,
+      "positive_states": 1,
+      "step": 5,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 2771,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/vacuous_trigger_control/trace.json",
+    "sha256": "8e4f63b95d4bd4f60d5c2e402066ef8daadf87d7e7572e092943a8c9293aee74"
+  },
+  "trace_id": "ARD-ROVER-CRASH-002--vacuous_trigger_control"
+}

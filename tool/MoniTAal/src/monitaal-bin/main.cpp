@@ -112,7 +112,7 @@ template <class state_t>
 void monitor_from_file(Monitor<state_t>& monitor, bin_settings_t& settings, std::ostream& out, std::istream& input) {
     std::vector<timed_input_t> events;
 
-    while (not input.eof() || monitor.status() == INCONCLUSIVE) {        
+    while (not input.eof() && monitor.status() == INCONCLUSIVE) {
         events = EventParser::parse_input(&input, 1000);
         monitor.input(events);
         settings.event_counter += events.size();

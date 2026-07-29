@@ -1,0 +1,193 @@
+{
+  "summary": {
+    "output_dir": "/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full",
+    "signoff_csv": "/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full/review_signoff_template.csv",
+    "mode": "pre-review",
+    "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED",
+    "validation_rows": 16,
+    "pass": 16,
+    "fail": 0,
+    "signoff_rows": 56,
+    "queue_rows": 72,
+    "expected_signoff_queue_rows": 56,
+    "blank_decisions": 56,
+    "nonblank_decisions": 0,
+    "invalid_decisions": 0,
+    "policy_mismatch_rows": 0,
+    "forbidden_decision_rows": 0,
+    "unresolved_evidence_tokens": 0,
+    "missing_queue_evidence_rows": 0,
+    "unresolved_queue_evidence_tokens": 0,
+    "unresolved_source_sheet_tokens": 0,
+    "unresolved_source_rows": 0,
+    "unresolved_queue_source_sheet_tokens": 0,
+    "unresolved_queue_source_rows": 0,
+    "missing_reviewer_or_date_rows": 0,
+    "missing_required_notes_rows": 0,
+    "decision_counts": {
+      "<blank>": 56
+    }
+  },
+  "rows": [
+    {
+      "check_id": "SIGNOFF_FILES_PRESENT",
+      "category": "artifact_presence",
+      "status": "PASS",
+      "expected": "human_review_queue.csv and signoff CSV exist",
+      "observed": "queue_exists=True; signoff_exists=True",
+      "evidence_artifacts": "human_review_queue.csv; review_signoff_template.csv",
+      "reviewer_action": "Regenerate the review packet if either file is missing.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_REQUIRED_COLUMNS",
+      "category": "schema",
+      "status": "PASS",
+      "expected": "required queue and signoff columns are present",
+      "observed": "missing_signoff=; missing_queue=",
+      "evidence_artifacts": "human_review_queue.csv; review_signoff_template.csv",
+      "reviewer_action": "Do not use a signoff sheet with missing review columns.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_QUEUE_COVERAGE",
+      "category": "coverage",
+      "status": "PASS",
+      "expected": "signoff rows cover exactly all P0/P1/P2 review queue rows",
+      "observed": "expected=56; actual=56; missing=; extra=",
+      "evidence_artifacts": "human_review_queue.csv; review_signoff_template.csv",
+      "reviewer_action": "Fix queue/signoff generation before asking for human signoff.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_PRIORITY_AND_REQUIRED_FLAGS",
+      "category": "schema",
+      "status": "PASS",
+      "expected": "all signoff rows are P0/P1/P2 and signoff_required=true",
+      "observed": "bad_priority=; missing_required=",
+      "evidence_artifacts": "review_signoff_template.csv",
+      "reviewer_action": "Only paper-facing P0/P1/P2 rows should require signoff.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_QUEUE_FIELD_SYNC",
+      "category": "coverage",
+      "status": "PASS",
+      "expected": "signoff rows copy queue evidence fields exactly",
+      "observed": "mismatched=",
+      "evidence_artifacts": "human_review_queue.csv; review_signoff_template.csv",
+      "reviewer_action": "Regenerate signoff rows if they drift from the review queue.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_ALLOWED_DECISIONS",
+      "category": "decision_policy",
+      "status": "PASS",
+      "expected": "decision_allowed is the canonical set and filled decisions use only allowed values",
+      "observed": "bad_allowed=; invalid_decisions=",
+      "evidence_artifacts": "review_signoff_template.csv",
+      "reviewer_action": "Use only the allowed signoff decisions.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_DECISION_SCOPE_POLICY",
+      "category": "decision_policy",
+      "status": "PASS",
+      "expected": "generated signoff decision policy fields match validator policy and no filled decision is forbidden for its row",
+      "observed": "policy_mismatch=; forbidden_decisions=",
+      "evidence_artifacts": "review_signoff_template.csv",
+      "reviewer_action": "Use recommended_decision/completion_requirements as guidance; never approve rows whose policy forbids that decision.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_EVIDENCE_FIELDS_PRESENT",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each signoff row names evidence, focus, must-not-claim text, and next action",
+      "observed": "missing_evidence_fields=",
+      "evidence_artifacts": "review_signoff_template.csv",
+      "reviewer_action": "Do not ask for signoff on rows without enough review context.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_EVIDENCE_RESOLUTION",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each signoff evidence token resolves to an output artifact, repo file, workbook sheet, or explicit glob with at least one match",
+      "observed": "unresolved=",
+      "evidence_artifacts": "review_signoff_template.csv; paper_review_results.xlsx; linked evidence artifacts",
+      "reviewer_action": "Fix evidence_artifacts before asking for human signoff; use concrete files or explicit glob: patterns for generated run artifacts.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "QUEUE_EVIDENCE_FIELDS_PRESENT",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each human review queue row names evidence, focus, summary, must-not-claim text, and next action",
+      "observed": "missing_evidence_fields=",
+      "evidence_artifacts": "human_review_queue.csv",
+      "reviewer_action": "Do not ask reviewers to use queue rows without enough review context.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "QUEUE_EVIDENCE_RESOLUTION",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each human review queue evidence token resolves to an output artifact, repo file, workbook sheet, or explicit glob with at least one match",
+      "observed": "unresolved=",
+      "evidence_artifacts": "human_review_queue.csv; paper_review_results.xlsx; linked evidence artifacts",
+      "reviewer_action": "Fix queue evidence_artifacts before asking for manual review.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_SOURCE_SHEET_RESOLUTION",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each signoff source_sheet token resolves to a workbook sheet",
+      "observed": "unresolved=",
+      "evidence_artifacts": "review_signoff_template.csv; paper_review_results.xlsx",
+      "reviewer_action": "Fix source_sheet names before asking reviewers to follow workbook references.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_SOURCE_ROW_RESOLUTION",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each signoff source_id resolves to the expected generated source CSV row for its queue type",
+      "observed": "unresolved=",
+      "evidence_artifacts": "review_signoff_template.csv; human_review_queue.csv; linked source CSV artifacts",
+      "reviewer_action": "Fix dangling source_id values before using the signoff row for human review.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "QUEUE_SOURCE_SHEET_RESOLUTION",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each human review queue source_sheet token resolves to a workbook sheet",
+      "observed": "unresolved=",
+      "evidence_artifacts": "human_review_queue.csv; paper_review_results.xlsx",
+      "reviewer_action": "Fix source_sheet names before using the queue for manual review.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "QUEUE_SOURCE_ROW_RESOLUTION",
+      "category": "reviewability",
+      "status": "PASS",
+      "expected": "each human review queue source_id resolves to the expected generated source CSV row for its queue type",
+      "observed": "unresolved=",
+      "evidence_artifacts": "human_review_queue.csv; linked source CSV artifacts",
+      "reviewer_action": "Fix dangling source_id values before using the queue for manual review.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    },
+    {
+      "check_id": "SIGNOFF_PRE_REVIEW_BLANK",
+      "category": "completion_boundary",
+      "status": "PASS",
+      "expected": "generated packet has blank reviewer-owned fields before human review",
+      "observed": "blank_decisions=56; nonblank_decisions=0",
+      "evidence_artifacts": "review_signoff_template.csv",
+      "reviewer_action": "Blank decisions mean ready for review, not approved.",
+      "completion_state": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "validator": "validate_property_records.py",
+  "result": "PASS",
+  "checks": 11096,
+  "failures": [],
+  "counts": {
+    "property_records": 51,
+    "property_records_by_system": {
+      "ArduPilot": 30,
+      "PX4": 21
+    },
+    "joined_atomic_propositions": 178,
+    "joined_author_dependency_associations": 7569,
+    "joined_formula_parameter_rows": 20,
+    "canonical_term_binding_rows": 227,
+    "validated_source_ranges": 178,
+    "official_document_records": 23,
+    "schema_validated_records": 51,
+    "curated_default_evidence_locations": 7,
+    "properties_with_previous_observation": 27,
+    "properties_with_symbolic_k": 4,
+    "explained_unique_record_fields": 221
+  },
+  "frozen_source_commits": {
+    "ArduPilot": {
+      "expected": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "manifest": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "checkout": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e"
+    },
+    "PX4": {
+      "expected": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "manifest": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "checkout": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
+    }
+  },
+  "field_definitions_zh": {
+    "schema_version": "验证报告结构版本；1.0 表示本验证器采用的首版报告接口。",
+    "validator": "执行检查的验证器文件名。",
+    "result": "总体结果；PASS 表示全部自动检查通过，FAIL 表示至少一项失败。",
+    "checks": "实际执行的布尔检查总数。",
+    "failures": "中文失败说明列表；为空才允许 result 为 PASS。",
+    "counts": "本次从交付文件重新统计的数量，不是人工填写结论。",
+    "frozen_source_commits": "固定源码提交的期望值、来源清单值和当前检出值三方对照。",
+    "schema_validation_engine": "逐条检查 JSON 记录结构所用的 Python 库及验证器；无法导入库时使用本文件内置的显式结构检查。",
+    "explained_unique_record_fields": "递归扫描 51 条性质记录后，在中英文对照字段字典中逐项解释的唯一机器字段数量。"
+  },
+  "status_definitions_zh": {
+    "PASS": "通过；仅说明本验证器覆盖的数据结构、连接、路径和保守时间语义检查均成立。",
+    "FAIL": "失败；至少一项交付一致性检查不成立，必须查看 failures。",
+    "NOT_ASSESSED": "未评估；没有判断当前 ArduPilot 或 PX4 是否满足论文性质。"
+  },
+  "schema_validation_engine": "jsonschema-3.2.0:Draft7Validator",
+  "scope_note_zh": "通过只证明 51 条逐性质记录完整保留 178 个原子命题、7,569 条作者候选关联、20 条公式参数覆盖、当前源码绑定、官方文档语境和未虚构的时间说明；不证明 PGFuzz 公式是当前官方规范，不证明候选输入具有真实因果依赖，也不证明固件符合性质。"
+}

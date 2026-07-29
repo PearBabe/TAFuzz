@@ -1,0 +1,54 @@
+property_id: RFC7252-MITL-006
+title: ACK/RST 必须按 Message ID 和 endpoint 匹配
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.4"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1322
+      end: 1325
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: ACK/RST 要匹配 CON/NON，Message ID 和 source endpoint 必须匹配原 message 的 Message ID 和 destination endpoint。
+  normative_keyword: MUST
+mitl: |
+  G( ACK_OR_RST_RECEIVED ->
+     F[0,0] (MID_MATCHES_PRIOR_MESSAGE && SOURCE_ENDPOINT_MATCHES_PRIOR_DESTINATION) )
+informal_semantics: >
+  收到 ACK 或 RST 时，必须能在同一处理步骤中确认它的 Message ID 和 source endpoint
+  与先前发送的 CON/NON message 匹配。
+role: client/server/both
+temporal_pattern: immediate_matching
+events:
+  start_event: ACK_OR_RST_RECEIVED
+  required_events:
+    - MID_MATCHES_PRIOR_MESSAGE
+    - SOURCE_ENDPOINT_MATCHES_PRIOR_DESTINATION
+atomic_propositions:
+  - name: ACK_OR_RST_RECEIVED
+    semantic: 收到类型为 ACK 或 RST 的 CoAP message。
+    fields: [session, peer, message.type, message.id]
+    future_source_mapping: [message field, function event]
+  - name: MID_MATCHES_PRIOR_MESSAGE
+    semantic: ACK/RST 的 Message ID 等于 prior CON/NON 的 Message ID。
+    fields: [message.id, prior_message.id]
+    future_source_mapping: [message field, data structure]
+  - name: SOURCE_ENDPOINT_MATCHES_PRIOR_DESTINATION
+    semantic: ACK/RST source endpoint 等于 prior CON/NON 的 destination endpoint。
+    fields: [peer, prior_destination_endpoint, session]
+    future_source_mapping: [endpoint state, data structure]
+correlation_key:
+  key: [session, peer, message_id]
+  reason: ACK/RST matching 的 RFC 条件正是 Message ID 和 endpoint；session 防止不同传输上下文混淆。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: ACK_OR_RST_RECEIVED
+  end: matching decision
+  interval: "[0,0]"
+  rfc_parameters: []
+  default_values: {}
+confidence: high
+verification_notes:
+  - 该性质是即时匹配，不需要自造秒级 timeout。
+  - unmatched ACK/RST 的处理与其他性质中的 silent ignore/closure 分开记录。

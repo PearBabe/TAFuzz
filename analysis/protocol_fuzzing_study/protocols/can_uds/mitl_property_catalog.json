@@ -1,0 +1,1469 @@
+[
+  {
+    "id": "CANTP-NBS-01",
+    "protocol": "CAN/UDS",
+    "protocol_extension": "AUTOSAR CAN-TP sender, python-can-isotp default profile",
+    "title": "Waiting for FlowControl ends or aborts at N_Bs=1000 ms",
+    "category": "CAN-TP N_Bs timeout",
+    "natural_language": "python-can-isotp 默认 N_Bs profile 中，发送方进入 WAIT_FC 后，1000 ms 前不得以 N_Bs 超时中止；到期前必须收到 FlowControl 或执行中止。",
+    "normative_strength": "SHALL",
+    "standard": "AUTOSAR SWS CAN Transport Layer",
+    "standard_version": "R24-11",
+    "standard_section": "7.2.3 [SWS_CanTp_00315-SWS_CanTp_00316]; 10.2 [ECUC_CanTp_00264]",
+    "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_CANTransportLayer.pdf",
+    "standard_excerpt": "abort transmission of this message and notify the upper layer",
+    "time_value_ms": "1000",
+    "time_parameter": "N_Bs / rx_flowcontrol_timeout",
+    "time_source": "python-can-isotp default rx_flowcontrol_timeout=1000 ms; AUTOSAR defines N_Bs as configurable with no default",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (n_bs_timer_generation_started_1000 -> (G [0,1000) (!tx_aborted_n_bs) && F [0,1000] (flow_control_received || tx_aborted_n_bs || n_bs_generation_cancelled)))",
+    "mightyppl_formula": "G* (n_bs_timer_generation_started_1000 -> (G [0,1000) (!tx_aborted_n_bs) && F [0,1000] (flow_control_received || tx_aborted_n_bs || n_bs_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "n_bs_timer_generation_started_1000",
+      "flow_control_received",
+      "tx_aborted_n_bs",
+      "n_bs_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "n_bs_timer_generation_started_1000": "The implementation enters WAIT_FC and starts timer_rx_fc with configured 1000 ms; adapter records whether this precedes an AUTOSAR Tx-confirmation start.",
+      "flow_control_received": "A valid correlated FC(CTS/WAIT/OVFLW) is decoded before N_Bs expiry; WAIT begins a new correlated wait window.",
+      "tx_aborted_n_bs": "FlowControlTimeoutError is raised and _stop_sending(success=False) executes for that transfer.",
+      "n_bs_generation_cancelled": "The public stop_sending path or TransportLayerLogic.reset ends the current WAIT_FC generation before its timeout; a harness process reset is accepted only when it records the same transfer generation."
+    },
+    "correlation_key": "ISO-TP addressing tuple + CAN channel + active send-request generation; CAN IDs and sequence numbers remain fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one segmented-send N_Bs timer generation; FC(WAIT) closes it and creates another word, CTS/OVFLW/abort/cancel closes it without overlap.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "flow_control_received",
+      "n_bs_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "pylessard/python-can-isotp",
+    "source_commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+    "source_path": "isotp/protocol.py",
+    "source_symbol": "def _process_tx",
+    "source_lines": "987-1051",
+    "source_url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L987-L1051",
+    "instrumentation_timing": "Emit trigger at _start_rx_fc_timer and record the implementation start plus any external Tx-confirmation timestamp. FC(WAIT) first satisfies the old word, then starts a new word. Emit abort only when the source action is observed; stamp its logical deadline and keep actual callback time.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "n_bs_timer_generation_started_1000"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": [
+          "tx_aborted_n_bs"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "n_bs_timer_generation_started_1000"
+        ]
+      },
+      {
+        "time": 999,
+        "props": [
+          "tx_aborted_n_bs"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "n_bs_timer_generation_started_1000"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": [
+            "tx_aborted_n_bs"
+          ]
+        },
+        {
+          "time": 1002,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "n_bs_timer_generation_started_1000"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: AUTOSAR start clause, implementation-vs-Tx-confirmation start, cancellation, per-generation projection, fixed helper hooks, and early/late traces are explicit.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "1000 ms is a python-can-isotp profile, not an AUTOSAR/ISO default. AUTOSAR starts N_Bs from Tx confirmation, while this library may start earlier; both timestamps are retained and the claim is explicitly implementation-profile-scoped. Timer::is_timed_out uses strict >, so the exact-bound oracle may expose a source discrepancy.",
+    "primary_source_atomic_propositions": [
+      "flow_control_received",
+      "tx_aborted_n_bs"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "N_Bs timer generation start",
+        "path": "isotp/protocol.py",
+        "symbol": "_start_rx_fc_timer",
+        "lines": "1250-1253",
+        "atomic_propositions": [
+          "n_bs_timer_generation_started_1000"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1250-L1253"
+      },
+      {
+        "role": "1000 ms receive-flow-control profile",
+        "path": "isotp/protocol.py",
+        "symbol": "__init__",
+        "lines": "349-354",
+        "atomic_propositions": [
+          "n_bs_timer_generation_started_1000"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L349-L354"
+      },
+      {
+        "role": "strict elapsed timeout predicate",
+        "path": "isotp/tools.py",
+        "symbol": "is_timed_out",
+        "lines": "48-53",
+        "atomic_propositions": [
+          "tx_aborted_n_bs"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py#L48-L53"
+      },
+      {
+        "role": "explicit send cancellation or layer reset",
+        "path": "isotp/protocol.py",
+        "symbol": "stop_sending / reset",
+        "lines": "1321-1325;1406-1415",
+        "atomic_propositions": [
+          "n_bs_generation_cancelled"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1321-L1325"
+      }
+    ],
+    "protocol_slug": "can_uds",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "N_Bs timer generation start",
+        "atomic_propositions": [
+          "n_bs_timer_generation_started_1000"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "_start_rx_fc_timer",
+        "lines": "1250-1253",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1250-L1253",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['_start_rx_fc_timer']; failed_symbols=[]; cited_ranges=[(1250, 1253)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "1000 ms receive-flow-control profile",
+        "atomic_propositions": [
+          "n_bs_timer_generation_started_1000"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "__init__",
+        "lines": "349-354",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L349-L354",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['__init__']; failed_symbols=[]; cited_ranges=[(349, 354)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "strict elapsed timeout predicate",
+        "atomic_propositions": [
+          "tx_aborted_n_bs"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/tools.py",
+        "symbol": "is_timed_out",
+        "lines": "48-53",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py#L48-L53",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py; verified_symbols=['is_timed_out']; failed_symbols=[]; cited_ranges=[(48, 53)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "explicit send cancellation or layer reset",
+        "atomic_propositions": [
+          "n_bs_generation_cancelled"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "stop_sending / reset",
+        "lines": "1321-1325;1406-1415",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1321-L1325",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['stop_sending', 'reset']; failed_symbols=[]; cited_ranges=[(1321, 1325), (1406, 1415)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['def _process_tx']; failed_symbols=[]; cited_ranges=[(987, 1051)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP reachable only with curl -k; local CA-chain verification failed",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "n_bs_timer_generation_started_1000",
+      "tx_aborted_n_bs",
+      "flow_control_received",
+      "n_bs_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 17,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "CANTP-NCR-01",
+    "protocol": "CAN/UDS",
+    "protocol_extension": "AUTOSAR CAN-TP receiver, python-can-isotp default profile",
+    "title": "Waiting for ConsecutiveFrame ends or aborts at N_Cr=1000 ms",
+    "category": "CAN-TP N_Cr timeout",
+    "natural_language": "python-can-isotp 默认 N_Cr profile 中，接收方等待下一 ConsecutiveFrame 后，1000 ms 前不得以 N_Cr 超时中止；到期前必须收到下一帧或执行中止。",
+    "normative_strength": "SHALL",
+    "standard": "AUTOSAR SWS CAN Transport Layer",
+    "standard_version": "R24-11",
+    "standard_section": "7.2.2 [SWS_CanTp_00312-SWS_CanTp_00313]; 10.2 [ECUC_CanTp_00279]",
+    "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_CANTransportLayer.pdf",
+    "standard_excerpt": "abort reception and notify the upper layer of this failure",
+    "time_value_ms": "1000",
+    "time_parameter": "N_Cr / rx_consecutive_frame_timeout",
+    "time_source": "python-can-isotp default rx_consecutive_frame_timeout=1000 ms; AUTOSAR defines N_Cr as configurable with no default",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (n_cr_timer_generation_started_1000 -> (G [0,1000) (!rx_aborted_n_cr) && F [0,1000] (consecutive_frame_received || rx_aborted_n_cr || n_cr_generation_cancelled)))",
+    "mightyppl_formula": "G* (n_cr_timer_generation_started_1000 -> (G [0,1000) (!rx_aborted_n_cr) && F [0,1000] (consecutive_frame_received || rx_aborted_n_cr || n_cr_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "n_cr_timer_generation_started_1000",
+      "consecutive_frame_received",
+      "rx_aborted_n_cr",
+      "n_cr_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "n_cr_timer_generation_started_1000": "A valid FirstFrame/non-final ConsecutiveFrame, or the local FC-send path, starts timer_rx_cf with configured 1000 ms; start provenance is recorded.",
+      "consecutive_frame_received": "The next correctly sequenced correlated ConsecutiveFrame is accepted; if more data remains, it starts a new N_Cr window.",
+      "rx_aborted_n_cr": "ConsecutiveFrameTimeoutError is raised and _stop_receiving executes for this transfer.",
+      "n_cr_generation_cancelled": "The public stop_receiving path or TransportLayerLogic.reset ends the current WAIT_CF generation before timeout; normal successful completion is retained as a distinct terminal cause by the adapter."
+    },
+    "correlation_key": "ISO-TP addressing tuple + CAN channel + receive generation + expected sequence number as a field",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one segmented-receive N_Cr generation; each accepted non-final CF closes it and creates another word, while completion/error/cancel ends it.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "consecutive_frame_received",
+      "n_cr_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "pylessard/python-can-isotp",
+    "source_commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+    "source_path": "isotp/protocol.py",
+    "source_symbol": "def _check_timeouts_rx",
+    "source_lines": "890-894",
+    "source_url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L890-L894",
+    "instrumentation_timing": "Emit start at _start_rx_cf_timer with its provenance; accepted CF is emitted only after sequence validation and first satisfies the old word before starting another. Emit abort only when observed, stamp its logical deadline, and retain callback time.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "n_cr_timer_generation_started_1000"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": [
+          "rx_aborted_n_cr"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "n_cr_timer_generation_started_1000"
+        ]
+      },
+      {
+        "time": 999,
+        "props": [
+          "rx_aborted_n_cr"
+        ]
+      },
+      {
+        "time": 1001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "n_cr_timer_generation_started_1000"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": [
+            "rx_aborted_n_cr"
+          ]
+        },
+        {
+          "time": 1002,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "n_cr_timer_generation_started_1000"
+          ]
+        },
+        {
+          "time": 1001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: AUTOSAR start clause, timer-start provenance, cancellation, accepted-CF/restart hook, per-generation projection, and early/late traces were added.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "1000 ms is a python-can-isotp profile, not an AUTOSAR/ISO default. The library timer may start in the local FC path rather than an external transmission confirmation, and strict elapsed > timeout may expose an exact-bound discrepancy.",
+    "primary_source_atomic_propositions": [
+      "rx_aborted_n_cr"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "accepted consecutive-frame path",
+        "path": "isotp/protocol.py",
+        "symbol": "_process_rx",
+        "lines": "895-984",
+        "atomic_propositions": [
+          "n_cr_timer_generation_started_1000",
+          "consecutive_frame_received"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L895-L984"
+      },
+      {
+        "role": "N_Cr timer generation start",
+        "path": "isotp/protocol.py",
+        "symbol": "_start_rx_cf_timer",
+        "lines": "1254-1257",
+        "atomic_propositions": [
+          "n_cr_timer_generation_started_1000"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1254-L1257"
+      },
+      {
+        "role": "1000 ms consecutive-frame profile",
+        "path": "isotp/protocol.py",
+        "symbol": "__init__",
+        "lines": "349-354",
+        "atomic_propositions": [
+          "n_cr_timer_generation_started_1000"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L349-L354"
+      },
+      {
+        "role": "strict elapsed timeout predicate",
+        "path": "isotp/tools.py",
+        "symbol": "is_timed_out",
+        "lines": "48-53",
+        "atomic_propositions": [
+          "rx_aborted_n_cr"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py#L48-L53"
+      },
+      {
+        "role": "explicit receive cancellation or layer reset",
+        "path": "isotp/protocol.py",
+        "symbol": "stop_receiving / reset",
+        "lines": "1341-1346;1406-1415",
+        "atomic_propositions": [
+          "n_cr_generation_cancelled"
+        ],
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1341-L1346"
+      }
+    ],
+    "protocol_slug": "can_uds",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "accepted consecutive-frame path",
+        "atomic_propositions": [
+          "n_cr_timer_generation_started_1000",
+          "consecutive_frame_received"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "_process_rx",
+        "lines": "895-984",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L895-L984",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['_process_rx']; failed_symbols=[]; cited_ranges=[(895, 984)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "N_Cr timer generation start",
+        "atomic_propositions": [
+          "n_cr_timer_generation_started_1000"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "_start_rx_cf_timer",
+        "lines": "1254-1257",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1254-L1257",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['_start_rx_cf_timer']; failed_symbols=[]; cited_ranges=[(1254, 1257)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "1000 ms consecutive-frame profile",
+        "atomic_propositions": [
+          "n_cr_timer_generation_started_1000"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "__init__",
+        "lines": "349-354",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L349-L354",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['__init__']; failed_symbols=[]; cited_ranges=[(349, 354)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "strict elapsed timeout predicate",
+        "atomic_propositions": [
+          "rx_aborted_n_cr"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/tools.py",
+        "symbol": "is_timed_out",
+        "lines": "48-53",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py#L48-L53",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/tools.py; verified_symbols=['is_timed_out']; failed_symbols=[]; cited_ranges=[(48, 53)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "explicit receive cancellation or layer reset",
+        "atomic_propositions": [
+          "n_cr_generation_cancelled"
+        ],
+        "repository": "pylessard/python-can-isotp",
+        "commit": "7b44c5282ee390df4977b710218564eb73e2dc2a",
+        "path": "isotp/protocol.py",
+        "symbol": "stop_receiving / reset",
+        "lines": "1341-1346;1406-1415",
+        "url": "https://github.com/pylessard/python-can-isotp/blob/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py#L1341-L1346",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['stop_receiving', 'reset']; failed_symbols=[]; cited_ranges=[(1341, 1346), (1406, 1415)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/pylessard/python-can-isotp/7b44c5282ee390df4977b710218564eb73e2dc2a/isotp/protocol.py; verified_symbols=['def _check_timeouts_rx']; failed_symbols=[]; cited_ranges=[(890, 894)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP reachable only with curl -k; local CA-chain verification failed",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "n_cr_timer_generation_started_1000",
+      "rx_aborted_n_cr",
+      "consecutive_frame_received",
+      "n_cr_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 19,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "UDS-P2-01",
+    "protocol": "CAN/UDS",
+    "protocol_extension": "AUTOSAR DCM server, iso14229 default P2 profile",
+    "title": "Initial diagnostic response or NRC 0x78 arrives within P2=50 ms",
+    "category": "UDS P2 server response",
+    "natural_language": "iso14229 默认 server P2=50 ms 时，服务器接收并开始处理诊断请求后，应在 50 ms 内发送最终响应；若仍需处理，则发送 NRC 0x78。",
+    "normative_strength": "SHALL",
+    "standard": "AUTOSAR SWS Diagnostic Communication Manager",
+    "standard_version": "R24-11",
+    "standard_section": "7.2.4.6 [SWS_Dcm_00024]",
+    "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+    "standard_excerpt": "shall send a negative response with NRC 0x78 when reaching the response time",
+    "time_value_ms": "50",
+    "time_parameter": "P2ServerMax profile",
+    "time_source": "driftregion/iso14229 UDS_SERVER_DEFAULT_P2_MS=50 with profile adjustment=0; AUTOSAR makes P2ServerMax and adjustment configurable",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (uds_request_processing_started_p2_50_adjust0 -> F [0,50] (uds_final_response_sent || uds_nrc78_sent || uds_p2_generation_cancelled))",
+    "mightyppl_formula": "G* (uds_request_processing_started_p2_50_adjust0 -> F [0,50] (uds_final_response_sent || uds_nrc78_sent || uds_p2_generation_cancelled))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "uds_request_processing_started_p2_50_adjust0",
+      "uds_final_response_sent",
+      "uds_nrc78_sent",
+      "uds_p2_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "uds_request_processing_started_p2_50_adjust0": "A complete valid request is accepted by UDSServerPoll with srv->p2_ms=50, normative server adjustment=0, and response suppression not selected; adapter snapshots request tick and implementation p2_timer.",
+      "uds_final_response_sent": "UDSTpSend is invoked with a final positive or non-0x78 negative response for the correlated request.",
+      "uds_nrc78_sent": "UDSTpSend is invoked with NRC RequestCorrectlyReceived-ResponsePending (0x78) for that request.",
+      "uds_p2_generation_cancelled": "UDSServerInit resets the server while the correlated request is outstanding, or the harness records transport teardown for that request generation before a response handoff."
+    },
+    "correlation_key": "transport connection + tester/source address + request generation + SID/subfunction as fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one accepted server request generation; repeated/new requests cannot share a word, and teardown/reset emits explicit cancellation.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "uds_p2_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The formula uses request-acceptance tick plus 50 ms as the normative profile deadline. The implementation p2_timer and actual UDSTpSend time are retained separately; a poll callback is not itself a response.",
+    "source_repository": "driftregion/iso14229",
+    "source_commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+    "source_path": "src/server.c",
+    "source_symbol": "UDSServerPoll",
+    "source_lines": "1581-1660",
+    "source_url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1581-L1660",
+    "instrumentation_timing": "Emit trigger after lines 1653-1658 accept/evaluate the request and snapshot request+50 plus srv->p2_timer. Emit response only at actual UDSTpSend handoff; classify NRC 0x78 versus final. Suppressed-positive requests are trigger-false; teardown/reset emits cancellation.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "uds_request_processing_started_p2_50_adjust0"
+        ]
+      },
+      {
+        "time": 50,
+        "props": [
+          "uds_nrc78_sent"
+        ]
+      },
+      {
+        "time": 51,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "uds_request_processing_started_p2_50_adjust0"
+        ]
+      },
+      {
+        "time": 51,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "LATE_OR_MISSING_RESPONSE",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "uds_request_processing_started_p2_50_adjust0"
+          ]
+        },
+        {
+          "time": 51,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: adjustment=0 is a trigger precondition, request and response hooks are in fixed ranges, cancellation is explicit, and normative versus implementation deadlines are separated.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "50 ms is the locked iso14229 profile and this card explicitly assumes server adjustment=0. Other DCMs must instantiate active P2ServerMax-adjust. The source's p2_timer can predate request acceptance, so both the normative request+50 deadline and implementation snapshot are retained.",
+    "primary_source_atomic_propositions": [
+      "uds_request_processing_started_p2_50_adjust0",
+      "uds_final_response_sent",
+      "uds_nrc78_sent"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "50 ms P2 implementation profile",
+        "path": "src/config.h",
+        "symbol": "UDS_SERVER_DEFAULT_P2_MS",
+        "lines": "42-43",
+        "atomic_propositions": [
+          "uds_request_processing_started_p2_50_adjust0"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L42-L43"
+      },
+      {
+        "role": "strict logical deadline predicate",
+        "path": "src/util.h",
+        "symbol": "UDSTimeAfter",
+        "lines": "13",
+        "atomic_propositions": [
+          "uds_final_response_sent",
+          "uds_nrc78_sent"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13"
+      },
+      {
+        "role": "response transport handoff",
+        "path": "src/server.c",
+        "symbol": "UDSServerPoll",
+        "lines": "1617-1621",
+        "atomic_propositions": [
+          "uds_final_response_sent",
+          "uds_nrc78_sent"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1617-L1621"
+      },
+      {
+        "role": "server reset cancellation",
+        "path": "src/server.c",
+        "symbol": "UDSServerInit",
+        "lines": "1564-1579",
+        "atomic_propositions": [
+          "uds_p2_generation_cancelled"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579"
+      }
+    ],
+    "protocol_slug": "can_uds",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "50 ms P2 implementation profile",
+        "atomic_propositions": [
+          "uds_request_processing_started_p2_50_adjust0"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/config.h",
+        "symbol": "UDS_SERVER_DEFAULT_P2_MS",
+        "lines": "42-43",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L42-L43",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h; verified_symbols=['UDS_SERVER_DEFAULT_P2_MS']; failed_symbols=[]; cited_ranges=[(42, 43)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "strict logical deadline predicate",
+        "atomic_propositions": [
+          "uds_final_response_sent",
+          "uds_nrc78_sent"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/util.h",
+        "symbol": "UDSTimeAfter",
+        "lines": "13",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h; verified_symbols=['UDSTimeAfter']; failed_symbols=[]; cited_ranges=[(13, 13)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "response transport handoff",
+        "atomic_propositions": [
+          "uds_final_response_sent",
+          "uds_nrc78_sent"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/server.c",
+        "symbol": "UDSServerPoll",
+        "lines": "1617-1621",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1617-L1621",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerPoll']; failed_symbols=[]; cited_ranges=[(1617, 1621)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "server reset cancellation",
+        "atomic_propositions": [
+          "uds_p2_generation_cancelled"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/server.c",
+        "symbol": "UDSServerInit",
+        "lines": "1564-1579",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerInit']; failed_symbols=[]; cited_ranges=[(1564, 1579)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerPoll']; failed_symbols=[]; cited_ranges=[(1581, 1660)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP reachable only with curl -k; local CA-chain verification failed",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "uds_request_processing_started_p2_50_adjust0",
+      "uds_final_response_sent",
+      "uds_nrc78_sent",
+      "uds_p2_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 160,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 198,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 27,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "UDS-P2STAR-01",
+    "protocol": "CAN/UDS",
+    "protocol_extension": "AUTOSAR DCM server, iso14229 default P2* profile",
+    "title": "After NRC 0x78 another response arrives within P2*=5000 ms",
+    "category": "UDS P2-star response",
+    "natural_language": "iso14229 默认 P2*=5000 ms 时，服务器发送 NRC 0x78 后，应在 5000 ms 内发送最终响应或新的 NRC 0x78。",
+    "normative_strength": "SHALL",
+    "standard": "AUTOSAR SWS Diagnostic Communication Manager",
+    "standard_version": "R24-11",
+    "standard_section": "7.2.4.6 [SWS_Dcm_00024]",
+    "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+    "standard_excerpt": "when reaching the response time DcmDspSessionP2StarServerMax",
+    "time_value_ms": "5000",
+    "time_parameter": "P2StarServerMax profile",
+    "time_source": "driftregion/iso14229 UDS_SERVER_DEFAULT_P2_STAR_MS=5000; AUTOSAR makes P2* session-configurable",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (uds_nrc78_sent_p2star_5000_adjust0 -> F [0,5000] (uds_final_response_after_nrc78 || uds_nrc78_repeated || uds_p2star_generation_cancelled))",
+    "mightyppl_formula": "G* (uds_nrc78_sent_p2star_5000_adjust0 -> F [0,5000] (uds_final_response_after_nrc78 || uds_nrc78_repeated || uds_p2star_generation_cancelled))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "uds_nrc78_sent_p2star_5000_adjust0",
+      "uds_final_response_after_nrc78",
+      "uds_nrc78_repeated",
+      "uds_p2star_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "uds_nrc78_sent_p2star_5000_adjust0": "An NRC 0x78 is successfully handed to transport for a request with p2_star_ms=5000 and server adjustment=0.",
+      "uds_final_response_after_nrc78": "A final correlated response is handed to the transport after that NRC 0x78.",
+      "uds_nrc78_repeated": "Another correlated NRC 0x78 is handed to the transport, starting the next P2* window.",
+      "uds_p2star_generation_cancelled": "UDSServerInit resets the server while the post-0x78 response is outstanding, or the harness records transport teardown for that exact request generation."
+    },
+    "correlation_key": "same server request generation + tester/source address; consecutive NRCs are ordered fields",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one post-NRC response generation; each repeated NRC satisfies it and starts a separate word for the same request, while teardown/reset cancels it.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "uds_nrc78_repeated",
+      "uds_p2star_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The logical P2* deadline is derived from successful NRC handoff plus 5000 ms. Actual repeated/final response handoff is the observed action; callback/poll time is retained separately.",
+    "source_repository": "driftregion/iso14229",
+    "source_commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+    "source_path": "src/server.c",
+    "source_symbol": "UDSServerPoll",
+    "source_lines": "1598-1638",
+    "source_url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1598-L1638",
+    "instrumentation_timing": "Classify each successful UDSTpSend at lines 1617-1637; a repeated NRC atomically satisfies the old word before opening another. Store the P2* logical deadline and actual handoff time; poll callback time is not the response event.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "uds_nrc78_sent_p2star_5000_adjust0"
+        ]
+      },
+      {
+        "time": 5000,
+        "props": [
+          "uds_final_response_after_nrc78"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "uds_nrc78_sent_p2star_5000_adjust0"
+        ]
+      },
+      {
+        "time": 5001,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "PRIMARY_ORACLE",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "uds_nrc78_sent_p2star_5000_adjust0"
+          ]
+        },
+        {
+          "time": 5001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "APPROVE",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Approved with caveat: adjustment=0 and successful transport handoff are explicit, and every repeated NRC closes one generation before starting the next.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "The implementation normally repeats NRC 0x78 at 0.3*P2*=1500 ms. 5000 ms and adjustment=0 are locked implementation preconditions, not AUTOSAR universal defaults.",
+    "primary_source_atomic_propositions": [
+      "uds_nrc78_sent_p2star_5000_adjust0",
+      "uds_final_response_after_nrc78",
+      "uds_nrc78_repeated"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "5000 ms P2-star implementation profile",
+        "path": "src/config.h",
+        "symbol": "UDS_SERVER_DEFAULT_P2_STAR_MS",
+        "lines": "47-48",
+        "atomic_propositions": [
+          "uds_nrc78_sent_p2star_5000_adjust0"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L47-L48"
+      },
+      {
+        "role": "strict logical deadline predicate",
+        "path": "src/util.h",
+        "symbol": "UDSTimeAfter",
+        "lines": "13",
+        "atomic_propositions": [
+          "uds_final_response_after_nrc78",
+          "uds_nrc78_repeated"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13"
+      },
+      {
+        "role": "server reset cancellation",
+        "path": "src/server.c",
+        "symbol": "UDSServerInit",
+        "lines": "1564-1579",
+        "atomic_propositions": [
+          "uds_p2star_generation_cancelled"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579"
+      }
+    ],
+    "protocol_slug": "can_uds",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "5000 ms P2-star implementation profile",
+        "atomic_propositions": [
+          "uds_nrc78_sent_p2star_5000_adjust0"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/config.h",
+        "symbol": "UDS_SERVER_DEFAULT_P2_STAR_MS",
+        "lines": "47-48",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L47-L48",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h; verified_symbols=['UDS_SERVER_DEFAULT_P2_STAR_MS']; failed_symbols=[]; cited_ranges=[(47, 48)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "strict logical deadline predicate",
+        "atomic_propositions": [
+          "uds_final_response_after_nrc78",
+          "uds_nrc78_repeated"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/util.h",
+        "symbol": "UDSTimeAfter",
+        "lines": "13",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h; verified_symbols=['UDSTimeAfter']; failed_symbols=[]; cited_ranges=[(13, 13)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "server reset cancellation",
+        "atomic_propositions": [
+          "uds_p2star_generation_cancelled"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/server.c",
+        "symbol": "UDSServerInit",
+        "lines": "1564-1579",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerInit']; failed_symbols=[]; cited_ranges=[(1564, 1579)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerPoll']; failed_symbols=[]; cited_ranges=[(1598, 1638)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP reachable only with curl -k; local CA-chain verification failed",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "uds_nrc78_sent_p2star_5000_adjust0",
+      "uds_final_response_after_nrc78",
+      "uds_nrc78_repeated",
+      "uds_p2star_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 160,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 198,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 21,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "UDS-S3-01",
+    "protocol": "CAN/UDS",
+    "protocol_extension": "AUTOSAR DCM non-default session, driftregion/iso14229 S3 profile",
+    "title": "Idle non-default session returns to default at S3=5100 ms",
+    "category": "UDS S3 session timeout",
+    "natural_language": "锁定 iso14229 S3=5100 ms profile 后，非默认会话不得在 5100 ms 前因 S3 timeout 回到默认会话；到 deadline 应因 S3 切回，或由 owner 有效活动重置、显式会话操作/停止取消该 generation。",
+    "normative_strength": "SHALL",
+    "standard": "AUTOSAR SWS Diagnostic Communication Manager",
+    "standard_version": "R24-11",
+    "standard_section": "7.2.4.13 [SWS_Dcm_01670]; 7.2.4.14 [SWS_Dcm_01680]",
+    "standard_url": "https://www.autosar.org/fileadmin/standards/R24-11/CP/AUTOSAR_CP_SWS_DiagnosticCommunicationManager.pdf",
+    "standard_excerpt": "If the S3Server elapses, the Dcm shall switch back to default session",
+    "time_value_ms": "5100",
+    "time_parameter": "S3Server implementation profile",
+    "time_source": "driftregion/iso14229 UDS_SERVER_DEFAULT_S3_MS=5100; treated as a locked configured/overwrite profile",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (non_default_session_idle_started_s3_5100 -> (G [0,5100) (!default_session_entered_due_to_s3) && F [0,5100] (default_session_entered_due_to_s3 || s3_resetting_activity_received || s3_generation_cancelled)))",
+    "mightyppl_formula": "G* (non_default_session_idle_started_s3_5100 -> (G [0,5100) (!default_session_entered_due_to_s3) && F [0,5100] (default_session_entered_due_to_s3 || s3_resetting_activity_received || s3_generation_cancelled)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "non_default_session_idle_started_s3_5100",
+      "default_session_entered_due_to_s3",
+      "s3_resetting_activity_received",
+      "s3_generation_cancelled"
+    ],
+    "ap_definitions": {
+      "non_default_session_idle_started_s3_5100": "A non-default session begins a fresh idle S3 window with srv->s3_ms=5100 after a qualifying activity/reset.",
+      "default_session_entered_due_to_s3": "UDSServerPoll changes sessionType to UDS_LEV_DS_DS specifically because the S3 timer elapsed.",
+      "s3_resetting_activity_received": "A valid request from the owning tester/connection that normatively resets S3 is processed before expiry.",
+      "s3_generation_cancelled": "A valid DiagnosticSessionControl changes the session generation, or UDSServerInit resets the server, before the old S3 timeout cause occurs."
+    },
+    "correlation_key": "server instance + transport connection + tester/source address + non-default session epoch",
+    "projection_rule": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD; each reset/restart closes the old generation and opens a separately monitored generation. Project one owner-scoped non-default-session idle generation; owner reset creates another word, while explicit session action/stop/profile change cancels it.",
+    "projection_cardinality": "EXACTLY_ONE_TRIGGER_PER_PROJECTED_WORD",
+    "trigger_event_semantics": "Emit the trigger only after every role/state/profile precondition has been checked; never emit two trigger valuations in the same projected word.",
+    "cancellation_or_supersession_aps": [
+      "s3_resetting_activity_received",
+      "s3_generation_cancelled"
+    ],
+    "timer_observation_semantics": "The protocol verdict uses the declared logical deadline and observes whether the correlated action occurred; actual callback/dispatch time is retained separately.",
+    "source_repository": "driftregion/iso14229",
+    "source_commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+    "source_path": "src/server.c",
+    "source_symbol": "UDSServerPoll",
+    "source_lines": "1581-1588",
+    "source_url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1581-L1588",
+    "instrumentation_timing": "Start only from a fixed s3_session_timeout_timer assignment owned by the current tester/session. A reset first satisfies the old word and then opens another. Emit cause-specific timeout at lines 1583-1587, stamp logical deadline, and retain actual poll time.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "non_default_session_idle_started_s3_5100"
+        ]
+      },
+      {
+        "time": 5100,
+        "props": [
+          "default_session_entered_due_to_s3"
+        ]
+      },
+      {
+        "time": 5101,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "non_default_session_idle_started_s3_5100"
+        ]
+      },
+      {
+        "time": 5099,
+        "props": [
+          "default_session_entered_due_to_s3"
+        ]
+      },
+      {
+        "time": 5101,
+        "props": []
+      }
+    ],
+    "negative_trace_kind": "EARLY_ACTION",
+    "additional_negative_traces": {
+      "late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "non_default_session_idle_started_s3_5100"
+          ]
+        },
+        {
+          "time": 5101,
+          "props": [
+            "default_session_entered_due_to_s3"
+          ]
+        },
+        {
+          "time": 5102,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "non_default_session_idle_started_s3_5100"
+          ]
+        },
+        {
+          "time": 5101,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+    "independent_audit_note": "Original audit disposition=FIX; fixed after audit: timeout cause is separated from explicit default-session entry, all start/reset/cancel hooks are fixed, and early plus late/missing boundary oracles are included.",
+    "human_review_status": "PENDING",
+    "review_question": "请确认角色、计时起点、profile 常数、AP 和 correlation 映射。",
+    "limitations": "AUTOSAR's unoverwritten default is 5000 ms; 5100 ms is an iso14229 configured profile. UDSTimeAfter is strict >, so the exact 5100 ms conformance oracle may expose a one-tick implementation discrepancy without adding tolerance.",
+    "primary_source_atomic_propositions": [
+      "default_session_entered_due_to_s3"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "non-default session entry and explicit session change",
+        "path": "src/server.c",
+        "symbol": "Handle_0x10_DiagnosticSessionControl",
+        "lines": "38-83",
+        "atomic_propositions": [
+          "non_default_session_idle_started_s3_5100",
+          "s3_generation_cancelled"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L38-L83"
+      },
+      {
+        "role": "TesterPresent S3 refresh",
+        "path": "src/server.c",
+        "symbol": "Handle_0x3E_TesterPresent",
+        "lines": "1304-1321",
+        "atomic_propositions": [
+          "s3_resetting_activity_received"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1304-L1321"
+      },
+      {
+        "role": "server initialization and reset",
+        "path": "src/server.c",
+        "symbol": "UDSServerInit",
+        "lines": "1564-1579",
+        "atomic_propositions": [
+          "non_default_session_idle_started_s3_5100",
+          "s3_generation_cancelled"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579"
+      },
+      {
+        "role": "5100 ms S3 implementation profile",
+        "path": "src/config.h",
+        "symbol": "UDS_SERVER_DEFAULT_S3_MS",
+        "lines": "51-53",
+        "atomic_propositions": [
+          "non_default_session_idle_started_s3_5100"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L51-L53"
+      },
+      {
+        "role": "strict S3 deadline predicate",
+        "path": "src/util.h",
+        "symbol": "UDSTimeAfter",
+        "lines": "13",
+        "atomic_propositions": [
+          "default_session_entered_due_to_s3"
+        ],
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13"
+      }
+    ],
+    "protocol_slug": "can_uds",
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "non-default session entry and explicit session change",
+        "atomic_propositions": [
+          "non_default_session_idle_started_s3_5100",
+          "s3_generation_cancelled"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/server.c",
+        "symbol": "Handle_0x10_DiagnosticSessionControl",
+        "lines": "38-83",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L38-L83",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['Handle_0x10_DiagnosticSessionControl']; failed_symbols=[]; cited_ranges=[(38, 83)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "TesterPresent S3 refresh",
+        "atomic_propositions": [
+          "s3_resetting_activity_received"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/server.c",
+        "symbol": "Handle_0x3E_TesterPresent",
+        "lines": "1304-1321",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1304-L1321",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['Handle_0x3E_TesterPresent']; failed_symbols=[]; cited_ranges=[(1304, 1321)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "server initialization and reset",
+        "atomic_propositions": [
+          "non_default_session_idle_started_s3_5100",
+          "s3_generation_cancelled"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/server.c",
+        "symbol": "UDSServerInit",
+        "lines": "1564-1579",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c#L1564-L1579",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerInit']; failed_symbols=[]; cited_ranges=[(1564, 1579)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "5100 ms S3 implementation profile",
+        "atomic_propositions": [
+          "non_default_session_idle_started_s3_5100"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/config.h",
+        "symbol": "UDS_SERVER_DEFAULT_S3_MS",
+        "lines": "51-53",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h#L51-L53",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/config.h; verified_symbols=['UDS_SERVER_DEFAULT_S3_MS']; failed_symbols=[]; cited_ranges=[(51, 53)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "strict S3 deadline predicate",
+        "atomic_propositions": [
+          "default_session_entered_due_to_s3"
+        ],
+        "repository": "driftregion/iso14229",
+        "commit": "b0e92b14fcc384d42bfd01ecd7f745addb6bf761",
+        "path": "src/util.h",
+        "symbol": "UDSTimeAfter",
+        "lines": "13",
+        "url": "https://github.com/driftregion/iso14229/blob/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h#L13",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/util.h; verified_symbols=['UDSTimeAfter']; failed_symbols=[]; cited_ranges=[(13, 13)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/driftregion/iso14229/b0e92b14fcc384d42bfd01ecd7f745addb6bf761/src/server.c; verified_symbols=['UDSServerPoll']; failed_symbols=[]; cited_ranges=[(1581, 1588)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP reachable only with curl -k; local CA-chain verification failed",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "non_default_session_idle_started_s3_5100",
+      "default_session_entered_due_to_s3",
+      "s3_resetting_activity_received",
+      "s3_generation_cancelled"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 20,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  }
+]

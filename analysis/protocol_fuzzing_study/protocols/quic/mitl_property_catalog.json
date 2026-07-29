@@ -1,0 +1,1785 @@
+[
+  {
+    "id": "QUIC-ACK-01",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9000 v1 transport",
+    "title": "1-RTT ACK respects the default 25 ms max_ack_delay",
+    "category": "acknowledgment delay",
+    "natural_language": "未显式发送 max_ack_delay 参数时，已解密处理的 ack-eliciting 1-RTT 包必须在 25 ms 内至少确认一次。",
+    "normative_strength": "MUST",
+    "standard": "RFC 9000",
+    "standard_version": "RFC 9000 (QUIC v1)",
+    "standard_section": "13.2.1, 18.2",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-13.2.1",
+    "standard_excerpt": "MUST be acknowledged at least once within the maximum delay",
+    "time_value_ms": "25",
+    "time_parameter": "default max_ack_delay",
+    "time_source": "RFC 9000 Section 18.2 default when max_ack_delay is absent",
+    "instantiation_basis": "NORMATIVE_DEFAULT",
+    "mathematical_mitl": "G (quic_1rtt_ack_eliciting_packet_processed_default_ack_delay -> F [0,25] (quic_ack_covering_packet_sent))",
+    "mightyppl_formula": "G* (quic_1rtt_ack_eliciting_packet_processed_default_ack_delay -> F [0,25] (quic_ack_covering_packet_sent))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay",
+      "quic_ack_covering_packet_sent"
+    ],
+    "ap_definitions": {
+      "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay": "Protected 1-RTT packet is fully processed, is ack-eliciting, and local max_ack_delay is the absent-parameter default.",
+      "quic_ack_covering_packet_sent": "An outgoing ACK frame contains the correlated packet number."
+    },
+    "correlation_key": "QUIC connection object + packet number space + packet number; packet numbers stay fields",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_conn.c",
+    "source_symbol": "conn_compute_ack_delay",
+    "source_lines": "1847-1855",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L1847-L1855",
+    "instrumentation_timing": "Start at pktns_commit_recv_pkt_num; finish when ngtcp2_acktr_create_ack_frame output is serialized.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+        ]
+      },
+      {
+        "time": 25,
+        "props": [
+          "quic_ack_covering_packet_sent"
+        ]
+      },
+      {
+        "time": 26,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+        ]
+      },
+      {
+        "time": 26,
+        "props": [
+          "quic_ack_covering_packet_sent"
+        ]
+      },
+      {
+        "time": 27,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Initial and Handshake packets use immediate ACK semantics and are excluded from this 25 ms property.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "APPROVE",
+    "independent_audit_note": "Independent audit confirmed the 25 ms closed upper bound and default-parameter trigger.",
+    "primary_source_atomic_propositions": [
+      "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "default max_ack_delay profile constant",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+        "lines": "1278-1285",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+        "atomic_propositions": [
+          "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+        ]
+      },
+      {
+        "role": "commit fully processed ack-eliciting packet number",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "pktns_commit_recv_pkt_num",
+        "lines": "6293-6337",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6293-L6337",
+        "atomic_propositions": [
+          "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+        ]
+      },
+      {
+        "role": "ACK frame range construction for outgoing packet",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_acktr.c",
+        "symbol": "ngtcp2_acktr_create_ack_frame",
+        "lines": "340-426",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_acktr.c#L340-L426",
+        "atomic_propositions": [
+          "quic_ack_covering_packet_sent"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+          ]
+        },
+        {
+          "time": 26,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "default max_ack_delay profile constant",
+        "atomic_propositions": [
+          "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+        "lines": "1278-1285",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h; verified_symbols=['NGTCP2_DEFAULT_MAX_ACK_DELAY']; failed_symbols=[]; cited_ranges=[(1278, 1285)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "commit fully processed ack-eliciting packet number",
+        "atomic_propositions": [
+          "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "pktns_commit_recv_pkt_num",
+        "lines": "6293-6337",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6293-L6337",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['pktns_commit_recv_pkt_num']; failed_symbols=[]; cited_ranges=[(6293, 6337)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "ACK frame range construction for outgoing packet",
+        "atomic_propositions": [
+          "quic_ack_covering_packet_sent"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_acktr.c",
+        "symbol": "ngtcp2_acktr_create_ack_frame",
+        "lines": "340-426",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_acktr.c#L340-L426",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_acktr.c; verified_symbols=['ngtcp2_acktr_create_ack_frame']; failed_symbols=[]; cited_ranges=[(340, 426)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_compute_ack_delay']; failed_symbols=[]; cited_ranges=[(1847, 1855)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay",
+      "quic_ack_covering_packet_sent"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 40,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 54,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 14,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "QUIC-IDLE-01",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9000 idle timeout; ngtcp2 example profile",
+    "title": "ngtcp2 example profile does not discard state before 30 s idle",
+    "category": "idle timeout",
+    "natural_language": "双方使用 ngtcp2 example 的默认 30 秒 max_idle_timeout 时，连接持续空闲满 30 秒以前不得丢弃连接状态。",
+    "normative_strength": "protocol contract + implementation profile",
+    "standard": "RFC 9000",
+    "standard_version": "RFC 9000 (QUIC v1)",
+    "standard_section": "10.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-10.1",
+    "standard_excerpt": "closed and its state is discarded when it remains idle for longer",
+    "time_value_ms": "30000",
+    "time_parameter": "max_idle_timeout",
+    "time_source": "ngtcp2 example client/server default timeout=30 seconds",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (quic_connection_became_idle_ngtcp2_30s_profile -> G [0,30000] ((!quic_connection_state_discarded) || quic_explicit_close_or_terminal_received))",
+    "mightyppl_formula": "G* (quic_connection_became_idle_ngtcp2_30s_profile -> G [0,30000] ((!quic_connection_state_discarded) || quic_explicit_close_or_terminal_received))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_connection_became_idle_ngtcp2_30s_profile",
+      "quic_connection_state_discarded",
+      "quic_explicit_close_or_terminal_received"
+    ],
+    "ap_definitions": {
+      "quic_connection_became_idle_ngtcp2_30s_profile": "Negotiated effective idle timeout is 30000 ms and the last activity timestamp starts a new idle generation.",
+      "quic_connection_state_discarded": "Connection state is disposed specifically by the idle-expiry path.",
+      "quic_explicit_close_or_terminal_received": "Application close, peer close/stateless reset, or terminal transport error legitimately ends the open-idle profile."
+    },
+    "correlation_key": "ngtcp2 connection object + negotiated transport-parameter snapshot",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_conn.c",
+    "source_symbol": "ngtcp2_conn_get_idle_expiry",
+    "source_lines": "14060-14092",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L14060-L14092",
+    "instrumentation_timing": "Emit idle start whenever conn_restart_timer_on_read/write updates idle_ts; emit discard immediately before application connection removal.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ]
+      },
+      {
+        "time": 30001,
+        "props": [
+          "quic_connection_state_discarded"
+        ]
+      },
+      {
+        "time": 30002,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ]
+      },
+      {
+        "time": 29999,
+        "props": [
+          "quic_connection_state_discarded"
+        ]
+      },
+      {
+        "time": 30001,
+        "props": []
+      }
+    ],
+    "review_question": "请确认 30 秒只作为 ngtcp2 example profile，而不声称为 RFC 9000 默认值（RFC 缺省为 0/禁用）。",
+    "limitations": "The library computes expiry but the example application performs destruction; this property needs one library hook and one application hook.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Explicit close, stateless reset, and terminal transport outcomes now discharge the idle-only profile.",
+    "primary_source_atomic_propositions": [
+      "quic_connection_became_idle_ngtcp2_30s_profile"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "example server installs configured idle timeout transport parameter",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "examples/server.cc",
+        "symbol": "Handler::init",
+        "lines": "817-827",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/examples/server.cc#L817-L827",
+        "atomic_propositions": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ],
+        "legacy_exact_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/examples/server_base.h#L70-L80"
+      },
+      {
+        "role": "read activity starts a new idle generation",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_restart_timer_on_read",
+        "lines": "2163-2166",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L2163-L2166",
+        "atomic_propositions": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ]
+      },
+      {
+        "role": "write activity starts a new idle generation",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_restart_timer_on_write",
+        "lines": "2158-2161",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L2158-L2161",
+        "atomic_propositions": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ]
+      },
+      {
+        "role": "connection-state disposal hook",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_del",
+        "lines": "1740-1845",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L1740-L1845",
+        "atomic_propositions": [
+          "quic_connection_state_discarded"
+        ]
+      },
+      {
+        "role": "peer CONNECTION_CLOSE transition to draining",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_recv_connection_close",
+        "lines": "6054-6084",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6054-L6084",
+        "atomic_propositions": [
+          "quic_explicit_close_or_terminal_received"
+        ]
+      },
+      {
+        "role": "validated stateless reset transition to draining",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_on_stateless_reset",
+        "lines": "8046-8074",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L8046-L8074",
+        "atomic_propositions": [
+          "quic_explicit_close_or_terminal_received"
+        ]
+      },
+      {
+        "role": "local CONNECTION_CLOSE transition to closing",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_write_connection_close_pkt",
+        "lines": "12688-12749",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L12688-L12749",
+        "atomic_propositions": [
+          "quic_explicit_close_or_terminal_received"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "example server installs configured idle timeout transport parameter",
+        "atomic_propositions": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "examples/server.cc",
+        "symbol": "Handler::init",
+        "lines": "817-827",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/examples/server.cc#L817-L827",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/examples/server.cc; verified_symbols=['Handler::init']; failed_symbols=[]; cited_ranges=[(817, 827)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "read activity starts a new idle generation",
+        "atomic_propositions": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_restart_timer_on_read",
+        "lines": "2163-2166",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L2163-L2166",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_restart_timer_on_read']; failed_symbols=[]; cited_ranges=[(2163, 2166)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "write activity starts a new idle generation",
+        "atomic_propositions": [
+          "quic_connection_became_idle_ngtcp2_30s_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_restart_timer_on_write",
+        "lines": "2158-2161",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L2158-L2161",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_restart_timer_on_write']; failed_symbols=[]; cited_ranges=[(2158, 2161)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "connection-state disposal hook",
+        "atomic_propositions": [
+          "quic_connection_state_discarded"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_del",
+        "lines": "1740-1845",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L1740-L1845",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_del']; failed_symbols=[]; cited_ranges=[(1740, 1845)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 5,
+        "role": "peer CONNECTION_CLOSE transition to draining",
+        "atomic_propositions": [
+          "quic_explicit_close_or_terminal_received"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_recv_connection_close",
+        "lines": "6054-6084",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6054-L6084",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_recv_connection_close']; failed_symbols=[]; cited_ranges=[(6054, 6084)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 6,
+        "role": "validated stateless reset transition to draining",
+        "atomic_propositions": [
+          "quic_explicit_close_or_terminal_received"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_on_stateless_reset",
+        "lines": "8046-8074",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L8046-L8074",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_on_stateless_reset']; failed_symbols=[]; cited_ranges=[(8046, 8074)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 7,
+        "role": "local CONNECTION_CLOSE transition to closing",
+        "atomic_propositions": [
+          "quic_explicit_close_or_terminal_received"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_write_connection_close_pkt",
+        "lines": "12688-12749",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L12688-L12749",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_write_connection_close_pkt']; failed_symbols=[]; cited_ranges=[(12688, 12749)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_get_idle_expiry']; failed_symbols=[]; cited_ranges=[(14060, 14092)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "quic_connection_became_idle_ngtcp2_30s_profile",
+      "quic_connection_state_discarded",
+      "quic_explicit_close_or_terminal_received"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 74,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 96,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 14,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "QUIC-KU-01",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9001 QUIC-TLS key update",
+    "title": "Subsequent key update waits three PTO periods",
+    "category": "key update spacing",
+    "natural_language": "前一次 key update 已被 ACK 确认后，在默认 application PTO=1024 ms 的 profile 下，端点不应在 3072 ms 前再主动更新密钥。",
+    "normative_strength": "SHOULD",
+    "standard": "RFC 9001",
+    "standard_version": "RFC 9001",
+    "standard_section": "6.5",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9001.html#section-6.5",
+    "standard_excerpt": "Endpoints SHOULD wait three times the PTO before initiating a key update",
+    "time_value_ms": "3072",
+    "time_parameter": "minimum interval after confirmed key update",
+    "time_source": "3 * (333 + 4*(333/2) + default max_ack_delay 25) = 3072 ms",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_DERIVED_PROFILE",
+    "mathematical_mitl": "G (quic_previous_key_update_confirmed_initial_profile -> G [0,3072) (!quic_local_next_key_update_started))",
+    "mightyppl_formula": "G* (quic_previous_key_update_confirmed_initial_profile -> G [0,3072) (!quic_local_next_key_update_started))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_previous_key_update_confirmed_initial_profile",
+      "quic_local_next_key_update_started"
+    ],
+    "ap_definitions": {
+      "quic_previous_key_update_confirmed_initial_profile": "ACK confirms the previous key phase and current PTO inputs still equal the initial/default application profile.",
+      "quic_local_next_key_update_started": "Local endpoint rotates transmit/receive keys to initiate the next key phase."
+    },
+    "correlation_key": "ngtcp2 connection object + monotonically increasing key-update generation",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_conn.c",
+    "source_symbol": "conn_initiate_key_update",
+    "source_lines": "11281-11297",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L11281-L11297",
+    "instrumentation_timing": "Emit confirmation when confirmed_ts is assigned; emit next-start after conn_rotate_keys succeeds as initiator.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "MEDIUM",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ]
+      },
+      {
+        "time": 3072,
+        "props": [
+          "quic_local_next_key_update_started"
+        ]
+      },
+      {
+        "time": 3073,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ]
+      },
+      {
+        "time": 3071,
+        "props": [
+          "quic_local_next_key_update_started"
+        ]
+      },
+      {
+        "time": 3073,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Only applies while current smoothed_rtt/rttvar and peer max_ack_delay equal the declared profile; otherwise the live 3*PTO bound must be projected into a separately instantiated property.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "ROOT_REVIEWED_PROFILE",
+    "independent_audit_note": "Root review confirmed a no-early safety obligation under the explicitly frozen 1024 ms application-PTO profile; reinstantiate if live PTO differs.",
+    "primary_source_atomic_propositions": [
+      "quic_local_next_key_update_started"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "previous key-update ACK confirmation timestamp",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_handle_unconfirmed_key_update_from_remote",
+        "lines": "3455-3474",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L3455-L3474",
+        "atomic_propositions": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ]
+      },
+      {
+        "role": "default initial RTT input to key-update spacing profile",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+        "lines": "434-439",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+        "atomic_propositions": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ]
+      },
+      {
+        "role": "default max_ack_delay input to key-update spacing profile",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+        "lines": "1278-1285",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+        "atomic_propositions": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "previous key-update ACK confirmation timestamp",
+        "atomic_propositions": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_handle_unconfirmed_key_update_from_remote",
+        "lines": "3455-3474",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L3455-L3474",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_handle_unconfirmed_key_update_from_remote']; failed_symbols=[]; cited_ranges=[(3455, 3474)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "default initial RTT input to key-update spacing profile",
+        "atomic_propositions": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+        "lines": "434-439",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h; verified_symbols=['NGTCP2_DEFAULT_INITIAL_RTT']; failed_symbols=[]; cited_ranges=[(434, 439)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "default max_ack_delay input to key-update spacing profile",
+        "atomic_propositions": [
+          "quic_previous_key_update_confirmed_initial_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+        "lines": "1278-1285",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h; verified_symbols=['NGTCP2_DEFAULT_MAX_ACK_DELAY']; failed_symbols=[]; cited_ranges=[(1278, 1285)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_initiate_key_update']; failed_symbols=[]; cited_ranges=[(11281, 11297)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "quic_previous_key_update_confirmed_initial_profile",
+      "quic_local_next_key_update_started"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 26,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "QUIC-PC-01",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9002 persistent congestion",
+    "title": "Persistent congestion is not declared before three PTO periods",
+    "category": "persistent congestion",
+    "natural_language": "在默认 initial RTT 和 max_ack_delay profile 下，连续丢失区间尚未达到 3072 ms 时不得宣告 persistent congestion。",
+    "normative_strength": "RECOMMENDED threshold",
+    "standard": "RFC 9002",
+    "standard_version": "RFC 9002",
+    "standard_section": "7.6.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9002.html#section-7.6.1",
+    "standard_excerpt": "The RECOMMENDED value for kPersistentCongestionThreshold is 3",
+    "time_value_ms": "3072",
+    "time_parameter": "persistent congestion duration",
+    "time_source": "(333 + 4*(333/2) + 25) * 3 = 3072 ms under RFC/ngtcp2 defaults",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_DERIVED_PROFILE",
+    "mathematical_mitl": "G (quic_app_loss_run_started_initial_profile -> G [0,3072) (!quic_persistent_congestion_declared))",
+    "mightyppl_formula": "G* (quic_app_loss_run_started_initial_profile -> G [0,3072) (!quic_persistent_congestion_declared))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_app_loss_run_started_initial_profile",
+      "quic_persistent_congestion_declared"
+    ],
+    "ap_definitions": {
+      "quic_app_loss_run_started_initial_profile": "Oldest packet in a contiguous all-lost application-space run is sent after handshake confirmation with initial RTT and default max_ack_delay.",
+      "quic_persistent_congestion_declared": "Congestion controller's on_persistent_congestion callback is invoked for that loss run."
+    },
+    "correlation_key": "connection object + application packet-number space + contiguous sent-packet range",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_rtb.c",
+    "source_symbol": "rtb_detect_lost_pkt",
+    "source_lines": "1045-1085",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c#L1045-L1085",
+    "instrumentation_timing": "Record the oldest timestamp when the contiguous loss-run candidate begins; emit declaration at on_persistent_congestion.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_app_loss_run_started_initial_profile"
+        ]
+      },
+      {
+        "time": 3072,
+        "props": [
+          "quic_persistent_congestion_declared"
+        ]
+      },
+      {
+        "time": 3073,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_app_loss_run_started_initial_profile"
+        ]
+      },
+      {
+        "time": 3071,
+        "props": [
+          "quic_persistent_congestion_declared"
+        ]
+      },
+      {
+        "time": 3073,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "This is a no-early-declaration safety oracle. Establishment also requires all relevant ack-eliciting packets in the duration to be declared lost.",
+    "human_review_status": "PENDING",
+    "independent_audit_status": "ROOT_REVIEWED_PROFILE",
+    "independent_audit_note": "Root review confirmed a no-early safety obligation under the explicitly frozen 1024 ms application-PTO profile; reinstantiate if live PTO differs.",
+    "primary_source_atomic_propositions": [
+      "quic_app_loss_run_started_initial_profile"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "persistent-congestion threshold constant",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_cc.h",
+        "symbol": "NGTCP2_PERSISTENT_CONGESTION_THRESHOLD",
+        "lines": "34-38",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_cc.h#L34-L38",
+        "atomic_propositions": [
+          "quic_app_loss_run_started_initial_profile",
+          "quic_persistent_congestion_declared"
+        ]
+      },
+      {
+        "role": "persistent-congestion decision and callback",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_rtb.c",
+        "symbol": "rtb_detect_lost_pkt",
+        "lines": "1162-1185",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c#L1162-L1185",
+        "atomic_propositions": [
+          "quic_persistent_congestion_declared"
+        ]
+      },
+      {
+        "role": "default initial RTT input to fixed profile",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+        "lines": "434-439",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+        "atomic_propositions": [
+          "quic_app_loss_run_started_initial_profile"
+        ]
+      },
+      {
+        "role": "default max_ack_delay input to fixed profile",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+        "lines": "1278-1285",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+        "atomic_propositions": [
+          "quic_app_loss_run_started_initial_profile"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "persistent-congestion threshold constant",
+        "atomic_propositions": [
+          "quic_app_loss_run_started_initial_profile",
+          "quic_persistent_congestion_declared"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_cc.h",
+        "symbol": "NGTCP2_PERSISTENT_CONGESTION_THRESHOLD",
+        "lines": "34-38",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_cc.h#L34-L38",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_cc.h; verified_symbols=['NGTCP2_PERSISTENT_CONGESTION_THRESHOLD']; failed_symbols=[]; cited_ranges=[(34, 38)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "persistent-congestion decision and callback",
+        "atomic_propositions": [
+          "quic_persistent_congestion_declared"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_rtb.c",
+        "symbol": "rtb_detect_lost_pkt",
+        "lines": "1162-1185",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c#L1162-L1185",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c; verified_symbols=['rtb_detect_lost_pkt']; failed_symbols=[]; cited_ranges=[(1162, 1185)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "default initial RTT input to fixed profile",
+        "atomic_propositions": [
+          "quic_app_loss_run_started_initial_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+        "lines": "434-439",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h; verified_symbols=['NGTCP2_DEFAULT_INITIAL_RTT']; failed_symbols=[]; cited_ranges=[(434, 439)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "default max_ack_delay input to fixed profile",
+        "atomic_propositions": [
+          "quic_app_loss_run_started_initial_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+        "lines": "1278-1285",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h; verified_symbols=['NGTCP2_DEFAULT_MAX_ACK_DELAY']; failed_symbols=[]; cited_ranges=[(1278, 1285)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c; verified_symbols=['rtb_detect_lost_pkt']; failed_symbols=[]; cited_ranges=[(1045, 1085)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "quic_app_loss_run_started_initial_profile",
+      "quic_persistent_congestion_declared"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 34,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 23,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "QUIC-PTO-01",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9002 recovery",
+    "title": "Initial handshake PTO is approximately one second",
+    "category": "probe timeout",
+    "natural_language": "ngtcp2 初始 profile 实际 arm 999 ms PTO generation 后，该 generation 不得提前到期，并须在 999 ms 到期或因新的 loss timer/ACK/key discard 重设而失效。",
+    "normative_strength": "SHOULD/MUST computation",
+    "standard": "RFC 9002",
+    "standard_version": "RFC 9002",
+    "standard_section": "6.2.1-6.2.2",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9002.html#section-6.2.2",
+    "standard_excerpt": "the initial RTT SHOULD be set to 333 milliseconds",
+    "time_value_ms": "999..1000",
+    "time_parameter": "initial handshake PTO",
+    "time_source": "333 + 4*(333/2) = 999 ms in ngtcp2 integer arithmetic; RFC narrative calls this 1 second",
+    "instantiation_basis": "NORMATIVE_DERIVED_WITH_DOCUMENTED_ROUNDING",
+    "mathematical_mitl": "G (quic_pto_armed_999ms_initial_profile -> (G [0,999) (!quic_pto_deadline_reached) && F [0,999] (quic_pto_deadline_reached || quic_pto_generation_superseded)))",
+    "mightyppl_formula": "G* (quic_pto_armed_999ms_initial_profile -> (G [0,999) (!quic_pto_deadline_reached) && F [0,999] (quic_pto_deadline_reached || quic_pto_generation_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_pto_armed_999ms_initial_profile",
+      "quic_pto_deadline_reached",
+      "quic_pto_generation_superseded"
+    ],
+    "ap_definitions": {
+      "quic_pto_armed_999ms_initial_profile": "Loss detection actually selects PTO (not time-threshold loss) and arms a generation at 999 ms with pto_count=0.",
+      "quic_pto_deadline_reached": "The absolute deadline for that exact PTO generation is reached.",
+      "quic_pto_generation_superseded": "A qualifying ACK, later ack-eliciting send, key discard, or loss-timer replacement rearms/cancels that generation."
+    },
+    "correlation_key": "connection object + Initial/Handshake packet-number space",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_conn.c",
+    "source_symbol": "conn_compute_initial_pto",
+    "source_lines": "954-979",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L954-L979",
+    "instrumentation_timing": "Record the computed absolute loss_detection_timer and PTO inputs after ngtcp2_conn_set_loss_detection_timer.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_pto_armed_999ms_initial_profile"
+        ]
+      },
+      {
+        "time": 999,
+        "props": [
+          "quic_pto_deadline_reached"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_pto_armed_999ms_initial_profile"
+        ]
+      },
+      {
+        "time": 998,
+        "props": [
+          "quic_pto_deadline_reached"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": []
+      }
+    ],
+    "review_question": "请确认接受 RFC 的“1 second”叙述与 ngtcp2 999 ms 整数计算之间的有据范围，而不是把它称为容差。",
+    "limitations": "The 999..1000 range is a documented arithmetic/narrative discrepancy, not an injected epsilon; resumed RTT profiles are outside scope.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "quic_pto_armed_999ms_initial_profile"
+          ]
+        },
+        {
+          "time": 1000,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Obligation begins at the actual selected PTO arm and is cancelled by all RFC timer-supersession events.",
+    "primary_source_atomic_propositions": [
+      "quic_pto_armed_999ms_initial_profile"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "default initial RTT profile constant",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+        "lines": "434-439",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+        "atomic_propositions": [
+          "quic_pto_armed_999ms_initial_profile"
+        ]
+      },
+      {
+        "role": "PTO selection, arm, cancellation, and replacement",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_set_loss_detection_timer",
+        "lines": "13427-13469",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13427-L13469",
+        "atomic_propositions": [
+          "quic_pto_armed_999ms_initial_profile",
+          "quic_pto_generation_superseded"
+        ]
+      },
+      {
+        "role": "loss-detection deadline dispatch",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_on_loss_detection_timer",
+        "lines": "13478-13546",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13478-L13546",
+        "atomic_propositions": [
+          "quic_pto_deadline_reached"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "default initial RTT profile constant",
+        "atomic_propositions": [
+          "quic_pto_armed_999ms_initial_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/includes/ngtcp2/ngtcp2.h",
+        "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+        "lines": "434-439",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h; verified_symbols=['NGTCP2_DEFAULT_INITIAL_RTT']; failed_symbols=[]; cited_ranges=[(434, 439)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "PTO selection, arm, cancellation, and replacement",
+        "atomic_propositions": [
+          "quic_pto_armed_999ms_initial_profile",
+          "quic_pto_generation_superseded"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_set_loss_detection_timer",
+        "lines": "13427-13469",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13427-L13469",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_set_loss_detection_timer']; failed_symbols=[]; cited_ranges=[(13427, 13469)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "loss-detection deadline dispatch",
+        "atomic_propositions": [
+          "quic_pto_deadline_reached"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_on_loss_detection_timer",
+        "lines": "13478-13546",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13478-L13546",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_on_loss_detection_timer']; failed_symbols=[]; cited_ranges=[(13478, 13546)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_compute_initial_pto']; failed_symbols=[]; cited_ranges=[(954, 979)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "quic_pto_armed_999ms_initial_profile",
+      "quic_pto_deadline_reached",
+      "quic_pto_generation_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 18,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "QUIC-PTO-02",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9002 recovery",
+    "title": "Consecutive PTO doubles after the first expiry",
+    "category": "PTO backoff",
+    "natural_language": "pto_count=1 且默认 profile 实际按 1998 ms arm 下一 PTO generation 后，不得提前到期；须到期或被真正重置 backoff 的 ACK/重发事件替换。",
+    "normative_strength": "MUST",
+    "standard": "RFC 9002",
+    "standard_version": "RFC 9002",
+    "standard_section": "6.2.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9002.html#section-6.2.1",
+    "standard_excerpt": "the PTO period being set to twice its current value",
+    "time_value_ms": "1998",
+    "time_parameter": "second initial-path PTO",
+    "time_source": "RFC 9002 exponential backoff applied to ngtcp2 initial PTO=999 ms",
+    "instantiation_basis": "NORMATIVE_DERIVED_IMPLEMENTATION_ARITHMETIC",
+    "mathematical_mitl": "G (quic_pto_backoff_armed_1998ms -> (G [0,1998) (!quic_second_pto_deadline_reached) && F [0,1998] (quic_second_pto_deadline_reached || quic_second_pto_superseded)))",
+    "mightyppl_formula": "G* (quic_pto_backoff_armed_1998ms -> (G [0,1998) (!quic_second_pto_deadline_reached) && F [0,1998] (quic_second_pto_deadline_reached || quic_second_pto_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_pto_backoff_armed_1998ms",
+      "quic_second_pto_deadline_reached",
+      "quic_second_pto_superseded"
+    ],
+    "ap_definitions": {
+      "quic_pto_backoff_armed_1998ms": "After probe transmission pto_count=1 and the selected PTO generation is actually armed at 1998 ms.",
+      "quic_second_pto_deadline_reached": "That exact backoff generation reaches its absolute deadline.",
+      "quic_second_pto_superseded": "A later send/rearm or an ACK that RFC 9002 says resets PTO backoff replaces that exact generation."
+    },
+    "correlation_key": "connection object + global PTO generation across packet-number spaces",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_conn.c",
+    "source_symbol": "conn_get_earliest_pto_expiry",
+    "source_lines": "13387-13424",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13387-L13424",
+    "instrumentation_timing": "Emit first completion after pto_count increments; emit second fire when ngtcp2_conn_on_loss_detection_timer enters the PTO branch again.",
+    "observability": "WHITEBOX",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_pto_backoff_armed_1998ms"
+        ]
+      },
+      {
+        "time": 1998,
+        "props": [
+          "quic_second_pto_deadline_reached"
+        ]
+      },
+      {
+        "time": 1999,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_pto_backoff_armed_1998ms"
+        ]
+      },
+      {
+        "time": 1997,
+        "props": [
+          "quic_second_pto_deadline_reached"
+        ]
+      },
+      {
+        "time": 1999,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "Uses ngtcp2's exact 999 ms initial computation; implementations rounding the first PTO to 1000 ms need a separately declared 2000 ms profile.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "quic_pto_backoff_armed_1998ms"
+          ]
+        },
+        {
+          "time": 1999,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Trigger is actual pto_count=1 rearm; broad ACK discharge was replaced with generation-specific supersession.",
+    "primary_source_atomic_propositions": [
+      "quic_pto_backoff_armed_1998ms"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "PTO deadline, pto_count increment, and backoff rearm",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_on_loss_detection_timer",
+        "lines": "13478-13546",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13478-L13546",
+        "atomic_propositions": [
+          "quic_pto_backoff_armed_1998ms",
+          "quic_second_pto_deadline_reached"
+        ]
+      },
+      {
+        "role": "backoff timer replacement or cancellation",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_set_loss_detection_timer",
+        "lines": "13427-13469",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13427-L13469",
+        "atomic_propositions": [
+          "quic_second_pto_superseded"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "PTO deadline, pto_count increment, and backoff rearm",
+        "atomic_propositions": [
+          "quic_pto_backoff_armed_1998ms",
+          "quic_second_pto_deadline_reached"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_on_loss_detection_timer",
+        "lines": "13478-13546",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13478-L13546",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_on_loss_detection_timer']; failed_symbols=[]; cited_ranges=[(13478, 13546)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "backoff timer replacement or cancellation",
+        "atomic_propositions": [
+          "quic_second_pto_superseded"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "ngtcp2_conn_set_loss_detection_timer",
+        "lines": "13427-13469",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13427-L13469",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['ngtcp2_conn_set_loss_detection_timer']; failed_symbols=[]; cited_ranges=[(13427, 13469)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_get_earliest_pto_expiry']; failed_symbols=[]; cited_ranges=[(13387, 13424)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "quic_pto_backoff_armed_1998ms",
+      "quic_second_pto_deadline_reached",
+      "quic_second_pto_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 164,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 142,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 16,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "QUIC-PV-01",
+    "protocol": "QUIC",
+    "protocol_extension": "RFC 9000 path validation; RFC 9002 initial RTT",
+    "title": "Initial-profile path validation timeout is 2997 ms",
+    "category": "path validation",
+    "natural_language": "两个 PTO 快照均为 999 ms 且实际 arm 2997 ms path-validation generation 后，不得因 timeout 提前放弃；须在期限成功、timeout，或被新迁移/应用决策替换。",
+    "normative_strength": "RECOMMENDED",
+    "standard": "RFC 9000",
+    "standard_version": "RFC 9000 + RFC 9002",
+    "standard_section": "8.2.4",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-8.2.4",
+    "standard_excerpt": "three times the larger of the current PTO or the PTO",
+    "time_value_ms": "2997",
+    "time_parameter": "path validation timeout",
+    "time_source": "RFC 9000 3*max(PTOs), with ngtcp2/RFC 9002 initial PTO=999 ms",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_DERIVED_PROFILE",
+    "mathematical_mitl": "G (quic_path_validation_armed_2997ms_profile -> (G [0,2997) (!quic_path_abandoned_by_timeout) && F [0,2997] (quic_path_validated || quic_path_abandoned_by_timeout || quic_path_validation_superseded)))",
+    "mightyppl_formula": "G* (quic_path_validation_armed_2997ms_profile -> (G [0,2997) (!quic_path_abandoned_by_timeout) && F [0,2997] (quic_path_validated || quic_path_abandoned_by_timeout || quic_path_validation_superseded)))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "quic_path_validation_armed_2997ms_profile",
+      "quic_path_validated",
+      "quic_path_abandoned_by_timeout",
+      "quic_path_validation_superseded"
+    ],
+    "ap_definitions": {
+      "quic_path_validation_armed_2997ms_profile": "Path validation is actually armed at 3*max(999,999)=2997 ms with both PTO snapshots recorded.",
+      "quic_path_validated": "Matching PATH_RESPONSE validates that path generation.",
+      "quic_path_abandoned_by_timeout": "That generation is abandoned specifically because its validation deadline expires.",
+      "quic_path_validation_superseded": "New migration/path challenge or explicit application decision replaces that generation."
+    },
+    "correlation_key": "connection object + path tuple + PATH_CHALLENGE token stored only as correlation data",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "ngtcp2/ngtcp2",
+    "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+    "source_path": "lib/ngtcp2_conn.c",
+    "source_symbol": "conn_compute_pv_timeout_pto",
+    "source_lines": "995-1012",
+    "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L995-L1012",
+    "instrumentation_timing": "Record the computed pv expiry when the validation object is created; emit success/abandon at matching response or expiry.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_path_validation_armed_2997ms_profile"
+        ]
+      },
+      {
+        "time": 2997,
+        "props": [
+          "quic_path_abandoned_by_timeout"
+        ]
+      },
+      {
+        "time": 2998,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "quic_path_validation_armed_2997ms_profile"
+        ]
+      },
+      {
+        "time": 2996,
+        "props": [
+          "quic_path_abandoned_by_timeout"
+        ]
+      },
+      {
+        "time": 2998,
+        "props": []
+      }
+    ],
+    "review_question": "请确认事务投影、角色条件和固定时间 profile 与实验配置一致。",
+    "limitations": "RFC 9000 labels the 3*PTO value RECOMMENDED, not MUST; migration that supersedes an old validation attempt must be tagged as a non-timeout cancellation.",
+    "human_review_status": "PENDING",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "quic_path_validation_armed_2997ms_profile"
+          ]
+        },
+        {
+          "time": 2998,
+          "props": []
+        }
+      ]
+    },
+    "independent_audit_status": "FIXED_AFTER_AUDIT",
+    "independent_audit_note": "Separated timeout abandonment from supersession and bound the trigger to both PTO snapshots plus actual arm.",
+    "primary_source_atomic_propositions": [
+      "quic_path_validation_armed_2997ms_profile"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "path-validation object creation with timeout",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_pv.c",
+        "symbol": "ngtcp2_pv_new",
+        "lines": "46-68",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_pv.c#L46-L68",
+        "atomic_propositions": [
+          "quic_path_validation_armed_2997ms_profile"
+        ]
+      },
+      {
+        "role": "matching PATH_RESPONSE validation success",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_recv_path_response",
+        "lines": "6161-6268",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6161-L6268",
+        "atomic_propositions": [
+          "quic_path_validated"
+        ]
+      },
+      {
+        "role": "path-validation timeout abandonment",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_write_path_challenge",
+        "lines": "5203-5232",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L5203-L5232",
+        "atomic_propositions": [
+          "quic_path_abandoned_by_timeout"
+        ]
+      },
+      {
+        "role": "migration/application replacement abort",
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_abort_pv",
+        "lines": "5117-5132",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L5117-L5132",
+        "atomic_propositions": [
+          "quic_path_validation_superseded"
+        ]
+      }
+    ],
+    "source_mapping_status": "COMPLETE_FOR_ADMITTED_CANDIDATE",
+    "protocol_slug": "quic",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "path-validation object creation with timeout",
+        "atomic_propositions": [
+          "quic_path_validation_armed_2997ms_profile"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_pv.c",
+        "symbol": "ngtcp2_pv_new",
+        "lines": "46-68",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_pv.c#L46-L68",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_pv.c; verified_symbols=['ngtcp2_pv_new']; failed_symbols=[]; cited_ranges=[(46, 68)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "matching PATH_RESPONSE validation success",
+        "atomic_propositions": [
+          "quic_path_validated"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_recv_path_response",
+        "lines": "6161-6268",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6161-L6268",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_recv_path_response']; failed_symbols=[]; cited_ranges=[(6161, 6268)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "path-validation timeout abandonment",
+        "atomic_propositions": [
+          "quic_path_abandoned_by_timeout"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_write_path_challenge",
+        "lines": "5203-5232",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L5203-L5232",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_write_path_challenge']; failed_symbols=[]; cited_ranges=[(5203, 5232)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "migration/application replacement abort",
+        "atomic_propositions": [
+          "quic_path_validation_superseded"
+        ],
+        "repository": "ngtcp2/ngtcp2",
+        "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+        "path": "lib/ngtcp2_conn.c",
+        "symbol": "conn_abort_pv",
+        "lines": "5117-5132",
+        "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L5117-L5132",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_abort_pv']; failed_symbols=[]; cited_ranges=[(5117, 5132)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/ngtcp2/ngtcp2/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c; verified_symbols=['conn_compute_pv_timeout_pto']; failed_symbols=[]; cited_ranges=[(995, 1012)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "quic_path_validation_armed_2997ms_profile",
+      "quic_path_abandoned_by_timeout",
+      "quic_path_validated",
+      "quic_path_validation_superseded"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 11,
+    "validation_positive_edges": 328,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 9,
+    "validation_negative_edges": 278,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 23,
+    "validation_monitor_ms_positive": 1,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  }
+]

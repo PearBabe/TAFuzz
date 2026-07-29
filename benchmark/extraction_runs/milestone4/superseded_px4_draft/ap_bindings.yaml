@@ -1,0 +1,300 @@
+schema_version: 0.1-draft
+source_freeze: d6f12ad1c4f70ad3230afd7d86e971421e02fef4
+vehicle_scope: multicopter SITL
+binding_policy:
+  source_control_flow_originates_property: false
+  source_locations_are_mapping_evidence_only: true
+  implementation_satisfaction: NOT_ASSESSED
+  line_numbers_are_one_based: true
+ap_bindings:
+  - ap_id: AP-PX4-FAILSAFE-TRIGGER
+    semantic: an externally specified failsafe cause becomes active
+    cardinality: one AP family maps to many per-cause flags and checks
+    source_locations:
+      - {path: msg/FailsafeFlags.msg, lines: 25-60, symbols: failsafe_flags_s.*, role: cause flag family}
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 445-562, symbols: Failsafe::checkStateAndMode/CHECK_FAILSAFE, role: cause-to-action registration}
+    observation: EVENT_METADATA or INTERNAL_REQUIRED; HEARTBEAT.failsafe alone does not identify the cause
+  - ap_id: AP-PX4-DELAY-APPLICABLE
+    semantic: the selected failsafe action is eligible for COM_FAIL_ACT_T delay
+    cardinality: derived from selected action plus takeover/defer context
+    source_locations:
+      - {path: src/modules/commander/failsafe/framework.cpp, lines: 489-499, symbols: action_can_be_delayed/_current_delay, role: implementation binding only}
+    observation: INTERNAL_REQUIRED
+    warning: applicability must be normalized from authoritative docs before use
+  - ap_id: AP-PX4-CONFIGURED-ACTION
+    semantic: action selected by the active failsafe configuration
+    cardinality: many parameters and causes map to one action enum
+    source_locations:
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 445-562, symbols: fromNavDllOrRclActParam/fromGfActParam/CHECK_FAILSAFE, role: parameter-to-action mapping}
+      - {path: src/modules/commander/failsafe/framework.cpp, lines: 462-499, symbols: selected_action/returned_state, role: active-action selection}
+    observation: action outcome is usually DIRECT_WIRE through mode; the configured cause/action pair is INTERNAL_REQUIRED
+  - ap_id: AP-PX4-MODE-HOLD
+    semantic: multicopter Hold/Loiter navigation mode is active
+    cardinality: one AP maps to vehicle_status.nav_state and MAVLink custom mode
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 31-55, symbols: nav_state/NAVIGATION_STATE_AUTO_LOITER, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 129-142, symbols: get_px4_custom_mode, role: wire encoding including AUTO_LOITER and RTL}
+      - {path: src/modules/mavlink/streams/HEARTBEAT.hpp, lines: 103-130, symbols: custom_mode, role: MAVLink output}
+    observation: DIRECT_WIRE via HEARTBEAT.custom_mode or CURRENT_MODE.custom_mode
+  - ap_id: AP-PX4-MODE-RTL
+    semantic: Return mode is active
+    cardinality: vehicle_status.nav_state to PX4 custom AUTO_RTL
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 35-55, symbols: NAVIGATION_STATE_AUTO_RTL, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 139-142, symbols: PX4_CUSTOM_SUB_MODE_AUTO_RTL, role: wire encoding}
+      - {path: src/modules/mavlink/streams/CURRENT_MODE.hpp, lines: 59-72, symbols: current_mode.custom_mode, role: MAVLink output}
+    observation: DIRECT_WIRE
+  - ap_id: AP-PX4-MODE-LAND
+    semantic: Land or position-less Descend action is active
+    cardinality: two nav states may encode a landing outcome
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 35-55, symbols: NAVIGATION_STATE_DESCEND/NAVIGATION_STATE_AUTO_LAND, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 148-173, symbols: AUTO_LAND mapping, role: wire encoding}
+    observation: DIRECT_WIRE, but monitor must state whether Descend counts as Land for the candidate
+  - ap_id: AP-PX4-MODE-OFFBOARD
+    semantic: Offboard navigation mode is active
+    cardinality: vehicle_status.nav_state to PX4 custom OFFBOARD
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 35-55, symbols: NAVIGATION_STATE_OFFBOARD, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 157-159, symbols: PX4_CUSTOM_MAIN_MODE_OFFBOARD, role: wire encoding}
+    observation: DIRECT_WIRE
+  - ap_id: AP-PX4-MODE-TAKEOFF
+    semantic: multicopter automatic Takeoff mode is active
+    cardinality: vehicle_status.nav_state to PX4 AUTO_TAKEOFF custom mode
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 31-55, symbols: NAVIGATION_STATE_AUTO_TAKEOFF, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 165-168, symbols: PX4_CUSTOM_SUB_MODE_AUTO_TAKEOFF, role: wire encoding}
+    observation: DIRECT_WIRE
+  - ap_id: AP-PX4-MODE-ALTITUDE
+    semantic: Altitude-control fallback is active
+    cardinality: vehicle_status.nav_state to PX4 ALTCTL custom mode
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 35-45, symbols: NAVIGATION_STATE_ALTCTL, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 112-118, symbols: PX4_CUSTOM_MAIN_MODE_ALTCTL, role: wire encoding}
+    observation: DIRECT_WIRE
+  - ap_id: AP-PX4-MODE-STABILIZED
+    semantic: Stabilized fallback is active
+    cardinality: vehicle_status.nav_state to PX4 STABILIZED custom mode
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 46-55, symbols: NAVIGATION_STATE_STAB, role: internal state}
+      - {path: src/modules/commander/px4_custom_mode.h, lines: 161-163, symbols: PX4_CUSTOM_MAIN_MODE_STABILIZED, role: wire encoding}
+    observation: DIRECT_WIRE
+  - ap_id: AP-PX4-ARMED
+    semantic: arming state is armed
+    cardinality: one internal enum maps to one MAVLink base-mode bit
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 5-15, symbols: arming_state/armed_time, role: internal state}
+      - {path: src/modules/mavlink/streams/HEARTBEAT.hpp, lines: 62-84, symbols: MAV_MODE_FLAG_SAFETY_ARMED, role: wire encoding}
+    observation: DIRECT_WIRE via HEARTBEAT.base_mode; message has no embedded timestamp
+  - ap_id: AP-PX4-DISARMED
+    semantic: arming state is not armed
+    cardinality: complement of HEARTBEAT armed bit after system/component filtering
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 10-24, symbols: ARMING_STATE_DISARMED/latest_disarming_reason, role: internal state and reason}
+      - {path: src/modules/mavlink/streams/HEARTBEAT.hpp, lines: 79-84, symbols: base_mode, role: wire encoding}
+    observation: DIRECT_WIRE for state; auto-disarm reason is not in HEARTBEAT
+  - ap_id: AP-PX4-SELECTED-MANUAL-SAMPLE
+    semantic: a valid sample from the manual source currently selected by PX4
+    cardinality: many RC/MAVLink input instances converge on one selected setpoint
+    source_locations:
+      - {path: msg/versioned/ManualControlSetpoint.msg, lines: 3-17, symbols: timestamp/timestamp_sample/valid/data_source, role: selected-setpoint schema}
+      - {path: src/modules/manual_control/ManualControl.cpp, lines: 100-148, symbols: _selector/_manual_control_setpoint_pub, role: source selection and publication}
+      - {path: src/modules/mavlink/mavlink_receiver.cpp, lines: 2135-2138, symbols: manual_control_setpoint/_manual_control_input_pub, role: MAVLink input assignment}
+    observation: DIRECT_INPUT for sent MANUAL_CONTROL; INTERNAL_REQUIRED to prove acceptance and selection
+  - ap_id: AP-PX4-MANUAL-GAP-EXPIRED
+    semantic: selected manual setpoint has remained absent for runtime COM_RC_LOSS_T
+    cardinality: derived from selected timestamp plus parameter
+    source_locations:
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp, lines: 38-70, symbols: manual_control_setpoint.timestamp/COM_RC_LOSS_T, role: implementation binding}
+    observation: INTERNAL_REQUIRED unless the harness controls and verifies the selected source
+  - ap_id: AP-PX4-MANUAL-CONTROL-LOST
+    semantic: PX4 classifies manual control as lost
+    cardinality: one failsafe flag derived from validity and elapsed time
+    source_locations:
+      - {path: msg/FailsafeFlags.msg, lines: 38-40, symbols: manual_control_signal_lost, role: internal flag}
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp, lines: 42-69, symbols: manual_control_signal_lost, role: assignment and events}
+    observation: EVENT_METADATA or INTERNAL_REQUIRED; mode transition is only a consequence
+  - ap_id: AP-PX4-RC-LOSS-APPLICABLE
+    semantic: manual-control loss is enabled and not excepted for the intended mode
+    cardinality: mode plus COM_RC_IN_MODE plus COM_RCL_EXCEPT plus arming history
+    source_locations:
+      - {path: src/modules/commander/commander_params.c, lines: 600-633, symbols: NAV_RCL_ACT/COM_RCL_EXCEPT, role: configuration metadata}
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 459-496, symbols: rc_loss_ignored*, role: implementation binding}
+    observation: DERIVED_WIRE from runtime parameters and intended mode; some arming-history state is INTERNAL_REQUIRED
+  - ap_id: AP-PX4-GCS-HEARTBEAT
+    semantic: heartbeat accepted and classified as MAV_TYPE_GCS
+    cardinality: many incoming GCS frames update one last-heartbeat epoch
+    source_locations:
+      - {path: src/modules/mavlink/mavlink_receiver.cpp, lines: 2142-2165, symbols: handle_message_heartbeat/_heartbeat_type_gcs, role: decode and classification}
+      - {path: src/modules/commander/Commander.cpp, lines: 2780-2793, symbols: _datalink_last_heartbeat_gcs, role: accepted epoch update}
+    observation: DIRECT_INPUT when the harness is the only GCS; otherwise source identity and multiplexing must be filtered
+  - ap_id: AP-PX4-GCS-GAP-EXPIRED
+    semantic: last accepted GCS heartbeat is older than COM_DL_LOSS_T
+    cardinality: last-heartbeat epoch plus parameter
+    source_locations:
+      - {path: src/modules/commander/Commander.cpp, lines: 2846-2858, symbols: _datalink_last_heartbeat_gcs/COM_DL_LOSS_T, role: implementation binding}
+    observation: DERIVED_WIRE only under controlled single-GCS input
+  - ap_id: AP-PX4-GCS-CONNECTION-LOST
+    semantic: PX4 classifies its GCS connection as lost
+    cardinality: vehicle status and failsafe flag reflect one state
+    source_locations:
+      - {path: msg/versioned/VehicleStatus.msg, lines: 101-108, symbols: gcs_connection_lost/gcs_connection_lost_counter, role: internal state}
+      - {path: src/modules/commander/Commander.cpp, lines: 2846-2858, symbols: gcs_connection_lost, role: assignment and event}
+    observation: EVENT_METADATA or INTERNAL_REQUIRED; standard HEARTBEAT does not expose this bit
+  - ap_id: AP-PX4-DL-LOSS-APPLICABLE
+    semantic: data-link loss action is enabled and not excepted in current intended mode
+    cardinality: mode plus NAV_DLL_ACT plus COM_DLL_EXCEPT
+    source_locations:
+      - {path: src/modules/commander/commander_params.c, lines: 580-647, symbols: NAV_DLL_ACT/COM_DLL_EXCEPT, role: configuration metadata}
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 498-518, symbols: dll_loss_ignored*, role: implementation binding}
+    observation: DERIVED_WIRE from parameters and current/intended mode with caveats
+  - ap_id: AP-PX4-OFFBOARD-PROOF
+    semantic: a supported Offboard proof/setpoint message is accepted
+    cardinality: multiple MAVLink message families map to one offboard_control_mode topic
+    source_locations:
+      - {path: src/modules/mavlink/mavlink_receiver.cpp, lines: 1034-1149, symbols: handle_message_set_position_target_local_ned/offboard_control_mode, role: position velocity acceleration proof}
+      - {path: src/modules/mavlink/mavlink_receiver.cpp, lines: 1616-1642, symbols: handle_message_set_attitude_target/offboard_control_mode, role: attitude or rate proof}
+      - {path: msg/OffboardControlMode.msg, lines: 1-11, symbols: timestamp/control booleans, role: converged internal schema}
+    observation: DIRECT_INPUT for transmitted frames; acceptance and supported-field validity require INTERNAL_REQUIRED or faithful adapter checks
+  - ap_id: AP-PX4-OFFBOARD-PROOF-QUALIFIED
+    semantic: accepted proof history satisfies admission rate and duration
+    cardinality: derived temporal AP over AP-PX4-OFFBOARD-PROOF
+    source_locations: []
+    observation: NEEDS_BINDING; no one-second qualification state was established in the scoped source audit
+    warning: do not infer this AP solely because Offboard was entered
+  - ap_id: AP-PX4-OFFBOARD-GAP-EXPIRED
+    semantic: accepted offboard_control_mode timestamp is older than COM_OF_LOSS_T
+    cardinality: internal timestamp plus parameter and required control-estimate validity
+    source_locations:
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/offboardCheck.cpp, lines: 38-66, symbols: data_is_recent/offboard_available/offboard_control_signal_lost, role: implementation binding}
+    observation: DERIVED_INPUT only if acceptance is proven; otherwise INTERNAL_REQUIRED
+  - ap_id: AP-PX4-CONFIGURED-OFFBOARD-LOSS-ACTION
+    semantic: action selected after Offboard signal loss including RC-availability fallback
+    cardinality: COM_OBL_RC_ACT plus manual-control availability plus intended mode
+    source_locations:
+      - {path: src/modules/commander/commander_params.c, lines: 329-369, symbols: COM_OF_LOSS_T/COM_OBL_RC_ACT, role: parameter metadata}
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 659-680, symbols: checkModeFallback/fromOffboardLossActParam, role: implementation binding}
+    observation: DIRECT_WIRE for resulting mode; INTERNAL_REQUIRED for why that mode was chosen
+  - ap_id: AP-PX4-LANDED
+    semantic: landing detector reports landed
+    cardinality: internal boolean maps to MAV_LANDED_STATE_ON_GROUND
+    source_locations:
+      - {path: msg/versioned/VehicleLandDetected.msg, lines: 3-21, symbols: timestamp/landed, role: internal state}
+      - {path: src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp, lines: 65-124, symbols: landed_state, role: wire encoding}
+    observation: DIRECT_WIRE via EXTENDED_SYS_STATE.landed_state; message has no embedded timestamp
+  - ap_id: AP-PX4-TAKEOFF-DETECTED
+    semantic: landed transitions to false while armed
+    cardinality: transition over land detector updates vehicle_status.takeoff_time
+    source_locations:
+      - {path: src/modules/commander/Commander.cpp, lines: 2125-2141, symbols: was_landed/landed/takeoff_time, role: transition and epoch assignment}
+      - {path: msg/versioned/VehicleStatus.msg, lines: 5-8, symbols: takeoff_time, role: internal epoch}
+    observation: DERIVED_WIRE from EXTENDED_SYS_STATE ON_GROUND to IN_AIR; EVENT_METADATA can provide commander_takeoff_detected
+  - ap_id: AP-PX4-FLIGHT-TIME-WARNING
+    semantic: maximum-flight-time warning emitted after the 90-percent point
+    cardinality: one condition can produce repeated events with seconds or minutes argument
+    source_locations:
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/flightTimeCheck.cpp, lines: 60-115, symbols: remaining_flight_time_sec/commander_max_flight_time_warning_*, role: warning calculation and events}
+    observation: EVENT_METADATA; plain mode telemetry does not expose the warning
+  - ap_id: AP-PX4-RTL-LOITER-PHASE
+    semantic: direct RTL is holding at the destination descent altitude before landing
+    cardinality: internal RTL state plus destination geometry and current setpoint
+    source_locations:
+      - {path: src/modules/navigator/rtl_direct.cpp, lines: 163-180, symbols: RTLState/wait_at_rtl_descend_alt, role: phase transition}
+      - {path: src/modules/navigator/rtl_direct.cpp, lines: 299-320, symbols: RTLState::LOITER_HOLD/setLoiterHoldMissionItem, role: loiter setpoint}
+      - {path: src/modules/navigator/rtl_direct.cpp, lines: 577-594, symbols: sanitizeLandApproach/RTL_DESCEND_ALT, role: target altitude}
+    observation: DERIVED_WIRE from mode position and target; exact internal phase is INTERNAL_REQUIRED
+  - ap_id: AP-PX4-AUTHORIZED-MODE-TRANSITION
+    semantic: operator or system transition that legitimately ends indefinite RTL loiter
+    cardinality: multiple commands overrides and failsafe causes
+    source_locations: []
+    observation: NEEDS_POLICY_DEFINITION; current mode change is visible but authorization cause may not be
+  - ap_id: AP-PX4-TAKEOFF-TARGET-REACHED
+    semantic: the active Takeoff target is reached under an explicit acceptance tolerance
+    cardinality: target may come from a command or MIS_TAKEOFF_ALT and uses position plus acceptance logic
+    source_locations:
+      - {path: src/modules/navigator/takeoff.cpp, lines: 146-173, symbols: is_mission_item_reached_or_completed/setLoiterItemFromCurrentPositionSetpoint, role: completion and hold transition}
+      - {path: src/modules/navigator/takeoff.cpp, lines: 177-225, symbols: takeoff_altitude_amsl/MIS_TAKEOFF_ALT, role: target construction}
+      - {path: src/modules/navigator/mission_block.cpp, lines: 763-778, symbols: set_takeoff_item/altitude, role: takeoff item fields}
+    observation: DERIVED_WIRE from GLOBAL_POSITION_INT and target; exact acceptance predicate is INTERNAL_REQUIRED
+  - ap_id: AP-PX4-POSITION-HOLD
+    semantic: after Takeoff completion the vehicle is commanded to hold its current position
+    cardinality: loiter mission item plus stable target and actual position
+    source_locations:
+      - {path: src/modules/navigator/takeoff.cpp, lines: 153-172, symbols: setLoiterItemFromCurrentPositionSetpoint/position_setpoint_triplet, role: hold setpoint}
+      - {path: src/modules/navigator/mission_block.cpp, lines: 750-759, symbols: NAV_CMD_LOITER_UNLIMITED, role: loiter-item encoding}
+    observation: DERIVED_WIRE; define spatial/velocity tolerance before truth assignment
+  - ap_id: AP-PX4-LAST-HORIZONTAL-AID-FUSION
+    semantic: latest successful fusion from any source constraining horizontal velocity drift
+    cardinality: many aid-source functions update several last-fuse variables aggregated by EKF logic
+    source_locations:
+      - {path: src/modules/ekf2/EKF/position_fusion.cpp, lines: 56-74, symbols: aid_src.time_last_fuse/_time_last_hor_pos_fuse, role: successful position fusion}
+      - {path: src/modules/ekf2/EKF/velocity_fusion.cpp, lines: 36-70, symbols: aid_src.time_last_fuse/_time_last_hor_vel_fuse, role: successful velocity fusion}
+      - {path: src/modules/ekf2/EKF/aid_sources/optical_flow/optical_flow_fusion.cpp, lines: 96-115, symbols: _aid_src_optical_flow.time_last_fuse/_time_last_hor_vel_fuse, role: optical-flow fusion}
+      - {path: src/modules/ekf2/EKF/ekf_helper.cpp, lines: 800-897, symbols: _time_last_horizontal_aiding/isRecent, role: aggregation across active aiding sources}
+    observation: INTERNAL_REQUIRED; GPS_RAW_INT receipt is not equivalent to successful fusion
+  - ap_id: AP-PX4-HORIZONTAL-NAV-INVALID
+    semantic: horizontal navigation validity is reported invalid after aiding loss or excessive error
+    cardinality: EKF dead-reckoning timeout affects accuracy and commander validity checks
+    source_locations:
+      - {path: src/modules/ekf2/EKF/ekf_helper.cpp, lines: 879-897, symbols: _horizontal_deadreckon_time_exceeded, role: no-aid timeout state}
+      - {path: src/modules/ekf2/EKF/ekf_helper.cpp, lines: 254-281, symbols: get_ekf_lpos_accuracy, role: conservative error output after timeout}
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp, lines: 733-751, symbols: local_position_invalid/local_altitude_invalid, role: commander validity flags}
+    observation: LOCAL_POSITION_NED lacks validity and dead_reckoning fields; EVENT_METADATA or INTERNAL_REQUIRED
+  - ap_id: AP-PX4-HEIGHT-VALID
+    semantic: a usable local height estimate exists for fallback selection
+    cardinality: vehicle_local_position.z_valid and commander local_altitude_invalid
+    source_locations:
+      - {path: msg/versioned/VehicleLocalPosition.msg, lines: 6-17, symbols: z_valid/z, role: internal estimate}
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp, lines: 750-751, symbols: local_altitude_invalid, role: freshness and validity binding}
+    observation: INTERNAL_REQUIRED; standard LOCAL_POSITION_NED omits z_valid
+  - ap_id: AP-PX4-GEOFENCE-BREACH
+    semantic: any enabled max-distance max-altitude or custom-fence result is triggered
+    cardinality: three booleans plus GF_SOURCE/GF_PREDICT and position source
+    source_locations:
+      - {path: msg/GeofenceResult.msg, lines: 1-13, symbols: geofence_*_triggered, role: internal result schema}
+      - {path: src/modules/navigator/navigator_main.cpp, lines: 990-1018, symbols: _geofence_result, role: geometry tests and assignment}
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/geofenceCheck.cpp, lines: 36-50, symbols: any_geofence_triggered/geofence_breached, role: failsafe flag aggregation}
+    observation: INTERNAL_REQUIRED or EVENT_METADATA; no FENCE_STATUS stream was found
+  - ap_id: AP-PX4-CONFIGURED-GEOFENCE-ACTION
+    semantic: mode or other outcome selected by runtime GF_ACTION
+    cardinality: GF_ACTION plus termination circuit-breaker and action support
+    source_locations:
+      - {path: src/modules/navigator/geofence_params.c, lines: 48-62, symbols: GF_ACTION, role: parameter mapping}
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 560-563, symbols: geofence_breached/fromGfActParam, role: failsafe mapping}
+    observation: DIRECT_WIRE for mode outcomes; warning cause and termination gating need events/internal state
+  - ap_id: AP-PX4-ACTIVE-FAILSAFE-SET
+    semantic: set of all currently active failsafe causes and their configured actions
+    cardinality: many flags map to an internal action array
+    source_locations:
+      - {path: msg/FailsafeFlags.msg, lines: 25-60, symbols: failsafe flags, role: cause inputs}
+      - {path: src/modules/commander/failsafe/framework.cpp, lines: 320-349, symbols: _actions/state_failure/action, role: active action records}
+    observation: INTERNAL_REQUIRED; Events may provide an incomplete lossy reconstruction
+  - ap_id: AP-PX4-SELECTED-FAILSAFE-ACTION
+    semantic: maximum-severity currently selected action
+    cardinality: many active action records reduce to one selected action
+    source_locations:
+      - {path: src/modules/commander/failsafe/framework.cpp, lines: 450-499, symbols: selected_action/cur_action.action, role: reduction and delay handling}
+      - {path: src/modules/commander/Commander.cpp, lines: 2339-2412, symbols: _failsafe.selectedAction, role: application to vehicle mode}
+    observation: resulting mode is DIRECT_WIRE; full selected action including delay/defer is INTERNAL_REQUIRED
+  - ap_id: AP-PX4-BATTERY-THRESHOLD-CROSSING
+    semantic: configured battery remaining threshold is crossed for the relevant aggregated battery instance
+    cardinality: multiple battery instances and sources reduce to worst warning/remaining state
+    source_locations:
+      - {path: src/lib/battery/module.yaml, lines: 124-166, symbols: BAT_LOW_THR/BAT_CRIT_THR/BAT_EMERGEN_THR, role: threshold metadata}
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/batteryCheck.cpp, lines: 175-205, symbols: worst_warning/worst_battery_remaining, role: aggregation binding}
+    observation: DERIVED_WIRE from BATTERY_STATUS per instance plus archived parameters; aggregation policy must match source
+  - ap_id: AP-PX4-BATTERY-WARNING
+    semantic: battery state is Low Critical Emergency or another reported warning enum
+    cardinality: per-battery warnings aggregate to failsafe_flags.battery_warning and are also streamed per battery
+    source_locations:
+      - {path: msg/versioned/BatteryStatus.msg, lines: 45-53, symbols: warning/WARNING_*, role: internal warning enum}
+      - {path: src/modules/commander/HealthAndArmingChecks/checks/batteryCheck.cpp, lines: 188-205, symbols: failsafeFlags().battery_warning, role: aggregate assignment}
+      - {path: src/modules/mavlink/streams/BATTERY_STATUS.hpp, lines: 68-118, symbols: charge_state/battery_remaining, role: wire encoding}
+    observation: DIRECT_WIRE via BATTERY_STATUS.charge_state and battery_remaining
+  - ap_id: AP-PX4-CONFIGURED-BATTERY-ACTION
+    semantic: failsafe action selected from battery warning level and COM_LOW_BAT_ACT
+    cardinality: warning severity and action parameter map to a mode/warning action
+    source_locations:
+      - {path: src/modules/commander/commander_params.c, lines: 282-293, symbols: COM_LOW_BAT_ACT, role: parameter mapping}
+      - {path: src/modules/commander/failsafe/failsafe.cpp, lines: 577-603, symbols: fromBatteryWarningActParam/checkFailsafe, role: warning-to-action binding}
+    observation: resulting mode is DIRECT_WIRE; exact cause is EVENT_METADATA or INTERNAL_REQUIRED

@@ -1,0 +1,687 @@
+{
+  "schema_version": "1.0",
+  "property_id": "ARD-COPTER-RTL-003",
+  "title_zh": "Copter RTL Home 上方等待",
+  "title_en": "Copter RTL loiter above Home before final descent",
+  "system_scope": {
+    "system": "ArduPilot",
+    "vehicles": [
+      "Copter"
+    ],
+    "firmware_release": null,
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "SITL Copter 在 RTL 返回路径；Home、RTL landing configuration 和 mission 状态已归档。"
+  },
+  "status": "REVIEW_READY",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "ARD-COPTER-RTL-003-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "Copter RTL Mode",
+      "version": "209e532bc97e5a41966f8c9ab483323c264cae08",
+      "path_or_url": "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/rtl-mode.rst",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "c7f8bbe421d4e3b4f00dc41cf0f8f032a155249fc738a159faf17600d5ab0991",
+      "locator": {
+        "page": null,
+        "section": "RTL parameters",
+        "anchor": null,
+        "line_start": 65,
+        "line_end": 68,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+      "context_summary_zh": "定义到达 Home 上方后、最终下降前的暂停区间。",
+      "language": "en",
+      "document_status": "MAIN_ONLY"
+    },
+    {
+      "source_id": "ARD-COPTER-RTL-003-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "ArduCopter RTL_LOIT_TIME metadata",
+      "version": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "path_or_url": "baseline/ardupilot/ArduCopter/Parameters.cpp",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "ef28e89a26fe2baa8e9ed55b6c145c79726d6d7805d53e82ad4626da1401a0e6",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 80,
+        "line_end": 87,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "// @Param: RTL_LOIT_TIME\n    // @DisplayName: RTL loiter time\n    // @Description: Time (in milliseconds) to loiter above home before beginning final descent\n    // @Units: ms\n    // @Range: 0 60000\n    // @Increment: 1000\n    // @User: Standard\n    GSCALAR(rtl_loiter_time,      \"RTL_LOIT_TIME\",    RTL_LOITER_TIME),",
+      "context_summary_zh": "冻结源码中的毫秒单位、范围和默认值。",
+      "language": "en",
+      "document_status": "CURRENT"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "ARD-COPTER-RTL-003-S1",
+      "ARD-COPTER-RTL-003-S2"
+    ],
+    "edges": [
+      {
+        "from": "ARD-COPTER-RTL-003-S1",
+        "relation": "parameterizes",
+        "to": "ARD-COPTER-RTL-003-S2",
+        "evidence_source_id": "ARD-COPTER-RTL-003-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "标准 HEARTBEAT 只显示 RTL，不能区分内部 loiter/final-descent 子状态。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "ArduCopter RTL mode",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-RTL-003-S1",
+          "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "RTL 到达 Home 上方并进入 loiter/pause 阶段。",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-RTL-003-S1",
+          "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "RTL 未被取消，且 RTL_ALT_FINAL 等配置选择最终下降/着陆路径。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "等待运行时 RTL_LOIT_TIME 后开始最终下降。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "持续符合条件时，在 RTL_LOIT_TIME 结束前不得开始最终下降。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "离开 RTL、改变为非下降结尾或外部合法 mode transition 会取消本次义务。",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "进入 Home 上方 loiter/pause 阶段",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-RTL-003-S1",
+          "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "开始最终下降、RTL 取消或 run 结束",
+      "evidence": [
+        {
+          "source_id": "ARD-COPTER-RTL-003-S1",
+          "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "enter_loiter_at_home",
+        "relation": "BEFORE",
+        "right": "begin_final_descent",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "leave_rtl",
+        "relation": "CANCELS",
+        "right": "rtl_loiter_obligation",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "标准 HEARTBEAT 只显示 RTL，不能区分内部 loiter/final-descent 子状态。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_rtl_loiter",
+      "semantic_start_event": "enter_loiter_at_home",
+      "semantic_end_event": "begin_final_descent",
+      "cancel_event": "leave_rtl_or_nonlanding_path",
+      "reset_event": null,
+      "raw_expression": "runtime(RTL_LOIT_TIME)",
+      "lower": "runtime(RTL_LOIT_TIME)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "ms",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "ARD-COPTER-RTL-003-S2",
+      "source_span": {
+        "source_id": "ARD-COPTER-RTL-003-S2",
+        "quote": "// @Param: RTL_LOIT_TIME\n    // @DisplayName: RTL loiter time\n    // @Description: Time (in milliseconds) to loiter above home before beginning final descent\n    // @Units: ms\n    // @Range: 0 60000\n    // @Increment: 1000\n    // @User: Standard\n    GSCALAR(rtl_loiter_time,      \"RTL_LOIT_TIME\",    RTL_LOITER_TIME),",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "RTL_LOIT_TIME",
+      "formula": "T_rtl_loiter = runtime(RTL_LOIT_TIME)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 5000,
+          "unit": "ms",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/ARD-COPTER-RTL-003"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 5000,
+          "unit": "ms",
+          "source_id": "ARD-COPTER-RTL-003-S2"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "vehicle millis at RTL sub-state entry",
+      "conversion": "MITL interval unit is seconds; divide runtime parameter milliseconds by 1000.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G(enter_loiter_at_home -> (G_[0,T_rtl_loiter] rtl_loiter_eligible -> (G_[0,T_rtl_loiter) !begin_final_descent & F_[T_rtl_loiter,infty) begin_final_descent)))",
+    "concrete": "G(enter_loiter_at_home -> (G_[0,5] rtl_loiter_eligible -> (G_[0,5) !begin_final_descent & F_[5,infty) begin_final_descent)))",
+    "concrete_instances": [
+      {
+        "profile": "ArduPilot/ArduCopter — quad",
+        "capture_id": "ardupilot-copter-m6",
+        "parameter_id": "RTL_LOIT_TIME",
+        "raw_value": 5000,
+        "raw_unit": "ms",
+        "normalized_value": 5.0,
+        "formula_time_unit": "s",
+        "conversion": "5000 ms / 1000 = 5 s",
+        "formula": "G(enter_loiter_at_home -> (G_[0,5] rtl_loiter_eligible -> (G_[0,5) !begin_final_descent & F_[5,infty) begin_final_descent)))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+        "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+        "source_param_index": 5,
+        "source_param_count": 1387,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G(enter_loiter_at_home -> (G_[0,T_rtl_loiter] rtl_loiter_eligible -> (G_[0,T_rtl_loiter) !begin_final_descent & F_[T_rtl_loiter,infty) begin_final_descent)))",
+        "evidence": [
+          {
+            "source_id": "ARD-COPTER-RTL-003-S1",
+            "quote": "-  :ref:`RTL_LOIT_TIME <RTL_LOIT_TIME>`:\n   Time in milliseconds to hover/pause above the \"Home\" position before\n   beginning final descent.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "CONCRETE_UNVALIDATED"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-01",
+      "name": "enter_loiter_at_home",
+      "controlled_natural_language": "RTL 进入 Home 上方等待子状态。",
+      "truth_condition": "内部 RTL sub-state 的进入边沿。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-01-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 148,
+          "column": null,
+          "symbol": "RETURN_HOME -> loiterathome_start",
+          "semantic_identity": "State-machine transition call after RETURN_HOME reports complete.",
+          "entity_kind": "EVENT",
+          "function": "ModeRTL::run",
+          "role": "PRODUCER",
+          "type": "ModeRTL::SubMode transition",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 138-150 dispatch loiterathome_start when _state_complete is true in RETURN_HOME. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L148"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-01-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 258,
+          "column": null,
+          "symbol": "_state = SubMode::LOITER_AT_HOME",
+          "semantic_identity": "Canonical internal sub-state write for entering the Home loiter stage.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "ModeRTL::loiterathome_start",
+          "role": "WRITE",
+          "type": "ModeRTL::SubMode",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "loiterathome_start writes the state and clears _state_complete. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L258"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-01-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 260,
+          "column": null,
+          "symbol": "_loiter_start_time = millis()",
+          "semantic_identity": "Autopilot monotonic-boot epoch for this LOITER_AT_HOME entry.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "ModeRTL::loiterathome_start",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The timer is initialized in the same function immediately after the state write. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L260"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms coarse RTL mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-02",
+      "name": "rtl_loiter_eligible",
+      "controlled_natural_language": "本次 RTL 持续选择最终下降路径且未被取消。",
+      "truth_condition": "在所检查时间范围内 RTL 和 landing-path eligibility 均持续为 true。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-02-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode.h",
+          "line": 1534,
+          "column": null,
+          "symbol": "ModeRTL::SubMode and ModeRTL::_state",
+          "semantic_identity": "Internal RTL state enum and current-state field; LOITER_AT_HOME is the timed stage.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "enum class ModeRTL::SubMode : uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "mode.h:1534-1542 defines enum/accessor and mode.h:1603 stores _state. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode.h#L1534"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-02-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 462,
+          "column": null,
+          "symbol": "rtl_path.land = alt_final_m.get() <= 0",
+          "semantic_identity": "Path-selection field: true chooses direct landing after loiter; false permits FINAL_DESCENT when radio failsafe is also false.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "ModeRTL::build_path",
+          "role": "WRITE",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "build_path derives land from runtime RTL_ALT_FINAL_M. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L462"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-02-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 152,
+          "column": null,
+          "symbol": "rtl_path.land || copter.failsafe.radio",
+          "semantic_identity": "Transition guard selecting LAND versus FINAL_DESCENT after Home loiter completes.",
+          "entity_kind": "OTHER",
+          "function": "ModeRTL::run",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 151-156 call land_start on true and descent_start on false. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L152"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-02-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 134,
+          "column": null,
+          "symbol": "motors->armed()",
+          "semantic_identity": "RTL run stops state progression when motors are not armed.",
+          "entity_kind": "OTHER",
+          "function": "ModeRTL::run",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 132-136 return immediately when disarmed. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L134"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms coarse RTL mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-03",
+      "name": "begin_final_descent",
+      "controlled_natural_language": "RTL 开始最终下降。",
+      "truth_condition": "内部 RTL sub-state 进入 final descent 的边沿。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-03-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 294,
+          "column": null,
+          "symbol": "RTL loiter completion guard",
+          "semantic_identity": "After elapsed RTL_LOIT_TIME and yaw-reset completion, sets _state_complete true.",
+          "entity_kind": "OTHER",
+          "function": "ModeRTL::loiterathome_run",
+          "role": "GUARD",
+          "type": "bool over uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 294-304 compare elapsed time with runtime rtl_loiter_time and complete the stage. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L294"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-03-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 155,
+          "column": null,
+          "symbol": "descent_start()",
+          "semantic_identity": "State-machine producer chosen when Home loiter is complete, rtl_path.land is false, and radio failsafe is false.",
+          "entity_kind": "EVENT",
+          "function": "ModeRTL::run",
+          "role": "PRODUCER",
+          "type": "ModeRTL transition",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 151-156 choose between land_start and descent_start. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L155"
+        },
+        {
+          "binding_id": "ARD-COPTER-RTL-003-AP-03-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/ArduCopter/mode_rtl.cpp",
+          "line": 311,
+          "column": null,
+          "symbol": "_state = SubMode::FINAL_DESCENT",
+          "semantic_identity": "Canonical internal sub-state write for final descent start.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "ModeRTL::descent_start",
+          "role": "WRITE",
+          "type": "ModeRTL::SubMode",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "descent_start writes FINAL_DESCENT, clears completion, and initializes vertical/yaw controllers. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/ArduCopter/mode_rtl.cpp#L311"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Confirms coarse RTL mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone6-runtime-instantiation-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/PX4/properties/*.yaml",
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Concrete mathematical substitution exists where enabled/context-closed, but parser and monitor syntax validation remain Milestone 7 gates."
+    },
+    "satisfiable": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_tautology": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_vacuity": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete traces are generated."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "No TAMonitor result is claimed in Milestone 4."
+    },
+    "independent_review": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Independent review is a Milestone 7 gate and does not replace human acceptance."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Milestone 6 runtime parameter evidence is bound. Final parser, trace, context-conflict, and independent-review gates remain open.",
+    "conflicts": [
+      "ArduPilot wiki 是 MAIN_ONLY。",
+      "0ms 是合法运行时值；边界需要同一飞控时钟的事件探针。"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

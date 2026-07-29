@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schemas/timed_trace.schema.json",
+  "title": "TAFuzz timed trace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "trace_id", "property_id", "clock_domain", "epoch", "events", "dropped_event_count"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "trace_id": {"type": "string"},
+    "property_id": {"type": "string"},
+    "clock_domain": {"type": "string"},
+    "epoch": {"type": "string"},
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["seq", "time", "event_id", "scope_id", "correlation_id", "values", "source", "fresh"],
+        "properties": {
+          "seq": {"type": "integer", "minimum": 0},
+          "time": {"type": "number", "minimum": 0},
+          "event_id": {"type": "string"},
+          "scope_id": {"type": ["string", "null"]},
+          "correlation_id": {"type": ["string", "null"]},
+          "values": {"type": "object"},
+          "source": {"type": "string"},
+          "fresh": {"type": "boolean"}
+        }
+      }
+    },
+    "dropped_event_count": {"type": "integer", "minimum": 0},
+    "notes": {"type": "string"}
+  }
+}

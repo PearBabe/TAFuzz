@@ -1,0 +1,220 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 38
+      },
+      "token": "ap_primary"
+    },
+    "node_context": {
+      "kind": "NODE",
+      "location": {
+        "column": 31,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 31
+      },
+      "token": "node_context"
+    },
+    "node_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 36
+      },
+      "token": "node_state"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 27
+      },
+      "token": "source_primary"
+    },
+    "source_setup_mode": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 29
+      },
+      "token": "source_setup_mode"
+    }
+  },
+  "aps": [
+    {
+      "expression": "prepared context state == 8",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 38
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-075",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "setup_mode_prerequisite",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "Lifecycle order and required mode are explicit in the template, allowing the oracle to distinguish a valid setup sequence from an ignored pre-setup update.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "setup_mode_prerequisite",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "setup",
+        "state_commit",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "mutate value after setup",
+        "kind": "state_value",
+        "relative_time_window": null,
+        "suggested_values": [
+          "7",
+          "8"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_primary",
+            "kind": "setup",
+            "to": "node_context"
+          },
+          {
+            "certainty": "may",
+            "from": "node_context",
+            "kind": "state_commit",
+            "to": "node_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_state",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_context",
+          "node_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_setup_mode == 2",
+        "initialize_context occurs first"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "setup",
+        "control",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "select required mode before commit",
+        "kind": "setup_sequence",
+        "relative_time_window": null,
+        "suggested_values": [
+          "1",
+          "2"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_setup_mode",
+            "kind": "setup",
+            "to": "node_context"
+          },
+          {
+            "certainty": "may",
+            "from": "node_context",
+            "kind": "control",
+            "to": "node_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_state",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_setup_mode",
+          "node_context",
+          "node_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_setup_mode"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/075_setup_mode_prerequisite_may_v4.c",
+  "source_sha256": "0e94cf01665d022b2b99cf5600a3cf24e1263431f34beff848a153ef1d9526e9",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 27
+      },
+      "scope": "SESSION",
+      "symbol": "source_primary"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_setup_mode",
+      "kind": "setup_operation",
+      "location": {
+        "column": 13,
+        "file": "cases/075_setup_mode_prerequisite_may_v4.c",
+        "line": 29
+      },
+      "scope": "SESSION",
+      "symbol": "source_setup_mode"
+    }
+  ]
+}

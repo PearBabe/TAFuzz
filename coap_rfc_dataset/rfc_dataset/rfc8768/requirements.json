@@ -1,0 +1,147 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   https://www"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "When multiple proxies are involved, infinite forwarding loops may be\n   experienced (e"
+  },
+  {
+    "section": "1.1.  Intended Usage",
+    "keyword": "MUST",
+    "text": "However, its intended usage is general:\n\n      New CoAP proxies MUST implement this option and have it enabled by\n      default"
+  },
+  {
+    "section": "1.1.  Intended Usage",
+    "keyword": "MAY",
+    "text": "Note that this means that a server that receives requests both via\n   proxies and directly from clients may see otherwise identical\n   requests with and without the Hop-Limit option included; servers with\n   internal caching will therefore also want to implement this option,\n   since understanding the Hop-Limit option will improve caching\n   efficiency"
+  },
+  {
+    "section": "2.  Terminology",
+    "keyword": "SHOULD",
+    "text": "Readers should be familiar with the terms and concepts defined in\n   [RFC7252]"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "Therefore, any request\n   carrying multiple Hop-Limit options MUST be handled following the\n   procedure specified in Section 5"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "This value MUST be between 1 and 255\n   inclusive"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "CoAP requests received with a Hop-Limit option set to '0'\n   or greater than '255' MUST be rejected by a CoAP server/proxy using\n   4"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "SHOULD",
+    "text": "That is, a CoAP proxy that\n   does not understand the Hop-Limit option should forward it on"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "As such, a CoAP proxy that\n   does not understand the Hop-Limit option must follow the\n   recommendations in Section 5"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "SHOULD",
+    "text": "A CoAP proxy that understands the Hop-Limit option SHOULD be\n   instructed, using a configuration parameter, to insert a Hop-Limit\n   option when relaying a request that does not include the Hop-Limit\n   option"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "SHOULD",
+    "text": "The initial Hop-Limit value should be configurable"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "If no initial\n   value is explicitly provided, the default initial Hop-Limit value of\n   16 MUST be used"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "SHOULD",
+    "text": "Lower\n   values should be used with caution and only in networks where\n   topologies are known by the CoAP client (or proxy) inserting the Hop-\n   Limit option"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MAY",
+    "text": "Because forwarding errors may occur if inadequate Hop-Limit values\n   are used, proxies at the boundaries of an administrative domain MAY\n   be instructed to remove or rewrite the value of Hop-Limit carried in\n   received requests (i"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "SHOULD",
+    "text": "This modification should be done with caution in case\n   proxy-forwarded traffic repeatedly crosses the administrative domain\n   boundary in a loop, rendering ineffective the efficacy of loop\n   detection through the Hop-Limit option"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "A\n   CoAP proxy that understands the Hop-Limit option MUST NOT use a\n   stored 5"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "MUST",
+    "text": "CoAP requests MUST NOT be forwarded if the Hop-Limit option is set to\n   '0' after decrement"
+  },
+  {
+    "section": "3.  Hop-Limit Option",
+    "keyword": "SHOULD",
+    "text": "Requests that cannot be forwarded because of\n   exhausted Hop-Limit SHOULD be logged with a 5"
+  },
+  {
+    "section": "4.  Debugging and Troubleshooting",
+    "keyword": "MUST",
+    "text": "That\n   identifier MUST NOT include any space character (ASCII value 32)"
+  },
+  {
+    "section": "4.  Debugging and Troubleshooting",
+    "keyword": "SHOULD",
+    "text": "Only one\n   identifier per proxy should appear in the diagnostic payload"
+  },
+  {
+    "section": "4.  Debugging and Troubleshooting",
+    "keyword": "MUST",
+    "text": "An intermediate proxy MUST NOT forward a 5"
+  },
+  {
+    "section": "4.  Debugging and Troubleshooting",
+    "keyword": "SHOULD",
+    "text": "Such messages SHOULD be logged and appropriate\n   alerts sent to the administrators"
+  },
+  {
+    "section": "5.  HTTP Mapping Considerations",
+    "keyword": "MAY",
+    "text": "The HTTP-to-CoAP Proxy may be\n   instructed by policy to insert a Hop-Limit option only if a Via\n   (Section 5"
+  },
+  {
+    "section": "5.  HTTP Mapping Considerations",
+    "keyword": "MAY",
+    "text": "The\n   CoAP-to-HTTP Proxy may be instructed by policy to insert a CDN-Loop\n   header field instead of the Via header field"
+  },
+  {
+    "section": "5.  HTTP Mapping Considerations",
+    "keyword": "MAY",
+    "text": "When both HTTP-to-CoAP and CoAP-to-HTTP proxies are involved, the\n   loop detection may break if the proxy-forwarded traffic repeatedly\n   crosses the HTTP-to-CoAP and CoAP-to-HTTP proxies"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MAY",
+    "text": "08 (Hop Limit Reached) error message\n   may leak sensitive information revealing the topology of an\n   administrative domain"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MAY",
+    "text": "To prevent that, a CoAP proxy that is located\n   at the boundary of an administrative domain MAY be instructed to\n   strip the diagnostic payload or part of it before forwarding on the\n   5"
+  },
+  {
+    "section": "8.1.  Normative References",
+    "keyword": "MAY",
+    "text": "17487/RFC8174,\n              May 2017, <https://www"
+  }
+]

@@ -1,0 +1,201 @@
+{
+  "analyzer_binary": "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+  "analyzer_binary_sha256": "ea0c5b10b787f4370ad1e8f00e970d7f87b35332de98dba38bcee762faf8af40",
+  "analyzer_stage_completed_before_evaluation": true,
+  "candidate_binding_mode": "GIVEN_CANDIDATE_ANCHORS_NOT_SCORED",
+  "controllability_mode": "GIVEN_CONTROLLABILITY_NOT_SCORED",
+  "core_tree_sha256": "1adddf78662f22eca07940c00f839421be4bf8359eae119eff5267ffa2694c5b",
+  "evaluation_track": "PAIR_CLASSIFICATION_DIAGNOSTIC",
+  "host": {
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "python": "3.10.12"
+  },
+  "input_manifest": "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+  "input_manifest_sha256": "076e1f4d333be3e729391d5de0857dbaeee43b7ebef6ef17e2f42fec1257a229",
+  "input_schema_sha256": "0547a7e1e21844addf49c55175ea2715fe76feb872b4ce1ad0584c53f4eecb58",
+  "methods": {
+    "adgfuzz-assignment": {
+      "command": [
+        "/usr/bin/time",
+        "-f",
+        "wall_seconds=%e\npeak_rss_kib=%M\nuser_seconds=%U\nsystem_seconds=%S\nexit_code=%x",
+        "-o",
+        "/tmp/rift-m3-final-20260718/adgfuzz-assignment.time.txt",
+        "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+        "baseline",
+        "--method",
+        "adgfuzz-assignment",
+        "--input",
+        "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+        "--output",
+        "/tmp/rift-m3-final-20260718/adgfuzz-assignment.result.json"
+      ],
+      "evaluation_sha256": "9a0655d38f23e22560c6c0aca12f719a2adca9be6fbfb1d5b4e7d0cb2921d57d",
+      "performance": {
+        "exit_code": 0,
+        "measurement_scope": "EXTERNAL_COMPLETE_PROCESS_TREE_GNU_TIME",
+        "peak_rss_bytes": 112435200,
+        "system_seconds": 0.14,
+        "user_seconds": 0.76,
+        "wall_seconds": 0.89
+      },
+      "result_sha256": "faa0622842346e63e3b426fcb76b93ef20ff21c6d3113f9db97e8878764cea42",
+      "stderr": "",
+      "stdout": "PASS method=adgfuzz-style-assignment cases=120 output=\"/tmp/rift-m3-final-20260718/adgfuzz-assignment.result.json\"\n",
+      "time_sha256": "fc61fbcf08828fa9726f41fdcbe7ec74e34f0395667489e9e2e341180e79b818"
+    },
+    "llvm-def-use": {
+      "command": [
+        "/usr/bin/time",
+        "-f",
+        "wall_seconds=%e\npeak_rss_kib=%M\nuser_seconds=%U\nsystem_seconds=%S\nexit_code=%x",
+        "-o",
+        "/tmp/rift-m3-final-20260718/llvm-def-use.time.txt",
+        "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+        "baseline",
+        "--method",
+        "llvm-def-use",
+        "--input",
+        "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+        "--output",
+        "/tmp/rift-m3-final-20260718/llvm-def-use.result.json"
+      ],
+      "evaluation_sha256": "19aa1812eb3061d0e29c4f3a6db5edaf5697c7de70f9d269958b54620af6a0f5",
+      "performance": {
+        "exit_code": 0,
+        "measurement_scope": "EXTERNAL_COMPLETE_PROCESS_TREE_GNU_TIME",
+        "peak_rss_bytes": 93372416,
+        "system_seconds": 2.21,
+        "user_seconds": 2.31,
+        "wall_seconds": 7.18
+      },
+      "result_sha256": "eb6d23151b59a7bed6aa98aee6e6f61f4bd465dac8da80f9ad51dc20433c38ad",
+      "stderr": "",
+      "stdout": "PASS method=llvm-ssa-backward-def-use cases=120 output=\"/tmp/rift-m3-final-20260718/llvm-def-use.result.json\"\n",
+      "time_sha256": "cad0419944440728c0251e28ea23e8db1ff5cc4b1ee39912133c14616732194c"
+    },
+    "memoryssa-aa": {
+      "command": [
+        "/usr/bin/time",
+        "-f",
+        "wall_seconds=%e\npeak_rss_kib=%M\nuser_seconds=%U\nsystem_seconds=%S\nexit_code=%x",
+        "-o",
+        "/tmp/rift-m3-final-20260718/memoryssa-aa.time.txt",
+        "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+        "baseline",
+        "--method",
+        "memoryssa-aa",
+        "--input",
+        "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+        "--output",
+        "/tmp/rift-m3-final-20260718/memoryssa-aa.result.json"
+      ],
+      "evaluation_sha256": "a18b3b14313a1adfafa74107dc94a28d4902b157942532a05b278b2258824eb9",
+      "performance": {
+        "exit_code": 0,
+        "measurement_scope": "EXTERNAL_COMPLETE_PROCESS_TREE_GNU_TIME",
+        "peak_rss_bytes": 103989248,
+        "system_seconds": 1.48,
+        "user_seconds": 1.69,
+        "wall_seconds": 4.68
+      },
+      "result_sha256": "9d0a83581f9c25ce7d0ebfc515e26c866273d0a0403ab83f31a463e3bf41a06b",
+      "stderr": "",
+      "stdout": "PASS method=llvm-memoryssa-basicaa-backward cases=120 output=\"/tmp/rift-m3-final-20260718/memoryssa-aa.result.json\"\n",
+      "time_sha256": "19024dfc896569907453384f8c8d80b18c12027be5d2711ab7869df7ee4ac131"
+    },
+    "moonshine-rw": {
+      "command": [
+        "/usr/bin/time",
+        "-f",
+        "wall_seconds=%e\npeak_rss_kib=%M\nuser_seconds=%U\nsystem_seconds=%S\nexit_code=%x",
+        "-o",
+        "/tmp/rift-m3-final-20260718/moonshine-rw.time.txt",
+        "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+        "baseline",
+        "--method",
+        "moonshine-rw",
+        "--input",
+        "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+        "--output",
+        "/tmp/rift-m3-final-20260718/moonshine-rw.result.json"
+      ],
+      "evaluation_sha256": "c4c9ffa287add007d3f1ed7e54d8ed88549a65914a5a2f94b1f28ee14791e5b7",
+      "performance": {
+        "exit_code": 0,
+        "measurement_scope": "EXTERNAL_COMPLETE_PROCESS_TREE_GNU_TIME",
+        "peak_rss_bytes": 110895104,
+        "system_seconds": 0.17,
+        "user_seconds": 0.76,
+        "wall_seconds": 0.93
+      },
+      "result_sha256": "2530e4bbb34bbe110ee2dd5e9173301db81b6a6c81b39c27a5fe80f7c78d81a9",
+      "stderr": "",
+      "stdout": "PASS method=moonshine-rw cases=120 output=\"/tmp/rift-m3-final-20260718/moonshine-rw.result.json\"\n",
+      "time_sha256": "4efb55fee4198da80ba0db8d53b3a13ab9ca4d6f11d922f4e518eb094fb9f68c"
+    },
+    "plain-pdg": {
+      "command": [
+        "/usr/bin/time",
+        "-f",
+        "wall_seconds=%e\npeak_rss_kib=%M\nuser_seconds=%U\nsystem_seconds=%S\nexit_code=%x",
+        "-o",
+        "/tmp/rift-m3-final-20260718/plain-pdg.time.txt",
+        "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+        "baseline",
+        "--method",
+        "plain-pdg",
+        "--input",
+        "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+        "--output",
+        "/tmp/rift-m3-final-20260718/plain-pdg.result.json"
+      ],
+      "evaluation_sha256": "120cc4fa26fc7a5d7ae1bf60c6bc045b6ab2a1b271f2c211ed8073b9f2b8b32b",
+      "performance": {
+        "exit_code": 0,
+        "measurement_scope": "EXTERNAL_COMPLETE_PROCESS_TREE_GNU_TIME",
+        "peak_rss_bytes": 114573312,
+        "system_seconds": 0.11,
+        "user_seconds": 0.83,
+        "wall_seconds": 0.93
+      },
+      "result_sha256": "45435cf7c528bb76da2ca3067af5d72adcbc1ffb6500714b18ae4b80f3afa990",
+      "stderr": "",
+      "stdout": "PASS method=plain-ast-pdg-property-slice cases=120 output=\"/tmp/rift-m3-final-20260718/plain-pdg.result.json\"\n",
+      "time_sha256": "7908b7baabb1737fb0426e15613bef28867850edc80b4710313a06bf3f7405e8"
+    },
+    "svf-value-flow": {
+      "command": [
+        "/usr/bin/time",
+        "-f",
+        "wall_seconds=%e\npeak_rss_kib=%M\nuser_seconds=%U\nsystem_seconds=%S\nexit_code=%x",
+        "-o",
+        "/tmp/rift-m3-final-20260718/svf-value-flow.time.txt",
+        "/tmp/tafuzz-sa-cmake-all/tafuzz-sa",
+        "baseline",
+        "--method",
+        "svf-value-flow",
+        "--input",
+        "/tmp/rift-m3-root.0gpdWJ/input/analyzer_input.json",
+        "--output",
+        "/tmp/rift-m3-final-20260718/svf-value-flow.result.json"
+      ],
+      "evaluation_sha256": "cd7338109e8a894c0b59a7f2b0784a816560af44d0613a3edc5b6c908ef9e88d",
+      "performance": {
+        "exit_code": 0,
+        "measurement_scope": "EXTERNAL_COMPLETE_PROCESS_TREE_GNU_TIME",
+        "peak_rss_bytes": 105095168,
+        "system_seconds": 4.51,
+        "user_seconds": 31.09,
+        "wall_seconds": 40.21
+      },
+      "result_sha256": "b3cece8739f771684474e7370721ea5fef9397697e67825efe0fdce81cc199a5",
+      "stderr": "",
+      "stdout": "Vmsize   132\nSCCDetectTime       0\nSCCMergeTime        0\nTotalTime           0.001\nUpdateCGTime        0\n----------------Numbers stats----------------------------\nAddrProcessed       34\nCopyProcessed       3\nDummyFieldPtrs      0\nFieldObjs           0\nGepProcessed        0\nIndCallSites        0\nIndEdgeSolved       0\nLoadProcessed       6\nLocalVarInRecur     0\nMaxInAddrEdge       1\nMaxInCopyEdge       2\nMaxInLoadEdge       1\nMaxInStoreEdge      1\nMaxNodesInSCC       0\nMaxOutAddrEdge      8\nMaxOutCopyEdge      2\nMaxOutLoadEdge      2\nMaxOutStoreEdge     1\nMaxPtsSetSize       1\nMemObjects          28\nNodesInCycles       0\nNullPointer         2\nNumOfAddrs          34\nNumOfCGEdge         32\nNumOfCGNode         80\nNumOfCopys          16\nNumOfFieldExpand    0\nNumOfGeps           2\nNumOfLoads          8\nNumOfSCCDetect      3\nNumOfSFRs           0\nNumOfStores         6\nNumOfValidNode      77\nNumOfValidObjNode   27\nPointers            147\nPointsToBlkPtr      0\nPointsToConstPtr    0\nSolveIterations     3\nStoreProcessed      6\nTotalCycleNum       0\nTotalObjects        28\nTotalPWCCycleNum    0\nTotalPointers       147\n#######################################################\n\n****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****\n################ (program : case_120-memory.bc)###############\nUniquePointsToSets       28\nTotalUnions              37\nPropertyUnions           37\nUniqueUnions             0\nLookupUnions             0\nPreemptiveUnions         0\nTotalComplements         240\nPropertyComplements      240\nUniqueComplements        0\nLookupComplements        0\nPreemptiveComplements    0\nTotalIntersections       12\nPropertyIntersections    12\nUniqueIntersections      0\nLookupIntersections      0\nPreemptiveIntersections  0\n#######################################################\n\n*********Memory SSA Statistics***************\n################ (program : case_120-memory.bc)###############\n----------------Time and memory stats--------------------\nAverageRegSize      1\nGenMUCHITime        0\nGenRegionTime       0\nInsertPHITime       0\nSSARenameTime       0\nTotalMSSATime       0\n----------------Numbers stats----------------------------\nBBHasMSSAPhi        1\nCSChiNode           1\nCSHasChi            1\nCSHasMu             1\nCSMuNode            1\nFunEntryChi         20\nFunHasEntryChi      5\nFunHasRetMu         5\nFunRetMu            20\nLoadHasMu           23\nLoadMuNode          21\nMSSAPhi             3\nMaxRegSize          1\nMemRegions          19\nStoreChiNode        21\nStoreHasChi         21\n#######################################################\n\n*********SVFG Statistics***************\n################ (program : case_120-memory.bc)###############\n----------------Time and memory stats--------------------\nATNodeTime          0\nAvgWeight           1\nConnDirEdgeTime     0\nConnIndEdgeTime     0\nOptTime             0\nTLNodeTime          0\nTotalTime           0\n----------------Numbers stats----------------------------\nActualIn            1\nActualOut           1\nActualParam         11\nActualRet           5\nAddr                34\nAvgInDegree         1\nAvgIndInDeg         1\nAvgIndOutDeg        1\nAvgOutDegree        1\nCopy                5\nDirectCallEdge      9\nDirectEdge          117\nDirectRetEdge       4\nFormalIn            20\nFormalOut           20\nFormalParam         11\nFormalRet           5\nGep                 2\nIndCallEdge         1\nIndRetEdge          1\nIndirectEdge        71\nIndirectEdgeLabels  71\nLoad                23\nMSSAPhi             3\nMaxInDegree         3\nMaxIndInDeg         2\nMaxIndOutDeg        4\nMaxOutDegree        6\nPHI                 6\nStore               21\nTotalEdge           188\nTotalNode           180\n#######################################################\nPASS method=svf-3.2-backward-value-flow cases=1 output=\"/mnt/c/Users/PC-123/AppData/Local/Temp/tafuzz-sa-bitcode-477cb8/svf-isolated-case-119.json\"\nPASS method=svf-3.2-backward-value-flow cases=120 output=\"/tmp/rift-m3-final-20260718/svf-value-flow.result.json\"\n",
+      "time_sha256": "76b9af02cca8542934044f81e2f9fec4e5d0cce58608b01a9908ef14f84c696e"
+    }
+  },
+  "result_schema_sha256": "4ded9b571a8a821718025ec4c8fb04480c2192529a47837c235e150ca998e8e3",
+  "schema_version": "rift.m3-run.v1",
+  "summary_sha256": "1ced0b68bad5be327dbc36381a770efc64e7ce17d69652d1ab8928634e804071"
+}

@@ -1,0 +1,39 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-003
+title: GCS data-link loss timeout
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 136-153
+    original_text: "Amount of time after losing the data connection before the failsafe will trigger."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 86-98
+    original_text: "After this amount of seconds without datalink, the GCS connection lost mode triggers."
+normalized_requirement:
+  context: a GCS connection has previously existed and the current mode is not selected by COM_DLL_EXCEPT
+  trigger: no accepted GCS heartbeat/data-link proof for T_dl
+  obligation: trigger GCS-connection-loss; NAV_DLL_ACT and any applicable reaction delay determine the action
+  acceptance_binding: current source binding identifies MAV_TYPE_GCS HEARTBEAT, but that implementation fact is not used as a new requirement
+time_constraint:
+  expression: T_dl = runtime(COM_DL_LOSS_T) seconds
+  compiled_default_instance: 10 seconds
+  allowed_metadata_range: 5 to 300 seconds
+  epoch: last accepted heartbeat classified by PX4 as MAV_TYPE_GCS
+  clock: PX4 HRT internally or host monotonic at the wire observer
+  boundary: documentation says after; equality and tolerance are unresolved
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G((gcs_gap_expired & dl_loss_applicable) -> F_[0,EPS_OBS] gcs_connection_lost)"
+atomic_propositions:
+  - AP-PX4-GCS-HEARTBEAT
+  - AP-PX4-GCS-GAP-EXPIRED
+  - AP-PX4-GCS-CONNECTION-LOST
+  - AP-PX4-DL-LOSS-APPLICABLE
+mavlink_observation_refs: [OBS-PX4-GCS-HEARTBEAT, OBS-PX4-PARAM, OBS-PX4-EVENT, OBS-PX4-MODE]
+blockers: [NEEDS_TRIGGER_OUTPUT, NEEDS_FIRST_CONNECTION_SEMANTICS, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

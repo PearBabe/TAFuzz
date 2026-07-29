@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "milestone7-link-and-catalog-audit-prefinal-20260718",
+  "generated_on": "2026-07-18",
+  "review_state": "PRE_FINAL",
+  "scope": {
+    "purpose": "Read-only aggregate consistency, provenance, frozen-permalink, catalog-recount, and local-link gate.",
+    "property_semantics_origin": "DOCUMENT_EVIDENCE_ONLY",
+    "source_control_flow_property_inference": false,
+    "network_permalink_fetch": false,
+    "local_link_scope": "Authored benchmark entry documents, milestone reports, and all 13 generated per-property reports selected by scope_globs.",
+    "local_link_exclusions": [
+      "Vendored documentation under benchmark/profuzzbench.",
+      "Vendored documentation under benchmark/rift/external."
+    ],
+    "fenced_exact_quote_policy": "Skip fenced exact-quote content while checking all authored links outside those fences.",
+    "rebuild_order": [
+      "build_property_catalog.py --stage 6",
+      "build_monitor_validation.py --force",
+      "build_monitor_validation.py --check",
+      "build_property_catalog.py --stage 7",
+      "validate_property_catalog.py --stage 7"
+    ],
+    "side_effect_policy": "Validators known to rewrite saved reports are not invoked; their saved reports and owned artifacts are checked read-only."
+  },
+  "frozen_commits": {
+    "ArduPilot": {
+      "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472"
+    },
+    "PX4": {
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72"
+    }
+  },
+  "counts": {
+    "properties": 13,
+    "atomic_propositions": 46,
+    "source_bindings": 227,
+    "ap_observations": 77,
+    "source_evidence": 28,
+    "runtime_instances": 15,
+    "runtime_property_parameters": 15
+  },
+  "property_gate": {
+    "property_statuses": {
+      "CANDIDATE": 1,
+      "NEEDS_CONTEXT": 12
+    },
+    "mitl_statuses": {
+      "MONITOR_VALIDATED": 6,
+      "MONITOR_VALIDATION_FAILED": 1,
+      "NEEDS_CONTEXT": 4,
+      "SYMBOLIC_ONLY": 1,
+      "UNSUPPORTED_BY_MONITOR": 1
+    },
+    "implementation_satisfaction": {
+      "NOT_ASSESSED": 13
+    },
+    "accepted_property_count": 0,
+    "epsilon_formula_properties": 0,
+    "source_evidence_file_count": 16,
+    "ap_statuses": {
+      "BOUND": 43,
+      "PARTIALLY_BOUND": 3
+    },
+    "ap_observability": {
+      "CONDITIONAL": 12,
+      "DERIVED": 6,
+      "DIRECT": 9,
+      "INSTRUMENTATION_REQUIRED": 16,
+      "UNRESOLVED": 3
+    },
+    "runtime_instance_statuses": {
+      "DISABLED_BY_RUNTIME_CONFIGURATION": 2,
+      "INSTANTIATED_FORMULA_VALIDATED": 8,
+      "INSTANTIATED_UNVALIDATED": 2,
+      "NEEDS_CONTEXT": 2,
+      "NOT_FORMALIZED": 1
+    },
+    "concrete_properties": 8,
+    "review_decisions": {
+      "PENDING": 13
+    },
+    "implementation_conformance_verdict_count": 0,
+    "synthetic_monitor_property_results": {
+      "PASS": 6,
+      "FAILED": 1,
+      "UNSUPPORTED": 1
+    },
+    "validation": [
+      "Draft-7 property schema validation.",
+      "Standalone property JSON equals aggregate catalog object.",
+      "Property, AP, binding, and observation CSV/JSON projections agree.",
+      "Source file SHA-256, line range, and exact quote agree.",
+      "Runtime instances join exactly to Milestone-6 capture and parameter evidence.",
+      "All 10 active concrete instances carry Stage-7 coverage notes and no longer retain Stage-6 unvalidated wording.",
+      "PRE_FINAL permits no ACCEPTED status, implementation verdict, epsilon boundary, or closed review."
+    ]
+  },
+  "binding_permalink_gate": {
+    "count": 227,
+    "source_file_count": 58,
+    "set_sha256": "edf87a79286ac21554ab974cd4c8a100d02fe4a354b0e32d669cc71bda6fd2ae",
+    "canonicalization": "Sorted UTF-8 records: binding_id<TAB>url<LF>.",
+    "network_fetch_performed": false,
+    "url_templates": {
+      "ArduPilot": "https://github.com/ArduPilot/ardupilot/blob/<commit>/<path>#L<line>",
+      "PX4": "https://github.com/PX4/PX4-Autopilot/blob/<commit>/<path>#L<line>"
+    },
+    "validation": [
+      "Recorded binding commit equals the frozen firmware commit.",
+      "Local source file exists and its bytes equal git show <commit>:<path>.",
+      "Recorded line and optional column are in range.",
+      "At least one checkable symbol token occurs in the nearby source window.",
+      "The exact reconstructed fixed-commit permalink occurs in binding evidence.",
+      "Macro spelling and expansion path:line locations are range-checked when present."
+    ]
+  },
+  "catalog_gate": {
+    "system_counts": {
+      "ArduPilot": {
+        "messages": 352,
+        "message_fields": 2708,
+        "commands": 216,
+        "command_param_slots": 1512,
+        "configuration_parameters": 16904,
+        "time_rows": 2628
+      },
+      "PX4": {
+        "messages": 251,
+        "message_fields": 2018,
+        "commands": 176,
+        "command_param_slots": 1232,
+        "configuration_parameters": 1418,
+        "time_rows": 463
+      }
+    },
+    "totals": {
+      "messages": 603,
+      "message_fields": 4726,
+      "commands": 392,
+      "command_param_slots": 2744,
+      "configuration_parameters": 18322,
+      "time_rows": 3091,
+      "static_support_rows": 995,
+      "runtime_overlay_primary_rows": 1307,
+      "runtime_overlay_supplemental_rows": 3,
+      "runtime_overlay_total_rows": 1310
+    },
+    "hashes": {
+      "static_manifest_sha256": "9c07ad1f7e404737e405bc45b9b1fe5c223e8df4c30665729bcf7ecf68b2f840",
+      "static_validation_report_sha256": "2fd850ef8b9520c1af94c3757a71507690e6c2d401a3a995996bcea55f9a7020",
+      "runtime_catalog_manifest_sha256": "78abb79cfe9403a731169deece9f858a69ffa0861d895e5c458b285508cb1385",
+      "runtime_overlay_csv_sha256": "c1c2a3fa6692728aadf3c83b9ba9efd6704bba158fbd87eb502029e6ea11b91b",
+      "runtime_overlay_json_sha256": "1aecd29c4482532cfdbbbedd5a973dff61587cf474cd206bbec4349da87349f6"
+    },
+    "saved_validation_report_status": "PASS",
+    "validation": [
+      "Static-manifest inputs, outputs, generator, validator, and documentation hashes agree.",
+      "Messages, fields, commands, seven command slots, configuration parameters, and time rows are recounted.",
+      "XML origin lines, configuration source locations, and time-row references resolve.",
+      "The four-profile runtime overlay remains separate from static catalog support and remains NOT_ASSESSED."
+    ]
+  },
+  "local_link_gate": {
+    "markdown_files": 34,
+    "local_links": 250,
+    "set_sha256": "bc4166cbcfaca514777e949427fef6578050f0c2e428b9d8bd78b7262e36c4fc",
+    "canonicalization": "Sorted UTF-8 records: source_path:source_line<TAB>raw_target<LF>.",
+    "scope_globs": [
+      "README.md",
+      "METHOD.md",
+      "RESULTS.md",
+      "MAVLink_ArduPilot_PX4_observability.md",
+      "paper_audits/*.md",
+      "mavlink_catalog/README.md",
+      "extraction_runs/milestone*/*.md",
+      "extraction_runs/milestone*/*/README.md",
+      "ArduPilot/README.md",
+      "ArduPilot/property_catalog.md",
+      "ArduPilot/properties/*.md",
+      "PX4/README.md",
+      "PX4/property_catalog.md",
+      "PX4/properties/*.md"
+    ],
+    "broken": 0,
+    "validated_target_forms": [
+      "Local files and directories.",
+      "Markdown heading anchors.",
+      "Lx and Lx-Ly fragments.",
+      "Absolute or relative path:line and path:start-end targets."
+    ]
+  },
+  "subvalidators": [
+    {
+      "command": "python3 benchmark/scripts/validate_milestone6.py",
+      "mode": "RUN_READ_ONLY",
+      "expected_return_code": 0,
+      "last_observed_checks": 1035,
+      "last_observed_failures": 0,
+      "notes": "Includes runtime capture, Stage-7 property catalog, and runtime overlay --check subvalidators."
+    },
+    {
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "mode": "NOT_RUN_WRITES_OUTPUTS",
+      "notes": "Equivalent binding, source, schema, CSV/JSON, and provenance checks are performed read-only by validate_benchmark.py."
+    },
+    {
+      "command": "python3 benchmark/mavlink_catalog/validate_catalog.py",
+      "mode": "NOT_RUN_WRITES_REPORT",
+      "notes": "The saved PASS report is read; catalog artifacts are independently hashed and recounted."
+    }
+  ],
+  "report_markdown": {
+    "path": "benchmark/extraction_runs/milestone7/link_and_catalog_audit.md",
+    "sha256": "8ae9aabc4a0e319417c52a3fa6daa44174e689898ad7f81581e96d674488edea"
+  },
+  "limitations": [
+    "This gate proves consistency and provenance, not firmware implementation satisfaction.",
+    "GitHub permalinks are reconstructed and checked against local frozen Git objects without network retrieval.",
+    "The local-link source scope excludes vendored documentation; fenced exact-quote content is skipped to avoid interpreting quoted source as authored Markdown.",
+    "Synthetic parser/monitor progress is not flight-controller trace evidence.",
+    "The superseded 14-candidate PX4 draft is retained only as a hash-fixed post-isolation archive; the aggregate gate excludes it from canonical inputs, while no externally anchored pre-move receipt exists to prove earlier historical identity."
+  ],
+  "unresolved": [
+    "Twelve properties remain NEEDS_CONTEXT and one remains CANDIDATE.",
+    "Three atomic propositions remain PARTIALLY_BOUND; the additional PX4 data-link-loss AP preserves the unresolved normative liveness identity instead of inheriting the heartbeat implementation.",
+    "One synthetic monitor suite has an endpoint-verdict mismatch and one is unsupported under the primary runtime limit.",
+    "Hardware behavior, AP instrumentation fidelity, timestamp correlation, and implementation satisfaction remain unassessed.",
+    "No explicit FINAL_REVIEW_COMPLETE status file has been supplied."
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/benchmark/m4/micro-run/2",
+  "title": "Sealed RIFT-M4 micro analyzer run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "input_manifest_sha256",
+    "schema_migration_ledger_sha256",
+    "production_schema_tree_sha256",
+    "analyzer",
+    "adapter_config_sha256",
+    "sandbox",
+    "analysis_complete",
+    "all_cases_completed_before_seal",
+    "evaluation_not_started",
+    "case_count",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": "rift.m4.micro-run.v2"},
+    "input_manifest_sha256": {"$ref": "#/definitions/sha256"},
+    "schema_migration_ledger_sha256": {"$ref": "#/definitions/sha256"},
+    "production_schema_tree_sha256": {"$ref": "#/definitions/sha256"},
+    "analyzer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/definitions/sha256"}
+      }
+    },
+    "adapter_config_sha256": {"$ref": "#/definitions/sha256"},
+    "sandbox": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "engine",
+        "root_filesystem_read_only",
+        "network_isolated",
+        "private_process_namespace",
+        "denied_read_roots"
+      ],
+      "properties": {
+        "engine": {"$ref": "#/definitions/artifact"},
+        "root_filesystem_read_only": {"const": true},
+        "network_isolated": {"const": true},
+        "private_process_namespace": {"const": true},
+        "denied_read_roots": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "analysis_complete": {"const": true},
+    "all_cases_completed_before_seal": {"const": true},
+    "evaluation_not_started": {"const": true},
+    "case_count": {"type": "integer", "minimum": 1},
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/definitions/case_run"}
+    }
+  },
+  "definitions": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/definitions/sha256"}
+      }
+    },
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name", "argv", "execution_argv", "argument_files", "exit_code", "stdout", "stderr"
+      ],
+      "properties": {
+        "name": {"enum": ["index", "bind", "influence"]},
+        "argv": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "execution_argv": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "argument_files": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/definitions/artifact"}
+        },
+        "exit_code": {"const": 0},
+        "stdout": {"$ref": "#/definitions/artifact"},
+        "stderr": {"$ref": "#/definitions/artifact"}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_index",
+        "ap_bindings",
+        "contextual_influence_graph",
+        "ap_influence_cones",
+        "analysis_certificate"
+      ],
+      "properties": {
+        "semantic_index": {"$ref": "#/definitions/artifact"},
+        "ap_bindings": {"$ref": "#/definitions/artifact"},
+        "contextual_influence_graph": {"$ref": "#/definitions/artifact"},
+        "ap_influence_cones": {"$ref": "#/definitions/artifact"},
+        "analysis_certificate": {"$ref": "#/definitions/artifact"}
+      }
+    },
+    "case_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "status", "input_hashes", "artifacts", "stages"],
+      "properties": {
+        "case_id": {"type": "string", "pattern": "^case_[0-9]{3}$"},
+        "status": {"const": "COMPLETE"},
+        "input_hashes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["compile_database_sha256", "property_ir_sha256"],
+          "properties": {
+            "compile_database_sha256": {"$ref": "#/definitions/sha256"},
+            "property_ir_sha256": {"$ref": "#/definitions/sha256"}
+          }
+        },
+        "artifacts": {"$ref": "#/definitions/artifacts"},
+        "stages": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {"$ref": "#/definitions/stage"}
+        }
+      }
+    }
+  }
+}

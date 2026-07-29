@@ -1,0 +1,839 @@
+{
+  "schema_version": "1.0",
+  "property_id": "ARD-ROVER-CRASH-002",
+  "title_zh": "Rover crash 条件持续时间",
+  "title_en": "Rover persistent crash-condition timeout",
+  "system_scope": {
+    "system": "ArduPilot",
+    "vehicles": [
+      "Rover"
+    ],
+    "firmware_release": null,
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "SITL Rover；启用 crash check；阈值、模式和 CRASH_ANGLE 隔离设置已归档。"
+  },
+  "status": "REVIEW_READY",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "ARD-ROVER-CRASH-002-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "Rover Crash Check",
+      "version": "209e532bc97e5a41966f8c9ab483323c264cae08",
+      "path_or_url": "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/rover/source/docs/rover-failsafes.rst",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "f68a1c10ab43b3f831d2600a4233d3bc1e1cec6326bcdc57b03baf3c8afd1576",
+      "locator": {
+        "page": null,
+        "section": "Crash Check",
+        "anchor": null,
+        "line_start": 97,
+        "line_end": 106,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+      "context_summary_zh": "给出适用模式、速度、转率、油门合取条件、持续时间和角度替代路径。",
+      "language": "en",
+      "document_status": "MAIN_ONLY"
+    },
+    {
+      "source_id": "ARD-ROVER-CRASH-002-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "Rover crash-check parameter metadata",
+      "version": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "path_or_url": "baseline/ardupilot/Rover/Parameters.cpp",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "84ffa3f20ff0acb1f1125a66b272e64fb82c6cc50b103688b996e15ca5ef462f",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 634,
+        "line_end": 668,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "// @Param: CRASH_THR_MIN\n    // @DisplayName: Crash throttle minimum\n    // @Description: Throttle above this threshold accompanied by a low speed condition triggers crash detection. Zero disables velocity and turn rate checks.\n    // @Units: %\n    // @Range: 0 100\n    // @Increment: 1\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_THR_MIN\", 58, ParametersG2, crash_thr_min, 5),\n\n    // @Param: CRASH_VEL_MIN\n    // @DisplayName: Crash velocity minimum\n    // @Description: Velocity below this threshold with accompanying throttle demand triggers crash detection. Zero disables velocity check.\n    // @Units: m/s\n    // @Range: 0 60\n    // @Increment: 0.1\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_VEL_MIN\", 59, ParametersG2, crash_vel_min, 0.08),\n\n    // @Param: CRASH_TRAT_MIN\n    // @DisplayName: Crash turn rate minimum\n    // @Description: Turn rate below this threshold with accompanying throttle demand triggers crash detection. Zero disables turn rate check.\n    // @Units: deg/s\n    // @Range: 0 360\n    // @Increment: 1\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_TRAT_MIN\", 60, ParametersG2, crash_turn_rate_min, 10.0),\n\n    // @Param: CRASH_TIMEOUT\n    // @DisplayName: Crash timeout\n    // @Description: Crash conditions persisting for this duration trigger crash detection.\n    // @Units: s\n    // @Range: 0 60\n    // @Increment: 0.5\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_TIMEOUT\", 61, ParametersG2, crash_timeout, 2.0),",
+      "context_summary_zh": "冻结源码中的四个阈值/时间参数、单位、禁用值和默认值。",
+      "language": "en",
+      "document_status": "CURRENT"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "ARD-ROVER-CRASH-002-S1",
+      "ARD-ROVER-CRASH-002-S2"
+    ],
+    "edges": [
+      {
+        "from": "ARD-ROVER-CRASH-002-S1",
+        "relation": "parameterizes",
+        "to": "ARD-ROVER-CRASH-002-S2",
+        "evidence_source_id": "ARD-ROVER-CRASH-002-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "VFR_HUD 无时间戳而 ATTITUDE 有 time_boot_ms；纯 wire 多流合取无法保证同一采样时刻。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "ArduRover crash check",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-CRASH-002-S1",
+          "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "适用模式内 crash 条件合取首次连续成立。",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-CRASH-002-S1",
+          "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "FS_CRASH_CHECK 为 1 或 2。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "模式为 Auto/Guided/RTL/SmartRTL。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "速度、转率和 demanded throttle 均使用各自运行时阈值。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "隔离 CRASH_ANGLE 立即路径。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "条件持续至少 CRASH_TIMEOUT 后切换 Hold，并在配置为 2 时 disarm。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在 CRASH_TIMEOUT 结束前不得仅由 persistence 分支触发 crash action。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "任一合取条件中断会重置持续区间。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "CRASH_ANGLE 是独立立即触发路径。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "crash conjunction 从 false 变 true",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-CRASH-002-S1",
+          "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "任一条件恢复、crash action、failsafe 禁用或 run 结束",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-CRASH-002-S1",
+          "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "crash_condition",
+        "relation": "TRIGGERS",
+        "right": "crash_timer",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "condition_break",
+        "relation": "RESETS",
+        "right": "crash_timer",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "VFR_HUD 无时间戳而 ATTITUDE 有 time_boot_ms；纯 wire 多流合取无法保证同一采样时刻。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_crash",
+      "semantic_start_event": "crash_condition_start",
+      "semantic_end_event": "crash_action",
+      "cancel_event": "failsafe_disabled_or_run_end",
+      "reset_event": "condition_break",
+      "raw_expression": "runtime(CRASH_TIMEOUT)",
+      "lower": "runtime(CRASH_TIMEOUT)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "ARD-ROVER-CRASH-002-S2",
+      "source_span": {
+        "source_id": "ARD-ROVER-CRASH-002-S2",
+        "quote": "// @Param: CRASH_THR_MIN\n    // @DisplayName: Crash throttle minimum\n    // @Description: Throttle above this threshold accompanied by a low speed condition triggers crash detection. Zero disables velocity and turn rate checks.\n    // @Units: %\n    // @Range: 0 100\n    // @Increment: 1\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_THR_MIN\", 58, ParametersG2, crash_thr_min, 5),\n\n    // @Param: CRASH_VEL_MIN\n    // @DisplayName: Crash velocity minimum\n    // @Description: Velocity below this threshold with accompanying throttle demand triggers crash detection. Zero disables velocity check.\n    // @Units: m/s\n    // @Range: 0 60\n    // @Increment: 0.1\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_VEL_MIN\", 59, ParametersG2, crash_vel_min, 0.08),\n\n    // @Param: CRASH_TRAT_MIN\n    // @DisplayName: Crash turn rate minimum\n    // @Description: Turn rate below this threshold with accompanying throttle demand triggers crash detection. Zero disables turn rate check.\n    // @Units: deg/s\n    // @Range: 0 360\n    // @Increment: 1\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_TRAT_MIN\", 60, ParametersG2, crash_turn_rate_min, 10.0),\n\n    // @Param: CRASH_TIMEOUT\n    // @DisplayName: Crash timeout\n    // @Description: Crash conditions persisting for this duration trigger crash detection.\n    // @Units: s\n    // @Range: 0 60\n    // @Increment: 0.5\n    // @User: Advanced\n    AP_GROUPINFO(\"CRASH_TIMEOUT\", 61, ParametersG2, crash_timeout, 2.0),",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "CRASH_TIMEOUT",
+      "formula": "T_crash = runtime(CRASH_TIMEOUT)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 2.0,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/ARD-ROVER-CRASH-002"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 2.0,
+          "unit": "s",
+          "source_id": "ARD-ROVER-CRASH-002-S2"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "single vehicle-side instrumentation clock",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((crash_condition_start & crash_check_enabled) -> (G_[0,T_crash) !crash_action & F_[T_crash,infty) crash_action))",
+    "concrete": "G((crash_condition_start & crash_check_enabled) -> (G_[0,2) !crash_action & F_[2,infty) crash_action))",
+    "concrete_instances": [
+      {
+        "profile": "ArduPilot/Rover — rover",
+        "capture_id": "ardupilot-rover-m6",
+        "parameter_id": "CRASH_TIMEOUT",
+        "raw_value": 2.0,
+        "raw_unit": "s",
+        "normalized_value": 2.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 2 s = 2 s",
+        "formula": "G((crash_condition_start & crash_check_enabled) -> (G_[0,2) !crash_action & F_[2,infty) crash_action))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+        "source_sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+        "source_param_index": 1132,
+        "source_param_count": 1271,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((crash_condition_start & crash_check_enabled) -> (G_[0,T_crash) !crash_action & F_[T_crash,infty) crash_action))",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-CRASH-002-S1",
+            "quote": "If enabled by setting the :ref:`FS_CRASH_CHECK <FS_CRASH_CHECK>` parameter to \"1\" (for :ref:`Hold <hold-mode>`) or \"2\" (for :ref:`Hold <hold-mode>` and Disarm) this failsafe will switch the vehicle to Hold and then (optionally) disarm the vehicle if all the following are true for at least :ref:`CRASH_TIMEOUT <CRASH_TIMEOUT>` seconds:\n\n- the vehicle is in :ref:`Auto <auto-mode>`, :ref:`Guided <guided-mode>`, :ref:`RTL <rtl-mode>` or :ref:`SmartRTL <smartrtl-mode>` mode\n- velocity falls below :ref:`CRASH_VEL_MIN <CRASH_VEL_MIN>`\n- the vehicle is turning at less than :ref:`CRASH_TRAT_MIN <CRASH_TRAT_MIN>`\n- demanded throttle to the motors (from the pilot or autopilot) is at least :ref:`CRASH_THR_MIN <CRASH_THR_MIN>`\n\nIn addition, the :ref:`CRASH_ANGLE <CRASH_ANGLE>` parameter immediately enables the same actions above if the vehicle's roll or pitch angle exceeds that value. \"0\" disables this check.\n\nA `Lua script applet <https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/applets/crash-actions.md>`_ is available to extend crash check actions.",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "CONCRETE_UNVALIDATED"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-01",
+      "name": "crash_condition_start",
+      "controlled_natural_language": "完整 crash 合取条件开始连续成立。",
+      "truth_condition": "eligible_mode & armed & demanded_throttle>=CRASH_THR_MIN & groundspeed<CRASH_VEL_MIN & abs(turn_rate)<CRASH_TRAT_MIN 的上升沿。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-01-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 11,
+          "column": null,
+          "symbol": "crash_counter",
+          "semantic_identity": "Static sample counter for consecutive crash-condition checks.",
+          "entity_kind": "VARIABLE",
+          "function": "Rover::crash_check",
+          "role": "DEFINITION",
+          "type": "static uint16_t samples",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The function is scheduled at 10 Hz and resets/increments this counter. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L11"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-01-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 15,
+          "column": null,
+          "symbol": "armed/enabled/eligible-mode guard",
+          "semantic_identity": "Requires armed, FS_CRASH_CHECK nonzero, and autopilot mode unless the vehicle is a balancebot.",
+          "entity_kind": "OTHER",
+          "function": "Rover::crash_check",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 14-18 reset the counter and return when ineligible. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L15"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-01-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 28,
+          "column": null,
+          "symbol": "persistence crash conjunction",
+          "semantic_identity": "When enabled, continued counting requires low groundspeed, low absolute yaw rate, and absolute demanded throttle at or above their runtime thresholds, subject to zero-threshold disable rules.",
+          "entity_kind": "OTHER",
+          "function": "Rover::crash_check",
+          "role": "DERIVATION",
+          "type": "bool over AP_Float and sensor/actuator values",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 28-35 reset on any threshold-negating disjunct. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L28"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-01-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 38,
+          "column": null,
+          "symbol": "crash_counter++",
+          "semantic_identity": "First increment from zero is the modelled crash_condition_start edge; subsequent increments represent persistence.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Rover::crash_check",
+          "role": "WRITE",
+          "type": "uint16_t samples",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "No separate edge flag or timestamp is written. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L38"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-01-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/Rover.cpp",
+          "line": 130,
+          "column": null,
+          "symbol": "SCHED_TASK(crash_check, 10, ...)",
+          "semantic_identity": "Nominal 10-Hz sampling schedule used to convert CRASH_TIMEOUT seconds to counter ticks.",
+          "entity_kind": "FUNCTION",
+          "function": "Rover::scheduler_tasks",
+          "role": "DERIVATION",
+          "type": "10 Hz scheduled callback",
+          "macro_spelling_location": "baseline/ardupilot/Rover/Rover.cpp:130",
+          "macro_expansion_location": "baseline/ardupilot/Rover/Rover.cpp:130",
+          "confidence": "EXACT",
+          "evidence": "crash_check compares crash_counter with crash_timeout * 10 at crash_check.cpp:41. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/Rover.cpp#L130"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "VFR_HUD",
+          "message_id": 74,
+          "field": "groundspeed",
+          "direction": "OUTGOING",
+          "derivation": "Groundspeed and throttle fields approximate two conjuncts; VFR_HUD has no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "VFR_HUD",
+          "message_id": 74,
+          "field": "throttle",
+          "direction": "OUTGOING",
+          "derivation": "Demanded throttle for Rover; VFR_HUD has no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "ATTITUDE",
+          "message_id": 30,
+          "field": "yawspeed",
+          "direction": "OUTGOING",
+          "derivation": "Yaw rate with vehicle boot timestamp; cannot be strictly aligned to VFR_HUD from embedded fields.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Mode/armed are coarse state inputs. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-02",
+      "name": "crash_check_enabled",
+      "controlled_natural_language": "persistence crash check 已启用且 angle 路径被隔离。",
+      "truth_condition": "FS_CRASH_CHECK in {1,2} 且 CRASH_ANGLE=0 或姿态保证不越界。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-02-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/Parameters.cpp",
+          "line": 136,
+          "column": null,
+          "symbol": "FS_CRASH_CHECK / Parameters::fs_crash_check",
+          "semantic_identity": "Runtime action enum: disabled, Hold, or HoldAndDisarm.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Int8 / enum fs_crash_action",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:173",
+          "macro_expansion_location": "baseline/ardupilot/Rover/Parameters.cpp:136",
+          "confidence": "EXACT",
+          "evidence": "Enum values are Rover/defines.h:69-73. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/Parameters.cpp#L136"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-02-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/Parameters.cpp",
+          "line": 454,
+          "column": null,
+          "symbol": "CRASH_ANGLE / ParametersG2::crash_angle",
+          "semantic_identity": "Independent roll/pitch crash threshold; zero disables this path.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Int8 degrees",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:152",
+          "macro_expansion_location": "baseline/ardupilot/Rover/Parameters.cpp:454",
+          "confidence": "EXACT",
+          "evidence": "Metadata and macro define the angle threshold. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/Parameters.cpp#L454"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-02-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 21,
+          "column": null,
+          "symbol": "crash-angle path",
+          "semantic_identity": "Sets crashed immediately when nonzero CRASH_ANGLE is exceeded, independently of persistence completion.",
+          "entity_kind": "OTHER",
+          "function": "Rover::crash_check",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 20-23 compare pitch and roll and set crashed=true. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L21"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-02-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 28,
+          "column": null,
+          "symbol": "crash_thr_min > 0 && crash_timeout > 0",
+          "semantic_identity": "Enables the persistence counter path; velocity and turn-rate subchecks are individually enabled by positive thresholds.",
+          "entity_kind": "OTHER",
+          "function": "Rover::crash_check",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 28-44 contain the persistence path. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L28"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_CRASH_CHECK, CRASH_ANGLE, CRASH_THR_MIN, CRASH_VEL_MIN, CRASH_TRAT_MIN; configuration snapshot",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DERIVED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-03",
+      "name": "crash_action",
+      "controlled_natural_language": "配置的 Hold/optional-disarm crash action 发生。",
+      "truth_condition": "进入 Hold；若 FS_CRASH_CHECK=2，同时最终 disarmed。",
+      "kind": "CORRELATION",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-03-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 46,
+          "column": null,
+          "symbol": "crashed action branch",
+          "semantic_identity": "Common action producer after angle or persistence crash detection.",
+          "entity_kind": "EVENT",
+          "function": "Rover::crash_check",
+          "role": "PRODUCER",
+          "type": "bool crashed",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 46-63 log and select balancebot or ordinary Rover action. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L46"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-03-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 58,
+          "column": null,
+          "symbol": "set_mode(mode_hold, ModeReason::CRASH_FAILSAFE)",
+          "semantic_identity": "Ordinary Rover requests Hold with a cause-specific mode reason.",
+          "entity_kind": "FUNCTION",
+          "function": "Rover::crash_check",
+          "role": "PRODUCER",
+          "type": "bool mode transition request",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Line 56 also produces Crash: Going to HOLD STATUSTEXT. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L58"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-03-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 59,
+          "column": null,
+          "symbol": "FS_CRASH_HOLD_AND_DISARM branch",
+          "semantic_identity": "When FS_CRASH_CHECK=2, requests disarm with AP_Arming::Method::CRASH after Hold request.",
+          "entity_kind": "FUNCTION",
+          "function": "Rover::crash_check",
+          "role": "PRODUCER",
+          "type": "AP_Arming::Method::CRASH",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 59-60 implement the optional disarm. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L59"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-03-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/system.cpp",
+          "line": 284,
+          "column": null,
+          "symbol": "control_mode_reason = reason",
+          "semantic_identity": "Successful Hold transition records CRASH_FAILSAFE as the canonical cause and logs/sends mode state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Rover::set_mode",
+          "role": "WRITE",
+          "type": "ModeReason",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Rover::is_crashed reads this reason at crash_check.cpp:69-72. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/system.cpp#L284"
+        },
+        {
+          "binding_id": "ARD-ROVER-CRASH-002-AP-03-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/crash_check.cpp",
+          "line": 50,
+          "column": null,
+          "symbol": "balancebot crash action",
+          "semantic_identity": "Balancebot variant emits Crash: Disarming and disarms directly without entering Hold.",
+          "entity_kind": "EVENT",
+          "function": "Rover::crash_check",
+          "role": "PRODUCER",
+          "type": "AP_Arming::Method::CRASH",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 50-54 are the explicit alternate branch. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/crash_check.cpp#L50"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Observe Hold custom_mode and armed bit. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May contain Crash: Going to HOLD; no timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone6-runtime-instantiation-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/PX4/properties/*.yaml",
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Concrete mathematical substitution exists where enabled/context-closed, but parser and monitor syntax validation remain Milestone 7 gates."
+    },
+    "satisfiable": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_tautology": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_vacuity": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete traces are generated."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "No TAMonitor result is claimed in Milestone 4."
+    },
+    "independent_review": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Independent review is a Milestone 7 gate and does not replace human acceptance."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Milestone 6 runtime parameter evidence is bound. Final parser, trace, context-conflict, and independent-review gates remain open.",
+    "conflicts": [
+      "需要统一飞控侧采样，不能按不同消息主机到达时间随意对齐。",
+      "阈值为运行时参数；源码默认仅记录。"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

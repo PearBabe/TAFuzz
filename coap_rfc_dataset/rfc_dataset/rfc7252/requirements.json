@@ -1,0 +1,1592 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   http://www"
+  },
+  {
+    "section": "1.2.  Terminology",
+    "keyword": "MAY",
+    "text": "These words may also appear\n   in this document in lowercase, absent their normative meanings"
+  },
+  {
+    "section": "1.2.  Terminology",
+    "keyword": "MAY",
+    "text": "Unlike a forward-proxy, the client may not be aware\n      that it is communicating with a reverse-proxy; a reverse-proxy\n      receives requests as if it were the origin server for the target\n      resource"
+  },
+  {
+    "section": "1.2.  Terminology",
+    "keyword": "MAY",
+    "text": "By itself, an Acknowledgement\n      message does not indicate success or failure of any request\n      encapsulated in the Confirmable message, but the Acknowledgement\n      message may also carry a Piggybacked Response (see below)"
+  },
+  {
+    "section": "2.  Constrained Application Protocol",
+    "keyword": "MAY",
+    "text": "The server then sends a response with a Response\n   Code; this response may include a resource representation"
+  },
+  {
+    "section": "2.1.  Messaging Model",
+    "keyword": "MAY",
+    "text": "CoAP uses a short fixed-length binary header (4 bytes) that may be\n   followed by compact binary options and a payload"
+  },
+  {
+    "section": "2.1.  Messaging Model",
+    "keyword": "MAY",
+    "text": "When a recipient is not able to process a\n   Non-confirmable message, it may reply with a Reset message (RST)"
+  },
+  {
+    "section": "2.2.  Request/Response Model",
+    "keyword": "MAY",
+    "text": "Even for existing methods, a single request\n   may yield multiple responses, e"
+  },
+  {
+    "section": "2.3.  Intermediaries and Caching",
+    "keyword": "MAY",
+    "text": "Such a mapping may be used to realize an HTTP REST interface\n   using CoAP or to convert between HTTP and CoAP"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MAY",
+    "text": "CoAP may also be used over Datagram\n   Transport Layer Security (DTLS) (see Section 9"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MUST",
+    "text": "Implementations of this specification MUST set this field\n      to 1 (01 binary)"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MUST",
+    "text": "Messages with unknown version numbers MUST be silently ignored"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MUST",
+    "text": "Lengths 9-15 are\n      reserved, MUST NOT be sent, and MUST be processed as a message\n      format error"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MAY",
+    "text": "The header is followed by the Token value, which may be 0 to 8 bytes,\n   as given by the Token Length field"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MUST",
+    "text": "The presence of a\n   marker followed by a zero-length payload MUST be processed as a\n   message format error"
+  },
+  {
+    "section": "3.  Message Format",
+    "keyword": "MAY",
+    "text": "Implementation Note:  The byte value 0xFF may also occur within an\n      option length or value, so simple byte-wise scanning for 0xFF is\n      not a viable technique for finding the payload marker"
+  },
+  {
+    "section": "3.1.  Option Format",
+    "keyword": "MUST",
+    "text": "If the field is set to this value,\n         it MUST be processed as a message format error"
+  },
+  {
+    "section": "3.1.  Option Format",
+    "keyword": "MAY",
+    "text": "The length and\n      format of the Option Value depend on the respective option, which\n      MAY define variable-length values"
+  },
+  {
+    "section": "3.1.  Option Format",
+    "keyword": "MAY",
+    "text": "2 for the\n      formats used in this document; options defined in other documents\n      MAY make use of other option value formats"
+  },
+  {
+    "section": "3.2.  Option Value Formats",
+    "keyword": "MAY",
+    "text": "An option definition may specify a range of permissible\n             numbers of bytes; if it has a choice, a sender SHOULD\n             represent the integer with as few bytes as possible, i"
+  },
+  {
+    "section": "3.2.  Option Value Formats",
+    "keyword": "MUST",
+    "text": "A recipient MUST be\n             prepared to process values with leading zero bytes"
+  },
+  {
+    "section": "4.  Message Transmission",
+    "keyword": "MAY",
+    "text": "As CoAP is bound to unreliable transports such as UDP, CoAP messages\n   may arrive out of order, appear duplicated, or go missing without\n   notice"
+  },
+  {
+    "section": "4.1.  Messages and Endpoints",
+    "keyword": "MAY",
+    "text": "Separate from the message type, a message may carry a request, a\n   response, or be Empty"
+  },
+  {
+    "section": "4.1.  Messages and Endpoints",
+    "keyword": "MUST",
+    "text": "The Token Length\n   field MUST be set to 0 and bytes of data MUST NOT be present after\n   the Message ID field"
+  },
+  {
+    "section": "4.1.  Messages and Endpoints",
+    "keyword": "MUST",
+    "text": "If there are any bytes, they MUST be processed\n   as a message format error"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MUST",
+    "text": "A recipient\n   MUST either (a) acknowledge a Confirmable message with an\n   Acknowledgement message or (b) reject the message if the recipient\n   lacks context to process the message properly, including situations\n   where the message is Empty, uses a code with a reserved class (1, 6,\n   or 7), or has a message format error"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MUST",
+    "text": "The Acknowledgement message MUST echo the Message ID of\n   the Confirmable message and MUST carry a response or be Empty (see\n   Sections 5"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MUST",
+    "text": "The Reset message MUST echo the Message\n   ID of the Confirmable message and MUST be Empty"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MAY",
+    "text": "In particular, an endpoint may be late for a specific\n   retransmission due to its sleep schedule and may catch up on the next\n   one"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MUST",
+    "text": "However, the minimum spacing before another retransmission is\n   ACK_TIMEOUT, and the entire sequence of (re-)transmissions MUST stay\n   in the envelope of MAX_TRANSMIT_SPAN (see Section 4"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MAY",
+    "text": "2), even if\n   that means a sender may miss an opportunity to transmit"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MAY",
+    "text": "A CoAP endpoint that sent a Confirmable message MAY give up in\n   attempting to obtain an ACK even before the MAX_RETRANSMIT counter\n   value is reached"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MAY",
+    "text": "In particular, a CoAP\n   request message may have elicited a separate response, in which case\n   it is clear to the requester that only the ACK was lost and a\n   retransmission of the request would serve no purpose"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MUST",
+    "text": "However, a\n   responder MUST NOT in turn rely on this cross-layer behavior from a\n   requester, i"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MUST",
+    "text": ", it MUST retain the state to create the ACK for the\n   request, if needed, even if a Confirmable response was already\n   acknowledged by the requester"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "MAY",
+    "text": "Another reason for giving up retransmission MAY be the receipt of\n   ICMP errors"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "SHOULD",
+    "text": "If it is desired to take account of ICMP errors, to\n   mitigate potential spoofing attacks, implementations SHOULD take care\n   to check the information about the original datagram in the ICMP\n   message, including port numbers and CoAP header information such as\n   message type and code, Message ID, and Token; if this is not possible\n   due to limitations of the UDP service API, ICMP errors SHOULD be\n   ignored"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "SHOULD",
+    "text": "Packet Too Big errors [RFC4443] (\"fragmentation needed and\n   DF set\" for IPv4 [RFC0792]) cannot properly occur and SHOULD be\n   ignored if the implementation note in Section 4"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "SHOULD",
+    "text": "6 is followed;\n   otherwise, they SHOULD feed into a path MTU discovery algorithm\n   [RFC4821]"
+  },
+  {
+    "section": "4.2.  Messages Transmitted Reliably",
+    "keyword": "SHOULD",
+    "text": "Source Quench and Time Exceeded ICMP messages SHOULD be\n   ignored"
+  },
+  {
+    "section": "4.3.  Messages Transmitted without Reliability",
+    "keyword": "MUST",
+    "text": "A Non-\n   confirmable message always carries either a request or response and\n   MUST NOT be Empty"
+  },
+  {
+    "section": "4.3.  Messages Transmitted without Reliability",
+    "keyword": "MUST",
+    "text": "A Non-confirmable message MUST NOT be\n   acknowledged by the recipient"
+  },
+  {
+    "section": "4.3.  Messages Transmitted without Reliability",
+    "keyword": "MUST",
+    "text": "A recipient MUST reject the message\n   if it lacks context to process the message properly, including the\n   case where the message is Empty, uses a code with a reserved class\n   (1, 6, or 7), or has a message format error"
+  },
+  {
+    "section": "4.3.  Messages Transmitted without Reliability",
+    "keyword": "MUST",
+    "text": "Rejecting a Non-\n   confirmable message MAY involve sending a matching Reset message, and\n   apart from the Reset message the rejected message MUST be silently\n   ignored"
+  },
+  {
+    "section": "4.3.  Messages Transmitted without Reliability",
+    "keyword": "MAY",
+    "text": "A sender MAY choose to\n   transmit multiple copies of a Non-confirmable message within\n   MAX_TRANSMIT_SPAN (limited by the provisions of Section 4"
+  },
+  {
+    "section": "4.3.  Messages Transmitted without Reliability",
+    "keyword": "MAY",
+    "text": "7, in\n   particular, by PROBING_RATE if no response is received), or the\n   network may duplicate the message in transit"
+  },
+  {
+    "section": "4.4.  Message Correlation",
+    "keyword": "MUST",
+    "text": "The Message ID MUST be echoed in the\n   Acknowledgement or Reset message by the recipient"
+  },
+  {
+    "section": "4.4.  Message Correlation",
+    "keyword": "MUST",
+    "text": "The same Message ID MUST NOT be reused (in communicating with the\n   same endpoint) within the EXCHANGE_LIFETIME (Section 4"
+  },
+  {
+    "section": "4.4.  Message Correlation",
+    "keyword": "MUST",
+    "text": "For an Acknowledgement or Reset message to match a Confirmable or\n   Non-confirmable message, the Message ID and source endpoint of the\n   Acknowledgement or Reset message MUST match the Message ID and\n   destination endpoint of the Confirmable or Non-confirmable message"
+  },
+  {
+    "section": "4.5.  Message Deduplication",
+    "keyword": "SHOULD",
+    "text": "The recipient SHOULD acknowledge each\n   duplicate copy of a Confirmable message using the same\n   Acknowledgement or Reset message but SHOULD process any request or\n   response in the message only once"
+  },
+  {
+    "section": "4.5.  Message Deduplication",
+    "keyword": "MAY",
+    "text": "This rule MAY be relaxed in case\n   the Confirmable message transports a request that is idempotent (see\n   Section 5"
+  },
+  {
+    "section": "4.5.  Message Deduplication",
+    "keyword": "MAY",
+    "text": "For example, if the result of a POST\n      request is just the creation of some short-lived state at the\n      server, it may be less expensive to incur this effort multiple\n      times for a request than keeping track of whether a previous\n      transmission of the same request already was processed"
+  },
+  {
+    "section": "4.5.  Message Deduplication",
+    "keyword": "SHOULD",
+    "text": "As a general rule that MAY be\n   relaxed based on the specific semantics of a message, the recipient\n   SHOULD silently ignore any duplicated Non-confirmable message and\n   SHOULD process any request or response in the message only once"
+  },
+  {
+    "section": "4.6.  Message Size",
+    "keyword": "SHOULD",
+    "text": "A CoAP message, appropriately encapsulated, SHOULD fit within a\n   single IP packet (i"
+  },
+  {
+    "section": "4.6.  Message Size",
+    "keyword": "SHOULD",
+    "text": "If the Path MTU is not known for a destination, an IP MTU of 1280\n   bytes SHOULD be assumed; if nothing is known about the size of the\n   headers, good upper bounds are 1152 bytes for the message size and\n   1024 bytes for the payload size"
+  },
+  {
+    "section": "4.6.  Message Size",
+    "keyword": "MAY",
+    "text": "If IPv4 support on unusual networks is a\n      consideration, implementations may want to limit themselves to\n      more conservative IPv4 datagram sizes such as 576 bytes; per\n      [RFC0791], the absolute minimum value of the IP MTU for IPv4 is as\n      low as 68 bytes, which would leave only 40 bytes minus security\n      overhead for a UDP payload"
+  },
+  {
+    "section": "4.6.  Message Size",
+    "keyword": "SHOULD",
+    "text": "Standards Track                   [Page 25]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n      form of path MTU discovery [RFC4821]; this should generally be\n      unnecessary in realistic use cases for CoAP, however"
+  },
+  {
+    "section": "4.6.  Message Size",
+    "keyword": "MAY",
+    "text": ", 6LoWPAN L2 packets are limited\n      to 127 bytes including various overheads); this may motivate\n      implementations to be frugal in their packet sizes and to move to\n      block-wise transfers [BLOCK] when approaching three-digit message\n      sizes"
+  },
+  {
+    "section": "4.7.  Congestion Control",
+    "keyword": "MAY",
+    "text": "An outstanding interaction is either a CON for which an ACK has not\n   yet been received but is still expected (message layer) or a request\n   for which neither a response nor an Acknowledgment message has yet\n   been received but is still expected (which may both occur at the same\n   time, counting as one outstanding interaction)"
+  },
+  {
+    "section": "4.7.  Congestion Control",
+    "keyword": "MAY",
+    "text": "Further congestion control optimizations and considerations are\n   expected in the future, may for example provide automatic\n   initialization of the CoAP transmission parameters defined in\n   Section 4"
+  },
+  {
+    "section": "4.7.  Congestion Control",
+    "keyword": "MAY",
+    "text": "8, and thus may allow a value for NSTART greater than one"
+  },
+  {
+    "section": "4.7.  Congestion Control",
+    "keyword": "MUST",
+    "text": "Unless this is modified by\n   additional congestion control optimizations, it MUST be chosen in\n   such a way that an endpoint does not exceed an average data rate of\n   PROBING_RATE in sending to another endpoint that does not respond"
+  },
+  {
+    "section": "4.7.  Congestion Control",
+    "keyword": "MAY",
+    "text": "However, clients may malfunction or actually be\n      attackers, e"
+  },
+  {
+    "section": "4.7.  Congestion Control",
+    "keyword": "SHOULD",
+    "text": "To limit the damage (to the network and to its own energy\n      resources), a server SHOULD implement some rate limiting for its\n      response transmission based on reasonable assumptions about\n      application requirements"
+  },
+  {
+    "section": "4.8.1.  Changing the Parameters",
+    "keyword": "MAY",
+    "text": "2), and PROBING_RATE may be\n   configured to values specific to the application environment\n   (including dynamically adjusted values); however, the configuration\n   method is out of scope of this document"
+  },
+  {
+    "section": "4.8.1.  Changing the Parameters",
+    "keyword": "MUST",
+    "text": "Configurations MUST NOT\n   decrease ACK_TIMEOUT or increase NSTART without using mechanisms that\n   ensure congestion control safety, either defined in the configuration\n   or in future standards documents"
+  },
+  {
+    "section": "4.8.1.  Changing the Parameters",
+    "keyword": "MUST",
+    "text": "ACK_RANDOM_FACTOR MUST NOT be decreased below 1"
+  },
+  {
+    "section": "4.8.1.  Changing the Parameters",
+    "keyword": "SHOULD",
+    "text": "0, and it SHOULD have\n   a value that is sufficiently different from 1"
+  },
+  {
+    "section": "4.8.1.  Changing the Parameters",
+    "keyword": "MUST",
+    "text": "2), the configuration mechanism\n   MUST ensure the adjusted value is also available to all the endpoints\n   with which these adjusted values are to be used to communicate"
+  },
+  {
+    "section": "5.1.  Requests",
+    "keyword": "MUST",
+    "text": "The\n   GET method is safe; therefore, it MUST NOT take any other action on a\n   resource other than retrieval"
+  },
+  {
+    "section": "5.2.1.  Piggybacked",
+    "keyword": "MUST",
+    "text": "The client MUST be prepared to receive either"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MAY",
+    "text": "It may not be possible to return a piggybacked response in all cases"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MAY",
+    "text": "A server may also immediately\n   send an acknowledgement if it knows in advance that there will be no\n   piggybacked response"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MAY",
+    "text": "(It may also be sent as a\n   Non-confirmable message; see Section 5"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MUST",
+    "text": "Once\n   the server sends back an Empty Acknowledgement, it MUST NOT send back\n\n\n\nShelby, et al"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MUST",
+    "text": "If a retransmitted request is\n   received (perhaps because the original Acknowledgement was delayed),\n   another Empty Acknowledgement is sent, and any response MUST be sent\n   as a separate response"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MUST",
+    "text": "If the server then sends a Confirmable response, the client's\n   Acknowledgement to that response MUST also be an Empty message (one\n   that carries neither a request nor a response)"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MUST",
+    "text": "The server MUST stop\n   retransmitting its response on any matching Acknowledgement (silently\n   ignoring any Response Code or payload) or Reset message"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MAY",
+    "text": "Implementation Notes:  Note that, as the underlying datagram\n      transport may not be sequence-preserving, the Confirmable message\n      carrying the response may actually arrive before or after the\n      Acknowledgement message for the request; for the purposes of\n      terminating the retransmission sequence, this also serves as an\n      acknowledgement"
+  },
+  {
+    "section": "5.2.2.  Separate",
+    "keyword": "MAY",
+    "text": "As there is no underlying\n      transport protocol that could be instructed to run a keep-alive\n      mechanism, the requester may want to set up a timeout that is\n      unrelated to CoAP's retransmission timers in case the server is\n      destroyed or otherwise unable to send the response"
+  },
+  {
+    "section": "5.2.3.  Non-confirmable",
+    "keyword": "MUST",
+    "text": "However, an\n   endpoint MUST be prepared to receive a Non-confirmable response\n   (preceded or followed by an Empty Acknowledgement message) in reply\n   to a Confirmable request, or a Confirmable response in reply to a\n   Non-confirmable request"
+  },
+  {
+    "section": "5.3.1.  Token",
+    "keyword": "MUST",
+    "text": ")  Every request\n   carries a client-generated token that the server MUST echo (without\n   modification) in any resulting response"
+  },
+  {
+    "section": "5.3.1.  Token",
+    "keyword": "SHOULD",
+    "text": "The client SHOULD generate tokens in such a way that tokens currently\n   in use for a given source/destination endpoint pair are unique"
+  },
+  {
+    "section": "5.3.1.  Token",
+    "keyword": "SHOULD",
+    "text": "A client sending a request without using Transport Layer Security\n   (Section 9) SHOULD use a nontrivial, randomized token to guard\n   against spoofing of responses (Section 11"
+  },
+  {
+    "section": "5.3.1.  Token",
+    "keyword": "SHOULD",
+    "text": "A client that is connected to\n   the general Internet SHOULD use at least 32 bits of randomness,\n   keeping in mind that not being directly connected to the Internet is\n   not necessarily sufficient protection against spoofing"
+  },
+  {
+    "section": "5.3.1.  Token",
+    "keyword": "MAY",
+    "text": ")  Clients that want to optimize the\n   Token length may further want to detect the level of ongoing attacks\n   (e"
+  },
+  {
+    "section": "5.3.1.  Token",
+    "keyword": "MUST",
+    "text": "An endpoint receiving a token it did not generate MUST treat the\n   token as opaque and make no assumptions about its content or\n   structure"
+  },
+  {
+    "section": "5.3.2.  Request/Response Matching Rules",
+    "keyword": "MUST",
+    "text": "The source endpoint of the response MUST be the same as the\n       destination endpoint of the original request"
+  },
+  {
+    "section": "5.3.2.  Request/Response Matching Rules",
+    "keyword": "MUST",
+    "text": "In a piggybacked response, the Message ID of the Confirmable\n       request and the Acknowledgement MUST match, and the tokens of the\n       response and original request MUST match"
+  },
+  {
+    "section": "5.3.2.  Request/Response Matching Rules",
+    "keyword": "MUST",
+    "text": "In a separate\n       response, just the tokens of the response and original request\n       MUST match"
+  },
+  {
+    "section": "5.3.2.  Request/Response Matching Rules",
+    "keyword": "MAY",
+    "text": "Implementation Note:  A client that receives a response in a CON\n      message may want to clean up the message state right after sending\n      the ACK"
+  },
+  {
+    "section": "5.3.2.  Request/Response Matching Rules",
+    "keyword": "MAY",
+    "text": "If that ACK is lost and the server retransmits the CON,\n      the client may no longer have any state to which to correlate this\n      response, making the retransmission an unexpected message; the\n      client will likely send a Reset message so it does not receive any\n      more retransmissions"
+  },
+  {
+    "section": "5.4.  Options",
+    "keyword": "MAY",
+    "text": "Both requests and responses may include a list of one or more\n   options"
+  },
+  {
+    "section": "5.4.  Options",
+    "keyword": "MUST",
+    "text": "In case an option is\n   not defined for a Method or Response Code, it MUST NOT be included by\n   a sender and MUST be treated like an unrecognized option by a\n   recipient"
+  },
+  {
+    "section": "5.4.1.  Critical/Elective",
+    "keyword": "MUST",
+    "text": "The\n   difference between these is how an option unrecognized by an endpoint\n   is handled:\n\n   o  Upon reception, unrecognized options of class \"elective\" MUST be\n      silently ignored"
+  },
+  {
+    "section": "5.4.1.  Critical/Elective",
+    "keyword": "MUST",
+    "text": "o  Unrecognized options of class \"critical\" that occur in a\n      Confirmable request MUST cause the return of a 4"
+  },
+  {
+    "section": "5.4.1.  Critical/Elective",
+    "keyword": "SHOULD",
+    "text": "This response SHOULD include a diagnostic payload\n      describing the unrecognized option(s) (see Section 5"
+  },
+  {
+    "section": "5.4.1.  Critical/Elective",
+    "keyword": "MUST",
+    "text": "o  Unrecognized options of class \"critical\" that occur in a Non-\n      confirmable message MUST cause the message to be rejected\n      (Section 4"
+  },
+  {
+    "section": "5.4.3.  Length",
+    "keyword": "MUST",
+    "text": "If the length of an option value\n   in a request is outside the defined range, that option MUST be\n   treated like an unrecognized option (see Section 5"
+  },
+  {
+    "section": "5.4.4.  Default Values",
+    "keyword": "MAY",
+    "text": "Options may be defined to have a default value"
+  },
+  {
+    "section": "5.4.4.  Default Values",
+    "keyword": "SHOULD",
+    "text": "If the value of an\n   option is intended to be this default value, the option SHOULD NOT be\n   included in the message"
+  },
+  {
+    "section": "5.4.4.  Default Values",
+    "keyword": "MUST",
+    "text": "If the option is not present, the default\n   value MUST be assumed"
+  },
+  {
+    "section": "5.4.5.  Repeatable Options",
+    "keyword": "MAY",
+    "text": "An option that is repeatable MAY be included one or more\n   times in a message"
+  },
+  {
+    "section": "5.4.5.  Repeatable Options",
+    "keyword": "MUST",
+    "text": "An option that is not repeatable MUST NOT be\n   included more than once in a message"
+  },
+  {
+    "section": "5.4.5.  Repeatable Options",
+    "keyword": "MUST",
+    "text": "If a message includes an option with more occurrences than the option\n   is defined for, each supernumerary option occurrence that appears\n   subsequently in the message MUST be treated like an unrecognized\n   option (see Section 5"
+  },
+  {
+    "section": "5.4.6.  Option Numbers",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 39]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   An endpoint may use an equivalent of the C code in Figure 11 to\n   derive the characteristics of an option number \"onum\""
+  },
+  {
+    "section": "5.5.  Payloads and Representations",
+    "keyword": "MAY",
+    "text": "Both requests and responses may include a payload, depending on the\n   Method or Response Code, respectively"
+  },
+  {
+    "section": "5.5.  Payloads and Representations",
+    "keyword": "MUST",
+    "text": "If a Method or Response Code\n   is not defined to have a payload, then a sender MUST NOT include one,\n   and a recipient MUST ignore it"
+  },
+  {
+    "section": "5.5.1.  Representation",
+    "keyword": "SHOULD",
+    "text": "Payload \"sniffing\"\n   SHOULD only be attempted if no content type is given"
+  },
+  {
+    "section": "5.5.2.  Diagnostic Payload",
+    "keyword": "MUST",
+    "text": "This diagnostic\n   message MUST be encoded using UTF-8 [RFC3629], more specifically\n   using Net-Unicode form [RFC5198]"
+  },
+  {
+    "section": "5.5.2.  Diagnostic Payload",
+    "keyword": "SHOULD",
+    "text": "In contrast to what is usual in HTTP,\n   the payload SHOULD be empty if there is no additional information\n   beyond the Response Code"
+  },
+  {
+    "section": "5.5.4.  Content Negotiation",
+    "keyword": "MAY",
+    "text": "A server may be able to supply a representation for a resource in one\n   of multiple representation formats"
+  },
+  {
+    "section": "5.6.  Caching",
+    "keyword": "MAY",
+    "text": "CoAP endpoints MAY cache responses in order to reduce the response\n   time and network bandwidth consumption on future, equivalent\n   requests"
+  },
+  {
+    "section": "5.6.  Caching",
+    "keyword": "MUST",
+    "text": "Response Codes that indicate success and\n   are unrecognized by an endpoint MUST NOT be cached"
+  },
+  {
+    "section": "5.6.  Caching",
+    "keyword": "MUST",
+    "text": "For a presented request, a CoAP endpoint MUST NOT use a stored\n   response, unless:\n\n   o  the presented request method and that used to obtain the stored\n      response match,\n\n   o  all options match between those in the presented request and those\n      of the request used to obtain the stored response (which includes\n      the request URI), except that there is no need for a match of any\n      request options marked as NoCacheKey (Section 5"
+  },
+  {
+    "section": "5.6.  Caching",
+    "keyword": "MAY",
+    "text": "For URI schemes\n   other than coap and coaps, matching of those options that constitute\n   the request URI may be performed under rules specific to the URI\n   scheme"
+  },
+  {
+    "section": "5.6.1.  Freshness Model",
+    "keyword": "MUST",
+    "text": "If an origin server\n   wishes to prevent caching, it MUST explicitly include a Max-Age\n   Option with a value of zero seconds"
+  },
+  {
+    "section": "5.6.2.  Validation Model",
+    "keyword": "SHOULD",
+    "text": "When sending such a request, the endpoint SHOULD add an ETag Option\n   specifying the entity-tag of each stored response that is applicable"
+  },
+  {
+    "section": "5.6.2.  Validation Model",
+    "keyword": "MAY",
+    "text": "Instead, the response SHOULD\n   be used to satisfy the request and MAY replace the stored response"
+  },
+  {
+    "section": "5.7.  Proxying",
+    "keyword": "MAY",
+    "text": "This may be useful, for example,\n   when the request could otherwise not be made, or to service the\n   response from a cache in order to reduce response time and network\n   bandwidth or energy consumption"
+  },
+  {
+    "section": "5.7.  Proxying",
+    "keyword": "MAY",
+    "text": "Notes:  The terminology in this specification has been selected to be\n      culturally compatible with the terminology used in the wider web\n      application environments, without necessarily matching it in every\n      detail (which may not even be relevant to Constrained RESTful\n      Environments)"
+  },
+  {
+    "section": "5.7.  Proxying",
+    "keyword": "SHOULD",
+    "text": "Not too much semantics should be ascribed to the\n      components of the terms (such as \"forward\", \"reverse\", or\n      \"cross\")"
+  },
+  {
+    "section": "5.7.  Proxying",
+    "keyword": "SHOULD",
+    "text": ", \"coaps\" or \"https\"), the request towards the proxy\n   SHOULD be sent using DTLS except where equivalent lower-layer\n   security is used for the leg between the client and the proxy"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MAY",
+    "text": "This way is fully specified for\n   a forward-proxy but may depend on the specific configuration for a\n   reverse-proxy"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "04 (Gateway\n   Timeout) response MUST be returned"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "02 (Bad Gateway) response MUST be returned"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "If a response is generated out of a cache, the generated (or implied)\n   Max-Age Option MUST NOT extend the max-age originally set by the\n   server, considering the time the resource representation spent in the\n   cache"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "SHOULD",
+    "text": "Considering\n   potential network delays on the way from the origin server, a proxy\n   should be conservative in the max-age values offered"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "All options present in a proxy request MUST be processed at the\n   proxy"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "Unsafe options in a request that are not recognized by the\n   proxy MUST lead to a 4"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "A CoAP-to-CoAP proxy MUST forward to the origin server all\n   Safe-to-Forward options that it does not recognize"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "Standards Track                   [Page 45]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   Unsafe options in a response that are not recognized by the CoAP-to-\n   CoAP proxy server MUST lead to a 5"
+  },
+  {
+    "section": "5.7.1.  Proxy Operation",
+    "keyword": "MUST",
+    "text": "Again,\n   Safe-to-Forward options that are not recognized MUST be forwarded"
+  },
+  {
+    "section": "5.7.2.  Forward-Proxies",
+    "keyword": "MUST",
+    "text": "2), then the request MUST be treated as a\n   local (non-proxied) request"
+  },
+  {
+    "section": "5.7.2.  Forward-Proxies",
+    "keyword": "MUST",
+    "text": "Unless a proxy is configured to forward the proxy request to another\n   proxy, it MUST translate the request as follows: the scheme of the\n   request URI defines the outgoing protocol and its details (e"
+  },
+  {
+    "section": "5.7.3.  Reverse-Proxies",
+    "keyword": "MAY",
+    "text": "A reverse-proxy may also build a namespace that gives the client more\n\n\n\nShelby, et al"
+  },
+  {
+    "section": "5.7.3.  Reverse-Proxies",
+    "keyword": "MAY",
+    "text": "If the mapping from a resource offered by the\n   reverse-proxy to resources offered by its various origin servers is\n   not unique, the reverse-proxy may need to generate a new ETag, making\n   sure the semantics of this option are properly preserved"
+  },
+  {
+    "section": "5.8.  Method Definitions",
+    "keyword": "MUST",
+    "text": "A\n   request with an unrecognized or unsupported Method Code MUST generate\n   a 4"
+  },
+  {
+    "section": "5.8.1.  GET",
+    "keyword": "SHOULD",
+    "text": "03 (Valid) Response Code SHOULD be\n   present in the response"
+  },
+  {
+    "section": "5.8.2.  POST",
+    "keyword": "SHOULD",
+    "text": "If a resource has been created on the server, the response returned\n   by the server SHOULD have a 2"
+  },
+  {
+    "section": "5.8.2.  POST",
+    "keyword": "SHOULD",
+    "text": "If the\n   POST succeeds but does not result in a new resource being created on\n   the server, the response SHOULD have a 2"
+  },
+  {
+    "section": "5.8.2.  POST",
+    "keyword": "SHOULD",
+    "text": "If the POST succeeds and results in the target resource being\n   deleted, the response SHOULD have a 2"
+  },
+  {
+    "section": "5.8.3.  PUT",
+    "keyword": "SHOULD",
+    "text": "If a resource exists at the request URI, the enclosed representation\n   SHOULD be considered a modified version of that resource, and a 2"
+  },
+  {
+    "section": "5.8.3.  PUT",
+    "keyword": "SHOULD",
+    "text": "04\n   (Changed) Response Code SHOULD be returned"
+  },
+  {
+    "section": "5.8.3.  PUT",
+    "keyword": "MAY",
+    "text": "If no resource exists,\n   then the server MAY create a new resource with that URI, resulting in\n   a 2"
+  },
+  {
+    "section": "5.8.3.  PUT",
+    "keyword": "SHOULD",
+    "text": "If the resource could not be created\n   or modified, then an appropriate error Response Code SHOULD be sent"
+  },
+  {
+    "section": "5.8.4.  DELETE",
+    "keyword": "SHOULD",
+    "text": "02 (Deleted) Response Code SHOULD be\n   used on success or in case the resource did not exist before the\n   request"
+  },
+  {
+    "section": "5.9.1.1.  2.01 Created",
+    "keyword": "MUST",
+    "text": "A cache receiving this response MUST mark any\n   stored response for the created resource as not fresh"
+  },
+  {
+    "section": "5.9.1.2.  2.02 Deleted",
+    "keyword": "MUST",
+    "text": "However, a cache MUST mark any\n   stored response for the deleted resource as not fresh"
+  },
+  {
+    "section": "5.9.1.3.  2.03 Valid",
+    "keyword": "MUST",
+    "text": "Accordingly, the\n   response MUST include an ETag Option and MUST NOT include a payload"
+  },
+  {
+    "section": "5.9.1.3.  2.03 Valid",
+    "keyword": "MUST",
+    "text": "03 (Valid) response, it MUST update the stored response\n   with the value of the Max-Age Option included in the response\n   (explicitly, or implicitly as a default value; see also\n   Section 5"
+  },
+  {
+    "section": "5.9.1.3.  2.03 Valid",
+    "keyword": "MUST",
+    "text": "For each type of Safe-to-Forward option present in\n   the response, the (possibly empty) set of options of this type that\n   are present in the stored response MUST be replaced with the set of\n   options of this type in the response received"
+  },
+  {
+    "section": "5.9.1.4.  2.04 Changed",
+    "keyword": "MUST",
+    "text": "However, a cache MUST mark any\n   stored response for the changed resource as not fresh"
+  },
+  {
+    "section": "5.9.2.  Client Error 4.xx",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD include a diagnostic payload under the conditions\n   detailed in Section 5"
+  },
+  {
+    "section": "5.9.2.2.  4.01 Unauthorized",
+    "keyword": "SHOULD",
+    "text": "The\n   client SHOULD NOT repeat the request without first improving its\n   authentication status to the server"
+  },
+  {
+    "section": "5.9.2.3.  4.02 Bad Option",
+    "keyword": "SHOULD",
+    "text": "The client SHOULD NOT repeat the\n   request without modification"
+  },
+  {
+    "section": "5.9.2.9.  4.13 Request Entity Too Large",
+    "keyword": "SHOULD",
+    "text": "The response SHOULD include a Size1 Option (Section 5"
+  },
+  {
+    "section": "5.9.3.  Server Error 5.xx",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD include a diagnostic payload under the conditions\n   detailed in Section 5"
+  },
+  {
+    "section": "5.10.1.  Uri-Host, Uri-Port, Uri-Path, and Uri-Query",
+    "keyword": "MUST",
+    "text": "The value of a Uri-Path Option\n   MUST NOT be \""
+  },
+  {
+    "section": "5.10.1.  Uri-Host, Uri-Port, Uri-Path, and Uri-Query",
+    "keyword": "MUST",
+    "text": "\" (as the request URI must be resolved before\n   parsing it into options)"
+  },
+  {
+    "section": "5.10.2.  Proxy-Uri and Proxy-Scheme",
+    "keyword": "MAY",
+    "text": "Note that the forward-proxy MAY forward the request on to another\n   proxy or directly to the server specified by the absolute-URI"
+  },
+  {
+    "section": "5.10.2.  Proxy-Uri and Proxy-Scheme",
+    "keyword": "MUST",
+    "text": "In\n   order to avoid request loops, a proxy MUST be able to recognize all\n   of its server names, including any aliases, local variations, and the\n   numeric IP addresses"
+  },
+  {
+    "section": "5.10.2.  Proxy-Uri and Proxy-Scheme",
+    "keyword": "MUST",
+    "text": "The Proxy-Uri Option MUST take precedence over any of the Uri-Host,\n   Uri-Port, Uri-Path or Uri-Query options (each of which MUST NOT be\n   included in a request containing the Proxy-Uri Option)"
+  },
+  {
+    "section": "5.10.4.  Accept",
+    "keyword": "MUST",
+    "text": "06 \"Not Acceptable\" MUST be sent\n   as a response, unless another error code takes precedence for this\n   response"
+  },
+  {
+    "section": "5.10.5.  Max-Age",
+    "keyword": "MAY",
+    "text": "The Max-Age Option indicates the maximum time a response may be\n   cached before it is considered not fresh (see Section 5"
+  },
+  {
+    "section": "5.10.5.  Max-Age",
+    "keyword": "SHOULD",
+    "text": "Servers that provide resources with strict tolerances on the value of\n   Max-Age SHOULD update the value before each retransmission"
+  },
+  {
+    "section": "5.10.6.  ETag",
+    "keyword": "MAY",
+    "text": "It is generated by the server providing the\n   resource, which may generate it in any number of ways including a\n   version, checksum, hash, or time"
+  },
+  {
+    "section": "5.10.6.  ETag",
+    "keyword": "MUST",
+    "text": "An endpoint receiving an entity-\n   tag MUST treat it as opaque and make no assumptions about its content\n   or structure"
+  },
+  {
+    "section": "5.10.6.  ETag",
+    "keyword": "MAY",
+    "text": "(Endpoints that generate an entity-tag are encouraged\n   to use the most compact representation possible, in particular in\n   regards to clients and intermediaries that may want to store multiple\n   ETag values"
+  },
+  {
+    "section": "5.10.6.1.  ETag as a Response Option",
+    "keyword": "MUST",
+    "text": "The ETag Option MUST NOT occur more than\n   once in a response"
+  },
+  {
+    "section": "5.10.6.2.  ETag as a Request Option",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 56]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   The ETag Option MAY occur zero, one, or multiple times in a request"
+  },
+  {
+    "section": "5.10.7.  Location-Path and Location-Query",
+    "keyword": "MUST",
+    "text": "If a response with one or more Location-Path and/or Location-Query\n   Options passes through a cache that interprets these options and the\n   implied URI identifies one or more currently stored responses, those\n   entries MUST be marked as not fresh"
+  },
+  {
+    "section": "5.10.7.  Location-Path and Location-Query",
+    "keyword": "MUST",
+    "text": "The value of a Location-Path Option\n   MUST NOT be \""
+  },
+  {
+    "section": "5.10.7.  Location-Path and Location-Query",
+    "keyword": "MAY",
+    "text": "Beyond Location-Path and\n   Location-Query, more Location-* options may be defined in the future\n   and have been reserved option numbers 128, 132, 136, and 140"
+  },
+  {
+    "section": "5.10.7.  Location-Path and Location-Query",
+    "keyword": "MUST",
+    "text": "02 (Bad Option)\n   error MUST be returned"
+  },
+  {
+    "section": "5.10.8.  Conditional Request Options",
+    "keyword": "MUST",
+    "text": "Standards Track                   [Page 57]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   For each of these options, if the condition given is not fulfilled,\n   then the server MUST NOT perform the requested method"
+  },
+  {
+    "section": "5.10.8.  Conditional Request Options",
+    "keyword": "MUST",
+    "text": "Instead, the\n   server MUST respond with the 4"
+  },
+  {
+    "section": "5.10.8.  Conditional Request Options",
+    "keyword": "MAY",
+    "text": "12 Response Code, then any\n   conditional request options MAY be ignored"
+  },
+  {
+    "section": "5.10.8.1.  If-Match",
+    "keyword": "MAY",
+    "text": "The If-Match Option MAY be used to make a request conditional on the\n   current existence or value of an ETag for one or more representations\n   of the target resource"
+  },
+  {
+    "section": "5.10.8.2.  If-None-Match",
+    "keyword": "MAY",
+    "text": "The If-None-Match Option MAY be used to make a request conditional on\n   the nonexistence of the target resource"
+  },
+  {
+    "section": "6.  CoAP URIs",
+    "keyword": "SHOULD",
+    "text": "Also,\n      implementers should take care to perform the processing of\n      percent-decoding or percent-encoding exactly once on the way from\n      a URI to its decoded components or back"
+  },
+  {
+    "section": "6.  CoAP URIs",
+    "keyword": "MAY",
+    "text": "Percent-encoding is\n      crucial for data transparency but may lead to unusual results such\n      as a slash character in a path component"
+  },
+  {
+    "section": "6.1.  coap URI Scheme",
+    "keyword": "MUST",
+    "text": "The host MUST NOT be empty; if a URI\n\n\n\nShelby, et al"
+  },
+  {
+    "section": "6.1.  coap URI Scheme",
+    "keyword": "SHOULD",
+    "text": "As the environments that CoAP is used in are\n   usually constrained for bandwidth and energy, the trade-off between\n   these two qualities should lean towards the shortness, without\n   ignoring descriptiveness"
+  },
+  {
+    "section": "6.2.  coaps URI Scheme",
+    "keyword": "MUST",
+    "text": "coaps-URI = \"coaps:\" \"//\" host [ \":\" port ] path-abempty\n               [ \"?\" query ]\n\n   All of the requirements listed above for the \"coap\" scheme are also\n   requirements for the \"coaps\" scheme, except that a default UDP port\n   of 5684 is assumed if the port subcomponent is empty or not given,\n   and the UDP datagrams MUST be secured through the use of DTLS as\n   described in Section 9"
+  },
+  {
+    "section": "6.5.  Composing URIs from Options",
+    "keyword": "MUST",
+    "text": "1 of [RFC3986]; to reduce variability, the\n   hexadecimal notation for percent-encoding in CoAP URIs MUST use\n   uppercase letters)"
+  },
+  {
+    "section": "7.1.  Service Discovery",
+    "keyword": "MUST",
+    "text": "The CoAP default port number 5683 MUST be supported by a server that\n   offers resources for resource discovery (see Section 7"
+  },
+  {
+    "section": "7.1.  Service Discovery",
+    "keyword": "SHOULD",
+    "text": "2 below) and\n   SHOULD be supported for providing access to other resources"
+  },
+  {
+    "section": "7.1.  Service Discovery",
+    "keyword": "MAY",
+    "text": "The\n   default port number 5684 for DTLS-secured CoAP MAY be supported by a\n   server for resource discovery and for providing access to other\n   resources"
+  },
+  {
+    "section": "7.1.  Service Discovery",
+    "keyword": "MAY",
+    "text": "In addition, other endpoints may be hosted at other\n   ports, e"
+  },
+  {
+    "section": "7.2.  Resource Discovery",
+    "keyword": "SHOULD",
+    "text": "To\n   maximize interoperability in a CoRE environment, a CoAP endpoint\n   SHOULD support the CoRE Link Format of discoverable resources as\n   described in [RFC6690], except where fully manual configuration is\n   desired"
+  },
+  {
+    "section": "7.2.1.  'ct' Attribute",
+    "keyword": "MUST",
+    "text": "The value is in the CoAP identifier code format as a\n   decimal ASCII integer and MUST be in the range of 0-65535 (16-bit\n   unsigned integer)"
+  },
+  {
+    "section": "7.2.1.  'ct' Attribute",
+    "keyword": "MAY",
+    "text": "The Content-Format code\n   attribute MAY include a space-separated sequence of Content-Format\n   codes, indicating that multiple content-formats are available"
+  },
+  {
+    "section": "8.  Multicast CoAP",
+    "keyword": "MAY",
+    "text": "Note that an endpoint might receive\n   multicast requests on other multicast addresses, including the all-\n   nodes IPv6 address (or via broadcast on IPv4); an endpoint MUST\n   therefore be prepared to receive such messages but MAY ignore them if\n   multicast service discovery is not desired"
+  },
+  {
+    "section": "8.1.  Messaging Layer",
+    "keyword": "MUST",
+    "text": "Such multicast requests MUST be Non-confirmable"
+  },
+  {
+    "section": "8.1.  Messaging Layer",
+    "keyword": "SHOULD",
+    "text": "A server SHOULD be aware that a request arrived via multicast, e"
+  },
+  {
+    "section": "8.1.  Messaging Layer",
+    "keyword": "MUST",
+    "text": "To avoid an implosion of error responses, when a server is aware that\n   a request arrived via multicast, it MUST NOT return a Reset message\n   in reply to a Non-confirmable message"
+  },
+  {
+    "section": "8.1.  Messaging Layer",
+    "keyword": "MUST",
+    "text": "Standards Track                   [Page 65]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   unicast message from the sender, the sender MUST avoid using a\n   Message ID that is also still active from this endpoint with any\n   unicast endpoint that might receive the multicast message"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "MAY",
+    "text": "When a server is aware that a request arrived via multicast, the\n   server MAY always ignore the request, in particular if it doesn't\n   have anything useful to respond (e"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "MAY",
+    "text": "The decision for this may depend on\n   the application"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "SHOULD",
+    "text": "(For example, in query filtering as described in\n   [RFC6690], a server should not respond to a multicast request if the\n   filter does not match"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "SHOULD",
+    "text": "Instead, it should pick a duration for the\n   period of time during which it intends to respond"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "MAY",
+    "text": "The specific value of this Leisure may depend on the application or\n   MAY be derived as described below"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD then pick a\n   random point of time within the chosen leisure period to send back\n   the unicast response to the multicast request"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "SHOULD",
+    "text": "To compute a value for Leisure, the server should have a group size\n   estimate G, a target data transfer rate R (which both should be\n   chosen conservatively), and an estimated response size S; a rough\n   lower bound for Leisure can then be computed as\n\n                          lb_Leisure = S * G / R\n\n   For example, for a multicast request with link-local scope on a 2"
+  },
+  {
+    "section": "8.2.  Request/Response Layer",
+    "keyword": "MAY",
+    "text": "If a CoAP endpoint does not have suitable data to compute a value for\n   Leisure, it MAY resort to DEFAULT_LEISURE"
+  },
+  {
+    "section": "8.2.1.  Caching",
+    "keyword": "MAY",
+    "text": "When a client makes a multicast request, it always makes a new\n   request to the multicast group (since there may be new group members\n   that joined meanwhile or ones that did not get the previous request)"
+  },
+  {
+    "section": "8.2.1.  Caching",
+    "keyword": "MAY",
+    "text": "It MAY update a cache with the received responses"
+  },
+  {
+    "section": "8.2.1.  Caching",
+    "keyword": "MAY",
+    "text": "A response received in reply to a GET request to a multicast group\n   MAY be used to satisfy a subsequent request on the related unicast\n   request URI"
+  },
+  {
+    "section": "8.2.1.  Caching",
+    "keyword": "MAY",
+    "text": "A cache MAY revalidate a response by making a GET request on the\n   related unicast request URI"
+  },
+  {
+    "section": "8.2.1.  Caching",
+    "keyword": "MUST",
+    "text": "A GET request to a multicast group MUST NOT contain an ETag option"
+  },
+  {
+    "section": "9.  Securing CoAP",
+    "keyword": "SHOULD",
+    "text": "Alternative techniques to provide lower-layer security SHOULD be\n      used when appropriate"
+  },
+  {
+    "section": "9.  Securing CoAP",
+    "keyword": "MAY",
+    "text": "Certain link layers in use with constrained nodes\n      also provide link-layer security, which may be appropriate with\n      proper key management"
+  },
+  {
+    "section": "9.  Securing CoAP",
+    "keyword": "MAY",
+    "text": "At the\n      extreme, there may be one key for each node this CoAP node needs\n      to communicate with (1:1 node/key ratio)"
+  },
+  {
+    "section": "9.  Securing CoAP",
+    "keyword": "MAY",
+    "text": "CoAP does not provide a way to forward\n   different levels of authorization that clients may have with an\n   intermediary to further intermediaries or origin servers -- it\n   therefore may be required to perform all authorization at the first\n   intermediary"
+  },
+  {
+    "section": "9.1.  DTLS-Secured CoAP",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 69]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   In some constrained nodes (limited flash and/or RAM) and networks\n   (limited bandwidth or high scalability requirements), and depending\n   on the specific cipher suites in use, all modes of DTLS may not be\n   applicable"
+  },
+  {
+    "section": "9.1.  DTLS-Secured CoAP",
+    "keyword": "SHOULD",
+    "text": "Whether the\n   use of a given mode of DTLS is applicable for a CoAP-based\n   application should be carefully weighed considering the specific\n   cipher suites that may be applicable, whether the session maintenance\n   makes it compatible with application flows, and whether sufficient\n   resources are available on the constrained nodes and for the added\n   network overhead"
+  },
+  {
+    "section": "9.1.  DTLS-Secured CoAP",
+    "keyword": "MAY",
+    "text": "The specific\n   security policies of an application may determine the actual set of\n   cipher suites that can be used"
+  },
+  {
+    "section": "9.1.  DTLS-Secured CoAP",
+    "keyword": "MAY",
+    "text": ")  DTLS is not applicable to group\n   keying (multicast communication); however, it may be a component in a\n   future group key management protocol"
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "SHOULD",
+    "text": "The endpoint acting as the CoAP client should also act as the DTLS\n   client"
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "SHOULD",
+    "text": "It should initiate a session to the server on the\n   appropriate port"
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "MAY",
+    "text": "When the DTLS handshake has finished, the client\n   may initiate the first CoAP request"
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "MUST",
+    "text": "All CoAP messages MUST be sent\n   as DTLS \"application data\""
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "MUST",
+    "text": "The following rules are added for matching an Acknowledgement message\n   or Reset message to a Confirmable message, or a Reset message to a\n   Non-confirmable message: The DTLS session MUST be the same, and the\n   epoch MUST be the same"
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "MUST",
+    "text": "Retransmissions MUST NOT\n   be performed across epochs"
+  },
+  {
+    "section": "9.1.1.  Messaging Layer",
+    "keyword": "SHOULD",
+    "text": "Devices can close a\n   DTLS connection when they need to recover resources, but in general\n   they should keep the connection up for as long as possible"
+  },
+  {
+    "section": "9.1.2.  Request/Response Layer",
+    "keyword": "MUST",
+    "text": "The following rules are added for matching a response to a request:\n   The DTLS session MUST be the same, and the epoch MUST be the same"
+  },
+  {
+    "section": "9.1.2.  Request/Response Layer",
+    "keyword": "MUST",
+    "text": "This means the response to a DTLS secured request MUST always be DTLS\n   secured using the same security session and epoch"
+  },
+  {
+    "section": "9.1.2.  Request/Response Layer",
+    "keyword": "MUST",
+    "text": "Any attempt to\n   supply a NoSec response to a DTLS request simply does not match the\n   request and therefore MUST be rejected (unless it does match an\n   unrelated NoSec request)"
+  },
+  {
+    "section": "9.1.3.  Endpoint Identity",
+    "keyword": "SHOULD",
+    "text": "Devices SHOULD support the Server Name Indication (SNI) to indicate\n   their authority in the SNI HostName field as defined in Section 3 of\n   [RFC6066]"
+  },
+  {
+    "section": "9.1.3.1.  Pre-Shared Keys",
+    "keyword": "MUST",
+    "text": "Implementations in these modes MUST support the mandatory-to-\n   implement cipher suite TLS_PSK_WITH_AES_128_CCM_8 as specified in\n   [RFC6655]"
+  },
+  {
+    "section": "9.1.3.1.  Pre-Shared Keys",
+    "keyword": "MAY",
+    "text": "Depending on the commissioning model, applications may need to define\n   an application profile for identity hints (as required and detailed\n   in Section 5"
+  },
+  {
+    "section": "9.1.3.1.  Pre-Shared Keys",
+    "keyword": "SHOULD",
+    "text": "In\n   particular, applications should carefully weigh whether or not they\n   need Perfect Forward Secrecy (PFS) and select an appropriate cipher\n   suite (Section 7"
+  },
+  {
+    "section": "9.1.3.1.  Pre-Shared Keys",
+    "keyword": "MUST",
+    "text": "The entropy of the PSK must be\n   sufficient to mitigate against brute-force and (where the PSK is not\n   chosen randomly but by a human) dictionary attacks (Section 7"
+  },
+  {
+    "section": "9.1.3.2.  Raw Public Key Certificates",
+    "keyword": "MAY",
+    "text": "A device MAY be configured with\n   multiple raw public keys"
+  },
+  {
+    "section": "9.1.3.2.  Raw Public Key Certificates",
+    "keyword": "MUST",
+    "text": "Implementations in RawPublicKey\n   mode MUST support the mandatory-to-implement cipher suite\n   TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8 as specified in [RFC7251],\n   [RFC5246], and [RFC4492]"
+  },
+  {
+    "section": "9.1.3.2.  Raw Public Key Certificates",
+    "keyword": "MUST",
+    "text": "The key used MUST be ECDSA capable"
+  },
+  {
+    "section": "9.1.3.2.  Raw Public Key Certificates",
+    "keyword": "MUST",
+    "text": "The\n   curve secp256r1 MUST be supported [RFC4492]; this curve is equivalent\n   to the NIST P-256 curve"
+  },
+  {
+    "section": "9.1.3.2.  Raw Public Key Certificates",
+    "keyword": "MUST",
+    "text": "Implementations MUST use the Supported Elliptic Curves and Supported\n   Point Formats Extensions [RFC4492]; the uncompressed point format\n   MUST be supported; [RFC6090] can be used as an implementation method"
+  },
+  {
+    "section": "9.1.3.2.1.  Provisioning",
+    "keyword": "MUST",
+    "text": "All implementations that support checking RawPublicKey\n   identities MUST support at least the sha-256-120 mode (SHA-256\n   truncated to 120 bits)"
+  },
+  {
+    "section": "9.1.3.2.1.  Provisioning",
+    "keyword": "SHOULD",
+    "text": "Implementations SHOULD also support longer\n   length identifiers and MAY support shorter lengths"
+  },
+  {
+    "section": "9.1.3.2.1.  Provisioning",
+    "keyword": "SHOULD",
+    "text": "All implementations SHOULD\n   support the binary mode, and implementations that have a user\n   interface SHOULD also support the human-speakable format"
+  },
+  {
+    "section": "9.1.3.2.1.  Provisioning",
+    "keyword": "SHOULD",
+    "text": "During (initial and ongoing) provisioning, an access\n   control list of identifiers with which the device may start DTLS\n   sessions SHOULD also be installed and maintained"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "Implementations in Certificate Mode MUST support the mandatory-to-\n   implement cipher suite TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8 as\n   specified in [RFC7251], [RFC5246], and [RFC4492]"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "Certificates MUST be signed with ECDSA using\n   secp256r1, and the signature MUST use SHA-256"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "The key used MUST be\n   ECDSA capable"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "The curve secp256r1 MUST be supported [RFC4492]; this\n   curve is equivalent to the NIST P-256 curve"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "Implementations MUST use the Supported Elliptic Curves and\n   Supported Point Formats Extensions [RFC4492]; the uncompressed point\n   format MUST be supported; [RFC6090] can be used as an implementation\n   method"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "SHOULD",
+    "text": "However, the\n   device's IP address should not typically be used as the subject, as\n   it would change over time"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "SHOULD",
+    "text": "If the CoAP node has a source of\n   absolute time, then the node SHOULD check that the validity dates of\n   the certificate are within range"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "The certificate MUST be validated\n   as appropriate for the security requirements, using functionality\n   equivalent to the algorithm specified in Section 6 of [RFC5280]"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "If\n   the certificate contains a SubjectAltName, then the authority of the\n   request URI MUST match at least one of the authorities of any CoAP\n   URI found in a field of URI type in the SubjectAltName set"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MUST",
+    "text": "If there\n   is no SubjectAltName in the certificate, then the authority of the\n   request URI MUST match the Common Name (CN) found in the certificate\n   using the matching rules defined in [RFC3280] with the exception that\n   certificates with wildcards are not allowed"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "MAY",
+    "text": "As a mapping of the Online Certificate Status Protocol (OCSP)\n   [RFC6960] onto CoAP is not currently defined and OCSP may also not be\n   easily applicable in all environments, an alternative approach may be\n   using the TLS Certificate Status Request extension (Section 8 of\n   [RFC6066]; also known as \"OCSP stapling\") or preferably the Multiple\n   Certificate Status Extension ([RFC6961]), if available"
+  },
+  {
+    "section": "9.1.3.3.  X.509 Certificates",
+    "keyword": "SHOULD",
+    "text": "If the system has a shared key in addition to the certificate, then a\n   cipher suite that includes the shared key such as\n   TLS_ECDHE_PSK_WITH_AES_128_CBC_SHA [RFC5489] SHOULD be used"
+  },
+  {
+    "section": "10.  Cross-Protocol Proxying between CoAP and HTTP",
+    "keyword": "MUST",
+    "text": ", is invisible and MUST have no effect on a proxy\n   function"
+  },
+  {
+    "section": "10.  Cross-Protocol Proxying between CoAP and HTTP",
+    "keyword": "MAY",
+    "text": "A separate\n   specification may define a convention for URIs operating such an\n   HTTP-CoAP reverse-proxy [MAPPING]"
+  },
+  {
+    "section": "10.1.  CoAP-HTTP Proxying",
+    "keyword": "SHOULD",
+    "text": ")\n\n   This section specifies for any CoAP request the CoAP response that\n   the proxy should return to the client"
+  },
+  {
+    "section": "10.1.1.  GET",
+    "keyword": "SHOULD",
+    "text": "05 (Content) Response Code SHOULD be returned"
+  },
+  {
+    "section": "10.1.1.  GET",
+    "keyword": "MUST",
+    "text": "The\n   payload of the response MUST be a representation of the target HTTP\n   resource, and the Content-Format Option MUST be set accordingly"
+  },
+  {
+    "section": "10.1.1.  GET",
+    "keyword": "MUST",
+    "text": "The\n   response MUST indicate a Max-Age value that is no greater than the\n   remaining time the representation can be considered fresh"
+  },
+  {
+    "section": "10.1.1.  GET",
+    "keyword": "SHOULD",
+    "text": "If the\n   HTTP entity has an entity-tag, the proxy SHOULD include an ETag\n   Option in the response and process ETag Options in requests as\n   described below"
+  },
+  {
+    "section": "10.1.1.  GET",
+    "keyword": "MAY",
+    "text": "A client can influence the processing of a GET request by including\n   the following option:\n\n   Accept:  The request MAY include an Accept Option, identifying the\n      preferred response content-format"
+  },
+  {
+    "section": "10.1.1.  GET",
+    "keyword": "MAY",
+    "text": "ETag:  The request MAY include one or more ETag Options, identifying\n      responses that the client has stored"
+  },
+  {
+    "section": "10.1.2.  PUT",
+    "keyword": "MUST",
+    "text": "01 (Created)\n   response MUST be returned to the client"
+  },
+  {
+    "section": "10.1.2.  PUT",
+    "keyword": "MUST",
+    "text": "04 (Changed) response MUST be returned to indicate\n   successful completion of the request"
+  },
+  {
+    "section": "10.1.3.  DELETE",
+    "keyword": "MUST",
+    "text": "02 (Deleted) response MUST be returned to the client upon success\n   or if the resource does not exist at the time of the request"
+  },
+  {
+    "section": "10.1.4.  POST",
+    "keyword": "MUST",
+    "text": "04 (Changed) response\n   MUST be returned to the client"
+  },
+  {
+    "section": "10.1.4.  POST",
+    "keyword": "MUST",
+    "text": "01 (Created) response MUST be returned"
+  },
+  {
+    "section": "10.2.  HTTP-CoAP Proxying",
+    "keyword": "SHOULD",
+    "text": "This section specifies for any HTTP request the HTTP response that\n   the proxy should return to the client"
+  },
+  {
+    "section": "10.2.  HTTP-CoAP Proxying",
+    "keyword": "MAY",
+    "text": "Unless otherwise specified,\n   all the statements made are RECOMMENDED behavior; some highly\n   constrained implementations may need to resort to shortcuts"
+  },
+  {
+    "section": "10.2.1.  OPTIONS and TRACE",
+    "keyword": "MUST",
+    "text": "As the OPTIONS and TRACE methods are not supported in CoAP, a 501\n   (Not Implemented) error MUST be returned to the client"
+  },
+  {
+    "section": "10.2.2.  GET",
+    "keyword": "MUST",
+    "text": "The payload of the\n   response MUST be a representation of the target CoAP resource, and\n   the Content-Type and Content-Encoding header fields MUST be set\n   accordingly"
+  },
+  {
+    "section": "10.2.2.  GET",
+    "keyword": "MUST",
+    "text": "The response MUST indicate a max-age directive that\n   indicates a value no greater than the remaining time the\n   representation can be considered fresh"
+  },
+  {
+    "section": "10.2.2.  GET",
+    "keyword": "SHOULD",
+    "text": "If the CoAP response has an\n   ETag option, the proxy should include an ETag header field in the\n   response"
+  },
+  {
+    "section": "10.2.3.  HEAD",
+    "keyword": "MUST",
+    "text": "The HEAD method is identical to GET except that the server MUST NOT\n   return a message-body in the response"
+  },
+  {
+    "section": "10.2.3.  HEAD",
+    "keyword": "MAY",
+    "text": "Implementation Note:  An HTTP-CoAP proxy may want to try using a\n      block-wise transfer option [BLOCK] to minimize the amount of data\n      actually transferred, but it needs to be prepared for the case\n      that the origin server does not support block-wise transfers"
+  },
+  {
+    "section": "10.2.4.  POST",
+    "keyword": "MUST",
+    "text": "If the action performed by the POST method does not result in a\n   resource that can be identified by a URI, a 200 (OK) or 204 (No\n   Content) response MUST be returned to the client"
+  },
+  {
+    "section": "10.2.4.  POST",
+    "keyword": "MUST",
+    "text": "If a resource has\n   been created on the origin server, a 201 (Created) response MUST be\n   returned"
+  },
+  {
+    "section": "11.2.  Proxying and Caching",
+    "keyword": "MAY",
+    "text": "This is relevant for\n   clients that implement multiple security domains, as well as for\n   proxies that may serve multiple clients"
+  },
+  {
+    "section": "11.2.  Proxying and Caching",
+    "keyword": "MUST",
+    "text": "Unlike the \"coap\" scheme, responses to \"coaps\" identified requests\n   are never \"public\" and thus MUST NOT be reused for shared caching,\n   unless the cache is able to make equivalent access control decisions\n   to the ones that led to the cached entry"
+  },
+  {
+    "section": "11.2.  Proxying and Caching",
+    "keyword": "MAY",
+    "text": "Finally, a proxy that fans out Separate Responses (as opposed to\n   piggybacked Responses) to multiple original requesters may provide\n   additional amplification (see Section 11"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "MAY",
+    "text": "This response packet may be significantly larger than the\n   request packet"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "MAY",
+    "text": "As a mitigating factor, many constrained networks will only be able\n   to generate a small amount of traffic, which may make CoAP nodes less\n   attractive for this attack"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "SHOULD",
+    "text": "Therefore, large amplification factors SHOULD NOT be provided in the\n   response if the request is not authenticated"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "MAY",
+    "text": "Multicast CoAP requests may be the\n   source of accidental or deliberate DoS attacks, especially over\n   constrained networks"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "SHOULD",
+    "text": "To limit the possibility of malicious use,\n   CoAP servers SHOULD NOT accept multicast requests that can not be\n   authenticated in some way, cryptographically or by some multicast\n   boundary limiting the potential sources"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "SHOULD",
+    "text": "If possible, a CoAP server\n   SHOULD limit the support for multicast requests to the specific\n   resources where the feature is required"
+  },
+  {
+    "section": "11.3.  Risk of Amplification",
+    "keyword": "SHOULD",
+    "text": "Implementations SHOULD make use of modern APIs such as\n   IPV6_RECVPKTINFO [RFC3542], if available, to make this determination"
+  },
+  {
+    "section": "11.4.  IP Address Spoofing Attacks",
+    "keyword": "MAY",
+    "text": "spoofing a multicast request for a target node; this may result\n       in network congestion/collapse, a DoS attack on the victim, or\n       forced wake-up from sleeping; or\n\n   5"
+  },
+  {
+    "section": "11.4.  IP Address Spoofing Attacks",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 83]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   with limited total energy available may exhaust that energy much more\n   quickly than planned (battery depletion attack)"
+  },
+  {
+    "section": "11.5.  Cross-Protocol Attacks",
+    "keyword": "MAY",
+    "text": "This may be used to circumvent firewall rules that prevent direct\n   communication from the attacker to the victim but happen to allow\n   communication from the CoAP endpoint (which may also host a valid\n   role in the other protocol) to the victim"
+  },
+  {
+    "section": "11.5.  Cross-Protocol Attacks",
+    "keyword": "MAY",
+    "text": "Also, CoAP endpoints may be the victim of a cross-protocol attack\n   generated through an endpoint of another UDP-based protocol such as\n   DNS"
+  },
+  {
+    "section": "11.5.  Cross-Protocol Attacks",
+    "keyword": "MAY",
+    "text": "The DNS count words may be interpreted as multiple\n   instances of a (nonexistent but elective) CoAP option 0, or possibly\n   as a Token"
+  },
+  {
+    "section": "11.5.  Cross-Protocol Attacks",
+    "keyword": "MAY",
+    "text": "The echoed query finally may be manufactured by the\n   attacker to achieve a desired effect on the CoAP endpoint; the\n   response added by the server (if any) might then just be interpreted\n   as added payload"
+  },
+  {
+    "section": "11.5.  Cross-Protocol Attacks",
+    "keyword": "MAY",
+    "text": "It is often much harder to ensure or prove the absence of\n   viable attacks than to generate examples that may not yet completely\n   enable an attack but might be further developed by more creative\n   minds"
+  },
+  {
+    "section": "11.6.  Constrained-Node Considerations",
+    "keyword": "SHOULD",
+    "text": "Instead, keys should be generated externally and added\n   to the device during manufacturing or commissioning"
+  },
+  {
+    "section": "11.6.  Constrained-Node Considerations",
+    "keyword": "MUST",
+    "text": "Special care must be taken in\n   implementation of cryptographic primitives"
+  },
+  {
+    "section": "11.6.  Constrained-Node Considerations",
+    "keyword": "MAY",
+    "text": "In particular,\n   assigning a shared key to a group of nodes may make any single\n   constrained node a target for subverting the entire group"
+  },
+  {
+    "section": "12.1.1.  Method Codes",
+    "keyword": "MUST",
+    "text": "Each entry in the sub-registry must include the Method Code in the\n   range 0"
+  },
+  {
+    "section": "12.1.1.  Method Codes",
+    "keyword": "SHOULD",
+    "text": "The documentation of a Method Code should specify the semantics of a\n   request with that code, including the following properties:\n\n   o  The Response Codes the method returns in the success case"
+  },
+  {
+    "section": "12.1.2.  Response Codes",
+    "keyword": "MUST",
+    "text": "Each entry in the sub-registry must include the Response Code in the\n   range 2"
+  },
+  {
+    "section": "12.1.2.  Response Codes",
+    "keyword": "SHOULD",
+    "text": "Standards Track                   [Page 88]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   The documentation of a Response Code should specify the semantics of\n   a response with that code, including the following properties:\n\n   o  The methods the Response Code applies to"
+  },
+  {
+    "section": "12.2.  CoAP Option Numbers Registry",
+    "keyword": "MUST",
+    "text": "Each entry in the sub-registry must include the Option Number, the\n   name of the option, and a reference to the option's documentation"
+  },
+  {
+    "section": "12.2.  CoAP Option Numbers Registry",
+    "keyword": "MUST",
+    "text": "They are not\n   meant for vendor-specific use of any kind and MUST NOT be used in\n   operational deployments"
+  },
+  {
+    "section": "12.2.  CoAP Option Numbers Registry",
+    "keyword": "SHOULD",
+    "text": "Standards Track                   [Page 90]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n          +-------------+---------------------------------------+\n          |       Range | Registration Procedures               |\n          +-------------+---------------------------------------+\n          |       0-255 | IETF Review or IESG Approval          |\n          |    256-2047 | Specification Required                |\n          |  2048-64999 | Expert Review                         |\n          | 65000-65535 | Experimental use (no operational use) |\n          +-------------+---------------------------------------+\n\n           Table 8: CoAP Option Numbers: Registration Procedures\n\n   The documentation of an Option Number should specify the semantics of\n   an option with that number, including the following properties:\n\n   o  The meaning of the option in a request"
+  },
+  {
+    "section": "12.2.  CoAP Option Numbers Registry",
+    "keyword": "MUST",
+    "text": "o  Whether the option must occur at most once or whether it can occur\n      multiple times"
+  },
+  {
+    "section": "12.3.  CoAP Content-Formats Registry",
+    "keyword": "MUST",
+    "text": "Standards Track                   [Page 91]\n\n\nRFC 7252       The Constrained Application Protocol (CoAP)     June 2014\n\n\n   Each entry in the sub-registry must include the media type registered\n   with IANA, the numeric identifier in the range 0-65535 to be used for\n   that media type in CoAP, the content-coding associated with this\n   identifier, and a reference to a document describing what a payload\n   with that media type means semantically"
+  },
+  {
+    "section": "12.3.  CoAP Content-Formats Registry",
+    "keyword": "MUST",
+    "text": "They are not meant for vendor-specific use of any kind\n   and MUST NOT be used in operational deployments"
+  },
+  {
+    "section": "12.7.  Secure Service Name and Port Number Registration",
+    "keyword": "MAY",
+    "text": "CoAP resource discovery may also be provided using the DTLS-secured\n   CoAP \"coaps\" scheme"
+  },
+  {
+    "section": "12.8.  Multicast Address Registration",
+    "keyword": "MAY",
+    "text": "As the address is used for\n      discovery that may span beyond a single network, it has come from\n      the Internetwork Control Block (224"
+  },
+  {
+    "section": "14.1.  Normative References",
+    "keyword": "MAY",
+    "text": "Alvestrand, \"Guidelines for Writing an\n              IANA Considerations Section in RFCs\", BCP 26, RFC 5226,\n              May 2008"
+  },
+  {
+    "section": "14.1.  Normative References",
+    "keyword": "MAY",
+    "text": "509 Public Key\n              Infrastructure Certificate and Certificate Revocation List\n              (CRL) Profile\", RFC 5280, May 2008"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Jinmei,\n              \"Advanced Sockets Application Program Interface (API) for\n              IPv6\", RFC 3542, May 2003"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Moeller, \"Elliptic Curve Cryptography (ECC) Cipher Suites\n              for Transport Layer Security (TLS)\", RFC 4492, May 2006"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "Keranen, \"Terminology for\n              Constrained-Node Networks\", RFC 7228, May 2014"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": ", \"Retransmission Timeout Considerations\", Work\n              in Progress, May 2012"
+  },
+  {
+    "section": "14.2.  Informative References",
+    "keyword": "MAY",
+    "text": "00, MID=0xad7c)\n      |      |\n\n      Figure 21: Confirmable Request; Separate Response (Unexpected)\n\n   Figure 22 shows a basic GET request where the request and the\n   response are Non-confirmable, so both may be lost without notice"
+  }
+]

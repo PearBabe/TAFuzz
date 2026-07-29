@@ -1,0 +1,65 @@
+property_id: RFC7252-MITL-002
+title: CON timeout 后重传计数与退避更新
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1167
+      end: 1189
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: timeout 触发且 counter 小于 MAX_RETRANSMIT 时，消息重传、counter 递增、timeout doubled。
+  normative_keyword: MUST
+mitl: |
+  G( CON_TIMEOUT_FIRED && RETRANSMIT_COUNTER_LT_MAX && !ACK_MATCHED && !RST_MATCHED ->
+     F[0,0] (CON_RETRANSMITTED && RETRANSMIT_COUNTER_INCREMENTED && TIMEOUT_DOUBLED) )
+informal_semantics: >
+  对等待 ACK/RST 的 CON，当 timeout 到期且重传计数仍小于 MAX_RETRANSMIT 时，
+  同一处理步骤必须完成重传、counter 递增和 timeout 翻倍。
+role: client/server/both
+temporal_pattern: immediate_state_transition
+events:
+  start_event: CON_TIMEOUT_FIRED
+  required_events:
+    - CON_RETRANSMITTED
+    - RETRANSMIT_COUNTER_INCREMENTED
+    - TIMEOUT_DOUBLED
+atomic_propositions:
+  - name: CON_TIMEOUT_FIRED
+    semantic: 某个等待 ACK/RST 的 CON exchange 的 retransmission timeout 到期。
+    fields: [session, peer, message.id, timer_id]
+    future_source_mapping: [timer, internal state, data structure]
+  - name: RETRANSMIT_COUNTER_LT_MAX
+    semantic: 该 exchange 的 retransmission counter 小于 MAX_RETRANSMIT。
+    fields: [session, peer, message.id, retransmission_counter, MAX_RETRANSMIT]
+    future_source_mapping: [internal state]
+  - name: RETRANSMIT_COUNTER_INCREMENTED
+    semantic: 该 exchange 的 retransmission counter 在 timeout 处理步骤中递增。
+    fields: [session, peer, message.id, retransmission_counter_before, retransmission_counter_after]
+    future_source_mapping: [internal state, data structure]
+  - name: TIMEOUT_DOUBLED
+    semantic: 该 exchange 的下一次 timeout 基于当前 timeout 翻倍。
+    fields: [session, peer, message.id, timeout_before, timeout_after]
+    future_source_mapping: [timer, internal state]
+  - name: CON_RETRANSMITTED
+    semantic: 同一 CON exchange 被重传。
+    fields: [session, peer, message.id]
+    future_source_mapping: [message field, function event]
+correlation_key:
+  key: [session, peer, message_id]
+  reason: timeout、counter 和重传都属于同一个 CON message-layer exchange。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: CON_TIMEOUT_FIRED
+  end: retransmit/counter/timeout update
+  interval: "[0,0]"
+  rfc_parameters:
+    - MAX_RETRANSMIT
+  default_values:
+    MAX_RETRANSMIT: 4
+confidence: high
+verification_notes:
+  - 该性质检查 timeout 处理步骤的状态演化，而不是检查具体等待秒数。
+  - 若实现允许异步拆分，需要在 trace 中定义同一 logical step。

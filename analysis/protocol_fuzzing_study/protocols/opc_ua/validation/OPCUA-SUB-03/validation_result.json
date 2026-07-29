@@ -1,0 +1,39 @@
+{
+  "id": "OPCUA-SUB-03",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {},
+  "additional_negative_results": {
+    "late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "default_subscription_no_publish_window_started",
+    "subscription_timeout_closed",
+    "subscription_lifetime_reset",
+    "subscription_lifetime_generation_cancelled"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 11,
+  "positive_edges": 328,
+  "positive_clocks": 2,
+  "negative_locations": 9,
+  "negative_edges": 278,
+  "negative_clocks": 2,
+  "build_ms": 18,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

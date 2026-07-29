@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schemas/catalog.schema.json",
+  "title": "TAFuzz MITL property catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "evidence_snapshot_at", "stage7_enriched_at", "system", "firmware_commit", "counts", "properties"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "evidence_snapshot_at": {"type": "string", "format": "date-time"},
+    "stage7_enriched_at": {"type": ["string", "null"], "format": "date-time"},
+    "system": {"enum": ["ArduPilot", "PX4"]},
+    "firmware_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "counts": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "properties": {
+      "type": "array",
+      "items": {"$ref": "property.schema.json"}
+    }
+  }
+}

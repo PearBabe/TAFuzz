@@ -1,0 +1,136 @@
+{
+  "artifact_id": "artifact.property.case_082",
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_primary",
+      "description": "public source declaration: ap_primary = (v_f5b37ec5e >= 10)",
+      "predicate": {
+        "node_kind": "comparison",
+        "operands": [],
+        "operator": ">=",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "roles": [
+        "guard"
+      ],
+      "selector_refs": [
+        "sel.case_082.ap_primary.location",
+        "sel.case_082.ap_primary.expression"
+      ],
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    },
+    {
+      "ap_id": "ap_secondary",
+      "description": "public source declaration: ap_secondary = ((v_f5b37ec5e & 1) == 0 && v_f5b37ec5e != 0)",
+      "predicate": {
+        "node_kind": "boolean",
+        "operands": [],
+        "operator": "&&",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "roles": [
+        "guard"
+      ],
+      "selector_refs": [
+        "sel.case_082.ap_secondary.location",
+        "sel.case_082.ap_secondary.expression"
+      ],
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "formula": {
+    "node_id": "formula.case_082.root",
+    "operands": [
+      {
+        "ap_ref": "ap_primary",
+        "node_id": "formula.case_082.ap_primary",
+        "operands": [],
+        "operator": "atom"
+      },
+      {
+        "ap_ref": "ap_secondary",
+        "node_id": "formula.case_082.ap_secondary",
+        "operands": [],
+        "operator": "atom"
+      }
+    ],
+    "operator": "and"
+  },
+  "formula_text": "ap_primary := ((v_f5b37ec5e >= 10)) and ap_secondary := (((v_f5b37ec5e & 1) == 0 && v_f5b37ec5e != 0))",
+  "logic": "MITL",
+  "property_id": "property.case_082",
+  "schema_version": "1.0.0",
+  "selectors": [
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 9,
+        "file": "sources/case_082.cpp",
+        "line": 24,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_082.ap_primary.location"
+    },
+    {
+      "expression_structure": {
+        "node_kind": "comparison",
+        "operands": [],
+        "operator": ">=",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "kind": "expression_structure",
+      "selector_id": "sel.case_082.ap_primary.expression"
+    },
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 9,
+        "file": "sources/case_082.cpp",
+        "line": 26,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_082.ap_secondary.location"
+    },
+    {
+      "expression_structure": {
+        "node_kind": "boolean",
+        "operands": [],
+        "operator": "&&",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "kind": "expression_structure",
+      "selector_id": "sel.case_082.ap_secondary.expression"
+    }
+  ],
+  "time_domain": "dense"
+}

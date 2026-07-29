@@ -1,0 +1,21 @@
+﻿id,build_ok,positive_symbolic,negative_symbolic,positive_concrete,negative_concrete,expected_oracle_ok,symbolic_concrete_consistent,ap_order,positive_locations,positive_edges,positive_clocks,negative_locations,negative_edges,negative_clocks,build_ms,monitor_ms_positive,monitor_ms_negative,status
+SIP-TX-01,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_invite_sent"", ""timer_a_fired"", ""invite_transaction_stopped""]",11,164,2,9,142,2,21,0,0,PASS
+SIP-TX-02,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_invite_sent"", ""invite_retransmitted"", ""invite_transaction_stopped""]",11,164,2,9,142,2,33,0,0,PASS
+SIP-TX-03,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""timer_a_first_cycle_completed"", ""invite_retransmitted"", ""invite_transaction_stopped""]",11,164,2,9,142,2,21,0,0,PASS
+SIP-TX-04,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""invite_client_calling_entered"", ""timer_b_fired"", ""invite_final_response_received""]",11,164,2,9,142,2,22,0,0,PASS
+SIP-TX-05,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""invite_provisional_received"", ""invite_retransmitted""]",5,18,2,7,48,2,35,0,0,PASS
+SIP-TX-06,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_invite_client_completed"", ""transaction_terminated""]",5,34,2,7,48,2,17,0,0,PASS
+SIP-TX-07,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_noninvite_sent"", ""timer_e_fired"", ""noninvite_final_response_received""]",11,164,2,9,142,2,18,0,0,PASS
+SIP-TX-08,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_noninvite_sent"", ""noninvite_retransmitted"", ""noninvite_final_response_received""]",11,164,2,9,142,2,18,0,0,PASS
+SIP-TX-09,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""timer_e_first_cycle_completed"", ""noninvite_retransmitted"", ""noninvite_final_response_received""]",11,164,2,9,142,2,18,0,0,PASS
+SIP-TX-10,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""noninvite_provisional_received"", ""timer_e_fired"", ""noninvite_final_response_received""]",11,164,2,9,142,2,29,0,0,PASS
+SIP-TX-11,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""noninvite_trying_entered"", ""timer_f_fired"", ""noninvite_final_response_received""]",11,164,2,9,142,2,20,0,0,PASS
+SIP-TX-12,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_noninvite_client_completed"", ""transaction_terminated""]",9,64,2,9,74,2,19,0,0,PASS
+SIP-TX-13,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_invite_server_completed"", ""timer_g_fired"", ""ack_received""]",11,164,2,9,142,2,18,0,0,PASS
+SIP-TX-14,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_invite_server_completed"", ""final_response_retransmitted"", ""ack_received""]",11,164,2,9,142,2,23,0,0,PASS
+SIP-TX-15,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""timer_g_first_cycle_completed"", ""final_response_retransmitted"", ""ack_received""]",11,164,2,9,142,2,18,0,0,PASS
+SIP-TX-16,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""invite_server_completed"", ""timer_h_fired"", ""ack_received""]",11,164,2,9,142,2,19,0,0,PASS
+SIP-TX-17,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""ack_received"", ""final_response_retransmitted""]",5,18,2,7,48,2,20,0,0,PASS
+SIP-TX-18,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_invite_server_confirmed"", ""transaction_terminated""]",9,64,2,9,74,2,16,0,0,PASS
+SIP-TX-19,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""udp_noninvite_server_completed"", ""transaction_terminated""]",9,64,2,9,74,2,18,0,0,PASS
+SIP-TX-20,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,"[""proxy_invite_forwarded"", ""timer_c_fired""]",5,34,2,7,48,2,16,0,0,PASS

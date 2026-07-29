@@ -1,0 +1,108 @@
+property_id: RFC7252-MITL-001
+title: CON 初始重传窗口
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.2"
+    - "4.8"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1163
+      end: 1189
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1479
+      end: 1492
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: 新 CON 的 initial timeout 在 ACK_TIMEOUT 到 ACK_TIMEOUT * ACK_RANDOM_FACTOR 之间，重传计数从 0 开始。
+  normative_keyword: MUST
+mitl: |
+  G( CON_WAIT_START ->
+     ( G[0, ACK_TIMEOUT) !CON_RETRANSMITTED
+       && F[ACK_TIMEOUT, ACK_TIMEOUT * ACK_RANDOM_FACTOR]
+          (CON_RETRANSMITTED || ACK_MATCHED || RST_MATCHED || CON_ATTEMPT_CANCELED) ) )
+informal_semantics: >
+  当一个 CON exchange 进入等待 ACK/RST 状态后，在 ACK_TIMEOUT 之前不得重传；
+  若未收到 ACK/RST 且未取消，首次重传或终止事件必须落在 RFC 初始 timeout 窗口内。
+role: client/server/both
+temporal_pattern: timed_retry
+events:
+  start_event: CON_WAIT_START
+  terminal_events:
+    - CON_RETRANSMITTED
+    - ACK_MATCHED
+    - RST_MATCHED
+    - CON_ATTEMPT_CANCELED
+atomic_propositions:
+  - name: CON_WAIT_START
+    semantic: CON PDU 已发送并进入等待 ACK/RST 的可靠传输状态。
+    fields:
+      - message.type
+      - message.id
+      - peer
+      - session
+    future_source_mapping:
+      - message field
+      - internal state
+      - timer
+      - data structure
+      - function event
+  - name: CON_RETRANSMITTED
+    semantic: 同一 CON exchange 被再次发送。
+    fields:
+      - message.id
+      - peer
+      - session
+      - retransmission_counter
+    future_source_mapping:
+      - message field
+      - timer
+      - function event
+  - name: ACK_MATCHED
+    semantic: 收到与该 CON exchange 匹配的 ACK。
+    fields:
+      - message.type
+      - message.id
+      - peer
+      - session
+    future_source_mapping:
+      - message field
+      - internal state
+  - name: RST_MATCHED
+    semantic: 收到与该 CON exchange 匹配的 RST。
+    fields:
+      - message.type
+      - message.id
+      - peer
+      - session
+    future_source_mapping:
+      - message field
+      - internal state
+  - name: CON_ATTEMPT_CANCELED
+    semantic: 该 CON 传输尝试被应用或协议状态取消。
+    fields:
+      - session
+      - peer
+      - message.id
+      - cancel_reason
+    future_source_mapping:
+      - internal state
+      - function event
+correlation_key:
+  key: [session, peer, message_id]
+  reason: ACK/RST 与 CON 在 RFC7252 中通过 Message ID 和对应 endpoint 关联；session 用于区分并发传输上下文。
+time_parameters:
+  bound_kind: nonzero_bounded
+  start: CON_WAIT_START
+  end: CON_RETRANSMITTED 或 ACK/RST/cancel terminal event
+  rfc_parameters:
+    - ACK_TIMEOUT
+    - ACK_RANDOM_FACTOR
+  default_values:
+    ACK_TIMEOUT: 2 seconds
+    ACK_RANDOM_FACTOR: 1.5
+  note: 默认值仅供实例化参考，MITL 公式保留符号参数。
+confidence: high
+verification_notes:
+  - RFC 规定的是 initial timeout 设置范围；实际发送可能受时钟调度影响，后续实现应区分 timer schedule/fire 和 packet send。
+  - 不允许把窗口硬编码为固定毫秒。

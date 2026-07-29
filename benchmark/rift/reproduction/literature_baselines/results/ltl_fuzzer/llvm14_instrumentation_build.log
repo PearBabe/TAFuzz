@@ -1,0 +1,142 @@
+make: Entering directory '/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/AFLGo/llvm_mode'
+[*] Checking for working 'llvm-config'...
+[*] Checking for working 'clang-14'...
+[*] Checking for '../afl-showmap'...
+[+] All set and ready to build.
+clang++-14 `llvm-config-14 --cxxflags` -Wl,-znodelete -fno-rtti -fpic -O3 -funroll-loops -Wall -D_FORTIFY_SOURCE=2 -g -Wno-pointer-sign -DVERSION=\"2.52b\" -Wno-variadic-macros -shared afl-llvm-pass.so.cc ltl-instr-func.cc -o ../afl-llvm-pass.so `llvm-config-14 --ldflags` 
+afl-llvm-pass.so.cc:185:8: error: no template named 'map' in namespace 'std'; did you mean 'max'?
+  std::map<std::string, int> bb_to_dis;
+  ~~~~~^~~
+       max
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: 'max' declared here
+    max(const _Tp&, const _Tp&);
+    ^
+afl-llvm-pass.so.cc:185:29: error: expected ';' after expression
+  std::map<std::string, int> bb_to_dis;
+                            ^
+                            ;
+afl-llvm-pass.so.cc:185:3: error: reference to overloaded function could not be resolved; did you mean to call it?
+  std::map<std::string, int> bb_to_dis;
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: possible target for call
+    max(const _Tp&, const _Tp&);
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:412:5: note: possible target for call
+    max(const _Tp&, const _Tp&, _Compare);
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_algo.h:3461:5: note: possible target for call
+    max(initializer_list<_Tp> __l)
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_algo.h:3467:5: note: possible target for call
+    max(initializer_list<_Tp> __l, _Compare __comp)
+    ^
+afl-llvm-pass.so.cc:185:30: error: use of undeclared identifier 'bb_to_dis'
+  std::map<std::string, int> bb_to_dis;
+                             ^
+afl-llvm-pass.so.cc:187:8: error: no template named 'map' in namespace 'std'; did you mean 'max'?
+  std::map<std::string, int> loc_to_revt;          //RERS: locations mapped to events
+  ~~~~~^~~
+       max
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: 'max' declared here
+    max(const _Tp&, const _Tp&);
+    ^
+afl-llvm-pass.so.cc:187:29: error: expected ';' after expression
+  std::map<std::string, int> loc_to_revt;          //RERS: locations mapped to events
+                            ^
+                            ;
+afl-llvm-pass.so.cc:187:3: error: reference to overloaded function could not be resolved; did you mean to call it?
+  std::map<std::string, int> loc_to_revt;          //RERS: locations mapped to events
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: possible target for call
+    max(const _Tp&, const _Tp&);
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:412:5: note: possible target for call
+    max(const _Tp&, const _Tp&, _Compare);
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_algo.h:3461:5: note: possible target for call
+    max(initializer_list<_Tp> __l)
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_algo.h:3467:5: note: possible target for call
+    max(initializer_list<_Tp> __l, _Compare __comp)
+    ^
+afl-llvm-pass.so.cc:187:30: error: use of undeclared identifier 'loc_to_revt'
+  std::map<std::string, int> loc_to_revt;          //RERS: locations mapped to events
+                             ^
+afl-llvm-pass.so.cc:188:8: error: no template named 'map' in namespace 'std'; did you mean 'max'?
+  std::map<std::string, std::string> loc_to_pevt;  //Protocols
+  ~~~~~^~~
+       max
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: 'max' declared here
+    max(const _Tp&, const _Tp&);
+    ^
+afl-llvm-pass.so.cc:188:37: error: expected ';' after expression
+  std::map<std::string, std::string> loc_to_pevt;  //Protocols
+                                    ^
+                                    ;
+afl-llvm-pass.so.cc:188:3: error: reference to overloaded function could not be resolved; did you mean to call it?
+  std::map<std::string, std::string> loc_to_pevt;  //Protocols
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: possible target for call
+    max(const _Tp&, const _Tp&);
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:412:5: note: possible target for call
+    max(const _Tp&, const _Tp&, _Compare);
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_algo.h:3461:5: note: possible target for call
+    max(initializer_list<_Tp> __l)
+    ^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/stl_algo.h:3467:5: note: possible target for call
+    max(initializer_list<_Tp> __l, _Compare __comp)
+    ^
+afl-llvm-pass.so.cc:188:38: error: use of undeclared identifier 'loc_to_pevt'
+  std::map<std::string, std::string> loc_to_pevt;  //Protocols
+                                     ^
+afl-llvm-pass.so.cc:217:9: error: use of undeclared identifier 'bb_to_dis'; did you mean 'bb_dis'?
+        bb_to_dis.emplace(bb_name, bb_dis);
+        ^~~~~~~~~
+        bb_dis
+afl-llvm-pass.so.cc:215:13: note: 'bb_dis' declared here
+        int bb_dis = (int) (100.0 * atof(line.substr(pos + 1, line.length()).c_str()));
+            ^
+afl-llvm-pass.so.cc:217:18: error: member reference base type 'int' is not a structure or union
+        bb_to_dis.emplace(bb_name, bb_dis);
+        ~~~~~~~~~^~~~~~~~
+afl-llvm-pass.so.cc:234:13: error: use of undeclared identifier 'loc_to_revt'
+            loc_to_revt.insert(std::make_pair(loc, evt_int));
+            ^
+afl-llvm-pass.so.cc:252:13: error: use of undeclared identifier 'loc_to_pevt'
+            loc_to_pevt.insert(std::make_pair(loc, evt));
+            ^
+afl-llvm-pass.so.cc:430:58: error: no member named 'F_None' in namespace 'llvm::sys::fs'
+        raw_fd_ostream cfgFile(cfgFileName, EC, sys::fs::F_None);
+                                                ~~~~~~~~~^
+afl-llvm-pass.so.cc:511:22: error: no template named 'map' in namespace 'std'; did you mean 'max'?
+                std::map<std::string,int>::iterator it;
+                ~~~~~^~~
+                     max
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: 'max' declared here
+    max(const _Tp&, const _Tp&);
+    ^
+afl-llvm-pass.so.cc:511:42: error: qualified name refers into a specialization of function template 'std::max'
+                std::map<std::string,int>::iterator it;
+                ~~~~~~~~~~~~~~~~~~~~~~~~~^
+/usr/bin/../lib/gcc/x86_64-linux-gnu/11/../../../../include/c++/11/bits/algorithmfwd.h:407:5: note: function template 'max' declared here
+    max(const _Tp&, const _Tp&);
+    ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+ltl-instr-func.cc:122:75: error: too few arguments to function call, expected at least 4, have 3
+        IRB.CreateStore(gbptr_vec[i], IRB.CreateConstGEP2_64(ptr_arr, 0, i));
+                                      ~~~~~~~~~~~~~~~~~~~~~~              ^
+/usr/lib/llvm-14/include/llvm/IR/IRBuilder.h:1828:10: note: 'CreateConstGEP2_64' declared here
+  Value *CreateConstGEP2_64(Type *Ty, Value *Ptr, uint64_t Idx0, uint64_t Idx1,
+         ^
+ltl-instr-func.cc:127:85: error: too few arguments to function call, expected at least 4, have 3
+        IRB.CreateStore(lcptr_vec[i], IRB.CreateConstGEP2_64(ptr_arr, 0, i + gb_size));
+                                      ~~~~~~~~~~~~~~~~~~~~~~                        ^
+/usr/lib/llvm-14/include/llvm/IR/IRBuilder.h:1828:10: note: 'CreateConstGEP2_64' declared here
+  Value *CreateConstGEP2_64(Type *Ty, Value *Ptr, uint64_t Idx0, uint64_t Idx1,
+         ^
+2 errors generated.
+make: *** [Makefile:84: ../afl-llvm-pass.so] Error 1
+make: Leaving directory '/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/AFLGo/llvm_mode'

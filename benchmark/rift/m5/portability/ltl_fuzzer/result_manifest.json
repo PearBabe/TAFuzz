@@ -1,0 +1,278 @@
+{
+  "schema_version": "rift.portability.ltl-fuzzer.result-manifest.v1",
+  "generated_at": "2026-07-18T08:08:03Z",
+  "status": "FULL_13_TU_DETACHED_PASS",
+  "claim": "PORTABILITY_PROBE_NOT_REQUIREMENT",
+  "source": {
+    "repository": "benchmark/rift/external/ltl_fuzzer",
+    "commit": "716ac301fa3a8ea39814bc80eeebba49c19c1378",
+    "tree": "ee7f4a651abf3e7f6104be92751e4880385ead85",
+    "tracked_worktree_clean": true,
+    "untracked_files_ignored_and_preserved": true,
+    "main_cc": {
+      "sha256": "521ecb48f403f81ec6da54180fb8bb49a6ab277ab8997d7080c71e85ea849ec6",
+      "size": 993
+    },
+    "utils_cc": {
+      "sha256": "27244a031056ba59eaa27ddeed6f3d0de58d930b37e2e867b894fb1b95085cd2",
+      "size": 5181
+    }
+  },
+  "analyzer": {
+    "path": "/tmp/tafuzz-sa-m5-schema3-75cc7f4d74d8507dacd4e2919393406d15e867d8422efec2519c89a344327f0a",
+    "binary_sha256": "75cc7f4d74d8507dacd4e2919393406d15e867d8422efec2519c89a344327f0a",
+    "production_core_sha256": "be454d86de57170968a9758ab349620685e2b69ef4f467c05e3df6026c41a6d8",
+    "schema_bundle_sha256": "4e170722f4b981faf54c7bc561cd6ac710856808d95c0c5c4f0549f53c15f9aa",
+    "build_manifest_sha256": "cbef04222f76b8fc4f1f2f925b00f55beab896f63aedc861acbe24853ff51dc4"
+  },
+  "inputs": {
+    "full_compile_database": {
+      "path": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.json",
+      "sha256": "acee244a4817ab8a29d907372c07f4a0502dfbfca666857ce7043f5337bd9b04",
+      "entries": 13
+    },
+    "single_main_compile_database": {
+      "path": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.main.sealed.json",
+      "sha256": "b555404ed35a28fd8a6378db1b99ea2fe340ec8fb5b3dcc5b74e854646ba2fa2",
+      "entries": 1,
+      "derivation": "exact main.cc entry projection; compile command unchanged"
+    },
+    "without_utils_compile_database": {
+      "path": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.without-utils.json",
+      "sha256": "af7b71ac2b5279bb3f3c8b9eaf91d8354c0607f5a85ad4b61aa3fbc13703e671",
+      "entries": 12,
+      "derivation": "diagnostic projection excluding only src/utils.cc"
+    },
+    "utils_only_compile_database": {
+      "path": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.utils.cc.json",
+      "sha256": "b1985294f9e05c025a33559f1614b41a14b7894135b0fe6664106b148d3d6d4b",
+      "entries": 1,
+      "derivation": "minimal failing src/utils.cc entry"
+    },
+    "property_ir": {
+      "path": "benchmark/rift/m5/portability/ltl_fuzzer/property_ir.json",
+      "sha256": "d83010d052b58a3950b7da0e618b7050109ff7ff48c381641f3ef809a6a9f8fe",
+      "size": 3786
+    },
+    "executor_capabilities": {
+      "path": "benchmark/rift/m5/portability/ltl_fuzzer/executor_capabilities.json",
+      "sha256": "6606cdb79d0102a4c96fe1cf57ec230a3bde1323f00fe05fbd8dd9e1bf38c14e",
+      "size": 827
+    },
+    "model_packs": [
+      {
+        "path": "src/StaticAnalysis/model_packs/platform/posix_lp64_v1.json",
+        "model_pack_id": "pack.platform.posix-lp64",
+        "layer": "platform",
+        "property_independent": true,
+        "project_specific": false,
+        "sha256": "c532d54ab0e3e2cb62d82393164aa5497be8e6a39cc9c1e60c516a8a39266da0",
+        "semantic_sha256": "d042fbbfeec0d2a50eb5f447a0ca7b684b31fb305447ff858dc8c09e159e132d"
+      }
+    ]
+  },
+  "commands": {
+    "configure": [
+      "cmake", "-S", "/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer",
+      "-B", "/tmp/rift-m5-ltl-fuzzer-clang18", "-G", "Ninja",
+      "-DCMAKE_C_COMPILER=/usr/bin/clang-18",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++-18",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+      "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+    ],
+    "derive_ast": [
+      "python3", "benchmark/rift/m5/portability/ltl_fuzzer/derive_ast_evidence.py",
+      "--compile-db", "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.json",
+      "--single-tu-db", "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.main.sealed.json",
+      "--output", "/tmp/rift-m5-ltl-fuzzer-clang18/ast_evidence.sealed.json"
+    ],
+    "full_fixed_recipes": [
+      "/tmp/tafuzz-sa-m5-schema3-75cc7f4d74d8507dacd4e2919393406d15e867d8422efec2519c89a344327f0a",
+      "recipes", "--compile-db", "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.json",
+      "--property", "/home/lqq/project/TAFuzz/benchmark/rift/m5/portability/ltl_fuzzer/property_ir.json",
+      "--output-dir", "/tmp/rift-m5-ltl-fuzzer-schema3-full-fixed-sealed",
+      "--logical-root", "source=/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer",
+      "--logical-root", "build=/tmp/rift-m5-ltl-fuzzer-clang18",
+      "--logical-root", "llvm=/usr/lib/llvm-18",
+      "--model-pack", "/home/lqq/project/TAFuzz/src/StaticAnalysis/model_packs/platform/posix_lp64_v1.json",
+      "--executor-capabilities", "/home/lqq/project/TAFuzz/benchmark/rift/m5/portability/ltl_fuzzer/executor_capabilities.json",
+      "--solver-timeout-ms", "1000", "--max-solver-queries", "100"
+    ],
+    "historical_without_utils_recipes": "pre-fix analyzer with compile_commands.without-utils.json and /tmp/rift-m5-ltl-fuzzer-schema3-without-utils-final",
+    "historical_minimal_utils_index": [
+      "/tmp/tafuzz-sa-m5-schema3-d8a7e74a8a06de47280501086fb3d0f1b00a85e5ac0d12f3338dffe11104d5de",
+      "index", "--compile-db", "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.utils.cc.json",
+      "--logical-root", "source=/home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer",
+      "--logical-root", "build=/tmp/rift-m5-ltl-fuzzer-clang18",
+      "--logical-root", "llvm=/usr/lib/llvm-18",
+      "--output", "/tmp/rift-m5-ltl-fuzzer-utils-index.json"
+    ]
+  },
+  "runs": {
+    "historical_single_main_pre_fix": {
+      "output_root": "/tmp/rift-m5-ltl-fuzzer-schema3-single-final",
+      "exit_code": 0,
+      "wall_seconds": 10.07,
+      "peak_rss_kib": 335836,
+      "address_space_limit_bytes": 12884901888,
+      "stdout_sha256": "c3e889f95ca2d6b56e999c714f92a4ef6259194547c5a69c167bbf3736d55e48",
+      "time_receipt_sha256": "b18b6b7003d59237d4f98de22199ad08a39a5d698dac9aed43aeb6b5fea2a00c",
+      "semantic_counts": {
+        "translation_units": 1,
+        "entities": 362,
+        "function_summaries": 22,
+        "callsites": 60,
+        "semantic_nodes": 196,
+        "semantic_relations": 60,
+        "graph_nodes": 196,
+        "graph_edges": 276,
+        "cones": 1,
+        "predicate_occurrences": 1,
+        "frontier_candidates": 2,
+        "actionable_candidates": 1,
+        "frontier_actions": 1,
+        "recipes": 1
+      },
+      "probe_verification": {
+        "verdict": "PASS", "checks": 33, "failures": 0,
+        "report_sha256": "540794f434406bc4a71c71e7a14a7bf2f7f228f2f53aac03122a9e569ba031c7"
+      },
+      "detached_verification": {
+        "verdict": "PASS", "checks": 65, "failures": 0,
+        "physical_files_rehashed": 2136,
+        "report_sha256": "4f1c9a52d7bb51317be96932eb8ccf8dad0fa684e0338ff1c30e65af82045218"
+      }
+    },
+    "historical_full_13_failure": {
+      "exit_code": 1,
+      "wall_seconds": 12.74,
+      "peak_rss_kib": 345624,
+      "output_bundle_created": false,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "time_receipt_sha256": "4fc9ee08755aaa6c6c2f10047bbf11b55c3ce73d30b8956e8ebf620e4790055f",
+      "status": "FULL_PROJECT_BLOCKED_CORE_BUG",
+      "detail": "See full_project_blocker.json"
+    },
+    "historical_minimal_utils_failure": {
+      "exit_code": 1,
+      "wall_seconds": 0.77,
+      "peak_rss_kib": 181164,
+      "output_artifact_created": false,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "time_receipt_sha256": "d51b2aa0b67c06b30acb57bf1194600e8c7b2e8f1247b778fc4af426d6d85010",
+      "status": "MINIMAL_REPRODUCER_CONFIRMED"
+    },
+    "historical_without_utils_diagnostic": {
+      "output_root": "/tmp/rift-m5-ltl-fuzzer-schema3-without-utils-final",
+      "exit_code": 0,
+      "wall_seconds": 20.23,
+      "peak_rss_kib": 371344,
+      "stdout_sha256": "9117a22b451a39feac03cc4b136246730fe9a58e582b3256473d24837b0dab89",
+      "time_receipt_sha256": "dd931a41aa57df34d7e343a706dfee3e3420d2d2b086da98ddae2b22f5a2fc25",
+      "translation_units": 12,
+      "graph_nodes": 3585,
+      "graph_edges": 6383,
+      "frontier_candidates": 12,
+      "actionable_candidates": 1,
+      "recipes": 1,
+      "probe_verification": {"verdict": "PASS", "checks": 33, "failures": 0},
+      "detached_verification": {
+        "verdict": "FAIL", "checks": 82, "failures": 18,
+        "report_sha256": "c70915fc03a9151836edfa16cb488a7a248315673db8fc83028c580369e540a1"
+      },
+      "claim_boundary": "Localization diagnostic only; one real TU was omitted. Superseded by the final full 13-TU core run."
+    },
+    "final_full_13": {
+      "output_root": "/tmp/rift-m5-ltl-fuzzer-schema3-full-fixed-sealed",
+      "exit_code": 0,
+      "wall_seconds": 20.64,
+      "peak_rss_kib": 370892,
+      "address_space_limit_bytes": 12884901888,
+      "stdout_sha256": "340932fffd84cc7374f1c757b379d119203c2489277cac114132251de39cbe9c",
+      "time_receipt_sha256": "59eeb0f71a655f20b867a09015e320c1753150a3cc26c0c64eb8e414e2fd6a32",
+      "semantic_counts": {
+        "translation_units": 13,
+        "entities": 2969,
+        "function_summaries": 201,
+        "callsites": 1170,
+        "semantic_nodes": 2961,
+        "semantic_relations": 1835,
+        "graph_nodes": 4036,
+        "graph_edges": 7196,
+        "cones": 1,
+        "predicate_occurrences": 1,
+        "external_actions": 12,
+        "boundary_attachments": 12,
+        "frontier_candidates": 12,
+        "actionable_candidates": 1,
+        "frontier_actions": 1,
+        "recipes": 1
+      },
+      "probe_verification": {
+        "verdict": "PASS", "checks": 33, "failures": 0,
+        "report_sha256": "3d54e433c880e3220be26c4b4cdfb01ed1ee38db73715dce97762f204213aff8"
+      },
+      "detached_verification": {
+        "verdict": "PASS", "checks": 65, "failures": 0,
+        "physical_files_rehashed": 2161,
+        "report_sha256": "7cc26c0a6717841f32a8380f0c246eea01b19400fe5bf77f7f18e9f5730464d6",
+        "frontier_reconstruction": "4036 nodes, 7196 graph/model arcs, 12 candidates and every compact ledger",
+        "historical_pre_reconciliation": {
+          "verdict": "FAIL", "checks": 82, "failures": 18,
+          "report_sha256": "65cb82eddb94363db920a18b57f9c565a8b189e0c433cd6f2f47e1b3bde52171",
+          "root_cause": "The old verifier pruned reverse state zero without requiring reverse-cone enumeration_complete; production prunes only when enumeration_complete and zero."
+        }
+      }
+    }
+  },
+  "historical_single_bundle": {
+    "analysis_certificate.json": {"size": 1180944, "sha256": "139fe55fe9eeeb70f2f4c58f9b23a08a05d2daf3ad67f54fc143ff9a017abe78"},
+    "semantic_index.json": {"size": 1821410, "sha256": "62f5caee840a5443f39a485b5838741ec1cc89b37f36919adbbac0e057f2b001"},
+    "ap_bindings.json": {"size": 4361, "sha256": "655108479e5f40a705c480db5d9ad4cdf11f57ccd08a68a157a250a6b774afab"},
+    "contextual_influence_graph.json": {"size": 879446, "sha256": "5fddab9125baab07875f97cd606be462861aec0b9c87073986757c792fb5066b"},
+    "ap_influence_cones.json": {"size": 118351, "sha256": "e9ac2f2ea609d7072322f518ac8e08a30e082e5d63b2bc8fd3b4f609edf24b22"},
+    "model_fact_overlay.json": {"size": 11514, "sha256": "fcc9382ee43011a757ccef51e9b11fdf893d36b3453c5b58e262cfce2da2401b"},
+    "predicate_occurrence_bindings.json": {"size": 2795, "sha256": "ff126c2b3d4ddf466fc493e7b276d0423c8b92296c78ae4eafd7d3dc51910ba4"},
+    "frontier_candidates.json": {"size": 97296, "sha256": "4beda1090afbb642e3a9fa8841186667966e15812670a18cb2f0d00dbcfc65bf"},
+    "fuzzable_frontier.json": {"size": 2438, "sha256": "f4e97574418517cd30bdbb5ab9808ad372e226a3eda01e82ab5f0163b62108ef"},
+    "mutation_recipes.json": {"size": 68385, "sha256": "93ede816ef21e97ce9d656a257950931fb5dbdd07d5a33af3442a9d51a6ecbc6"},
+    "recipe_replay_obligations.json": {"size": 1260, "sha256": "5cfe293faf0d7deb7164c65d0864f6b82cd3ad008342b1390889613e2fa3ef9a"},
+    "m5_analysis_certificate.json": {"size": 12552, "sha256": "38dd38cdeeee3071320cb62377f88173f948d4402738c20556bd96186a938537"}
+  },
+  "final_full_bundle": {
+    "analysis_certificate.json": {"size": 2667744, "sha256": "25183f4cb1bc47a20b01be32ed3939e5166d3ecddf17f99b342d8806c9b33038"},
+    "semantic_index.json": {"size": 13521072, "sha256": "53079506b8046c117aec3f8695afb1ffa8882a875e69c0330878677e2cb4de76"},
+    "ap_bindings.json": {"size": 4361, "sha256": "15d2db8a0f4fe28f6d32ac60deae8352b94ed55a5d09181feeec3ca6745b76fe"},
+    "contextual_influence_graph.json": {"size": 19945748, "sha256": "82f6e262d05d70cee54e66c7ae7662cf8026c239153cc211f532e1a966dba553"},
+    "ap_influence_cones.json": {"size": 1592901, "sha256": "14fbef77cca1f972574c6ea881dda5e1204ce963ab2a40bb491b25f2bfdc335e"},
+    "model_fact_overlay.json": {"size": 29137, "sha256": "680f7985dc374ebdacafa175db7838c4519bff683ef99b3193a6da7d1d1c1438"},
+    "predicate_occurrence_bindings.json": {"size": 2795, "sha256": "5730f0ad6c80db88dfa3a2bfa152753addfddf526519146fb271d84b3559b391"},
+    "frontier_candidates.json": {"size": 1251596, "sha256": "ecf94f4c9b3a7ccee9d374f4c9c7bc327543f6f0740c407096be41b7a2765802"},
+    "fuzzable_frontier.json": {"size": 2438, "sha256": "0a36a768fb4010bf9a505da1b3aa96690a7a8a4a15b5308a305a48da88f013a1"},
+    "mutation_recipes.json": {"size": 860141, "sha256": "6381443cb81652399d5e93da2e3a78f39930c4fd92f4e61bd700eba50ec054a2"},
+    "recipe_replay_obligations.json": {"size": 1260, "sha256": "906a07650c79c2efd384e3258b5f69142ebafe076d6c1d005a3355f57c9ecaf5"},
+    "m5_analysis_certificate.json": {"size": 12607, "sha256": "8ccf26d2ef9df3155379f51aacc838a3d5896d244c22d25132028afc4c0e932c"}
+  },
+  "evidence_files": {
+    "README.md": {"size": 5518, "sha256": "e0ff140ca1ff9690a4277725c8b7b7c2ee2db37aa6b3ddae3990d5be8a14108d"},
+    "RESULTS.md": {"size": 6125, "sha256": "daa8b089df44bbdce137cbd0464a89319a0ccc8de19adc3328a5bb14ef74e0ec"},
+    "property_ir.json": {"size": 3786, "sha256": "d83010d052b58a3950b7da0e618b7050109ff7ff48c381641f3ef809a6a9f8fe"},
+    "executor_capabilities.json": {"size": 827, "sha256": "6606cdb79d0102a4c96fe1cf57ec230a3bde1323f00fe05fbd8dd9e1bf38c14e"},
+    "derive_ast_evidence.py": {"size": 10185, "sha256": "5f76bb819058ad7d072296df8b41bbea72ab9a6f8d394e4414e872bcecc12b70"},
+    "verify_probe.py": {"size": 12731, "sha256": "19aeba22435a75af76b6f64bc52b8c7f377f85712fc1a761780319ea6137c0b1"},
+    "ast_evidence.json": {"size": 3598, "sha256": "cd8928e2e693f36ceea6a12c983f231e02fed73fb41e4682ba5d242ea609ed5d"},
+    "full_project_blocker.json": {"size": 7566, "sha256": "eea7109f48f3fe88dd284f0d8dafe642b6f69f50bdcf240609e4a6cbc0513934"}
+  },
+  "claim_boundary": {
+    "supported": [
+      "All 13 frozen real LTL-Fuzzer C/C++ TUs pass the final unchanged generic schema-3 core pipeline.",
+      "The exact argc predicate occurrence meets a generic POSIX process-argument-count boundary in one compatible modelled witness.",
+      "The historical static std::ios_base member bug was minimized, fixed generically, and removed on the full-project rerun.",
+      "The final full-project bundle passes independent detached reconstruction of all physical commitments and compact candidate ledgers."
+    ],
+    "not_supported": [
+      "Human-gold accuracy, external direction correctness, runtime AP flip, recipe replay, fuzzing gain, or property satisfaction.",
+      "A final three-project portability claim before the parent M5 gate consolidates all targets under one accepted analyzer identity."
+    ]
+  }
+}

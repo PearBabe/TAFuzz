@@ -1,0 +1,100 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/008_direct_data_negative_v7.cpp",
+        "line": 25
+      },
+      "token": "ap_primary"
+    },
+    "node_value": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/008_direct_data_negative_v7.cpp",
+        "line": 23
+      },
+      "token": "node_value"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/008_direct_data_negative_v7.cpp",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_value > 12",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/008_direct_data_negative_v7.cpp",
+        "line": 25
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-008",
+  "case_relation": "NO_INFLUENCE",
+  "category": "direct_data",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "A direct assignment template fixes whether the primary external value reaches the AP expression on every path, on a guarded path, or on no path.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "direct_data",
+    "variant": 7
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The external argument is consumed only by a void cast; the AP reads a constant local value.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/008_direct_data_negative_v7.cpp",
+  "source_sha256": "aa2d114ca42a097a0c9c1fe339d3893d8a9a6b232bd343f489c86d424c28e139",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/008_direct_data_negative_v7.cpp",
+        "line": 20
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+schema_version: 0.1-draft
+source_freeze: d6f12ad1c4f70ad3230afd7d86e971421e02fef4
+exclusions:
+  - exclusion_id: PX4-EXCL-001
+    category: source_control_flow
+    rule: Ordinary if-guards, state transitions, loop periods and existing source timeouts cannot originate a property.
+    examples: [navigator geofence check cadence, CPU load hysteresis, ESC timeouts, work-queue periods]
+    disposition: binding evidence only when an external requirement already exists
+  - exclusion_id: PX4-EXCL-002
+    category: tests_and_assertions
+    rule: Unit tests and assertions describe implementation expectations, not an independent external requirement.
+    disposition: excluded from normative corpus
+  - exclusion_id: PX4-EXCL-003
+    category: historical_pgfuzz
+    rule: PGFuzz policies and formulas are comparison leads only and are not copied as current PX4 requirements.
+    reasons: [different release context, known naming or unit ambiguities, no frozen-v1.17 provenance]
+  - exclusion_id: PX4-EXCL-004
+    category: historical_adgfuzz
+    rule: ADGFuzz ground/status, waypoint-distance and no-message oracles are testing heuristics, not PX4 requirements.
+    disposition: may inform later mutator or oracle design, never the normative bound
+  - exclusion_id: PX4-EXCL-005
+    category: artifact_delays
+    rule: Sleeps, poll periods, retry counts and instrumentation timeouts in fuzzing artifacts are not system time constraints.
+  - exclusion_id: PX4-EXCL-006
+    category: configuration_domain
+    rule: Gains, rate limits and parameter ranges without a documented trigger-obligation relation are not temporal properties.
+  - exclusion_id: PX4-EXCL-007
+    category: vague_temporal_language
+    rule: Words such as immediately and shortly remain qualitative unless an authoritative numeric derivation exists.
+    disposition: retain as NEEDS_TIME_BOUND or exclude from executable MITL
+  - exclusion_id: PX4-EXCL-008
+    category: protocol_schema_only
+    rule: A MAVLink XML message definition proves schema capability, not that this PX4 build emits the message or satisfies a behavior.
+    example: FENCE_STATUS exists in common.xml but no PX4 FENCE_STATUS stream was found in the frozen tree.
+  - exclusion_id: PX4-EXCL-009
+    category: source_comment_override
+    rule: Source comments and implementation behavior may reveal mapping conflicts but cannot silently override official user-facing text.
+  - exclusion_id: PX4-EXCL-010
+    category: default_as_requirement
+    rule: A compiled default is only one configuration instance; runtime PARAM_VALUE is authoritative for a parameterized run.
+  - exclusion_id: PX4-EXCL-011
+    category: inferred_deadline
+    rule: Physical travel time computed from distance or configured speed is not a deadline unless the requirement specifies assumptions and tolerance.
+    affected_candidate: PX4-MC-CAND-010
+  - exclusion_id: PX4-EXCL-012
+    category: satisfaction_from_binding
+    rule: Finding matching variables or branches does not show that the implementation satisfies the candidate property.
+    required_value: implementation_satisfaction=NOT_ASSESSED

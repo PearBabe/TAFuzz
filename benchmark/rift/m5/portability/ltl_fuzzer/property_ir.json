@@ -1,0 +1,144 @@
+{
+  "schema_version": "2.0.0",
+  "artifact_id": "artifact.property.ltl-fuzzer.main.portability-probe",
+  "property_id": "property.ltl-fuzzer.main.argc-guard.portability-probe",
+  "logic": "LTL",
+  "time_domain": "discrete",
+  "formula_text": "PORTABILITY_PROBE_NOT_REQUIREMENT: argc < 2",
+  "formula": {
+    "node_id": "formula.ltl-fuzzer.main.argc-guard",
+    "operator": "atom",
+    "ap_ref": "ap_ltl_fuzzer_argc_lt_two",
+    "operands": []
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_ltl_fuzzer_argc_lt_two",
+      "roles": [
+        "guard",
+        "state"
+      ],
+      "value_type": {
+        "kind": "bool",
+        "canonical": "bool",
+        "bit_width": 8,
+        "signed": false
+      },
+      "predicate": {
+        "node_kind": "comparison",
+        "operator": "<",
+        "value_type": {
+          "kind": "bool",
+          "canonical": "bool",
+          "bit_width": 8,
+          "signed": false
+        },
+        "operands": [
+          {
+            "node_kind": "cast",
+            "operator": "LValueToRValue",
+            "value_type": {
+              "kind": "integer",
+              "canonical": "int",
+              "bit_width": 32,
+              "signed": true
+            },
+            "operands": [
+              {
+                "node_kind": "reference",
+                "operator": "decl_ref",
+                "value_type": {
+                  "kind": "integer",
+                  "canonical": "int",
+                  "bit_width": 32,
+                  "signed": true
+                },
+                "referenced_selector_id": "sel.ltl-fuzzer.main.argc-occurrence",
+                "operands": []
+              }
+            ]
+          },
+          {
+            "node_kind": "literal",
+            "operator": "integer",
+            "value_type": {
+              "kind": "integer",
+              "canonical": "int",
+              "bit_width": 32,
+              "signed": true
+            },
+            "literal": 2,
+            "operands": []
+          }
+        ]
+      },
+      "role_selector_groups": [
+        {
+          "group_id": "grp.ltl-fuzzer.main.argc-guard.site",
+          "role": "guard",
+          "all_of": [
+            "sel.ltl-fuzzer.main.argc-guard.site"
+          ]
+        },
+        {
+          "group_id": "grp.ltl-fuzzer.main.argc-guard.state",
+          "role": "state",
+          "all_of": [
+            "sel.ltl-fuzzer.main.argc"
+          ]
+        },
+        {
+          "group_id": "grp.ltl-fuzzer.main.argc-guard.occurrence",
+          "role": "state",
+          "all_of": [
+            "sel.ltl-fuzzer.main.argc-occurrence"
+          ]
+        }
+      ],
+      "description": "PORTABILITY_PROBE_NOT_REQUIREMENT: the real LTL-Fuzzer process-argument guard at src/main.cc:10:8-15."
+    }
+  ],
+  "selectors": [
+    {
+      "selector_id": "sel.ltl-fuzzer.main.argc-guard.site",
+      "kind": "source_location",
+      "location": {
+        "file": "src/main.cc",
+        "line": 10,
+        "column": 8,
+        "end_line": 10,
+        "end_column": 15,
+        "location_kind": "spelling"
+      }
+    },
+    {
+      "selector_id": "sel.ltl-fuzzer.main.argc",
+      "kind": "usr",
+      "usr": "c:main.cc@156@F@main#I#**C#@argc",
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "bit_width": 32,
+        "signed": true
+      }
+    },
+    {
+      "selector_id": "sel.ltl-fuzzer.main.argc-occurrence",
+      "kind": "source_location",
+      "location": {
+        "file": "src/main.cc",
+        "line": 10,
+        "column": 8,
+        "end_line": 10,
+        "end_column": 11,
+        "location_kind": "spelling"
+      },
+      "value_type": {
+        "kind": "integer",
+        "canonical": "int",
+        "bit_width": 32,
+        "signed": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,2451 @@
+{
+  "schema_version": "1.0",
+  "rows": [
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL1",
+      "ap_id": "A.RTL1-AP01",
+      "role": "antecedent",
+      "expression": "ALT_t < RTL_ALT",
+      "truth_meaning_zh": "当前高度低于 ArduPilot 返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL1",
+      "ap_id": "A.RTL1-AP02",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL1",
+      "ap_id": "A.RTL1-AP03",
+      "role": "consequent",
+      "expression": "ALT_t-1 < ALT_t",
+      "truth_meaning_zh": "当前观测高度高于上一观测高度。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL2",
+      "ap_id": "A.RTL2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL2",
+      "ap_id": "A.RTL2-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= RTL_ALT",
+      "truth_meaning_zh": "当前高度达到或超过 ArduPilot 返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL2",
+      "ap_id": "A.RTL2-AP03",
+      "role": "antecedent",
+      "expression": "Pos_t != home_position",
+      "truth_meaning_zh": "当前位置不等于返航参考位置。",
+      "terms": [
+        "Pos_t",
+        "home_position"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL2",
+      "ap_id": "A.RTL2-AP04",
+      "role": "consequent",
+      "expression": "Pos_t-1 != Pos_t",
+      "truth_meaning_zh": "当前位置与上一观测位置不同。",
+      "terms": [
+        "Pos_t-1",
+        "Pos_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL2",
+      "ap_id": "A.RTL2-AP05",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL3",
+      "ap_id": "A.RTL3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL3",
+      "ap_id": "A.RTL3-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= RTL_ALT",
+      "truth_meaning_zh": "当前高度达到或超过 ArduPilot 返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL3",
+      "ap_id": "A.RTL3-AP03",
+      "role": "antecedent",
+      "expression": "Pos_t = home_position",
+      "truth_meaning_zh": "当前位置等于返航参考位置。",
+      "terms": [
+        "Pos_t",
+        "home_position"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL3",
+      "ap_id": "A.RTL3-AP04",
+      "role": "consequent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL4",
+      "ap_id": "A.RTL4-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL4",
+      "ap_id": "A.RTL4-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t = GroundALT",
+      "truth_meaning_zh": "当前高度严格等于论文所称地面高度。",
+      "terms": [
+        "ALT_t",
+        "GroundALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RTL4",
+      "ap_id": "A.RTL4-AP03",
+      "role": "consequent",
+      "expression": "Disarm = on",
+      "truth_meaning_zh": "电机处于锁定状态。",
+      "terms": [
+        "Disarm"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = FLIP",
+      "truth_meaning_zh": "当前飞行模式是翻滚模式。",
+      "terms": [
+        "Mode_t",
+        "FLIP"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP02",
+      "role": "consequent",
+      "expression": "Mode_t-1 in {ACRO,ALT_HOLD}",
+      "truth_meaning_zh": "上一观测模式是特技或定高模式。",
+      "terms": [
+        "Mode_t-1",
+        "ACRO",
+        "ALT_HOLD"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP03",
+      "role": "negated_consequent",
+      "expression": "Roll_t > 45deg",
+      "truth_meaning_zh": "当前横滚角大于 45 度。",
+      "terms": [
+        "Roll_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP04",
+      "role": "consequent_disjunct",
+      "expression": "Throttle_t <= 1500",
+      "truth_meaning_zh": "当前油门通道值不超过 1500。",
+      "terms": [
+        "Throttle_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP05",
+      "role": "consequent_disjunct",
+      "expression": "ALT_t < 10m",
+      "truth_meaning_zh": "当前高度低于 10 米。",
+      "terms": [
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP06",
+      "role": "condition_from_description",
+      "expression": "Roll_t < 45deg",
+      "truth_meaning_zh": "当前横滚角小于 45 度；该条件来自论文自然语言，不是印刷公式中的同向原子。",
+      "terms": [
+        "Roll_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP07",
+      "role": "condition_from_description",
+      "expression": "Throttle_t >= 1500",
+      "truth_meaning_zh": "当前油门通道值达到或超过 1500；该条件来自论文自然语言。",
+      "terms": [
+        "Throttle_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP1",
+      "ap_id": "A.FLIP1-AP08",
+      "role": "condition_from_description",
+      "expression": "ALT_t > 10m",
+      "truth_meaning_zh": "当前高度高于 10 米；该条件来自论文自然语言。",
+      "terms": [
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP2",
+      "ap_id": "A.FLIP2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = FLIP",
+      "truth_meaning_zh": "当前飞行模式是翻滚模式。",
+      "terms": [
+        "Mode_t",
+        "FLIP"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP2",
+      "ap_id": "A.FLIP2-AP02",
+      "role": "antecedent",
+      "expression": "-90deg <= Roll_t <= 45deg",
+      "truth_meaning_zh": "当前横滚角位于负 90 度到 45 度之间。",
+      "terms": [
+        "Roll_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP2",
+      "ap_id": "A.FLIP2-AP03",
+      "role": "consequent",
+      "expression": "Roll_rate = 400deg/s",
+      "truth_meaning_zh": "横滚角速度严格等于每秒 400 度。",
+      "terms": [
+        "Roll_rate"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP2",
+      "ap_id": "A.FLIP2-AP04",
+      "role": "consequent",
+      "expression": "Roll_direction = right",
+      "truth_meaning_zh": "横滚方向为右。",
+      "terms": [
+        "Roll_direction"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP3",
+      "ap_id": "A.FLIP3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = FLIP3",
+      "truth_meaning_zh": "论文内部的 FLIP3 恢复阶段标签成立。",
+      "terms": [
+        "Mode_t",
+        "FLIP3"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP3",
+      "ap_id": "A.FLIP3-AP02",
+      "role": "consequent",
+      "expression": "F_[0,k](Roll_t = Roll_original)",
+      "truth_meaning_zh": "在未知 k 时间内横滚恢复到原值。",
+      "terms": [
+        "Roll_t",
+        "Roll_original",
+        "k"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP3",
+      "ap_id": "A.FLIP3-AP03",
+      "role": "consequent",
+      "expression": "F_[0,k](Pitch_t = Pitch_original)",
+      "truth_meaning_zh": "在未知 k 时间内俯仰恢复到原值。",
+      "terms": [
+        "Pitch_t",
+        "Pitch_original",
+        "k"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIP3",
+      "ap_id": "A.FLIP3-AP04",
+      "role": "consequent",
+      "expression": "F_[0,k](Yaw_t = Yaw_original)",
+      "truth_meaning_zh": "在未知 k 时间内偏航恢复到原值。",
+      "terms": [
+        "Yaw_t",
+        "Yaw_original",
+        "k"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIPGeneral",
+      "ap_id": "A.FLIPGeneral-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = FLIP1",
+      "truth_meaning_zh": "论文内部的 FLIP1 开始阶段标签成立。",
+      "terms": [
+        "Mode_t",
+        "FLIP1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.FLIPGeneral",
+      "ap_id": "A.FLIPGeneral-AP02",
+      "role": "consequent",
+      "expression": "F_[0,2.5s](Mode_t = FLIP3)",
+      "truth_meaning_zh": "2.5 秒内到达论文的 FLIP3 阶段。",
+      "terms": [
+        "Mode_t",
+        "FLIP3"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.ALT_HOLD1",
+      "ap_id": "A.ALT_HOLD1-AP01",
+      "role": "antecedent",
+      "expression": "ALT_src = Baro",
+      "truth_meaning_zh": "论文抽象的高度来源被标记为气压计。",
+      "terms": [
+        "ALT_src",
+        "Baro"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.ALT_HOLD1",
+      "ap_id": "A.ALT_HOLD1-AP02",
+      "role": "consequent",
+      "expression": "ALT_t = ALT_Baro",
+      "truth_meaning_zh": "当前高度严格等于气压计高度。",
+      "terms": [
+        "ALT_t",
+        "ALT_Baro"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.ALT_HOLD1",
+      "ap_id": "A.ALT_HOLD1-AP03",
+      "role": "consequent",
+      "expression": "ALT_t != ALT_GPS",
+      "truth_meaning_zh": "当前高度不等于 GPS 高度。",
+      "terms": [
+        "ALT_t",
+        "ALT_GPS"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.ALT_HOLD2",
+      "ap_id": "A.ALT_HOLD2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ALT_HOLD",
+      "truth_meaning_zh": "当前模式是 ArduPilot 定高模式。",
+      "terms": [
+        "Mode_t",
+        "ALT_HOLD"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.ALT_HOLD2",
+      "ap_id": "A.ALT_HOLD2-AP02",
+      "role": "antecedent",
+      "expression": "Throttle_t = 1500",
+      "truth_meaning_zh": "油门输入严格等于通道中值 1500。",
+      "terms": [
+        "Throttle_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.ALT_HOLD2",
+      "ap_id": "A.ALT_HOLD2-AP03",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE1",
+      "ap_id": "A.CIRCLE1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE1",
+      "ap_id": "A.CIRCLE1-AP02",
+      "role": "antecedent",
+      "expression": "RC_pitch < 1500",
+      "truth_meaning_zh": "俯仰遥控输入小于通道中值。",
+      "terms": [
+        "RC_pitch"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE1",
+      "ap_id": "A.CIRCLE1-AP03",
+      "role": "antecedent",
+      "expression": "Circle_radius_t > 0",
+      "truth_meaning_zh": "当前绕圈半径为正数。",
+      "terms": [
+        "Circle_radius_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE1",
+      "ap_id": "A.CIRCLE1-AP04",
+      "role": "consequent",
+      "expression": "Circle_radius_t < Circle_radius_t-1",
+      "truth_meaning_zh": "绕圈半径比上一观测减小。",
+      "terms": [
+        "Circle_radius_t",
+        "Circle_radius_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE2",
+      "ap_id": "A.CIRCLE2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE2",
+      "ap_id": "A.CIRCLE2-AP02",
+      "role": "antecedent",
+      "expression": "RC_pitch > 1500",
+      "truth_meaning_zh": "俯仰遥控输入大于通道中值。",
+      "terms": [
+        "RC_pitch"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE2",
+      "ap_id": "A.CIRCLE2-AP03",
+      "role": "consequent",
+      "expression": "Circle_radius_t > Circle_radius_t-1",
+      "truth_meaning_zh": "绕圈半径比上一观测增大。",
+      "terms": [
+        "Circle_radius_t",
+        "Circle_radius_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE3",
+      "ap_id": "A.CIRCLE3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE3",
+      "ap_id": "A.CIRCLE3-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll > 1500",
+      "truth_meaning_zh": "横滚遥控输入大于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE3",
+      "ap_id": "A.CIRCLE3-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = clockwise",
+      "truth_meaning_zh": "绕圈方向是顺时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE3",
+      "ap_id": "A.CIRCLE3-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t > Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测增大。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE4",
+      "ap_id": "A.CIRCLE4-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE4",
+      "ap_id": "A.CIRCLE4-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll > 1500",
+      "truth_meaning_zh": "横滚遥控输入大于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE4",
+      "ap_id": "A.CIRCLE4-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = counterclockwise",
+      "truth_meaning_zh": "绕圈方向是逆时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE4",
+      "ap_id": "A.CIRCLE4-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t < Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测减小。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE5",
+      "ap_id": "A.CIRCLE5-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE5",
+      "ap_id": "A.CIRCLE5-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll < 1500",
+      "truth_meaning_zh": "横滚遥控输入小于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE5",
+      "ap_id": "A.CIRCLE5-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = counterclockwise",
+      "truth_meaning_zh": "绕圈方向是逆时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE5",
+      "ap_id": "A.CIRCLE5-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t > Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测增大。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE6",
+      "ap_id": "A.CIRCLE6-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE6",
+      "ap_id": "A.CIRCLE6-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll < 1500",
+      "truth_meaning_zh": "横滚遥控输入小于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE6",
+      "ap_id": "A.CIRCLE6-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = clockwise",
+      "truth_meaning_zh": "绕圈方向是顺时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE6",
+      "ap_id": "A.CIRCLE6-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t < Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测减小。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE7",
+      "ap_id": "A.CIRCLE7-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = CIRCLE",
+      "truth_meaning_zh": "当前模式是 ArduPilot 绕圈模式。",
+      "terms": [
+        "Mode_t",
+        "CIRCLE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE7",
+      "ap_id": "A.CIRCLE7-AP02",
+      "role": "consequent",
+      "expression": "RC_roll_t = RC_roll_t-1",
+      "truth_meaning_zh": "横滚输入与上一观测严格相等。",
+      "terms": [
+        "RC_roll_t",
+        "RC_roll_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE7",
+      "ap_id": "A.CIRCLE7-AP03",
+      "role": "consequent",
+      "expression": "RC_pitch_t = RC_pitch_t-1",
+      "truth_meaning_zh": "俯仰输入与上一观测严格相等。",
+      "terms": [
+        "RC_pitch_t",
+        "RC_pitch_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE7",
+      "ap_id": "A.CIRCLE7-AP04",
+      "role": "consequent",
+      "expression": "RC_yaw_t = RC_yaw_t-1",
+      "truth_meaning_zh": "偏航输入与上一观测严格相等。",
+      "terms": [
+        "RC_yaw_t",
+        "RC_yaw_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CIRCLE7",
+      "ap_id": "A.CIRCLE7-AP05",
+      "role": "consequent",
+      "expression": "RC_throttle_t <= RC_throttle_t-1 or RC_throttle_t >= RC_throttle_t-1",
+      "truth_meaning_zh": "油门输入不大于或不小于上一值；对普通数值是恒真析取。",
+      "terms": [
+        "RC_throttle_t",
+        "RC_throttle_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LAND1",
+      "ap_id": "A.LAND1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LAND1",
+      "ap_id": "A.LAND1-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= 10m",
+      "truth_meaning_zh": "当前高度达到或超过 10 米。",
+      "terms": [
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LAND1",
+      "ap_id": "A.LAND1-AP03",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = LAND_SPEED_HIGH",
+      "truth_meaning_zh": "垂直速度严格等于高空着陆速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "LAND_SPEED_HIGH"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LAND2",
+      "ap_id": "A.LAND2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LAND2",
+      "ap_id": "A.LAND2-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t < 10m",
+      "truth_meaning_zh": "当前高度低于 10 米。",
+      "terms": [
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LAND2",
+      "ap_id": "A.LAND2-AP03",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = LAND_SPEED",
+      "truth_meaning_zh": "垂直速度严格等于低空着陆速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "LAND_SPEED"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.AUTO1",
+      "ap_id": "A.AUTO1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = AUTO",
+      "truth_meaning_zh": "当前模式是自动任务模式。",
+      "terms": [
+        "Mode_t",
+        "AUTO"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.AUTO1",
+      "ap_id": "A.AUTO1-AP02",
+      "role": "consequent",
+      "expression": "RC_roll_t = RC_roll_t-1",
+      "truth_meaning_zh": "横滚输入与上一观测严格相等。",
+      "terms": [
+        "RC_roll_t",
+        "RC_roll_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.AUTO1",
+      "ap_id": "A.AUTO1-AP03",
+      "role": "consequent",
+      "expression": "RC_pitch_t = RC_pitch_t-1",
+      "truth_meaning_zh": "俯仰输入与上一观测严格相等。",
+      "terms": [
+        "RC_pitch_t",
+        "RC_pitch_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.AUTO1",
+      "ap_id": "A.AUTO1-AP04",
+      "role": "consequent",
+      "expression": "RC_throttle_t = RC_throttle_t-1",
+      "truth_meaning_zh": "油门输入与上一观测严格相等。",
+      "terms": [
+        "RC_throttle_t",
+        "RC_throttle_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.AUTO1",
+      "ap_id": "A.AUTO1-AP05",
+      "role": "consequent",
+      "expression": "RC_yaw_t <= RC_yaw_t-1 or RC_yaw_t >= RC_yaw_t-1",
+      "truth_meaning_zh": "偏航输入不大于或不小于上一值；对普通数值是恒真析取。",
+      "terms": [
+        "RC_yaw_t",
+        "RC_yaw_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.BRAKE1",
+      "ap_id": "A.BRAKE1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = BRAKE",
+      "truth_meaning_zh": "当前模式是制动模式。",
+      "terms": [
+        "Mode_t",
+        "BRAKE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.BRAKE1",
+      "ap_id": "A.BRAKE1-AP02",
+      "role": "consequent",
+      "expression": "F_[0,k](Pos_t = Pos_t-1)",
+      "truth_meaning_zh": "在未知 k 时间内当前位置与上一观测位置相同。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1",
+        "k"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.DRIFT1",
+      "ap_id": "A.DRIFT1-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.DRIFT1",
+      "ap_id": "A.DRIFT1-AP02",
+      "role": "antecedent",
+      "expression": "Mode_t = DRIFT",
+      "truth_meaning_zh": "当前模式是漂移模式。",
+      "terms": [
+        "Mode_t",
+        "DRIFT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.DRIFT1",
+      "ap_id": "A.DRIFT1-AP03",
+      "role": "consequent",
+      "expression": "F_[0,k](Mode_t = FS_EKF_ACTION)",
+      "truth_meaning_zh": "在未知 k 时间内模式变成参数 FS_EKF_ACTION 指定的动作。",
+      "terms": [
+        "Mode_t",
+        "FS_EKF_ACTION",
+        "k"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LOITER1",
+      "ap_id": "A.LOITER1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LOITER",
+      "truth_meaning_zh": "当前模式是定点盘旋模式。",
+      "terms": [
+        "Mode_t",
+        "LOITER"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LOITER1",
+      "ap_id": "A.LOITER1-AP02",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LOITER1",
+      "ap_id": "A.LOITER1-AP03",
+      "role": "consequent",
+      "expression": "Yaw_t = Yaw_t-1",
+      "truth_meaning_zh": "当前偏航与上一观测严格相等。",
+      "terms": [
+        "Yaw_t",
+        "Yaw_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.LOITER1",
+      "ap_id": "A.LOITER1-AP04",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GUIDED1",
+      "ap_id": "A.GUIDED1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = GUIDED",
+      "truth_meaning_zh": "当前模式是外部引导模式。",
+      "terms": [
+        "Mode_t",
+        "GUIDED"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GUIDED1",
+      "ap_id": "A.GUIDED1-AP02",
+      "role": "antecedent",
+      "expression": "Waypoint = empty",
+      "truth_meaning_zh": "论文抽象的航点集合为空。",
+      "terms": [
+        "Waypoint"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GUIDED1",
+      "ap_id": "A.GUIDED1-AP03",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GUIDED1",
+      "ap_id": "A.GUIDED1-AP04",
+      "role": "consequent",
+      "expression": "Yaw_t = Yaw_t-1",
+      "truth_meaning_zh": "当前偏航与上一观测严格相等。",
+      "terms": [
+        "Yaw_t",
+        "Yaw_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GUIDED1",
+      "ap_id": "A.GUIDED1-AP05",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.SPORT1",
+      "ap_id": "A.SPORT1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = SPORT",
+      "truth_meaning_zh": "当前模式是运动模式。",
+      "terms": [
+        "Mode_t",
+        "SPORT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.SPORT1",
+      "ap_id": "A.SPORT1-AP02",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = PILOT_SPEED_UP",
+      "truth_meaning_zh": "垂直速度严格等于飞手上升速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "PILOT_SPEED_UP"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RC.FS1",
+      "ap_id": "A.RC.FS1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ACRO",
+      "truth_meaning_zh": "当前模式是特技模式。",
+      "terms": [
+        "Mode_t",
+        "ACRO"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RC.FS1",
+      "ap_id": "A.RC.FS1-AP02",
+      "role": "antecedent",
+      "expression": "Throttle_t < FS_THR_VALUE",
+      "truth_meaning_zh": "油门输入低于遥控故障保护阈值参数。",
+      "terms": [
+        "Throttle_t",
+        "FS_THR_VALUE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RC.FS1",
+      "ap_id": "A.RC.FS1-AP03",
+      "role": "antecedent_from_description",
+      "expression": "Armed = true",
+      "truth_meaning_zh": "飞行器电机已经解锁。",
+      "terms": [
+        "Armed"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RC.FS1",
+      "ap_id": "A.RC.FS1-AP04",
+      "role": "consequent",
+      "expression": "Disarm = on",
+      "truth_meaning_zh": "电机处于锁定状态。",
+      "terms": [
+        "Disarm"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RC.FS2",
+      "ap_id": "A.RC.FS2-AP01",
+      "role": "antecedent",
+      "expression": "Throttle_t < FS_THR_VALUE",
+      "truth_meaning_zh": "油门输入低于遥控故障保护阈值参数。",
+      "terms": [
+        "Throttle_t",
+        "FS_THR_VALUE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.RC.FS2",
+      "ap_id": "A.RC.FS2-AP02",
+      "role": "consequent",
+      "expression": "RC_fail = on",
+      "truth_meaning_zh": "遥控故障保护状态开启。",
+      "terms": [
+        "RC_fail"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CHUTE1",
+      "ap_id": "A.CHUTE1-AP01",
+      "role": "antecedent",
+      "expression": "Parachute = on",
+      "truth_meaning_zh": "降落伞已经释放。",
+      "terms": [
+        "Parachute"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CHUTE1",
+      "ap_id": "A.CHUTE1-AP02",
+      "role": "consequent",
+      "expression": "Armed = true",
+      "truth_meaning_zh": "飞行器电机已经解锁。",
+      "terms": [
+        "Armed"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CHUTE1",
+      "ap_id": "A.CHUTE1-AP03",
+      "role": "consequent",
+      "expression": "Mode_t notin {FLIP,ACRO}",
+      "truth_meaning_zh": "当前模式既不是翻滚也不是特技模式。",
+      "terms": [
+        "Mode_t",
+        "FLIP",
+        "ACRO"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CHUTE1",
+      "ap_id": "A.CHUTE1-AP04",
+      "role": "consequent",
+      "expression": "ALT_t <= ALT_t-1",
+      "truth_meaning_zh": "当前高度不高于上一观测高度，即论文所称不在爬升。",
+      "terms": [
+        "ALT_t",
+        "ALT_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.CHUTE1",
+      "ap_id": "A.CHUTE1-AP05",
+      "role": "consequent",
+      "expression": "ALT_t > CHUTE_ALT_MIN",
+      "truth_meaning_zh": "当前高度高于最低开伞高度参数。",
+      "terms": [
+        "ALT_t",
+        "CHUTE_ALT_MIN"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GPS.FS1",
+      "ap_id": "A.GPS.FS1-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GPS.FS1",
+      "ap_id": "A.GPS.FS1-AP02",
+      "role": "consequent",
+      "expression": "GPS_count < 4",
+      "truth_meaning_zh": "可见 GPS 卫星数量少于四。",
+      "terms": [
+        "GPS_count"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GPS.FS2",
+      "ap_id": "A.GPS.FS2-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GPS.FS2",
+      "ap_id": "A.GPS.FS2-AP02",
+      "role": "antecedent",
+      "expression": "Baro = on",
+      "truth_meaning_zh": "论文抽象的气压计可用状态开启。",
+      "terms": [
+        "Baro"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "ArduPilot",
+      "property_id": "A.GPS.FS2",
+      "ap_id": "A.GPS.FS2-AP03",
+      "role": "consequent",
+      "expression": "ALT_src = Baro",
+      "truth_meaning_zh": "论文抽象的高度来源被标记为气压计。",
+      "terms": [
+        "ALT_src",
+        "Baro"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL1",
+      "ap_id": "PX.RTL1-AP01",
+      "role": "antecedent",
+      "expression": "ALT_t < RTL_RETURN_ALT",
+      "truth_meaning_zh": "PX4 当前高度低于返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_RETURN_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL1",
+      "ap_id": "PX.RTL1-AP02",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL1",
+      "ap_id": "PX.RTL1-AP03",
+      "role": "consequent",
+      "expression": "ALT_t-1 < ALT_t",
+      "truth_meaning_zh": "当前观测高度高于上一观测高度。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= RTL_RETURN_ALT",
+      "truth_meaning_zh": "PX4 当前高度达到或超过返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_RETURN_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP03",
+      "role": "antecedent",
+      "expression": "Pos_t != home_position",
+      "truth_meaning_zh": "当前位置不等于返航参考位置。",
+      "terms": [
+        "Pos_t",
+        "home_position"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP04",
+      "role": "consequent",
+      "expression": "Pos_t-1 != Pos_t",
+      "truth_meaning_zh": "当前位置与上一观测位置不同。",
+      "terms": [
+        "Pos_t-1",
+        "Pos_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP05",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= RTL_RETURN_ALT",
+      "truth_meaning_zh": "PX4 当前高度达到或超过返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_RETURN_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP03",
+      "role": "antecedent",
+      "expression": "Pos_t = home_position",
+      "truth_meaning_zh": "当前位置等于返航参考位置。",
+      "terms": [
+        "Pos_t",
+        "home_position"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP04",
+      "role": "consequent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP02",
+      "role": "antecedent_as_printed",
+      "expression": "RTL_DESCEND_ALT = -1",
+      "truth_meaning_zh": "论文公式错误地把返航下降高度参数与负一比较。",
+      "terms": [
+        "RTL_DESCEND_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP03",
+      "role": "antecedent_from_description",
+      "expression": "RTL_LAND_DELAY = -1",
+      "truth_meaning_zh": "PX4 返航着陆等待参数为负一，表示不着陆而保持盘旋。",
+      "terms": [
+        "RTL_LAND_DELAY"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP04",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP05",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL5",
+      "ap_id": "PX.RTL5-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL5",
+      "ap_id": "PX.RTL5-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t = GroundALT",
+      "truth_meaning_zh": "当前高度严格等于论文所称地面高度。",
+      "terms": [
+        "ALT_t",
+        "GroundALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL5",
+      "ap_id": "PX.RTL5-AP03",
+      "role": "consequent",
+      "expression": "Disarm = on",
+      "truth_meaning_zh": "电机处于锁定状态。",
+      "terms": [
+        "Disarm"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP02",
+      "role": "antecedent",
+      "expression": "RC_pitch < 1500",
+      "truth_meaning_zh": "俯仰遥控输入小于通道中值。",
+      "terms": [
+        "RC_pitch"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP03",
+      "role": "antecedent",
+      "expression": "Circle_radius_t > 0",
+      "truth_meaning_zh": "当前绕圈半径为正数。",
+      "terms": [
+        "Circle_radius_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP04",
+      "role": "consequent",
+      "expression": "Circle_radius_t < Circle_radius_t-1",
+      "truth_meaning_zh": "绕圈半径比上一观测减小。",
+      "terms": [
+        "Circle_radius_t",
+        "Circle_radius_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT2",
+      "ap_id": "PX.ORBIT2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT2",
+      "ap_id": "PX.ORBIT2-AP02",
+      "role": "antecedent",
+      "expression": "RC_pitch > 1500",
+      "truth_meaning_zh": "俯仰遥控输入大于通道中值。",
+      "terms": [
+        "RC_pitch"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT2",
+      "ap_id": "PX.ORBIT2-AP03",
+      "role": "consequent",
+      "expression": "Circle_radius_t > Circle_radius_t-1",
+      "truth_meaning_zh": "绕圈半径比上一观测增大。",
+      "terms": [
+        "Circle_radius_t",
+        "Circle_radius_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll > 1500",
+      "truth_meaning_zh": "横滚遥控输入大于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = clockwise",
+      "truth_meaning_zh": "绕圈方向是顺时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t > Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测增大。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll > 1500",
+      "truth_meaning_zh": "横滚遥控输入大于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = counterclockwise",
+      "truth_meaning_zh": "绕圈方向是逆时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t < Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测减小。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT5",
+      "ap_id": "PX.ORBIT5-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT5",
+      "ap_id": "PX.ORBIT5-AP02",
+      "role": "consequent",
+      "expression": "Circle_radius_t < 100m",
+      "truth_meaning_zh": "论文抽象的绕点半径严格小于 100 米。",
+      "terms": [
+        "Circle_radius_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT6",
+      "ap_id": "PX.ORBIT6-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT6",
+      "ap_id": "PX.ORBIT6-AP02",
+      "role": "consequent",
+      "expression": "Circle_speed_t < 2m/s^2",
+      "truth_meaning_zh": "论文用速度变量与加速度单位阈值比较。",
+      "terms": [
+        "Circle_speed_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.LAND1",
+      "ap_id": "PX.LAND1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.LAND1",
+      "ap_id": "PX.LAND1-AP02",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = MPC_LAND_SPEED",
+      "truth_meaning_zh": "垂直速度严格等于 PX4 着陆速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "MPC_LAND_SPEED"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ALTITUDE1",
+      "ap_id": "PX.ALTITUDE1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ALTITUDE",
+      "truth_meaning_zh": "当前 PX4 模式是高度控制模式。",
+      "terms": [
+        "Mode_t",
+        "ALTITUDE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ALTITUDE1",
+      "ap_id": "PX.ALTITUDE1-AP02",
+      "role": "antecedent",
+      "expression": "Throttle_t = 1500",
+      "truth_meaning_zh": "油门输入严格等于通道中值 1500。",
+      "terms": [
+        "Throttle_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ALTITUDE1",
+      "ap_id": "PX.ALTITUDE1-AP03",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.POSITION1",
+      "ap_id": "PX.POSITION1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = POSITION",
+      "truth_meaning_zh": "当前 PX4 模式是位置控制模式。",
+      "terms": [
+        "Mode_t",
+        "POSITION"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.POSITION1",
+      "ap_id": "PX.POSITION1-AP02",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = HOLD",
+      "truth_meaning_zh": "当前 PX4 模式是保持模式。",
+      "terms": [
+        "Mode_t",
+        "HOLD"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP02",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP03",
+      "role": "consequent",
+      "expression": "Yaw_t = Yaw_t-1",
+      "truth_meaning_zh": "当前偏航与上一观测严格相等。",
+      "terms": [
+        "Yaw_t",
+        "Yaw_t-1"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP04",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = HOLD",
+      "truth_meaning_zh": "当前 PX4 模式是保持模式。",
+      "terms": [
+        "Mode_t",
+        "HOLD"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP02",
+      "role": "antecedent",
+      "expression": "MIS_LTRMIN_ALT != -1",
+      "truth_meaning_zh": "最小盘旋高度参数没有使用禁用值负一。",
+      "terms": [
+        "MIS_LTRMIN_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP03",
+      "role": "antecedent_from_description",
+      "expression": "ALT_t < MIS_LTRMIN_ALT",
+      "truth_meaning_zh": "当前高度低于最小盘旋高度参数；该前件来自论文自然语言但被印刷公式遗漏。",
+      "terms": [
+        "ALT_t",
+        "MIS_LTRMIN_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP04",
+      "role": "consequent",
+      "expression": "ALT_t-1 < ALT_t",
+      "truth_meaning_zh": "当前观测高度高于上一观测高度。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP05",
+      "role": "target_from_description",
+      "expression": "Target_ALT = MIS_LTRMIN_ALT",
+      "truth_meaning_zh": "目标高度等于最小盘旋高度参数；该目标来自论文自然语言，印刷公式只保留了上升趋势。",
+      "terms": [
+        "Target_ALT",
+        "MIS_LTRMIN_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF1",
+      "ap_id": "PX.TAKEOFF1-AP01",
+      "role": "antecedent",
+      "expression": "Command_t = takeoff",
+      "truth_meaning_zh": "当前处理的是起飞命令。",
+      "terms": [
+        "Command_t",
+        "takeoff"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF1",
+      "ap_id": "PX.TAKEOFF1-AP02",
+      "role": "consequent_as_printed",
+      "expression": "ALT_t <= MIS_TAKEOFF_ALT",
+      "truth_meaning_zh": "当前高度不超过任务起飞高度参数。",
+      "terms": [
+        "ALT_t",
+        "MIS_TAKEOFF_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF1",
+      "ap_id": "PX.TAKEOFF1-AP03",
+      "role": "target_from_description",
+      "expression": "Target_ALT = MIS_TAKEOFF_ALT",
+      "truth_meaning_zh": "起飞目标高度等于任务起飞高度参数；该等式来自论文自然语言。",
+      "terms": [
+        "Target_ALT",
+        "MIS_TAKEOFF_ALT"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF2",
+      "ap_id": "PX.TAKEOFF2-AP01",
+      "role": "antecedent",
+      "expression": "Command_t = takeoff",
+      "truth_meaning_zh": "当前处理的是起飞命令。",
+      "terms": [
+        "Command_t",
+        "takeoff"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF2",
+      "ap_id": "PX.TAKEOFF2-AP02",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = MPC_TKO_SPEED",
+      "truth_meaning_zh": "垂直速度严格等于 PX4 起飞速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "MPC_TKO_SPEED"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS1",
+      "ap_id": "PX.GPS.FS1-AP01",
+      "role": "antecedent",
+      "expression": "GPS_loss = on",
+      "truth_meaning_zh": "论文抽象的 GPS 丢失事件已经发生。",
+      "terms": [
+        "GPS_loss"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS1",
+      "ap_id": "PX.GPS.FS1-AP02",
+      "role": "consequent",
+      "expression": "F_[0,COM_POS_FS_DELAY+k](GPS_fail = on)",
+      "truth_meaning_zh": "在位置故障延迟参数加调度余量内触发 GPS 故障保护。",
+      "terms": [
+        "GPS_fail",
+        "COM_POS_FS_DELAY",
+        "k"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS2",
+      "ap_id": "PX.GPS.FS2-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS2",
+      "ap_id": "PX.GPS.FS2-AP02",
+      "role": "antecedent",
+      "expression": "RC_t = on",
+      "truth_meaning_zh": "遥控器输入被论文抽象为可用。",
+      "terms": [
+        "RC_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS2",
+      "ap_id": "PX.GPS.FS2-AP03",
+      "role": "consequent",
+      "expression": "Mode_t = ALTITUDE",
+      "truth_meaning_zh": "当前 PX4 模式是高度控制模式。",
+      "terms": [
+        "Mode_t",
+        "ALTITUDE"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS3",
+      "ap_id": "PX.GPS.FS3-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS3",
+      "ap_id": "PX.GPS.FS3-AP02",
+      "role": "antecedent",
+      "expression": "RC_t = off",
+      "truth_meaning_zh": "遥控器输入被论文抽象为不可用。",
+      "terms": [
+        "RC_t"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS3",
+      "ap_id": "PX.GPS.FS3-AP03",
+      "role": "consequent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "PENDING_CURRENT_SOURCE_BINDING",
+      "implementation_satisfaction": "NOT_ASSESSED"
+    }
+  ]
+}

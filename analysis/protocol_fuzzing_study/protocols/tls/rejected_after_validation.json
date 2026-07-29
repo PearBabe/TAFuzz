@@ -1,0 +1,125 @@
+[
+  {
+    "id": "TLS13-TICKET-01",
+    "protocol": "TLS",
+    "protocol_extension": "TLS 1.3 session tickets",
+    "title": "TLS 1.3 tickets become unusable within seven days",
+    "category": "session ticket lifetime",
+    "natural_language": "客户端缓存 TLS 1.3 NewSessionTicket 后，最迟七天内必须使该 ticket 过期或移除，不得继续用于 PSK 恢复。",
+    "normative_strength": "MUST NOT",
+    "standard": "RFC 8446",
+    "standard_version": "RFC 8446 (TLS 1.3)",
+    "standard_section": "4.6.1",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc8446.html#section-4.6.1",
+    "standard_excerpt": "Clients MUST NOT cache tickets for longer than 7 days",
+    "time_value_ms": "604800000",
+    "time_parameter": "maximum ticket cache lifetime",
+    "time_source": "RFC 8446 Section 4.6.1: 604800 seconds",
+    "instantiation_basis": "NORMATIVE_MAXIMUM",
+    "mathematical_mitl": "G (tls13_ticket_cached -> F [0,604800000] (tls13_ticket_became_unusable || tls13_ticket_removed))",
+    "mightyppl_formula": "G* (tls13_ticket_cached -> F [0,604800000] (tls13_ticket_became_unusable || tls13_ticket_removed))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "tls13_ticket_cached",
+      "tls13_ticket_became_unusable",
+      "tls13_ticket_removed"
+    ],
+    "ap_definitions": {
+      "tls13_ticket_cached": "A parsed TLS 1.3 NewSessionTicket is admitted to the client session cache.",
+      "tls13_ticket_became_unusable": "Adapter/client marks the ticket ineligible at min(ticket_lifetime,604800s).",
+      "tls13_ticket_removed": "The correlated session ticket is removed from cache before the maximum age."
+    },
+    "correlation_key": "SSL_SESSION pointer/cache key + ticket nonce/hash; ticket bytes never become AP names",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "openssl/openssl",
+    "source_commit": "0437435a960123be1ced766d18d715f939698345",
+    "source_path": "ssl/statem/extensions_clnt.c",
+    "source_symbol": "tls_construct_ctos_psk",
+    "source_lines": "1094-1118",
+    "source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/statem/extensions_clnt.c#L1094-L1118",
+    "instrumentation_timing": "Record ticket creation after tls_process_new_session_ticket stores tick_lifetime_hint; emit unusable when the PSK age check first rejects it or adapter expiry fires.",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "LOW",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tls13_ticket_cached"
+        ]
+      },
+      {
+        "time": 604800000,
+        "props": [
+          "tls13_ticket_became_unusable"
+        ]
+      },
+      {
+        "time": 604800001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "tls13_ticket_cached"
+        ]
+      },
+      {
+        "time": 604800001,
+        "props": []
+      }
+    ],
+    "review_question": "OpenSSL 0437435a checks the advertised lifetime but does not explicitly expose the RFC seven-day cap;请确认使用 adapter 合成 max-age 事件并把潜在超长 ticket 视为可发现违规。",
+    "limitations": "Requires virtual time. The source hook observes ticket age eligibility; explicit cache eviction may be lazy, so the formal AP is unusable-or-removed rather than memory freed.",
+    "human_review_status": "PENDING",
+    "ticket_parse_source_url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/statem/statem_clnt.c#L2574-L2665",
+    "benchmark_source": "ProFuzzBench OpenSSL pin 0437435a960123be1ced766d18d715f939698345",
+    "independent_audit_status": "REJECT_OR_FIX",
+    "independent_audit_note": "Rejected and deliberately left without fabricated AP mappings: the fixed source observes PSK eligibility but does not expose a transition proving seven-day cache removal/non-use; tls13_ticket_became_unusable was adapter-derived and self-fulfilling, and tls13_ticket_removed lacks a fixed cache-eviction hook.",
+    "protocol_slug": "tls",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "tls13_ticket_cached"
+          ]
+        },
+        {
+          "time": 604800001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "auxiliary_source_mappings": [],
+    "primary_source_atomic_propositions": [],
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/openssl/openssl/0437435a960123be1ced766d18d715f939698345/ssl/statem/extensions_clnt.c; verified_symbols=['tls_construct_ctos_psk']; failed_symbols=[]; cited_ranges=[(1094, 1118)]; uncovered_ranges=[]",
+    "mapping_audit_status": "REJECTED_MAPPING_GAP",
+    "standard_url_verification_note": "HTTP 200",
+    "rejection_reasons": [
+      "AP_WITHOUT_SOURCE_MAPPING:tls13_ticket_became_unusable,tls13_ticket_cached,tls13_ticket_removed",
+      "INDEPENDENT_AUDIT_REJECT",
+      "PRIMARY_SOURCE_APS_MISSING_OR_EMPTY",
+      "UNKNOWN_OR_UNAPPROVED_AUDIT_STATUS:REJECT_OR_FIX",
+      "UNSTRUCTURED_SOURCE_URLS:https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/statem/statem_clnt.c#L2574-L2665"
+    ]
+  }
+]

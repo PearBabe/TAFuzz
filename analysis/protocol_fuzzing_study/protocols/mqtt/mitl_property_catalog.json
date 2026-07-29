@@ -1,0 +1,626 @@
+[
+  {
+    "id": "MQTT-KA-01",
+    "protocol": "MQTT",
+    "protocol_extension": "MQTT 5.0 with the Mosquitto command-line client default profile",
+    "title": "An idle default-profile client starts another control packet within 60 seconds",
+    "category": "client Keep Alive",
+    "natural_language": "在 Mosquitto 命令行客户端未覆盖 Keep Alive 的固定 profile 中，值为 60 s。客户端完成一个 MQTT 控制报文后，若连接继续存活，必须在 60000 ms 内开始下一个控制报文；没有其他控制报文时应发送 PINGREQ。",
+    "normative_strength": "MUST",
+    "standard": "MQTT Version 5.0",
+    "standard_version": "OASIS Standard 07 March 2019",
+    "standard_section": "3.1.2.10",
+    "standard_url": "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html#_Keep_Alive_1",
+    "standard_excerpt": "in the absence of sending any other MQTT Control Packets, the Client MUST send a PINGREQ packet",
+    "time_value_ms": "60000",
+    "time_parameter": "Keep Alive=60 seconds",
+    "time_source": "Mosquitto v2.0.21 command-line client default, permitted by the configurable MQTT Keep Alive field",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE",
+    "mathematical_mitl": "G (mqtt_client_outbound_window_started -> F [0,60000] (mqtt_pingreq_started || mqtt_other_control_packet_started || mqtt_network_connection_closed))",
+    "mightyppl_formula": "G* (mqtt_client_outbound_window_started -> F [0,60000] (mqtt_pingreq_started || mqtt_other_control_packet_started || mqtt_network_connection_closed))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "mqtt_client_outbound_window_started",
+      "mqtt_pingreq_started",
+      "mqtt_other_control_packet_started",
+      "mqtt_network_connection_closed"
+    ],
+    "ap_definitions": {
+      "mqtt_client_outbound_window_started": "The profiled client finishes transmitting one MQTT Control Packet on an active connection and commits next_msg_out for Keep Alive 60.",
+      "mqtt_pingreq_started": "The first byte of a PINGREQ for the correlated client connection starts transmission.",
+      "mqtt_other_control_packet_started": "The first byte of a non-PINGREQ MQTT Control Packet for that connection starts transmission.",
+      "mqtt_network_connection_closed": "The correlated connection generation transitions from connected to inactive at net__socket_close; a broker Keep Alive reason, when present, is retained as an event field."
+    },
+    "correlation_key": "Mosquitto client instance + network-connection generation + direction; the fixed profile requires effective Keep Alive=60",
+    "projection_rule": "select one active connection generation with the fixed default profile, order completed and newly started outbound packets, then project the fixed AP alphabet",
+    "source_repository": "eclipse-mosquitto/mosquitto",
+    "source_commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+    "source_path": "lib/packet_mosq.c",
+    "source_symbol": "packet__write",
+    "source_lines": "227-358",
+    "source_url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/packet_mosq.c#L227-L358",
+    "instrumentation_timing": "emit the trigger after packet completion updates next_msg_out; emit a start AP when the first byte is handed to the socket, or close after the connection state changes",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "mqtt_client_outbound_window_started"
+        ]
+      },
+      {
+        "time": 60000,
+        "props": [
+          "mqtt_pingreq_started"
+        ]
+      },
+      {
+        "time": 60001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "mqtt_client_outbound_window_started"
+        ]
+      },
+      {
+        "time": 60001,
+        "props": []
+      }
+    ],
+    "additional_negative_traces": {
+      "late_or_missing_next_control_packet": [
+        {
+          "time": 0,
+          "props": [
+            "mqtt_client_outbound_window_started"
+          ]
+        },
+        {
+          "time": 60001,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "mqtt_client_outbound_window_started"
+          ]
+        },
+        {
+          "time": 60001,
+          "props": []
+        }
+      ]
+    },
+    "review_question": "确认测试使用 Mosquitto 命令行客户端默认 Keep Alive=60，且 CONNACK 未用 Server Keep Alive 覆盖该值。",
+    "limitations": "60 s 不是 MQTT 通用常数；API 调用、命令行选项或 Server Keep Alive 都可改变有效值，因此该条仅适用于明确锁定的默认 profile。negative 与命名附加反例均覆盖截止后仍缺少后继控制报文或关闭的 late/missing 情形。",
+    "independent_audit_status": "ROOT_REVIEWED",
+    "independent_audit_note": "Root review confirmed the implementation-profile scope, effective-Keep-Alive correlation, and that the existing negative trace covers the late/missing eventuality case.",
+    "human_review_status": "PENDING",
+    "primary_source_atomic_propositions": [
+      "mqtt_client_outbound_window_started",
+      "mqtt_pingreq_started",
+      "mqtt_other_control_packet_started"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "Keep Alive scheduling eligibility",
+        "path": "lib/util_mosq.c",
+        "symbol": "mosquitto__check_keepalive",
+        "lines": "62-143",
+        "atomic_propositions": [
+          "mqtt_client_outbound_window_started",
+          "mqtt_pingreq_started"
+        ],
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/util_mosq.c#L62-L143"
+      },
+      {
+        "role": "network connection generation close",
+        "path": "lib/net_mosq.c",
+        "symbol": "net__socket_close",
+        "lines": "214-267",
+        "atomic_propositions": [
+          "mqtt_network_connection_closed"
+        ],
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/net_mosq.c#L214-L267"
+      }
+    ],
+    "protocol_slug": "mqtt",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "Keep Alive scheduling eligibility",
+        "atomic_propositions": [
+          "mqtt_client_outbound_window_started",
+          "mqtt_pingreq_started"
+        ],
+        "repository": "eclipse-mosquitto/mosquitto",
+        "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+        "path": "lib/util_mosq.c",
+        "symbol": "mosquitto__check_keepalive",
+        "lines": "62-143",
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/util_mosq.c#L62-L143",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/util_mosq.c; verified_symbols=['mosquitto__check_keepalive']; failed_symbols=[]; cited_ranges=[(62, 143)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "network connection generation close",
+        "atomic_propositions": [
+          "mqtt_network_connection_closed"
+        ],
+        "repository": "eclipse-mosquitto/mosquitto",
+        "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+        "path": "lib/net_mosq.c",
+        "symbol": "net__socket_close",
+        "lines": "214-267",
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/net_mosq.c#L214-L267",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/net_mosq.c; verified_symbols=['net__socket_close']; failed_symbols=[]; cited_ranges=[(214, 267)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/packet_mosq.c; verified_symbols=['packet__write']; failed_symbols=[]; cited_ranges=[(227, 358)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing_next_control_packet": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "mqtt_client_outbound_window_started",
+      "mqtt_pingreq_started",
+      "mqtt_other_control_packet_started",
+      "mqtt_network_connection_closed"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 160,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 198,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 16,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "MQTT-KA-02",
+    "protocol": "MQTT",
+    "protocol_extension": "MQTT 5.0 broker with effective Keep Alive 60 seconds",
+    "title": "The broker receives a control packet or closes by the 90-second Keep Alive deadline",
+    "category": "server Keep Alive enforcement",
+    "natural_language": "对有效 Keep Alive=60 s 的固定连接 profile，服务器从客户端最后一个 MQTT 控制报文接收完成起，若 90000 ms 内没有收到下一个控制报文，必须关闭该网络连接。",
+    "normative_strength": "MUST",
+    "standard": "MQTT Version 5.0",
+    "standard_version": "OASIS Standard 07 March 2019",
+    "standard_section": "3.1.2.10",
+    "standard_url": "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html#_Keep_Alive_1",
+    "standard_excerpt": "within one and a half times the Keep Alive time period, it MUST close the Network Connection",
+    "time_value_ms": "90000",
+    "time_parameter": "1.5 * effective Keep Alive; effective Keep Alive=60 seconds",
+    "time_source": "MQTT normative 1.5 multiplier applied to the Mosquitto command-line client default Keep Alive profile",
+    "instantiation_basis": "IMPLEMENTATION_PROFILE_DERIVED",
+    "mathematical_mitl": "G (mqtt_server_inbound_window_started -> F [0,90000] (mqtt_client_control_packet_received || mqtt_network_connection_closed))",
+    "mightyppl_formula": "G* (mqtt_server_inbound_window_started -> F [0,90000] (mqtt_client_control_packet_received || mqtt_network_connection_closed))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "mqtt_server_inbound_window_started",
+      "mqtt_client_control_packet_received",
+      "mqtt_network_connection_closed"
+    ],
+    "ap_definitions": {
+      "mqtt_server_inbound_window_started": "Mosquitto finishes receiving a valid MQTT Control Packet for an active non-bridge client and refreshes last_msg_in with effective Keep Alive 60.",
+      "mqtt_client_control_packet_received": "A later valid MQTT Control Packet from that client is completely received and refreshes the same connection's Keep Alive state.",
+      "mqtt_network_connection_closed": "The correlated connection generation transitions from connected to inactive at net__socket_close; a broker Keep Alive reason, when present, is retained as an event field."
+    },
+    "correlation_key": "broker listener + client identity + network-connection generation + inbound direction; effective Keep Alive=60",
+    "projection_rule": "derive the effective Keep Alive after CONNECT/CONNACK negotiation, select one non-bridge connection generation, then project refresh, receive, and close events",
+    "source_repository": "eclipse-mosquitto/mosquitto",
+    "source_commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+    "source_path": "lib/packet_mosq.c",
+    "source_symbol": "packet__read",
+    "source_lines": "361-589",
+    "source_url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/packet_mosq.c#L361-L589",
+    "instrumentation_timing": "emit the trigger after last_msg_in is refreshed; emit receive after the next valid packet refresh, and emit close after do_disconnect changes the connection state",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "mqtt_server_inbound_window_started"
+        ]
+      },
+      {
+        "time": 90000,
+        "props": [
+          "mqtt_network_connection_closed"
+        ]
+      },
+      {
+        "time": 90001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "mqtt_server_inbound_window_started"
+        ]
+      },
+      {
+        "time": 90001,
+        "props": []
+      }
+    ],
+    "additional_negative_traces": {
+      "late_or_missing_receive_or_close": [
+        {
+          "time": 0,
+          "props": [
+            "mqtt_server_inbound_window_started"
+          ]
+        },
+        {
+          "time": 90001,
+          "props": []
+        }
+      ],
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "mqtt_server_inbound_window_started"
+          ]
+        },
+        {
+          "time": 90001,
+          "props": []
+        }
+      ]
+    },
+    "review_question": "确认 adapter 使用协商后的有效 Keep Alive，并单独核对 Mosquitto 秒级时间轮在 90000 ms 边界的实际关闭时刻。",
+    "limitations": "该固定数值依赖 Keep Alive=60 的 profile；Mosquitto 的秒级时间轮和主循环调度可能暴露边界延后，这正是该 oracle 要检测的实现行为。negative 与命名附加反例均覆盖 90000 ms 后仍未接收或关闭的 late/missing 情形。",
+    "independent_audit_status": "ROOT_REVIEWED",
+    "independent_audit_note": "Root review confirmed the 1.5 multiplier and fixed effective-60-second profile; the exact time-wheel boundary remains an explicit implementation oracle, with a late/missing negative trace.",
+    "human_review_status": "PENDING",
+    "primary_source_atomic_propositions": [
+      "mqtt_server_inbound_window_started",
+      "mqtt_client_control_packet_received"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "broker Keep Alive expiry decision",
+        "path": "src/keepalive.c",
+        "symbol": "keepalive__check",
+        "lines": "127-175",
+        "atomic_propositions": [
+          "mqtt_network_connection_closed"
+        ],
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/src/keepalive.c#L127-L175"
+      },
+      {
+        "role": "network connection generation close",
+        "path": "lib/net_mosq.c",
+        "symbol": "net__socket_close",
+        "lines": "214-267",
+        "atomic_propositions": [
+          "mqtt_network_connection_closed"
+        ],
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/net_mosq.c#L214-L267"
+      }
+    ],
+    "protocol_slug": "mqtt",
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "broker Keep Alive expiry decision",
+        "atomic_propositions": [
+          "mqtt_network_connection_closed"
+        ],
+        "repository": "eclipse-mosquitto/mosquitto",
+        "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+        "path": "src/keepalive.c",
+        "symbol": "keepalive__check",
+        "lines": "127-175",
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/src/keepalive.c#L127-L175",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/src/keepalive.c; verified_symbols=['keepalive__check']; failed_symbols=[]; cited_ranges=[(127, 175)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "network connection generation close",
+        "atomic_propositions": [
+          "mqtt_network_connection_closed"
+        ],
+        "repository": "eclipse-mosquitto/mosquitto",
+        "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+        "path": "lib/net_mosq.c",
+        "symbol": "net__socket_close",
+        "lines": "214-267",
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/net_mosq.c#L214-L267",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/net_mosq.c; verified_symbols=['net__socket_close']; failed_symbols=[]; cited_ranges=[(214, 267)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/packet_mosq.c; verified_symbols=['packet__read']; failed_symbols=[]; cited_ranges=[(361, 589)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "late_or_missing_receive_or_close": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      },
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "mqtt_server_inbound_window_started",
+      "mqtt_client_control_packet_received",
+      "mqtt_network_connection_closed"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 80,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 102,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 14,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  },
+  {
+    "id": "MQTT-RTX-01",
+    "protocol": "MQTT",
+    "protocol_extension": "MQTT 5.0 QoS 1 and QoS 2 delivery",
+    "title": "A PUBLISH negatively acknowledged with reason code 0x80 or greater is never retransmitted",
+    "category": "retransmission termination",
+    "natural_language": "收到 Reason Code 大于等于 0x80 的 PUBACK 或 PUBREC 后，对应 PUBLISH 被视为已确认；在该消息 generation 的剩余生命周期内不得再次重传。",
+    "normative_strength": "MUST NOT",
+    "standard": "MQTT Version 5.0",
+    "standard_version": "OASIS Standard 07 March 2019",
+    "standard_section": "4.4",
+    "standard_url": "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html#_Message_delivery_retry",
+    "standard_excerpt": "the corresponding PUBLISH packet is treated as acknowledged, and MUST NOT be retransmitted",
+    "time_value_ms": "unbounded",
+    "time_parameter": "post-negative-ack future",
+    "time_source": "MQTT retransmission termination condition after PUBACK/PUBREC Reason Code >= 0x80",
+    "instantiation_basis": "NORMATIVE_UNBOUNDED",
+    "mathematical_mitl": "G (mqtt_publish_negative_ack_received -> G (!mqtt_same_publish_retransmitted))",
+    "mightyppl_formula": "G* (mqtt_publish_negative_ack_received -> G* (!mqtt_same_publish_retransmitted))",
+    "interval_class": "NON_PUNCTUAL_UNBOUNDED",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "mqtt_publish_negative_ack_received",
+      "mqtt_same_publish_retransmitted"
+    ],
+    "ap_definitions": {
+      "mqtt_publish_negative_ack_received": "A valid PUBACK or PUBREC with Reason Code at least 0x80 matches an active outbound PUBLISH generation by Packet Identifier and removes or completes its stored state.",
+      "mqtt_same_publish_retransmitted": "The sender starts another PUBLISH for that same stored message generation; a later legitimate Packet Identifier reuse for new content is not the same generation."
+    },
+    "correlation_key": "client/broker role + network-session generation + outbound direction + Packet Identifier + stored-message generation + QoS",
+    "projection_rule": "match PUBACK/PUBREC to the active stored PUBLISH before projection and retain its generation identity after deletion so Packet Identifier reuse is not conflated",
+    "source_repository": "eclipse-mosquitto/mosquitto",
+    "source_commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+    "source_path": "lib/handle_pubrec.c",
+    "source_symbol": "handle__pubrec",
+    "source_lines": "93-125",
+    "source_url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/handle_pubrec.c#L93-L125",
+    "instrumentation_timing": "emit the trigger only after reason validation and successful message-state deletion; emit retransmission at the first byte of a later send for the retained generation identity",
+    "observability": "HYBRID",
+    "oracle_value": "HIGH",
+    "triggerability": "HIGH",
+    "confidence": "HIGH",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "mqtt_publish_negative_ack_received"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "mqtt_publish_negative_ack_received"
+        ]
+      },
+      {
+        "time": 1,
+        "props": [
+          "mqtt_same_publish_retransmitted"
+        ]
+      },
+      {
+        "time": 1000,
+        "props": []
+      }
+    ],
+    "review_question": "确认 trigger 只在 PUBACK/PUBREC 成功匹配并完成状态删除时发出，且 generation 追踪不会把新的 Packet Identifier 复用误判为重传。",
+    "limitations": "该义务无有限截止时间；有限词通过仅代表观察窗口内未重传，采集终点应覆盖 stored-message generation 的完整生命周期。",
+    "independent_audit_status": "ROOT_REVIEWED",
+    "independent_audit_note": "Root review confirmed negative PUBACK/PUBREC generation matching, state deletion evidence, and the weak-finite terminal-projection caveat for the unbounded safety check.",
+    "human_review_status": "PENDING",
+    "primary_source_atomic_propositions": [
+      "mqtt_publish_negative_ack_received"
+    ],
+    "auxiliary_source_mappings": [
+      {
+        "role": "negative PUBACK state completion",
+        "path": "lib/handle_pubackcomp.c",
+        "symbol": "handle__pubackcomp",
+        "lines": "41-168",
+        "atomic_propositions": [
+          "mqtt_publish_negative_ack_received"
+        ],
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/handle_pubackcomp.c#L41-L168"
+      },
+      {
+        "role": "later PUBLISH send for retained message generation",
+        "path": "lib/send_publish.c",
+        "symbol": "send__publish / send__real_publish",
+        "lines": "42-134;137-221",
+        "atomic_propositions": [
+          "mqtt_same_publish_retransmitted"
+        ],
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/send_publish.c#L42-L134"
+      }
+    ],
+    "protocol_slug": "mqtt",
+    "additional_negative_traces": {},
+    "additional_positive_traces": {},
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "negative PUBACK state completion",
+        "atomic_propositions": [
+          "mqtt_publish_negative_ack_received"
+        ],
+        "repository": "eclipse-mosquitto/mosquitto",
+        "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+        "path": "lib/handle_pubackcomp.c",
+        "symbol": "handle__pubackcomp",
+        "lines": "41-168",
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/handle_pubackcomp.c#L41-L168",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/handle_pubackcomp.c; verified_symbols=['handle__pubackcomp']; failed_symbols=[]; cited_ranges=[(41, 168)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "later PUBLISH send for retained message generation",
+        "atomic_propositions": [
+          "mqtt_same_publish_retransmitted"
+        ],
+        "repository": "eclipse-mosquitto/mosquitto",
+        "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+        "path": "lib/send_publish.c",
+        "symbol": "send__publish / send__real_publish",
+        "lines": "42-134;137-221",
+        "url": "https://github.com/eclipse-mosquitto/mosquitto/blob/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/send_publish.c#L42-L134",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/send_publish.c; verified_symbols=['send__publish', 'send__real_publish']; failed_symbols=[]; cited_ranges=[(42, 134), (137, 221)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/eclipse-mosquitto/mosquitto/672ae3e57f8b4e086f6ce2dec836734cc38258c3/lib/handle_pubrec.c; verified_symbols=['handle__pubrec']; failed_symbols=[]; cited_ranges=[(93, 125)]; uncovered_ranges=[]",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {},
+    "validation_ap_order": [
+      "mqtt_publish_negative_ack_received",
+      "mqtt_same_publish_retransmitted"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 5,
+    "validation_positive_edges": 18,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 48,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 19,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  }
+]

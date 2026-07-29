@@ -1,0 +1,43 @@
+{
+  "id": "SIP-TX-22",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {
+    "superseded_by_matched_2xx_ack": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    }
+  },
+  "additional_negative_results": {
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "source_realistic_2000ms_interval": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "timer_x_rearmed_expected_2t1",
+    "timer_x_deadline",
+    "matched_2xx_ack"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 11,
+  "positive_edges": 164,
+  "positive_clocks": 2,
+  "negative_locations": 9,
+  "negative_edges": 142,
+  "negative_clocks": 2,
+  "build_ms": 15,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

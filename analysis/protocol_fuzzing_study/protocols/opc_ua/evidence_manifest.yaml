@@ -1,0 +1,496 @@
+{
+  "protocol": "OPC UA",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/industrial_protocols/opc_ua/evidence.json",
+      "record": {
+        "protocol": "OPC UA",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+        "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+        "scope": "OPC 10000-4 v1.05.07 relationships instantiated only after checking server-revised values on open62541 v1.4.14.",
+        "proposal_summary": {
+          "emitted": 8,
+          "approve": 2,
+          "fix_applied": 6,
+          "rejected": 0
+        },
+        "standards": [
+          {
+            "title": "OPC 10000-4: Services",
+            "version": "1.05.07",
+            "url": "https://reference.opcfoundation.org/Core/Part4/v105/docs/",
+            "sections_reviewed": [
+              "5.6.2.1",
+              "5.7.2.2",
+              "5.14.1.1",
+              "5.14.1.2",
+              "5.14.2.2",
+              "7.32"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "repository": "open62541/open62541",
+            "version": "v1.4.14",
+            "commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+            "url": "https://github.com/open62541/open62541"
+          }
+        ],
+        "profile_differences": [
+          "Client requested defaults are never treated as revised values; every trigger checks the server-returned value.",
+          "SecureChannel renewal is an after-75% SHOULD interval, not an exact action at 75%.",
+          "Session cleanup and Subscription lifetime source use strict/greater-than checks that may expose exact-bound discrepancies.",
+          "Subscription queue loss, re-enable, transfer/deletion, setting change, and normal close are explicit generation boundaries."
+        ],
+        "rejected_candidates": []
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "OPCUA-PUB-01",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "7.32",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/7.32",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/server/ua_subscription.c",
+      "source_lines": "427-452",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L452",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Publish timeoutHint deadline and queue",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_Publish",
+          "lines": "304-315",
+          "atomic_propositions": [
+            "publish_request_queued_timeout_hint_5000"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L304-L315"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SC-01",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.6.2.1",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.6.2.1",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/client/ua_client_connect.c",
+      "source_lines": "495-589",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589",
+      "auxiliary_source_mappings": [
+        {
+          "role": "RENEW OpenSecureChannelRequest send",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "sendOPNAsync",
+          "lines": "593-646",
+          "atomic_propositions": [
+            "secure_channel_renew_requested"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L593-L646"
+        },
+        {
+          "role": "SecureChannel close lifecycle",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "closeSecureChannel",
+          "lines": "2198-2236",
+          "atomic_propositions": [
+            "secure_channel_closed"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L2198-L2236"
+        },
+        {
+          "role": "600000 ms client lifetime profile",
+          "path": "plugins/ua_config_default.c",
+          "symbol": "UA_ClientConfig_setDefault",
+          "lines": "1115-1118",
+          "atomic_propositions": [
+            "security_token_issued_default_lifetime"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SC-02",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.6.2.1",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.6.2.1",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/ua_securechannel_crypto.c",
+      "source_lines": "506-569",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/ua_securechannel_crypto.c#L506-L569",
+      "auxiliary_source_mappings": [
+        {
+          "role": "old-token installation and expiry-field snapshot",
+          "path": "src/client/ua_client_connect.c",
+          "symbol": "processOPNResponse",
+          "lines": "495-589",
+          "atomic_propositions": [
+            "old_security_token_expired_default_lifetime"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/client/ua_client_connect.c#L495-L589"
+        },
+        {
+          "role": "600000 ms client lifetime profile",
+          "path": "plugins/ua_config_default.c",
+          "symbol": "UA_ClientConfig_setDefault",
+          "lines": "1115-1118",
+          "atomic_propositions": [
+            "old_security_token_expired_default_lifetime"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1115-L1118"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SESS-01",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.7.2.2",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.7.2.2",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/server/ua_services_session.c",
+      "source_lines": "115-126",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L115-L126",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Session logical idle deadline",
+          "path": "src/server/ua_session.c",
+          "symbol": "UA_Session_updateLifetime",
+          "lines": "125-131",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000",
+            "session_service_activity"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_session.c#L125-L131"
+        },
+        {
+          "role": "valid Service activity refresh",
+          "path": "src/server/ua_server_binary.c",
+          "symbol": "processMSGDecoded",
+          "lines": "716-865",
+          "atomic_propositions": [
+            "session_service_activity"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_server_binary.c#L716-L865"
+        },
+        {
+          "role": "revised Session timeout creation",
+          "path": "src/server/ua_services_session.c",
+          "symbol": "UA_Server_createSession / Service_CreateSession",
+          "lines": "224-260;263-393",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L224-L260"
+        },
+        {
+          "role": "explicit CloseSession and removal",
+          "path": "src/server/ua_services_session.c",
+          "symbol": "Service_CloseSession / UA_Server_removeSession",
+          "lines": "29-98;918-960",
+          "atomic_propositions": [
+            "session_idle_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_session.c#L29-L98"
+        },
+        {
+          "role": "1200000 ms requested client profile",
+          "path": "plugins/ua_config_default.c",
+          "symbol": "UA_ClientConfig_setDefault",
+          "lines": "1173-1174",
+          "atomic_propositions": [
+            "session_idle_window_started_1200000"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/plugins/ua_config_default.c#L1173-L1174"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SUB-01",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.14.1.1",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.1.1",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/server/ua_subscription.c",
+      "source_lines": "730-759",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L730-L759",
+      "auxiliary_source_mappings": [
+        {
+          "role": "CreateSubscription revised values",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_CreateSubscription",
+          "lines": "55-127",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L55-L127"
+        },
+        {
+          "role": "Publish request queue prerequisite",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_Publish",
+          "lines": "236-355",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L236-L355"
+        },
+        {
+          "role": "first notification or keep-alive response",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_publish",
+          "lines": "427-648",
+          "atomic_propositions": [
+            "first_publish_response"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L427-L648"
+        },
+        {
+          "role": "Subscription deletion or setting change",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "atomic_propositions": [
+            "first_cycle_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+        },
+        {
+          "role": "revised interval change",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription",
+          "lines": "130-193",
+          "atomic_propositions": [
+            "first_cycle_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+        },
+        {
+          "role": "500 ms client request profile",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "atomic_propositions": [
+            "default_subscription_first_cycle_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SUB-02",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.14.1.1; 5.14.2.2",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.1.1",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/server/ua_subscription.c",
+      "source_lines": "477-610",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+      "auxiliary_source_mappings": [
+        {
+          "role": "revised keep-alive settings",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+          "lines": "26-52;55-127",
+          "atomic_propositions": [
+            "default_keepalive_window_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52"
+        },
+        {
+          "role": "Subscription deletion",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "atomic_propositions": [
+            "keepalive_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+        },
+        {
+          "role": "revised interval/count change",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription",
+          "lines": "130-193",
+          "atomic_propositions": [
+            "keepalive_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+        },
+        {
+          "role": "default 500 ms by 10 client profile",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "atomic_propositions": [
+            "default_keepalive_window_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SUB-03",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.14.1.1; 5.14.2.2",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.2.2",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/server/ua_subscription.c",
+      "source_lines": "455-474",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L455-L474",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Subscription lifetime reset",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "Subscription_resetLifetime",
+          "lines": "118-120",
+          "atomic_propositions": [
+            "subscription_lifetime_reset"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L118-L120"
+        },
+        {
+          "role": "manual Subscription deletion",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "atomic_propositions": [
+            "subscription_lifetime_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+        },
+        {
+          "role": "service reset or revised-setting change",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription / Service_Republish",
+          "lines": "130-193;393-433",
+          "atomic_propositions": [
+            "subscription_lifetime_reset",
+            "subscription_lifetime_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+        },
+        {
+          "role": "default revised-value source",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+          "lines": "26-52;55-127",
+          "atomic_propositions": [
+            "default_subscription_no_publish_window_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52"
+        },
+        {
+          "role": "500 ms and 10000-count client profile",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "atomic_propositions": [
+            "default_subscription_no_publish_window_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "OPCUA-SUB-04",
+      "protocol": "OPC UA",
+      "standard": "OPC 10000-4: Services",
+      "standard_version": "1.05.07",
+      "section": "5.14.1.1",
+      "standard_url": "https://reference.opcfoundation.org/specs/OPC-10000-4/5.14.1.1",
+      "source_repository": "open62541/open62541",
+      "source_commit": "76e425ee963e8c16c0414f2f6bd0c7a5761a92c3",
+      "source_path": "src/server/ua_subscription.c",
+      "source_lines": "477-610",
+      "source_url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L477-L610",
+      "auxiliary_source_mappings": [
+        {
+          "role": "disable/re-enable and lifetime reset",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Operation_SetPublishingMode",
+          "lines": "196-214",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started",
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L196-L214"
+        },
+        {
+          "role": "Subscription deletion",
+          "path": "src/server/ua_subscription.c",
+          "symbol": "UA_Subscription_delete",
+          "lines": "53-115",
+          "atomic_propositions": [
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_subscription.c#L53-L115"
+        },
+        {
+          "role": "revised interval/count change",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "Service_ModifySubscription",
+          "lines": "130-193",
+          "atomic_propositions": [
+            "disabled_keepalive_generation_cancelled"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L130-L193"
+        },
+        {
+          "role": "default revised-value source",
+          "path": "src/server/ua_services_subscription.c",
+          "symbol": "setSubscriptionSettings / Service_CreateSubscription",
+          "lines": "26-52;55-127",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/src/server/ua_services_subscription.c#L26-L52"
+        },
+        {
+          "role": "500 ms by 10 client profile",
+          "path": "include/open62541/client_subscriptions.h",
+          "symbol": "UA_CreateSubscriptionRequest_default",
+          "lines": "43-63",
+          "atomic_propositions": [
+            "disabled_keepalive_window_started"
+          ],
+          "url": "https://github.com/open62541/open62541/blob/76e425ee963e8c16c0414f2f6bd0c7a5761a92c3/include/open62541/client_subscriptions.h#L43-L63"
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

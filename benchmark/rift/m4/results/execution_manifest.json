@@ -1,0 +1,102 @@
+{
+  "schema_version": "rift.m4.execution-evidence/1.0.0",
+  "recorded_at": "2026-07-18T11:57:32+08:00",
+  "milestone": "RIFT-M4",
+  "status": "PASS_WITH_EXPLICIT_BOUNDARIES",
+  "analyzer": {
+    "path": "/tmp/tafuzz-sa-m4-clang18/tafuzz-sa",
+    "sha256": "6ae5b4fb5103e3a265c06ca6fb9e482818139d48a7aa7fbef1faa9a1afddabdf",
+    "build_manifest_sha256": "a44093ba29a80a89ed9fc251d5eacc81cbb14fa1dc17b19096a7c6d8faa6164e",
+    "production_core_sha256": "6472e17700ebede4b0112283d62f82d4d2b779dd950b52662a57c02732388ac0",
+    "schema_bundle_sha256": "f960af4ea0cf4865e787dfbe01b0f812239ba7fe0d7d70e1923ebfa463c9dd8e",
+    "schema_tree_validator_sha256": "35a8b6280474ab8f7970dd31d720e7a3144a678d1cd6b8f19ed9ac919f85e57e",
+    "compiler": "/usr/bin/clang++-18",
+    "language": "C++20"
+  },
+  "synthetic_gold_run": {
+    "bundle": "benchmark/rift/m4/micro/frozen",
+    "output_directory": "/tmp/rift-m4-production-final-v6",
+    "run_manifest_sha256": "0f1b4a51a82710cb384e303d58c08b38ef052ce70d8b7aa95dcce7ea7d9360fc",
+    "cases": 120,
+    "atomic_propositions": 130,
+    "source_ap_pairs": 202,
+    "binding_top1_f1": 1.0,
+    "must_detection": {
+      "detected": 66,
+      "gold": 66,
+      "recall": 1.0,
+      "exact_must": 0,
+      "downgraded_to_may": 66
+    },
+    "influence": {
+      "precision": 0.9795918367346939,
+      "recall": 0.96,
+      "f1": 0.9696969696969697,
+      "false_positive": 3,
+      "false_negative": 6
+    },
+    "persistent_report": "benchmark/rift/m4/results/micro_final_evaluation.json",
+    "persistent_report_sha256": "1a29835493ea532bc72e6c1886899c2ceac8b83bfc65f3e1f04a6534acec138a"
+  },
+  "libcoap_run": {
+    "source_commit": "94bacc8939dd6711169cd2332a002a361ec62531",
+    "compile_database_sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+    "typed_property_ir_sha256": "0b5aea91edc4d7c68e9a39a3a24f82640d2b37385fdaa9bcda9b98cf20e9f187",
+    "translation_units": 38,
+    "graph_nodes": 121868,
+    "runs": [
+      {
+        "output_directory": "/tmp/rift-m4-libcoap-final-v6a",
+        "wall_seconds": 57.55,
+        "max_rss_kib": 1806560
+      },
+      {
+        "output_directory": "/tmp/rift-m4-libcoap-final-v6b",
+        "wall_seconds": 58.49,
+        "max_rss_kib": 1806728
+      }
+    ],
+    "semantic_artifacts_byte_identical_across_runs": true,
+    "semantic_index_sha256": "c74807e581e7e178230c788b8a22a071f9be5a67cb528ab75bd326d86a16b998",
+    "ap_bindings_sha256": "908dac4103253871cfa77a20af033cd55d48d6ee4eab65f4113c16ed35eb2560",
+    "contextual_influence_graph_sha256": "a9c9e7c150cb1324fed2c44f62cea5a9f2b50e2aadff4e0c845caeda25cd05f7",
+    "ap_influence_cones_sha256": "3a55bc0f1f7280029d19cfbb6b7cef78318d18e3ed99c855c757a06e65023a2a",
+    "analysis_certificate_sha256_run_a": "c797451eee32a90eca2feb18b734798be22634815e2d6f548cceb769ee3f929f",
+    "unknown_source_locations": 0,
+    "strict_certificate_verification": {
+      "status": "PASS",
+      "failures": 0,
+      "unsupported": 0,
+      "persistent_report": "benchmark/rift/m4/results/libcoap_strict_verification.json",
+      "persistent_report_sha256": "c466eb9d96bd173e2275a3124ca18172718fb53d6172a091e65682b47d315c7e"
+    },
+    "provisional_projection": {
+      "status": "DEVELOPMENT_DIAGNOSTIC_NOT_GOLD",
+      "labels": 36,
+      "recovered_known_path": 32,
+      "recovered_unknown_only": 1,
+      "not_recovered_current_cones": 2,
+      "not_recovered_model_required": 1,
+      "persistent_report": "benchmark/rift/m4/results/libcoap_provisional_evaluation.json",
+      "persistent_report_sha256": "dc749460a78add496e8b1a141ba5eaaaf6c77145c6d6a518cdeb9cc623ba8db4"
+    }
+  },
+  "verification": {
+    "clang18_ctest": "13/13 PASS",
+    "schema_contract": "8 schemas / 375 checks PASS",
+    "micro_contract_tests": "21/21 PASS",
+    "independent_verifier_tests": "51/51 PASS",
+    "libcoap_frozen_input_checks": "246 PASS including MemorySSA",
+    "strict_one_case_certificate": "PASS failures=0 unsupported=0",
+    "strict_libcoap_certificate": "PASS failures=0 unsupported=0"
+  },
+  "boundaries": {
+    "real_project_labels_are_gold": false,
+    "completed_independent_human_reviewers": 0,
+    "arbitration_status": "PENDING",
+    "exact_must_classification_claimed": false,
+    "three_project_portability_claimed": false,
+    "model_pack_execution_engine_present": false,
+    "frontier_or_recipe_claimed": false
+  }
+}

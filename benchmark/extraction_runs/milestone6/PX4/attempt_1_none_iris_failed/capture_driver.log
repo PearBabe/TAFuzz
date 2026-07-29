@@ -1,0 +1,10 @@
+2026-07-17T23:06:08.678368+00:00 Frozen dialect generated from /home/lqq/project/TAFuzz/baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/development.xml; unique_message_ids=243
+2026-07-17T23:06:08.684618+00:00 Starting PX4 command=/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc cwd=/home/lqq/project/TAFuzz/benchmark/extraction_runs/milestone6/PX4/runtime_state
+2026-07-17T23:06:39.817324+00:00 CAPTURE ERROR
+Traceback (most recent call last):
+  File "/home/lqq/project/TAFuzz/benchmark/extraction_runs/milestone6/PX4/capture_px4_runtime.py", line 909, in main
+    target_sys, target_comp, last_heartbeat = wait_for_autopilot(
+  File "/home/lqq/project/TAFuzz/benchmark/extraction_runs/milestone6/PX4/capture_px4_runtime.py", line 582, in wait_for_autopilot
+    raise TimeoutError("No autopilot HEARTBEAT received within 30 seconds")
+TimeoutError: No autopilot HEARTBEAT received within 30 seconds
+

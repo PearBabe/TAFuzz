@@ -1,0 +1,42 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-010
+title: Takeoff reaches target altitude and holds
+system: PX4
+vehicle_scope: multicopter SITL Takeoff mode
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes_mc/takeoff.md
+    lines: 5-16
+    original_text: "The Takeoff flight mode causes the vehicle to take off to a specified height and wait for further input."
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes_mc/takeoff.md
+    lines: 22-35
+    original_text: "A multi rotor ascends vertically to the altitude defined in MIS_TAKEOFF_ALT and holds position."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/navigator/mission_params.c
+    lines: 46-58
+    original_text: "This is the relative altitude the system will take off to if not otherwise specified."
+normalized_requirement:
+  context: Takeoff mode is accepted with valid local position and no overriding explicit takeoff altitude
+  trigger: entry into multicopter Takeoff mode
+  obligation: ascend to the configured relative target altitude and then hold position
+  explicit_command_case: an explicit finite takeoff altitude overrides MIS_TAKEOFF_ALT and requires a separate property instance
+time_constraint:
+  expression: no response deadline is stated
+  target_value: runtime(MIS_TAKEOFF_ALT) metres when no explicit target is supplied
+  compiled_default_instance: 2.5 metres
+  epoch: Takeoff-mode activation
+  clock: only needed for eventuality monitoring; no numeric duration may be inferred from MPC_TKO_SPEED
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G(takeoff_mode_enter -> F_[0,INF] (takeoff_target_reached & position_hold))"
+  note: executable monitoring needs a finite campaign horizon but that horizon is not a system deadline
+atomic_propositions:
+  - AP-PX4-MODE-TAKEOFF
+  - AP-PX4-TAKEOFF-TARGET-REACHED
+  - AP-PX4-POSITION-HOLD
+mavlink_observation_refs: [OBS-PX4-PARAM, OBS-PX4-MODE, OBS-PX4-GLOBAL-POSITION, OBS-PX4-LOCAL-TARGET]
+blockers: [NEEDS_REACH_TOLERANCE, NEEDS_HOLD_DEFINITION, NEEDS_ENVIRONMENT_ASSUMPTIONS, NEEDS_EXPLICIT_TARGET_SPLIT]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

@@ -1,0 +1,945 @@
+第43卷 第5期 2016 年 5 月
+计算机科学 Computer Science
+Vol.43 No.5 May2016
+到稿日 期:2015-05-13 返 修 日 期:2015-07-04 本 文 受 国 家 自 然 科 学 基 金 (61170189,61370126),国 家 863 计 划 (2015AA016004),博 士 点
+基 金 (20111102130003)资 助 。
+张 雄(1989-),男,硕士生,主要研究方向为网络与信息安全,E-mail:1025679612@qq.com;李舟军(1963-),男,教 授,博 士 生 导 师,主 要 研 究
+方 向 为 数 据 挖 掘 与 文 本 挖 掘 、网 络 与 信 息 安 全 。
+模糊测试技术研究综述
+张 雄 李舟军
+(北京航空航天大学计算机学院 北京100191)
+摘 要 软 件 中 的 安 全 漏 洞 可 能 导 致 非 常 严 重 的 后 果 ,因 此 漏 洞 挖 掘 已 成 为 网 络 与 信 息 安 全 领 域 的 重 大 课 题 和 研 究
+热点。目前常用的漏洞挖掘技术包括静态分析、动态分析、二 进 制 比 对、模 糊 测 试 等。随 着 软 件 的 规 模 和 复 杂 度 不 断
+增大,模糊测试具有其它漏洞挖掘技术无法比拟的优势。首先介绍和分析了各种漏洞挖掘技术的优点和缺点;然 后 分
+别详细描述了模糊测试的研究进展、模糊测试的过程、测试用例的生成技术;最后介绍了模糊测试在各个领域的 应 用,
+并对其发展方向进行了展望。
+关键词 软件安全,漏洞挖掘,模糊测试,测试用例生成
+中图法分类号 TP391 文献标识码 A DOI 10.11896/j.issn.1002-137X.2016.5.001
+SurveyofFuzzTestingTechnology
+ZHANG Xiong LIZhou-jun
+(SchoolofComputerScienceandEngineering,BeihangUniversity,Beijing100191,China)
+Abstract Securityvulnerabilitiesinsoftwaremayleadtoseriousconsequences,andvulnerabilityexploitinghasbecome
+ahotareaofresearchinnetworkandinformationsecurity.Popularvulnerabilityexploitingtechnologiesincludestatic
+analysis,dynamicanalysis,binarycodecomparison,fuzztestingandsoon.Along withtheexpansionofthescaleand
+complexityofsoftware,fuzztestinghasincomparableadvantageswhichothervulnerabilityexploitingtechnologycan’t
+provide.Firstly,bothadvantagesanddisadvantagesofvariousvulnerabilityexploitingtechnologyarediscussed.Second
+ly,anaccountoftheresearchadvancesoffuzztestingtheprocedureoffuzztestingandtestcasegenerationtechnology
+weredescribedin detail.Finally,theapplicationsoffuzztesting wereshown andthetrend offuturestudy was
+discussed.
+Keywords Softwaresecurity,Vulnerabilityexploiting,Fuzztesting,Testcasegeneration
+1 引言
+随着计算机的广泛 使 用 和 计 算 机 网 络 的 大 范 围 普 及 ,软
+件产业得到了飞速 发 展,并 且 已 从 国 防 技 术、工 业 控 制、航 空
+航天、金融证券、邮电 通 信、医 疗 卫 生 等 专 业 领 域 渗 透 到 了 人
+们的日常生活中。随 着 软 件 种 类 的 增 多,软 件 的 功 能 越 来 越
+强 ,其 规 模 也 越 来 越 大 ,软 件 的 安 全 性 问 题 日 益 凸 显 。
+近年来,利用 软 件 漏 洞 进 行 恶 意 攻 击 的 行 为 层 出 不 穷 。
+根据国家互联 网 应 急 中 心 的 报 道[1]可 知,2002 年 到 2013 年
+期间,每年都会新增 大 量 的 漏 洞 报 告。 一 些 不 法 分 子 可 以 利
+用这些漏洞在极短时间内攻击用户电脑、服务器等,获取用 户
+的隐私信息或者篡改用户存储在网络空间中的私密数据。最
+近发 生 的 棱 镜 事 件、OpenSSL 相 关 的 HeartBleed 漏 洞、携 程
+网泄密事件、12306密码泄露事件 等,无 疑 将 软 件 安 全 问 题 推
+到了风口浪尖。
+漏洞挖掘已成为软件安全领域的一个重要研究方向。目
+前常用的漏 洞 挖 掘 技 术 分 为 静 态 分 析 、动 态 分 析、二 进 制 比
+对、模糊测试等[2]。随着软件规模的爆炸式增长,除模糊 测 试
+以外的其他 几 种 漏 洞 挖 掘 技 术 ,或 者 存 在 状 态 爆 炸 、路 径 爆
+炸、约束求解困难、耗时长等问题,或者存在误报率高等 缺 点。
+相比这些方法,模糊 测 试 具 有 自 动 化 程 度 高、系 统 消 耗 低、误
+报率低、不依赖于目标程序源代码等优点,正是这些优点激 起
+了人们对模糊测试研究的热情。
+2 概述
+2.1 常用漏洞挖掘技术
+目前常用的漏洞挖掘技术分为静态分析、动态分析、二 进
+制 比 对 、模 糊 测 试 等 。
+静态分析是指在不运行软件的前提下进行的一种分析技
+术。其主要通过对目标程序的词法、语法、语义分析来发 现 软
+件中潜在的安全漏 洞[2],特 别 是 函 数 调 用 中 参 数 的 来 源 以 及
+函数返回值,通过对参数进行来源分析与跟踪,很容易发现 其
+中 未 对 参 数 进 行 边 界 检 查 而 造 成 的 缓 冲 区 溢 出 、堆 溢 出 等 类
+型的安全漏洞。常用的静态分析工具根据分析对象可分为两
+类:1)针 对 有 源 代 码 的 源 码 扫 描 工 具 ,常 用 的 有 ITS4[3]、
+FLAWFINDER[4]等,主要 用 于 检 查 不 符 合 安 全 规 范 的 函 数
+·
+1
+·
+
+
+ 调用(如 C 中 的 strcpy、strcat)、指 针 等;2)对 于 二 进 制 程 序 的
+反汇编扫描工具,bugscan和 bugaudit是 其 中 的 代 表,都 是 在
+通 过IDA PRO[5]在 目 标 程 序 反 汇 编 的 基 础 上 进 行 分 析[6]。
+静态分析易集成到开发过程中,自动化程度较高,但是缺少 运
+行 时 的 动 态 信 息 ,无 法 对 潜 在 的 漏 洞 进 行 确 认 ,误 报 率 较 高 。
+动态分析是一种通 过 动 态 加 载 并 运 行 的 目 标 软 件,监 测
+程序运行时的堆栈信息、内存使用情况、变量的值等状态信 息
+以及 程 序 的 输 出 来 验 证 或 发 现 软 件 漏 洞 的 技 术[2,7]。 与 静 态
+分 析 相 比,动 态 分 析 需 要 运 行 时 系 统 的 支 持 与 具 体 的 输 入 数
+据 ,同 时 ,还 可 能 借 助 于 OllyDbg[8]、WinDbg[9]、SoftICE[10]等
+调试工具。动态分析技术监测到的异常基本都是由程序漏洞
+引起的,对其进行分 析 即 可 发 现 相 应 的 漏 洞,因 而,动 态 分 析
+具有极高的准确率。然 而,动 态 分 析 往 往 需 要 对 目 标 软 件 进
+行逆向分析,涉及的 技 术 较 复 杂,对 分 析 人 员 的 要 求 较 高,自
+动 化 程 度 不 高 ,有 着 较 大 的 局 限 性 。
+二进制比对也称为补丁比对。作为软件安全漏洞的补救
+措 施,软 件 开 发 商 会 定 期 或 不 定 期 地 提 供 相 应 的 修 补 程 序 即
+补丁。补丁对比技术通过对比添加补丁前后目标程序的变化
+来 精 确 定 位 漏 洞 的 位 置 和 成 因 ,有 经 验 的 人 员 结 合 数 据 流 分
+析等方法能够在短时间内找出漏洞的成因并给出漏洞的利用
+代码。目前常用的补 丁 对 比 方 法 有 二 进 制 字 节 比 对 、二 进 制
+程序反汇编后的文本比对和结构化二进制比对等[2]。补丁 作
+为高危漏洞的一种紧急补救措施,存在如下不足:1)补丁 对 目
+标 程 序 作 修 改 时 ,软 件 开 发 商 往 往 仅 考 虑 了 漏 洞 的 上 下 文 ,未
+必 考 虑 到 整 个 软 件 的 系 统 环 境 ,因 此 补 丁 对 目 标 漏 洞 的 修 补
+未必一定完善;2)补丁程序通常是一种紧急采用的措施,补 丁
+程 序 本 身 的 安 全 性 难 以 保 证 ,补 丁 自 身 并 没 有 经 过 严 格 的 安
+全测试,虽然修补了原有的漏洞,但是补丁程序可能引入新 的
+安全漏洞,更重要的是,二进制比对技术并不能用于挖掘新 的
+漏 洞 ,一 般 只 是 用 于 研 究 已 经 被 发 现 的 漏 洞 。
+模糊测试是一种基于缺陷注入的自动化软件漏洞挖掘技
+术,其基本思想与黑 盒 测 试 类 似。 模 糊 测 试 通 过 向 待 测 试 的
+目 标 软 件 输 入 一 些 半 随 机 的 数 据 并 执 行 程 序 ,监 控 程 序 的 运
+行 状 况,同 时 记 录 并 进 一 步 分 析 目 标 程 序 发 生 的 异 常 来 发 现
+潜 在 的 漏 洞[11]。所 谓 半 随 机 是 指 输 入 的 数 据 对 于 目 标 程 序
+来讲,其重 要 的 数 据 格 式 (如 指 定 文 件 格 式 的 魔 数、CRC 校
+验)和大部分数据是 有 效 且 合 法 的,与 此 同 时,输 入 的 其 它 部
+分却是不满足目标程序输入数据格式规约的非法数据。由于
+目标程序在编写时未必考虑到对所有非法数据的出错处理,
+因 此 半 随 机 数 据 很 有 可 能 造 成 目 标 程 序 崩 溃 ,从 而 触 发 相 应
+的安全漏洞。
+2.2 模糊测试的优点和缺点
+一次典型的模糊测试包含以下过程:确定测试目标、确 定
+目标程序的预期输 入、生 成 测 试 用 例、执 行 测 试 用 例、异 常 监
+视、异常分析与漏洞确认。在模糊测试的过程中,测试用 例 执
+行、异常监视这两个重要的过程完全可以自动化实现。 而 且,
+通过模糊测试技术发现 的 漏 洞 一 般 是 真 正 存 在 的 (原 因 是 对
+半有效数据的处理不当),即模糊测试技术存在误报率低的 优
+点。其它的漏洞挖掘方法往往需要对目标程序的源代码或二
+进 制 代 码 进 行 深 入 的 分 析[12],这 是 过 程 的 开 销 巨 大 ,而 模 糊
+测试并不需要对目标程序的源代码或二进制程序进行分析即
+可进行。
+相比其它漏洞挖掘方法,模糊测试有着巨大的优势,与 此
+同时,其不足也十分 明 显。 目 前 模 糊 测 试 技 术 仍 然 存 在 许 多
+局 限 性 ,模 糊 测 试 的 一 些 缺 点 与 局 限 性 如 下 。
+1)对 访 问 控 制 漏 洞 无 能 为 力
+某些应用支持多级权限,每个用户都有相应的权限级 别,
+不同级别的账户权限不同。例如,在教务管理系统中,存 在 管
+理员、学生、老师等角色,管理员拥有增加一门课程、删除 学 生
+某门课成绩、修改某学生的成绩等几乎所有权限;老师拥有 修
+改 某 些 课 程 所 有 选 课 学 生 成 绩 的 权 限 ;学 生 则 只 有 查 询 自 己
+所选的每门课分数 的 权 限。 在 这 类 系 统 中,一 个 基 本 的 权 限
+控制就是要保证低权限用户不能执行高权限用户所具有的操
+作。
+在 模 糊 测 试 中 ,违 反 权 限 控 制 的 安 全 漏 洞 很 难 被 发 现 ,比
+如,对于教务管理系统,数据库权限控制错误将导致学生可 以
+修改自己的 分 数,然 而,这 类 错 误 在 模 糊 测 试 中 是 无 法 发 现
+的,其根本原因是模糊测试系统无法理解程序的逻辑,它并 不
+知道学生不能修改 选 课 分 数。 事 实 上,即 使 可 能 修 改 代 码 让
+模 糊 测 试 系 统 实 现 这 些 逻 辑 ,这 样 的 模 糊 测 试 系 统 也 无 法 在
+其 它 地 方 再 次 被 重 复 使 用[13]。
+2)无 法 发 现 糟 糕 的 设 计 逻 辑
+糟糕的逻辑往往并 不 会 导 致 程 序 崩 溃,而 模 糊 测 试 发 现
+漏 洞 的 一 个 最 重 要 的 依 据 就 是 监 测 目 标 程 序 的 崩 溃 ,因 此 ,模
+糊测试对这种类型的漏洞也无能为力。以下就是一个典型的
+例子。
+在 VERITASBackupExecfor WindowsServers中 存 在
+一个允许攻击者 远 程 控 制 Windows服 务 器 并 完 全 操 纵 注 册
+表的漏洞,存在该漏洞的原因是 Windows中 某 个 实 现 远 程 过
+程调试(RPC)的接口在不需要认证的情况下就具 有 修 改 注 册
+表的权限。这个 漏 洞 根 本 上 源 自 Windows系 统 设 计 上 的 一
+个 失 误,设 计 人 员 认 为 攻 击 者 也 许 会 花 费 更 多 的 时 间 来 破 解
+IDL(接口定义语言),而 不 是 去 寻 找 RPC 模 块 中 的 漏 洞。 虽
+然模糊测试可以发 现 目 标 程 序 在 使 用 RPC 时 不 进 行 参 数 检
+查从而导致的某些比较“低 级 ”的 错 误,但 是 模 糊 测 试 无 法 确
+定这些错误是否真正会导致系统不安全。
+3)无 法 识 别 多 阶 段 安 全 漏 洞
+一次典型的攻击过程通常通过连续利用若干个安全漏洞
+来实现。首先利用漏 洞 使 机 器 接 受 未 授 权 的 访 问 ,然 后 再 利
+用 其 它 漏 洞 缺 陷 获 得 更 大 的 权 限 ,紧 接 着 获 得 机 器 的 完 全 控
+制权,最后达到恶意 攻 击 的 目 的。 模 糊 测 试 对 识 别 单 独 的 漏
+洞很有用,但通常而言,模糊测试对那些小的漏洞序列构成 的
+高危漏洞却毫无办法。
+4)无 法 识 别 多 点 触 发 漏 洞
+当前的模糊测试技术往往只能挖掘出由单个因素引起的
+漏洞,而对于需要多 条 件 才 能 触 发 的 漏 洞 却 无 能 为 力 。 近 年
+来,相关学者试图将模糊测试用于挖掘多点触发漏洞,提出 了
+多维模糊测试的概念并进行了相关的研究,然而,多维模糊 测
+试 面 临 着 组 合 爆 炸 等 亟 待 解 决 的 难 题 ,目 前 其 研 究 进 展 缓 慢 。
+3 模糊测试技术研究进展
+模糊测试最早可追 溯 到 1989 年,威 斯 康 辛 大 学 的 B.P.
+Miller开 发 了 一 个 模 糊 测 试 工 具 并 命 名 为 Fuzz,用 来 对
+UNIX 系 统 上 的 软 件 进 行 安 全 性 测 试 。B.P.Miller等 人 发
+·
+2
+·
+
+
+ 现,通过向 UNIX 系统上的软件输入各种随机字符串,可使其
+中 多 于 25% 的 程 序 崩 溃[11]。
+1999年,芬兰 Oulu大 学 的 协 议 测 试 项 目 组 研 发 了 网 络
+协议安全测试软件 PROTOS[14],并获得了微软公司的资 金 支
+持。PROTOS使用了灰盒测试方法,首 次 提 出 了 测 试 集 的 概
+念,即在分析协议归约的基础上,产生违背归约或者很可能 无
+法正确处理的报文。不久之后,相关学者利用 PROTOS发 现
+了众多厂 商 SNMP、SIP、LDAP 协 议 软 件 中 诸 如 CAN-2003
+131 等 严 重 的 漏 洞,最 近 网 络 出 现 的 与 OpenSSL 相 关 的
+HeatBleed漏洞的发现工具就是在 PROTOS的基础上发展起
+来的。PROTOS是模糊 测 试 技 术 发 展 过 程 中 的 一 个 重 要 的
+里程碑。
+2002年,Immunitysec公 司 的 Dave Aitel开 发 了 一 款 通
+用 协 议 测 试 框 架 工 具 SPIKE[15,16]。SPIKE 主 要 用 于 测 试 基
+于网络的应用程序,采用了一种基于块的方法,能够有效地 对
+包 含 变 量 和 相 应 变 量 长 度 的 数 据 块 进 行 测 试 ,同 时,SPIKE
+可以从大量的数据样例中自动学习目标软件的数据规约。作
+为第一个可以实现自定制 的 模 糊 测 试 器 框 架,SPIKE 的 发 布
+是模糊测试历史上一个最重要的里程碑。
+2004年,IOACTIVE 发布了著名的跨平 台 模 糊 测 试 框 架
+Peach[17],它 采 用 Python 语 言 编 写。Peach 几 乎 可 以 对 所 有
+常见的对象进行模糊测试,例如文件结构、COM 对象、网络 协
+议、API接口 等。 使 用 Peach 时,其 主 要 工 作 就 是 定 义 一 个
+XML 文件来 引 导 测 试 过 程 。Peach 是 一 个 灵 活 的 模 糊 测 试
+框 架 ,最 大 程 度 地 实 现 了 代 码 重 用 。
+2005年,iDefense公司开发了 基 于 Windows平 台 的 文 件
+格 式 模 糊 测 试 工 具 FileFuzz[13,18]和 基 于 Linux 平 台 的 Spike
+File[13],开启了文件类漏洞挖掘的热潮 。 随 后 几 年 ,相 当 数 量
+的 类 似 漏 洞 相 继 出 现,其 中 大 多 数 漏 洞 被 发 现 不 久 就 开 始 危
+及到广泛使用这些文件格式的各种应用软件。由于文件格式
+越来越复杂,相应的 漏 洞 数 目 越 来 越 多,其 危 害 相 当 严 重,并
+且 文 件 类 漏 洞 的 挖 掘 相 对 较 容 易 ,因 此 文 件 格 式 的 安 全 漏 洞
+挖掘最终成为模糊测试的主要应用领域之一。
+2006 年 左 右,针 对 ActiveX 控 件 的 模 糊 测 试 开 始 兴 起 ,
+DavidZimmer和 H.D.Moore 分 别 发 布 了 测 试 工 具 COM
+Raider[19]和 AxMan[20]。这 两 款 工 具 测 试 的 对 象 是 那 些 在 微
+软InternetExploer浏览器中能够被 Web应 用 程 序 实 例 化 的
+ActiveX 控件,这两款 软 件 发 现 了 ActiveX 控 件 中 诸 如 Heap
+Spray之类的严重漏洞。此类 应 用 程 序 的 用 户 群 体 十 分 庞 大
+且漏洞可被远程利 用,因 此 ActiveX 控 件 漏 洞 具 有 非 常 高 的
+风险。正如之 后 大 量 测 试 结 果 证 明 的 那 样 ,ActiveX 控 件 是
+一种非常适合模糊测试的对象,因为它包括了调用接口、函 数
+原 型 和 实 际 的 控 制 逻 辑,所 以 十 分 便 于 对 其 实 施 自 动 化 的 模
+糊测试。
+2007年,密歇根州立大学的JaredDeMott提 出 了 灰 盒 测
+试 思 想 ,并 设 计 了 更 加 高 效 的 模 糊 测 试 器 EFS[21,22]。EFS 将
+代 码 覆 盖 与 模 糊 测 试 技 术 相 结 合 ,通 过 反 汇 编 工 具 找 到 应 用
+程序 中 所 有 可 能 测 试 的 函 数 ,并 逐 一 测 试,挖 掘 了 多 个
+GoldenFTP、IISFTP 和 SMTP 中的安全漏洞。
+2008年 ,微 软 研 究 院 的 PatriceGodefroid[23,24]在 模 糊 测
+试方法中引入了白盒测试(White-box)思 想,同 时 将 符 号 执 行
+和 约 束 求 解 的 方 法 应 用 于 模 糊 测 试 中 ,使 得 模 糊 测 试 更 加 精
+确 ,覆 盖 率 也 更 高 。
+2009年,麻省理工学院的 VijayGanesh提 出 了 基 于 污 点
+传 播 的 白 盒 模 糊 测 试 技 术,开 发 了 一 款 模 糊 测 试 工 具 Buzz
+Fuzz[25],并发现了开源软件 Swfdec和 MuPDF 中多个 著 名 的
+安全漏洞。
+2010年,北京大学的王铁磊将 符 号 执 行 和 细 颗 粒 度 动 态
+污 点 传 播 技 术 相 结 合 ,提 出 了 一 种 绕 过 校 验 和 机 制 的 方 法 ,并
+开发 了 相 应 的 工 具 TaintScope[26,27],发 现 了 包 括 AdobeAc
+robat、GooglePicasa、MicrosoftPaint、ImageMagick 在 内 的 多
+个未知漏洞。
+2011年之后,众多 学 者 将 遗 传 算 法 、启 发 式 算 法 等 用 于
+生成 模 糊 测 试 用 例 ,大 大 提 高 了 测 试 用 例 的 生 成 效 率[28,29]。
+同 时,多 维 模 糊 测 试 研 究 的 兴 起 也 弥 补 了 传 统 模 糊 测 试 只 能
+挖掘单点触发漏洞的不足。
+4 模糊测试过程
+模糊测试方法多种 多 样,没 有 一 种 对 于 所 有 软 件 都 适 合
+的方法,决定使用哪种模糊测试方法完全依赖于被测的程 序、
+测试者的技术水平以及目标程序所接受的输入数据格式。但
+是,无 论 采 用 什 么 样 的 模 糊 测 试 方 法 对 何 种 目 标 程 序 进 行 模
+糊测 试,其 测 试 过 程 都 应 包 含 如 图 1 所 示 的 几 个 相 同 的 基 本
+阶 段[13]。
+图1 模糊测试的几个阶段
+4.1 确定测试目标
+确定测试目标是整 个 模 糊 测 试 过 程 中 的 第 一 步 ,有 了 明
+确的目标,才能决定 使 用 的 测 试 工 具 和 测 试 方 法 。 在 此 过 程
+中,可以借鉴风险模 型 的 测 试 方 法,根 据 被 测 的 程 序,在 一 些
+典 型 的 漏 洞 收 集 网 站 如 SecurityFocus[30]、Secunia[31]、
+CNVD[32]等查找软件开发 商 历 史 上 曾 出 现 的 安 全 漏 洞 ,分 析
+这 些 漏 洞 的 形 成 原 因 及 编 码 习 惯 ,有 针 对 性 地 选 择 相 应 的 模
+糊测 试 工 具 和 方 法。 同 时 对 于 类 似 Windows 上 的 DLL、
+Linux上的 SO 等类型的被多个程序使用的共享库,也 应 该 成
+为 重 点 的 测 试 对 象,因 为 在 这 些 库 中 出 现 的 安 全 漏 洞 会 影 响
+更 多 的 程 序 ,其 危 害 性 更 大 。
+4.2 确定目标程序的预期输入
+绝大部分可利用的安全漏洞都是由于目标软件未对输入
+数据进行校验或未对不合法的输入做相应的出错处理。模糊
+测 试 是 一 个 不 断 地 枚 举 输 入 向 量 的 过 程 ,如 果 不 能 充 分 分 析
+目标程序的输入数据规约,就无法进行有针对性的模糊测 试,
+测试就会有很大的局限性,测试的效果就会大打折扣。 比 如,
+对 TCP 协议处理软件进行模糊测试,不仅只应该对 数 据 部 分
+进行测试,序号、确认号、数据偏移字段、标志位、保留字 段、窗
+口、校验和等部分也应该被纳入模糊测试的范围,对不同的 软
+件,在所有的字段中,可 以 选 择 性 地 侧 重 某 些 部 分,但 是 一 个
+完整的模糊测试过程应该对所有部分进行充分完全的测试。
+值得一提的是,以 SPIKE 为首的模糊测试工 具 能 够 从 大 量 的
+输入样本中自主学习目标软件的输入数据规约。
+·
+3
+·
+
+
+ 4.3 生成测试用例
+在分析目标软件的 数 据 规 约 的 基 础 上,可 以 针 对 性 地 设
+计测试用例。测试用例生成是模糊测试的核心和关键步骤。
+测 试 用 例 生 成 模 块 主 要 用 于 生 成 测 试 用 例 样 本 ,即 所 谓 的 模
+糊器。根据模糊器采 用 的 生 成 算 法 可 将 其 分 为 3 类:基 于 变
+异 的 方 法 、基 于 生 成 的 方 法 和 两 者 相 结 合 的 方 法[13]。 基 于 变
+异 的 生 成 算 法 从 一 个 合 法 的 样 本 出 发 ,通 过 某 些 算 法 不 断 地
+修改其中一些数据,生成一批畸形的样本;基于生成的算法 在
+对 目 标 软 件 输 入 数 据 格 式 的 规 约 有 很 深 的 了 解 上 ,自 动 生 成
+一些不满足数据规约的测试样本。在生成测试用例过程中,
+一些启发 式 的 生 成 策 略 往 往 能 收 到 意 想 不 到 的 效 果 ,如 在
+Windows平台上,可在文件名中包 含 &、#、@、\等 特 殊 字 符
+或者使文件名的长度超过 MAX_PATH(在 Windows中 被 定
+义为256)。但是,无 论 采 用 哪 种 方 法,测 试 用 例 都 应 该 使 用
+自动化的方法来实现。
+4.4 执行测试用例
+执行测试用例的过 程 往 往 与 测 试 用 例 生 成 一 起 执 行,即
+将测试用例输入给目标程序以监测程序的运行状态。试想一
+下,在对 Word程序的模糊测试中存 在 大 批 量 的 样 本 ,手 动 打
+开这些样本 不 仅 十 分 枯 燥,还 耗 费 大 量 不 必 要 的 人 工 时 间 。
+通 常 情 况 下,模 糊 测 试 用 例 的 执 行 往 往 采 用 自 动 化 的 方 法 来
+实现,由模糊测试系 统 自 动 化 地 执 行 所 有 的 测 试 用 例。 自 动
+化模糊测试的流程如图2所示。
+图2 自动化模糊测试流程
+每个程序在启动时操作系统均会传递相关的环境变量和
+命令行,这些信息决 定 了 操 作 系 统 如 何 启 动 该 应 用 程 序 。 在
+Windows平台上,一个标准的 C+ + (C)程 序 的 main 函 数 原
+型如图3所示。
+#include 〈iostream〉
+usingnamespacestd;
+intmain(intargc,char* argv[],char**env){
+while(*env){
+cout *envendl;
++ +env;
+}
+}
+图3 Windows平台 main函数原型
+当在桌面上双击一 个 文 件 时,操 作 系 统 实 际 上 会 创 建 一
+个 进 程 来 启 动 编 辑 软 件 并 打 开 相 应 的 文 件 ,创 建 的 进 程 参 数
+则 是 编 辑 软 件 的 路 径 再 加 上 该 文 件 的 路 径 ,各 操 作 系 统 平 台
+提供的 C++(C)编程接口 均 会 提 供 相 应 的 API函 数 用 于 创
+建进 程。 在 Windows 平 台 上,可 以 使 用 Win32 SDK 中 的
+CreateProcess函数来自 动 地 执 行 测 试 用 例,CreateProcess函
+数的原型如图4所示。
+BOOLCreateProcess
+(
+LPCTSTRlpApplicationName,
+LPTSTRlpCommandLine,
+LPSECURITY_ATTRIBUTESlpProcessAttributes,
+LPSECURITY_ATTRIBUTESlpThreadAttributes,
+BOOLbInheritHandles,
+DWORDdwCreationFlags,
+LPVOIDlpEnvironment,
+LPCTSTRlpCurrentDirectory,
+LPSTARTUPINFOlpStartupInfo,
+LPPROCESS_INFORMATIONlpProcessInformation
+);
+图4 Win32CreateProcess函数原型
+CreateProcess的第二个参 数 即 是 程 序 的 命 令 行 参 数,即
+C++(C)程序中 main函 数 的 第 二 个 参 数,在 遵 循 POSIX 标
+准的系统平台上也有fork、exec等类似的 API。
+4.5 异常监视
+异常监视是模糊测 试 过 程 中 一 个 非 常 关 键 的 部 分 ,用 于
+记录模糊测试过程 中 的 任 何 有 用 的 异 常 信 息 。 试 想 一 下,对
+程 序 进 行 模 糊 测 试 的 过 程 中 ,当 执 行 某 个 测 试 用 例 目 标 程 序
+发生异常时,倘若没有异常监视模块,测试人员或许根本不 知
+道 目 标 程 序 发 生 了 异 常 ,更 无 法 找 出 触 发 异 常 的 样 本 及 相 关
+信息,整个测试过程 将 会 变 得 没 有 任 何 意 义。 由 于 模 糊 测 试
+过程比较长,当测试用例的数目较多时,不可能由人工监视 目
+标 软 件 是 否 发 现 异 常 ,目 前 异 常 监 视 往 往 采 用 自 动 化 的 方 式
+实现。当前常用的异 常 监 视 技 术 依 据 原 理 分 为 两 种 :基 于 调
+试的方法和基于插装的方法。
+基于调试的方法在 调 试 模 式 下 启 动 目 标 软 件 ,通 过 操 作
+系统平台提供的调试 API,开发有针对性的异常监 测 模 块,用
+此方法实现异常监 视 虽 然 难 度 较 大,但 更 加 高 效。 当 调 试 模
+式在启动目标程序时,启动目标程序的进程称为父进程,被 启
+动 的 目 标 程 序 的 执 行 进 程 称 为 子 进 程 ,子 进 程 中 发 生 的 任 何
+事 件 在 父 进 程 中 均 可 被 捕 捉 ,由 父 进 程 控 制 子 进 程 的 执 行 ,在
+父 进 程 中 不 仅 可 以 获 取 异 常 发 生 时 的 样 本 信 息 ,还 可 以 获 取
+异常发生 时 被 调 试 程 序 的 执 行 地 址、各 寄 存 器 值 等 重 要 信
+息[33]。在 Windows平台上,创 建 进 程 使 用 Win32SDK 中 的
+CreateProcessAPI来实现,通过指定 CreateProcessAPI的 第
+6个参数可以使子进程以调试模式启动。
+与基于调试的方法 相 比,基 于 插 装 的 方 法 虽 然 性 能 有 所
+降低,但其功能却更加强大。在模糊测试过程中,仅仅通 过 观
+察 程 序 的 输 入、输 出 对 了 解 软 件 内 部 的 运 行 信 息 往 往 是 不 够
+的。如软件运行过程 中 内 部 变 量 的 状 态 信 息、模 块 之 间 的 交
+互信息等,这些信息 对 于 发 现 漏 洞 及 定 位 漏 洞 特 别 重 要 。 目
+前常用的插装方法分为源代码插装、静态代码插装、二进制 代
+码 插 装 等[34]。源 代 码 插 装 是 一 种 最 自 然 的 方 式 ,即 在 编 写 软
+件时,在需要 监 视 的 地 方 插 入 检 测 代 码 ,如 增 加 输 出 信 息 语
+句、增 加 日 志 语 句 等,尤 其 是 面 向 切 面 编 程 技 术 (Aspect
+orientedProgramming)[35]可以较 好 地 用 于 源 代 码 插 装 ,有 效
+地分离业务逻 辑 与 监 测 逻 辑。 静 态 目 标 代 码 插 装 在 Java社
+区中十分流行,字 节 码 插 装 可 以 直 接 更 改 中 间 代 码 文 件 (如
+Java的 .class文 件 等 )或 在 类 被 类 加 载 器 (classloader)装 载 时
+进行字节码插装。字 节 码 插 装 有 着 执 行 效 率 高、插 装 点 灵 活
+·
+4
+·
+
+
+ 等优点,使其 在 面 向 切 面 编 程 领 域 大 放 光 彩 ,并 陆 续 出 现 了
+BCEL[36]、Javassit[37]、ASM[38]等 工 具 。基 于 二 进 制 的 插 装 技
+术 可 以 进 一 步 提 高 模 糊 测 试 的 异 常 监 测 能 力 ,但 是 其 系 统 消
+耗较大,且大部分为 商 业 插 装 软 件。 常 用 的 二 进 制 插 装 工 具
+有 DynamoRIO[39]、DynInst[40]和 Pin[41]等 。
+4.6 分析异常并确认漏洞
+异常分析是模糊测 试 过 程 中 的 最 后 一 步,主 要 分 析 目 标
+软 件 产 生 异 常 的 位 置 与 引 发 异 常 的 原 因 ,常 用 的 分 析 方 法 借
+助于IDA PRO、OllyDbg、SoftICE 等 二 进 制 分 析 工 具 进 行 人
+工分析。近年来相关学者基于 Pin开发离线 的 二 进 制 代 码 分
+析 程 序,使 用 二 进 制 代 码 的 动 态 插 装 工 具 对 运 行 中 的 程 序 进
+行监控,将其执行过程中必要的状态信息如线程信息、模块 信
+息 、指 令 信 息 、异 常 信 息 及 寄 存 器 上 下 文 等 信 息[34],记 录 到
+TRACE 文件。在 TRACE 文件的解析过程中,生成函数调用
+索引、指令地址索引、内 存 访 问 索 引 及 异 常 等 索 引 文 件,极 大
+地提高了分析的效率。
+5 测试用例生成技术
+5.1 测试用例生成技术分类
+理论上讲,所有的模糊器都可以归到基于生成、基于变 异
+这 两 大 类 的 某 一 类 中[13]。在 此 基 础 上 ,众 多 学 者 将 测 试 用 例
+生成方法分成以下几类。
+5.1.1 预先生成测试用例
+首先需要研究目标 软 件 的 输 入 数 据 规 约,理 解 输 入 中 每
+个 字 段 支 持 的 数 据 结 构 以 及 可 接 受 的 值 的 范 围 ;然 后 依 据 这
+些已经获得的知识生成用于测试边界条件或是违反归约的测
+试用例;接着利用这些测试用例来测试该归约实现的完备 性。
+创 建 这 些 测 试 用 例 可 能 需 要 耗 费 很 多 精 力 ,但 这 些 用 例 一 旦
+被 创 建,就 很 容 易 被 再 次 用 于 测 试 某 种 协 议 或 文 件 格 式 处 理
+软件的不同实 现。PROTOS 就 是 采 用 这 种 用 例 生 成 方 法 的
+代表,PROTOS使 用 该 方 法 发 现 了 包 括 CAN-2003-131 等 众
+多协议处理软件在处理协议中出现的安全漏洞。值得一提的
+是,2014 年 4 月 互 联 网 爆 出 与 OpenSSL 相 关 的 HeartBleed
+漏洞,该挖掘的工具就是基于 PROTOS的。
+5.1.2 随机生成测试用例
+测试方法是产生一 段 随 机 的 数 据,并 将 其 输 入 给 目 标 软
+件,试图使目标软件 崩 溃 或 者 诱 发 一 些 不 正 常 的 行 为 。 这 种
+方法可以用来 快 速 地 识 别 目 标 软 件 中 是 否 有 非 常 糟 糕 的 代
+码。随机生成输入在 实 现 上 比 较 简 单,却 能 发 现 软 件 中 一 些
+严重的错误,同 时 这 种 方 法 比 较 容 易 自 动 化 与 并 行 化 实 现 。
+然而,当前各种软件都会对输入的数据做一些校验,随机生 成
+的数据往往因为校验不通过 被 目 标 程 序 丢 弃 ,在 针 对 WORD
+程序的模糊测 试 过 程 中,相 关 研 究 表 明,多 于 85% 的 测 试 样
+本 在 OLE 解 析 时 不 通 过[13],无 法 进 行 更 深 入 的 测 试 。
+5.1.3 变异或强制性生成测试用例
+该方法从一个正确 有 效 的 协 议 样 本 或 数 据 样 本 开 始 ,不
+断地打断数据包或是文件中的一个字节、字、双字或是字符 串
+来生成测试用 例 的 测 试 方 法。iDefense公 司 开 发 的 FileFuzz
+就是基于这种想法,FileFuzz成功挖掘出了包含 MSOffice在
+内的多个软件中存在的安全漏洞。一些学者通过开发复合文
+档的数据解析模块,从解析一篇合法的复合文档开始,使用 系
+统 提 供 的 API修 改 文 档 中 相 应 的 数 据[42-44],生 成 测 试 用 例 ,
+这种方法避免了传统方法暴力修改导致测试用例不能通过文
+件校验的缺点,大大提高了模糊测试的效率。同时,文 献[28,
+29]将遗传算法应用到测试用例生成中,从一批合法的数 据 开
+始,通过一系列的变 异,遗 传 算 法 生 成 新 的 测 试 用 例,并 获 取
+了较理想的实验结果。
+5.1.4 自动协议生成测试用例
+该方法首先需要对目标软件的输入数据格式进行深入学
+习与研究,理解和解 释 协 议 归 约 或 文 件 格 式 定 义 。 在 获 取 知
+识的基础上,创建一 个 描 述 协 议 规 约 如 何 工 作 的 文 法 。 使 用
+这 种 方 法,测 试 者 可 以 识 别 出 数 据 包 或 是 文 件 中 的 静 态 部 分
+和动态部分,静态部分是不可随意修改的部分,动态部分是 可
+以被替代的部分。SPIKE[16]和 SPIKEfile工 具 是 这 类 测 试 工
+具的代表,两者都采用 SPIKE 脚本描述目标 协 议 或 者 文 件 格
+式 ,并 使 用 一 个 模 糊 测 试 引 擎 来 生 成 测 试 用 例 。
+5.2 测试用例生成技术研究现状
+以 FileFuzz为代表的传统模糊测试工具采用“盲测”的 方
+法 生 成 测 试 用 例,即 在 随 机 位 置 插 入 随 机 的 数 据 以 生 成 畸 形
+文件。然而现代软件 往 往 使 用 非 常 复 杂 的 私 有 数 据 结 构 ,如
+PPT、WORD、EXCEL、MP3、RMVB、PDF、JPEG、ZIP 压 缩
+包、带壳的 PE 文件等。使用的数 据 结 构 越 复 杂,其 相 应 的 解
+析逻 辑 越 复 杂 ,就 越 容 易 出 现 漏 洞[27,42]。 复 杂 的 数 据 结 构 通
+常具备以下特征:
+1)拥有一批预定义的静态数据,如 magic、cmdid等;
+2)数 据 结 构 的 内 容 是 可 以 动 态 改 变 的 ;
+3)数 据 结 构 之 间 是 嵌 套 的 ;
+4)数据中 存 在 多 种 数 据 关 系 ,如 大 小 校 验、指 针、引 用、
+CRC 校验等。
+有意义的数据被编 码 或 压 缩,甚 至 用 另 一 种 文 件 格 式 来
+存储,这些格式的文 件 被 挖 掘 出 越 来 越 多 的 漏 洞 。 对 采 用 复
+杂数据和结构 的 复 杂 文 件 进 行 漏 洞 挖 掘 ,传 统 的 BlindFuzz
+暴露出一些 不 足 之 处,例 如:产 生 测 试 用 例 的 策 略 缺 少 针 对
+性、生成大量无效测试用例、难以发现文件解析器深层逻辑 的
+漏 洞 等[8]。
+当今测试用例生成技术的革新主要体现在提高数据正确
+性和提高测试数据的畸形度。
+5.2.1 提高测试数据的有效性
+早期模糊测试技术 的 测 试 数 据 主 要 通 过 随 机 产 生 ,在 广
+泛 应 用 私 有 数 据 和 校 验 和 的 软 件 中 ,这 些 随 机 产 生 的 数 据 往
+往 因 为 通 不 过 校 验 而 被 直 接 丢 弃 ,根 本 到 达 不 了 存 在 安 全 漏
+洞的高危代码处。为了提高测试数据的合法率及测试数据的
+代码覆盖率,一些学者对测试数据的生成方法进行研究,产 生
+了 多 种 测 试 用 例 的 生 成 思 想 ,大 致 有 如 下 几 种 。
+1)基 于 知 识 发 现 的 测 试 用 例 生 成 技 术
+基于知识发现的测试用例生成技术是一种通过对目标软
+件 预 期 的 数 据 输 入 格 式 进 行 分 析 ,了 解 目 标 软 件 所 使 用 的 文
+件格式、网络协议等规约,在此基础上生成满足这些规约关 系
+的测试数据。通过这 种 办 法,可 以 大 大 提 高 生 成 数 据 在 校 验
+时期的通过率,从而顺利地覆盖可能的高危代码段,发现潜 在
+的安全 漏 洞 。SPIKE、Peach、Sulley[45]等 均 采 用 这 种 测 试 数
+据生成方法基于知识发现的测试用例生成技术可分为基于生
+成 的 产 生 方 法 、基 于 变 异 的 生 成 方 法 [46]和 两 者 结 合 的 方 法 。
+基于生成的产生方法需要对目标软件的预期输入格式非
+常 了 解,在 深 入 研 究 目 标 软 件 的 文 件 格 式 或 协 议 规 约 的 基 础
+上 生 成 违 反 部 分 规 约 的 测 试 数 据 ,这 种 办 法 往 往 需 要 前 期 大
+·
+5
+·
+
+
+ 量 的 人 工 投 入[47]。 基 于 变 异 的 产 生 方 法 需 要 对 目 标 软 件 的
+预期输入有部分了解,从一个正常的样本出发,修改其中某 些
+字段,从而产生新的畸形样本,这种方法对初始样本的依赖 性
+极 大,不 同 的 初 始 样 本 往 往 会 带 来 不 同 的 代 码 覆 盖 率 以 及 测
+试 效 果[46]。
+2)与 污 点 传 播 相 结 合 的 测 试 用 例 生 成 技 术
+与污点传播相结合的测试用例生成技术的主要思想是应
+用 白 盒 污 点 传 播 技 术 查 找 影 响 不 安 全 函 数 的 输 入 元 素 ,然 后
+进行有导向 的 变 异 数 据 测 试 ,从 而 保 证 其 它 输 入 的 正 确 性 。
+这种方法提高了代码的覆盖率,减少了冗余测试用例的生 成,
+提高了漏洞挖掘的效率[47]。BuzzFuzz是这方面的代表 。
+3)与 静 态 分 析 相 结 合 的 测 试 用 例 生 成 技 术
+当前大量程序都使用校验和来判断输入的合法性。针对
+这一限制,北京大学的王铁磊将符号执行、路径约束求解等 分
+析 技 术 相 结 合[27,42],能 够 自 动 识 别 程 序 中 的 校 验 和 检 验 代
+码,同时使检验失效,这 样 测 试 数 据 才 可 以 绕 过 校 验 和 检 查 ,
+当 覆 盖 到 不 安 全 函 数 时,会 自 动 生 成 带 正 确 校 验 和 的 测 试 数
+据。
+5.2.2 提高测试数据的畸形度
+为了使测试数据能 够 触 发 程 序 中 的 不 安 全 函 数,找 到 软
+件漏洞,现有 两 种 变 异 技 术 可 用 于 提 高 测 试 数 据 的 畸 形 度 :
+1)简 单 变 异 技 术 ;2)智 能 变 异 技 术 。
+1)简 单 变 异 技 术
+简单变异技术是用预先生成的一些畸形字符串或者随机
+测试技术产生的畸形数据对目标进行测试。如微 软 的 P.Go
+defroid提 出 的 白 盒 测 试 技 术[23,24]、意 大 利 的 AndreaLanz等
+提出的白盒测试技术[48]、美国麻省 理 工 的 VijayGanesh等 提
+出 的 有 导 向 的 智 能 模 糊 测 试 技 术[47]、中 国 科 学 技 术 大 学 的
+LIU Guang-Hong等提出的有导向的智能模糊测试技术[49]。
+2)智 能 变 异 技 术
+智能变异技术是指能够依据目标不安全函数运行的反馈
+信息,参照不安全函数的特点,智能地生成更容易触发不安 全
+畸形测试的数据,从而能够以更高的效率、更好的概率生成 畸
+形 度 高 的 漏 洞 触 发 测 试 数 据 。 如 FTSG[43]模 型 应 用 的 有 导
+向的多维变异算子能够根据目标潜在的特点,高效、智能地 生
+成畸形度高的测试数据。
+6 模糊测试技术的应用
+模糊测试与其它漏 洞 挖 掘 方 法 相 比,有 着 自 动 化 程 度 高
+的 优 点,然 而 并 没 有 一 个 通 用 的 模 糊 测 试 工 具 能 够 对 所 有 类
+型的程序进行测试,在实际中,往往需要根据不同的测试目 标
+选择不同的模糊测 试 工 具 和 模 糊 测 试 方 法。 下 面,根 据 不 同
+的测试对象对模糊测试技术进行分类。
+6.1 文字处理软件的模糊测试
+几乎所有的电脑、智 能 手 机 等 设 备 上 都 包 含 文 字 处 理 程
+序,例如办公软件通常需要 处 理 DOC、XLS、PPT 等 类 型 的 文
+件,当办公软件打开一个精心构造的恶意文件时,有可能触 发
+其中存在 的 安 全 漏 洞。 自 2004 年 从 Windows平 台 上 JPEG
+处 理 引 擎 中 一 个 缓 冲 区 溢 出 漏 洞 开 始 ,文 件 处 理 软 件 的 安 全
+便 受 到 广 大 安 全 工 作 者 的 关 注 ,针 对 文 件 处 理 软 件 的 模 糊 测
+试相关技术研究也 逐 渐 拉 开 序 幕。 随 后,用 于 文 件 处 理 软 件
+的 模 糊 测 试 工 具 诞 生,FileFuzz、SPIKEfile、notSPIKEfile、
+PAIMEIfilefuzz[50]是 其 中 的 佼 佼 者 。
+6.2 网络协议的模糊测试
+互联网的兴起使得 网 络 协 议 的 使 用 越 来 越 广 泛 ,常 见 的
+协议 如 HTTP、FTP、SSL 等 已 成 为 互 联 网 不 可 分 割 的 一 部
+分。互联网的公开性与联通性决定了网络协议处理软件漏洞
+的巨大 危 害 性,2014 年 互 联 网 上 爆 出 与 OpenSSL 相 关 的
+HeartBleed漏洞,利 用 该 漏 洞,攻 击 者 可 以 获 取 购 物 者 的 帐
+号、密码等秘 密 信 息,一 时 间 各 大 购 物 网 站 的 交 易 量 急 剧 下
+降,HeartBleed漏洞严重威胁购物者的帐号安全,同 时 也 给 各
+大电商集团带来了巨大损失。网络协议根据其复杂度可分为
+两个主要类别:简单 协 议 和 复 杂 协 议。 简 单 协 议 通 常 使 用 简
+单的认证或没有认证,简单协议通常是面向字符的,不包含 校
+验或长度信息,FTP、HTTP 是这类协议的代表。复杂协 议 通
+常使用二进制数据,认 证 过 程 比 较 复 杂,微 软 的 RPC 以 及 广
+泛使用的 SSL 协议是其中的代表。
+常 用 的 网 络 协 议 模 糊 测 试 器 主 要 有 SPIKE 和 Peach。
+SPIKE 是第一个公开的网络协 议 模 糊 测 试 工 具,该 工 具 包 含
+一些预生成 的 针 对 几 种 常 用 协 议 测 试 的 测 试 用 例 集 ,同 时,
+SPIKE 以 开 放 API的 形 式 提 供 使 用 接 口,方 便 用 户 定 制。
+Peach是一个使用 Python编写 的 跨 平 台 模 糊 测 试 框 架,该 工
+具比较灵活,使用一个 XML 文件 引 导 整 个 测 试 过 程,几 乎 可
+以用来对任何网络协议进行模糊测试。
+6.3 Web应用程序的模糊测试
+随着 Web2.0的 兴 起,传 统 的 一 些 桌 面 应 用 已 被 一 些
+Web应 用 所 取 代。 Web 应 用 是 采 用 B/S 架 构,按 照 HTTP/
+HTTPS协议提供服务的统称。由于国内外对 Web安全的 研
+究起步较晚,目 前 Web 应 用 中 存 在 着 大 量 拒 绝 服 务 (Denial
+of-service,DoS)[51]、跨 站 脚 本 (Corss-sitescripting,XSS)[52]、
+SQL 注入(SQLinjection)[53]等 类 型 的 安 全 漏 洞 。 Web 应 用
+的模糊测试 不 仅 能 发 现 Web 应 用 本 身 的 漏 洞,还 可 以 发 现
+Web服务器和数据 服 务 器 中 的 漏 洞。 目 前 主 要 用 于 Web 应
+用的 模 糊 测 试 工 具 有 SPIKE Proxy、WebScarab[54]、WebIn
+spect等。SPIKEProxy是 DaveAitel使 用 Python基 于 GPL
+许可开发的基于浏览器的 Web应用模糊测 试 工 具,它 以 代 理
+的方式工作,捕获 Web浏 览 器 发 出 的 请 求,允 许 用 户 针 对 目
+标 Web站点运行一系列的审计工作,最终找 出 多 种 类 型 的 漏
+洞。WebScarab是 Web应用安全 项 目(OWASP)开 发 的 多 种
+用于测试 Web应用 安 全 的 工 具 中 出 色 的 一 个。 WebInspect
+是 SPIDynamics公司开发的一款商业 工 具,提 供 了 一 整 套 全
+面 测 试 Web应 用 的 工 具[53]。
+6.4 Web浏览器的模糊测试
+严格意义上 讲,Web 浏 览 器 是 文 件 处 理 软 件 中 的 一 种 ,
+主要处理 的 文 件 是 诸 如 HTML、CSS、JS 之 类 的 与 Web相 关
+的文件,因其特殊 性,暂 时 将 其 分 成 单 独 一 类。 对 Web 浏 览
+器的模糊测试不 应 局 限 于 HTML、CSS、JS 等 类 型 文 件 的 解
+析模块上,类似 ActiveX 这 样 的 插 件 也 应 该 是 模 糊 测 试 的 一
+个重要组成部分。
+与 Web相 关 的 模 糊 测 试 工 具 有 COMRaider[19]、mang
+leme、Hamachi、CSSDIE 等。COMRaider主要用于IE 浏 览 器
+中广泛使用的 ActiveX 控件的 模 糊 测 试;mangleme是 第 一 个
+发布的针对 HTML 的模糊测试器;与 mangleme类似,Hama
+chi主要的目标是动 态 HTML(DHTML);CSSDIE 则 主 要 用
+于测试 Web页面布局中的 CSS文件。
+特别需要指出的是:所 有 的 应 用 程 序 都 在 某 个 具 体 的 环
+·
+6
+·
+
+
+ 境中运行,每个程序在作为一个进程被操作系统启动时,都 有
+自 己 独 立 的 命 令 行 参 数 和 环 境 变 量 ,大 量 的 程 序 本 身 往 往 假
+设命令行参数和环 境 变 量 是 合 法 的 而 直 接 使 用。 因 此,对 命
+令 行 参 数 和 环 境 变 量 进 行 模 糊 测 试 很 有 必 要 ,以 下 对 这 两 者
+进行简单的介绍。
+1)命 令 行 的 模 糊 测 试
+一个应用程序开始 运 行 时,通 常 会 处 理 用 户 传 给 它 的 命
+令行参数,命令行参数一般由操作传递给应用程序,由应用 程
+序决定如何使用。命 令 行 参 数 的 使 用 一 般 比 较 简 单,以 至 于
+大多 程 序 不 对 其 作 任 何 检 查 就 直 接 使 用 ,以 图 5 所 示 的 程 序
+为例。
+#include 〈iostream〉
+#include 〈stdlib.h〉
+usingnamespacestd;
+intmain(intargc,char *argv[]){
+for(inti=1;i<argc;+ +i){
+system(argv[i]);
+}
+}
+图5 命令行可能存在的安全漏洞示例代码
+在这个程序的system 函数调用中,并不 对 命 令 行 参 数 进
+行任何检查,如果命令行中包含一个木马程序的路径,则这 个
+程序就会自动执行 木 马 程 序。 由 此 可 见,不 对 命 令 行 参 数 进
+行任何检查可能导致严重灾难。
+clfuzz和iFUZZ 是 命 令 行 模 糊 测 试 器 中 的 代 表 。clfuzz
+主要用于测试应用中的格式字符串和缓冲区溢出安全漏洞;
+iFUZZ 的 使 用 更 加 灵 活 ,其 测 试 目 标 与 clfuzz大 致 相 同 。
+2)程 序 环 境 变 量 的 模 糊 测 试
+程序运行时,操作系 统 会 为 其 创 建 一 个 进 程,同 时,在 进
+程中会有一些操作系统安排好的变量,当前程序目录、环境 变
+量等被包含在其 中。 环 境 变 量 通 常 是 一 个 key-value二 元 组
+序列。在 C 语 言 中 通 常 使 用 getenv[38]函 数 获 取 key 变 量 对
+应 的value,在 Windows中,可以使用 Win32APIGetEnviron
+mentStrings[38]或者 C 语言 main函数的第三个参数获 取 函 数
+变量。与命令行参数类似,环境变量的使用一般比较简 单,大
+多 数 程 序 也 不 做 任 何 处 理 就 使 用 ,以 图 6 所 示 程 序 为 例 。
+#include 〈iostream〉
+#include 〈stdlib.h〉
+usingnamespacestd;
+voidfunc(){
+charbuf[100];
+memset(buf,0,sizeof(buf));
+strcpy(bug,getenv(" AppPath" ));
+printf(" %s\n" ,buf);
+}
+intmain(){
+func();
+}
+图6 环境变量可能造成缓冲区溢出的代码示例
+此程序的 主 要 目 的 是 将 AppPath 对 应 的 value 复 制 到
+buf缓冲区中,然后输入。然 而,在 代 码 里 面 存 在 明 显 的 缓 冲
+区溢 出 漏 洞,并 没 有 对 AppPath 对 应 的 字 符 串 长 度 进 行 判
+断,如果 AppPath对应的字符串的长度超过100,则 会 造 成 缓
+冲 区 溢 出 ,可 能 导 致 灾 难 性 的 后 果 。
+Sharefuzz[55]和iFuzz是环境变量模糊测试器中 杰 出 的 代
+表。Sharefuzz是第一个公 开 的 环 境 变 量 模 糊 测 试 器;iFUZZ
+虽 然 属 于 命 令 行 模 糊 测 试 器 ,但 同 时 也 对 环 境 变 量 进 行 了 大
+量 的 测 试 ,同 时 自 定 制 性 更 强 。
+7 模糊测试的发展方向
+模糊测试有其自身 的 优 势,与 此 同 时 其 不 足 也 是 十 分 明
+显的。模糊测试技术 仍 然 存 在 许 多 局 限 性,目 前 使 用 简 单 的
+模糊测试已经很难发现新类型的高危漏洞。通过模糊测试技
+术挖掘的漏洞仍大多是传统的堆溢出、栈溢出等溢出类漏 洞,
+对于后门、验证绕过、多 阶 段 触 发 等 类 型 的 漏 洞 却 无 能 为 力 。
+更 重 要 的 是 ,模 糊 测 试 并 不 能 保 证 覆 盖 到 所 有 的 语 句 分 枝 ,目
+前模糊测试的自动 化 程 度 还 不 高。 如 何 克 服 缺 陷、提 高 模 糊
+测试的效率是模糊测试未来研究的热点。模糊测试未来研究
+的热点可能包括以下几个方面。
+7.1 提高模糊测试的自动化程度
+模 糊 测 试 看 似 简 单 ,但 它 能 揭 示 出 程 序 中 的 重 要 漏 洞 ,通
+过模糊测试挖掘到的漏洞通常都比较严重。模糊测试的主要
+问 题 在 于 它 是 一 种 盲 注 入 的 方 式 ,手 工 进 行 模 糊 测 试 工 作 量
+过大,甚至几乎无法进行比较全面的测试,导致其实用价值 受
+到很大影响,在 常 用 的 模 糊 测 试 框 架 中 ,目 标 软 件 的 漏 洞 成
+因、目标软件的输入数据的规约、生成测试用例等往往需要 人
+工参与。目前大量的关注点在于研究自动化与智能化的模糊
+测试方法。
+7.2 优化测试用例生成策略
+模糊测试中关键的 步 骤 是 测 试 用 例 生 成,传 统 的 模 糊 测
+试在生成测试用例时往往盲目地去变异正常测试用例中某一
+部分,这种盲目的变异方法造成测试用例规模可能达到十 万、
+百万的级别,但其测试效果并不理想。因此,测试用例生 成 策
+略的设计与改进是目前模糊测试技术的热点研究内容之一。
+引 入 退 火 遗 传 算 法 等 对 测 试 规 则 进 行 改 进 ,使 得 最 小 测 试 用
+例 集 合 能 够 覆 盖 最 大 的 代 码 执 行 路 径 ,以 发 掘 那 些 隐 藏 较 深
+的 软 件 漏 洞 ,是 目 前 模 糊 测 试 技 术 的 发 展 趋 势[47,48]。 同 时 ,
+传 统 的 测 试 用 例 生 成 策 略 对 多 点 触 发 型 漏 洞 无 能 为 力 ,近 年
+来,多 维 模 糊 测 试 技 术 的 兴 起 使 得 用 多 点 触 发 漏 洞 的 挖 掘 成
+为可能。多维模糊测试技术是指对多维输入同时变异的模糊
+测 试 技 术,其 能 够 挖 掘 到 传 统 模 糊 测 试 技 术 无 法 挖 掘 到 的 漏
+洞。然而,多维模糊测试存在脆弱函数查找、脆弱函数覆 盖 等
+问题,如何克服这些困难,将是未来多维模糊测试技术中的 一
+个热点研究问题。
+7.3 与虚拟机技术相结合
+与虚拟机技 术 相 结 合,能 够 快 速、全 面 地 获 取 不 安 全 函
+数、目标程序的更多 反 馈 信 息,进 而 生 成 畸 形 度 更 高、正 确 度
+更 高 的 测 试 数 据 ,改 善 漏 洞 挖 掘 的 效 果 。
+7.4 模糊测试效果的评估技术研究
+以 SAGE 为 代 表 的 模 糊 测 试 框 架 以 代 码 覆 盖 率 来 评 价
+模糊测试效果,测试的过程缺乏聚焦性,测试路径通常会随 意
+扩散,这往往是不直接、不科学的;从不安全代码的覆盖 率、程
+序状态的覆盖率、输入边界测试的充分性、缓冲区边界覆盖 的
+充 分 性、测 试 数 据 的 有 效 性 和 知 识 获 取 的 充 分 性 等 多 个 角 度
+来 衡 量 测 试 效 果 会 更 加 科 学 ,也 能 更 好 地 指 导 测 试 用 例 的 生
+成和模糊测试技术的进一步发展。
+·
+7
+·
+
+
+ 结束语 随着各行业信息化的发展,软件无处不在,其 重
+要性日益显著,因而 软 件 的 安 全 性 显 得 尤 为 重 要。 作 为 一 种
+漏 洞 挖 掘 技 术,模 糊 测 试 具 有 其 它 漏 洞 挖 掘 技 术 所 不 具 备 的
+优点,是软件安全领域研究的重要方向,国内外众多研究者 在
+模糊测试领域进行了大量有益的探索和研究工作。
+本文对模糊测试技术作了全面的回顾与总结。首先将其
+它 漏 洞 挖 掘 技 术 与 模 糊 测 试 技 术 进 行 了 对 比 ;然 后 详 细 介 绍
+了 模 糊 测 试 研 究 进 展 与 模 糊 测 试 过 程 ,着 重 阐 述 了 模 糊 测 试
+中 的 测 试 用 例 生 成 技 术,并 介 绍 了 模 糊 测 试 在 各 类 软 件 安 全
+性 测 试 中 的 应 用 情 况;最 后 对 模 糊 测 试 技 术 未 来 可 能 的 研 究
+方向进行了展望。
+总之,我们认为在未来相当长的一段时间内,模糊测试 仍
+将是软件漏洞挖掘的一种实用而有效的利器。
+参考文献
+[1] CNCERT.2013ChinaInternetNetworkSecurityReport[M].
+Beijing:Post& Telecom Press,2013(inChinese)
+国家计算机应急技术处理协调中心.2013 年 中 国 互 联 网 网 络 安
+全 报 告 [M].北 京 :人 民 邮 电 出 版 社 ,2013
+[2] MeiHong,Wang Qian-xiang,Zhang Lu,etal.Analysisofthe
+progressofsoftwaretechnology[J].ChineseJournalofComput
+ers,2009,32(9):1697-1710(inChinese)
+梅宏,王千祥,张 路,等.软 件 分 析 技 术 进 展 [J].计 算 机 学 报,
+2009,32(9):1697-1710
+[3] ITS4[EB/OL].http://seclab.cs.ucdavis.edu/projects/testing/
+tools/its4.html
+[4] FLAWFINDER[EB/OL].http://www.dwheeler.com/flawfinder
+[5] IDAPRO[EB/OL].https://www.hex-rays.com/index.shtml
+[6] ZhaoXiao-dong.Researchandimplementationofbasedmalware
+analysistool[D].Nanjing:NanjingUniversity,2012(inChinese)
+赵晓东.基 于 虚 拟 化 的 恶 意 软 件 分 析 工 具 的 研 究 与 实 现 [D].南
+京 :南 京 大 学 ,2012
+[7] VoukM A.Softwarereliabilityengineering[OL]∥ ATutorialPre
+sentedattheAnnualReliabilityand MaintainabilitySymposium.
+2000.http://renoir.csc.ncsu.edu/Faculty/Vouk/vouk_se.html
+[8] OllyDbg[EB/CP].http://www.ollydbg.de
+[9] WinDbg[EB/CP].Whttp://www.windbg.org
+[10]SoftICE[EB/OL].http://en.wikipedia.org/wiki/SoftICE
+[11] MillerBP,KoskiD,LeeC,etal.FuzzRevisited:A Reexamina
+tionoftheReliabilityofUNIX UtilitiesandServices[R].Wis
+consin:ComputerSciences Department,Universityof Wiscon
+sin,1995
+[12] MillerBP,etal.AnempiricalstudyofthereliabilityofUNIX
+utilities[J].CommunicationsoftheACM,1990,33:32-44
+[13]Cohen M B,SnyderJ,RothermelG.Testingacrossconfigura
+tions:implicationsforcombinatorialtesting[J].ACM SIGSOFT
+SoftwareEngineeringNotes,2006,31(6):1-9
+[14]ShuG,LeeD.Testingsecuritypropertiesofprotocolimplemen
+tations-amachinelearningbasedapproach[C]∥27thInterna
+tionalConferenceon DistributedComputingSystems (ICDCS’
+07).IEEE,2007:25
+[15]AitelD.Theadvantagesofblock-basedprotocolanalysisofse
+curitytesting[R].New York:ImmunityInc,February2002
+[16]SPIKE[EB/OL].http://www.immunitysec.com/resources-free
+software.shtml
+[17]Peach[EB/OL].http://peachfuzz.sourceforge.ne
+[18]FillFuzz[EB/OL].http://labs.idefense.com/software/fuzzing.
+php
+[19]COMRaider[EB/OL].http://labs.idefense.com/software/fuz
+zing.php#more_comraider
+[20]AxMan[EB/OL].http://metasploit.com/users/hdm/tools/ax
+man
+[21]DemottJ.Theevolvingartoffuzzing[S].Defcon,2006
+[22]DeMottJ,etal.RevolutionizingtheFieldofGrey-box Attack
+SurfaceTesting with Evolutionary Fuzzing[S].BlackHatand
+Defcon,2007
+[23]GodefroidP,etal.Grammar-based whiteboxfuzzing[C]∥2008
+ACM SIGPLAN ConferenceonProgrammingLanguageDesign
+and Implementation 2008 (PLDI’08).Tucson,AZ,United
+states,2008:206-215
+[24]GodefroidP,etal.Automated Whiteboxfuzzing[C]∥ProcNet
+workDistributedSecuritySymposium(NDSS).SanDiego,Cali
+fornia,2008
+[25]GaneshV,etal.Taint-baseddirectedwhiteboxfuzzing [C]∥
+Proc200931stInternationalConferenceonSoftwareEnginee
+ring(ICSE2009).Vancouver,BC,Canada,2009:474-484
+[26] WangTL.Researchonkeytechnologiesofvulnerabilityexploi
+tingforbinaryprograms[M].Beijing:Peking University,2011
+(inChinese)
+王铁磊.面向二进制程序的 漏 洞 挖 掘 关 键 技 术 研 究 [M].北 京:
+北 京 大 学 ,2011
+[27] Wang T,etal.TaintScope:Achecksum-awaredirectedfuzzing
+toolforautomaticsoftwarevulnerabilitydetection [C]∥Proc
+31stIEEESymposiumonSecurityandPrivacy,SP2010.Berke
+ley/Oakland,CA,Unitedstates,2010:497-512
+[28]ZhangShu-qin.Researchon Fuzztestingtechnologybasedon
+geneticalgorithm[D].Wuhan:Huazhong UniversityofScience
+andTechnology,2011(inChinese)
+章淑琴.基于遗传算法 的 模 糊 测 试 技 术 研 究 [D].武 汉:华 中 科
+技 大 学 ,2011
+[29]DuXiao-jun,LinBo-gang,LinZhi-yuan,etal.ResearchofMulti
+populationgenetic algorithm in fuzztesting [J].Journalof
+Shandong University(ScienceEdition),2013(7):79-84(in Chi
+nese)
+杜 晓 军 ,林 柏 钢 ,林 志 远 ,等 .安 全 软 件 模 糊 测 试 中 多 种 群 遗 传 算
+法 的 研 究 [J].山 东 大 学 学 报 (理 学 版 ),2013(7):79-84
+[30]SecurityFocus[EB/OL].http://www.securityfocus.com/
+[31]Secunia [EB/OL].http://secunia.com/
+[32]CNVD[EB/OL].http://www.cnvd.org.cn/
+[33]JalbertN,Sen K.Atracesimplificationtechniqueforeffective
+debuggingofconcurrent programs[C]∥ Proceedings ofthe
+eighteenth ACM SIGSOFTInternationalSymposium onFoun
+dationsofSoftwareEngineering.ACM,2010:57-66
+[34]LukC,CohnR,MuthR,etal.Pin:Buildingcustomizedprogram
+analysistools withdynamicinstrumentation[J].Programming
+LanguageDesign &Implementation,2005,40(6):190-200
+[35]KojarskiS,LorenzD H.PluggableAOP:designingaspectmech
+anismsforthird-partycomposition[J].Oopsla’05 Proceedings
+ofAnnual Acm Sigplan Conference on Object Oriented Pro
+grammingSystemsLanguages & Applications,2005,40(10):
+247-263
+[36]BCEL[EB/OL].http://commons.apache.org/proper/commons
+bcel/
+(下 转 第 26 页 )
+·
+8
+·
+
+
+ 从图14可看出,在没 有 进 一 步 优 化 前,线 程 交 换 获 得 的
+加速效果并不理想,对于某些输入集,线程交换引起的开销 过
+大,导致加 速 比 小 于 1。 进 一 步 优 化 后,开 销 得 到 大 幅 度 减
+小,加速比提高,在交 换 范 围 为 256 和 512 时,性 能 分 别 最 高
+提高了6.4%和 5.3%。从 图 15 可 看 出,通 过 线 程 交 换,程 序
+的 功 耗 得 到 一 定 程 度 的 降 低 ,而 进 一 步 优 化 后 ,功 耗 变 化 不 大 。
+结束语 本文首先研究了线程交换对程序性能和功耗的
+影响。通过实验发现,线 程 交 换 在 减 少 BranchDivergence的
+同时会改变程序的访存行为,产生访存开销,这会在一定程 度
+上影响由于 BranchDivergence减少带 来 的 收 益,甚 至 完 全 抵
+消其收益。功耗方面,对于一些程序来说,线程交换影响 访 存
+行 为 并 不 一 定 会 引 起 访 存 次 数 的 增 多 ,因 此 线 程 交 换 并 不 一
+定 会 使 访 存 部 分 的 功 耗 增 加 ,并 且 由 于 线 程 交 换 减 少 了 某 些
+功 能 单 元 的 访 问 次 数 ,一 般 来 说 优 化 后 程 序 的 功 耗 会 降 低 。
+其次,本文研 究 了 交 换 范 围 对 程 序 性 能 和 功 耗 的 影 响 。
+不同的交换范围意味着不同的优化程度,一般来说,交换范 围
+越大,优化程度越高,同 时 带 来 的 开 销 也 越 大,所 以 并 不 是 交
+换 范 围 越 大 越 好,如 何 选 择 合 适 的 交 换 范 围 往 往 需 要 具 体 问
+题具体分析。
+最后,本文选择 Reduction 以 及 Bitonic这 两 个 含 有 较 多
+BranchDivergence的程序进行 优 化 和 性 能 测 试,研 究 了 它 们
+在 不 同 交 换 范 围 下 性 能 和 功 耗 的 表 现 ,并 针 对 优 化 过 程 中 存
+在的问题进行了进一步分析及优化。 通 过 优 化,Reduction程
+序 在 性 能 平 均 损 失4% 的 情 况 下 功 耗 最 大 降 低 了7% ,Bitionic
+程序在交换范围为256和512时 性 能 分 别 最 高 提 升 了 6.4%
+和 5.3% 。
+接下来,将通过更多程序测试本文所提优化方法的效 果,
+并将该优化策略集成在面向 CUDA 的编译器中。
+参考文献
+[1] NVIDIA CUDA[EB/OL].[2015-5-15].http://www.nvidia.
+com/cuda
+[2] ZhangEZ,JiangYun-lian,GuoZi-yu,etal.On-the-FlyElimina
+tionofDynamicIrregularitiesforGPU Computing[C]∥Pro
+ceedingsofthe16thInternationalConferenceon Architecture
+Supportfor Programming Languagesand Operating Systems
+(ASPLOS).NewportBeach,CA,USA,ACM,2011:369-380
+[3] ZhangEZ,Jiang Yun-lian,GuoZi-yu,etal.Streamlining GPU
+applicationonthefly:thread divergence elimination through
+runtimethread-dataremapping [C]∥Proceedingsofthe24th
+InternationalConferenceonSupercomputing.Tsukuba,Ibaraki,
+Japan,ACM,2010:115-126
+[4] HanT Y D,AbdelrahmanTS.ReducingBranchDivergencein
+GPU Programs[C]∥Proceedingsofthe4th Workshopon Ge
+neralPurposeProcessingon GraphicsProcessing Units.New
+portBeach,CA,ACM,2011:1-8
+[5] QianCheng,Shen Li,Zhao Xia,etal.ThreadSwappingBased
+OptimizationStrategyforSortAlgorithmsonGPUs[J].Journal
+ofNortheastern University(NaturalScience),2014,35(1):68
+73(inChinese)
+钱程,沈立,赵夏,等.GPU 上 基 于 线 程 交 换 的 排 序 算 法 优 化 策
+略 [J].东 北 大 学 学 报 (自 然 科 学 版 ),2014,35(1):68-73
+[6] BakhodaA,YuanGL,Fung W W L,etal.AnalyzingCUDA
+workloadsusingadetailed GPU simulator[C]∥IEEEInterna
+tionalSymposiumonPerformanceAnalysisofSystemsandSoft
+ware.Boston,MA,USA,IEEE,2009:163-174
+[7] GPGPU-Sim Manual[EB/OL].[2015-5-15].http://gpgpusim.
+org/manual/index.php/GPGPU-Sim_3.x_Manual
+[8] Xu Qiu-min,Annavaram M.PATS:Pattern AwareScheduling
+andPowerGatingforGPGPUs[C]∥Proceedingsofthe23rdin
+ternationalconferenceon Parallel Architecturesand Compila
+tion.Edmonton,AB,Canada,ACM,2014:225-236
+[9] LengJing-wen,Tayler H,AhmedE,etal.GPUWattch:Enab
+lingEnergyOptimizationinGPGPUs[C]∥Proceedingsof40th
+AnnualInternationalSymposium on Computer Architecture.
+Tel-Aviv,Israel,ACM,2013:487-498
+[10] GPUWattch[EB/OL].[2015-5-15].http://gpgpu-sim.org/
+gpuwattch
+(上 接 第 8 页 )
+[37]Javassit[EB/OL].http://www.csg.ci.i.u-tokyo.ac.jp/~chi
+ba/javassist/html/javassist/CtClass.html
+[38]ASM[EB/CP].http://asm.ow2.org/
+[39]DynamoRIO[EB/OL].http://www.dynamorio.org/
+[40]DynInst[EB/OL].http://www.dyninst.org/
+[41]Pin [EB/OL].https://software.intel.com/sites/landingpage/
+pintool/docs/71313/Pin/html/
+[42] WangT,WeiT,Zou W.Checksum-AwareFuzzingCombined
+withDynamicTaintAnalysisandSymbolicExecution[J].Acm
+TransactionsonInformation & System Security,2011,14(2):
+613-613
+[43]AtwoodJW,etal.Anewfuzzingtechniqueforsoftwarevulner
+abilitymining[D].ConcordiaUniversity,2009
+[44] MSDN[EB/OL].https://msdn.microsoft.com/zh-cn/default.
+aspx
+[45]Sulley[EB/OL].http://resources.infosecinstitute.com/sulley
+fuzzing/
+[46] MillerC,PetersonZNJ.AnalysisofMutationandGeneration
+Based Fuzzing[R/OL].http://securityevaluators.com/files/
+papers/analysisfuzzing.pdf
+[47]GaneshV,LeekT,Rinard M.Taint-basedDirected Whitebox
+Fuzzing[C]∥ProceedingInternationalConferenceonSoftware
+Engineering.2009:474-484
+[48]LanziA,MartignoniL,Monga M,etal.ASmartFuzzerforx86
+Executables[C]∥ICSE Workshops2007,ThirdInternational
+Workshopon Software EngineeringforSecureSystems,2007
+(SESS’07).IEEE,2007:7-7
+[49]LiuG H,WuG,TaoZ,etal.VulnerabilityAnalysisforX86Ex
+ecutablesUsing GeneticAlgorithm andFuzzing[C]∥Interna
+tionalConferenceonConvergence & HybridInformationTech
+nology.IEEE,2008:491-497
+[50]PaiMei[CP/OL].http://www.openrce.org/downloads/details/
+208/PaiMei
+[51]LiuW.ResearchonDoSAttackandDetectionProgramming[C]∥
+WorkshoponIntelligentInformation Technology Applications
+IEEE.2009:207-210
+[52]HydaraI,Sultan A B M,ZulzalilH,etal.Currentstateofre
+searchoncross-sitescripting(XSS)-A systematicliteraturere
+view[J].Information & SoftwareTechnology,2015:170-186
+[53]DukesL,YuanX,AkowuahF.Acasestudyon webapplication
+securitytestingwithtoolsand manualtesting[C]∥Southeast
+con,IEEE.IEEE,2013:1-6
+[54] WebScara[EB/OL].https://www.owasp.org/index.php/Ca
+tegory:OWASP_WebScarab_Project
+[55]ShareFuzz[CP/OL].http://www.immunitysec.com/resources
+·
+26
+·

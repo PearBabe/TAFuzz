@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/benchmark/m4/micro-evaluation/1",
+  "title": "RIFT-M4 synthetic influence-cone evaluation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "synthetic_corpus_status",
+    "evidence_identity",
+    "metric_definitions",
+    "overall",
+    "by_category",
+    "unsupported",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {"const": "rift.m4.micro-evaluation.v1"},
+    "synthetic_corpus_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["oracle", "human_labels_required", "real_project_claim"],
+      "properties": {
+        "oracle": {"const": "MECHANICAL_TEMPLATE_ORACLE"},
+        "human_labels_required": {"const": false},
+        "real_project_claim": {"const": "NOT_APPLICABLE"}
+      }
+    },
+    "evidence_identity": {"type": "object"},
+    "metric_definitions": {"type": "object"},
+    "overall": {"$ref": "#/definitions/metric_block"},
+    "by_category": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/definitions/metric_block"}
+    },
+    "unsupported": {"type": "object"},
+    "diagnostics": {"type": "object"}
+  },
+  "definitions": {
+    "nullable_ratio": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+    "prf": {
+      "type": "object",
+      "required": ["tp", "fp", "fn", "precision", "recall", "f1"],
+      "properties": {
+        "tp": {"type": "integer", "minimum": 0},
+        "fp": {"type": "integer", "minimum": 0},
+        "fn": {"type": "integer", "minimum": 0},
+        "precision": {"$ref": "#/definitions/nullable_ratio"},
+        "recall": {"$ref": "#/definitions/nullable_ratio"},
+        "f1": {"$ref": "#/definitions/nullable_ratio"}
+      },
+      "additionalProperties": true
+    },
+    "metric_block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pairs", "influence", "must_exact", "may_exact", "must_detection", "classification", "binding_top1"],
+      "properties": {
+        "pairs": {"type": "integer", "minimum": 0},
+        "influence": {"$ref": "#/definitions/prf"},
+        "must_exact": {"$ref": "#/definitions/prf"},
+        "may_exact": {"$ref": "#/definitions/prf"},
+        "must_detection": {"type": "object"},
+        "classification": {"type": "object"},
+        "binding_top1": {"$ref": "#/definitions/prf"}
+      }
+    }
+  }
+}

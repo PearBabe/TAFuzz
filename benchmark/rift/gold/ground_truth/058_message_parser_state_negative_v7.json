@@ -1,0 +1,109 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/058_message_parser_state_negative_v7.cpp",
+        "line": 31
+      },
+      "token": "ap_primary"
+    },
+    "node_message": {
+      "kind": "NODE",
+      "location": {
+        "column": 31,
+        "file": "cases/058_message_parser_state_negative_v7.cpp",
+        "line": 27
+      },
+      "token": "node_message"
+    },
+    "node_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/058_message_parser_state_negative_v7.cpp",
+        "line": 29
+      },
+      "token": "node_state"
+    },
+    "source_message_value": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/058_message_parser_state_negative_v7.cpp",
+        "line": 25
+      },
+      "token": "source_message_value"
+    }
+  },
+  "aps": [
+    {
+      "expression": "parsed state > 3",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/058_message_parser_state_negative_v7.cpp",
+        "line": 31
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-058",
+  "case_relation": "NO_INFLUENCE",
+  "category": "message_parser_state",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "A typed message, parser predicate, and state commit make the field-to-state path explicit; the negative template uses a parser-ignored field.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "message_parser_state",
+    "variant": 7
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The source populates the spare field, while the parser commits only the value field.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_message_value"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/058_message_parser_state_negative_v7.cpp",
+  "source_sha256": "32b87b04e3e55f088df72ddd16cc3bf7ad88a522fb7f7fd15000ee360a47c49c",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_message_value",
+      "kind": "message_field",
+      "location": {
+        "column": 13,
+        "file": "cases/058_message_parser_state_negative_v7.cpp",
+        "line": 25
+      },
+      "scope": "SESSION",
+      "symbol": "source_message_value"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+[
+  {
+    "guide_id": "RG_START_HERE",
+    "section": "entrypoint",
+    "priority": "P0",
+    "instruction": "Start with Review Queue, then Review Signoff. There are 44 P0 rows and 10 P1 rows; inspect P0 rows before paper wording.",
+    "evidence_artifacts": "human_review_queue.csv; review_signoff_template.csv; review_signoff_evidence_bundle.csv; paper_review_results.xlsx",
+    "decision_rule": "No paper-facing claim may be promoted from REVIEW_REQUIRED, BODY_PATTERN_READY_AFTER_HUMAN_SIGNOFF, or timeout-caveat status without a filled signoff row.",
+    "must_not_claim": "Do not treat generated queues or templates as human approval.",
+    "next_action": "Fill reviewer_decision only after checking every linked evidence artifact for that queue row."
+  },
+  {
+    "guide_id": "RG_DECISION_APPROVE_AS_CLAIMED",
+    "section": "decision_options",
+    "priority": "P0",
+    "instruction": "`APPROVE_AS_CLAIMED` means the reviewer accepts the row's current claim scope exactly as stated.",
+    "evidence_artifacts": "review_signoff_template.csv; Review Signoff; Review Queue",
+    "decision_rule": "Use only when evidence, proof notes, caveats, and must_not_claim text are all consistent with the final paper statement.",
+    "must_not_claim": "Do not use APPROVE_AS_CLAIMED for rows with unresolved timeout, approximate, or v2-deferred evidence debt.",
+    "next_action": "Record reviewer, review_date, and a short reviewer_note."
+  },
+  {
+    "guide_id": "RG_DECISION_APPROVE_WITH_CAVEAT",
+    "section": "decision_options",
+    "priority": "P0",
+    "instruction": "`APPROVE_WITH_CAVEAT` means the claim can be cited only with the exact caveat shown in the evidence sheets.",
+    "evidence_artifacts": "Review Queue; Paper Claim Review; Baseline Results; Benchmark Manifest",
+    "decision_rule": "Use for timeout, generated/reduced-trace, compflatten build-only, or BDD-projection-only claims that remain useful but bounded.",
+    "must_not_claim": "Do not collapse caveated rows into verified correctness or theorem-level equivalence claims.",
+    "next_action": "Copy the caveat into paper text or appendix wording before using the result."
+  },
+  {
+    "guide_id": "RG_DECISION_REJECT_OR_FIX",
+    "section": "decision_options",
+    "priority": "P0",
+    "instruction": "`REJECT_OR_FIX` means the row exposes a real defect, unsupported claim, or inadequate evidence.",
+    "evidence_artifacts": "Review Signoff; Review Queue; .codex/SESSION_LOG.md",
+    "decision_rule": "Use when a row has inconsistent evidence, failed audit status, or a claim that cannot be justified by its proof/baseline/oracle artifacts.",
+    "must_not_claim": "Do not leave REJECT_OR_FIX rows for the user to repair without recording the bug or required code/data fix.",
+    "next_action": "Fix the real issue, rerun the experiment, and regenerate the workbook."
+  },
+  {
+    "guide_id": "RG_DECISION_DEFER_TO_V2",
+    "section": "decision_options",
+    "priority": "P1",
+    "instruction": "`DEFER_TO_V2` means the scope is intentionally reserved for a later BDD-native or composition-aware implementation.",
+    "evidence_artifacts": "Goal Audit; Requirements Audit; glob:tamonitor_runs/*/bdd_interface.json",
+    "decision_rule": "Use for BDD-native runtime or compflatten runtime claims until a real implementation and oracle suite exist.",
+    "must_not_claim": "Do not claim BDD-native runtime, BDD-native speedups, or compflatten runtime RV in v1.",
+    "next_action": "Keep the row visible as future work, not a v1 result."
+  },
+  {
+    "guide_id": "RG_DECISION_KEEP_EXCLUDED",
+    "section": "decision_options",
+    "priority": "P1",
+    "instruction": "`KEEP_EXCLUDED` means the row remains in inventory for transparency but is outside formal claims.",
+    "evidence_artifacts": "Benchmark Manifest; XML Proof Appendix; Semantic Exclusions",
+    "decision_rule": "Use for internal Count forms, approximate XML candidates, no-candidate XML rows, and rows with unresolved proof debt.",
+    "must_not_claim": "Do not infer MITL equivalence from XML file names or from parser-visible internal forms.",
+    "next_action": "Leave the exclusion reason intact and cite only as inventory if needed."
+  },
+  {
+    "guide_id": "RG_MITL_ORACLE_BOUNDARY",
+    "section": "correctness_evidence",
+    "priority": "P0",
+    "instruction": "MITL runtime correctness claims rely on hand-oracle derivations: 70 verified rows and 17 construction/stat-only rows.",
+    "evidence_artifacts": "manual_oracle_guide.csv; semantic_oracle_derivations.csv; semantic_prefix_oracle_review.csv; mitl_correctness_audit.csv",
+    "decision_rule": "Only rows marked HAND_ORACLE_VERIFIED/VERIFIED and prefix-match evidence may support runtime correctness claims.",
+    "must_not_claim": "Do not count construction/stat-only rows or missing oracle rows as runtime correctness evidence.",
+    "next_action": "Spot-check representative F/G/U/R, past-operator, finite-word, and infinite-word rows before citing."
+  },
+  {
+    "guide_id": "RG_XML_PROOF_BOUNDARY",
+    "section": "xml_translation",
+    "priority": "P0",
+    "instruction": "XML-to-MITL rows are structural proof drafts; use XML Obligations, XML Trace Coverage, and Original Trace Gaps first to separate machine-checked prerequisites from human theorem-review obligations.",
+    "evidence_artifacts": "xml_proof_obligations.csv; xml_trace_coverage_obligations.csv; xml_original_trace_gaps.csv; xml_edge_guard_proofs.csv; xml_proof_appendix.csv; xml_translation_proof_appendix.md",
+    "decision_rule": "A proof-ready row may be promoted only after all machine-checkable obligations have no FAIL status and the reviewer signs off that the candidate MITL formula matches the XML pair under the stated trace assumptions.",
+    "must_not_claim": "Do not claim all MoniTAal XML benchmarks were equivalently converted to MITL.",
+    "next_action": "Work through XML_PROOF_* and PAPER_CLAIM_* signoff rows together."
+  },
+  {
+    "guide_id": "RG_XML_ORIGINAL_TRACE_GAPS",
+    "section": "xml_translation",
+    "priority": "P0",
+    "instruction": "Original Trace Gaps lists proof-ready XML rows whose repository/original timed-word evidence is missing or INCONCLUSIVE; every XML_ORIGINAL_TRACE_GAP_* row needs an explicit human caveat or a decisive original trace.",
+    "evidence_artifacts": "xml_original_trace_gaps.csv; xml_original_trace_gaps.md; xml_trace_coverage_obligations.csv; monitaal_baseline_results.csv; review_signoff_template.csv",
+    "decision_rule": "Use APPROVE_WITH_CAVEAT only if the paper wording keeps the original-input provenance caveat; use REJECT_OR_FIX if the paper claim requires decisive original-input evidence.",
+    "must_not_claim": "Do not use APPROVE_AS_CLAIMED for generated-only or INCONCLUSIVE original-input provenance gaps.",
+    "next_action": "Review the Original Trace Gaps sheet before approving any affected XML proof or paper-claim signoff row."
+  },
+  {
+    "guide_id": "RG_PAPER_CLAIM_AUDIT",
+    "section": "paper_claims",
+    "priority": "P1",
+    "instruction": "Paper claim consistency audit has 0 FAIL rows; use it as a safety check, not as a mathematical proof.",
+    "evidence_artifacts": "paper_claim_review.csv; paper_claim_consistency_audit.csv; review_signoff_template.csv",
+    "decision_rule": "A PASS claim audit means no generated consistency issue was found; human signoff is still required for proof-ready body rows.",
+    "must_not_claim": "Do not call generated proof ledgers final theorem proofs without reviewer approval.",
+    "next_action": "Sign off BODY_PATTERN_READY_AFTER_HUMAN_SIGNOFF rows before using them in paper body text."
+  },
+  {
+    "guide_id": "RG_TIMEOUT_POLICY",
+    "section": "benchmark_caveats",
+    "priority": "P1",
+    "instruction": "MoniTAal baseline has 0 timeout rows, 0 skipped-no-input rows, and 3 generated empty probes for XML pairs without repository inputs; completed baseline rows may still be INCONCLUSIVE.",
+    "evidence_artifacts": "monitaal_baseline_results.csv; timeout_rerun_summary.csv; timeout_rerun_details.csv; translation_candidate_results.csv",
+    "decision_rule": "Rows with a MoniTAal verdict can support trace-level final-verdict comparison; timeout and skipped-input rows cannot.",
+    "must_not_claim": "Do not report generated empty probes, skipped-input rows, or INCONCLUSIVE baseline matches as XML-to-MITL equivalence proofs or original-input benchmark evidence.",
+    "next_action": "Use APPROVE_WITH_CAVEAT or KEEP_EXCLUDED for no-original-input rows; require proof signoff for proof-ready matched rows."
+  },
+  {
+    "guide_id": "RG_REPRODUCIBILITY",
+    "section": "reproducibility",
+    "priority": "P1",
+    "instruction": "Tie any paper table or manual decision to the matching result directory and reproducibility manifest.",
+    "evidence_artifacts": "reproducibility_manifest.csv; reproducibility_manifest.json; reproducibility_manifest.md; experiment_summary.json; .codex/PROJECT_STATE.md",
+    "decision_rule": "Every cited result should point to a concrete output directory, command, source hash, result hash, and dirty-worktree state.",
+    "must_not_claim": "Do not separate copied tables from the matching manifest and workbook.",
+    "next_action": "Record the exact result directory in paper notes or review notes."
+  },
+  {
+    "guide_id": "RG_RERUN_AFTER_FIX",
+    "section": "bug_fix_loop",
+    "priority": "P1",
+    "instruction": "If any review row exposes a real bug, fix the cause, rerun the full experiment, regenerate the workbook, and update handoff files.",
+    "evidence_artifacts": ".codex/SESSION_LOG.md; test/TARV/scripts/run_paper_experiments.py; src/TAMonitor",
+    "decision_rule": "A fix is accepted only when the relevant audit rows and regression outputs pass after rerun.",
+    "must_not_claim": "Do not patch expected results or weaken oracle semantics to make a test pass.",
+    "next_action": "Append the command/result summary to SESSION_LOG and update PROJECT_STATE."
+  },
+  {
+    "guide_id": "RG_CURRENT_SIGNOFF_STATUS",
+    "section": "current_status",
+    "priority": "P0",
+    "instruction": "The generated signoff template currently has 56 blank reviewer decisions; this is expected before human review.",
+    "evidence_artifacts": "review_signoff_template.csv; review_signoff_template.md",
+    "decision_rule": "Blank reviewer decisions mean the artifact is ready for review, not signed off.",
+    "must_not_claim": "Do not state that human review is complete until decisions are filled and checked.",
+    "next_action": "Use this row to distinguish generated evidence from human approval."
+  },
+  {
+    "guide_id": "RG_SIGNOFF_IMPORT_ROUNDTRIP",
+    "section": "current_status",
+    "priority": "P0",
+    "instruction": "After manual review, import reviewer-owned fields from a filled CSV or Review Signoff workbook sheet instead of hand-editing generated queue, policy, or evidence columns.",
+    "evidence_artifacts": "test/TARV/scripts/import_review_signoff.py; review_signoff_template.csv; review_signoff_evidence_bundle.csv; review_signoff_validation.json; signoff_import_roundtrip_audit.csv; signoff_import_roundtrip_audit.md",
+    "decision_rule": "Only reviewer_decision, reviewer, review_date, and reviewer_notes are human-owned import fields; generated evidence and decision-policy fields must match the current packet.",
+    "must_not_claim": "Do not overwrite generated signoff rows with a stale workbook export or cite completed human signoff before complete-mode validation passes.",
+    "next_action": "Run import_review_signoff.py, then validate_review_signoff.py --mode complete; use verify_review_packet.py --signoff-mode complete for a completed-review packet."
+  }
+]

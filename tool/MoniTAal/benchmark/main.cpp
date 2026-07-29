@@ -388,7 +388,7 @@ void run_gearcontroller_testing(benchmark_setting& setting, bool testing) {
 
     bool input_mode = true;
 
-    std::cout << "Seed: " << SEED;
+    std::cout << "Seed: " << SEED << '\n';
     srand (SEED);
     int error = setting.error;
     int error_count = 0;

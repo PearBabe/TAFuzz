@@ -1,0 +1,43 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-014
+title: Battery threshold classification and configured action
+system: PX4
+vehicle_scope: multicopter SITL with configured battery source
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 76-94
+    original_text: "The low battery failsafe is triggered when capacity drops below battery failsafe level values."
+  - kind: user_facing_parameter_metadata
+    path: src/lib/battery/module.yaml
+    lines: 124-166
+    original_text: "BAT_LOW_THR, BAT_CRIT_THR and BAT_EMERGEN_THR set the low, critical and dangerously-low reporting thresholds."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 282-293
+    original_text: "COM_LOW_BAT_ACT selects Warning, Land, or Return at critical and Land at emergency."
+normalized_requirement:
+  context: battery source, instance aggregation and COM_LOW_BAT_ACT are fixed and archived
+  trigger: reported remaining capacity crosses a runtime low, critical or emergency threshold
+  obligation: emit the matching battery warning classification and select the configured warning/Return/Land behavior
+  common_configuration_only: safety.md describes a common Warn-Return-Land setup, not an unconditional action mapping
+time_constraint:
+  expression: no numeric response bound is stated; immediately at emergency is qualitative only
+  thresholds: runtime(BAT_LOW_THR), runtime(BAT_CRIT_THR), runtime(BAT_EMERGEN_THR), unit normalized fraction
+  compiled_default_instances: {low: 0.15, critical: 0.07, emergency: 0.05}
+  epoch: first qualifying threshold crossing after battery-source and aggregation semantics are resolved
+  clock: BATTERY_STATUS receipt time on host monotonic clock or internal battery_status HRT
+  boundary: threshold equality and filtering/hysteresis semantics need authoritative confirmation
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G(battery_threshold_crossing(level) -> F_[0,B_BATTERY] (warning_level(level) & configured_battery_action(level)))"
+  note: B_BATTERY is unresolved; the word immediately does not supply a number
+atomic_propositions:
+  - AP-PX4-BATTERY-THRESHOLD-CROSSING
+  - AP-PX4-BATTERY-WARNING
+  - AP-PX4-CONFIGURED-BATTERY-ACTION
+mavlink_observation_refs: [OBS-PX4-PARAM, OBS-PX4-BATTERY, OBS-PX4-EVENT, OBS-PX4-MODE]
+blockers: [NEEDS_TIME_BOUND, NEEDS_THRESHOLD_PROVENANCE, NEEDS_MULTI_BATTERY_POLICY, NEEDS_EQUALITY_AND_FILTER_RULES]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

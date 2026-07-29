@@ -1,0 +1,38 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-007
+title: Preflight auto-disarm when takeoff does not occur
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/advanced_config/prearm_arm_disarm.md
+    lines: 86-94
+    original_text: "Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable)."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 229-243
+    original_text: "The vehicle is expected to take off after arming. In case it did not takeoff within the timeout it disarms again."
+normalized_requirement:
+  context: auto-disarm is enabled and the vehicle has become armed but has not taken off
+  trigger: arming accepted
+  cancellation: a takeoff-detected event occurs before expiry
+  obligation: disarm after T_pre if cancellation did not occur
+  source_binding_warning: Commander.cpp:2294-2297 adds COM_SPOOLUP_TIME; this is a conflict to reconcile, not a replacement requirement
+time_constraint:
+  expression: T_pre = runtime(COM_DISARM_PRFLT) seconds when T_pre > 0
+  compiled_default_instance: 10.0 seconds
+  epoch: external documentation says arming; current implementation binding uses a summed delay
+  clock: PX4 HRT internally or host-monotonic wire receipt time
+  boundary: NEEDS_DOC_SOURCE_RECONCILIATION and NEEDS_OBSERVER_TOLERANCE
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G((armed_rise & no_takeoff_during_[0,T_pre]) -> F_[T_pre,T_pre+EPS_OBS] disarmed)"
+atomic_propositions:
+  - AP-PX4-ARMED
+  - AP-PX4-DISARMED
+  - AP-PX4-TAKEOFF-DETECTED
+mavlink_observation_refs: [OBS-PX4-ARMED, OBS-PX4-LANDED, OBS-PX4-PARAM]
+blockers: [NEEDS_DOC_SOURCE_RECONCILIATION, NEEDS_TAKEOFF_EVENT_DEFINITION, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

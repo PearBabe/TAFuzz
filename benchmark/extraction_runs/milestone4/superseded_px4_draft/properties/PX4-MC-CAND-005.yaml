@@ -1,0 +1,41 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-005
+title: Offboard loss exits external control after configured timeout
+system: PX4
+vehicle_scope: multicopter SITL with MAVLink Offboard input
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes/offboard.md
+    lines: 24-31
+    original_text: "If the rate falls below 2Hz while under external control PX4 will switch out of offboard mode after a timeout."
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 223-233
+    original_text: "COM_OF_LOSS_T: Delay after loss of offboard connection before the failsafe is triggered."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 329-369
+    original_text: "Time-out to wait when offboard connection is lost before triggering offboard lost action."
+normalized_requirement:
+  context: vehicle is in Offboard and a supported proof stream had been accepted
+  trigger: the proof stream is considered lost under the reconciled rate rule
+  obligation: after T_of, leave Offboard and select the action configured by COM_OBL_RC_ACT, subject to RC-availability semantics
+time_constraint:
+  expression: T_of = runtime(COM_OF_LOSS_T) seconds
+  compiled_default_instance: 1.0 seconds
+  epoch: NEEDS_LOSS_EPOCH_RECONCILIATION between last accepted proof and first rate-rule violation
+  clock: PX4 HRT internally or a single host-monotonic wire clock
+  boundary: rate equality and action observation tolerance unresolved
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G((mode_offboard & offboard_gap_expired) -> F_[0,EPS_OBS] (!mode_offboard & configured_offboard_loss_action))"
+atomic_propositions:
+  - AP-PX4-MODE-OFFBOARD
+  - AP-PX4-OFFBOARD-PROOF
+  - AP-PX4-OFFBOARD-GAP-EXPIRED
+  - AP-PX4-CONFIGURED-OFFBOARD-LOSS-ACTION
+mavlink_observation_refs: [OBS-PX4-OFFBOARD-INPUT, OBS-PX4-PARAM, OBS-PX4-MODE]
+blockers: [NEEDS_RATE_BOUNDARY_RECONCILIATION, NEEDS_LOSS_EPOCH_RECONCILIATION, NEEDS_RC_AVAILABILITY_MAPPING, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

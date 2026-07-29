@@ -1,0 +1,403 @@
+{
+  "schema_version": "2.0.0",
+  "model_pack_id": "pack.platform.posix-lp64",
+  "model_pack_version": "1.0.0",
+  "layer": "platform",
+  "property_independent": true,
+  "target": {
+    "target_version": "POSIX.1-2017",
+    "target_abi": "linux-gnu-lp64",
+    "evidence_id": "evidence.posix-public-api",
+    "digest_policy": "freeze_before_property"
+  },
+  "resource_limits": {
+    "max_selector_matches": 500000,
+    "max_capture_values": 500000,
+    "max_join_assignments": 500000,
+    "max_emitted_facts": 500000
+  },
+  "selectors": [
+    {
+      "selector_id": "selector.posix.main",
+      "kind": "exact_qualified_signature",
+      "exact_value": "main:int (int, char **)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.read",
+      "kind": "exact_qualified_signature",
+      "exact_value": "read:long (int, void *, unsigned long)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.recv",
+      "kind": "exact_qualified_signature",
+      "exact_value": "recv:long (int, void *, unsigned long, int)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.recvfrom",
+      "kind": "exact_qualified_signature",
+      "exact_value": "recvfrom:long (int, void *, unsigned long, int, struct sockaddr *, unsigned int *)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.recvmsg",
+      "kind": "exact_qualified_signature",
+      "exact_value": "recvmsg:long (int, struct msghdr *, int)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.fread",
+      "kind": "exact_qualified_signature",
+      "exact_value": "fread:unsigned long (void *, unsigned long, unsigned long, struct _IO_FILE *)",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.getenv",
+      "kind": "exact_qualified_signature",
+      "exact_value": "getenv:char *(const char *) noexcept",
+      "application_private": false
+    },
+    {
+      "selector_id": "selector.posix.clock-gettime",
+      "kind": "exact_qualified_signature",
+      "exact_value": "clock_gettime:int (int, struct timespec *)",
+      "application_private": false
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "rule.posix.argument-count",
+      "matches": [
+        {"match_id": "match.posix.main-count", "selector_ref": "selector.posix.main"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.argc",
+          "match_ref": "match.posix.main-count",
+          "projection": "formal_parameter",
+          "index": 0
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.argc",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.argc",
+          "certainty": "modelled",
+          "transfer_relation": "process_argument_count",
+          "external_action": {
+            "action_schema_id": "action.posix.argc",
+            "action_class": "process_argument_count",
+            "channel": "process_start",
+            "operation": "set_argument_count",
+            "payload_type": {"kind": "integer", "canonical": "int", "bit_width": 32, "signed": true},
+            "payload_slot": "argc",
+            "scope_schema": "process_epoch",
+            "generation_schema": "process_epoch",
+            "timing_capability": "startup_only",
+            "required_capability": "environment"
+          }
+        }
+      ],
+      "evidence_note": "ISO C process entry receives an implementation-provided argument count."
+    },
+    {
+      "rule_id": "rule.posix.process-arguments",
+      "matches": [
+        {"match_id": "match.posix.main", "selector_ref": "selector.posix.main"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.argv",
+          "match_ref": "match.posix.main",
+          "projection": "formal_parameter",
+          "index": 1
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.argv",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.argv",
+          "certainty": "modelled",
+          "transfer_relation": "process_argument_vector",
+          "external_action": {
+            "action_schema_id": "action.posix.argv",
+            "action_class": "process_argument",
+            "channel": "process_start",
+            "operation": "set_argument",
+            "payload_type": {"kind": "array", "canonical": "char **"},
+            "payload_slot": "argv[*]",
+            "scope_schema": "process_epoch",
+            "generation_schema": "process_epoch",
+            "timing_capability": "startup_only",
+            "required_capability": "environment"
+          }
+        }
+      ],
+      "evidence_note": "ISO C process entry receives an implementation-provided argument vector."
+    },
+    {
+      "rule_id": "rule.posix.read-buffer",
+      "matches": [
+        {"match_id": "match.posix.read", "selector_ref": "selector.posix.read"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.read-buffer",
+          "match_ref": "match.posix.read",
+          "projection": "call_argument",
+          "index": 1
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.read-buffer",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.read-buffer",
+          "certainty": "modelled",
+          "transfer_relation": "bytes_written_to_buffer",
+          "external_action": {
+            "action_schema_id": "action.posix.read-bytes",
+            "action_class": "byte_stream",
+            "channel": "file_descriptor",
+            "operation": "supply_bytes",
+            "payload_type": {"kind": "array", "canonical": "unsigned char[]"},
+            "payload_slot": "buffer",
+            "scope_schema": "file_descriptor_epoch",
+            "generation_schema": "open_close_epoch",
+            "timing_capability": "arrival_time",
+            "required_capability": "direct"
+          }
+        }
+      ],
+      "evidence_note": "The public read interface stores received bytes in its second formal argument."
+    },
+    {
+      "rule_id": "rule.posix.recv-buffer",
+      "matches": [
+        {"match_id": "match.posix.recv", "selector_ref": "selector.posix.recv"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.recv-buffer",
+          "match_ref": "match.posix.recv",
+          "projection": "call_argument",
+          "index": 1
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.recv-buffer",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.recv-buffer",
+          "certainty": "modelled",
+          "transfer_relation": "bytes_written_to_buffer",
+          "external_action": {
+            "action_schema_id": "action.posix.recv-bytes",
+            "action_class": "socket_message",
+            "channel": "connected_socket",
+            "operation": "receive",
+            "payload_type": {"kind": "array", "canonical": "unsigned char[]"},
+            "payload_slot": "buffer",
+            "scope_schema": "socket_session",
+            "generation_schema": "socket_epoch",
+            "timing_capability": "arrival_drop_repeat",
+            "required_capability": "timing"
+          }
+        }
+      ],
+      "evidence_note": "The public receive interface stores one message in its buffer argument."
+    },
+    {
+      "rule_id": "rule.posix.recvfrom-buffer",
+      "matches": [
+        {"match_id": "match.posix.recvfrom", "selector_ref": "selector.posix.recvfrom"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.recvfrom-buffer",
+          "match_ref": "match.posix.recvfrom",
+          "projection": "call_argument",
+          "index": 1
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.recvfrom-buffer",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.recvfrom-buffer",
+          "certainty": "modelled",
+          "transfer_relation": "datagram_written_to_buffer",
+          "external_action": {
+            "action_schema_id": "action.posix.recvfrom-datagram",
+            "action_class": "socket_datagram",
+            "channel": "datagram_socket",
+            "operation": "receive",
+            "payload_type": {"kind": "array", "canonical": "unsigned char[]"},
+            "payload_slot": "datagram",
+            "scope_schema": "peer_tuple",
+            "generation_schema": "socket_epoch",
+            "timing_capability": "arrival_drop_repeat_reorder",
+            "required_capability": "timing"
+          }
+        }
+      ],
+      "evidence_note": "The public datagram interface stores a peer message in its buffer argument."
+    },
+    {
+      "rule_id": "rule.posix.recvmsg-header",
+      "matches": [
+        {"match_id": "match.posix.recvmsg", "selector_ref": "selector.posix.recvmsg"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.recvmsg-header",
+          "match_ref": "match.posix.recvmsg",
+          "projection": "call_argument",
+          "index": 1
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.recvmsg-header",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.recvmsg-header",
+          "certainty": "modelled",
+          "transfer_relation": "message_written_through_iovec",
+          "external_action": {
+            "action_schema_id": "action.posix.recvmsg-message",
+            "action_class": "socket_message",
+            "channel": "message_socket",
+            "operation": "receive",
+            "payload_type": {"kind": "record", "canonical": "struct msghdr"},
+            "payload_slot": "iov[*]",
+            "scope_schema": "peer_tuple",
+            "generation_schema": "socket_epoch",
+            "timing_capability": "arrival_drop_repeat_reorder",
+            "required_capability": "timing"
+          }
+        }
+      ],
+      "evidence_note": "The public message receive interface fills buffers referenced by its message header."
+    },
+    {
+      "rule_id": "rule.posix.fread-buffer",
+      "matches": [
+        {"match_id": "match.posix.fread", "selector_ref": "selector.posix.fread"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.fread-buffer",
+          "match_ref": "match.posix.fread",
+          "projection": "call_argument",
+          "index": 0
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.fread-buffer",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.fread-buffer",
+          "certainty": "modelled",
+          "transfer_relation": "records_written_to_buffer",
+          "external_action": {
+            "action_schema_id": "action.posix.fread-records",
+            "action_class": "file_records",
+            "channel": "stdio_stream",
+            "operation": "supply_records",
+            "payload_type": {"kind": "array", "canonical": "unsigned char[]"},
+            "payload_slot": "records",
+            "scope_schema": "stream_epoch",
+            "generation_schema": "open_close_epoch",
+            "timing_capability": "read_time",
+            "required_capability": "environment"
+          }
+        }
+      ],
+      "evidence_note": "The public buffered file interface stores records in its first argument."
+    },
+    {
+      "rule_id": "rule.posix.environment-value",
+      "matches": [
+        {"match_id": "match.posix.getenv", "selector_ref": "selector.posix.getenv"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.getenv-result",
+          "match_ref": "match.posix.getenv",
+          "projection": "call_result"
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.getenv-result",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.getenv-result",
+          "certainty": "modelled",
+          "transfer_relation": "environment_value_returned",
+          "external_action": {
+            "action_schema_id": "action.posix.environment",
+            "action_class": "environment_variable",
+            "channel": "process_environment",
+            "operation": "set_value",
+            "payload_type": {"kind": "array", "canonical": "char[]"},
+            "payload_slot": "named_value",
+            "scope_schema": "process_epoch",
+            "generation_schema": "process_epoch",
+            "timing_capability": "startup_only",
+            "required_capability": "environment"
+          }
+        }
+      ],
+      "evidence_note": "The public environment lookup interface returns a process environment value."
+    },
+    {
+      "rule_id": "rule.posix.clock-sample",
+      "matches": [
+        {"match_id": "match.posix.clock-gettime", "selector_ref": "selector.posix.clock-gettime"}
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.posix.timespec",
+          "match_ref": "match.posix.clock-gettime",
+          "projection": "call_argument",
+          "index": 1
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.posix.clock-sample",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.posix.timespec",
+          "certainty": "modelled",
+          "transfer_relation": "clock_sample_written",
+          "external_action": {
+            "action_schema_id": "action.posix.clock-progress",
+            "action_class": "time_progress",
+            "channel": "system_clock",
+            "operation": "advance",
+            "payload_type": {"kind": "timestamp", "canonical": "struct timespec", "unit": "ns"},
+            "payload_slot": "clock_sample",
+            "scope_schema": "clock_epoch",
+            "generation_schema": "boot_epoch",
+            "timing_capability": "time_advance",
+            "required_capability": "timing"
+          }
+        }
+      ],
+      "evidence_note": "The public clock interface stores a timestamp sample in its output argument."
+    }
+  ]
+}

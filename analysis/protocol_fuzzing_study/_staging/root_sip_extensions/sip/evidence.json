@@ -1,0 +1,111 @@
+{
+  "protocol": "SIP",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_REPAIRS",
+  "human_review_status": "PENDING",
+  "independent_audit": {
+    "report": "analysis/protocol_fuzzing_study/_audit/sip_catalog_audit.md",
+    "scope": "SIP-TX-01..26",
+    "original_dispositions": {
+      "FIX": 23,
+      "REJECT": 3
+    },
+    "implemented_override_status": {
+      "FIXED_AFTER_AUDIT": 23,
+      "REJECT": 3
+    },
+    "human_approval": "PENDING",
+    "semantic_repairs": [
+      "Timer arm, stored logical deadline, scheduler callback, protocol action, and state termination are distinct events and timestamps.",
+      "Mathematical formulas use standard G; executable MightyPPL formulas use weak finite-word G* under an explicitly closed one-generation projection.",
+      "Every bounded eventual property has an early counterexample and a negative_late_or_missing counterexample; every legal supersession has a positive trace.",
+      "Every admitted AP is assigned to at least one fixed primary or auxiliary source mapping; mappings carry only their source-specific AP subsets.",
+      "Every re-arm/reset creates a new timer_generation and a fresh monitor; overlapping trigger generations are excluded from one finite word."
+    ]
+  },
+  "screened_documents": [
+    {
+      "standard": "RFC 3261",
+      "url": "https://www.rfc-editor.org/rfc/rfc3261.html",
+      "sections": ["16.6", "17.1.1.2", "17.1.2.2", "17.2.1", "17.2.2"],
+      "accessed": "2026-07-13",
+      "use": "Timer A--K, Timer C strict bound, transaction state and supersession rules"
+    },
+    {
+      "standard": "RFC 6026",
+      "url": "https://www.rfc-editor.org/rfc/rfc6026.html",
+      "sections": ["7.1", "7.2", "8.1", "8.4", "8.7"],
+      "accessed": "2026-07-13",
+      "use": "Accepted states, Timer D/L/M, UAS-core 2xx retransmission schedule"
+    }
+  ],
+  "fixed_implementations": [
+    {
+      "repository": "pjsip/pjproject",
+      "commit": "bba95b8a95c0a9e8c1939166fd20083ae9e3e956",
+      "paths": [
+        "pjsip/src/pjsip/sip_transaction.c",
+        "pjsip/include/pjsip/sip_config.h"
+      ],
+      "property_scope": "SIP-TX-01..19 plus rejected callback assertions 02/08/14"
+    },
+    {
+      "repository": "kamailio/kamailio",
+      "commit": "2648eb330b133a20f1398d59a28c53532106cad3",
+      "paths": [
+        "src/modules/tm/t_lookup.c",
+        "src/modules/tm/t_reply.c",
+        "src/modules/tm/timer.h",
+        "src/modules/tm/config.h",
+        "src/modules/tm/config.c"
+      ],
+      "property_scope": "SIP-TX-20 Timer C initial/reset generation and lifetime interaction"
+    },
+    {
+      "repository": "DoubangoTelecom/doubango",
+      "commit": "7604ae6761534d2efdc862bc9961623abc98b9a5",
+      "paths": [
+        "tinySIP/src/transactions/tsip_transac_ist.c",
+        "tinySIP/src/transactions/tsip_transac_ict.c",
+        "tinySIP/src/tsip_timers.c"
+      ],
+      "property_scope": "SIP-TX-21..26 RFC 6026 extensions"
+    }
+  ],
+  "known_deviation_profiles": [
+    {
+      "id": "KAMAILIO_TIMER_C_DEFAULT",
+      "property": "SIP-TX-20",
+      "finding": "fr_inv_timeout defaults to 120000 ms and max_inv_lifetime to exactly 180000 ms, while RFC 3261 requires Timer C strictly greater than 180000 ms.",
+      "catalog_treatment": "NORMATIVE strict-bound oracle; fixed default profile is EXPECTED_VIOLATION unless configuration is pinned above the bound."
+    },
+    {
+      "id": "DOUBANGO_TIMER_X_SECOND_INTERVAL",
+      "property": "SIP-TX-22",
+      "finding": "The initial handler shifts 500 to 1000 after scheduling; the first callback shifts again before scheduling, producing a 2000-ms next interval rather than 1000 ms.",
+      "catalog_treatment": "NORMATIVE_EXPECTED_VIOLATION_PROFILE with an explicit source-realistic negative trace."
+    },
+    {
+      "id": "DOUBANGO_TIMER_X_NO_T2_CAP",
+      "property": "SIP-TX-23",
+      "finding": "Timer X uses timeout <<= 1 without min(...,T2), permitting 8000-ms and longer intervals.",
+      "catalog_treatment": "One fresh 4000-ms monitor per post-cap generation; 8000-ms source behavior is an explicit negative trace."
+    },
+    {
+      "id": "DOUBANGO_TIMER_L_EARLY_TRANSPORT_TERMINATION",
+      "property": "SIP-TX-25",
+      "finding": "The FSM registers Any transport error -> Terminated although the RFC 6026 server-side retention property has no such early-discard exception.",
+      "catalog_treatment": "All termination paths must emit the AP; the early transport path is an explicit known-deviation negative."
+    }
+  ],
+  "deduplication": {
+    "rejected_timed_properties": ["SIP-TX-02", "SIP-TX-08", "SIP-TX-14"],
+    "replacement_assertions": [
+      "timer_a_callback -> invite_retransmit_requested",
+      "timer_e_callback -> noninvite_retransmit_requested",
+      "timer_g_callback -> final_response_retransmit_requested"
+    ],
+    "reason": "The RFC gives a causal callback action but no non-punctual callback/send latency bound measured from the earlier arm; the timing obligations duplicate TX-01/TX-07/TX-13."
+  },
+  "scope_note": "This staging evidence repairs the earlier immutable catalog through audit_overrides.json. It does not modify the formal protocols output and does not constitute user signoff or observed runtime conformance."
+}

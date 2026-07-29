@@ -1,0 +1,219 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 33
+      },
+      "token": "ap_primary"
+    },
+    "node_message": {
+      "kind": "NODE",
+      "location": {
+        "column": 31,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 29
+      },
+      "token": "node_message"
+    },
+    "node_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 31
+      },
+      "token": "node_state"
+    },
+    "source_message_kind": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 27
+      },
+      "token": "source_message_kind"
+    },
+    "source_message_value": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 25
+      },
+      "token": "source_message_value"
+    }
+  },
+  "aps": [
+    {
+      "expression": "parsed state > 3",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 33
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-055",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "message_parser_state",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "A typed message, parser predicate, and state commit make the field-to-state path explicit; the negative template uses a parser-ignored field.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "message_parser_state",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "field",
+        "parse",
+        "state_commit"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross value boundary for accepted kind",
+        "kind": "message_field_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "3",
+          "4"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_message_value",
+            "kind": "field",
+            "to": "node_message"
+          },
+          {
+            "certainty": "may",
+            "from": "node_message",
+            "kind": "parse",
+            "to": "node_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_state",
+            "kind": "state_commit",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_message_value",
+          "node_message",
+          "node_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_message_kind == 24"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_message_value"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "field",
+        "parse",
+        "control"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "select accepted or rejected kind",
+        "kind": "message_kind_selection",
+        "relative_time_window": null,
+        "suggested_values": [
+          "23",
+          "24"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_message_kind",
+            "kind": "field",
+            "to": "node_message"
+          },
+          {
+            "certainty": "may",
+            "from": "node_message",
+            "kind": "parse",
+            "to": "node_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_state",
+            "kind": "control",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_message_kind",
+          "node_message",
+          "node_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_message_kind"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/055_message_parser_state_may_v4.c",
+  "source_sha256": "41921a0ba93aa3d4e0f07cf0bf821976b0d33a5f1baed53bb7cb71d85d774ddc",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_message_value",
+      "kind": "message_field",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 25
+      },
+      "scope": "SESSION",
+      "symbol": "source_message_value"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_message_kind",
+      "kind": "message_field",
+      "location": {
+        "column": 13,
+        "file": "cases/055_message_parser_state_may_v4.c",
+        "line": 27
+      },
+      "scope": "SESSION",
+      "symbol": "source_message_kind"
+    }
+  ]
+}

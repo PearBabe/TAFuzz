@@ -1,0 +1,29 @@
+$ /home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor --formula /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/formula.mitl --word finite --build-mode flatten --state symbolic --out /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/build_only --build-only
+TAMonitor completed
+Formula satisfiable: SAT
+Final verdict: NOT_RUN_BUILD_ONLY
+Output: "/home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/build_only"
+
+$ /home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor --trace /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/positive.trace --formula /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/formula.mitl --word finite --build-mode flatten --state symbolic --out /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/positive_symbolic
+TAMonitor completed
+Formula satisfiable: SAT
+Final verdict: POSITIVE
+Output: "/home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/positive_symbolic"
+
+$ /home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor --trace /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/negative.trace --formula /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/formula.mitl --word finite --build-mode flatten --state symbolic --out /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/negative_symbolic
+TAMonitor completed
+Formula satisfiable: SAT
+Final verdict: NEGATIVE
+Output: "/home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/negative_symbolic"
+
+$ /home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor --trace /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/positive.trace --formula /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/formula.mitl --word finite --build-mode flatten --state concrete --out /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/positive_concrete
+TAMonitor completed
+Formula satisfiable: SAT
+Final verdict: POSITIVE
+Output: "/home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/positive_concrete"
+
+$ /home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor --trace /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/negative.trace --formula /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/formula.mitl --word finite --build-mode flatten --state concrete --out /home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/negative_concrete
+TAMonitor completed
+Formula satisfiable: SAT
+Final verdict: NEGATIVE
+Output: "/home/lqq/project/TAFuzz/analysis/protocol_fuzzing_study/protocols/tcp/validation/TCP-R2-01/negative_concrete"

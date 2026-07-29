@@ -1,0 +1,475 @@
+{
+  "protocol": "CoAP",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/ietf_app_protocols/coap/evidence.json",
+      "record": {
+        "protocol": "CoAP",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_ROOT_REVIEW",
+        "scope": "RFC 7252 timers, retransmission, Message ID lifetime, and multicast leisure obligations with fixed libcoap source mappings",
+        "semantics": "Mathematical MITL uses ordinary G over complete correlated behaviors. MightyPPL validation uses the tool-specific weak finite G* over declared terminal projections; timed words are pointwise with absolute integer milliseconds, flatten construction, and omitted APs=false.",
+        "root_review": {
+          "completed": true,
+          "proposal_count": 7,
+          "default_status": "ROOT_REVIEWED",
+          "adapter_caveat": {
+            "proposal_id": "COAP-MID-01",
+            "status": "ROOT_REVIEWED_WITH_ADAPTER_CAVEAT"
+          }
+        },
+        "standard": {
+          "title": "The Constrained Application Protocol (CoAP)",
+          "version": "RFC 7252 (June 2014)",
+          "html_url": "https://www.rfc-editor.org/rfc/rfc7252.html",
+          "text_url": "https://www.rfc-editor.org/rfc/rfc7252.txt",
+          "local_text_artifact": "/tmp/tafuzz_ietf_refs/rfc7252.txt",
+          "text_sha256": "abfe8cce3370b5b32487421b35725eb6eaf962ea454cad008b5a5cd052e27c5f",
+          "sections_reviewed": [
+            "4.2",
+            "4.3",
+            "4.4",
+            "4.5",
+            "4.7",
+            "4.8",
+            "4.8.1",
+            "4.8.2",
+            "5.2.2",
+            "8.2"
+          ],
+          "short_excerpt_limit": "all admitted excerpts contain at most 20 whitespace-delimited English words"
+        },
+        "implementation": {
+          "repository": "obgm/libcoap",
+          "version": "v4.3.5",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "tree_url": "https://github.com/obgm/libcoap/tree/7cf7465b784baded4de183290c547d582becfd28",
+          "local_checkout": "/tmp/tafuzz_ietf_sources/libcoap",
+          "head_verified": true,
+          "checkout_clean": true,
+          "selection": "mature maintained CoAP implementation used only for fixed source-level observability mappings",
+          "files": [
+            {
+              "path": "src/coap_net.c",
+              "sha256": "663b78b647bf5dcda84fcd567a488ad38a88c69cb0c257207bfb36ffbdaf2601",
+              "symbols": [
+                "coap_calc_timeout",
+                "coap_wait_ack",
+                "coap_send_internal",
+                "coap_retransmit",
+                "coap_dispatch",
+                "handle_request multicast delayed-response branch"
+              ],
+              "line_ranges": [
+                "1123-1180",
+                "1855-2007",
+                "3552-3604",
+                "3983-3993",
+                "4089-4139"
+              ]
+            },
+            {
+              "path": "src/coap_session.c",
+              "sha256": "e01cc7967c7db80ed7cb1db91459c0a8102f3e36816c0e08555ed718359efc35",
+              "symbols": [
+                "coap_make_session",
+                "coap_new_message_id_lkd"
+              ],
+              "line_ranges": [
+                "455-460",
+                "1898-1914"
+              ]
+            },
+            {
+              "path": "include/coap3/coap_session_internal.h",
+              "sha256": "256aa3e19f87f9480f0ff0424a8e50f1bb0a85c9826010bd53732d1d74506f93",
+              "symbols": [
+                "COAP_DEFAULT_LEISURE_TICKS",
+                "COAP_MAX_TRANSMIT_SPAN",
+                "COAP_EXCHANGE_LIFETIME"
+              ],
+              "line_ranges": [
+                "608-628",
+                "665-673"
+              ]
+            }
+          ]
+        },
+        "proposal_evidence": [
+          {
+            "proposal_id": "COAP-TX-01",
+            "standard_locator": "RFC 7252 Sections 4.2 and 4.8; text lines 1167-1177 and Table 2 lines 1484-1492",
+            "source_locators": [
+              "src/coap_net.c:1123-1180 coap_calc_timeout/coap_wait_ack absolute queue deadline",
+              "src/coap_net.c:1883-1901 coap_send_internal initial randomized timeout",
+              "src/coap_session.c:455-457 default parameter initialization"
+            ],
+            "value_derivation": "ACK_TIMEOUT=2000 ms; ACK_TIMEOUT*ACK_RANDOM_FACTOR=2000*1.5=3000 ms; the bounded AP is the stored absolute deadline crossing, not callback dispatch"
+          },
+          {
+            "proposal_id": "COAP-TX-02",
+            "standard_locator": "RFC 7252 Section 4.2; text lines 1183-1187",
+            "source_locators": [
+              "src/coap_net.c:1908-1969 coap_retransmit next_delay and absolute queue deadline"
+            ],
+            "value_derivation": "the first post-retransmission wait is twice the 2000--3000 ms initial timeout: 4000--6000 ms; callback scheduling is excluded from the bounded AP"
+          },
+          {
+            "proposal_id": "COAP-TX-03",
+            "standard_locator": "RFC 7252 Sections 4.2 and 4.8; text lines 1183-1189 and Table 2",
+            "source_locators": [
+              "src/coap_net.c:1918-1939 coap_retransmit commits the final absolute queue deadline",
+              "src/coap_net.c:1951-1969 actual retransmission send hook",
+              "src/coap_net.c:1972-2007 no-more-retransmissions and later coap_retry_failure_callback_reported diagnostic"
+            ],
+            "value_derivation": "after retransmit_cnt reaches 4, the final wait is 2^4 times the 2000--3000 ms initial timeout: 32000--48000 ms; deadline crossing is bounded, while callback completion is only subsequent diagnostic evidence"
+          },
+          {
+            "proposal_id": "COAP-TX-04",
+            "standard_locator": "RFC 7252 Sections 4.2 and 4.8.2; text lines 1194-1198 and 1553-1556",
+            "source_locators": [
+              "src/coap_net.c:1855-1901 coap_send_internal initial successful-send and queue-generation hooks",
+              "src/coap_net.c:1908-1969 coap_retransmit successful-send hook",
+              "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/include/coap3/coap_session_internal.h#L618-L628 additional COAP_MAX_TRANSMIT_SPAN constant definition"
+            ],
+            "value_derivation": "(2+4+8+16)*1.5 seconds = 45000 ms"
+          },
+          {
+            "proposal_id": "COAP-TX-05",
+            "standard_locator": "RFC 7252 Section 4.2; text lines 1167-1169 and 1185-1189",
+            "source_locators": [
+              "src/coap_net.c:3983-3993 and 4089-4139 coap_dispatch queue removal"
+            ],
+            "value_derivation": "unbounded post-discharge safety obligation over the remaining finite projection"
+          },
+          {
+            "proposal_id": "COAP-MID-01",
+            "standard_locator": "RFC 7252 Sections 4.4 and 4.8.2; text lines 1302-1306 and 1639-1641",
+            "source_locators": [
+              "src/coap_session.c:1898-1914 coap_new_message_id_lkd",
+              "include/coap3/coap_session_internal.h:665-673 COAP_EXCHANGE_LIFETIME"
+            ],
+            "value_derivation": "default EXCHANGE_LIFETIME = 247 seconds = 247000 ms"
+          },
+          {
+            "proposal_id": "COAP-MCAST-01",
+            "standard_locator": "RFC 7252 Sections 8.2 and 4.8; text lines 3668-3672, 3690-3691, and Table 2",
+            "source_locators": [
+              "src/coap_net.c:3552-3604 multicast delayed-response branch",
+              "src/coap_session.c:455-460 default_leisure initialization"
+            ],
+            "value_derivation": "DEFAULT_LEISURE=5 seconds = 5000 ms for the explicitly fixed default path"
+          }
+        ],
+        "formula_validation": {
+          "validator": "/home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor",
+          "command_profile": "--word finite --build-mode flatten; each trace checked once with --state symbolic and once with --state concrete",
+          "persistent_validation_artifacts": false,
+          "results": [
+            {
+              "id": "COAP-TX-01",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE",
+              "additional_negative_results": {
+                "late_or_missing_deadline": {
+                  "symbolic": "NEGATIVE",
+                  "concrete": "NEGATIVE"
+                }
+              }
+            },
+            {
+              "id": "COAP-TX-02",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE",
+              "additional_negative_results": {
+                "late_or_missing_deadline": {
+                  "symbolic": "NEGATIVE",
+                  "concrete": "NEGATIVE"
+                }
+              }
+            },
+            {
+              "id": "COAP-TX-03",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE",
+              "additional_negative_results": {
+                "early_deadline": {
+                  "symbolic": "NEGATIVE",
+                  "concrete": "NEGATIVE"
+                },
+                "late_or_missing_deadline": {
+                  "symbolic": "NEGATIVE",
+                  "concrete": "NEGATIVE"
+                }
+              }
+            },
+            {
+              "id": "COAP-TX-04",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE"
+            },
+            {
+              "id": "COAP-TX-05",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE"
+            },
+            {
+              "id": "COAP-MID-01",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE"
+            },
+            {
+              "id": "COAP-MCAST-01",
+              "build": "PASS",
+              "positive_symbolic": "POSITIVE",
+              "negative_symbolic": "NEGATIVE",
+              "positive_concrete": "POSITIVE",
+              "negative_concrete": "NEGATIVE",
+              "additional_negative_results": {
+                "late_or_missing_response": {
+                  "symbolic": "NEGATIVE",
+                  "concrete": "NEGATIVE"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "COAP-MCAST-01",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "8.2; 4.8",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-8.2",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "3552-3604",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3552-L3604",
+      "auxiliary_source_mappings": [
+        {
+          "role": "delayed multicast response send",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-1969",
+          "atomic_propositions": [
+            "coap_multicast_response_sent"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "COAP-MID-01",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "4.4; 4.8.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-4.4",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "1014-1050",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1014-L1050",
+      "auxiliary_source_mappings": [
+        {
+          "role": "Message ID allocation prerequisite",
+          "path": "src/coap_session.c",
+          "symbol": "coap_new_message_id_lkd",
+          "lines": "1909-1915",
+          "atomic_propositions": [
+            "coap_mid_first_used",
+            "coap_same_mid_reused"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_session.c#L1909-L1915"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "COAP-TX-01",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "4.2; 4.8",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-4.2",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "1123-1180;1883-1901",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1123-L1180",
+      "auxiliary_source_mappings": [
+        {
+          "role": "matching ACK/RST queue removal",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4128-4133",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993"
+        },
+        {
+          "role": "explicit local exchange cancellation",
+          "path": "src/coap_net.c",
+          "symbol": "coap_cancel_session_messages / coap_cancel_all_messages",
+          "lines": "2573-2613;2616-2646",
+          "atomic_propositions": [
+            "coap_attempt_cancelled"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L2573-L2613"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "COAP-TX-02",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "4.2; 4.8",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-4.2",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "1908-1969",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969",
+      "auxiliary_source_mappings": [
+        {
+          "role": "matching ACK/RST queue removal",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4128-4133",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993"
+        },
+        {
+          "role": "explicit local exchange cancellation",
+          "path": "src/coap_net.c",
+          "symbol": "coap_cancel_session_messages / coap_cancel_all_messages",
+          "lines": "2573-2613;2616-2646",
+          "atomic_propositions": [
+            "coap_attempt_cancelled"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L2573-L2613"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "COAP-TX-03",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "4.2; 4.8",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-4.2",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "1908-2007",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L2007",
+      "auxiliary_source_mappings": [
+        {
+          "role": "matching ACK/RST queue removal",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4128-4133",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993"
+        },
+        {
+          "role": "explicit local exchange cancellation",
+          "path": "src/coap_net.c",
+          "symbol": "coap_cancel_session_messages / coap_cancel_all_messages",
+          "lines": "2573-2613;2616-2646",
+          "atomic_propositions": [
+            "coap_attempt_cancelled"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L2573-L2613"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "COAP-TX-04",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "4.2; 4.8.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-4.8.2",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "1855-1969",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1855-L1969",
+      "auxiliary_source_mappings": [
+        {
+          "role": "MAX_TRANSMIT_SPAN implementation expression",
+          "path": "include/coap3/coap_session_internal.h",
+          "symbol": "COAP_MAX_TRANSMIT_SPAN",
+          "lines": "618-628",
+          "atomic_propositions": [
+            "coap_con_initial_sent"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/include/coap3/coap_session_internal.h#L618-L628"
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "COAP-TX-05",
+      "protocol": "CoAP",
+      "standard": "RFC 7252",
+      "standard_version": "RFC 7252 (June 2014)",
+      "section": "4.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc7252.html#section-4.2",
+      "source_repository": "obgm/libcoap",
+      "source_commit": "7cf7465b784baded4de183290c547d582becfd28",
+      "source_path": "src/coap_net.c",
+      "source_lines": "3983-3993;4089-4139",
+      "source_url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993",
+      "auxiliary_source_mappings": [
+        {
+          "role": "subsequent send for the same queue-node generation",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-1969",
+          "atomic_propositions": [
+            "coap_same_con_retransmitted"
+          ],
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969"
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

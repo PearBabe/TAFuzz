@@ -1,0 +1,79 @@
+{
+  "schema_version": "2.0.0",
+  "model_pack_id": "pack.adapter.neutral-read-arg",
+  "model_pack_version": "1.0.0",
+  "layer": "project_adapter",
+  "property_independent": true,
+  "target": {
+    "target_version": "neutral-read-arg-1",
+    "target_abi": "c-int32-charpp",
+    "evidence_id": "evidence.neutral-read-arg-interface",
+    "digest_policy": "freeze_before_property"
+  },
+  "resource_limits": {
+    "max_selector_matches": 100000,
+    "max_capture_values": 100000,
+    "max_join_assignments": 100000,
+    "max_emitted_facts": 100000
+  },
+  "selectors": [
+    {
+      "selector_id": "selector.neutral.read-arg",
+      "kind": "exact_qualified_signature",
+      "exact_value": "read_arg:int (int, char **, int, int)",
+      "application_private": true
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "rule.neutral.read-arg-result",
+      "matches": [
+        {
+          "match_id": "match.neutral.read-arg",
+          "selector_ref": "selector.neutral.read-arg"
+        }
+      ],
+      "captures": [
+        {
+          "capture_id": "capture.neutral.read-arg-result",
+          "match_ref": "match.neutral.read-arg",
+          "projection": "call_result"
+        }
+      ],
+      "joins": [],
+      "emits": [
+        {
+          "emit_id": "emit.neutral.read-arg-result",
+          "fact_kind": "external_boundary",
+          "source_capture_ref": "capture.neutral.read-arg-result",
+          "certainty": "modelled",
+          "transfer_relation": "parsed_integer_returned",
+          "value_transfer": {
+            "kind": "parse_identity_with_precondition",
+            "precondition": "canonical_decimal_integer_in_range",
+            "executor_enforces_precondition": true,
+            "failure_branch_unknown": true
+          },
+          "external_action": {
+            "action_schema_id": "action.neutral.integer-argument",
+            "action_class": "integer_argument",
+            "channel": "process_argument",
+            "operation": "supply_integer",
+            "payload_type": {
+              "kind": "integer",
+              "canonical": "int",
+              "bit_width": 32,
+              "signed": true
+            },
+            "payload_slot": "captured_callsite_argument",
+            "scope_schema": "process_epoch",
+            "generation_schema": "process_epoch",
+            "timing_capability": "startup_only",
+            "required_capability": "environment"
+          }
+        }
+      ],
+      "evidence_note": "The adapter interface returns one integer supplied through a process argument."
+    }
+  ]
+}

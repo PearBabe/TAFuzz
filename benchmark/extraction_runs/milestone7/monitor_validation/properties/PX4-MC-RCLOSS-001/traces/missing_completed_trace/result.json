@@ -1,0 +1,85 @@
+{
+  "boundary_region": "missing",
+  "case_kind": "missing_completed_trace",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 2500,
+    "response_delta_ticks": null,
+    "threshold_ticks": 500,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "The independent oracle treats this synthetic finite word as complete and no required response occurs.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 136,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/monitor_trace.csv",
+    "sha256": "dd89b8ac82eac9e9f05f5f7a4152a383b9bea54e2fda949c0e2ccba0eb365b82"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 0,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "PX4-MC-RCLOSS-001:trace:missing_completed_trace",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1367,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor/metadata.json",
+      "sha256": "48eef27c76e8d28a951b4c9285c32429f4868b2476409124605a8cc1ad9a4f00"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 969,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor.stdout.txt",
+      "sha256": "54a4b0684682c426976cdd56d9aa488002af8f9d525aa9189e25fb5005def567"
+    },
+    "steps": {
+      "bytes": 385,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/tamonitor/steps.csv",
+      "sha256": "3efaf156af250a8ed5fe4fd22e320593d9a6159f647d29d94910202e41bc439e"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 2500,
+      "monitor_advanced": true,
+      "negative_states": 2,
+      "positive_states": 1,
+      "step": 5,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 2733,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/missing_completed_trace/trace.json",
+    "sha256": "5947b276364c4aab377eddaf07e3b4936422fd0f424ef99f835cb174b76b71e0"
+  },
+  "trace_id": "PX4-MC-RCLOSS-001--missing_completed_trace"
+}

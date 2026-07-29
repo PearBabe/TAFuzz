@@ -1,0 +1,52 @@
+[
+  {
+    "duration_seconds": 4.007584549,
+    "end_host_monotonic_ns": 8202862573863,
+    "end_host_wall_utc": "2026-07-17T23:10:57.318921+00:00",
+    "name": "STARTUP",
+    "notes": "Stable target is defined by receiving the expected vehicle HEARTBEAT, then observing a three-second passive warmup.",
+    "start_host_monotonic_ns": 8198854989314,
+    "start_host_wall_utc": "2026-07-17T23:10:53.311329+00:00",
+    "traffic_origin": "Passive UDP receive only; no PARAM or MAV_CMD request was sent."
+  },
+  {
+    "duration_seconds": 12.000524119,
+    "end_host_monotonic_ns": 8214863189500,
+    "end_host_wall_utc": "2026-07-17T23:11:10.246496+00:00",
+    "name": "BASELINE",
+    "notes": "This phase is measured after target HEARTBEAT and passive warmup. It is kept separate so later request responses are not classified as default streams.",
+    "start_host_monotonic_ns": 8202862665381,
+    "start_host_wall_utc": "2026-07-17T23:10:57.319004+00:00",
+    "traffic_origin": "Passive firmware-default stream only; no outbound request and no harness heartbeat."
+  },
+  {
+    "duration_seconds": 0.991262244,
+    "end_host_monotonic_ns": 8215854647656,
+    "end_host_wall_utc": "2026-07-17T23:11:11.237878+00:00",
+    "name": "PARAMETER_DOWNLOAD",
+    "notes": "Full runtime parameter enumeration. Source defaults are never substituted.",
+    "start_host_monotonic_ns": 8214863385412,
+    "start_host_wall_utc": "2026-07-17T23:11:10.246616+00:00",
+    "traffic_origin": "Harness GCS HEARTBEAT plus PARAM_REQUEST_LIST/PARAM_REQUEST_READ; no PARAM_SET."
+  },
+  {
+    "duration_seconds": 22.060892696,
+    "end_host_monotonic_ns": 8237931673062,
+    "end_host_wall_utc": "2026-07-17T23:11:33.314904+00:00",
+    "name": "REQUEST_SWEEP",
+    "notes": "ACK and message observation are recorded independently. A message seen in the request window is not claimed causal when it was already a baseline stream.",
+    "start_host_monotonic_ns": 8215870780366,
+    "start_host_wall_utc": "2026-07-17T23:11:11.254013+00:00",
+    "traffic_origin": "One serial MAV_CMD_REQUEST_MESSAGE (command 512) per frozen all.xml message ID."
+  },
+  {
+    "duration_seconds": 15.252543002,
+    "end_host_monotonic_ns": 8253191753397,
+    "end_host_wall_utc": "2026-07-17T23:11:49.512789+00:00",
+    "name": "RELEVANT_STREAM_SAMPLE",
+    "notes": "This phase follows and is excluded from the passive baseline and request sweep.",
+    "start_host_monotonic_ns": 8237939210395,
+    "start_host_wall_utc": "2026-07-17T23:11:33.322444+00:00",
+    "traffic_origin": "MAV_CMD_SET_MESSAGE_INTERVAL for selected AP-observation messages, then timed receive."
+  }
+]

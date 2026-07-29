@@ -1,0 +1,121 @@
+Configuring the project
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AC_PrecLand/AC_PrecLand_StateMachine.cpp:219:13: warning: absolute value function 'fabsf' given an argument of type 'double' but has parameter of type 'float' which may cause truncation of value [-Wabsolute-value]
+  219 |         if (fabsf(pos.z - retry_pos_m.z) < MAX_POS_ERROR_M) {
+      |             ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AC_PrecLand/AC_PrecLand_StateMachine.cpp:219:13: note: use function 'std::abs' instead
+  219 |         if (fabsf(pos.z - retry_pos_m.z) < MAX_POS_ERROR_M) {
+      |             ^~~~~
+      |             std::abs
+1 warning generated.
+
+In file included from /home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX_CFGv2.cpp:21:
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+  748 |     UBLOX_GNSS(UBLOX_GNSS_TYPE_ASSERT)
+      |                ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+7 warnings generated.
+
+In file included from /home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.cpp:21:
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+  748 |     UBLOX_GNSS(UBLOX_GNSS_TYPE_ASSERT)
+      |                ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+7 warnings generated.
+
+In file included from /home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS.cpp:40:
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+  748 |     UBLOX_GNSS(UBLOX_GNSS_TYPE_ASSERT)
+      |                ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_GPS/AP_GPS_UBLOX.h:748:16: warning: 'static_assert' with no message is a C++17 extension [-Wc++17-extensions]
+7 warnings generated.
+
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_IRLock/AP_IRLock_I2C.cpp:45:11: warning: moving a temporary object prevents copy elision [-Wpessimizing-move]
+   45 |     dev = std::move(hal.i2c_mgr->get_device(bus, IRLOCK_I2C_ADDRESS));
+      |           ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_IRLock/AP_IRLock_I2C.cpp:45:11: note: remove std::move call here
+   45 |     dev = std::move(hal.i2c_mgr->get_device(bus, IRLOCK_I2C_ADDRESS));
+      |           ^~~~~~~~~~                                                ~
+1 warning generated.
+
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_Notify/NCP5623.cpp:71:16: warning: moving a temporary object prevents copy elision [-Wpessimizing-move]
+   71 |         _dev = std::move(hal.i2c_mgr->get_device(_bus, addrs[i]));
+      |                ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_Notify/NCP5623.cpp:71:16: note: remove std::move call here
+   71 |         _dev = std::move(hal.i2c_mgr->get_device(_bus, addrs[i]));
+      |                ^~~~~~~~~~                                       ~
+1 warning generated.
+
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_OpticalFlow/AP_OpticalFlow_Pixart.cpp:91:12: warning: moving a temporary object prevents copy elision [-Wpessimizing-move]
+   91 |     _dev = std::move(hal.spi->get_device(devname));
+      |            ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_OpticalFlow/AP_OpticalFlow_Pixart.cpp:91:12: note: remove std::move call here
+   91 |     _dev = std::move(hal.spi->get_device(devname));
+      |            ^~~~~~~~~~                            ~
+1 warning generated.
+
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_PiccoloCAN/piccolo_protocol/scaledencode.c:71:23: warning: implicit conversion from 'unsigned long' to 'float' changes value from 4294967295 to 4294967296 [-Wimplicit-const-int-float-conversion]
+   71 |     if(scaledvalue >= 4294967295ul)
+      |                    ~~ ^~~~~~~~~~~~
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_PiccoloCAN/piccolo_protocol/scaledencode.c:99:23: warning: implicit conversion from 'unsigned long' to 'float' changes value from 4294967295 to 4294967296 [-Wimplicit-const-int-float-conversion]
+   99 |     if(scaledvalue >= 4294967295ul)
+      |                    ~~ ^~~~~~~~~~~~
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_PiccoloCAN/piccolo_protocol/scaledencode.c:128:27: warning: implicit conversion from 'long' to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  128 |         if(scaledvalue >= 2147483647l)
+      |                        ~~ ^~~~~~~~~~~
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_PiccoloCAN/piccolo_protocol/scaledencode.c:163:27: warning: implicit conversion from 'long' to 'float' changes value from 2147483647 to 2147483648 [-Wimplicit-const-int-float-conversion]
+  163 |         if(scaledvalue >= 2147483647l)
+      |                        ~~ ^~~~~~~~~~~
+4 warnings generated.
+
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/SITL/SIM_GPS.cpp:580:35: warning: absolute value function 'fabsf' given an argument of type 'double' but has parameter of type 'float' which may cause truncation of value [-Wabsolute-value]
+  580 |     const double cosine_of_lat = (fabsf(d.latitude) < highest_permissible_lat_deg) ? cos(radians(d.latitude)) : cos(radians(highest_permissible_lat_deg));
+      |                                   ^
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/SITL/SIM_GPS.cpp:580:35: note: use function 'std::abs' instead
+  580 |     const double cosine_of_lat = (fabsf(d.latitude) < highest_permissible_lat_deg) ? cos(radians(d.latitude)) : cos(radians(highest_permissible_lat_deg));
+      |                                   ^~~~~
+      |                                   std::abs
+1 warning generated.
+
+/home/lqq/project/TAFuzz/baseline/ardupilot/libraries/AP_ADSB/sagetech-sdk/float2Buf.c:23:23: warning: variable length array folded to constant array as an extension [-Wgnu-folding-constant]
+   23 |         unsigned char bytes[FLOAT_SIZE];
+      |                       ^
+1 warning generated.
+
+	Command being timed: "timeout 2700 /home/lqq/anaconda3/bin/python ./waf -j8 -o /tmp/rift-ardupilot-clang/build -t /home/lqq/project/TAFuzz/baseline/ardupilot --no-lock-in-top --no-lock-in-run copter"
+	User time (seconds): 868.86
+	System time (seconds): 86.88
+	Percent of CPU this job got: 756%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:06.42
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 181948
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 56
+	Minor (reclaiming a frame) page faults: 17217183
+	Voluntary context switches: 132669
+	Involuntary context switches: 13393
+	Swaps: 0
+	File system inputs: 274265
+	File system outputs: 252312
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

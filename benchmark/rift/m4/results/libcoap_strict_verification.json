@@ -1,0 +1,186 @@
+{
+  "certificate_path": "/tmp/rift-m4-libcoap-final-v6a/analysis_certificate.json",
+  "failure_count": 0,
+  "findings": [
+    {
+      "check_id": "certificate.exists",
+      "detail": "non-empty analysis_certificate.json exists",
+      "status": "PASS"
+    },
+    {
+      "check_id": "certificate.schema_version",
+      "detail": "analysis certificate schema 2.0.0",
+      "status": "PASS"
+    },
+    {
+      "check_id": "certificate.toolchain",
+      "detail": "19 digest-bound runtime components include analyzer bytes",
+      "status": "PASS"
+    },
+    {
+      "check_id": "analyzer.binary_bytes",
+      "detail": "supplied analyzer bytes match certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "analyzer.configuration_reconstruction",
+      "detail": "supplied argv matches configuration digest",
+      "status": "PASS"
+    },
+    {
+      "check_id": "build_manifest.source_tree",
+      "detail": "replayed 16 production and 8 schema files",
+      "status": "PASS"
+    },
+    {
+      "check_id": "build_manifest.binary_embedding",
+      "detail": "binary embeds policy, manifest, production-core, and schema commitments",
+      "status": "PASS"
+    },
+    {
+      "check_id": "build_manifest.contract",
+      "detail": "generated and certified build manifests agree",
+      "status": "PASS"
+    },
+    {
+      "check_id": "environment.v2",
+      "detail": "exact 16-variable hash vector and aggregate agree",
+      "status": "PASS"
+    },
+    {
+      "check_id": "environment.raw_values",
+      "detail": "all 16 supplied raw environment values rehash exactly",
+      "status": "PASS"
+    },
+    {
+      "check_id": "toolchain.physical_files",
+      "detail": "19 analyzer/loader/shared-object files rehash and identify the exact toolchain set",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.inputs",
+      "detail": "required input kinds are present exactly once",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.input_bytes",
+      "detail": "all declared input byte digests match",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.outputs",
+      "detail": "four required output kinds are present exactly once",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.output_bytes",
+      "detail": "all four output byte digests match",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.output_identity",
+      "detail": "output artifact identities match descriptors",
+      "status": "PASS"
+    },
+    {
+      "check_id": "stages.topology",
+      "detail": "fixed five-stage topology is complete and ordered",
+      "status": "PASS"
+    },
+    {
+      "check_id": "stages.closure",
+      "detail": "each stage consumes exactly predecessor/input bytes and produces its declared artifact",
+      "status": "PASS"
+    },
+    {
+      "check_id": "formats.semantic_index",
+      "detail": "semantic-index v2 lossless fields detected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source.input_manifest",
+      "detail": "280 logical content digests aggregate correctly and close over 38 TUs",
+      "status": "PASS"
+    },
+    {
+      "check_id": "formats.contextual_graph",
+      "detail": "contextual-graph v2 canonical fields detected",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.input_identity",
+      "detail": "property IR identity matches certificate",
+      "status": "PASS"
+    },
+    {
+      "check_id": "formats.bindings",
+      "detail": "ap-bindings schema 2.0.0 policy is valid",
+      "status": "PASS"
+    },
+    {
+      "check_id": "bindings.group_closure",
+      "detail": "12 AP roles close over 18 role-DNF groups",
+      "status": "PASS"
+    },
+    {
+      "check_id": "bindings.candidate_groups",
+      "detail": "18 candidates bind exact selector_group_id/all_of provenance",
+      "status": "PASS"
+    },
+    {
+      "check_id": "soundness.binding_resolution",
+      "detail": "12 role-DNF resolutions agree with per-group accounting",
+      "status": "PASS"
+    },
+    {
+      "check_id": "artifacts.internal_chain",
+      "detail": "all embedded input/output digest references close",
+      "status": "PASS"
+    },
+    {
+      "check_id": "certificate.identity_v2",
+      "detail": "certificate_id binds analysis, configuration, and four output digests",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source.certificate_commitment",
+      "detail": "certificate source_inputs and analysis_id bind the verified source manifest",
+      "status": "PASS"
+    },
+    {
+      "check_id": "source.physical_provenance",
+      "detail": "rehash verified 279 physical paths; only content-addressed predefines are pathless",
+      "status": "PASS"
+    },
+    {
+      "check_id": "soundness.gap_closure",
+      "detail": "certificate gaps exactly close over outputs",
+      "status": "PASS"
+    },
+    {
+      "check_id": "soundness.status",
+      "detail": "stage, artifact, gap, and aggregate statuses are conservative",
+      "status": "PASS"
+    },
+    {
+      "check_id": "graph.endpoints",
+      "detail": "all graph endpoints and available v2 conditions exist",
+      "status": "PASS"
+    },
+    {
+      "check_id": "cones.membership_fixed_point",
+      "detail": "4 cones exactly match the four-class path-mask fixed point",
+      "status": "PASS"
+    },
+    {
+      "check_id": "cones.witness_reachability",
+      "detail": "4 cones have closed witnesses, complete fixed-point members, and independently derived memberships",
+      "status": "PASS"
+    }
+  ],
+  "overall_status": "PASS",
+  "schema_version": "rift.verification-report/1.0.0",
+  "strict_provenance": true,
+  "unsupported_count": 0,
+  "verifier_version": "0.4.0"
+}

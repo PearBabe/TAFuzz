@@ -1,0 +1,346 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 57
+      },
+      "token": "ap_primary"
+    },
+    "node_callback_state": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 55
+      },
+      "token": "node_callback_state"
+    },
+    "node_dequeued": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 47
+      },
+      "token": "node_dequeued"
+    },
+    "node_queue": {
+      "kind": "NODE",
+      "location": {
+        "column": 29,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 44
+      },
+      "token": "node_queue"
+    },
+    "node_timer": {
+      "kind": "NODE",
+      "location": {
+        "column": 29,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 49
+      },
+      "token": "node_timer"
+    },
+    "source_payload": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 38
+      },
+      "token": "source_payload"
+    },
+    "source_queue_accept": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 40
+      },
+      "token": "source_queue_accept"
+    },
+    "source_timer_fire": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 42
+      },
+      "token": "source_timer_fire"
+    }
+  },
+  "aps": [
+    {
+      "expression": "callback-committed state >= 6",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 57
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-065",
+  "case_relation": "MAY_INFLUENCE",
+  "category": "async_timer_callback_queue",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The template models enqueue, dequeue, timer fire, callback invocation, and state commit as distinct mechanically known stages; the negative path drops before commit.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "async_timer_callback_queue",
+    "variant": 4
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "enqueue",
+        "dequeue",
+        "timer",
+        "callback",
+        "state_commit"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross threshold when enqueue succeeds and timer fires",
+        "kind": "async_payload_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "5",
+          "6"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_payload",
+            "kind": "enqueue",
+            "to": "node_queue"
+          },
+          {
+            "certainty": "may",
+            "from": "node_queue",
+            "kind": "dequeue",
+            "to": "node_dequeued"
+          },
+          {
+            "certainty": "may",
+            "from": "node_dequeued",
+            "kind": "timer",
+            "to": "node_timer"
+          },
+          {
+            "certainty": "may",
+            "from": "node_timer",
+            "kind": "callback",
+            "to": "node_callback_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_callback_state",
+            "kind": "state_commit",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_payload",
+          "node_queue",
+          "node_dequeued",
+          "node_timer",
+          "node_callback_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_queue_accept != 0",
+        "source_timer_fire != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_payload"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control",
+        "dequeue",
+        "timer",
+        "callback",
+        "state_commit"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "accept or drop queued item",
+        "kind": "drop_toggle",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_queue_accept",
+            "kind": "control",
+            "to": "node_queue"
+          },
+          {
+            "certainty": "may",
+            "from": "node_queue",
+            "kind": "dequeue",
+            "to": "node_dequeued"
+          },
+          {
+            "certainty": "may",
+            "from": "node_dequeued",
+            "kind": "timer",
+            "to": "node_timer"
+          },
+          {
+            "certainty": "may",
+            "from": "node_timer",
+            "kind": "callback",
+            "to": "node_callback_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_callback_state",
+            "kind": "state_commit",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_queue_accept",
+          "node_queue",
+          "node_dequeued",
+          "node_timer",
+          "node_callback_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_timer_fire != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_queue_accept"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "timer",
+        "callback",
+        "state_commit"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "arm or suppress timer firing",
+        "kind": "timer_fire",
+        "relative_time_window": "at the queued callback deadline",
+        "suggested_values": [
+          "0",
+          "1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "may",
+            "from": "source_timer_fire",
+            "kind": "timer",
+            "to": "node_timer"
+          },
+          {
+            "certainty": "may",
+            "from": "node_timer",
+            "kind": "callback",
+            "to": "node_callback_state"
+          },
+          {
+            "certainty": "may",
+            "from": "node_callback_state",
+            "kind": "state_commit",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_timer_fire",
+          "node_timer",
+          "node_callback_state",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [
+        "source_queue_accept != 0"
+      ],
+      "relation": "MAY_INFLUENCE",
+      "source_id": "source_timer_fire"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/065_async_timer_callback_queue_may_v4.c",
+  "source_sha256": "3b8ec11f8f269954a1ff30e7bff796b98f707cc7d4462d77589948f32ac455df",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_payload",
+      "kind": "callback_payload",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 38
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_payload"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_queue_accept",
+      "kind": "queue_operation",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 40
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_queue_accept"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_timer_fire",
+      "kind": "event_operation",
+      "location": {
+        "column": 13,
+        "file": "cases/065_async_timer_callback_queue_may_v4.c",
+        "line": 42
+      },
+      "scope": "EVENT_SEQUENCE",
+      "symbol": "source_timer_fire"
+    }
+  ]
+}

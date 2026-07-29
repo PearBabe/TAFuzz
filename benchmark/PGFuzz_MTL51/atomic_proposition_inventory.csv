@@ -1,0 +1,179 @@
+system,property_id,ap_id,role,expression,truth_meaning_zh,terms,binding_status,implementation_satisfaction
+ArduPilot,A.RTL1,A.RTL1-AP01,antecedent,ALT_t < RTL_ALT,当前高度低于 ArduPilot 返航高度参数。,ALT_t|RTL_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL1,A.RTL1-AP02,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL1,A.RTL1-AP03,consequent,ALT_t-1 < ALT_t,当前观测高度高于上一观测高度。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL2,A.RTL2-AP01,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL2,A.RTL2-AP02,antecedent,ALT_t >= RTL_ALT,当前高度达到或超过 ArduPilot 返航高度参数。,ALT_t|RTL_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL2,A.RTL2-AP03,antecedent,Pos_t != home_position,当前位置不等于返航参考位置。,Pos_t|home_position,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL2,A.RTL2-AP04,consequent,Pos_t-1 != Pos_t,当前位置与上一观测位置不同。,Pos_t-1|Pos_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL2,A.RTL2-AP05,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL3,A.RTL3-AP01,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL3,A.RTL3-AP02,antecedent,ALT_t >= RTL_ALT,当前高度达到或超过 ArduPilot 返航高度参数。,ALT_t|RTL_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL3,A.RTL3-AP03,antecedent,Pos_t = home_position,当前位置等于返航参考位置。,Pos_t|home_position,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL3,A.RTL3-AP04,consequent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL4,A.RTL4-AP01,antecedent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL4,A.RTL4-AP02,antecedent,ALT_t = GroundALT,当前高度严格等于论文所称地面高度。,ALT_t|GroundALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RTL4,A.RTL4-AP03,consequent,Disarm = on,电机处于锁定状态。,Disarm,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP01,antecedent,Mode_t = FLIP,当前飞行模式是翻滚模式。,Mode_t|FLIP,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP02,consequent,"Mode_t-1 in {ACRO,ALT_HOLD}",上一观测模式是特技或定高模式。,Mode_t-1|ACRO|ALT_HOLD,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP03,negated_consequent,Roll_t > 45deg,当前横滚角大于 45 度。,Roll_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP04,consequent_disjunct,Throttle_t <= 1500,当前油门通道值不超过 1500。,Throttle_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP05,consequent_disjunct,ALT_t < 10m,当前高度低于 10 米。,ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP06,condition_from_description,Roll_t < 45deg,当前横滚角小于 45 度；该条件来自论文自然语言，不是印刷公式中的同向原子。,Roll_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP07,condition_from_description,Throttle_t >= 1500,当前油门通道值达到或超过 1500；该条件来自论文自然语言。,Throttle_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP1,A.FLIP1-AP08,condition_from_description,ALT_t > 10m,当前高度高于 10 米；该条件来自论文自然语言。,ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP2,A.FLIP2-AP01,antecedent,Mode_t = FLIP,当前飞行模式是翻滚模式。,Mode_t|FLIP,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP2,A.FLIP2-AP02,antecedent,-90deg <= Roll_t <= 45deg,当前横滚角位于负 90 度到 45 度之间。,Roll_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP2,A.FLIP2-AP03,consequent,Roll_rate = 400deg/s,横滚角速度严格等于每秒 400 度。,Roll_rate,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP2,A.FLIP2-AP04,consequent,Roll_direction = right,横滚方向为右。,Roll_direction,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP3,A.FLIP3-AP01,antecedent,Mode_t = FLIP3,论文内部的 FLIP3 恢复阶段标签成立。,Mode_t|FLIP3,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP3,A.FLIP3-AP02,consequent,"F_[0,k](Roll_t = Roll_original)",在未知 k 时间内横滚恢复到原值。,Roll_t|Roll_original|k,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP3,A.FLIP3-AP03,consequent,"F_[0,k](Pitch_t = Pitch_original)",在未知 k 时间内俯仰恢复到原值。,Pitch_t|Pitch_original|k,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIP3,A.FLIP3-AP04,consequent,"F_[0,k](Yaw_t = Yaw_original)",在未知 k 时间内偏航恢复到原值。,Yaw_t|Yaw_original|k,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIPGeneral,A.FLIPGeneral-AP01,antecedent,Mode_t = FLIP1,论文内部的 FLIP1 开始阶段标签成立。,Mode_t|FLIP1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.FLIPGeneral,A.FLIPGeneral-AP02,consequent,"F_[0,2.5s](Mode_t = FLIP3)",2.5 秒内到达论文的 FLIP3 阶段。,Mode_t|FLIP3,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.ALT_HOLD1,A.ALT_HOLD1-AP01,antecedent,ALT_src = Baro,论文抽象的高度来源被标记为气压计。,ALT_src|Baro,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.ALT_HOLD1,A.ALT_HOLD1-AP02,consequent,ALT_t = ALT_Baro,当前高度严格等于气压计高度。,ALT_t|ALT_Baro,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.ALT_HOLD1,A.ALT_HOLD1-AP03,consequent,ALT_t != ALT_GPS,当前高度不等于 GPS 高度。,ALT_t|ALT_GPS,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.ALT_HOLD2,A.ALT_HOLD2-AP01,antecedent,Mode_t = ALT_HOLD,当前模式是 ArduPilot 定高模式。,Mode_t|ALT_HOLD,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.ALT_HOLD2,A.ALT_HOLD2-AP02,antecedent,Throttle_t = 1500,油门输入严格等于通道中值 1500。,Throttle_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.ALT_HOLD2,A.ALT_HOLD2-AP03,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE1,A.CIRCLE1-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE1,A.CIRCLE1-AP02,antecedent,RC_pitch < 1500,俯仰遥控输入小于通道中值。,RC_pitch,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE1,A.CIRCLE1-AP03,antecedent,Circle_radius_t > 0,当前绕圈半径为正数。,Circle_radius_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE1,A.CIRCLE1-AP04,consequent,Circle_radius_t < Circle_radius_t-1,绕圈半径比上一观测减小。,Circle_radius_t|Circle_radius_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE2,A.CIRCLE2-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE2,A.CIRCLE2-AP02,antecedent,RC_pitch > 1500,俯仰遥控输入大于通道中值。,RC_pitch,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE2,A.CIRCLE2-AP03,consequent,Circle_radius_t > Circle_radius_t-1,绕圈半径比上一观测增大。,Circle_radius_t|Circle_radius_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE3,A.CIRCLE3-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE3,A.CIRCLE3-AP02,antecedent,RC_roll > 1500,横滚遥控输入大于通道中值。,RC_roll,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE3,A.CIRCLE3-AP03,antecedent,Circle_direction_t = clockwise,绕圈方向是顺时针。,Circle_direction_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE3,A.CIRCLE3-AP04,consequent,Circle_speed_t > Circle_speed_t-1,绕圈速度比上一观测增大。,Circle_speed_t|Circle_speed_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE4,A.CIRCLE4-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE4,A.CIRCLE4-AP02,antecedent,RC_roll > 1500,横滚遥控输入大于通道中值。,RC_roll,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE4,A.CIRCLE4-AP03,antecedent,Circle_direction_t = counterclockwise,绕圈方向是逆时针。,Circle_direction_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE4,A.CIRCLE4-AP04,consequent,Circle_speed_t < Circle_speed_t-1,绕圈速度比上一观测减小。,Circle_speed_t|Circle_speed_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE5,A.CIRCLE5-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE5,A.CIRCLE5-AP02,antecedent,RC_roll < 1500,横滚遥控输入小于通道中值。,RC_roll,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE5,A.CIRCLE5-AP03,antecedent,Circle_direction_t = counterclockwise,绕圈方向是逆时针。,Circle_direction_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE5,A.CIRCLE5-AP04,consequent,Circle_speed_t > Circle_speed_t-1,绕圈速度比上一观测增大。,Circle_speed_t|Circle_speed_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE6,A.CIRCLE6-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE6,A.CIRCLE6-AP02,antecedent,RC_roll < 1500,横滚遥控输入小于通道中值。,RC_roll,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE6,A.CIRCLE6-AP03,antecedent,Circle_direction_t = clockwise,绕圈方向是顺时针。,Circle_direction_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE6,A.CIRCLE6-AP04,consequent,Circle_speed_t < Circle_speed_t-1,绕圈速度比上一观测减小。,Circle_speed_t|Circle_speed_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE7,A.CIRCLE7-AP01,antecedent,Mode_t = CIRCLE,当前模式是 ArduPilot 绕圈模式。,Mode_t|CIRCLE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE7,A.CIRCLE7-AP02,consequent,RC_roll_t = RC_roll_t-1,横滚输入与上一观测严格相等。,RC_roll_t|RC_roll_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE7,A.CIRCLE7-AP03,consequent,RC_pitch_t = RC_pitch_t-1,俯仰输入与上一观测严格相等。,RC_pitch_t|RC_pitch_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE7,A.CIRCLE7-AP04,consequent,RC_yaw_t = RC_yaw_t-1,偏航输入与上一观测严格相等。,RC_yaw_t|RC_yaw_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CIRCLE7,A.CIRCLE7-AP05,consequent,RC_throttle_t <= RC_throttle_t-1 or RC_throttle_t >= RC_throttle_t-1,油门输入不大于或不小于上一值；对普通数值是恒真析取。,RC_throttle_t|RC_throttle_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LAND1,A.LAND1-AP01,antecedent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LAND1,A.LAND1-AP02,antecedent,ALT_t >= 10m,当前高度达到或超过 10 米。,ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LAND1,A.LAND1-AP03,consequent,Speed_vertical_t = LAND_SPEED_HIGH,垂直速度严格等于高空着陆速度参数。,Speed_vertical_t|LAND_SPEED_HIGH,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LAND2,A.LAND2-AP01,antecedent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LAND2,A.LAND2-AP02,antecedent,ALT_t < 10m,当前高度低于 10 米。,ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LAND2,A.LAND2-AP03,consequent,Speed_vertical_t = LAND_SPEED,垂直速度严格等于低空着陆速度参数。,Speed_vertical_t|LAND_SPEED,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.AUTO1,A.AUTO1-AP01,antecedent,Mode_t = AUTO,当前模式是自动任务模式。,Mode_t|AUTO,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.AUTO1,A.AUTO1-AP02,consequent,RC_roll_t = RC_roll_t-1,横滚输入与上一观测严格相等。,RC_roll_t|RC_roll_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.AUTO1,A.AUTO1-AP03,consequent,RC_pitch_t = RC_pitch_t-1,俯仰输入与上一观测严格相等。,RC_pitch_t|RC_pitch_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.AUTO1,A.AUTO1-AP04,consequent,RC_throttle_t = RC_throttle_t-1,油门输入与上一观测严格相等。,RC_throttle_t|RC_throttle_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.AUTO1,A.AUTO1-AP05,consequent,RC_yaw_t <= RC_yaw_t-1 or RC_yaw_t >= RC_yaw_t-1,偏航输入不大于或不小于上一值；对普通数值是恒真析取。,RC_yaw_t|RC_yaw_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.BRAKE1,A.BRAKE1-AP01,antecedent,Mode_t = BRAKE,当前模式是制动模式。,Mode_t|BRAKE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.BRAKE1,A.BRAKE1-AP02,consequent,"F_[0,k](Pos_t = Pos_t-1)",在未知 k 时间内当前位置与上一观测位置相同。,Pos_t|Pos_t-1|k,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.DRIFT1,A.DRIFT1-AP01,antecedent,GPS_fail = on,论文抽象的 GPS 故障保护状态开启。,GPS_fail,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.DRIFT1,A.DRIFT1-AP02,antecedent,Mode_t = DRIFT,当前模式是漂移模式。,Mode_t|DRIFT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.DRIFT1,A.DRIFT1-AP03,consequent,"F_[0,k](Mode_t = FS_EKF_ACTION)",在未知 k 时间内模式变成参数 FS_EKF_ACTION 指定的动作。,Mode_t|FS_EKF_ACTION|k,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LOITER1,A.LOITER1-AP01,antecedent,Mode_t = LOITER,当前模式是定点盘旋模式。,Mode_t|LOITER,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LOITER1,A.LOITER1-AP02,consequent,Pos_t = Pos_t-1,当前位置与上一观测位置严格相等。,Pos_t|Pos_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LOITER1,A.LOITER1-AP03,consequent,Yaw_t = Yaw_t-1,当前偏航与上一观测严格相等。,Yaw_t|Yaw_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.LOITER1,A.LOITER1-AP04,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GUIDED1,A.GUIDED1-AP01,antecedent,Mode_t = GUIDED,当前模式是外部引导模式。,Mode_t|GUIDED,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GUIDED1,A.GUIDED1-AP02,antecedent,Waypoint = empty,论文抽象的航点集合为空。,Waypoint,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GUIDED1,A.GUIDED1-AP03,consequent,Pos_t = Pos_t-1,当前位置与上一观测位置严格相等。,Pos_t|Pos_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GUIDED1,A.GUIDED1-AP04,consequent,Yaw_t = Yaw_t-1,当前偏航与上一观测严格相等。,Yaw_t|Yaw_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GUIDED1,A.GUIDED1-AP05,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.SPORT1,A.SPORT1-AP01,antecedent,Mode_t = SPORT,当前模式是运动模式。,Mode_t|SPORT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.SPORT1,A.SPORT1-AP02,consequent,Speed_vertical_t = PILOT_SPEED_UP,垂直速度严格等于飞手上升速度参数。,Speed_vertical_t|PILOT_SPEED_UP,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RC.FS1,A.RC.FS1-AP01,antecedent,Mode_t = ACRO,当前模式是特技模式。,Mode_t|ACRO,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RC.FS1,A.RC.FS1-AP02,antecedent,Throttle_t < FS_THR_VALUE,油门输入低于遥控故障保护阈值参数。,Throttle_t|FS_THR_VALUE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RC.FS1,A.RC.FS1-AP03,antecedent_from_description,Armed = true,飞行器电机已经解锁。,Armed,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RC.FS1,A.RC.FS1-AP04,consequent,Disarm = on,电机处于锁定状态。,Disarm,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RC.FS2,A.RC.FS2-AP01,antecedent,Throttle_t < FS_THR_VALUE,油门输入低于遥控故障保护阈值参数。,Throttle_t|FS_THR_VALUE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.RC.FS2,A.RC.FS2-AP02,consequent,RC_fail = on,遥控故障保护状态开启。,RC_fail,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CHUTE1,A.CHUTE1-AP01,antecedent,Parachute = on,降落伞已经释放。,Parachute,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CHUTE1,A.CHUTE1-AP02,consequent,Armed = true,飞行器电机已经解锁。,Armed,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CHUTE1,A.CHUTE1-AP03,consequent,"Mode_t notin {FLIP,ACRO}",当前模式既不是翻滚也不是特技模式。,Mode_t|FLIP|ACRO,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CHUTE1,A.CHUTE1-AP04,consequent,ALT_t <= ALT_t-1,当前高度不高于上一观测高度，即论文所称不在爬升。,ALT_t|ALT_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.CHUTE1,A.CHUTE1-AP05,consequent,ALT_t > CHUTE_ALT_MIN,当前高度高于最低开伞高度参数。,ALT_t|CHUTE_ALT_MIN,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GPS.FS1,A.GPS.FS1-AP01,antecedent,GPS_fail = on,论文抽象的 GPS 故障保护状态开启。,GPS_fail,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GPS.FS1,A.GPS.FS1-AP02,consequent,GPS_count < 4,可见 GPS 卫星数量少于四。,GPS_count,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GPS.FS2,A.GPS.FS2-AP01,antecedent,GPS_fail = on,论文抽象的 GPS 故障保护状态开启。,GPS_fail,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GPS.FS2,A.GPS.FS2-AP02,antecedent,Baro = on,论文抽象的气压计可用状态开启。,Baro,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+ArduPilot,A.GPS.FS2,A.GPS.FS2-AP03,consequent,ALT_src = Baro,论文抽象的高度来源被标记为气压计。,ALT_src|Baro,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL1,PX.RTL1-AP01,antecedent,ALT_t < RTL_RETURN_ALT,PX4 当前高度低于返航高度参数。,ALT_t|RTL_RETURN_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL1,PX.RTL1-AP02,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL1,PX.RTL1-AP03,consequent,ALT_t-1 < ALT_t,当前观测高度高于上一观测高度。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL2,PX.RTL2-AP01,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL2,PX.RTL2-AP02,antecedent,ALT_t >= RTL_RETURN_ALT,PX4 当前高度达到或超过返航高度参数。,ALT_t|RTL_RETURN_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL2,PX.RTL2-AP03,antecedent,Pos_t != home_position,当前位置不等于返航参考位置。,Pos_t|home_position,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL2,PX.RTL2-AP04,consequent,Pos_t-1 != Pos_t,当前位置与上一观测位置不同。,Pos_t-1|Pos_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL2,PX.RTL2-AP05,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL3,PX.RTL3-AP01,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL3,PX.RTL3-AP02,antecedent,ALT_t >= RTL_RETURN_ALT,PX4 当前高度达到或超过返航高度参数。,ALT_t|RTL_RETURN_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL3,PX.RTL3-AP03,antecedent,Pos_t = home_position,当前位置等于返航参考位置。,Pos_t|home_position,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL3,PX.RTL3-AP04,consequent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL4,PX.RTL4-AP01,antecedent,Mode_t = RTL,当前飞行模式是返航模式。,Mode_t|RTL,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL4,PX.RTL4-AP02,antecedent_as_printed,RTL_DESCEND_ALT = -1,论文公式错误地把返航下降高度参数与负一比较。,RTL_DESCEND_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL4,PX.RTL4-AP03,antecedent_from_description,RTL_LAND_DELAY = -1,PX4 返航着陆等待参数为负一，表示不着陆而保持盘旋。,RTL_LAND_DELAY,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL4,PX.RTL4-AP04,consequent,Pos_t = Pos_t-1,当前位置与上一观测位置严格相等。,Pos_t|Pos_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL4,PX.RTL4-AP05,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL5,PX.RTL5-AP01,antecedent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL5,PX.RTL5-AP02,antecedent,ALT_t = GroundALT,当前高度严格等于论文所称地面高度。,ALT_t|GroundALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.RTL5,PX.RTL5-AP03,consequent,Disarm = on,电机处于锁定状态。,Disarm,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT1,PX.ORBIT1-AP01,antecedent,Mode_t = ORBIT,当前 PX4 模式是绕点飞行模式。,Mode_t|ORBIT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT1,PX.ORBIT1-AP02,antecedent,RC_pitch < 1500,俯仰遥控输入小于通道中值。,RC_pitch,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT1,PX.ORBIT1-AP03,antecedent,Circle_radius_t > 0,当前绕圈半径为正数。,Circle_radius_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT1,PX.ORBIT1-AP04,consequent,Circle_radius_t < Circle_radius_t-1,绕圈半径比上一观测减小。,Circle_radius_t|Circle_radius_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT2,PX.ORBIT2-AP01,antecedent,Mode_t = ORBIT,当前 PX4 模式是绕点飞行模式。,Mode_t|ORBIT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT2,PX.ORBIT2-AP02,antecedent,RC_pitch > 1500,俯仰遥控输入大于通道中值。,RC_pitch,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT2,PX.ORBIT2-AP03,consequent,Circle_radius_t > Circle_radius_t-1,绕圈半径比上一观测增大。,Circle_radius_t|Circle_radius_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT3,PX.ORBIT3-AP01,antecedent,Mode_t = ORBIT,当前 PX4 模式是绕点飞行模式。,Mode_t|ORBIT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT3,PX.ORBIT3-AP02,antecedent,RC_roll > 1500,横滚遥控输入大于通道中值。,RC_roll,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT3,PX.ORBIT3-AP03,antecedent,Circle_direction_t = clockwise,绕圈方向是顺时针。,Circle_direction_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT3,PX.ORBIT3-AP04,consequent,Circle_speed_t > Circle_speed_t-1,绕圈速度比上一观测增大。,Circle_speed_t|Circle_speed_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT4,PX.ORBIT4-AP01,antecedent,Mode_t = ORBIT,当前 PX4 模式是绕点飞行模式。,Mode_t|ORBIT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT4,PX.ORBIT4-AP02,antecedent,RC_roll > 1500,横滚遥控输入大于通道中值。,RC_roll,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT4,PX.ORBIT4-AP03,antecedent,Circle_direction_t = counterclockwise,绕圈方向是逆时针。,Circle_direction_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT4,PX.ORBIT4-AP04,consequent,Circle_speed_t < Circle_speed_t-1,绕圈速度比上一观测减小。,Circle_speed_t|Circle_speed_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT5,PX.ORBIT5-AP01,antecedent,Mode_t = ORBIT,当前 PX4 模式是绕点飞行模式。,Mode_t|ORBIT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT5,PX.ORBIT5-AP02,consequent,Circle_radius_t < 100m,论文抽象的绕点半径严格小于 100 米。,Circle_radius_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT6,PX.ORBIT6-AP01,antecedent,Mode_t = ORBIT,当前 PX4 模式是绕点飞行模式。,Mode_t|ORBIT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ORBIT6,PX.ORBIT6-AP02,consequent,Circle_speed_t < 2m/s^2,论文用速度变量与加速度单位阈值比较。,Circle_speed_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.LAND1,PX.LAND1-AP01,antecedent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.LAND1,PX.LAND1-AP02,consequent,Speed_vertical_t = MPC_LAND_SPEED,垂直速度严格等于 PX4 着陆速度参数。,Speed_vertical_t|MPC_LAND_SPEED,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ALTITUDE1,PX.ALTITUDE1-AP01,antecedent,Mode_t = ALTITUDE,当前 PX4 模式是高度控制模式。,Mode_t|ALTITUDE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ALTITUDE1,PX.ALTITUDE1-AP02,antecedent,Throttle_t = 1500,油门输入严格等于通道中值 1500。,Throttle_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.ALTITUDE1,PX.ALTITUDE1-AP03,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.POSITION1,PX.POSITION1-AP01,antecedent,Mode_t = POSITION,当前 PX4 模式是位置控制模式。,Mode_t|POSITION,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.POSITION1,PX.POSITION1-AP02,consequent,Pos_t = Pos_t-1,当前位置与上一观测位置严格相等。,Pos_t|Pos_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD1,PX.HOLD1-AP01,antecedent,Mode_t = HOLD,当前 PX4 模式是保持模式。,Mode_t|HOLD,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD1,PX.HOLD1-AP02,consequent,Pos_t = Pos_t-1,当前位置与上一观测位置严格相等。,Pos_t|Pos_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD1,PX.HOLD1-AP03,consequent,Yaw_t = Yaw_t-1,当前偏航与上一观测严格相等。,Yaw_t|Yaw_t-1,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD1,PX.HOLD1-AP04,consequent,ALT_t-1 = ALT_t,当前高度与上一观测高度严格相等。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD2,PX.HOLD2-AP01,antecedent,Mode_t = HOLD,当前 PX4 模式是保持模式。,Mode_t|HOLD,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD2,PX.HOLD2-AP02,antecedent,MIS_LTRMIN_ALT != -1,最小盘旋高度参数没有使用禁用值负一。,MIS_LTRMIN_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD2,PX.HOLD2-AP03,antecedent_from_description,ALT_t < MIS_LTRMIN_ALT,当前高度低于最小盘旋高度参数；该前件来自论文自然语言但被印刷公式遗漏。,ALT_t|MIS_LTRMIN_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD2,PX.HOLD2-AP04,consequent,ALT_t-1 < ALT_t,当前观测高度高于上一观测高度。,ALT_t-1|ALT_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.HOLD2,PX.HOLD2-AP05,target_from_description,Target_ALT = MIS_LTRMIN_ALT,目标高度等于最小盘旋高度参数；该目标来自论文自然语言，印刷公式只保留了上升趋势。,Target_ALT|MIS_LTRMIN_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.TAKEOFF1,PX.TAKEOFF1-AP01,antecedent,Command_t = takeoff,当前处理的是起飞命令。,Command_t|takeoff,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.TAKEOFF1,PX.TAKEOFF1-AP02,consequent_as_printed,ALT_t <= MIS_TAKEOFF_ALT,当前高度不超过任务起飞高度参数。,ALT_t|MIS_TAKEOFF_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.TAKEOFF1,PX.TAKEOFF1-AP03,target_from_description,Target_ALT = MIS_TAKEOFF_ALT,起飞目标高度等于任务起飞高度参数；该等式来自论文自然语言。,Target_ALT|MIS_TAKEOFF_ALT,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.TAKEOFF2,PX.TAKEOFF2-AP01,antecedent,Command_t = takeoff,当前处理的是起飞命令。,Command_t|takeoff,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.TAKEOFF2,PX.TAKEOFF2-AP02,consequent,Speed_vertical_t = MPC_TKO_SPEED,垂直速度严格等于 PX4 起飞速度参数。,Speed_vertical_t|MPC_TKO_SPEED,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS1,PX.GPS.FS1-AP01,antecedent,GPS_loss = on,论文抽象的 GPS 丢失事件已经发生。,GPS_loss,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS1,PX.GPS.FS1-AP02,consequent,"F_[0,COM_POS_FS_DELAY+k](GPS_fail = on)",在位置故障延迟参数加调度余量内触发 GPS 故障保护。,GPS_fail|COM_POS_FS_DELAY|k,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS2,PX.GPS.FS2-AP01,antecedent,GPS_fail = on,论文抽象的 GPS 故障保护状态开启。,GPS_fail,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS2,PX.GPS.FS2-AP02,antecedent,RC_t = on,遥控器输入被论文抽象为可用。,RC_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS2,PX.GPS.FS2-AP03,consequent,Mode_t = ALTITUDE,当前 PX4 模式是高度控制模式。,Mode_t|ALTITUDE,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS3,PX.GPS.FS3-AP01,antecedent,GPS_fail = on,论文抽象的 GPS 故障保护状态开启。,GPS_fail,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS3,PX.GPS.FS3-AP02,antecedent,RC_t = off,遥控器输入被论文抽象为不可用。,RC_t,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED
+PX4,PX.GPS.FS3,PX.GPS.FS3-AP03,consequent,Mode_t = LAND,当前飞行模式是着陆模式。,Mode_t|LAND,PENDING_CURRENT_SOURCE_BINDING,NOT_ASSESSED

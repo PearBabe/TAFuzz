@@ -1,0 +1,850 @@
+{
+  "schema_version": "1.0",
+  "property_id": "PX4-MC-GCSLOSS-002",
+  "title_zh": "PX4 GCS data-link loss",
+  "title_en": "PX4 GCS data-link-loss timeout",
+  "system_scope": {
+    "system": "PX4",
+    "vehicles": [
+      "multicopter SITL"
+    ],
+    "firmware_release": "v1.17.0",
+    "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "PX4 multicopter SITL；参数/模式已归档；telemetry/data connection 的官方关联键、liveness predicate 和时钟仍待闭合。"
+  },
+  "status": "REVIEW_READY",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "PX4-MC-GCSLOSS-002-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Safety: Data Link Loss",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/config/safety.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "82b627ef4c4d323ef5e524c5630903c31570e103a9701b65a5f4b8fb33ee4db3",
+      "locator": {
+        "page": null,
+        "section": "Data Link Loss Failsafe",
+        "anchor": null,
+        "line_start": 136,
+        "line_end": 153,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+      "context_summary_zh": "定义 telemetry/GCS data-link loss、COM_DL_LOSS_T 和模式例外。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-GCSLOSS-002-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "PX4 COM_DL_LOSS_T metadata",
+      "version": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "path_or_url": "baseline/px4/src/modules/commander/commander_params.c",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "4e83db4e821aac5fb5ad96aa7755bac8dffac0714581d0895688198c8e41902a",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 86,
+        "line_end": 98,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "/**\n * GCS connection loss time threshold\n *\n * After this amount of seconds without datalink, the GCS connection lost mode triggers\n *\n * @group Commander\n * @unit s\n * @min 5\n * @max 300\n * @decimal 1\n * @increment 1\n */\nPARAM_DEFINE_INT32(COM_DL_LOSS_T, 10);",
+      "context_summary_zh": "冻结提交中的参数单位、范围和默认值。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "PX4-MC-GCSLOSS-002-S1",
+      "PX4-MC-GCSLOSS-002-S2"
+    ],
+    "edges": [
+      {
+        "from": "PX4-MC-GCSLOSS-002-S1",
+        "relation": "parameterizes",
+        "to": "PX4-MC-GCSLOSS-002-S2",
+        "evidence_source_id": "PX4-MC-GCSLOSS-002-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "官方 v1.17 文档没有将 telemetry/data connection liveness 定义为 MAV_TYPE_GCS heartbeat，也没有给出 loss-start 时钟或时间戳载体。",
+      "当前 PX4 heartbeat/HRT flow 只是 MODELLED 源码候选映射，不是规范等价关系。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "PX4 data-link-loss failsafe",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-GCSLOSS-002-S1",
+          "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "与地面站的 telemetry link/data connection 进入 lost/unavailable 状态。",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-GCSLOSS-002-S1",
+          "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "与地面站的 telemetry/data connection 此前已建立。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "NAV_DLL_ACT 未禁用该 failsafe，且 COM_DLL_EXCEPT 未将当前模式列为例外。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "官方来源未定义该 connection 的精确 liveness predicate、关联键或事件载体；当前仍为待补证前置。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "自 telemetry/data connection 丢失起达到运行时 COM_DL_LOSS_T 后，Data Link Loss failsafe 触发。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在该 data connection loss 持续达到 COM_DL_LOSS_T 前，不得仅因该 loss 触发 Data Link Loss failsafe。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "已配置的 COM_DLL_EXCEPT 模式不触发该 failsafe。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "NAV_DLL_ACT=Disabled 时不要求执行 failsafe action。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "官方来源定义的 telemetry/data connection loss 开始",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-GCSLOSS-002-S1",
+          "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "官方来源定义的 connection 恢复、配置例外/取消或 run 结束",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-GCSLOSS-002-S1",
+          "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "telemetry_data_connection_restored",
+        "relation": "RESETS",
+        "right": "data_link_loss_gap",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "data_link_loss_gap",
+        "relation": "TRIGGERS",
+        "right": "gcs_connection_lost",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "官方 v1.17 文档没有将 telemetry/data connection liveness 定义为 MAV_TYPE_GCS heartbeat，也没有给出 loss-start 时钟或时间戳载体。",
+      "当前 PX4 heartbeat/HRT flow 只是 MODELLED 源码候选映射，不是规范等价关系。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_dl_loss",
+      "semantic_start_event": "telemetry_data_link_loss_start",
+      "semantic_end_event": "gcs_connection_lost",
+      "cancel_event": "configured_exception_or_run_end",
+      "reset_event": "telemetry_data_connection_restored",
+      "raw_expression": "runtime(COM_DL_LOSS_T)",
+      "lower": "runtime(COM_DL_LOSS_T)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "PX4-MC-GCSLOSS-002-S2",
+      "source_span": {
+        "source_id": "PX4-MC-GCSLOSS-002-S2",
+        "quote": "/**\n * GCS connection loss time threshold\n *\n * After this amount of seconds without datalink, the GCS connection lost mode triggers\n *\n * @group Commander\n * @unit s\n * @min 5\n * @max 300\n * @decimal 1\n * @increment 1\n */\nPARAM_DEFINE_INT32(COM_DL_LOSS_T, 10);",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "COM_DL_LOSS_T",
+      "formula": "T_dl_loss = runtime(COM_DL_LOSS_T)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 10,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/PX4-MC-GCSLOSS-002"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 10,
+          "unit": "s",
+          "source_id": "PX4-MC-GCSLOSS-002-S2"
+        }
+      ],
+      "clock_domain": "UNKNOWN",
+      "timestamp_carrier": "Official sources do not define a liveness-event timestamp carrier or clock. The current PX4 MAV_TYPE_GCS heartbeat/HRT flow is retained only as a MODELLED implementation candidate.",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((data_link_loss_gap_start & dl_loss_applicable) -> (G_[0,T_dl_loss) !gcs_connection_lost & F_[T_dl_loss,infty) gcs_connection_lost))",
+    "concrete": "G((data_link_loss_gap_start & dl_loss_applicable) -> (G_[0,10) !gcs_connection_lost & F_[10,infty) gcs_connection_lost))",
+    "concrete_instances": [
+      {
+        "profile": "PX4/multicopter — px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+        "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+        "parameter_id": "COM_DL_LOSS_T",
+        "raw_value": 10,
+        "raw_unit": "s",
+        "normalized_value": 10.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 10 s = 10 s",
+        "formula": "G((data_link_loss_gap_start & dl_loss_applicable) -> (G_[0,10) !gcs_connection_lost & F_[10,infty) gcs_connection_lost))",
+        "status": "INSTANTIATED_UNVALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "source_param_index": 260,
+        "source_param_count": 900,
+        "clock_domain": "UNKNOWN",
+        "notes": "由保存的 PARAM_VALUE 确定性代换；尚未运行 MITL parser、可满足性或 TAMonitor。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((data_link_loss_gap_start & dl_loss_applicable) -> (G_[0,T_dl_loss) !gcs_connection_lost & F_[T_dl_loss,infty) gcs_connection_lost))",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-GCSLOSS-002-S1",
+            "quote": "## Data Link Loss Failsafe\n\nThe Data Link Loss failsafe is triggered if a telemetry link (connection to ground station) is lost.\n\n![Safety - Data Link Loss (QGC)](../../assets/qgc/setup/safety/safety_data_link_loss.png)\n\nThe settings and underlying parameters are shown below.\n\n| Setting                | Parameter                                                                | Description                                                                       |\n| ---------------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |\n| Data Link Loss Timeout | [COM_DL_LOSS_T](../advanced_config/parameter_reference.md#COM_DL_LOSS_T) | Amount of time after losing the data connection before the failsafe will trigger. |\n| Failsafe Action        | [NAV_DLL_ACT](../advanced_config/parameter_reference.md#NAV_DLL_ACT)     | Disabled, Hold mode, Return mode, Land mode, Disarm, Terminate.                   |\n\nThe following settings also apply, but are not displayed in the QGC UI.\n\n| Setting                                                     | Parameter                                                                  | Description                                          |\n| ----------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |\n| <a id=\"COM_DLL_EXCEPT\"></a>Mode exceptions for DLL failsafe | [COM_DLL_EXCEPT](../advanced_config/parameter_reference.md#COM_DLL_EXCEPT) | Set modes where DL loss will not trigger a failsafe. |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "CONCRETE_UNVALIDATED"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-01",
+      "name": "data_link_loss_gap_start",
+      "controlled_natural_language": "官方来源所指 telemetry/data connection 的丢失区间开始。",
+      "truth_condition": "与地面站的 source-defined telemetry/data connection 从 available 变为 lost/unavailable；精确 liveness predicate、关联键和时钟尚未解析。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-01-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 2142,
+          "column": 1,
+          "symbol": "MavlinkReceiver::handle_message_heartbeat",
+          "semantic_identity": "Current implementation candidate HEARTBEAT consumer; the official source does not establish equivalence to the normative telemetry/data-connection liveness event.",
+          "entity_kind": "MESSAGE_CONSUMER",
+          "function": "MavlinkReceiver::handle_message_heartbeat",
+          "role": "CONSUMER",
+          "type": "void(mavlink_message_t *)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This handler decodes incoming HEARTBEAT and classifies GCS type. It locates the current realization only and is not normative evidence. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L2142"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-01-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 2154,
+          "column": 3,
+          "symbol": "MAV_TYPE_GCS",
+          "semantic_identity": "Current implementation heartbeat-classification guard; it does not define general telemetry/data-connection availability.",
+          "entity_kind": "OTHER",
+          "function": "MavlinkReceiver::handle_message_heartbeat",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The source accepts MAV_TYPE_GCS independent of same_system and retains no normative connection identity; official docs do not make this the liveness predicate. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L2154"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-01-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 2164,
+          "column": 5,
+          "symbol": "_heartbeat_type_gcs",
+          "semantic_identity": "Current implementation HRT epoch for an accepted GCS heartbeat; only a MODELLED candidate for the unresolved normative connection event.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "MavlinkReceiver::handle_message_heartbeat",
+          "role": "WRITE",
+          "type": "hrt_abstime",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The handler stores current hrt time for an accepted GCS heartbeat, but official data-link-loss sources do not identify this as the normative start carrier. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L2164"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-01-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_receiver.cpp",
+          "line": 2923,
+          "column": 3,
+          "symbol": "heartbeat_type_gcs",
+          "semantic_identity": "Current implementation heartbeat-freshness projection; not an official definition of telemetry/data-connection availability.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "MavlinkReceiver::CheckHeartbeats",
+          "role": "DERIVATION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This is a 2.5-second heartbeat freshness projection, not a source-defined data-connection liveness event. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_receiver.cpp#L2923"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-01-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/TelemetryStatus.msg",
+          "line": 42,
+          "column": 1,
+          "symbol": "heartbeat_type_gcs",
+          "semantic_identity": "Current implementation uORB heartbeat-freshness field; only a candidate projection for the unresolved normative data-link predicate.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The message field carries per-link heartbeat freshness. No selected official source equates it with all telemetry/data-connection liveness. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/TelemetryStatus.msg#L42"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-01-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2792,
+          "column": 5,
+          "symbol": "_datalink_last_heartbeat_gcs",
+          "semantic_identity": "Commander copies telemetry_status publication time while heartbeat_type_gcs remains true.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::dataLinkCheck",
+          "role": "WRITE",
+          "type": "hrt_abstime",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "telemetry.timestamp is later than the underlying receipt epoch and can refresh during the 2.5-second receiver freshness window. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2792"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "type",
+          "direction": "INCOMING",
+          "derivation": "Harness can exercise the current PX4 MAV_TYPE_GCS-heartbeat realization, but the official v1.17 source does not equate that flow with the normative telemetry/data-connection liveness event. HEARTBEAT has no embedded receipt timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "UNRESOLVED",
+      "status": "PARTIALLY_BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-02",
+      "name": "dl_loss_applicable",
+      "controlled_natural_language": "data-link loss 对当前模式/配置生效。",
+      "truth_condition": "NAV_DLL_ACT、COM_DLL_EXCEPT 和 current mode 的组合允许检查。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-02-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/commander_params.c",
+          "line": 598,
+          "column": 1,
+          "symbol": "NAV_DLL_ACT",
+          "semantic_identity": "Runtime GCS data-link-loss action parameter, including disabled.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "int32",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The frozen source defines parameter identity and default; campaign capture supplies the runtime value. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/commander_params.c#L598"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-02-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/commander_params.c",
+          "line": 647,
+          "column": 1,
+          "symbol": "COM_DLL_EXCEPT",
+          "semantic_identity": "Runtime data-link-loss mode-exception bitmask.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "int32",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The parameter is one input to applicability. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/commander_params.c#L647"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-02-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/framework.h",
+          "line": 128,
+          "column": 3,
+          "symbol": "user_intended_mode",
+          "semantic_identity": "Current intended navigation mode consumed by the data-link exception derivation.",
+          "entity_kind": "FIELD",
+          "function": "FailsafeBase::update",
+          "role": "READ",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Mode is combined with exception bits and implementation-specific ignore states. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/framework.h#L128"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-02-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 512,
+          "column": 2,
+          "symbol": "dll_loss_ignored",
+          "semantic_identity": "Implementation aggregate for GCS-loss ignore conditions.",
+          "entity_kind": "VARIABLE",
+          "function": "Failsafe::update",
+          "role": "DERIVATION",
+          "type": "const bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The aggregate covers mission, hold, offboard, takeoff, VTOL-takeoff, and unconditional land/precland handling. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L512"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-02-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/failsafe/failsafe.cpp",
+          "line": 515,
+          "column": 2,
+          "symbol": "_param_nav_dll_act",
+          "semantic_identity": "Implementation guard requiring NAV_DLL_ACT to be enabled and no ignore predicate to hold.",
+          "entity_kind": "OTHER",
+          "function": "Failsafe::update",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The guard locates the implementation decision but does not redefine the normalized official AP. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/failsafe/failsafe.cpp#L515"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects NAV_DLL_ACT, COM_DLL_EXCEPT; derive configured applicability",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DERIVED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-GCSLOSS-002-AP-03",
+      "name": "gcs_connection_lost",
+      "controlled_natural_language": "Data Link Loss failsafe 触发时的当前源码内部 GCS-connection-lost 事件。",
+      "truth_condition": "gcs_connection_lost 从 false 变 true；该字段是对官方 failsafe-trigger 结果的当前源码映射，不反向定义规范输入。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-03-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 106,
+          "column": 1,
+          "symbol": "gcs_connection_lost",
+          "semantic_identity": "VehicleStatus boolean whose false-to-true transition is the normalized AP.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The field explicitly represents lost data link to GCS. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L106"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-03-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2849,
+          "column": 7,
+          "symbol": "_datalink_last_heartbeat_gcs",
+          "semantic_identity": "Commander timeout guard using COM_DL_LOSS_T against its last-GCS time state.",
+          "entity_kind": "OTHER",
+          "function": "Commander::dataLinkCheck",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The guard identifies the internal transition site. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2849"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-03-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2851,
+          "column": 4,
+          "symbol": "gcs_connection_lost",
+          "semantic_identity": "Assignment marking VehicleStatus GCS connection lost true.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::dataLinkCheck",
+          "role": "WRITE",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the direct true write for the AP. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2851"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-03-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2855,
+          "column": 4,
+          "symbol": "commander_gcs_lost",
+          "semantic_identity": "Named event emitted when Commander enters the GCS-lost state.",
+          "entity_kind": "EVENT",
+          "function": "Commander::dataLinkCheck",
+          "role": "PRODUCER",
+          "type": "events::ID",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The event is colocated with the flag transition and counter increment. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2855"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-03-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 1945,
+          "column": 4,
+          "symbol": "_vehicle_status_pub.publish",
+          "semantic_identity": "uORB producer for VehicleStatus, including gcs_connection_lost and a vehicle timestamp.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "Commander::Run",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<vehicle_status_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Internal instrumentation can observe the state transition on vehicle_status. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L1945"
+        },
+        {
+          "binding_id": "PX4-MC-GCSLOSS-002-AP-03-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/mavlink_events.cpp",
+          "line": 216,
+          "column": 3,
+          "symbol": "event_msg.id",
+          "semantic_identity": "MAVLink EVENT ID field populated from the PX4 event identity.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "SendProtocol::send_event",
+          "role": "WRITE",
+          "type": "uint32_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The generic EVENT producer preserves the named event ID. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/mavlink_events.cpp#L216"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry GCS/data-link lost event. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "INSTRUMENTATION_REQUIRED",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone6-runtime-instantiation-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/PX4/properties/*.yaml",
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/px4_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Concrete mathematical substitution exists where enabled/context-closed, but parser and monitor syntax validation remain Milestone 7 gates."
+    },
+    "satisfiable": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_tautology": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete formula generation."
+    },
+    "non_vacuity": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Deferred until concrete traces are generated."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "No TAMonitor result is claimed in Milestone 4."
+    },
+    "independent_review": {
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence": "Independent review is a Milestone 7 gate and does not replace human acceptance."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Milestone 6 runtime parameter evidence is bound. Final parser, trace, context-conflict, and independent-review gates remain open.",
+    "conflicts": [
+      "官方 data-link loss 事件的 liveness predicate/时钟未解析；HEARTBEAT 及 GCS host arrival time 不能自动替代。"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

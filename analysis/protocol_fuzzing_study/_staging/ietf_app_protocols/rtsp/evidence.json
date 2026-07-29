@@ -1,0 +1,320 @@
+{
+  "protocol": "RTSP",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE",
+  "root_review_status": "ROOT_REVIEWED_WITH_CAVEAT",
+  "scope": "Official RTSP/1.0 RFC 2326 is the primary standard for the locked RTSP/1.0 LIVE555 snapshot; RFC 7826 RTSP/2.0 remains screened separately and fail-closed on version mismatch.",
+  "admission_summary": {
+    "proposed": 1,
+    "admitted": 1,
+    "excluded": 10,
+    "conclusion": "RFC 2326 explicitly permits a server-declared Session timeout, and locked LIVE555 uses one 65-second value for its default profile, Session response parameter, and per-session liveness task. One no-early callback profile property is therefore admitted with a caveat: RFC 2326 makes inactivity teardown optional, so no eventual callback deadline is claimed."
+  },
+  "deduplication": "RFC 2326 Section 12.37's 60-second default, Appendix A.2's one-minute state text, and LIVE555's declared 65-second override are one session-inactivity obligation, not three properties. RFC 7826's analogous RTSP/2.0 rule is retained only as a version-mismatch exclusion.",
+  "standards": [
+    {
+      "id": "RFC2326",
+      "title": "Real Time Streaming Protocol (RTSP)",
+      "version": "RFC 2326 (April 1998, RTSP/1.0; obsoleted by RFC 7826)",
+      "url": "https://www.rfc-editor.org/rfc/rfc2326.html",
+      "source_type": "IETF Standards Track",
+      "sections_reviewed": [
+        "9",
+        "9.2",
+        "10.6",
+        "12.37",
+        "Appendix A",
+        "Appendix A.2"
+      ]
+    },
+    {
+      "id": "RFC7826",
+      "title": "Real-Time Streaming Protocol Version 2.0",
+      "version": "RFC 7826 (December 2016, RTSP/2.0)",
+      "url": "https://www.rfc-editor.org/rfc/rfc7826.html",
+      "source_type": "IETF Standards Track",
+      "sections_reviewed": [
+        "3",
+        "10.3",
+        "10.4",
+        "10.5",
+        "10.7",
+        "13.5.2",
+        "16.1.3",
+        "18.44",
+        "18.49"
+      ]
+    }
+  ],
+  "implementation": {
+    "repository": "rgaufman/live555",
+    "version": "2018.08.28 ProFuzzBench pinned snapshot",
+    "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+    "url": "https://github.com/rgaufman/live555/tree/ceeb4f462709695b145852de309d8cd25e2dca01",
+    "selection": "Exact ProFuzzBench RTSP target snapshot.",
+    "protocol_version_evidence": {
+      "path": "liveMedia/RTSPServer.cpp",
+      "symbol": "RTSPServer::RTSPClientSession::handleCmd_SETUP",
+      "lines": "1425-1499",
+      "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L1425-L1499",
+      "finding": "Every SETUP response literal in the locked server is RTSP/1.0, so RFC 2326 is the matching base standard."
+    },
+    "source_files_reviewed": [
+      {
+        "path": "liveMedia/include/RTSPServer.hh",
+        "symbols": [
+          "RTSPServer::createNew"
+        ],
+        "lines": "31-41",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/include/RTSPServer.hh#L31-L41",
+        "finding": "The public server factory defaults reclamationSeconds to 65 and documents inactivity reclamation after at least that interval."
+      },
+      {
+        "path": "liveMedia/GenericMediaServer.cpp",
+        "symbols": [
+          "GenericMediaServer::setUpOurSocket",
+          "GenericMediaServer::ClientSession::ClientSession",
+          "GenericMediaServer::ClientSession::noteLiveness",
+          "GenericMediaServer::ClientSession::livenessTimeoutTask"
+        ],
+        "lines": "141-204,257-312",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/GenericMediaServer.cpp",
+        "finding": "The RTSP server accepts stream connections; each ClientSession arms/reschedules fReclamationSeconds*1000000 and the inactivity callback deletes that session."
+      },
+      {
+        "path": "liveMedia/RTSPServer.cpp",
+        "symbols": [
+          "RTSPServer::allowedCommandNames",
+          "RTSPServer::RTSPClientConnection::handleRequestBytes",
+          "RTSPServer::RTSPClientSession::handleCmd_SETUP",
+          "RTSPServer::RTSPClientSession::handleCmd_TEARDOWN"
+        ],
+        "lines": "116-118,607-898,1416-1499,1570-1596",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp",
+        "finding": "Session-bearing requests call noteLiveness, and SETUP emits the same fReclamationSeconds value as timeout=65."
+      },
+      {
+        "path": "UsageEnvironment/UsageEnvironment.cpp",
+        "symbols": [
+          "TaskScheduler::rescheduleDelayedTask"
+        ],
+        "lines": "52-57",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/UsageEnvironment/UsageEnvironment.cpp#L52-L57",
+        "finding": "A reschedule removes the old task token and installs a new delayed-task generation."
+      },
+      {
+        "path": "BasicUsageEnvironment/BasicTaskScheduler0.cpp",
+        "symbols": [
+          "BasicTaskScheduler0::scheduleDelayedTask",
+          "BasicTaskScheduler0::unscheduleDelayedTask"
+        ],
+        "lines": "23-74",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/BasicTaskScheduler0.cpp#L23-L74",
+        "finding": "The microsecond delay is converted to a DelayInterval, queued under a token, and dispatched through AlarmHandler."
+      },
+      {
+        "path": "BasicUsageEnvironment/DelayQueue.cpp",
+        "symbols": [
+          "DelayQueue::addEntry",
+          "DelayQueue::handleAlarm",
+          "DelayQueue::synchronize"
+        ],
+        "lines": "126-219",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/DelayQueue.cpp#L126-L219",
+        "finding": "A delayed callback is handled only after its queue delay reaches zero; this supports the no-early direction but does not impose a must-dispatch upper bound."
+      },
+      {
+        "path": "liveMedia/RTSPClient.cpp",
+        "symbols": [
+          "RTSPClient::parseRTSPURL",
+          "RTSPClient::openConnection"
+        ],
+        "lines": "247-258,850-880",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPClient.cpp",
+        "finding": "The client accepts the rtsp:// scheme and creates a stream/TCP socket; no rtspu:// unreliable control path exists."
+      },
+      {
+        "path": "liveMedia/ProxyServerMediaSession.cpp",
+        "symbols": [
+          "ProxyRTSPClient::scheduleLivenessCommand",
+          "ProxyRTSPClient::scheduleDESCRIBECommand"
+        ],
+        "lines": "408-424,509-523",
+        "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/ProxyServerMediaSession.cpp",
+        "finding": "Proxy liveness and DESCRIBE retry paths do not implement the screened RFC 7826 responder/backoff duties."
+      }
+    ]
+  },
+  "method": "Exhaustive numeric-timing screening first matched the locked RTSP/1.0 implementation to RFC 2326, then retained RFC 7826 only as a separately versioned exclusion set. Admission required a non-punctual finite pointwise formula, a single correlated timer generation, fixed commit source hooks, and decisive symbolic/concrete traces. Optional RFC actions were not promoted to mandatory eventual deadlines.",
+  "screening_records": [
+    {
+      "candidate_id": "RTSP-SESSION-01",
+      "standard_section": "RFC 2326 Section 12.37 and Appendix A.2",
+      "numeric_rule": "The Session timeout defaults to 60 seconds, a server may declare another value, and locked LIVE555 declares and schedules 65 seconds.",
+      "decision": "ADMITTED",
+      "rejection_reasons": [],
+      "proposal_id": "RTSP-SESSION-01",
+      "normative_scope": "Only no-early consistency for a post-SETUP, established-session LIVE555 65-second task-token generation is asserted. The constructor's pre-response arm is excluded. RFC 2326's inactivity teardown remains MAY; no eventual callback bound is asserted.",
+      "source_evidence": [
+        "liveMedia/include/RTSPServer.hh:31-41 fixes the public default reclamationSeconds at 65.",
+        "liveMedia/RTSPServer.cpp:1416-1499 emits the same value in the RTSP/1.0 Session response.",
+        "liveMedia/GenericMediaServer.cpp:283-312 reschedules a 65-second task and enters the deletion callback for inactivity.",
+        "UsageEnvironment/UsageEnvironment.cpp:52-57 and BasicUsageEnvironment/BasicTaskScheduler0.cpp:23-74 define a distinct task token for each reschedule generation."
+      ]
+    },
+    {
+      "candidate_id": "RTSP10-UNRELIABLE-RTT-500",
+      "standard_section": "RFC 2326 Section 9.2",
+      "numeric_rule": "For connectionless RTSP, a sender may retransmit after one estimated RTT, whose initial value is 500 ms.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/RTSPClient.cpp:247-258 accepts rtsp://, not rtspu://.",
+        "liveMedia/RTSPClient.cpp:850-880 creates a stream/TCP socket.",
+        "liveMedia/GenericMediaServer.cpp:141-204 creates, listens on, and accepts a stream socket; no unreliable RTSP request retransmission path or 500 ms RTT timer exists."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-SESSION-60",
+      "standard_section": "RFC 7826 Sections 10.5 and 18.49",
+      "numeric_rule": "RTSP/2.0 Session timeout defaults to 60 seconds; values below 30 seconds are not recommended.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH"
+      ],
+      "source_evidence": [
+        "The locked server emits RTSP/1.0 and is mapped to RFC 2326 instead; its 65-second profile is represented once by RTSP-SESSION-01."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-TEARDOWN-CLOSE-10",
+      "standard_section": "RFC 7826 Section 10.3",
+      "numeric_rule": "A server SHOULD wait at least 10 seconds after the TEARDOWN response before closing the connection.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/RTSPServer.cpp:1570-1596 sends the response and deletes an empty RTSP/1.0 session, but defines no 10-second connection-close timer."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-INCOMPLETE-10",
+      "standard_section": "RFC 7826 Section 10.3",
+      "numeric_rule": "A server is RECOMMENDED to wait at least 10 seconds for an incomplete message to continue.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/RTSPServer.cpp:607-724 buffers partial input until another read, without an RFC 7826 10-second delayed task."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-RESPONDER-5",
+      "standard_section": "RFC 7826 Section 10.4",
+      "numeric_rule": "A responder SHOULD answer within 5 seconds or send 100 Continue and repeat it every 5 seconds.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/RTSPServer.cpp:735-898 dispatches commands and sends RTSP/1.0 responses synchronously; no 100 Continue timer exists."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-REQUESTER-10",
+      "standard_section": "RFC 7826 Section 10.4",
+      "numeric_rule": "A requester SHOULD wait at least 10 seconds for a response, restarting the wait after a 100 response.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/RTSPClient.cpp:196-203 tracks pending requests but the locked RTSP/1.0 client has no matching response-deadline task."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-OVERLOAD-BACKOFF",
+      "standard_section": "RFC 7826 Section 10.7",
+      "numeric_rule": "No-response backoff starts at 5 seconds, doubles to a 30-minute mean, and randomizes over 0.5 to 1.5 times the mean.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/ProxyServerMediaSession.cpp:509-523 implements an unrelated RTSP/1.0 DESCRIBE retry of 1, 2, ... 256 then 256-511 seconds, not RFC 7826 Retry-After handling."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-PLAY-NOTIFY-300",
+      "standard_section": "RFC 7826 Section 13.5.2",
+      "numeric_rule": "Periodic media-property notifications are recommended about every 5 minutes, between 1 minute and 2 hours.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "VERSION_MISMATCH",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "liveMedia/RTSPServer.cpp:116-118 lists the locked server methods and omits PLAY_NOTIFY."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-VALIDATOR-60",
+      "standard_section": "RFC 7826 Section 16.1.3",
+      "numeric_rule": "A Last-Modified value can qualify as strong when it precedes Date by at least 60 seconds.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "FORMULA_UNSUPPORTED",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "This is a comparison of two message-carried absolute timestamps, not an elapsed event obligation, and no matching validator path exists in the locked source."
+      ]
+    },
+    {
+      "candidate_id": "RTSP20-RETRY-AFTER-DYNAMIC",
+      "standard_section": "RFC 7826 Section 18.44",
+      "numeric_rule": "Retry-After carries either an absolute date or a sender-selected delay; 120 seconds is only an example.",
+      "decision": "EXCLUDED",
+      "rejection_reasons": [
+        "NO_NUMERIC_BOUND",
+        "NO_FIXED_SOURCE_MAP"
+      ],
+      "source_evidence": [
+        "The standard supplies no universal Retry-After value, and the locked source has no Retry-After parser or scheduler."
+      ]
+    }
+  ],
+  "formula_validation": {
+    "property_id": "RTSP-SESSION-01",
+    "tamonitor_sha256": "e2dc4f9a77c49fe900e80d544078d9215c01d894a9396e689dd6fab6dd91d7f4",
+    "mode": "finite word, flatten, absolute integer milliseconds",
+    "build_only": "PASS",
+    "positive_symbolic": "POSITIVE",
+    "positive_concrete": "POSITIVE",
+    "negative_symbolic": "NEGATIVE",
+    "negative_concrete": "NEGATIVE",
+    "symbolic_concrete_consistent": true,
+    "additional_negative_results": {},
+    "note": "The property is one-sided. A late or missing callback is intentionally not a negative trace because RFC 2326 teardown is MAY and event-loop dispatch can be late."
+  },
+  "verification": {
+    "standard_text_retrieved": true,
+    "source_commit_checked_out": "ceeb4f462709695b145852de309d8cd25e2dca01",
+    "source_paths_and_lines_checked": true,
+    "candidate_gate_checked": true,
+    "service_built": false,
+    "service_started": false,
+    "protocol_messages_sent": false,
+    "formula_or_trace_execution": true,
+    "formula_execution_scope": "TAMonitor only; no LIVE555 process or network activity"
+  }
+}

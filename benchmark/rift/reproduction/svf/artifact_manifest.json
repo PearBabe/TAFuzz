@@ -1,0 +1,194 @@
+{
+  "schema_version": "rift.reproduction.svf.v1",
+  "captured_at": "2026-07-18T06:50:37+08:00",
+  "status": "REPRODUCED_MINIMAL_WPA_SVFG_SMOKE",
+  "artifact": {
+    "name": "SVF",
+    "version": "3.2",
+    "role": "generic interprocedural pointer/value-flow baseline",
+    "upstream_url": "https://github.com/SVF-tools/SVF.git",
+    "tag": "SVF-3.2",
+    "commit": "197a6590bd9c695a9c3daf52622dea912ef9a002",
+    "tree": "dab507aca71987a0988ac9deef45b6da9e14e4b2",
+    "commit_date": "2025-12-17T22:02:18+11:00",
+    "license": "AGPL-3.0-or-later",
+    "clone_command": "git clone --branch SVF-3.2 --depth 1 https://github.com/SVF-tools/SVF.git benchmark/rift/external/svf",
+    "source_patches": [],
+    "source_git_status": "CLEAN"
+  },
+  "environment": {
+    "os": "Ubuntu 22.04.5 LTS",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "architecture": "x86_64",
+    "memory_limit_kib": 12582912,
+    "build_parallelism": 4
+  },
+  "toolchain": {
+    "clang": "18.1.8",
+    "llvm": "18.1.8",
+    "llvm_cmake_dir": "/usr/lib/llvm-18/lib/cmake/llvm",
+    "llvm_rtti": true,
+    "z3": "4.8.12.0",
+    "ninja": "1.10.1",
+    "system_cmake": "3.22.1 (below SVF's 3.23 minimum; not used)",
+    "cmake": {
+      "version": "3.28.6",
+      "source": "https://github.com/Kitware/CMake/releases/download/v3.28.6/cmake-3.28.6-linux-x86_64.tar.gz",
+      "sha256": "931e3c0d546ee03ca72bb147ccd9b49e3b6252f765f66bf21b9d165519940458",
+      "upstream_checksum_match": true,
+      "persistent_binary_in_workspace": false
+    }
+  },
+  "build": {
+    "configuration": "Release shared libraries, assertions enabled, Clang/LLVM 18",
+    "configure_command": "/tmp/rift-svf-cmake-3.28.6/cmake-3.28.6-linux-x86_64/bin/cmake -G Ninja -S benchmark/rift/external/svf -B benchmark/rift/reproduction/svf/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/usr/bin/clang-18 -DCMAKE_CXX_COMPILER=/usr/bin/clang++-18 -DLLVM_DIR=/usr/lib/llvm-18/lib/cmake/llvm -DSVF_ENABLE_ASSERTIONS=ON -DBUILD_SHARED_LIBS=ON -DSVF_WARN_AS_ERROR=ON",
+    "build_command": "/tmp/rift-svf-cmake-3.28.6/cmake-3.28.6-linux-x86_64/bin/cmake --build benchmark/rift/reproduction/svf/build --parallel 4",
+    "install_command": "/tmp/rift-svf-cmake-3.28.6/cmake-3.28.6-linux-x86_64/bin/cmake --install benchmark/rift/reproduction/svf/build --prefix /home/lqq/project/TAFuzz/benchmark/rift/reproduction/svf/install",
+    "configure_exit_code": 0,
+    "build_exit_code": 0,
+    "install_exit_code": 0,
+    "targets_completed": 124,
+    "configure_wall_seconds": 6.4,
+    "configure_peak_rss_kib": 89652,
+    "build_wall_seconds": 134.72,
+    "build_peak_rss_kib": 696096,
+    "install_wall_seconds": 0.04,
+    "install_peak_rss_kib": 9336,
+    "llvm18_compatibility": "PASS_WITHOUT_SOURCE_PATCHES"
+  },
+  "tests": {
+    "upstream_ctest": {
+      "exit_code": 0,
+      "discovered_tests": 0,
+      "reason": "The SVF-3.2 tag does not contain a Test-Suite directory or gitlink; CMake only enables tests when that directory exists."
+    },
+    "bitcode": {
+      "source": "cases/alias_valueflow_smoke.c",
+      "compile_command": "/usr/bin/clang-18 -g -O0 -fno-discard-value-names -emit-llvm -c cases/alias_valueflow_smoke.c -o results/alias_valueflow_smoke.bc",
+      "verify_command": "/usr/bin/opt-18 -passes=verify -disable-output results/alias_valueflow_smoke.bc",
+      "compile_exit_code": 0,
+      "verify_exit_code": 0,
+      "compile_wall_seconds": 0.01,
+      "compile_peak_rss_kib": 85472
+    },
+    "wpa_smoke": {
+      "command": "build/bin/wpa -ander -alias-check -svfg -stat results/alias_valueflow_smoke.bc",
+      "exit_code": 0,
+      "wall_seconds": 0.07,
+      "peak_rss_kib": 55976,
+      "oracles": {
+        "MAYALIAS": "PASS",
+        "NOALIAS": "PASS"
+      },
+      "general_stats": {
+        "total_pointers": 70,
+        "total_objects": 17,
+        "total_svf_statements": 48
+      },
+      "memory_ssa": {
+        "memory_regions": 8,
+        "load_mu_nodes": 10,
+        "store_chi_nodes": 8
+      },
+      "svfg": {
+        "nodes": 78,
+        "edges": 75,
+        "direct_edges": 44,
+        "indirect_edges": 31
+      },
+      "non_fatal_observation": "SVF printed two 'npm: not found' package-metadata probe warnings; analysis and all oracles still exited successfully."
+    },
+    "external_cmake_consumer": {
+      "status": "COMPILE_LINK_PASS_AD_HOC_RUNTIME_DIAGNOSTIC_EXCLUDED",
+      "purpose": "Secondary packaging check only; not part of the minimal WPA gate. An ad hoc run loaded the module and constructed the objects, but getTotalEdgeNum returned 0 while official wpa reported 75. API graph counters are excluded from acceptance; only official wpa -svfg -stat supplies SVFG count evidence.",
+      "runtime_diagnostic_evidence": "raw/api-runtime-diagnostic.txt",
+      "targets_consumed": [
+        "SVF::SvfCore",
+        "SVF::SvfLLVM"
+      ]
+    }
+  },
+  "portability_boundary": {
+    "project_independent_core_interfaces": [
+      "LLVMModuleSet for one or more LLVM 18 bitcode modules",
+      "SVFIRBuilder and SVFIR/PAG node and edge traversal",
+      "ICFG and call graph construction",
+      "AndersenWaveDiff points-to sets and alias queries",
+      "MemorySSA and SVFGBuilder full sparse value-flow graph",
+      "SVFG node/edge traversal and installed SVF::SvfCore/SVF::SvfLLVM CMake targets"
+    ],
+    "must_remain_external_model_pack": [
+      "mapping typed MITL AP roles and source entities to SVF nodes",
+      "framework entry points and controllable protocol/configuration/sensor sources",
+      "timer arm/fire/cancel and scheduler semantics",
+      "callback registration/invocation and queue enqueue/dequeue/drop semantics",
+      "lifecycle, object instance, scope, session and generation semantics",
+      "protocol parsers, dispatcher contracts and persistent parameter stores",
+      "mutation direction, temporal windows and prerequisite operation sequences"
+    ],
+    "hard_rule": "No libcoap, MQTT, MAVLink or ArduPilot symbol may be compiled into the generic SVF adapter; those facts belong to versioned model packs."
+  },
+  "claim_boundary": {
+    "supported": [
+      "The frozen official SVF-3.2 source builds against Clang/LLVM 18.1.8 without source patches.",
+      "The official wpa executable runs AndersenWaveDiff, validates one MAYALIAS and one NOALIAS oracle, constructs MemorySSA and a full SVFG on the minimal input.",
+      "SVF provides a viable generic value-flow substrate and baseline interface."
+    ],
+    "not_supported": [
+      "No upstream Test-Suite or large-project accuracy/performance result was reproduced.",
+      "This smoke does not establish AP binding, external controllability, control dependence, asynchronous/lifecycle semantics, MITL residual ranking or mutation recipes.",
+      "This is not an implementation or evaluation of RIFT."
+    ]
+  },
+  "files": {
+    "../../external/svf/build.sh": {
+      "sha256": "e566af1df8e3ef20e142fbafbacbc2251d4c7035ee8ca1aefe0fdee0edff929b"
+    },
+    "../../external/svf/CMakeLists.txt": {
+      "sha256": "f3dd1b21867fe44f9aca9e546fa7e7609da7f9cc0d80e5baebb0b279c7966c38"
+    },
+    "cases/alias_valueflow_smoke.c": {
+      "sha256": "03444f059dda415a786814cad4afe862ac1698092edb2e42936e5a6c681a96f8"
+    },
+    "results/alias_valueflow_smoke.bc": {
+      "sha256": "28b104330de3fa0e7952ea00c391c47a7f3ea5640f7985ac3450fbfbd7e444d6",
+      "size": 4712
+    },
+    "results/alias_valueflow_smoke.ll": {
+      "sha256": "60e3871631de6f5ee3849bac88532fa0bbd20c07559df13256157c553ef92d2f"
+    },
+    "build/bin/wpa": {
+      "sha256": "4d9c0b7d7f9c5176f304b03edb5a8a90e2abaf011c9db4110d1920f1e76f49f5",
+      "size": 38736
+    },
+    "build/lib/libSvfCore.so.3.2": {
+      "sha256": "cf7d2efb0753f25735a7c80589f0b45b40b996e2371d13fb29c5d4ec4a546ae4",
+      "size": 4324960
+    },
+    "build/lib/libSvfLLVM.so.3.2": {
+      "sha256": "30646949cf5cb002639487ac4c1570af0e5b94298d0000c440ea4de9c51f74ff",
+      "size": 1020720
+    },
+    "build/CMakeCache.txt": {
+      "sha256": "8b444c50fa9ad04c7201a02f32840f4bb19de78b2f3876d1fea36f63754f0d14"
+    },
+    "raw/configure.log": {
+      "sha256": "399d39b52a01445b23fa9be428300f4fc3636c8c6ea1cb0f3d331705132a4751"
+    },
+    "raw/build.log": {
+      "sha256": "ea6c166418b3b82e313736a595eee26785d57a8a34a69f29407614ff4aaf6847"
+    },
+    "raw/compile-smoke.log": {
+      "sha256": "6167211b4bac5a664115abec3aac07c174212aa474283d1bd5ea0f741ca40ee4"
+    },
+    "raw/wpa-smoke.log": {
+      "sha256": "5721c2f077463f37b390d9174b609b8b353cfa5b57270c87aa8b7345e9dda9af"
+    },
+    "raw/ctest-list.log": {
+      "sha256": "820e27c4ca2b0ace303f1664b4641b87effddaa8981ea7d9c971b48646a5001c"
+    },
+    "raw/install.log": {
+      "sha256": "0342d892b8911ff4f5a951eaa93792f16ad71a68eb4a1540d94e12ac87636a29"
+    }
+  }
+}

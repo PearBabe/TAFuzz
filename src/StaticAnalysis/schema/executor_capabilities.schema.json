@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/executor-capabilities/1.0.0",
+  "title": "RIFT executor capability manifest",
+  "description": "Independent evidence that an executor can realize an abstract external action. A model pack cannot assert this manifest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "executor_id", "executor_version",
+    "capabilities", "status", "unsupported_constructs", "diagnostics"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "executor_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "executor_version": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/semver"},
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/definitions/capability"}
+    },
+    "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+    "unsupported_constructs": {
+      "type": "array",
+      "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}
+    },
+    "diagnostics": {"type": "array", "items": {"type": "string"}}
+  },
+  "definitions": {
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capability_id", "required_capability", "action_schema_id",
+        "controllability", "evidence_note"
+      ],
+      "properties": {
+        "capability_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "required_capability": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"},
+        "action_schema_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "controllability": {
+          "enum": ["DIRECT", "SEQUENCE", "TIMING", "ENVIRONMENT", "UNAVAILABLE", "UNKNOWN"]
+        },
+        "evidence_note": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+      }
+    }
+  }
+}

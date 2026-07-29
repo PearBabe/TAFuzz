@@ -1,0 +1,134 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 25
+      },
+      "token": "ap_primary"
+    },
+    "ap_secondary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 27
+      },
+      "token": "ap_secondary"
+    },
+    "node_shared": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 23
+      },
+      "token": "node_shared"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "shared affine value crosses threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 25
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    },
+    {
+      "expression": "shared affine value satisfies parity/presence guard",
+      "id": "ap_secondary",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 27
+      },
+      "role": "GUARD",
+      "symbol": "ap_secondary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-108",
+  "case_relation": "NO_INFLUENCE",
+  "category": "one_input_multi_ap",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "One shared derived node feeds two independently declared APs; negative variants preserve the fan-out shape but root it at a constant.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "one_input_multi_ap",
+    "variant": 7
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "Both APs read a constant shared node rather than the external source.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_primary"
+    },
+    {
+      "ap_id": "ap_secondary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "Both APs read a constant shared node rather than the external source.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+  "source_sha256": "a8a07997aba8811f1ff09ecccfe5fdcff7eb113907595ec1e0533be05f437d8e",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/108_one_input_multi_ap_negative_v7.cpp",
+        "line": 20
+      },
+      "scope": "SESSION",
+      "symbol": "source_primary"
+    }
+  ]
+}

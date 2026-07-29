@@ -1,0 +1,186 @@
+{
+  "protocol": "DICOM",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "dicom_tcp_connection_accepted_dcmtk_30s_profile": {
+      "definition": "storescp acceptor passes opt_acse_timeout=30 and DUL receives the TCP transport connection.",
+      "properties": [
+        "DICOM-ARTIM-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "storescp acceptor passes opt_acse_timeout=30 and DUL receives the TCP transport connection.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile",
+            "dicom_artim_expired",
+            "dicom_associate_rq_received",
+            "dicom_transport_closed_or_parse_abort"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dul.cc",
+          "symbol": "DUL_ReceiveAssociationRQ",
+          "lines": "687-707",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dul.cc#L687-L707",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "auxiliary:1",
+          "role": "storescp ACSE timeout profile constant",
+          "event_predicate": "storescp acceptor passes opt_acse_timeout=30 and DUL receives the TCP transport connection.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/apps/storescp.cc",
+          "symbol": "opt_acse_timeout",
+          "lines": "173",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L173",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "auxiliary:2",
+          "role": "storescp passes the 30-second ACSE profile into the acceptor network",
+          "event_predicate": "storescp acceptor passes opt_acse_timeout=30 and DUL receives the TCP transport connection.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/apps/storescp.cc",
+          "symbol": "main",
+          "lines": "928-940",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L928-L940",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "auxiliary:3",
+          "role": "DUL FSM transport-connection response transition",
+          "event_predicate": "storescp acceptor passes opt_acse_timeout=30 and DUL receives the TCP transport connection.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dulfsm.cc",
+          "symbol": "AE_5_TransportConnectResponse",
+          "lines": "1118-1127",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dulfsm.cc#L1118-L1127",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "dicom_artim_expired": {
+      "definition": "PRV_NextPDUType returns DUL_READTIMEOUT and dispatches ARTIM_TIMER_EXPIRED.",
+      "properties": [
+        "DICOM-ARTIM-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "PRV_NextPDUType returns DUL_READTIMEOUT and dispatches ARTIM_TIMER_EXPIRED.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile",
+            "dicom_artim_expired",
+            "dicom_associate_rq_received",
+            "dicom_transport_closed_or_parse_abort"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dul.cc",
+          "symbol": "DUL_ReceiveAssociationRQ",
+          "lines": "687-707",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dul.cc#L687-L707",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "dicom_associate_rq_received": {
+      "definition": "A valid A-ASSOCIATE-RQ PDU is recognized for this association.",
+      "properties": [
+        "DICOM-ARTIM-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A valid A-ASSOCIATE-RQ PDU is recognized for this association.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile",
+            "dicom_artim_expired",
+            "dicom_associate_rq_received",
+            "dicom_transport_closed_or_parse_abort"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dul.cc",
+          "symbol": "DUL_ReceiveAssociationRQ",
+          "lines": "687-707",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dul.cc#L687-L707",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "dicom_transport_closed_or_parse_abort": {
+      "definition": "Peer transport close or terminal malformed-PDU/abort branch ends this waiting generation.",
+      "properties": [
+        "DICOM-ARTIM-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "DICOM-ARTIM-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Peer transport close or terminal malformed-PDU/abort branch ends this waiting generation.",
+          "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile",
+            "dicom_artim_expired",
+            "dicom_associate_rq_received",
+            "dicom_transport_closed_or_parse_abort"
+          ],
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dul.cc",
+          "symbol": "DUL_ReceiveAssociationRQ",
+          "lines": "687-707",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dul.cc#L687-L707",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

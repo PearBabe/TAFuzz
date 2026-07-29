@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.local/schemas/pgfuzz-mtl51-property-record.schema.json",
+  "title": "PGFuzz-MTL51 逐性质审计记录结构",
+  "description": "验证逐性质记录的必需字段和基本类型；通过不表示飞控满足性质。",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dataset_id",
+    "system",
+    "property_id",
+    "paper_order",
+    "dataset_role",
+    "implementation_satisfaction",
+    "frozen_current_source",
+    "paper_evidence",
+    "official_document_context",
+    "temporal_semantics",
+    "property_binding_summary",
+    "atomic_propositions",
+    "formula_parameters",
+    "parameter_value_contract_zh",
+    "author_dependency_summary",
+    "author_input_dependencies",
+    "current_input_identities",
+    "audit_boundary_zh"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "dataset_id": {"type": "string", "minLength": 1},
+    "system": {"enum": ["ArduPilot", "PX4"]},
+    "property_id": {"type": "string", "minLength": 1},
+    "paper_order": {"type": "integer", "minimum": 1, "maximum": 51},
+    "artifact_policy_directory": {"type": "string", "minLength": 1},
+    "dataset_role": {"const": "HISTORICAL_PROPERTY_SEED"},
+    "implementation_satisfaction": {"const": "NOT_ASSESSED"},
+    "status_legend_zh": {"type": "object"},
+    "frozen_current_source": {
+      "type": "object",
+      "required": ["path", "commit", "scope"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "scope": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "paper_evidence": {
+      "type": "object",
+      "required": [
+        "paper",
+        "table",
+        "page_one_based",
+        "row_property_id",
+        "description_en",
+        "description_zh",
+        "template",
+        "paper_formula_transcription",
+        "binding_formula_interpretation",
+        "issues"
+      ],
+      "properties": {
+        "table": {"const": "Table XII"},
+        "page_one_based": {"const": 18},
+        "row_property_id": {"type": "string"},
+        "description_en": {"type": "string", "minLength": 1},
+        "description_zh": {"type": "string", "minLength": 1},
+        "template": {"type": "string", "minLength": 1},
+        "paper_formula_transcription": {"type": "string", "minLength": 1},
+        "binding_formula_interpretation": {"type": "string", "minLength": 1},
+        "inherits_from": {"type": ["string", "null"]},
+        "issues": {"type": "array"}
+      }
+    },
+    "official_document_context": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["document_id", "system", "url", "property_ids", "evidence_role"],
+        "properties": {
+          "document_id": {"type": "string", "minLength": 1},
+          "system": {"enum": ["ArduPilot", "PX4"]},
+          "url": {"type": "string", "format": "uri"},
+          "property_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "evidence_role": {"const": "CONTEXT_ONLY_NOT_CURRENT_REQUIREMENT_CONFIRMATION"}
+        }
+      }
+    },
+    "temporal_semantics": {
+      "type": "object",
+      "required": ["explicit_eventually_windows", "uses_previous_observation", "concrete_time_policy_zh"],
+      "properties": {
+        "explicit_eventually_windows": {"type": "array"},
+        "uses_previous_observation": {"type": "boolean"},
+        "previous_observation_contract": {"type": ["object", "null"]},
+        "concrete_time_policy_zh": {"type": "string", "minLength": 1}
+      }
+    },
+    "property_binding_summary": {
+      "type": "object",
+      "required": ["binding_status", "mavlink_observability", "ap_count", "conclusion_limit_zh"],
+      "properties": {
+        "binding_status": {"enum": ["EXACT", "MODELLED", "UNRESOLVED"]},
+        "mavlink_observability": {
+          "enum": ["DIRECT", "DERIVED", "CONDITIONAL", "INSTRUMENTATION_REQUIRED", "UNRESOLVED"]
+        },
+        "ap_count": {"type": "integer", "minimum": 1},
+        "conclusion_limit_zh": {"type": "string", "minLength": 1}
+      }
+    },
+    "atomic_propositions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "ap_id",
+          "expression",
+          "truth_meaning_zh",
+          "binding_status",
+          "selected_term_binding_ids",
+          "alternative_term_binding_ids",
+          "binding_selection_reason_zh",
+          "evaluation_plan_zh",
+          "mavlink_observability",
+          "mavlink_observation_bindings",
+          "selected_source_bindings",
+          "alternative_source_bindings",
+          "implementation_satisfaction"
+        ],
+        "properties": {
+          "ap_id": {"type": "string", "minLength": 1},
+          "expression": {"type": "string", "minLength": 1},
+          "truth_meaning_zh": {"type": "string", "minLength": 1},
+          "binding_status": {"enum": ["EXACT", "MODELLED", "UNRESOLVED"]},
+          "selected_term_binding_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "alternative_term_binding_ids": {"type": "array", "items": {"type": "string"}},
+          "mavlink_observability": {
+            "enum": ["DIRECT", "DERIVED", "CONDITIONAL", "INSTRUMENTATION_REQUIRED", "UNRESOLVED"]
+          },
+          "implementation_satisfaction": {"const": "NOT_ASSESSED"}
+        }
+      }
+    },
+    "formula_parameters": {"type": "array"},
+    "parameter_value_contract_zh": {"type": "object"},
+    "author_dependency_summary": {
+      "type": "object",
+      "required": ["association_count", "unique_input_identity_count", "claim_limit_zh"],
+      "properties": {
+        "association_count": {"type": "integer", "minimum": 0},
+        "unique_input_identity_count": {"type": "integer", "minimum": 0},
+        "claim_limit_zh": {"type": "string", "minLength": 1}
+      }
+    },
+    "author_input_dependencies": {"type": "array"},
+    "current_input_identities": {"type": "array"},
+    "audit_boundary_zh": {
+      "type": "object",
+      "required": ["requirement_origin", "source_binding", "static_analysis", "conformance"]
+    }
+  }
+}

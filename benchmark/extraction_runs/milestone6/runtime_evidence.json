@@ -1,0 +1,2292 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-17T23:33:06+00:00",
+  "captures": [
+    {
+      "capture_id": "ardupilot-copter-m6",
+      "system": "ArduPilot",
+      "vehicle": "ArduCopter",
+      "profile": "quad",
+      "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472",
+      "runtime_status": "COMPLETE",
+      "launch_command": "/home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arducopter --wipe --model quad --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20100 --rc-in-port 21101 --sim-port-in 22101 --sim-port-out 22102 --irlock-port 23101 --serial0 udpclient:127.0.0.1:19101 --sysid 151 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest",
+      "connection": "udpin:127.0.0.1:19101",
+      "phases": [
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8096738016218,
+          "end_host_monotonic_ns": 8100745713197,
+          "traffic_origin": "Passive UDP receive only; no PARAM or MAV_CMD request was sent.",
+          "notes": "Stable target is defined by receiving the expected vehicle HEARTBEAT, then observing a three-second passive warmup."
+        },
+        {
+          "name": "BASELINE",
+          "start_host_monotonic_ns": 8100745825063,
+          "end_host_monotonic_ns": 8112746175580,
+          "traffic_origin": "Passive firmware-default stream only; no outbound request and no harness heartbeat.",
+          "notes": "This phase is measured after target HEARTBEAT and passive warmup. It is kept separate so later request responses are not classified as default streams."
+        },
+        {
+          "name": "PARAMETER_DOWNLOAD",
+          "start_host_monotonic_ns": 8112746272436,
+          "end_host_monotonic_ns": 8113595654504,
+          "traffic_origin": "Harness GCS HEARTBEAT plus PARAM_REQUEST_LIST/PARAM_REQUEST_READ; no PARAM_SET.",
+          "notes": "Full runtime parameter enumeration. Source defaults are never substituted."
+        },
+        {
+          "name": "REQUEST_SWEEP",
+          "start_host_monotonic_ns": 8113611368693,
+          "end_host_monotonic_ns": 8130675035047,
+          "traffic_origin": "One serial MAV_CMD_REQUEST_MESSAGE (command 512) per frozen all.xml message ID.",
+          "notes": "ACK and message observation are recorded independently. A message seen in the request window is not claimed causal when it was already a baseline stream."
+        },
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8130684288798,
+          "end_host_monotonic_ns": 8145890359064,
+          "traffic_origin": "MAV_CMD_SET_MESSAGE_INTERVAL for selected AP-observation messages, then timed receive.",
+          "notes": "This phase follows and is excluded from the passive baseline and request sweep."
+        }
+      ],
+      "parameter_snapshot": {
+        "status": "COMPLETE",
+        "protocol": "PARAM",
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+        "sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+        "expected_count": 1387,
+        "received_count": 1387,
+        "unique_parameter_count": 1387,
+        "missing_indices": [],
+        "key_values": [
+          {
+            "name": "BATT2_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 354,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112984126191
+          },
+          {
+            "name": "BATT3_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 355,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112988720438
+          },
+          {
+            "name": "BATT4_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 356,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112988858992
+          },
+          {
+            "name": "BATT5_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 357,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112988959228
+          },
+          {
+            "name": "BATT6_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 358,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112989064480
+          },
+          {
+            "name": "BATT7_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 359,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112989161112
+          },
+          {
+            "name": "BATT8_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 360,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112989258455
+          },
+          {
+            "name": "BATT9_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 361,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112989354648
+          },
+          {
+            "name": "BATT_CAPACITY",
+            "wire_value": 3300.0,
+            "decoded_value": 3300,
+            "param_type": 6,
+            "param_index": 335,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112972328952
+          },
+          {
+            "name": "BATT_CRT_MAH",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 342,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977602216
+          },
+          {
+            "name": "BATT_CRT_VOLT",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 341,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977502486
+          },
+          {
+            "name": "BATT_FS_CRT_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 344,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977820317
+          },
+          {
+            "name": "BATT_FS_LOW_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 343,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977711763
+          },
+          {
+            "name": "BATT_FS_VOLTSRC",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 338,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977178636
+          },
+          {
+            "name": "BATT_LOW_MAH",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 340,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977400585
+          },
+          {
+            "name": "BATT_LOW_TIMER",
+            "wire_value": 10.0,
+            "decoded_value": 10,
+            "param_type": 2,
+            "param_index": 337,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977083523
+          },
+          {
+            "name": "BATT_LOW_VOLT",
+            "wire_value": 10.5,
+            "decoded_value": 10.5,
+            "param_type": 9,
+            "param_index": 339,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112977299229
+          },
+          {
+            "name": "BATT_MONITOR",
+            "wire_value": 4.0,
+            "decoded_value": 4,
+            "param_type": 2,
+            "param_index": 334,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112972221743
+          },
+          {
+            "name": "FS_GCS_ENABLE",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 7,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112780222555
+          },
+          {
+            "name": "FS_GCS_TIMEOUT",
+            "wire_value": 5.0,
+            "decoded_value": 5.0,
+            "param_type": 9,
+            "param_index": 1200,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113484840703
+          },
+          {
+            "name": "FS_OPTIONS",
+            "wire_value": 16.0,
+            "decoded_value": 16,
+            "param_type": 6,
+            "param_index": 1195,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113484313222
+          },
+          {
+            "name": "GUID_TIMEOUT",
+            "wire_value": 3.0,
+            "decoded_value": 3.0,
+            "param_type": 9,
+            "param_index": 1204,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113490108510
+          },
+          {
+            "name": "MAV_GCS_SYSID",
+            "wire_value": 255.0,
+            "decoded_value": 255,
+            "param_type": 4,
+            "param_index": 1350,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113572500023
+          },
+          {
+            "name": "MAV_GCS_SYSID_HI",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 4,
+            "param_index": 1351,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113572593761
+          },
+          {
+            "name": "RTL_CONE_SLOPE",
+            "wire_value": 3.0,
+            "decoded_value": 3.0,
+            "param_type": 9,
+            "param_index": 4,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112779840079
+          },
+          {
+            "name": "RTL_LOIT_TIME",
+            "wire_value": 5000.0,
+            "decoded_value": 5000,
+            "param_type": 6,
+            "param_index": 5,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8112779986210
+          },
+          {
+            "name": "RTL_OPTIONS",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 1201,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113484934519
+          },
+          {
+            "name": "SERIAL0_PROTOCOL",
+            "wire_value": 2.0,
+            "decoded_value": 2,
+            "param_type": 2,
+            "param_index": 1321,
+            "param_count": 1387,
+            "source_system": 151,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8113555055658
+          }
+        ]
+      },
+      "message_summary": {
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/message_summary.json",
+        "sha256": "0744e8babc0b4608ae249a36c174dd25d2f172e3d55e86b1809bd0e54e54076f",
+        "total_message_count": 2733,
+        "distinct_message_count": 51,
+        "baseline_distinct_message_count": 2,
+        "host_clock": "CLOCK_MONOTONIC_NS"
+      },
+      "request_sweep": {
+        "status": "COMPLETE",
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/request_sweep.json",
+        "sha256": "8869f73d93bf3c4310d5f719f794b2869695682bf0def1784cca82023407b58c",
+        "attempted": 352,
+        "message_observed": 45,
+        "unsupported": 0,
+        "no_response": 0
+      },
+      "clock_domains": [
+        "CLOCK_MONOTONIC_NS",
+        "HOST_UTC_WALL_FOR_TLOG_ONLY",
+        "ARDUPILOT_BOOT_OR_PROTOCOL_SPECIFIC_ONBOARD_FIELDS_AS_NAMED"
+      ],
+      "process_cleanup": "{\"cleaned_only_owned_process_group\": true, \"completed_at\": \"2026-07-17T23:09:59.451745+00:00\", \"pid\": 738302, \"pid_exists_after_wait\": false, \"post_cleanup_process_tree\": {\"command\": \"ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738302\", \"exit_code\": 1, \"stderr\": \"\", \"stdout\": \"\"}, \"pre_cleanup_process_tree\": {\"command\": \"ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738302\", \"exit_code\": 0, \"stderr\": \"\", \"stdout\": \" 738302  738202  738302  738302 Ssl  arducopter      /home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arducopter --wipe --model quad --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20100 --rc-in-port 21101 --sim-port-in 22101 --sim-port-out 22102 --irlock-port 23101 --serial0 udpclient:127.0.0.1:19101 --sysid 151 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest\\n\"}, \"process_group\": 738302, \"return_code\": -2, \"signals\": [{\"sent_at\": \"2026-07-17T23:09:59.441475+00:00\", \"signal\": \"SIGINT\"}]}",
+      "artifacts": [
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/README.md",
+          "sha256": "5267998a6c338716283123b46c8b5bbf367d5884abb7bb06881791fa78df5676",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/collect_runtime.py",
+          "sha256": "d0c12c523f6daf83bf608ea64f4f9fb36643895b3d800c90980c004381cd7bf9",
+          "role": "executed reproduction script"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/dialect_generated.py",
+          "sha256": "3ac6cf13172d62e37e3b0321b2817f050702a085714af792d8466a279f7ab27e",
+          "role": "generated parser for frozen all.xml dialect"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/postflight.json",
+          "sha256": "8a5567b116654861181f1508970cecf671fa2f9f01d035eeb1a53023476f9179",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/preflight.json",
+          "sha256": "f226e931503625ec72812f7815221f5fbc77828b426c87452bd24c5a3eec9ae2",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/command.txt",
+          "sha256": "c58c7f29c4a5f0421b6d86cab7258ddc6a0411b596d0134619b261f470858742",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/interval_requests.json",
+          "sha256": "1faa25f28f299082663000b511bb512284ccf0f4e093131a7f97c69aaa9669e6",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/launch.json",
+          "sha256": "fa8391d1df0a5cb82d71fcb6ed8890998943f9b80df40fa3c544d352a8332779",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/message_summary.json",
+          "sha256": "0744e8babc0b4608ae249a36c174dd25d2f172e3d55e86b1809bd0e54e54076f",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/messages.jsonl",
+          "sha256": "e8e160bbbc168957829c75a182a8af380fd6e14ba897bcc4ef2b450fc64c6c6a",
+          "role": "authoritative decoded per-message host-monotonic trace"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/messages.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "empty auxiliary MAVLink logging attempt; not traffic evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/messages.tlog",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "empty auxiliary MAVLink logging attempt; not traffic evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/outbound_actions.jsonl",
+          "sha256": "73eed13eb5b0fad27996f38154fc49513a345b522ecf275f37b7bccdb0bcd0c1",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+          "sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.jsonl",
+          "sha256": "4e53dd2223e40186781d2f44bd64846db0bd915a39d738a6739461e080bd31d1",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/phase_timeline.json",
+          "sha256": "8eba78e6651b41042d0c7e3f49e882715f6b9832eeef0c9b6ad7d43b2d002474",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/process_cleanup.json",
+          "sha256": "fc58cfef25adb3c48c4a112c87830261c3499c7c7a217b1b29fba3cb68645644",
+          "role": "owned-process cleanup evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/request_sweep.json",
+          "sha256": "8869f73d93bf3c4310d5f719f794b2869695682bf0def1784cca82023407b58c",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/request_sweep.jsonl",
+          "sha256": "e3024aa45cbec23788102ec80e3ec8f085613f73725240e53a9f60eaf6355c53",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/required_parameters.json",
+          "sha256": "364ed2c7071e61ae4db5b963050fff4b05f30b0a6f8238a03d067fe9776d6836",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/run_result.json",
+          "sha256": "805eaa6d87d1563bf75a3acea12ace20eb229016b9ddb200730e01761c0e17cb",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/runtime/eeprom.bin",
+          "sha256": "b521f37552befdcd568ef965d2f86ac2b2ab5cb62fbd189e737f7fc439a866d0",
+          "role": "isolated SITL runtime state/log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/runtime/terrain/S36E149.DAT",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "isolated SITL runtime state/log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/stderr.log",
+          "sha256": "835c44c4975a1351dd4c5b11b12d13c18e3e5ceee309b9846d2feddbfcd3fb83",
+          "role": "SITL process output"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/stdout.log",
+          "sha256": "d0404b7351abce0ce0dd50ac68f5fa96adbb7afc412467143bcb22c73d8d5563",
+          "role": "SITL process output"
+        }
+      ],
+      "limitations": [
+        "Host arrival uses CLOCK_MONOTONIC_NS; it is not silently substituted for vehicle time.",
+        "Only message fields classified as timestamps by the frozen static catalog are sampled as onboard time carriers.",
+        "Request-window observation can be periodic/default traffic; baseline_present and observation_causality retain this ambiguity.",
+        "No flight or property-conformance scenario was executed; this is runtime support and parameter evidence only.",
+        "pymavlink setup_logfile/setup_logfile_raw produced zero-byte auxiliary files; messages.jsonl is the authoritative nonempty traffic capture."
+      ]
+    },
+    {
+      "capture_id": "ardupilot-plane-m6",
+      "system": "ArduPilot",
+      "vehicle": "ArduPlane",
+      "profile": "plane",
+      "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472",
+      "runtime_status": "COMPLETE",
+      "launch_command": "/home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arduplane --wipe --model plane --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20200 --rc-in-port 21201 --sim-port-in 22201 --sim-port-out 22202 --irlock-port 23201 --serial0 udpclient:127.0.0.1:19102 --sysid 152 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest",
+      "connection": "udpin:127.0.0.1:19102",
+      "phases": [
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8145932689677,
+          "end_host_monotonic_ns": 8149948610521,
+          "traffic_origin": "Passive UDP receive only; no PARAM or MAV_CMD request was sent.",
+          "notes": "Stable target is defined by receiving the expected vehicle HEARTBEAT, then observing a three-second passive warmup."
+        },
+        {
+          "name": "BASELINE",
+          "start_host_monotonic_ns": 8149948745274,
+          "end_host_monotonic_ns": 8161949044448,
+          "traffic_origin": "Passive firmware-default stream only; no outbound request and no harness heartbeat.",
+          "notes": "This phase is measured after target HEARTBEAT and passive warmup. It is kept separate so later request responses are not classified as default streams."
+        },
+        {
+          "name": "PARAMETER_DOWNLOAD",
+          "start_host_monotonic_ns": 8161949123898,
+          "end_host_monotonic_ns": 8163072558378,
+          "traffic_origin": "Harness GCS HEARTBEAT plus PARAM_REQUEST_LIST/PARAM_REQUEST_READ; no PARAM_SET.",
+          "notes": "Full runtime parameter enumeration. Source defaults are never substituted."
+        },
+        {
+          "name": "REQUEST_SWEEP",
+          "start_host_monotonic_ns": 8163089863445,
+          "end_host_monotonic_ns": 8183400420900,
+          "traffic_origin": "One serial MAV_CMD_REQUEST_MESSAGE (command 512) per frozen all.xml message ID.",
+          "notes": "ACK and message observation are recorded independently. A message seen in the request window is not claimed causal when it was already a baseline stream."
+        },
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8183407557220,
+          "end_host_monotonic_ns": 8198823246928,
+          "traffic_origin": "MAV_CMD_SET_MESSAGE_INTERVAL for selected AP-observation messages, then timed receive.",
+          "notes": "This phase follows and is excluded from the passive baseline and request sweep."
+        }
+      ],
+      "parameter_snapshot": {
+        "status": "COMPLETE",
+        "protocol": "PARAM",
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.json",
+        "sha256": "0767f3f3019f5399679118cbcf0931e552bdb6ee40cc67303a8b476a6e61c4dd",
+        "expected_count": 1440,
+        "received_count": 1440,
+        "unique_parameter_count": 1440,
+        "missing_indices": [],
+        "key_values": [
+          {
+            "name": "BATT2_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 459,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162342918905
+          },
+          {
+            "name": "BATT3_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 460,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162343062815
+          },
+          {
+            "name": "BATT4_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 461,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162343165583
+          },
+          {
+            "name": "BATT5_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 462,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162343266753
+          },
+          {
+            "name": "BATT6_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 463,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162343380420
+          },
+          {
+            "name": "BATT7_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 464,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162343483967
+          },
+          {
+            "name": "BATT8_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 465,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162343584329
+          },
+          {
+            "name": "BATT9_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 466,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162348845051
+          },
+          {
+            "name": "BATT_CAPACITY",
+            "wire_value": 3300.0,
+            "decoded_value": 3300,
+            "param_type": 6,
+            "param_index": 439,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162325787558
+          },
+          {
+            "name": "BATT_CRT_MAH",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 447,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331787944
+          },
+          {
+            "name": "BATT_CRT_VOLT",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 446,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331691351
+          },
+          {
+            "name": "BATT_FS_CRT_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 449,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162332035089
+          },
+          {
+            "name": "BATT_FS_LOW_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 448,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331888238
+          },
+          {
+            "name": "BATT_FS_VOLTSRC",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 443,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331397269
+          },
+          {
+            "name": "BATT_LOW_MAH",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 445,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331590804
+          },
+          {
+            "name": "BATT_LOW_TIMER",
+            "wire_value": 10.0,
+            "decoded_value": 10,
+            "param_type": 2,
+            "param_index": 442,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331242313
+          },
+          {
+            "name": "BATT_LOW_VOLT",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 444,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162331495059
+          },
+          {
+            "name": "BATT_MONITOR",
+            "wire_value": 4.0,
+            "decoded_value": 4,
+            "param_type": 2,
+            "param_index": 438,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162325687216
+          },
+          {
+            "name": "MAV_GCS_SYSID",
+            "wire_value": 255.0,
+            "decoded_value": 255,
+            "param_type": 4,
+            "param_index": 1403,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8163043097512
+          },
+          {
+            "name": "MAV_GCS_SYSID_HI",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 4,
+            "param_index": 1404,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8163043194319
+          },
+          {
+            "name": "SERIAL0_PROTOCOL",
+            "wire_value": 2.0,
+            "decoded_value": 2,
+            "param_type": 2,
+            "param_index": 1373,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8163020081048
+          },
+          {
+            "name": "TKOFF_ALT",
+            "wire_value": 50.0,
+            "decoded_value": 50,
+            "param_type": 4,
+            "param_index": 1269,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162943960807
+          },
+          {
+            "name": "TKOFF_LVL_ALT",
+            "wire_value": 10.0,
+            "decoded_value": 10,
+            "param_type": 4,
+            "param_index": 1270,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162944070061
+          },
+          {
+            "name": "TKOFF_ROTATE_SPD",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 19,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162016413403
+          },
+          {
+            "name": "TKOFF_THR_DELAY",
+            "wire_value": 2.0,
+            "decoded_value": 2,
+            "param_type": 2,
+            "param_index": 12,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162010615251
+          },
+          {
+            "name": "TKOFF_THR_MAX",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 41,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162028775084
+          },
+          {
+            "name": "TKOFF_THR_MAX_T",
+            "wire_value": 4.0,
+            "decoded_value": 4.0,
+            "param_type": 9,
+            "param_index": 13,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162010766875
+          },
+          {
+            "name": "TKOFF_THR_MINACC",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 11,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162005490417
+          },
+          {
+            "name": "TKOFF_THR_MINSPD",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 10,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162005383101
+          },
+          {
+            "name": "TKOFF_TIMEOUT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 1217,
+            "param_count": 1440,
+            "source_system": 152,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162903385237
+          }
+        ]
+      },
+      "message_summary": {
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/message_summary.json",
+        "sha256": "59ba29fc993f9a1e1f9b53c817c44d17b92e3cf177f70f3b686a6a46a452b7bd",
+        "total_message_count": 4326,
+        "distinct_message_count": 52,
+        "baseline_distinct_message_count": 33,
+        "host_clock": "CLOCK_MONOTONIC_NS"
+      },
+      "request_sweep": {
+        "status": "COMPLETE",
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/request_sweep.json",
+        "sha256": "2d13e6d8853a5d35e6fbb416ae74bd4f58ca92a43ce8e70e79e9073e816ad463",
+        "attempted": 352,
+        "message_observed": 46,
+        "unsupported": 0,
+        "no_response": 0
+      },
+      "clock_domains": [
+        "CLOCK_MONOTONIC_NS",
+        "HOST_UTC_WALL_FOR_TLOG_ONLY",
+        "ARDUPILOT_BOOT_OR_PROTOCOL_SPECIFIC_ONBOARD_FIELDS_AS_NAMED"
+      ],
+      "process_cleanup": "{\"cleaned_only_owned_process_group\": true, \"completed_at\": \"2026-07-17T23:10:53.293745+00:00\", \"pid\": 738634, \"pid_exists_after_wait\": false, \"post_cleanup_process_tree\": {\"command\": \"ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738634\", \"exit_code\": 1, \"stderr\": \"\", \"stdout\": \"\"}, \"pre_cleanup_process_tree\": {\"command\": \"ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738634\", \"exit_code\": 0, \"stderr\": \"\", \"stdout\": \" 738634  738202  738634  738634 Ssl  arduplane       /home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arduplane --wipe --model plane --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20200 --rc-in-port 21201 --sim-port-in 22201 --sim-port-out 22202 --irlock-port 23201 --serial0 udpclient:127.0.0.1:19102 --sysid 152 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest\\n\"}, \"process_group\": 738634, \"return_code\": -2, \"signals\": [{\"sent_at\": \"2026-07-17T23:10:53.288169+00:00\", \"signal\": \"SIGINT\"}]}",
+      "artifacts": [
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/README.md",
+          "sha256": "5267998a6c338716283123b46c8b5bbf367d5884abb7bb06881791fa78df5676",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/collect_runtime.py",
+          "sha256": "d0c12c523f6daf83bf608ea64f4f9fb36643895b3d800c90980c004381cd7bf9",
+          "role": "executed reproduction script"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/dialect_generated.py",
+          "sha256": "3ac6cf13172d62e37e3b0321b2817f050702a085714af792d8466a279f7ab27e",
+          "role": "generated parser for frozen all.xml dialect"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/postflight.json",
+          "sha256": "8a5567b116654861181f1508970cecf671fa2f9f01d035eeb1a53023476f9179",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/preflight.json",
+          "sha256": "f226e931503625ec72812f7815221f5fbc77828b426c87452bd24c5a3eec9ae2",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/command.txt",
+          "sha256": "9f6f864460524ecf182f73272e02eb3a710ac348e3eaad1989b606d6e20e55cf",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/interval_requests.json",
+          "sha256": "1f3305225b8a51eb0c901c133b2b4f27d6d44e572b1ed38dec927998f57852ac",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/launch.json",
+          "sha256": "82c46797f5977e0fd1376efc1cc64c6218acbc9fd363adc76d3af7bec743bfdb",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/message_summary.json",
+          "sha256": "59ba29fc993f9a1e1f9b53c817c44d17b92e3cf177f70f3b686a6a46a452b7bd",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/messages.jsonl",
+          "sha256": "2fe39ddb855400b37fa9c176421b4fe1403dc4f3ecdd86fe078b4f9d9b1920bb",
+          "role": "authoritative decoded per-message host-monotonic trace"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/messages.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "empty auxiliary MAVLink logging attempt; not traffic evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/messages.tlog",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "empty auxiliary MAVLink logging attempt; not traffic evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/outbound_actions.jsonl",
+          "sha256": "2b991ccc064a0f4560da99fd172207b79bdf68302acae9170a94b64812d4edcc",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.json",
+          "sha256": "0767f3f3019f5399679118cbcf0931e552bdb6ee40cc67303a8b476a6e61c4dd",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.jsonl",
+          "sha256": "4d6f14afe16fa070516b243d1b3a23eb6834e32e512dbc90b63ff12a40543ee3",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/phase_timeline.json",
+          "sha256": "dd67d6d69a0315b78b6b4830d94e4bc4e3e560afed36f07401df0501d4ceb234",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/process_cleanup.json",
+          "sha256": "f86c5b085421336aaa79fd5a31db5b104e0a5b48cd163d423c91fd839406aff8",
+          "role": "owned-process cleanup evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/request_sweep.json",
+          "sha256": "2d13e6d8853a5d35e6fbb416ae74bd4f58ca92a43ce8e70e79e9073e816ad463",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/request_sweep.jsonl",
+          "sha256": "0bcdb668987076be2a1456e327df72f98d2ce46749838fa0ea1c2d0555588b75",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/required_parameters.json",
+          "sha256": "da6cd71c67f08a2c2edd2ff096f5604b2ba54bf32c86d8919d5ce97dbf4d81c5",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/run_result.json",
+          "sha256": "d48a9c78967a38865e8402256d382ae93d30cd3848aed74fb483e60e044d5828",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/runtime/eeprom.bin",
+          "sha256": "1492d334a0922a7c746c23f1097973db34005cbfd8f6197f6d903917dec02ed9",
+          "role": "isolated SITL runtime state/log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/runtime/terrain/S36E149.DAT",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "isolated SITL runtime state/log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/stderr.log",
+          "sha256": "3fc746225bfab310ec1c2d9cba759e5c560778a9571a655784c3ca21dbb964b7",
+          "role": "SITL process output"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/stdout.log",
+          "sha256": "4b6075b68641b18016b809706ae28420a19d82791e07d7a1dc967fafd47baef1",
+          "role": "SITL process output"
+        }
+      ],
+      "limitations": [
+        "Host arrival uses CLOCK_MONOTONIC_NS; it is not silently substituted for vehicle time.",
+        "Only message fields classified as timestamps by the frozen static catalog are sampled as onboard time carriers.",
+        "Request-window observation can be periodic/default traffic; baseline_present and observation_causality retain this ambiguity.",
+        "No flight or property-conformance scenario was executed; this is runtime support and parameter evidence only.",
+        "pymavlink setup_logfile/setup_logfile_raw produced zero-byte auxiliary files; messages.jsonl is the authoritative nonempty traffic capture."
+      ]
+    },
+    {
+      "capture_id": "ardupilot-rover-m6",
+      "system": "ArduPilot",
+      "vehicle": "Rover",
+      "profile": "rover",
+      "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472",
+      "runtime_status": "COMPLETE",
+      "launch_command": "/home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/ardurover --wipe --model rover --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20300 --rc-in-port 21301 --sim-port-in 22301 --sim-port-out 22302 --irlock-port 23301 --serial0 udpclient:127.0.0.1:19103 --sysid 153 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest",
+      "connection": "udpin:127.0.0.1:19103",
+      "phases": [
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8198854989314,
+          "end_host_monotonic_ns": 8202862573863,
+          "traffic_origin": "Passive UDP receive only; no PARAM or MAV_CMD request was sent.",
+          "notes": "Stable target is defined by receiving the expected vehicle HEARTBEAT, then observing a three-second passive warmup."
+        },
+        {
+          "name": "BASELINE",
+          "start_host_monotonic_ns": 8202862665381,
+          "end_host_monotonic_ns": 8214863189500,
+          "traffic_origin": "Passive firmware-default stream only; no outbound request and no harness heartbeat.",
+          "notes": "This phase is measured after target HEARTBEAT and passive warmup. It is kept separate so later request responses are not classified as default streams."
+        },
+        {
+          "name": "PARAMETER_DOWNLOAD",
+          "start_host_monotonic_ns": 8214863385412,
+          "end_host_monotonic_ns": 8215854647656,
+          "traffic_origin": "Harness GCS HEARTBEAT plus PARAM_REQUEST_LIST/PARAM_REQUEST_READ; no PARAM_SET.",
+          "notes": "Full runtime parameter enumeration. Source defaults are never substituted."
+        },
+        {
+          "name": "REQUEST_SWEEP",
+          "start_host_monotonic_ns": 8215870780366,
+          "end_host_monotonic_ns": 8237931673062,
+          "traffic_origin": "One serial MAV_CMD_REQUEST_MESSAGE (command 512) per frozen all.xml message ID.",
+          "notes": "ACK and message observation are recorded independently. A message seen in the request window is not claimed causal when it was already a baseline stream."
+        },
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8237939210395,
+          "end_host_monotonic_ns": 8253191753397,
+          "traffic_origin": "MAV_CMD_SET_MESSAGE_INTERVAL for selected AP-observation messages, then timed receive.",
+          "notes": "This phase follows and is excluded from the passive baseline and request sweep."
+        }
+      ],
+      "parameter_snapshot": {
+        "status": "COMPLETE",
+        "protocol": "PARAM",
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+        "sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+        "expected_count": 1271,
+        "received_count": 1271,
+        "unique_parameter_count": 1271,
+        "missing_indices": [],
+        "key_values": [
+          {
+            "name": "BATT2_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 629,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215376889754
+          },
+          {
+            "name": "BATT3_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 630,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215377014135
+          },
+          {
+            "name": "BATT4_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 631,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215381433057
+          },
+          {
+            "name": "BATT5_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 632,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215381555558
+          },
+          {
+            "name": "BATT6_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 633,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215381651001
+          },
+          {
+            "name": "BATT7_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 634,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215381746687
+          },
+          {
+            "name": "BATT8_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 635,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215381839910
+          },
+          {
+            "name": "BATT9_MONITOR",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 636,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215381933473
+          },
+          {
+            "name": "BATT_CAPACITY",
+            "wire_value": 3300.0,
+            "decoded_value": 3300,
+            "param_type": 6,
+            "param_index": 609,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215364249454
+          },
+          {
+            "name": "BATT_CRT_MAH",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 617,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215370029090
+          },
+          {
+            "name": "BATT_CRT_VOLT",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 616,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215369931047
+          },
+          {
+            "name": "BATT_FS_CRT_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 619,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215370234294
+          },
+          {
+            "name": "BATT_FS_LOW_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 618,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215370132744
+          },
+          {
+            "name": "BATT_FS_VOLTSRC",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 613,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215364415113
+          },
+          {
+            "name": "BATT_LOW_MAH",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 615,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215369770608
+          },
+          {
+            "name": "BATT_LOW_TIMER",
+            "wire_value": 10.0,
+            "decoded_value": 10,
+            "param_type": 2,
+            "param_index": 612,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215364379932
+          },
+          {
+            "name": "BATT_LOW_VOLT",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 614,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215364450129
+          },
+          {
+            "name": "BATT_MONITOR",
+            "wire_value": 4.0,
+            "decoded_value": 4,
+            "param_type": 2,
+            "param_index": 608,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215364100138
+          },
+          {
+            "name": "CRASH_ANGLE",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 1080,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215714141317
+          },
+          {
+            "name": "CRASH_THR_MIN",
+            "wire_value": 5.0,
+            "decoded_value": 5.0,
+            "param_type": 9,
+            "param_index": 1129,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215749425805
+          },
+          {
+            "name": "CRASH_TIMEOUT",
+            "wire_value": 2.0,
+            "decoded_value": 2.0,
+            "param_type": 9,
+            "param_index": 1132,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215749719215
+          },
+          {
+            "name": "CRASH_TRAT_MIN",
+            "wire_value": 10.0,
+            "decoded_value": 10.0,
+            "param_type": 9,
+            "param_index": 1131,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215749621766
+          },
+          {
+            "name": "CRASH_VEL_MIN",
+            "wire_value": 0.07999999821186066,
+            "decoded_value": 0.07999999821186066,
+            "param_type": 9,
+            "param_index": 1130,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215749523001
+          },
+          {
+            "name": "FRAME_CLASS",
+            "wire_value": 1.0,
+            "decoded_value": 1,
+            "param_type": 2,
+            "param_index": 1064,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215702364252
+          },
+          {
+            "name": "FRAME_TYPE",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 1082,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215714342129
+          },
+          {
+            "name": "FS_ACTION",
+            "wire_value": 2.0,
+            "decoded_value": 2,
+            "param_type": 2,
+            "param_index": 10,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8214915291931
+          },
+          {
+            "name": "FS_CRASH_CHECK",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 15,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8214921142651
+          },
+          {
+            "name": "FS_GCS_ENABLE",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 2,
+            "param_index": 14,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8214921030114
+          },
+          {
+            "name": "FS_GCS_TIMEOUT",
+            "wire_value": 5.0,
+            "decoded_value": 5.0,
+            "param_type": 9,
+            "param_index": 1125,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215749007955
+          },
+          {
+            "name": "FS_OPTIONS",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 1106,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215731850753
+          },
+          {
+            "name": "FS_THR_ENABLE",
+            "wire_value": 1.0,
+            "decoded_value": 1,
+            "param_type": 2,
+            "param_index": 12,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8214915404858
+          },
+          {
+            "name": "FS_THR_VALUE",
+            "wire_value": 910.0,
+            "decoded_value": 910,
+            "param_type": 4,
+            "param_index": 13,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8214920818326
+          },
+          {
+            "name": "FS_TIMEOUT",
+            "wire_value": 1.5,
+            "decoded_value": 1.5,
+            "param_type": 9,
+            "param_index": 11,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8214915350187
+          },
+          {
+            "name": "MAV_GCS_SYSID",
+            "wire_value": 255.0,
+            "decoded_value": 255,
+            "param_type": 4,
+            "param_index": 1234,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215830488029
+          },
+          {
+            "name": "MAV_GCS_SYSID_HI",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 4,
+            "param_index": 1235,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215830650113
+          },
+          {
+            "name": "RCMAP_THROTTLE",
+            "wire_value": 3.0,
+            "decoded_value": 3,
+            "param_type": 2,
+            "param_index": 129,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215003043403
+          },
+          {
+            "name": "RC_FS_TIMEOUT",
+            "wire_value": 1.0,
+            "decoded_value": 1.0,
+            "param_type": 9,
+            "param_index": 979,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215638396334
+          },
+          {
+            "name": "SERIAL0_PROTOCOL",
+            "wire_value": 2.0,
+            "decoded_value": 2,
+            "param_type": 2,
+            "param_index": 1205,
+            "param_count": 1271,
+            "source_system": 153,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8215807474268
+          }
+        ]
+      },
+      "message_summary": {
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/message_summary.json",
+        "sha256": "176e0539bdf8f5f57b090820241c4a1491e40340795c3fb2c3cc44aaa41b7e4a",
+        "total_message_count": 3754,
+        "distinct_message_count": 46,
+        "baseline_distinct_message_count": 26,
+        "host_clock": "CLOCK_MONOTONIC_NS"
+      },
+      "request_sweep": {
+        "status": "COMPLETE",
+        "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/request_sweep.json",
+        "sha256": "55fb889fa7ee61b5ee3d2241573036b33f7dedf41ebcde7acfa1f8defde29c2d",
+        "attempted": 352,
+        "message_observed": 40,
+        "unsupported": 0,
+        "no_response": 0
+      },
+      "clock_domains": [
+        "CLOCK_MONOTONIC_NS",
+        "HOST_UTC_WALL_FOR_TLOG_ONLY",
+        "ARDUPILOT_BOOT_OR_PROTOCOL_SPECIFIC_ONBOARD_FIELDS_AS_NAMED"
+      ],
+      "process_cleanup": "{\"cleaned_only_owned_process_group\": true, \"completed_at\": \"2026-07-17T23:11:49.526465+00:00\", \"pid\": 739346, \"pid_exists_after_wait\": false, \"post_cleanup_process_tree\": {\"command\": \"ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 739346\", \"exit_code\": 1, \"stderr\": \"\", \"stdout\": \"\"}, \"pre_cleanup_process_tree\": {\"command\": \"ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 739346\", \"exit_code\": 0, \"stderr\": \"\", \"stdout\": \" 739346  738202  739346  739346 Ssl  ardurover       /home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/ardurover --wipe --model rover --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20300 --rc-in-port 21301 --sim-port-in 22301 --sim-port-out 22302 --irlock-port 23301 --serial0 udpclient:127.0.0.1:19103 --sysid 153 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest\\n\"}, \"process_group\": 739346, \"return_code\": -2, \"signals\": [{\"sent_at\": \"2026-07-17T23:11:49.520872+00:00\", \"signal\": \"SIGINT\"}]}",
+      "artifacts": [
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/README.md",
+          "sha256": "5267998a6c338716283123b46c8b5bbf367d5884abb7bb06881791fa78df5676",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/collect_runtime.py",
+          "sha256": "d0c12c523f6daf83bf608ea64f4f9fb36643895b3d800c90980c004381cd7bf9",
+          "role": "executed reproduction script"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/dialect_generated.py",
+          "sha256": "3ac6cf13172d62e37e3b0321b2817f050702a085714af792d8466a279f7ab27e",
+          "role": "generated parser for frozen all.xml dialect"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/postflight.json",
+          "sha256": "8a5567b116654861181f1508970cecf671fa2f9f01d035eeb1a53023476f9179",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/preflight.json",
+          "sha256": "f226e931503625ec72812f7815221f5fbc77828b426c87452bd24c5a3eec9ae2",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/command.txt",
+          "sha256": "d4becf4f6e107a30ee1e9f0f33e1950fabf0e368ce98706c049991e59ad04691",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/interval_requests.json",
+          "sha256": "7922f09bf71f8c9b9de8f1e7a8f75220a53665020ff4ae5113f9514341dd1fe1",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/launch.json",
+          "sha256": "9d55d9b3280c13b7f101a62b4f97d9065624a67868d65f9294cc2c2eae32b1c4",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/message_summary.json",
+          "sha256": "176e0539bdf8f5f57b090820241c4a1491e40340795c3fb2c3cc44aaa41b7e4a",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/messages.jsonl",
+          "sha256": "d1a0c84820a8f308992741f7e8e015d0b1b68cce0ad2cca882de7a44b125adf0",
+          "role": "authoritative decoded per-message host-monotonic trace"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/messages.raw",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "empty auxiliary MAVLink logging attempt; not traffic evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/messages.tlog",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "empty auxiliary MAVLink logging attempt; not traffic evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/outbound_actions.jsonl",
+          "sha256": "d4bd85d1325d7364e4e9e53b1886805016ac2d30ebe8cb405383e11c4feac369",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+          "sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.jsonl",
+          "sha256": "3b79402e8b2817d31c315b4d2cbb52f16e61a281d34162f6829c9b939624f22a",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/phase_timeline.json",
+          "sha256": "93fcb5eeef6163af2280c963443171d98d938a688fee3f12e2c0a34fcb0d834e",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/process_cleanup.json",
+          "sha256": "c3bf203bb734b698ff3c2aa79b9002c6cb40064840547f4a28309ac993627281",
+          "role": "owned-process cleanup evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/request_sweep.json",
+          "sha256": "55fb889fa7ee61b5ee3d2241573036b33f7dedf41ebcde7acfa1f8defde29c2d",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/request_sweep.jsonl",
+          "sha256": "d742016329aa349eb4068056ffafde923dc51b1b8b69bf9107db0042eda10c7a",
+          "role": "message request/response evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/required_parameters.json",
+          "sha256": "27c3181c729b47b3b987549c1231de1e0c73f3a89613ca419cc0bd7fac479b7c",
+          "role": "runtime parameter evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/run_result.json",
+          "sha256": "4ad0f34191039bdf91fdfa99abe3a095a7ce2437bd393f9a0f28132be133aefb",
+          "role": "capture metadata or supporting artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/runtime/eeprom.bin",
+          "sha256": "a317fb94550dd3eda95336de24db76579f5029e329c5caef7f0c7eb1f83e52d8",
+          "role": "isolated SITL runtime state/log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/stderr.log",
+          "sha256": "8b8963e6c565f1a97abde47c22bdda435bd660e10acd0b71ff4be753ac9d6c57",
+          "role": "SITL process output"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/stdout.log",
+          "sha256": "1c09a5f47bdaea589c80f36224814ba3703006c5d4b01ac39457f46916bb13ee",
+          "role": "SITL process output"
+        }
+      ],
+      "limitations": [
+        "Host arrival uses CLOCK_MONOTONIC_NS; it is not silently substituted for vehicle time.",
+        "Only message fields classified as timestamps by the frozen static catalog are sampled as onboard time carriers.",
+        "Request-window observation can be periodic/default traffic; baseline_present and observation_causality retain this ambiguity.",
+        "No flight or property-conformance scenario was executed; this is runtime support and parameter evidence only.",
+        "pymavlink setup_logfile/setup_logfile_raw produced zero-byte auxiliary files; messages.jsonl is the authoritative nonempty traffic capture."
+      ]
+    },
+    {
+      "limitations": [
+        "This is runtime acquisition only; implementation/property satisfaction is NOT_ASSESSED.",
+        "PX4 used the internal headless SIH multicopter airframe sihsim_quadx; no external graphical simulator, arming, takeoff command, or campaign flight path was used.",
+        "Host CLOCK_MONOTONIC_NS arrival time is not substituted for PX4 onboard time fields.",
+        "MAV_CMD_REQUEST_MESSAGE COMMAND_ACK identifies command 512 but not the requested message ID; correlation is sequential and temporal.",
+        "A matching frame after a request is not asserted causal when that message was already present in BASELINE.",
+        "No PARAM_SET, stream-interval change, arming command, mode command, or actuator command was sent.",
+        "For non-finite float32 carriers produced by PX4 bytewise integer PARAM encoding, parameters_runtime.json stores a string sentinel plus exact float32 hex; the manifest's numeric wire_value falls back to the decoded integer value.",
+        "PX4 emitted the special _HASH_CHECK record at index 65535 in addition to the complete indexed set 0 through param_count-1; it explains why unique parameter names exceed expected_count by one."
+      ],
+      "parameter_snapshot": {
+        "status": "COMPLETE",
+        "protocol": "PARAM",
+        "path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "expected_count": 900,
+        "received_count": 941,
+        "unique_parameter_count": 901,
+        "missing_indices": [],
+        "key_values": [
+          {
+            "name": "COM_RC_LOSS_T",
+            "wire_value": 0.5,
+            "decoded_value": 0.5,
+            "param_type": 9,
+            "param_index": 297,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8162647408941
+          },
+          {
+            "name": "COM_RC_IN_MODE",
+            "wire_value": 1.401298464324817e-45,
+            "decoded_value": 1,
+            "param_type": 6,
+            "param_index": 296,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8163392894979
+          },
+          {
+            "name": "COM_RCL_EXCEPT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 294,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8164144049244
+          },
+          {
+            "name": "NAV_RCL_ACT",
+            "wire_value": 2.802596928649634e-45,
+            "decoded_value": 2,
+            "param_type": 6,
+            "param_index": 650,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8164899300356
+          },
+          {
+            "name": "COM_DL_LOSS_T",
+            "wire_value": 1.401298464324817e-44,
+            "decoded_value": 10,
+            "param_type": 6,
+            "param_index": 260,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8165649969385
+          },
+          {
+            "name": "COM_DLL_EXCEPT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 259,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8166402952904
+          },
+          {
+            "name": "NAV_DLL_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 642,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8167155244283
+          },
+          {
+            "name": "COM_OF_LOSS_T",
+            "wire_value": 1.0,
+            "decoded_value": 1.0,
+            "param_type": 9,
+            "param_index": 285,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8167905573358
+          },
+          {
+            "name": "COM_OBL_RC_ACT",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 284,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8168656138183
+          },
+          {
+            "name": "COM_DISARM_LAND",
+            "wire_value": 2.0,
+            "decoded_value": 2.0,
+            "param_type": 9,
+            "param_index": 256,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8169404521839
+          },
+          {
+            "name": "COM_DISARM_PRFLT",
+            "wire_value": 10.0,
+            "decoded_value": 10.0,
+            "param_type": 9,
+            "param_index": 258,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8170161575543
+          },
+          {
+            "name": "COM_FLT_TIME_MAX",
+            "wire_value": -1,
+            "decoded_value": -1,
+            "param_type": 6,
+            "param_index": 271,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8170913406680
+          },
+          {
+            "name": "RTL_LAND_DELAY",
+            "wire_value": 0.0,
+            "decoded_value": 0.0,
+            "param_type": 9,
+            "param_index": 796,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8171664303047
+          },
+          {
+            "name": "RTL_TYPE",
+            "wire_value": 0.0,
+            "decoded_value": 0,
+            "param_type": 6,
+            "param_index": 803,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8172411510209
+          },
+          {
+            "name": "RTL_DESCEND_ALT",
+            "wire_value": 10.0,
+            "decoded_value": 10.0,
+            "param_type": 9,
+            "param_index": 795,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8173167394566
+          },
+          {
+            "name": "MAV_SYS_ID",
+            "wire_value": 6.025583396596713e-44,
+            "decoded_value": 43,
+            "param_type": 6,
+            "param_index": 518,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8173921287111
+          },
+          {
+            "name": "MAV_TYPE",
+            "wire_value": 2.802596928649634e-45,
+            "decoded_value": 2,
+            "param_type": 6,
+            "param_index": 519,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8174669906722
+          },
+          {
+            "name": "SYS_AUTOSTART",
+            "wire_value": 1.4069036581821163e-41,
+            "decoded_value": 10040,
+            "param_type": 6,
+            "param_index": 866,
+            "param_count": 900,
+            "source_system": 43,
+            "source_component": 1,
+            "received_host_monotonic_ns": 8175427841861
+          }
+        ]
+      },
+      "launch_command": "/home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/bin/px4 -i 42 -d /home/lqq/project/TAFuzz/baseline/px4/build/px4_sitl_default/etc",
+      "message_summary": {
+        "path": "benchmark/extraction_runs/milestone6/PX4/message_inventory.json",
+        "sha256": "e181dc337e7db3794aa1078bd4c2f4d343db81db09663c1933a34bfd7c9f00a9",
+        "total_message_count": 14748,
+        "distinct_message_count": 54,
+        "baseline_distinct_message_count": 33,
+        "host_clock": "CLOCK_MONOTONIC_NS"
+      },
+      "process_cleanup": "pid=738719 pgid=738719 exit_code=0 cleanup_complete=True",
+      "system": "PX4",
+      "clock_domains": [
+        "CLOCK_MONOTONIC_NS",
+        "HOST_UTC_WALL_FOR_TLOG_ONLY",
+        "PX4_BOOT_OR_UNIX_OR_PROTOCOL_SPECIFIC_ONBOARD_FIELDS_AS_NAMED"
+      ],
+      "artifacts": [
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/mavlink_messages.jsonl",
+          "sha256": "8c1d380f0df038a28645e76c5a6f607dab6d7526bf9f04058101324ad269b734",
+          "role": "Decoded MAVLink JSONL with raw frame hex and phase/timing metadata"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/mavlink_capture.tlog",
+          "sha256": "0ea098fbbb50e44093c33b5d1fa283c3284b5daf6ea2a17b7c48248eaac9f02e",
+          "role": "Raw MAVLink tlog"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/message_inventory.json",
+          "sha256": "e181dc337e7db3794aa1078bd4c2f4d343db81db09663c1933a34bfd7c9f00a9",
+          "role": "Message inventory and three-layer counts"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+          "sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+          "role": "Runtime parameter snapshot"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/message_request_sweep.json",
+          "sha256": "cea0d0eb996dd515a878a6977b31f035b32b0ce4a35ef35f1e66a85c01771b86",
+          "role": "Full dialect request sweep"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/px4.stdout.log",
+          "sha256": "6490bfbcb30c48cbb25c734960859cd7522d15617e97df1793573788e9e649b5",
+          "role": "PX4 stdout"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/px4.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "role": "PX4 stderr"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/process_lifecycle.json",
+          "sha256": "30fe3452eea1727d56eeeef2863e45b00ac02460c0d8fa937a8204b0537ad350",
+          "role": "Process exit and cleanup evidence"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/source_integrity.json",
+          "sha256": "43bf7d05669c26211e881c85c09e4c245fa6bef0a6b105edf06b03250c16acf4",
+          "role": "Frozen source/worktree verification"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/commands.json",
+          "sha256": "fec4d0fd52578477b72f1fdc6200d8ed6b8b35c99a5e47adec96dd0b7a7a3676",
+          "role": "Exact commands and protocol actions"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/capture_details.json",
+          "sha256": "acfe4d8b7dc8dd01f6ad896821b63777e18cc9420170e10f28d5a9704a835d45",
+          "role": "Extended capture facts"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/capture_driver.log",
+          "sha256": "44be40eb280215b0835737b7fd1ce4f9a2d28ef6560ca61deda2f8a0de755a70",
+          "role": "Capture-driver progress and errors"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/px4_development_v20.py",
+          "sha256": "ca4927eceb3db48675481867da92d41cb4dd603d17b2f6dbb8a6abe9b188c94f",
+          "role": "Generated frozen PX4 development dialect decoder"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/dialect_generation.log",
+          "sha256": "cadaf2a7bd727b40bfbd7ac9c8e0305cab16764ee538261536181567fbb147db",
+          "role": "Dialect generation log"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/README.md",
+          "sha256": "f94cd87d0a7cecf5af9d30734c2456c51f3359a7d7259c6309068b5c2ed5d301",
+          "role": "Human-readable capture report"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/capture_px4_runtime.py",
+          "sha256": "d5f847f49d2b6f159758136057a1fcf927e5d7fda26978e18d39a2871f611530",
+          "role": "Reproduction script"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/dataman",
+          "sha256": "55cf902b00539fd43b45029e449392ebfab82acdda744f056fcbe3aa0b0c10c4",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/log/2026-07-17/23_10_00.ulg",
+          "sha256": "e8e21a0e6c3f729ce61bb5c5bc0df47361eb5e7fd5252ed4eeb60488f7e9abc1",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/parameters.bson",
+          "sha256": "c255c7ca21d2df8eb73a14169e924d202c0e27c185be11951bf53a0df654fe88",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/runtime_state/parameters_backup.bson",
+          "sha256": "c255c7ca21d2df8eb73a14169e924d202c0e27c185be11951bf53a0df654fe88",
+          "role": "PX4 isolated runtime-state artifact"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/manifest.json",
+          "sha256": "e716bed71700a298cfae0ff5db944fbe96dc073053d2ac2199a6418a3e1c6c5e",
+          "role": "Preserved failed none_iris attempt manifest"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/px4.stdout.log",
+          "sha256": "02691315ba1b2e8b4e7a3a6199b947da9e5a4ac05c5cb3c97a723ef6c10fecff",
+          "role": "Preserved failed none_iris startup stdout"
+        },
+        {
+          "path": "benchmark/extraction_runs/milestone6/PX4/attempt_1_none_iris_failed/process_lifecycle.json",
+          "sha256": "81cba146659c7e005f8a11365e2774ba09e65b495177d30c10ef394b4e16e72d",
+          "role": "Preserved failed-attempt cleanup evidence"
+        }
+      ],
+      "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "phases": [
+        {
+          "name": "OTHER",
+          "start_host_monotonic_ns": 8146347386239,
+          "end_host_monotonic_ns": 8147663038940,
+          "traffic_origin": "PX4 startup and GCS discovery traffic",
+          "notes": "Pre-contract startup phase."
+        },
+        {
+          "name": "BASELINE",
+          "start_host_monotonic_ns": 8147663038940,
+          "end_host_monotonic_ns": 8159667030904,
+          "traffic_origin": "Default PX4 streams after GCS discovery; no PARAM or message request sent.",
+          "notes": "Duration 12.0s."
+        },
+        {
+          "name": "PARAMETER_DOWNLOAD",
+          "start_host_monotonic_ns": 8159667030904,
+          "end_host_monotonic_ns": 8176175644973,
+          "traffic_origin": "PARAM_REQUEST_LIST followed by explicit PARAM_REQUEST_READ for key parameters.",
+          "notes": "Runtime values only; no PARAM_SET is sent."
+        },
+        {
+          "name": "REQUEST_SWEEP",
+          "start_host_monotonic_ns": 8176175644973,
+          "end_host_monotonic_ns": 8184155993074,
+          "traffic_origin": "Sequential MAV_CMD_REQUEST_MESSAGE (512) plus default traffic that continued during windows.",
+          "notes": "Matching frames are temporal observations; default-stream presence is marked as causal ambiguity."
+        }
+      ],
+      "vehicle": "multicopter",
+      "request_sweep": {
+        "status": "COMPLETE",
+        "path": "benchmark/extraction_runs/milestone6/PX4/message_request_sweep.json",
+        "sha256": "cea0d0eb996dd515a878a6977b31f035b32b0ce4a35ef35f1e66a85c01771b86",
+        "attempted": 243,
+        "message_observed": 47,
+        "unsupported": 0,
+        "no_response": 0
+      },
+      "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "profile": "px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+      "runtime_status": "COMPLETE",
+      "connection": "udpout:127.0.0.1:18612 source=250:190 target=43:1"
+    }
+  ],
+  "property_parameters": [
+    {
+      "property_id": "ARD-COPTER-GCS-001",
+      "parameter_id": "FS_GCS_TIMEOUT",
+      "capture_id": "ardupilot-copter-m6",
+      "value": 5.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+      "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+      "source_param_index": 1200,
+      "source_param_count": 1387,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-COPTER-GUID-002",
+      "parameter_id": "GUID_TIMEOUT",
+      "capture_id": "ardupilot-copter-m6",
+      "value": 3.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+      "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+      "source_param_index": 1204,
+      "source_param_count": 1387,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-COPTER-RTL-003",
+      "parameter_id": "RTL_LOIT_TIME",
+      "capture_id": "ardupilot-copter-m6",
+      "value": 5000,
+      "unit": "ms",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+      "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+      "source_param_index": 5,
+      "source_param_count": 1387,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-PLANE-TAKEOFF-001",
+      "parameter_id": "TKOFF_TIMEOUT",
+      "capture_id": "ardupilot-plane-m6",
+      "value": 0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.json",
+      "source_sha256": "0767f3f3019f5399679118cbcf0931e552bdb6ee40cc67303a8b476a6e61c4dd",
+      "source_param_index": 1217,
+      "source_param_count": 1440,
+      "status": "RUNTIME_OBSERVED_DISABLED_DOMAIN"
+    },
+    {
+      "property_id": "ARD-ROVER-CRASH-002",
+      "parameter_id": "CRASH_TIMEOUT",
+      "capture_id": "ardupilot-rover-m6",
+      "value": 2.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+      "source_sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+      "source_param_index": 1132,
+      "source_param_count": 1271,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-ROVER-RCFS-001",
+      "parameter_id": "FS_TIMEOUT",
+      "capture_id": "ardupilot-rover-m6",
+      "value": 1.5,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+      "source_sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+      "source_param_index": 11,
+      "source_param_count": 1271,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-SHARED-BATT-001",
+      "parameter_id": "BATT_LOW_TIMER",
+      "capture_id": "ardupilot-copter-m6",
+      "value": 10,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json",
+      "source_sha256": "f3d4a3e416eb7e01000deec397640cbf291c8b14805073da5b256b88c6de61ab",
+      "source_param_index": 337,
+      "source_param_count": 1387,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-SHARED-BATT-001",
+      "parameter_id": "BATT_LOW_TIMER",
+      "capture_id": "ardupilot-plane-m6",
+      "value": 10,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Plane/parameters.json",
+      "source_sha256": "0767f3f3019f5399679118cbcf0931e552bdb6ee40cc67303a8b476a6e61c4dd",
+      "source_param_index": 442,
+      "source_param_count": 1440,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "ARD-SHARED-BATT-001",
+      "parameter_id": "BATT_LOW_TIMER",
+      "capture_id": "ardupilot-rover-m6",
+      "value": 10,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+      "source_sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+      "source_param_index": 612,
+      "source_param_count": 1271,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-AUTODISARM-004",
+      "parameter_id": "COM_DISARM_LAND",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 2.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 256,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-FLIGHTTIME-005",
+      "parameter_id": "COM_FLT_TIME_MAX",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": -1,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 271,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED_DISABLED_DOMAIN"
+    },
+    {
+      "property_id": "PX4-MC-GCSLOSS-002",
+      "parameter_id": "COM_DL_LOSS_T",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 10,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 260,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-OFFBOARD-003",
+      "parameter_id": "COM_OF_LOSS_T",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 1.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 285,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-RCLOSS-001",
+      "parameter_id": "COM_RC_LOSS_T",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 0.5,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 297,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    },
+    {
+      "property_id": "PX4-MC-RTLLOITER-006",
+      "parameter_id": "RTL_LAND_DELAY",
+      "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "value": 0.0,
+      "unit": "s",
+      "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+      "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+      "source_param_index": 796,
+      "source_param_count": 900,
+      "status": "RUNTIME_OBSERVED"
+    }
+  ],
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

@@ -1,0 +1,450 @@
+=== ArduCopter/events.cpp:1-18 ===
+     1	#include "Copter.h"
+     2	
+     3	/*
+     4	 *       This event will be called when the failsafe changes
+     5	 *       boolean failsafe reflects the current state
+     6	 */
+     7	
+     8	bool Copter::failsafe_option(FailsafeOption opt) const
+     9	{
+    10	    return (g2.fs_options & (uint32_t)opt);
+    11	}
+    12	
+    13	void Copter::failsafe_radio_on_event()
+    14	{
+    15	    LOGGER_WRITE_ERROR(LogErrorSubsystem::FAILSAFE_RADIO, LogErrorCode::FAILSAFE_OCCURRED);
+    16	
+    17	    // set desired action based on FS_THR_ENABLE parameter
+    18	    FailsafeAction desired_action;
+=== ArduCopter/events.cpp:125-240 ===
+   125	// failsafe_gcs_check - check for ground station failsafe
+   126	void Copter::failsafe_gcs_check()
+   127	{
+   128	    // Bypass GCS failsafe checks if disabled or GCS never connected
+   129	    if (g.failsafe_gcs == FS_GCS_Action::DISABLED) {
+   130	        return;
+   131	    }
+   132	
+   133	    const uint32_t gcs_last_seen_ms = gcs().sysid_mygcs_last_seen_time_ms();
+   134	    if (gcs_last_seen_ms == 0) {
+   135	        return;
+   136	    }
+   137	
+   138	    // calc time since last gcs update
+   139	    // note: this only looks at the heartbeat from the device id set by sysid_mygcs
+   140	    const uint32_t last_gcs_update_ms = millis() - gcs_last_seen_ms;
+   141	    const uint32_t gcs_timeout_ms = uint32_t(constrain_float(g2.fs_gcs_timeout * 1000.0f, 0.0f, UINT32_MAX));
+   142	
+   143	    // Determine which event to trigger
+   144	    if (last_gcs_update_ms < gcs_timeout_ms && failsafe.gcs) {
+   145	        // Recovery from a GCS failsafe
+   146	        set_failsafe_gcs(false);
+   147	        failsafe_gcs_off_event();
+   148	
+   149	    } else if (last_gcs_update_ms < gcs_timeout_ms && !failsafe.gcs) {
+   150	        // No problem, do nothing
+   151	
+   152	    } else if (last_gcs_update_ms > gcs_timeout_ms && failsafe.gcs) {
+   153	        // Already in failsafe, do nothing
+   154	
+   155	    } else if (last_gcs_update_ms > gcs_timeout_ms && !failsafe.gcs) {
+   156	        // New GCS failsafe event, trigger events
+   157	        set_failsafe_gcs(true);
+   158	        failsafe_gcs_on_event();
+   159	    }
+   160	}
+   161	
+   162	// failsafe_gcs_on_event - actions to take when GCS contact is lost
+   163	void Copter::failsafe_gcs_on_event(void)
+   164	{
+   165	    LOGGER_WRITE_ERROR(LogErrorSubsystem::FAILSAFE_GCS, LogErrorCode::FAILSAFE_OCCURRED);
+   166	    RC_Channels::clear_overrides();
+   167	
+   168	    // convert the desired failsafe response to the FailsafeAction enum
+   169	    FailsafeAction desired_action;
+   170	    switch ((FS_GCS_Action)g.failsafe_gcs) {
+   171	        case FS_GCS_Action::DISABLED:
+   172	            desired_action = FailsafeAction::NONE;
+   173	            break;
+   174	        case FS_GCS_Action::ALWAYS_RTL:
+   175	        case FS_GCS_Action::CONTINUE_MISSION:
+   176	            desired_action = FailsafeAction::RTL;
+   177	            break;
+   178	        case FS_GCS_Action::ALWAYS_SMARTRTL_OR_RTL:
+   179	            desired_action = FailsafeAction::SMARTRTL;
+   180	            break;
+   181	        case FS_GCS_Action::ALWAYS_SMARTRTL_OR_LAND:
+   182	            desired_action = FailsafeAction::SMARTRTL_LAND;
+   183	            break;
+   184	        case FS_GCS_Action::ALWAYS_LAND:
+   185	            desired_action = FailsafeAction::LAND;
+   186	            break;
+   187	        case FS_GCS_Action::AUTO_RTL_OR_RTL:
+   188	            desired_action = FailsafeAction::AUTO_DO_LAND_START;
+   189	            break;
+   190	        case FS_GCS_Action::BRAKE_OR_LAND:
+   191	            desired_action = FailsafeAction::BRAKE_LAND;
+   192	            break;
+   193	        default: // if an invalid parameter value is set, the fallback is RTL
+   194	            desired_action = FailsafeAction::RTL;
+   195	    }
+   196	
+   197	    // Conditions to deviate from FS_GCS_ENABLE parameter setting
+   198	    if (!motors->armed()) {
+   199	        desired_action = FailsafeAction::NONE;
+   200	        announce_failsafe("GCS");
+   201	
+   202	    } else if (should_disarm_on_failsafe()) {
+   203	        // should immediately disarm when we're on the ground
+   204	        arming.disarm(AP_Arming::Method::GCSFAILSAFE);
+   205	        desired_action = FailsafeAction::NONE;
+   206	        announce_failsafe("GCS", "Disarming");
+   207	
+   208	    } else if (flightmode->is_landing() && ((battery.has_failsafed() && battery.get_highest_failsafe_priority() <= FAILSAFE_LAND_PRIORITY))) {
+   209	        // Allow landing to continue when battery failsafe requires it (not a user option)
+   210	        announce_failsafe("GCS + Battery", "Continuing Landing");
+   211	        desired_action = FailsafeAction::LAND;
+   212	
+   213	    } else if (flightmode->is_landing() && failsafe_option(FailsafeOption::CONTINUE_IF_LANDING)) {
+   214	        // Allow landing to continue when FS_OPTIONS is set to continue landing
+   215	        announce_failsafe("GCS", "Continuing Landing");
+   216	        desired_action = FailsafeAction::LAND;
+   217	
+   218	    } else if (flightmode->mode_number() == Mode::Number::AUTO && failsafe_option(FailsafeOption::GCS_CONTINUE_IF_AUTO)) {
+   219	        // Allow mission to continue when FS_OPTIONS is set to continue mission
+   220	        announce_failsafe("GCS", "Continuing Auto Mode");
+   221	        desired_action = FailsafeAction::NONE;
+   222	
+   223	    } else if (failsafe_option(FailsafeOption::GCS_CONTINUE_IF_PILOT_CONTROL) && !flightmode->is_autopilot()) {
+   224	        // should continue when in a pilot controlled mode because FS_OPTIONS is set to continue in pilot controlled modes
+   225	        announce_failsafe("GCS", "Continuing Pilot Control");
+   226	        desired_action = FailsafeAction::NONE;
+   227	    } else {
+   228	        announce_failsafe("GCS");
+   229	    }
+   230	
+   231	    // Call the failsafe action handler
+   232	    do_failsafe_action(desired_action, ModeReason::GCS_FAILSAFE);
+   233	}
+   234	
+   235	// failsafe_gcs_off_event - actions to take when GCS contact is restored
+   236	void Copter::failsafe_gcs_off_event(void)
+   237	{
+   238	    gcs().send_text(MAV_SEVERITY_WARNING, "GCS Failsafe Cleared");
+   239	    LOGGER_WRITE_ERROR(LogErrorSubsystem::FAILSAFE_GCS, LogErrorCode::FAILSAFE_RESOLVED);
+   240	}
+=== ArduCopter/Copter.cpp:178-188 ===
+   178	#if MODE_SMARTRTL_ENABLED
+   179	    SCHED_TASK_CLASS(ModeSmartRTL,         &copter.mode_smartrtl,       save_position,    3, 100,  51),
+   180	#endif
+   181	#if HAL_SPRAYER_ENABLED
+   182	    SCHED_TASK_CLASS(AC_Sprayer,           &copter.sprayer,               update,         3,  90,  54),
+   183	#endif
+   184	    SCHED_TASK(three_hz_loop,          3,     75, 57),
+   185	#if AP_SERVORELAYEVENTS_ENABLED
+   186	    SCHED_TASK_CLASS(AP_ServoRelayEvents,  &copter.ServoRelayEvents,      update_events, 50,  75,  60),
+   187	#endif
+   188	#if AC_PRECLAND_ENABLED
+=== ArduCopter/Copter.cpp:738-749 ===
+   738	// three_hz_loop - 3hz loop
+   739	void Copter::three_hz_loop()
+   740	{
+   741	    // check if we've lost contact with the ground station
+   742	    failsafe_gcs_check();
+   743	
+   744	    // check if we've lost terrain data
+   745	    failsafe_terrain_check();
+   746	
+   747	    // check for deadreckoning failsafe
+   748	    failsafe_deadreckon_check();
+   749	
+=== ArduCopter/AP_State.cpp:72-80 ===
+    72	// ---------------------------------------------
+    73	void Copter::set_failsafe_gcs(bool b)
+    74	{
+    75	    failsafe.gcs = b;
+    76	
+    77	    // update AP_Notify
+    78	    AP_Notify::flags.failsafe_gcs = b;
+    79	}
+    80	
+=== ArduCopter/Parameters.cpp:97-102 ===
+    97	    // @Param: FS_GCS_ENABLE
+    98	    // @DisplayName: Ground Station Failsafe Enable
+    99	    // @Description: Controls whether failsafe will be invoked (and what action to take) when connection with Ground station is lost for at least 5 seconds. See FS_OPTIONS param for additional actions, or for cases allowing Mission continuation, when GCS failsafe is enabled.
+   100	    // @Values: 0:Disabled/NoAction,1:RTL,2:RTL or Continue with Mission in Auto Mode (Removed in 4.0+-see FS_OPTIONS),3:SmartRTL or RTL,4:SmartRTL or Land,5:Land,6:Auto DO_LAND_START/DO_RETURN_PATH_START or RTL,7:Brake or Land
+   101	    // @User: Standard
+   102	    GSCALAR(failsafe_gcs, "FS_GCS_ENABLE", static_cast<float>(FS_GCS_Action::DISABLED)),
+=== ArduCopter/Parameters.cpp:782-787 ===
+   782	    // @Param: FS_OPTIONS
+   783	    // @DisplayName: Failsafe options bitmask
+   784	    // @Description: Bitmask of additional options for battery, radio, & GCS failsafes. 0 disables all options.
+   785	    // @Bitmask: 0:Continue if in Auto on RC failsafe, 1:Continue if in Auto on GCS failsafe, 2:Continue if in Guided on RC failsafe, 3:Continue if landing on any failsafe, 4:Continue if in pilot controlled modes on GCS failsafe, 5:Release Gripper
+   786	    // @User: Advanced
+   787	    AP_GROUPINFO("FS_OPTIONS", 36, ParametersG2, fs_options, (float)Copter::FailsafeOption::GCS_CONTINUE_IF_PILOT_CONTROL),
+=== ArduCopter/Parameters.cpp:828-835 ===
+   828	    // @Param: FS_GCS_TIMEOUT
+   829	    // @DisplayName: GCS failsafe timeout
+   830	    // @Description: Timeout before triggering the GCS failsafe
+   831	    // @Units: s
+   832	    // @Range: 2 120
+   833	    // @Increment: 1
+   834	    // @User: Standard
+   835	    AP_GROUPINFO("FS_GCS_TIMEOUT", 42, ParametersG2, fs_gcs_timeout, 5),
+=== ArduCopter/Copter.h:603-615 ===
+   603	        AUTO_DO_LAND_START = 6,
+   604	        BRAKE_LAND         = 7
+   605	    };
+   606	
+   607	    enum class FailsafeOption {
+   608	        RC_CONTINUE_IF_AUTO             = (1<<0),   // 1
+   609	        GCS_CONTINUE_IF_AUTO            = (1<<1),   // 2
+   610	        RC_CONTINUE_IF_GUIDED           = (1<<2),   // 4
+   611	        CONTINUE_IF_LANDING             = (1<<3),   // 8
+   612	        GCS_CONTINUE_IF_PILOT_CONTROL   = (1<<4),   // 16
+   613	        RELEASE_GRIPPER                 = (1<<5),   // 32
+   614	    };
+   615	
+=== libraries/GCS_MAVLink/GCS.cpp:45-59 ===
+    45	    // @Param: _GCS_SYSID
+    46	    // @DisplayName: My ground station number
+    47	    // @Description: This sets what MAVLink source system IDs are accepted for GCS failsafe handling, RC overrides and manual control. When MAV_GCS_SYSID_HI is less than MAV_GCS_SYSID then only this value is considered to be a GCS. When MAV_GCS_SYSID_HI is greater than or equal to MAV_GCS_SYSID then the range of values between MAV_GCS_SYSID and MAV_GCS_SYSID_HI (inclusive) are all treated as valid GCS MAVLink system IDs
+    48	    // @Range: 1 255
+    49	    // @Increment: 1
+    50	    // @User: Advanced
+    51	    AP_GROUPINFO("_GCS_SYSID",    2,      GCS, mav_gcs_sysid, 255),
+    52	
+    53	    // @Param: _GCS_SYSID_HI
+    54	    // @DisplayName: ground station system ID, maximum
+    55	    // @Description: Upper limit of MAVLink source system IDs considered to be from the GCS. When this is less than MAV_GCS_SYSID then only MAV_GCS_SYSID is used as GCS ID. When this is greater than or equal to MAV_GCS_SYSID then the range of values from MAV_GCS_SYSID to MAV_GCS_SYSID_HI (inclusive) is treated as a GCS ID.
+    56	    // @Range: 0 255
+    57	    // @Increment: 1
+    58	    // @User: Advanced
+    59	    AP_GROUPINFO("_GCS_SYSID_HI",    5,   GCS, mav_gcs_sysid_high, 0),
+=== libraries/GCS_MAVLink/GCS.cpp:724-733 ===
+   724	/*
+   725	  return true if a MAVLink system ID is a GCS for this vehicle
+   726	*/
+   727	bool GCS::sysid_is_gcs(uint8_t _sysid) const
+   728	{
+   729	    if (mav_gcs_sysid_high <= mav_gcs_sysid) {
+   730	        return mav_gcs_sysid == _sysid;
+   731	    }
+   732	    return _sysid >= mav_gcs_sysid && _sysid <= mav_gcs_sysid_high;
+   733	}
+=== libraries/GCS_MAVLink/GCS_Common.cpp:4190-4245 ===
+  4190	#endif
+  4191	}
+  4192	
+  4193	#if AP_RC_CHANNEL_ENABLED
+  4194	// allow override of RC channel values for complete GCS
+  4195	// control of switch position and RC PWM values.
+  4196	void GCS_MAVLINK::handle_rc_channels_override(const mavlink_message_t &msg)
+  4197	{
+  4198	    if (!gcs().sysid_is_gcs(msg.sysid)) {
+  4199	        return; // Only accept control from our gcs
+  4200	    }
+  4201	
+  4202	    const uint32_t tnow = AP_HAL::millis();
+  4203	
+  4204	    mavlink_rc_channels_override_t packet;
+  4205	    mavlink_msg_rc_channels_override_decode(&msg, &packet);
+  4206	
+  4207	    const uint16_t override_data[] = {
+  4208	        packet.chan1_raw,
+  4209	        packet.chan2_raw,
+  4210	        packet.chan3_raw,
+  4211	        packet.chan4_raw,
+  4212	        packet.chan5_raw,
+  4213	        packet.chan6_raw,
+  4214	        packet.chan7_raw,
+  4215	        packet.chan8_raw,
+  4216	        packet.chan9_raw,
+  4217	        packet.chan10_raw,
+  4218	        packet.chan11_raw,
+  4219	        packet.chan12_raw,
+  4220	        packet.chan13_raw,
+  4221	        packet.chan14_raw,
+  4222	        packet.chan15_raw,
+  4223	        packet.chan16_raw
+  4224	    };
+  4225	
+  4226	    for (uint8_t i=0; i<8; i++) {
+  4227	        // Per MAVLink spec a value of UINT16_MAX means to ignore this field.
+  4228	        if (override_data[i] != UINT16_MAX) {
+  4229	            RC_Channels::set_override(i, override_data[i], tnow);
+  4230	        }
+  4231	    }
+  4232	    for (uint8_t i=8; i<ARRAY_SIZE(override_data); i++) {
+  4233	        // Per MAVLink spec a value of zero or UINT16_MAX means to
+  4234	        // ignore this field.
+  4235	        if (override_data[i] != 0 && override_data[i] != UINT16_MAX) {
+  4236	            // per the mavlink spec, a value of UINT16_MAX-1 means
+  4237	            // return the field to RC radio values:
+  4238	            const uint16_t value = override_data[i] == (UINT16_MAX-1) ? 0 : override_data[i];
+  4239	            RC_Channels::set_override(i, value, tnow);
+  4240	        }
+  4241	    }
+  4242	
+  4243	    sysid_mygcs_seen(tnow);
+  4244	
+  4245	}
+=== libraries/GCS_MAVLink/GCS_Common.cpp:4357-4376 ===
+  4357	void GCS_MAVLINK::handle_heartbeat(const mavlink_message_t &msg)
+  4358	{
+  4359	    // if the heartbeat is from our GCS then we don't failsafe for
+  4360	    // now...
+  4361	    if (gcs().sysid_is_gcs(msg.sysid)) {
+  4362	        sysid_mygcs_seen(AP_HAL::millis());
+  4363	    }
+  4364	}
+  4365	
+  4366	/*
+  4367	  handle messages which don't require vehicle specific data
+  4368	 */
+  4369	void GCS_MAVLINK::handle_message(const mavlink_message_t &msg)
+  4370	{
+  4371	    switch (msg.msgid) {
+  4372	
+  4373	    case MAVLINK_MSG_ID_HEARTBEAT: {
+  4374	        handle_heartbeat(msg);
+  4375	        break;
+  4376	    }
+=== libraries/GCS_MAVLink/GCS_Common.cpp:7630-7664 ===
+  7630	        }
+  7631	        override_value = radio_min + (radio_max - radio_min) * (value_in + offset) / scaler;
+  7632	    }
+  7633	    c->set_override(override_value, tnow);
+  7634	}
+  7635	
+  7636	void GCS_MAVLINK::handle_manual_control(const mavlink_message_t &msg)
+  7637	{
+  7638	    if (!gcs().sysid_is_gcs(msg.sysid)) {
+  7639	        return; // only accept control from our gcs
+  7640	    }
+  7641	
+  7642	    mavlink_manual_control_t packet;
+  7643	    mavlink_msg_manual_control_decode(&msg, &packet);
+  7644	
+  7645	    if (packet.target != gcs().sysid_this_mav()) {
+  7646	        return; // only accept control aimed at us
+  7647	    }
+  7648	
+  7649	    uint32_t tnow = AP_HAL::millis();
+  7650	
+  7651	    handle_manual_control_axes(packet, tnow);
+  7652	
+  7653	    // a manual control message is considered to be a 'heartbeat'
+  7654	    // from the ground station for failsafe purposes
+  7655	    sysid_mygcs_seen(tnow);
+  7656	}
+  7657	#endif  // AP_RC_CHANNEL_ENABLED
+  7658	
+  7659	// called when valid traffic has been seen from our GCS
+  7660	void GCS_MAVLINK::sysid_mygcs_seen(uint32_t seen_time_ms)
+  7661	{
+  7662	    gcs().sysid_mygcs_seen(seen_time_ms);
+  7663	    _sysid_gcs_last_seen_time_ms = seen_time_ms;
+  7664	}
+=== libraries/GCS_MAVLink/GCS.h:1176-1190 ===
+  1176	    /*
+  1177	      return true if a MAVLink system ID is a GCS
+  1178	     */
+  1179	    bool sysid_is_gcs(uint8_t sysid) const;
+  1180	
+  1181	    // last time traffic was seen from my designated GCS.  traffic
+  1182	    // includes heartbeats and some manual control messages.
+  1183	    uint32_t sysid_mygcs_last_seen_time_ms() const {
+  1184	        return _sysid_gcs_last_seen_time_ms;
+  1185	    }
+  1186	    // called when valid traffic has been seen from our GCS.  This is
+  1187	    // usually only called from GCS_MAVLINK::sysid_mygcs_seen(..)!
+  1188	    void sysid_mygcs_seen(uint32_t seen_time_ms) {
+  1189	        _sysid_gcs_last_seen_time_ms = seen_time_ms;
+  1190	    }
+=== Tools/autotest/arducopter.py:1190-1273 ===
+  1190	    def GCSFailsafe(self, side=60, timeout=360):
+  1191	        '''Test GCS Failsafe'''
+  1192	        # Test double-SmartRTL; ensure we do SmarRTL twice rather than
+  1193	        # landing (tests fix for actual bug)
+  1194	        self.set_parameter("MAV_GCS_SYSID", self.mav.source_system)
+  1195	        self.context_push()
+  1196	        self.start_subtest("GCS failsafe SmartRTL twice")
+  1197	        self.setGCSfailsafe(3)
+  1198	        self.set_parameter('FS_OPTIONS', 8)
+  1199	        self.takeoffAndMoveAway()
+  1200	        self.set_heartbeat_rate(0)
+  1201	        self.wait_mode("SMART_RTL")
+  1202	        self.wait_disarmed()
+  1203	        self.set_heartbeat_rate(self.speedup)
+  1204	        self.wait_statustext("GCS Failsafe Cleared", timeout=60)
+  1205	
+  1206	        self.takeoffAndMoveAway()
+  1207	        self.set_heartbeat_rate(0)
+  1208	        self.wait_statustext("GCS Failsafe")
+  1209	
+  1210	        def ensure_smartrtl(mav, m):
+  1211	            if m.get_type() != "HEARTBEAT":
+  1212	                return
+  1213	            # can't use mode_is here because we're in the message hook
+  1214	            print("Mode: %s" % self.mav.flightmode)
+  1215	            if self.mav.flightmode != "SMART_RTL":
+  1216	                raise NotAchievedException("Not in SMART_RTL")
+  1217	        self.install_message_hook_context(ensure_smartrtl)
+  1218	
+  1219	        self.set_heartbeat_rate(self.speedup)
+  1220	        self.wait_statustext("GCS Failsafe Cleared", timeout=60)
+  1221	        self.set_heartbeat_rate(0)
+  1222	        self.wait_statustext("GCS Failsafe")
+  1223	
+  1224	        self.wait_disarmed()
+  1225	
+  1226	        self.end_subtest("GCS failsafe SmartRTL twice")
+  1227	        self.set_heartbeat_rate(self.speedup)
+  1228	        self.wait_statustext("GCS Failsafe Cleared", timeout=60)
+  1229	        self.context_pop()
+  1230	
+  1231	        # Trigger telemetry loss with failsafe disabled. Verify no action taken.
+  1232	        self.start_subtest("GCS failsafe disabled test: FS_GCS_ENABLE=0 should take no failsafe action")
+  1233	        self.setGCSfailsafe(0)
+  1234	        self.takeoffAndMoveAway()
+  1235	        self.set_heartbeat_rate(0)
+  1236	        self.delay_sim_time(5, reason="GCS failsafe to not trigger")
+  1237	        self.wait_mode("ALT_HOLD")
+  1238	        self.set_heartbeat_rate(self.speedup)
+  1239	        self.delay_sim_time(5, reason="GCS link to restore")
+  1240	        self.wait_mode("ALT_HOLD")
+  1241	        self.end_subtest("Completed GCS failsafe disabled test")
+  1242	
+  1243	        # Trigger telemetry loss with failsafe enabled. Verify
+  1244	        # failsafe triggers to RTL. Restore telemetry, verify failsafe
+  1245	        # clears, and change modes.
+  1246	        self.start_subtest("GCS failsafe recovery test: FS_GCS_ENABLE=1 & FS_OPTIONS=0")
+  1247	        self.setGCSfailsafe(1)
+  1248	        self.set_parameter('FS_OPTIONS', 0)
+  1249	        self.set_heartbeat_rate(0)
+  1250	        self.wait_mode("RTL")
+  1251	        self.set_heartbeat_rate(self.speedup)
+  1252	        self.wait_statustext("GCS Failsafe Cleared", timeout=60)
+  1253	        self.change_mode("LOITER")
+  1254	        self.end_subtest("Completed GCS failsafe recovery test")
+  1255	
+  1256	        # Trigger telemetry loss with failsafe enabled. Verify
+  1257	        # failsafe triggers to RTL. Restore telemetry, verify failsafe
+  1258	        # clears, and change modes.
+  1259	        self.start_subtest("GCS failsafe recovery test: FS_GCS_ENABLE=1 & FS_OPTIONS=0 & FS_GCS_TIMEOUT=10")
+  1260	        self.setGCSfailsafe(1)
+  1261	        self.set_parameter('FS_OPTIONS', 0)
+  1262	        old_gcs_timeout = self.get_parameter("FS_GCS_TIMEOUT")
+  1263	        new_gcs_timeout = old_gcs_timeout * 2
+  1264	        self.set_parameter("FS_GCS_TIMEOUT", new_gcs_timeout)
+  1265	        self.set_heartbeat_rate(0)
+  1266	        self.delay_sim_time(old_gcs_timeout + (new_gcs_timeout - old_gcs_timeout) / 2, reason="GCS failsafe timeout to elapse")
+  1267	        self.assert_mode("LOITER")
+  1268	        self.wait_mode("RTL")
+  1269	        self.set_heartbeat_rate(self.speedup)
+  1270	        self.wait_statustext("GCS Failsafe Cleared", timeout=60)
+  1271	        self.change_mode("LOITER")
+  1272	        self.set_parameter('FS_GCS_TIMEOUT', old_gcs_timeout)
+  1273	        self.end_subtest("Completed GCS failsafe recovery test")

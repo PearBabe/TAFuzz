@@ -1,0 +1,399 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.dev/rift/schema/sealed-portability-matrix/1.0.0",
+  "title": "RIFT-M5 sealed portability matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evidence_kind",
+    "contract_id",
+    "claim_status",
+    "matrix_id",
+    "minimum_independent_projects",
+    "shared_identity",
+    "projects"
+  ],
+  "properties": {
+    "schema_version": {"const": "rift.sealed-portability-matrix/1.0.0"},
+    "evidence_kind": {"const": "rift.m5.sealed-portability-evidence"},
+    "contract_id": {"const": "RIFT-PORTABILITY-1"},
+    "claim_status": {"const": "SEALED_PORTABILITY_EVIDENCE"},
+    "matrix_id": {"type": "string", "pattern": "^portability-matrix:[0-9a-f]{64}$"},
+    "minimum_independent_projects": {"const": 3},
+    "shared_identity": {"$ref": "#/$defs/shared_identity"},
+    "projects": {
+      "type": "array",
+      "minItems": 3,
+      "items": {"$ref": "#/$defs/project"}
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "size": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "compile_database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size", "sha256", "semantic_sha256", "entry_count"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "size": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "semantic_sha256": {"$ref": "#/$defs/sha256"},
+        "entry_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "tree_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["root_path", "sha256", "file_count"],
+      "properties": {
+        "root_path": {"type": "string", "minLength": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "file_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "detached_verifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["script", "interpreter", "python_version", "identity_sha256"],
+      "properties": {
+        "script": {"$ref": "#/$defs/artifact"},
+        "interpreter": {"$ref": "#/$defs/artifact"},
+        "python_version": {"type": "string", "minLength": 1},
+        "identity_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "toolchain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "m4_identity_sha256",
+        "m5_identity_sha256",
+        "combined_identity_sha256",
+        "physical_components"
+      ],
+      "properties": {
+        "m4_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "m5_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "combined_identity_sha256": {"$ref": "#/$defs/sha256"},
+        "physical_components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/artifact"}
+        }
+      }
+    },
+    "core_literal_scan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contract",
+        "frozen_literals",
+        "dynamic_literals",
+        "scanned_file_count",
+        "scan_input_sha256",
+        "violation_count",
+        "verdict"
+      ],
+      "properties": {
+        "contract": {"$ref": "#/$defs/artifact"},
+        "frozen_literals": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "dynamic_literals": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "scanned_file_count": {"type": "integer", "minimum": 1},
+        "scan_input_sha256": {"$ref": "#/$defs/sha256"},
+        "violation_count": {"const": 0},
+        "verdict": {"const": "PASS"}
+      }
+    },
+    "shared_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analyzer_binary",
+        "build_manifest",
+        "production_core",
+        "schema_bundle",
+        "detached_verifier",
+        "toolchain",
+        "core_literal_scan"
+      ],
+      "properties": {
+        "analyzer_binary": {"$ref": "#/$defs/artifact"},
+        "build_manifest": {"$ref": "#/$defs/artifact"},
+        "production_core": {"$ref": "#/$defs/tree_identity"},
+        "schema_bundle": {"$ref": "#/$defs/tree_identity"},
+        "detached_verifier": {"$ref": "#/$defs/detached_verifier"},
+        "toolchain": {"$ref": "#/$defs/toolchain"},
+        "core_literal_scan": {"$ref": "#/$defs/core_literal_scan"}
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_id",
+        "root_path",
+        "head_commit",
+        "head_tree",
+        "tracked_worktree_clean",
+        "tracked_status_sha256"
+      ],
+      "properties": {
+        "repository_id": {"type": "string", "minLength": 1},
+        "root_path": {"type": "string", "minLength": 1},
+        "head_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "head_tree": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+        "tracked_worktree_clean": {"const": true},
+        "tracked_status_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "full_compile_database",
+        "analyzed_compile_database",
+        "analyzed_tu_count",
+        "indexed_tu_count",
+        "selection_reason"
+      ],
+      "properties": {
+        "kind": {"enum": ["FULL_COMPILE_DB", "SELECTED_REAL_TU"]},
+        "full_compile_database": {"$ref": "#/$defs/compile_database"},
+        "analyzed_compile_database": {"$ref": "#/$defs/compile_database"},
+        "analyzed_tu_count": {"type": "integer", "minimum": 1},
+        "indexed_tu_count": {"type": "integer", "minimum": 1},
+        "selection_reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "property": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "property_id", "artifact"],
+      "properties": {
+        "artifact_id": {"type": "string", "minLength": 1},
+        "property_id": {"type": "string", "minLength": 1},
+        "artifact": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_index",
+        "ap_bindings",
+        "contextual_influence_graph",
+        "ap_influence_cones",
+        "analysis_certificate",
+        "model_fact_overlay",
+        "predicate_occurrence_bindings",
+        "frontier_candidates",
+        "fuzzable_frontier",
+        "mutation_recipes",
+        "recipe_replay_obligations",
+        "m5_analysis_certificate",
+        "detached_report"
+      ],
+      "properties": {
+        "semantic_index": {"$ref": "#/$defs/artifact"},
+        "ap_bindings": {"$ref": "#/$defs/artifact"},
+        "contextual_influence_graph": {"$ref": "#/$defs/artifact"},
+        "ap_influence_cones": {"$ref": "#/$defs/artifact"},
+        "analysis_certificate": {"$ref": "#/$defs/artifact"},
+        "model_fact_overlay": {"$ref": "#/$defs/artifact"},
+        "predicate_occurrence_bindings": {"$ref": "#/$defs/artifact"},
+        "frontier_candidates": {"$ref": "#/$defs/artifact"},
+        "fuzzable_frontier": {"$ref": "#/$defs/artifact"},
+        "mutation_recipes": {"$ref": "#/$defs/artifact"},
+        "recipe_replay_obligations": {"$ref": "#/$defs/artifact"},
+        "m5_analysis_certificate": {"$ref": "#/$defs/artifact"},
+        "detached_report": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "model_pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model_pack_id",
+        "model_pack_version",
+        "layer",
+        "property_independent",
+        "raw_sha256",
+        "semantic_sha256",
+        "rule_count",
+        "selector_count",
+        "non_comment_lines",
+        "artifact"
+      ],
+      "properties": {
+        "model_pack_id": {"type": "string", "minLength": 1},
+        "model_pack_version": {"type": "string", "minLength": 1},
+        "layer": {"enum": ["platform", "framework", "project_adapter"]},
+        "property_independent": {"const": true},
+        "raw_sha256": {"$ref": "#/$defs/sha256"},
+        "semantic_sha256": {"$ref": "#/$defs/sha256"},
+        "rule_count": {"type": "integer", "minimum": 1},
+        "selector_count": {"type": "integer", "minimum": 1},
+        "non_comment_lines": {"type": "integer", "minimum": 1},
+        "artifact": {"$ref": "#/$defs/artifact"}
+      }
+    },
+    "observed_identities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binary_sha256",
+        "build_manifest_sha256",
+        "core_sha256",
+        "schema_sha256",
+        "m4_toolchain_sha256",
+        "m5_toolchain_sha256",
+        "verifier_identity_sha256"
+      ],
+      "properties": {
+        "binary_sha256": {"$ref": "#/$defs/sha256"},
+        "build_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "core_sha256": {"$ref": "#/$defs/sha256"},
+        "schema_sha256": {"$ref": "#/$defs/sha256"},
+        "m4_toolchain_sha256": {"$ref": "#/$defs/sha256"},
+        "m5_toolchain_sha256": {"$ref": "#/$defs/sha256"},
+        "verifier_identity_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "performance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analysis_receipt",
+        "analysis_wall_seconds",
+        "analysis_peak_rss_bytes",
+        "detached_receipt",
+        "detached_wall_seconds",
+        "detached_peak_rss_bytes"
+      ],
+      "properties": {
+        "analysis_receipt": {"$ref": "#/$defs/artifact"},
+        "analysis_wall_seconds": {"type": "number", "minimum": 0},
+        "analysis_peak_rss_bytes": {"type": "integer", "minimum": 0},
+        "detached_receipt": {"$ref": "#/$defs/artifact"},
+        "detached_wall_seconds": {"type": "number", "minimum": 0},
+        "detached_peak_rss_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "count_map": {
+      "type": "object",
+      "additionalProperties": {"type": "integer", "minimum": 0}
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "analysis_status",
+        "candidate_dispositions",
+        "candidate_with_uncertainty_count",
+        "recipe_statuses",
+        "model_unknown_outcome_count",
+        "model_coverage_gap_count",
+        "m4_unsupported_construct_count",
+        "m5_diagnostic_count",
+        "solver_queries",
+        "solver_timeouts",
+        "solver_unsupported"
+      ],
+      "properties": {
+        "analysis_status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE"]},
+        "candidate_dispositions": {"$ref": "#/$defs/count_map"},
+        "candidate_with_uncertainty_count": {"type": "integer", "minimum": 0},
+        "recipe_statuses": {"$ref": "#/$defs/count_map"},
+        "model_unknown_outcome_count": {"type": "integer", "minimum": 0},
+        "model_coverage_gap_count": {"type": "integer", "minimum": 0},
+        "m4_unsupported_construct_count": {"type": "integer", "minimum": 0},
+        "m5_diagnostic_count": {"type": "integer", "minimum": 0},
+        "solver_queries": {"type": "integer", "minimum": 0},
+        "solver_timeouts": {"type": "integer", "minimum": 0},
+        "solver_unsupported": {"type": "integer", "minimum": 0}
+      }
+    },
+    "adaptation_effort": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "setup_minutes",
+        "property_binding_minutes",
+        "adapter_authoring_minutes",
+        "model_validation_minutes",
+        "total_human_minutes",
+        "changed_core_files",
+        "core_patch_required",
+        "platform_rule_count",
+        "project_adapter_rule_count",
+        "platform_non_comment_lines",
+        "project_adapter_non_comment_lines",
+        "notes"
+      ],
+      "properties": {
+        "setup_minutes": {"type": "number", "minimum": 0},
+        "property_binding_minutes": {"type": "number", "minimum": 0},
+        "adapter_authoring_minutes": {"type": "number", "minimum": 0},
+        "model_validation_minutes": {"type": "number", "minimum": 0},
+        "total_human_minutes": {"type": "number", "minimum": 0},
+        "changed_core_files": {"const": 0},
+        "core_patch_required": {"const": false},
+        "platform_rule_count": {"type": "integer", "minimum": 1},
+        "project_adapter_rule_count": {"type": "integer", "minimum": 0},
+        "platform_non_comment_lines": {"type": "integer", "minimum": 1},
+        "project_adapter_non_comment_lines": {"type": "integer", "minimum": 0},
+        "notes": {"type": "string", "minLength": 1}
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "repository",
+        "scope",
+        "property",
+        "result_root",
+        "artifacts",
+        "executor_manifest",
+        "model_packs",
+        "observed_identities",
+        "performance",
+        "uncertainty",
+        "adaptation_effort",
+        "additional_core_forbidden_literals"
+      ],
+      "properties": {
+        "project_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"},
+        "repository": {"$ref": "#/$defs/repository"},
+        "scope": {"$ref": "#/$defs/scope"},
+        "property": {"$ref": "#/$defs/property"},
+        "result_root": {"type": "string", "minLength": 1},
+        "artifacts": {"$ref": "#/$defs/artifacts"},
+        "executor_manifest": {"$ref": "#/$defs/artifact"},
+        "model_packs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/model_pack"}},
+        "observed_identities": {"$ref": "#/$defs/observed_identities"},
+        "performance": {"$ref": "#/$defs/performance"},
+        "uncertainty": {"$ref": "#/$defs/uncertainty"},
+        "adaptation_effort": {"$ref": "#/$defs/adaptation_effort"},
+        "additional_core_forbidden_literals": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

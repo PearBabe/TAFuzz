@@ -1,0 +1,488 @@
+{
+  "schema_version": "rift.m4.libcoap-acceptance/0.1.0",
+  "manifest_id": "RIFT-M4-LIBCOAP-COAP-TX-01",
+  "status": "AUDITABLE_PROVISIONAL_ACCEPTANCE_TARGET",
+  "purpose": "Freeze the exact libcoap build, typed COAP-TX-01 joint-binding target, and provisional influence expectations used to develop M4 without adding project names or property-specific edges to the generic analyzer core.",
+  "source_subject": {
+    "repository_path": "benchmark/coap/libcoap",
+    "commit": "94bacc8939dd6711169cd2332a002a361ec62531",
+    "tree": "1a87122c8836ffe4ef33971ead9536231df2d8f0",
+    "describe": "v4.3.5-390-g94bacc89",
+    "legacy_evidence_commit": "7cf7465b784baded4de183290c547d582becfd28",
+    "legacy_is_ancestor": true,
+    "commit_transfer": "The accepted property text is inherited from 7cf7465b, but every source locator below is rebound against 94bacc89. The later commit has token-aware queue matching, so this transfer remains provisional until two independent humans review and arbitrate it."
+  },
+  "build": {
+    "reproduction_script": "benchmark/rift/reproduction/libcoap/reproduce_clang18.py",
+    "canonical_build_directory": "/tmp/tafuzz-rift-libcoap-fixed",
+    "compile_database": {
+      "path": "/tmp/tafuzz-rift-libcoap-fixed/compile_commands.json",
+      "sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+      "translation_units": 38,
+      "persistent_workspace_artifact": false
+    },
+    "linked_bitcode": {
+      "path": "/tmp/tafuzz-rift-libcoap-fixed/libcoap-all.bc",
+      "sha256": "08ead6a83ce230fab63eb028c9eec21fb0b2e23e79dd6270c8ee78e43b12c61d",
+      "bytes": 2743756
+    },
+    "static_archive": {
+      "path": "/tmp/tafuzz-rift-libcoap-fixed/libcoap-3.a",
+      "sha256": "efc44ed2ab109029494a2c56fb99cb5f6374cf05a3a8e7b4c5e5c52dbfe676c2"
+    },
+    "generated_config": {
+      "path": "/tmp/tafuzz-rift-libcoap-fixed/coap_config.h",
+      "sha256": "a1731981aae5bfb4defe95a6e48635959b412e12f8f5489b7fd9a47d16e65e76"
+    },
+    "toolchain": {
+      "clang": "Ubuntu clang version 18.1.8 (++20240731024944+3b5b5c1ec4a3-1~exp1~20240731145000.144)",
+      "llvm": "18.1.8"
+    },
+    "cmake_options": {
+      "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+      "BUILD_SHARED_LIBS": false,
+      "ENABLE_DTLS": false,
+      "ENABLE_TESTS": false,
+      "ENABLE_DOCS": false,
+      "ENABLE_EXAMPLES": false
+    },
+    "required_translation_units": [
+      "src/coap_net.c",
+      "src/coap_session.c",
+      "src/coap_io.c",
+      "src/coap_time.c",
+      "src/coap_pdu.c",
+      "src/coap_prng.c"
+    ],
+    "observed_reproducibility": "Three fixed-path runs in benchmark/rift/reproduction/libcoap/observed_results.json have identical compile-database, archive and linked-bitcode hashes; MemorySSA construction passed."
+  },
+  "inputs": {
+    "typed_property_ir": {
+      "path": "benchmark/rift/m4/libcoap/typed_property_ir.json",
+      "sha256": "0b5aea91edc4d7c68e9a39a3a24f82640d2b37385fdaa9bcda9b98cf20e9f187",
+      "schema_path": "src/StaticAnalysis/schema/typed_property_ir.schema.json",
+      "schema_sha256": "a7b213f82c518b966b220994f718effd3e4b088061213c78e7469302b308680f"
+    },
+    "property_profile_companion": {
+      "path": "benchmark/rift/m4/libcoap/property_ir.json",
+      "sha256": "f167c27d7f81a1f0a2b90e0062707e2bcf69dfb3631c961fe23b94bae3ee4539"
+    },
+    "provisional_influence_labels": {
+      "path": "benchmark/rift/m4/libcoap/provisional_influence_labels.json",
+      "sha256": "a4b99a02926ea0404b637b7ee53e804ff3a2b19ea69bb55fbff3104d7b5cf8af"
+    },
+    "legacy_property_catalog": {
+      "path": "analysis/protocol_fuzzing_study/protocols/coap/mitl_property_catalog.json",
+      "sha256": "aa514d2a284d360db8fb3256a7b04168472f8ad8759daa4781dc7ed31410852e"
+    },
+    "legacy_ap_map": {
+      "path": "analysis/protocol_fuzzing_study/protocols/coap/atomic_proposition_map.json",
+      "sha256": "7f473d07018a1894e01f8d9f0c611cbc1dd0c4011faf78cdf32f11cfd3bc10de"
+    },
+    "formula_validation": {
+      "path": "analysis/protocol_fuzzing_study/protocols/coap/validation/COAP-TX-01/validation_result.json",
+      "sha256": "8dbc94e0b5055bab4dfaae954e5f9b87ff7f12bab297d7b6b144c49367fcf8ae",
+      "status": "PASS"
+    },
+    "symbolic_rfc_property": {
+      "path": "analysis/protocol_fuzzing_study/rfc7252_libcoap_mitl_review/properties/property_001.yaml",
+      "sha256": "edb9056dadb407a64540446d36e983ac13773db6757e5bfd2e58126089e0efa8"
+    },
+    "reproduction_results": {
+      "path": "benchmark/rift/reproduction/libcoap/observed_results.json",
+      "sha256": "0eabcc8a7c985e257e8df81fe3a6dfba1210bf5d60191877ff39d3605e816825"
+    }
+  },
+  "source_files": [
+    {
+      "path": "src/coap_net.c",
+      "sha256": "83f1924097b22c1590476ef86f0b0cdddc0b30fa2ceed48c80a8330aa9667433"
+    },
+    {
+      "path": "src/coap_session.c",
+      "sha256": "811b7dd2738bbf7232081db58a828b6a62651ac54bb5bd3552de23896deb4d3e"
+    },
+    {
+      "path": "src/coap_io.c",
+      "sha256": "54f33445cad00078d73fa78b48d193f91fdd25c99d50fb8c2cbc1c9a6fb3ae18"
+    },
+    {
+      "path": "src/coap_time.c",
+      "sha256": "9201b66230dd2cd4501334851f70f2fce416deac9e785fff21fd2f14b6111007"
+    },
+    {
+      "path": "src/coap_pdu.c",
+      "sha256": "df423d23c529dff7df07752773e5bb7fccc2637ae828ef17574f11518fc1be81"
+    },
+    {
+      "path": "src/coap_prng.c",
+      "sha256": "316f1afe8033292cff3b667f32aff4d89b99ad11ef06f54068348c7634dfecaf"
+    },
+    {
+      "path": "include/coap3/coap_net_internal.h",
+      "sha256": "613270116fe8ffa29a7fec708576f34beca2bf396b0ac5e98469270c00b8918e"
+    },
+    {
+      "path": "include/coap3/coap_session.h",
+      "sha256": "a64695b278f5ecd96360cff94aaa3f93e0f1b12499ac426b233fc0e62ee63f1f"
+    },
+    {
+      "path": "include/coap3/coap_session_internal.h",
+      "sha256": "cecfbeb623e832e25f18770c1126183a6fb061fff76203efa1716547dd981f9e"
+    },
+    {
+      "path": "include/coap3/coap_time.h",
+      "sha256": "2a01d09822d4cb8b8e5dfb820c6f779b0bba65b478d6eb71b267e0fd49445156"
+    }
+  ],
+  "joint_binding_targets": [
+    {
+      "id": "BIND-TRIGGER",
+      "property_role": "trigger",
+      "atomic_proposition": "coap_con_wait_started",
+      "binding_kind": "POST_COMMIT_PROGRAM_PHASE",
+      "primary_symbol": "coap_wait_ack",
+      "primary_locations": [
+        "src/coap_net.c:1398-1418"
+      ],
+      "required_predecessor_locations": [
+        "src/coap_net.c:2235-2294"
+      ],
+      "exactness": "The accepted phase is after coap_insert_node and timer update, with the successful-send, CON, unreliable-transport and allocation guards satisfied. Binding only node->timeout assignment is incomplete."
+    },
+    {
+      "id": "BIND-DEADLINE",
+      "property_role": "response_and_clock",
+      "atomic_proposition": "coap_first_retransmit_deadline_reached",
+      "binding_kind": "SYNTHETIC_LOGICAL_TIME_EVENT",
+      "primary_symbol": "coap_io_prepare_io_lkd",
+      "primary_locations": [
+        "src/coap_io.c:364-373"
+      ],
+      "required_schedule_locations": [
+        "src/coap_net.c:1398-1418"
+      ],
+      "exactness": "Bind the delta-queue deadline representation and monotonic due predicate. The event-loop callback timestamp is not the AP when dispatch is late."
+    },
+    {
+      "id": "BIND-ACK",
+      "property_role": "cancel",
+      "atomic_proposition": "coap_matching_ack_or_reset_received",
+      "binding_kind": "POST_EXACT_OBJECT_REMOVAL",
+      "primary_symbol": "coap_dispatch",
+      "primary_locations": [
+        "src/coap_net.c:4746-4749",
+        "src/coap_net.c:4781-4789"
+      ],
+      "required_callee_locations": [
+        "src/coap_net.c:3158-3203"
+      ],
+      "exactness": "ACK is true only when an ACK-arm removal yields the correlated node in sent; the OSCORE pre-decrypt removal is a conditional alternate."
+    },
+    {
+      "id": "BIND-RST",
+      "property_role": "cancel",
+      "atomic_proposition": "coap_matching_ack_or_reset_received",
+      "binding_kind": "POST_EXACT_OBJECT_REMOVAL",
+      "primary_symbol": "coap_dispatch",
+      "primary_locations": [
+        "src/coap_net.c:4901-4903",
+        "src/coap_net.c:4942-4945"
+      ],
+      "required_callee_locations": [
+        "src/coap_net.c:3158-3203"
+      ],
+      "exactness": "RST is true only when the RST arm removes the correlated session+MID queue node."
+    },
+    {
+      "id": "BIND-CANCEL-SESSION",
+      "property_role": "cancel",
+      "atomic_proposition": "coap_attempt_cancelled",
+      "binding_kind": "POST_EXACT_OBJECT_REMOVAL",
+      "primary_symbol": "coap_cancel_session_messages",
+      "primary_locations": [
+        "src/coap_net.c:3267-3303"
+      ],
+      "exactness": "Emit once for each removed queue-node generation, after unlink and before/at deletion; the function entry alone is not the event."
+    },
+    {
+      "id": "BIND-CANCEL-TOKEN",
+      "property_role": "cancel",
+      "atomic_proposition": "coap_attempt_cancelled",
+      "binding_kind": "POST_EXACT_OBJECT_REMOVAL",
+      "primary_symbol": "coap_cancel_all_messages",
+      "primary_locations": [
+        "src/coap_net.c:3306-3335"
+      ],
+      "exactness": "Emit once per removed session/token-matching generation; a null token is the all-tokens branch."
+    },
+    {
+      "id": "BIND-BOUND",
+      "property_role": "bound",
+      "atomic_proposition": null,
+      "binding_kind": "RUNTIME_EXPRESSION_AND_ALTERNATE_DEFINITIONS",
+      "primary_symbol": "coap_calc_timeout",
+      "primary_locations": [
+        "src/coap_net.c:95-104",
+        "src/coap_net.c:1358-1377",
+        "src/coap_net.c:2291-2294"
+      ],
+      "definition_locations": [
+        "src/coap_session.c:148-169",
+        "src/coap_session.c:498-500",
+        "include/coap3/coap_session.h:690-714"
+      ],
+      "exactness": "Retain exact fixed-point rounding, PRNG byte and tick scaling. Bind both creation defaults and externally callable setters; do not hardcode only the default constants."
+    },
+    {
+      "id": "BIND-SCOPE",
+      "property_role": "scope_and_generation",
+      "atomic_proposition": null,
+      "binding_kind": "TYPED_OBJECT_IDENTITY",
+      "primary_locations": [
+        "src/coap_net.c:2283-2294",
+        "src/coap_net.c:1388-1409",
+        "src/coap_net.c:3158-3203"
+      ],
+      "exactness": "Preserve session/endpoint, transport, MID and allocation-generation identity. Do not flatten to names or merge a reused queue-node address with a previous lifetime."
+    }
+  ],
+  "external_input_frontier_candidates": [
+    {
+      "channel": "public C API",
+      "entities": [
+        "coap_session_set_ack_timeout.value",
+        "coap_session_set_ack_random_factor.value",
+        "coap_pdu_init/coap_new_pdu.type",
+        "coap_pdu_set_type.type",
+        "coap_pdu_set_mid.mid",
+        "coap_send.session and pdu"
+      ],
+      "status": "PROVISIONAL"
+    },
+    {
+      "channel": "inbound UDP datagram",
+      "entities": [
+        "header type bits",
+        "header code byte",
+        "header MID bytes",
+        "token length and token bytes",
+        "session/remote endpoint selected by I/O"
+      ],
+      "status": "PROVISIONAL_MODEL_REQUIRED"
+    },
+    {
+      "channel": "time and callback/environment return",
+      "entities": [
+        "monotonic clock",
+        "registered/default PRNG byte",
+        "transport write result"
+      ],
+      "status": "PROVISIONAL_MODEL_REQUIRED"
+    },
+    {
+      "channel": "local cancellation API",
+      "entities": [
+        "coap_cancel_session_messages invocation/session/reason",
+        "coap_cancel_all_messages invocation/session/token"
+      ],
+      "status": "PROVISIONAL"
+    }
+  ],
+  "known_nonlocal_or_model_required_edges": [
+    "queue insertion persists to a later scheduler iteration",
+    "logical deadline crossing is synthesized from schedule state rather than callback wall time",
+    "raw datagram bytes cross the reusable protocol parser boundary",
+    "registered PRNG callback or operating-system entropy crosses an indirect/external-return boundary",
+    "queue-node identity persists across delta-queue reorder, pop, remove and free"
+  ],
+  "source_locators": [
+    {
+      "id": "LOC-001",
+      "path": "src/coap_net.c",
+      "start": 1358,
+      "end": 1377,
+      "required_tokens": [
+        "coap_calc_timeout",
+        "ACK_RANDOM_FACTOR",
+        "ACK_TIMEOUT",
+        "COAP_TICKS_PER_SECOND"
+      ]
+    },
+    {
+      "id": "LOC-002",
+      "path": "src/coap_net.c",
+      "start": 1384,
+      "end": 1418,
+      "required_tokens": [
+        "coap_wait_ack",
+        "sendqueue_basetime",
+        "coap_insert_node",
+        "coap_update_io_timer"
+      ]
+    },
+    {
+      "id": "LOC-003",
+      "path": "src/coap_net.c",
+      "start": 2235,
+      "end": 2294,
+      "required_tokens": [
+        "bytes_written",
+        "COAP_MESSAGE_CON",
+        "COAP_PROTO_RELIABLE",
+        "coap_new_node",
+        "coap_prng_lkd",
+        "coap_calc_timeout",
+        "coap_wait_ack"
+      ]
+    },
+    {
+      "id": "LOC-004",
+      "path": "src/coap_io.c",
+      "start": 364,
+      "end": 373,
+      "required_tokens": [
+        "coap_peek_next",
+        "sendqueue_basetime",
+        "coap_retransmit",
+        "coap_pop_next"
+      ]
+    },
+    {
+      "id": "LOC-005",
+      "path": "src/coap_net.c",
+      "start": 3158,
+      "end": 3203,
+      "required_tokens": [
+        "coap_remove_from_queue",
+        "session ==",
+        "mid ==",
+        "coap_binary_equal"
+      ]
+    },
+    {
+      "id": "LOC-006",
+      "path": "src/coap_net.c",
+      "start": 4746,
+      "end": 4789,
+      "required_tokens": [
+        "coap_remove_from_queue",
+        "COAP_MESSAGE_ACK",
+        "actual_token",
+        "sent"
+      ]
+    },
+    {
+      "id": "LOC-007",
+      "path": "src/coap_net.c",
+      "start": 4901,
+      "end": 4945,
+      "required_tokens": [
+        "COAP_MESSAGE_RST",
+        "coap_remove_from_queue",
+        "pdu->mid",
+        "sent"
+      ]
+    },
+    {
+      "id": "LOC-008",
+      "path": "src/coap_net.c",
+      "start": 3267,
+      "end": 3335,
+      "required_tokens": [
+        "coap_cancel_session_messages",
+        "coap_cancel_all_messages",
+        "sendqueue",
+        "actual_token",
+        "coap_delete_node_lkd"
+      ]
+    },
+    {
+      "id": "LOC-009",
+      "path": "src/coap_session.c",
+      "start": 148,
+      "end": 169,
+      "required_tokens": [
+        "coap_session_set_ack_timeout",
+        "ack_timeout",
+        "coap_session_set_ack_random_factor",
+        "ack_random_factor"
+      ]
+    },
+    {
+      "id": "LOC-010",
+      "path": "src/coap_session.c",
+      "start": 498,
+      "end": 500,
+      "required_tokens": [
+        "COAP_DEFAULT_ACK_TIMEOUT",
+        "COAP_DEFAULT_ACK_RANDOM_FACTOR",
+        "COAP_DEFAULT_MAX_RETRANSMIT"
+      ]
+    },
+    {
+      "id": "LOC-011",
+      "path": "src/coap_pdu.c",
+      "start": 1146,
+      "end": 1196,
+      "required_tokens": [
+        "coap_pdu_parse_header",
+        "pdu->type",
+        "pdu->mid",
+        "actual_token"
+      ]
+    },
+    {
+      "id": "LOC-012",
+      "path": "src/coap_net.c",
+      "start": 3097,
+      "end": 3144,
+      "required_tokens": [
+        "coap_handle_dgram",
+        "coap_pdu_parse2",
+        "coap_dispatch"
+      ]
+    },
+    {
+      "id": "LOC-013",
+      "path": "src/coap_prng.c",
+      "start": 170,
+      "end": 195,
+      "required_tokens": [
+        "rand_func",
+        "coap_set_prng",
+        "coap_prng_lkd"
+      ]
+    }
+  ],
+  "acceptance_gates": {
+    "machine_auditable_now": [
+      "all JSON inputs parse and cross-reference the same property",
+      "source commit/tree and full-file hashes match",
+      "all exact locator tokens remain in their frozen line ranges",
+      "fixed-path compile database, archive, generated config and linked bitcode match M1 hashes",
+      "all 38 compile commands include the six required translation units",
+      "LLVM 18 can construct MemorySSA on the linked module",
+      "all 19 provisional MUST labels and all eight joint-binding targets are present"
+    ],
+    "m4_development_gate": "RIFT must recover every provisional MUST label or report an explicit unsupported/model-required reason; silent omission fails. This is a development gate, not a paper metric.",
+    "headline_gold_gate": "BLOCKED until two humans independently label exact bindings/influencers on 94bacc89, arbitration is recorded, and the token-aware commit transfer is resolved."
+  },
+  "unresolved_human_label_requirements": [
+    "Review whether 94bacc89's token-aware non-empty ACK and OSCORE queue removal should extend the inherited monitor correlation key or remain only an implementation guard.",
+    "Review every exact <site, phase, scope> binding, especially the synthetic logical-deadline event versus event-loop callback time.",
+    "Independently label MUST/MAY/SCOPE/NO relationships, record raw disagreements and Cohen's kappa, then arbitrate before scoring real-project precision or recall.",
+    "Decide which non-ACK/RST removals count as allowed coap_attempt_cancelled. This draft admits only the two explicit cancellation functions already named by the inherited evidence.",
+    "Confirm the default-profile precondition: runtime setters must be absent or retain 2.000 and 1.500 when the fixed 2000/3000 formula is evaluated."
+  ],
+  "validation_commands": [
+    "python3 benchmark/rift/reproduction/libcoap/reproduce_clang18.py --build-dir /tmp/tafuzz-rift-libcoap-fixed --runs 3 --jobs 8",
+    "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/rift/m4/libcoap/validate_acceptance.py --build-dir /tmp/tafuzz-rift-libcoap-fixed",
+    "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/rift/m4/libcoap/validate_acceptance.py --build-dir /tmp/tafuzz-rift-libcoap-fixed --deep"
+  ],
+  "portability_boundary": {
+    "generic_core_change_authorized": false,
+    "property_specific_model_edges_added": false,
+    "project_knowledge_location": "This benchmark acceptance bundle only. Any future reusable libcoap model pack must describe parser/queue/timer/callback classes independently of COAP-TX-01 and must not copy these expected-answer labels."
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/recipe-replay-obligations/1.0.0",
+  "title": "RIFT mutation recipe replay obligations",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "artifact_id", "mutation_recipes_sha256",
+    "candidate_accounting_complete", "obligations"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "mutation_recipes_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+    "candidate_accounting_complete": {"const": true},
+    "obligations": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/obligation"}
+    }
+  },
+  "definitions": {
+    "obligation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "obligation_id", "recipe_id", "frontier_candidate_id", "status",
+        "atomic_action_ids", "indivisible_hyperedge", "ordered_step_ids",
+        "required_observations", "expected_relation", "solver_query_sha256",
+        "scope_schema", "generation_schema", "timing_status",
+        "uncertainty_reasons"
+      ],
+      "properties": {
+        "obligation_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "recipe_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "frontier_candidate_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "status": {"enum": ["READY", "PARTIAL", "UNKNOWN"]},
+        "atomic_action_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "indivisible_hyperedge": {"const": true},
+        "ordered_step_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "required_observations": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "ACTION_ACCEPTED", "AP_BEFORE", "AP_AFTER", "SCOPE_IDENTITY",
+              "GENERATION_IDENTITY", "MONITOR_SUCCESSOR", "RELATIVE_TIME"
+            ]
+          }
+        },
+        "expected_relation": {
+          "enum": ["AP_TRUTH_CHANGE", "MONITOR_SUCCESSOR_CHANGE", "UNKNOWN"]
+        },
+        "solver_query_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "scope_schema": {"type": ["string", "null"], "minLength": 1},
+        "generation_schema": {"type": ["string", "null"], "minLength": 1},
+        "timing_status": {"enum": ["EXACT", "WIDENED_UNKNOWN", "UNKNOWN"]},
+        "uncertainty_reasons": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"enum": ["PARTIAL", "UNKNOWN"]}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        },
+        {
+          "if": {"properties": {"expected_relation": {"const": "AP_TRUTH_CHANGE"}}},
+          "then": {
+            "properties": {
+              "required_observations": {
+                "allOf": [
+                  {"contains": {"const": "AP_BEFORE"}},
+                  {"contains": {"const": "AP_AFTER"}}
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

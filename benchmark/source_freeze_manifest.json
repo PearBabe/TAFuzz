@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "frozen_at": "2026-07-18T05:57:57+08:00",
+  "workspace": "/home/lqq/project/TAFuzz",
+  "mapping_policy": {
+    "implementation_satisfaction": "NOT_ASSESSED",
+    "source_control_flow_may_originate_properties": false,
+    "source_comments_and_parameter_metadata_may_originate_candidates": true,
+    "silent_retargeting_if_head_changes": false
+  },
+  "papers": [
+    {
+      "id": "PGFUZZ-2021",
+      "path": "/mnt/c/Users/PC-123/Zotero/storage/5UFRMB89/Kim 等 - 2021 - PGFUZZ Policy-guided fuzzing for robotic vehicles.pdf",
+      "pages": 18,
+      "sha256": "bb057be0069e9e764c8fb4bf963b09311cc914f3fb60da0b121afa94c90d7fcd"
+    },
+    {
+      "id": "ADGFUZZ-2026",
+      "path": "/mnt/c/Users/PC-123/Zotero/storage/X8VTAKST/Wang 等 - 2026 - ADGFUZZ Assignment dependency-guided fuzzing for robotic vehicles.pdf",
+      "pages": 19,
+      "sha256": "bb86bc3177c4e4bf2c8fe73e14e99760ab4dd662deb7902afafb502cfacaed72"
+    },
+    {
+      "id": "PROTOCOLGUARD-2026",
+      "path": "/mnt/c/Users/PC-123/Zotero/storage/8WI6R8KH/Song 等 - 2026 - ProtocolGuard Detecting protocol non-compliance bugs via LLM-guided static analysis and dynamic ver.pdf",
+      "pages": 18,
+      "sha256": "58ca7687749493ad350495b25fee0e510a0c39a22cb6b667845eee183229d11f"
+    }
+  ],
+  "repositories": [
+    {
+      "id": "ARDUPILOT-SUT",
+      "path": "/home/lqq/project/TAFuzz/baseline/ardupilot",
+      "remote": "https://github.com/ArduPilot/ardupilot.git",
+      "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "vehicle_scope": ["Copter", "Plane", "Rover"],
+      "preexisting_status": [" m modules/CrashDebug"],
+      "mavlink_submodule_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472"
+    },
+    {
+      "id": "PX4-SUT",
+      "path": "/home/lqq/project/TAFuzz/baseline/px4",
+      "remote": "https://github.com/PX4/PX4-Autopilot.git",
+      "tag": "v1.17.0",
+      "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "vehicle_scope": ["multicopter SITL"],
+      "preexisting_status": [],
+      "mavlink_submodule_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72"
+    },
+    {
+      "id": "PGFUZZ-ARTIFACT",
+      "path": "/home/lqq/project/TAFuzz/baseline/pgfuzz",
+      "remote": "https://github.com/purseclab/PGFuzz.git",
+      "commit": "7eaebf21116087249b8329d4ba7337a24a34ecb9",
+      "role": "historical_method_and_policy_leads_only"
+    },
+    {
+      "id": "ADGFUZZ-ARTIFACT",
+      "path": "/home/lqq/project/TAFuzz/baseline/ADGFuzz",
+      "remote": "https://github.com/wyunc/ADGFuzz.git",
+      "commit": "203fce3f4265241340ed62b9be90aec1da0afa37",
+      "role": "historical_oracle_and_heuristic_audit_only"
+    }
+  ],
+  "preservation_notes": [
+    "Do not update, reset, clean, or checkout baseline/ardupilot.",
+    "Do not remove PGFuzz __pycache__ files or its untracked paper copy.",
+    "Do not remove ADGFuzz runtime logs, core/stack artifacts, parameter files, or quick-result files.",
+    "MightyPPL and MoniTAal contain unrelated user changes and are read-only except for executing TAMonitor validation."
+  ]
+}

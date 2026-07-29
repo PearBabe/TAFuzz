@@ -1,0 +1,111 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/021_control_only_must_v0.c",
+        "line": 24
+      },
+      "token": "ap_primary"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/021_control_only_must_v0.c",
+        "line": 20
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "branch-selected Boolean",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/021_control_only_must_v0.c",
+        "line": 24
+      },
+      "role": "GUARD",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-021",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "control_only",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c11",
+  "oracle": {
+    "derivation": "The positive templates place the source only in a branch predicate, never in the assigned AP data value; negative variants remove that predicate dependence.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "control_only",
+    "variant": 0
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "control"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross guard boundary",
+        "kind": "guard_flip",
+        "relative_time_window": null,
+        "suggested_values": [
+          "3",
+          "4"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "control",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/021_control_only_must_v0.c",
+  "source_sha256": "16fe0e11132c05f177a6d76bf4f6ec57d272366fd0cad0d5b0c465e8b5cd0666",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 9,
+        "file": "cases/021_control_only_must_v0.c",
+        "line": 20
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    }
+  ]
+}

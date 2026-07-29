@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TPN name="/home/did/recherche/tools/romeo/romeo/examples/bucci04_nopreempt.xml">
+  <place id="1" identifier="Mutex" label="Mutex" initialMarking="1" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="301" y="466"/> 
+         <deltaLabel deltax="31.0" deltay="-3.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <place id="3" identifier="Ready1" label="Ready1" initialMarking="1" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="61" y="121"/> 
+         <deltaLabel deltax="28.0" deltay="-24.0"/> 
+      </graphics> 
+      <scheduling gamma="1" omega="3"/> 
+  </place> 
+
+  <place id="4" identifier="Ready2" label="Ready2" initialMarking="1" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="211" y="121"/> 
+         <deltaLabel deltax="28.0" deltay="-24.0"/> 
+      </graphics> 
+      <scheduling gamma="1" omega="2"/> 
+  </place> 
+
+  <place id="5" identifier="Exec3" label="Exec3" initialMarking="0" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="361" y="301"/> 
+         <deltaLabel deltax="31.0" deltay="-3.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <place id="6" identifier="Exec1" label="Exec1" initialMarking="0" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="61" y="301"/> 
+         <deltaLabel deltax="26.0" deltay="0.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <place id="7" identifier="Ready3" label="Ready3" initialMarking="1" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="361" y="121"/> 
+         <deltaLabel deltax="31.0" deltay="-21.0"/> 
+      </graphics> 
+      <scheduling gamma="1" omega="1"/> 
+  </place> 
+
+  <place id="8" identifier="Exec2" label="Exec2" initialMarking="0" eft="0" lft="inf"> 
+      <graphics color="0"> 
+         <position x="211" y="301"/> 
+         <deltaLabel deltax="27.0" deltay="0.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <transition id="1" identifier="Act1" label="Activate1"  eft="50" lft="50" eft_param="a" lft_param="a" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="61" y="31"/> 
+        <deltaLabel deltax="61.0" deltay="-17.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="3" identifier="Choose1" label="Choose1"  eft="0" lft="0" lft_param="0" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="61" y="211"/> 
+        <deltaLabel deltax="42.0" deltay="-16.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="5" identifier="Act2" label="Activate2"  eft="100" lft="inf" eft_param="a*2" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="211" y="31"/> 
+        <deltaLabel deltax="64.0" deltay="-19.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="6" identifier="Act3" label="Activate3"  eft="150" lft="150" eft_param="a*3" lft_param="a*3" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="361" y="31"/> 
+        <deltaLabel deltax="60.0" deltay="-19.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="7" identifier="Choose3" label="Choose3"  eft="0" lft="0" lft_param="0" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="361" y="211"/> 
+        <deltaLabel deltax="41.0" deltay="-18.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="8" identifier="Choose2" label="Choose2"  eft="0" lft="0" lft_param="0" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="211" y="211"/> 
+        <deltaLabel deltax="42.0" deltay="-17.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="9" identifier="Term3" label="Term3"  eft="20" lft="28" eft_param="20" lft_param="28" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="361" y="391"/> 
+        <deltaLabel deltax="41.0" deltay="-19.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="10" identifier="Term1" label="Term1"  eft="10" lft="20" eft_param="10" lft_param="b" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="61" y="391"/> 
+        <deltaLabel deltax="2.0" deltay="12.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <transition id="11" identifier="Term2" label="Term2"  eft="18" lft="28" eft_param="18" lft_param="28" speed="1"  obs="1"  guard=""> 
+     <graphics color="0"> 
+        <position x="211" y="391"/> 
+        <deltaLabel deltax="-38.0" deltay="-17.0"/> 
+        <deltaGuard deltax="20" deltay="-20"/> 
+        <deltaUpdate deltax="20" deltay="10"/> 
+        <deltaSpeed deltax="-20" deltay="5"/> 
+     </graphics> 
+     <update></update> 
+  </transition> 
+
+  <arc place="3" transition="1" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="3" transition="3" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="1" transition="3" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="6" transition="3" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="4" transition="5" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="7" transition="6" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="7" transition="7" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="3" transition="7" type="timedInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="4" transition="7" type="timedInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="1" transition="7" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="3" transition="7" type="logicalInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="4" transition="7" type="logicalInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="5" transition="7" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="4" transition="8" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="3" transition="8" type="timedInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="1" transition="8" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="3" transition="8" type="logicalInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="8" transition="8" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="5" transition="9" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="1" transition="9" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="6" transition="10" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="1" transition="10" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="8" transition="11" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="1" transition="11" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <declaration>// insert here your type definitions using C-like syntax
+
+
+// insert here your function definitions 
+// using C-like syntax</declaration>
+
+  <initialization>// insert here the state variables declarations 
+// and possibly some code to initialize them 
+// using C-like syntax</initialization>
+
+  <preferences> 
+      <colorPlace  c0="SkyBlue2"  c1="#ffbebe"  c2="cyan"  c3="green"  c4="yellow"  c5="brown" /> 
+ 
+      <colorTransition  c0="yellow"  c1="gray"  c2="cyan"  c3="green"  c4="SkyBlue2"  c5="brown" /> 
+ 
+      <colorArc  c0="black"  c1="gray"  c2="blue"  c3="#beb760"  c4="#be5c7e"  c5="#46be90" /> 
+ 
+  </preferences> 
+ </TPN> 
+

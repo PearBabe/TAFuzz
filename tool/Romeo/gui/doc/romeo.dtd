@@ -1,0 +1,69 @@
+<!--********************************************************************-->
+<!-- ROMEO  DTD specification of time petri nets                        -->
+<!-- Version : 0.0.beta                                                 -->
+<!-- Author : Guillaume Gardey                                          -->
+<!--********************************************************************-->
+
+
+<!-- Definition of TIME PETRI NETS                                      -->
+<!ELEMENT TPN (place*,transition*,arc*)>
+<!ATTLIST TPN
+            name CDATA #REQUIRED
+>
+
+<!-- Definition of PLACE                                                -->
+<!ELEMENT place (graphics,scheduling)>
+<!ATTLIST place
+            id CDATA #REQUIRED
+            label CDATA #REQUIRED
+            initialMarking CDATA #REQUIRED
+>
+
+<!-- Definition of TRANSITION                                           -->
+<!ELEMENT transition (graphics)>
+<!ATTLIST transition
+            id CDATA #REQUIRED
+            label CDATA #REQUIRED
+            eft CDATA #REQUIRED
+            lft CDATA #REQUIRED
+>
+
+<!-- Definition of ARC                                                  -->
+<!ELEMENT arc (nail)>
+<!ATTLIST arc
+            place CDATA #REQUIRED
+            transition CDATA #REQUIRED
+            type CDATA #REQUIRED
+            weight CDATA #REQUIRED
+>
+
+<!-- Definition of scheduling                                           -->
+<!ELEMENT scheduling EMPTY>
+<!ATTLIST scheduling
+            gamma CDATA #REQUIRED
+            omega CDATA #REQUIRED
+>
+
+<!-- Definition of GRAPHICS information                                 -->
+<!ELEMENT graphics (position,deltaLabel)>
+
+<!-- X-Y coordinates of element                                         -->
+<!ELEMENT position EMPTY>
+<!ATTLIST position
+            x CDATA #REQUIRED
+            y CDATA #REQUIRED
+>
+
+<!-- X-Y coordinates of element's label                                 -->
+<!ELEMENT deltaLabel EMPTY>
+<!ATTLIST deltaLabel
+            deltax CDATA #REQUIRED
+            deltay CDATA #REQUIRED
+>
+
+<!-- X-Y coordinates of an arc nail                                     -->
+<!ELEMENT nail EMPTY>
+<!ATTLIST nail 
+            xnail CDATA #REQUIRED
+            ynail CDATA #REQUIRED
+>

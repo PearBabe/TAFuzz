@@ -1,0 +1,5063 @@
+{
+  "schema_version": "1.0",
+  "rows": [
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL1",
+      "ap_id": "PX.RTL1-AP01",
+      "role": "antecedent",
+      "expression": "ALT_t < RTL_RETURN_ALT",
+      "truth_meaning_zh": "PX4 当前高度低于返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_RETURN_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-088",
+        "PX4-TB-095",
+        "PX4-TB-102",
+        "PX4-TB-103"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-013",
+        "PX4-TB-088",
+        "PX4-TB-095",
+        "PX4-TB-102",
+        "PX4-TB-103"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016",
+        "RTL_RETURN_ALT::SELECTED::RTL_RETURN_ALT:primary::PX4-TB-088,PX4-TB-095,PX4-TB-102,PX4-TB-103"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；RTL_RETURN_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-088",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-095",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-102",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-103",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL1",
+      "ap_id": "PX.RTL1-AP02",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "RTL::SELECTED::RTL:primary::PX4-TB-006"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；RTL：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-006",
+          "term": "RTL",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL1",
+      "ap_id": "PX.RTL1-AP03",
+      "role": "consequent",
+      "expression": "ALT_t-1 < ALT_t",
+      "truth_meaning_zh": "当前观测高度高于上一观测高度。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-021",
+        "PX4-TB-013"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:global_amsl::PX4-TB-017",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_home::PX4-TB-018",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:local_ned::PX4-TB-019",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:distance_to_ground::PX4-TB-020",
+        "ALT_t-1::SELECTED::ALT_t-1:relative_rtl_destination::PX4-TB-021",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_takeoff_reference::PX4-TB-022",
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t-1：上一样本必须与当前 RTL 高度使用同一目的地参考面；ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "内部目的地加 GLOBAL_POSITION_INT.alt"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance 或 ALTITUDE.altitude_bottom",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "内部目的地加 GLOBAL_POSITION_INT.alt",
+        "轨迹捕获加 GLOBAL_POSITION_INT.alt"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-021",
+          "term": "ALT_t-1",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "内部目的地加 GLOBAL_POSITION_INT.alt"
+        }
+      ],
+      "property_issue_codes": [
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "RTL::SELECTED::RTL:primary::PX4-TB-006"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；RTL：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-006",
+          "term": "RTL",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= RTL_RETURN_ALT",
+      "truth_meaning_zh": "PX4 当前高度达到或超过返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_RETURN_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-088",
+        "PX4-TB-095",
+        "PX4-TB-102",
+        "PX4-TB-103"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-013",
+        "PX4-TB-088",
+        "PX4-TB-095",
+        "PX4-TB-102",
+        "PX4-TB-103"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016",
+        "RTL_RETURN_ALT::SELECTED::RTL_RETURN_ALT:primary::PX4-TB-088,PX4-TB-095,PX4-TB-102,PX4-TB-103"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；RTL_RETURN_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-088",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-095",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-102",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-103",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP03",
+      "role": "antecedent",
+      "expression": "Pos_t != home_position",
+      "truth_meaning_zh": "当前位置不等于返航参考位置。",
+      "terms": [
+        "Pos_t",
+        "home_position"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-024",
+        "PX4-TB-027"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-027"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-024"
+      ],
+      "binding_group_summary": [
+        "Pos_t::SELECTED::Pos_t:global_wgs84::PX4-TB-023",
+        "Pos_t::ALTERNATIVE::Pos_t:local_ned::PX4-TB-024",
+        "home_position::SELECTED::home_position:primary::PX4-TB-027"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Pos_t：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；home_position：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "统一 WGS84 或局部坐标，检查有效性和重置，再用人工审核后确定的距离容差判定；原论文严格相等保持原样记录。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "HOME_POSITION.latitude,longitude,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "HOME_POSITION.latitude,longitude,time_usec",
+        "LOCAL_POSITION_NED.x,y,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-023",
+          "term": "Pos_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-027",
+          "term": "home_position",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HOME_POSITION.latitude,longitude,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP04",
+      "role": "consequent",
+      "expression": "Pos_t-1 != Pos_t",
+      "truth_meaning_zh": "当前位置与上一观测位置不同。",
+      "terms": [
+        "Pos_t-1",
+        "Pos_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-025",
+        "PX4-TB-026",
+        "PX4-TB-023",
+        "PX4-TB-024"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-025",
+        "PX4-TB-023"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-026",
+        "PX4-TB-024"
+      ],
+      "binding_group_summary": [
+        "Pos_t-1::SELECTED::Pos_t-1:global_wgs84::PX4-TB-025",
+        "Pos_t-1::ALTERNATIVE::Pos_t-1:local_ned::PX4-TB-026",
+        "Pos_t::SELECTED::Pos_t:global_wgs84::PX4-TB-023",
+        "Pos_t::ALTERNATIVE::Pos_t:local_ned::PX4-TB-024"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Pos_t-1：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；Pos_t：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "LOCAL_POSITION_NED.x,y,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-025",
+          "term": "Pos_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-023",
+          "term": "Pos_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL2",
+      "ap_id": "PX.RTL2-AP05",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-021",
+        "PX4-TB-013"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:global_amsl::PX4-TB-017",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_home::PX4-TB-018",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:local_ned::PX4-TB-019",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:distance_to_ground::PX4-TB-020",
+        "ALT_t-1::SELECTED::ALT_t-1:relative_rtl_destination::PX4-TB-021",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_takeoff_reference::PX4-TB-022",
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t-1：上一样本必须与当前 RTL 高度使用同一目的地参考面；ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "内部目的地加 GLOBAL_POSITION_INT.alt"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance 或 ALTITUDE.altitude_bottom",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "内部目的地加 GLOBAL_POSITION_INT.alt",
+        "轨迹捕获加 GLOBAL_POSITION_INT.alt"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-021",
+          "term": "ALT_t-1",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "内部目的地加 GLOBAL_POSITION_INT.alt"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "RTL::SELECTED::RTL:primary::PX4-TB-006"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；RTL：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-006",
+          "term": "RTL",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "SAME_SAMPLE_MODE_CONTRADICTION"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t >= RTL_RETURN_ALT",
+      "truth_meaning_zh": "PX4 当前高度达到或超过返航高度参数。",
+      "terms": [
+        "ALT_t",
+        "RTL_RETURN_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-088",
+        "PX4-TB-095",
+        "PX4-TB-102",
+        "PX4-TB-103"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-013",
+        "PX4-TB-088",
+        "PX4-TB-095",
+        "PX4-TB-102",
+        "PX4-TB-103"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016",
+        "RTL_RETURN_ALT::SELECTED::RTL_RETURN_ALT:primary::PX4-TB-088,PX4-TB-095,PX4-TB-102,PX4-TB-103"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；RTL_RETURN_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-088",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-095",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-102",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-103",
+          "term": "RTL_RETURN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_RETURN_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "SAME_SAMPLE_MODE_CONTRADICTION"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP03",
+      "role": "antecedent",
+      "expression": "Pos_t = home_position",
+      "truth_meaning_zh": "当前位置等于返航参考位置。",
+      "terms": [
+        "Pos_t",
+        "home_position"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-024",
+        "PX4-TB-027"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-027"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-024"
+      ],
+      "binding_group_summary": [
+        "Pos_t::SELECTED::Pos_t:global_wgs84::PX4-TB-023",
+        "Pos_t::ALTERNATIVE::Pos_t:local_ned::PX4-TB-024",
+        "home_position::SELECTED::home_position:primary::PX4-TB-027"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Pos_t：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；home_position：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "统一 WGS84 或局部坐标，检查有效性和重置，再用人工审核后确定的距离容差判定；原论文严格相等保持原样记录。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "HOME_POSITION.latitude,longitude,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "HOME_POSITION.latitude,longitude,time_usec",
+        "LOCAL_POSITION_NED.x,y,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-023",
+          "term": "Pos_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-027",
+          "term": "home_position",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HOME_POSITION.latitude,longitude,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "SAME_SAMPLE_MODE_CONTRADICTION"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL3",
+      "ap_id": "PX.RTL3-AP04",
+      "role": "consequent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "LAND::SELECTED::LAND:primary::PX4-TB-007"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；LAND：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-007",
+          "term": "LAND",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "SAME_SAMPLE_MODE_CONTRADICTION"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = RTL",
+      "truth_meaning_zh": "当前飞行模式是返航模式。",
+      "terms": [
+        "Mode_t",
+        "RTL"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-006"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "RTL::SELECTED::RTL:primary::PX4-TB-006"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；RTL：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "命题实体可定位，但所在性质存在论文公式冲突，不能据此修复整条公式。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-006",
+          "term": "RTL",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "WRONG_PARAMETER_IN_FORMULA",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP02",
+      "role": "antecedent_as_printed",
+      "expression": "RTL_DESCEND_ALT = -1",
+      "truth_meaning_zh": "论文公式错误地把返航下降高度参数与负一比较。",
+      "terms": [
+        "RTL_DESCEND_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-089",
+        "PX4-TB-096",
+        "PX4-TB-104"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-089",
+        "PX4-TB-096",
+        "PX4-TB-104"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "RTL_DESCEND_ALT::SELECTED::RTL_DESCEND_ALT:primary::PX4-TB-089,PX4-TB-096,PX4-TB-104"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "RTL_DESCEND_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "命题实体可定位，但所在性质存在论文公式冲突，不能据此修复整条公式。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_DESCEND_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_DESCEND_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-089",
+          "term": "RTL_DESCEND_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-096",
+          "term": "RTL_DESCEND_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_DESCEND_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-104",
+          "term": "RTL_DESCEND_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_DESCEND_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "WRONG_PARAMETER_IN_FORMULA",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP03",
+      "role": "antecedent_from_description",
+      "expression": "RTL_LAND_DELAY = -1",
+      "truth_meaning_zh": "PX4 返航着陆等待参数为负一，表示不着陆而保持盘旋。",
+      "terms": [
+        "RTL_LAND_DELAY"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-090",
+        "PX4-TB-097",
+        "PX4-TB-105",
+        "PX4-TB-106",
+        "PX4-TB-107"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-090",
+        "PX4-TB-097",
+        "PX4-TB-105",
+        "PX4-TB-106",
+        "PX4-TB-107"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "RTL_LAND_DELAY::SELECTED::RTL_LAND_DELAY:primary::PX4-TB-090,PX4-TB-097,PX4-TB-105,PX4-TB-106,PX4-TB-107"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "RTL_LAND_DELAY：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "命题实体可定位，但所在性质存在论文公式冲突，不能据此修复整条公式。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_LAND_DELAY,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=RTL_LAND_DELAY,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-090",
+          "term": "RTL_LAND_DELAY",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-097",
+          "term": "RTL_LAND_DELAY",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_LAND_DELAY,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-105",
+          "term": "RTL_LAND_DELAY",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_LAND_DELAY,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-106",
+          "term": "RTL_LAND_DELAY",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_LAND_DELAY,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-107",
+          "term": "RTL_LAND_DELAY",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=RTL_LAND_DELAY,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "WRONG_PARAMETER_IN_FORMULA",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP04",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-024",
+        "PX4-TB-025",
+        "PX4-TB-026"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-025"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-024",
+        "PX4-TB-026"
+      ],
+      "binding_group_summary": [
+        "Pos_t::SELECTED::Pos_t:global_wgs84::PX4-TB-023",
+        "Pos_t::ALTERNATIVE::Pos_t:local_ned::PX4-TB-024",
+        "Pos_t-1::SELECTED::Pos_t-1:global_wgs84::PX4-TB-025",
+        "Pos_t-1::ALTERNATIVE::Pos_t-1:local_ned::PX4-TB-026"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Pos_t：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；Pos_t-1：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "LOCAL_POSITION_NED.x,y,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-023",
+          "term": "Pos_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-025",
+          "term": "Pos_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "WRONG_PARAMETER_IN_FORMULA",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL4",
+      "ap_id": "PX.RTL4-AP05",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-021",
+        "PX4-TB-013"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:global_amsl::PX4-TB-017",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_home::PX4-TB-018",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:local_ned::PX4-TB-019",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:distance_to_ground::PX4-TB-020",
+        "ALT_t-1::SELECTED::ALT_t-1:relative_rtl_destination::PX4-TB-021",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_takeoff_reference::PX4-TB-022",
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t-1：上一样本必须与当前 RTL 高度使用同一目的地参考面；ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "内部目的地加 GLOBAL_POSITION_INT.alt"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance 或 ALTITUDE.altitude_bottom",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "内部目的地加 GLOBAL_POSITION_INT.alt",
+        "轨迹捕获加 GLOBAL_POSITION_INT.alt"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-021",
+          "term": "ALT_t-1",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "内部目的地加 GLOBAL_POSITION_INT.alt"
+        }
+      ],
+      "property_issue_codes": [
+        "WRONG_PARAMETER_IN_FORMULA",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL5",
+      "ap_id": "PX.RTL5-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "LAND::SELECTED::LAND:primary::PX4-TB-007"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；LAND：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-007",
+          "term": "LAND",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "IMMEDIACY_UNBOUNDED",
+        "EXACT_PHYSICAL_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL5",
+      "ap_id": "PX.RTL5-AP02",
+      "role": "antecedent",
+      "expression": "ALT_t = GroundALT",
+      "truth_meaning_zh": "当前高度严格等于论文所称地面高度。",
+      "terms": [
+        "ALT_t",
+        "GroundALT"
+      ],
+      "binding_status": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-028",
+        "PX4-TB-029",
+        "PX4-TB-030",
+        "PX4-TB-031"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-013",
+        "PX4-TB-028"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-029",
+        "PX4-TB-030",
+        "PX4-TB-031"
+      ],
+      "binding_group_summary": [
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::SELECTED::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016",
+        "GroundALT::SELECTED::GroundALT:untyped_unresolved::PX4-TB-028",
+        "GroundALT::ALTERNATIVE::GroundALT:landed_state::PX4-TB-029",
+        "GroundALT::ALTERNATIVE::GroundALT:home_amsl::PX4-TB-030",
+        "GroundALT::ALTERNATIVE::GroundALT:terrain_amsl::PX4-TB-031"
+      ],
+      "binding_selection_status": "UNRESOLVED_PRIMARY",
+      "binding_selection_reason_zh": "ALT_t：RTL_RETURN_ALT 当前定义为选定 RTL 目的地以上高度，目的地可为 Home、安全点或任务着陆点；GroundALT：论文把 GroundALT 放进数值高度等式，却没有给类型和参考面；选择未解决组，landed/Home/terrain 只保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "论文未定义 GroundALT 是数值高度、Home 高度、地形高度还是已落地状态；类型和参考面补证前不判真值。",
+      "evaluation_plan_zh": "保留原式和全部候选绑定；缺失定义或数值补证前不得给真值。",
+      "mavlink_observability": "UNRESOLVED",
+      "mavlink_observation_fields": [],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "EXTENDED_SYS_STATE.landed_state",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "HOME_POSITION.altitude,time_usec",
+        "LOCAL_POSITION_NED.z,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "IMMEDIACY_UNBOUNDED",
+        "EXACT_PHYSICAL_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.RTL5",
+      "ap_id": "PX.RTL5-AP03",
+      "role": "consequent",
+      "expression": "Disarm = on",
+      "truth_meaning_zh": "电机处于锁定状态。",
+      "terms": [
+        "Disarm"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-066",
+        "PX4-TB-067",
+        "PX4-TB-068"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-066",
+        "PX4-TB-067",
+        "PX4-TB-068"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Disarm::SELECTED::Disarm:vehicle_arming_state::PX4-TB-066,PX4-TB-067,PX4-TB-068"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Disarm：性质 PX.RTL5 的表达式 Disarm = on 选择候选组 Disarm:vehicle_arming_state；其他组保持互斥，不参与当前真值计算。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "按所列源码实体、真值条件、有效性条件和观测换算判定。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.base_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.base_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-066",
+          "term": "Disarm",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.base_mode"
+        },
+        {
+          "binding_id": "PX4-TB-067",
+          "term": "Disarm",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.base_mode"
+        },
+        {
+          "binding_id": "PX4-TB-068",
+          "term": "Disarm",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.base_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "IMMEDIACY_UNBOUNDED",
+        "EXACT_PHYSICAL_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ORBIT::SELECTED::ORBIT:primary::PX4-TB-008"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ORBIT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-008",
+          "term": "ORBIT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP02",
+      "role": "antecedent",
+      "expression": "RC_pitch < 1500",
+      "truth_meaning_zh": "俯仰遥控输入小于通道中值。",
+      "terms": [
+        "RC_pitch"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-047",
+        "PX4-TB-048",
+        "PX4-TB-049",
+        "PX4-TB-056"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-048",
+        "PX4-TB-049"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-047",
+        "PX4-TB-056"
+      ],
+      "binding_group_summary": [
+        "RC_pitch::ALTERNATIVE::RC_pitch:normalized_manual_control::PX4-TB-047,PX4-TB-056",
+        "RC_pitch::SELECTED::RC_pitch:raw_pwm::PX4-TB-048,PX4-TB-049"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "RC_pitch：表达式使用 1500 阈值，必须选择映射后的原始 PWM，而不是 [-1,1] 标准化轴值；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "若阈值为 1500，使用当前 RC_MAP 对应的原始 PWM；同时保留校准、死区、输入来源和 failsafe 有效性。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id=RC_MAP_PITCH,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "MANUAL_CONTROL 对应轴字段",
+        "PARAM_VALUE.param_id=RC_MAP_PITCH,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-048",
+          "term": "RC_pitch",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.chanN_raw,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-049",
+          "term": "RC_pitch",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RC_MAP_PITCH,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP03",
+      "role": "antecedent",
+      "expression": "Circle_radius_t > 0",
+      "truth_meaning_zh": "当前绕圈半径为正数。",
+      "terms": [
+        "Circle_radius_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Circle_radius_t::SELECTED::Circle_radius_t:target_radius::PX4-TB-035,PX4-TB-036"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Circle_radius_t：性质 PX.ORBIT1 的表达式 Circle_radius_t > 0 选择候选组 Circle_radius_t:target_radius；其他组保持互斥，不参与当前真值计算。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "明确选择内部目标量或实际测量量，保持前后样本定义一致，并按半径符号解析方向。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-036",
+          "term": "Circle_radius_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT1",
+      "ap_id": "PX.ORBIT1-AP04",
+      "role": "consequent",
+      "expression": "Circle_radius_t < Circle_radius_t-1",
+      "truth_meaning_zh": "绕圈半径比上一观测减小。",
+      "terms": [
+        "Circle_radius_t",
+        "Circle_radius_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036",
+        "PX4-TB-037"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036",
+        "PX4-TB-037"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Circle_radius_t::SELECTED::Circle_radius_t:target_radius::PX4-TB-035,PX4-TB-036",
+        "Circle_radius_t-1::SELECTED::Circle_radius_t-1:primary::PX4-TB-037"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Circle_radius_t：性质 PX.ORBIT1 的表达式 Circle_radius_t < Circle_radius_t-1 选择候选组 Circle_radius_t:target_radius；其他组保持互斥，不参与当前真值计算；Circle_radius_t-1：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-036",
+          "term": "Circle_radius_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        },
+        {
+          "binding_id": "PX4-TB-037",
+          "term": "Circle_radius_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT2",
+      "ap_id": "PX.ORBIT2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ORBIT::SELECTED::ORBIT:primary::PX4-TB-008"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ORBIT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-008",
+          "term": "ORBIT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT2",
+      "ap_id": "PX.ORBIT2-AP02",
+      "role": "antecedent",
+      "expression": "RC_pitch > 1500",
+      "truth_meaning_zh": "俯仰遥控输入大于通道中值。",
+      "terms": [
+        "RC_pitch"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-047",
+        "PX4-TB-048",
+        "PX4-TB-049",
+        "PX4-TB-056"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-048",
+        "PX4-TB-049"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-047",
+        "PX4-TB-056"
+      ],
+      "binding_group_summary": [
+        "RC_pitch::ALTERNATIVE::RC_pitch:normalized_manual_control::PX4-TB-047,PX4-TB-056",
+        "RC_pitch::SELECTED::RC_pitch:raw_pwm::PX4-TB-048,PX4-TB-049"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "RC_pitch：表达式使用 1500 阈值，必须选择映射后的原始 PWM，而不是 [-1,1] 标准化轴值；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "若阈值为 1500，使用当前 RC_MAP 对应的原始 PWM；同时保留校准、死区、输入来源和 failsafe 有效性。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id=RC_MAP_PITCH,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "MANUAL_CONTROL 对应轴字段",
+        "PARAM_VALUE.param_id=RC_MAP_PITCH,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-048",
+          "term": "RC_pitch",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.chanN_raw,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-049",
+          "term": "RC_pitch",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RC_MAP_PITCH,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT2",
+      "ap_id": "PX.ORBIT2-AP03",
+      "role": "consequent",
+      "expression": "Circle_radius_t > Circle_radius_t-1",
+      "truth_meaning_zh": "绕圈半径比上一观测增大。",
+      "terms": [
+        "Circle_radius_t",
+        "Circle_radius_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036",
+        "PX4-TB-037"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036",
+        "PX4-TB-037"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Circle_radius_t::SELECTED::Circle_radius_t:target_radius::PX4-TB-035,PX4-TB-036",
+        "Circle_radius_t-1::SELECTED::Circle_radius_t-1:primary::PX4-TB-037"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Circle_radius_t：性质 PX.ORBIT2 的表达式 Circle_radius_t > Circle_radius_t-1 选择候选组 Circle_radius_t:target_radius；其他组保持互斥，不参与当前真值计算；Circle_radius_t-1：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-036",
+          "term": "Circle_radius_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        },
+        {
+          "binding_id": "PX4-TB-037",
+          "term": "Circle_radius_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ORBIT::SELECTED::ORBIT:primary::PX4-TB-008"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ORBIT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-008",
+          "term": "ORBIT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll > 1500",
+      "truth_meaning_zh": "横滚遥控输入大于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-050",
+        "PX4-TB-051",
+        "PX4-TB-052",
+        "PX4-TB-057"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-051",
+        "PX4-TB-052"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-050",
+        "PX4-TB-057"
+      ],
+      "binding_group_summary": [
+        "RC_roll::ALTERNATIVE::RC_roll:normalized_manual_control::PX4-TB-050,PX4-TB-057",
+        "RC_roll::SELECTED::RC_roll:raw_pwm::PX4-TB-051,PX4-TB-052"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "RC_roll：表达式使用 1500 阈值，必须选择映射后的原始 PWM，而不是 [-1,1] 标准化轴值；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "若阈值为 1500，使用当前 RC_MAP 对应的原始 PWM；同时保留校准、死区、输入来源和 failsafe 有效性。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id=RC_MAP_ROLL,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "MANUAL_CONTROL 对应轴字段",
+        "PARAM_VALUE.param_id=RC_MAP_ROLL,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-051",
+          "term": "RC_roll",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.chanN_raw,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-052",
+          "term": "RC_roll",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RC_MAP_ROLL,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = clockwise",
+      "truth_meaning_zh": "绕圈方向是顺时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-038",
+        "PX4-TB-039",
+        "PX4-TB-040",
+        "PX4-TB-041",
+        "PX4-TB-042"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-038",
+        "PX4-TB-039",
+        "PX4-TB-040",
+        "PX4-TB-041"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-042"
+      ],
+      "binding_group_summary": [
+        "Circle_direction_t::SELECTED::Circle_direction_t:target_encoded_direction::PX4-TB-038,PX4-TB-039,PX4-TB-040,PX4-TB-041",
+        "Circle_direction_t::ALTERNATIVE::Circle_direction_t:actual_motion_direction::PX4-TB-042"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Circle_direction_t：作者候选输入改变 Orbit 目标方向，先选择 ORBIT_EXECUTION_STATUS 的目标编码方向；实际运动方向保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "明确选择内部目标量或实际测量量，保持前后样本定义一致，并按半径符号解析方向。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "COMMAND_ACK",
+        "COMMAND_LONG.command=MAV_CMD_DO_ORBIT,param1,param2",
+        "ORBIT_EXECUTION_STATUS.radius",
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_ACK",
+        "COMMAND_LONG.command=MAV_CMD_DO_ORBIT,param1,param2",
+        "GLOBAL_POSITION_INT.lat,lon,vx,vy,time_boot_ms",
+        "ORBIT_EXECUTION_STATUS.radius",
+        "ORBIT_EXECUTION_STATUS.radius,time_usec",
+        "ORBIT_EXECUTION_STATUS.x,y"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-038",
+          "term": "Circle_direction_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius"
+        },
+        {
+          "binding_id": "PX4-TB-040",
+          "term": "Circle_direction_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG.command=MAV_CMD_DO_ORBIT,param1,param2; COMMAND_ACK"
+        },
+        {
+          "binding_id": "PX4-TB-041",
+          "term": "Circle_direction_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT3",
+      "ap_id": "PX.ORBIT3-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t > Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测增大。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-043",
+        "PX4-TB-044",
+        "PX4-TB-045",
+        "PX4-TB-046"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-043",
+        "PX4-TB-045"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-044",
+        "PX4-TB-046"
+      ],
+      "binding_group_summary": [
+        "Circle_speed_t::SELECTED::Circle_speed_t:target_tangential_speed::PX4-TB-043",
+        "Circle_speed_t::ALTERNATIVE::Circle_speed_t:actual_ground_speed::PX4-TB-044",
+        "Circle_speed_t-1::SELECTED::Circle_speed_t-1:target_tangential_speed::PX4-TB-045",
+        "Circle_speed_t-1::ALTERNATIVE::Circle_speed_t-1:actual_ground_speed::PX4-TB-046"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Circle_speed_t：论文与控制输入/参数关联，先选择目标切向速度；实际地速保留为替代；Circle_speed_t-1：上一速度样本必须与当前值共同使用目标切向速度；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "内部插桩"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.vx,vy,time_boot_ms",
+        "内部插桩"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-045",
+          "term": "Circle_speed_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "内部插桩"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ORBIT::SELECTED::ORBIT:primary::PX4-TB-008"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ORBIT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-008",
+          "term": "ORBIT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP02",
+      "role": "antecedent",
+      "expression": "RC_roll > 1500",
+      "truth_meaning_zh": "横滚遥控输入大于通道中值。",
+      "terms": [
+        "RC_roll"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-050",
+        "PX4-TB-051",
+        "PX4-TB-052",
+        "PX4-TB-057"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-051",
+        "PX4-TB-052"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-050",
+        "PX4-TB-057"
+      ],
+      "binding_group_summary": [
+        "RC_roll::ALTERNATIVE::RC_roll:normalized_manual_control::PX4-TB-050,PX4-TB-057",
+        "RC_roll::SELECTED::RC_roll:raw_pwm::PX4-TB-051,PX4-TB-052"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "RC_roll：表达式使用 1500 阈值，必须选择映射后的原始 PWM，而不是 [-1,1] 标准化轴值；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "若阈值为 1500，使用当前 RC_MAP 对应的原始 PWM；同时保留校准、死区、输入来源和 failsafe 有效性。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id=RC_MAP_ROLL,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "MANUAL_CONTROL 对应轴字段",
+        "PARAM_VALUE.param_id=RC_MAP_ROLL,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-051",
+          "term": "RC_roll",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.chanN_raw,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-052",
+          "term": "RC_roll",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RC_MAP_ROLL,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP03",
+      "role": "antecedent",
+      "expression": "Circle_direction_t = counterclockwise",
+      "truth_meaning_zh": "绕圈方向是逆时针。",
+      "terms": [
+        "Circle_direction_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-038",
+        "PX4-TB-039",
+        "PX4-TB-040",
+        "PX4-TB-041",
+        "PX4-TB-042"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-038",
+        "PX4-TB-039",
+        "PX4-TB-040",
+        "PX4-TB-041"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-042"
+      ],
+      "binding_group_summary": [
+        "Circle_direction_t::SELECTED::Circle_direction_t:target_encoded_direction::PX4-TB-038,PX4-TB-039,PX4-TB-040,PX4-TB-041",
+        "Circle_direction_t::ALTERNATIVE::Circle_direction_t:actual_motion_direction::PX4-TB-042"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Circle_direction_t：作者候选输入改变 Orbit 目标方向，先选择 ORBIT_EXECUTION_STATUS 的目标编码方向；实际运动方向保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "明确选择内部目标量或实际测量量，保持前后样本定义一致，并按半径符号解析方向。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "COMMAND_ACK",
+        "COMMAND_LONG.command=MAV_CMD_DO_ORBIT,param1,param2",
+        "ORBIT_EXECUTION_STATUS.radius",
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_ACK",
+        "COMMAND_LONG.command=MAV_CMD_DO_ORBIT,param1,param2",
+        "GLOBAL_POSITION_INT.lat,lon,vx,vy,time_boot_ms",
+        "ORBIT_EXECUTION_STATUS.radius",
+        "ORBIT_EXECUTION_STATUS.radius,time_usec",
+        "ORBIT_EXECUTION_STATUS.x,y"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-038",
+          "term": "Circle_direction_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius"
+        },
+        {
+          "binding_id": "PX4-TB-040",
+          "term": "Circle_direction_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG.command=MAV_CMD_DO_ORBIT,param1,param2; COMMAND_ACK"
+        },
+        {
+          "binding_id": "PX4-TB-041",
+          "term": "Circle_direction_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT4",
+      "ap_id": "PX.ORBIT4-AP04",
+      "role": "consequent",
+      "expression": "Circle_speed_t < Circle_speed_t-1",
+      "truth_meaning_zh": "绕圈速度比上一观测减小。",
+      "terms": [
+        "Circle_speed_t",
+        "Circle_speed_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-043",
+        "PX4-TB-044",
+        "PX4-TB-045",
+        "PX4-TB-046"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-043",
+        "PX4-TB-045"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-044",
+        "PX4-TB-046"
+      ],
+      "binding_group_summary": [
+        "Circle_speed_t::SELECTED::Circle_speed_t:target_tangential_speed::PX4-TB-043",
+        "Circle_speed_t::ALTERNATIVE::Circle_speed_t:actual_ground_speed::PX4-TB-044",
+        "Circle_speed_t-1::SELECTED::Circle_speed_t-1:target_tangential_speed::PX4-TB-045",
+        "Circle_speed_t-1::ALTERNATIVE::Circle_speed_t-1:actual_ground_speed::PX4-TB-046"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Circle_speed_t：论文与控制输入/参数关联，先选择目标切向速度；实际地速保留为替代；Circle_speed_t-1：上一速度样本必须与当前值共同使用目标切向速度；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "内部插桩"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.vx,vy,time_boot_ms",
+        "内部插桩"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-045",
+          "term": "Circle_speed_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "内部插桩"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT5",
+      "ap_id": "PX.ORBIT5-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ORBIT::SELECTED::ORBIT:primary::PX4-TB-008"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ORBIT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-008",
+          "term": "ORBIT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "STRICT_MAX_BOUND"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT5",
+      "ap_id": "PX.ORBIT5-AP02",
+      "role": "consequent",
+      "expression": "Circle_radius_t < 100m",
+      "truth_meaning_zh": "论文抽象的绕点半径严格小于 100 米。",
+      "terms": [
+        "Circle_radius_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-035",
+        "PX4-TB-036"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Circle_radius_t::SELECTED::Circle_radius_t:target_radius::PX4-TB-035,PX4-TB-036"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Circle_radius_t：性质 PX.ORBIT5 的表达式 Circle_radius_t < 100m 选择候选组 Circle_radius_t:target_radius；其他组保持互斥，不参与当前真值计算。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "明确选择内部目标量或实际测量量，保持前后样本定义一致，并按半径符号解析方向。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "all_candidate_observation_fields": [
+        "ORBIT_EXECUTION_STATUS.radius,time_usec"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-036",
+          "term": "Circle_radius_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "ORBIT_EXECUTION_STATUS.radius,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "STRICT_MAX_BOUND"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT6",
+      "ap_id": "PX.ORBIT6-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ORBIT",
+      "truth_meaning_zh": "当前 PX4 模式是绕点飞行模式。",
+      "terms": [
+        "Mode_t",
+        "ORBIT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-008"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ORBIT::SELECTED::ORBIT:primary::PX4-TB-008"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ORBIT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "命题实体可定位，但所在性质存在论文公式冲突，不能据此修复整条公式。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-008",
+          "term": "ORBIT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "TYPE_UNIT_MISMATCH",
+        "STRICT_MAX_BOUND"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ORBIT6",
+      "ap_id": "PX.ORBIT6-AP02",
+      "role": "consequent",
+      "expression": "Circle_speed_t < 2m/s^2",
+      "truth_meaning_zh": "论文用速度变量与加速度单位阈值比较。",
+      "terms": [
+        "Circle_speed_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-043",
+        "PX4-TB-044"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-043"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-044"
+      ],
+      "binding_group_summary": [
+        "Circle_speed_t::SELECTED::Circle_speed_t:target_tangential_speed::PX4-TB-043",
+        "Circle_speed_t::ALTERNATIVE::Circle_speed_t:actual_ground_speed::PX4-TB-044"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Circle_speed_t：论文与控制输入/参数关联，先选择目标切向速度；实际地速保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "明确选择内部目标量或实际测量量，保持前后样本定义一致，并按半径符号解析方向。",
+      "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+      "mavlink_observation_fields": [],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.vx,vy,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [],
+      "property_issue_codes": [
+        "TYPE_UNIT_MISMATCH",
+        "STRICT_MAX_BOUND"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.LAND1",
+      "ap_id": "PX.LAND1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "LAND::SELECTED::LAND:primary::PX4-TB-007"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；LAND：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-007",
+          "term": "LAND",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "EXACT_PHYSICAL_EQUALITY",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.LAND1",
+      "ap_id": "PX.LAND1-AP02",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = MPC_LAND_SPEED",
+      "truth_meaning_zh": "垂直速度严格等于 PX4 着陆速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "MPC_LAND_SPEED"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-034",
+        "PX4-TB-091",
+        "PX4-TB-098",
+        "PX4-TB-108",
+        "PX4-TB-109"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-034",
+        "PX4-TB-091",
+        "PX4-TB-098",
+        "PX4-TB-108",
+        "PX4-TB-109"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Speed_vertical_t::SELECTED::Speed_vertical_t:primary::PX4-TB-034",
+        "MPC_LAND_SPEED::SELECTED::MPC_LAND_SPEED:primary::PX4-TB-091,PX4-TB-098,PX4-TB-108,PX4-TB-109"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Speed_vertical_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；MPC_LAND_SPEED：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "读取实际垂直速度，执行厘米/秒到米/秒及 NED 符号转换；参数使用本次运行实际值而非默认值。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.vz,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MPC_LAND_SPEED,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.vz,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MPC_LAND_SPEED,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-034",
+          "term": "Speed_vertical_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.vz,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-091",
+          "term": "MPC_LAND_SPEED",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-098",
+          "term": "MPC_LAND_SPEED",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=MPC_LAND_SPEED,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-108",
+          "term": "MPC_LAND_SPEED",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=MPC_LAND_SPEED,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-109",
+          "term": "MPC_LAND_SPEED",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=MPC_LAND_SPEED,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "EXACT_PHYSICAL_EQUALITY",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ALTITUDE1",
+      "ap_id": "PX.ALTITUDE1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = ALTITUDE",
+      "truth_meaning_zh": "当前 PX4 模式是高度控制模式。",
+      "terms": [
+        "Mode_t",
+        "ALTITUDE"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-003"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-003"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ALTITUDE::SELECTED::ALTITUDE:primary::PX4-TB-003"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ALTITUDE：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-003",
+          "term": "ALTITUDE",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ALTITUDE1",
+      "ap_id": "PX.ALTITUDE1-AP02",
+      "role": "antecedent",
+      "expression": "Throttle_t = 1500",
+      "truth_meaning_zh": "油门输入严格等于通道中值 1500。",
+      "terms": [
+        "Throttle_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-053",
+        "PX4-TB-054",
+        "PX4-TB-055",
+        "PX4-TB-058"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-054",
+        "PX4-TB-055"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-053",
+        "PX4-TB-058"
+      ],
+      "binding_group_summary": [
+        "Throttle_t::ALTERNATIVE::Throttle_t:normalized_manual_control::PX4-TB-053,PX4-TB-058",
+        "Throttle_t::SELECTED::Throttle_t:raw_pwm::PX4-TB-054,PX4-TB-055"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Throttle_t：表达式使用 1500 阈值，必须选择映射后的原始 PWM，而不是 [-1,1] 标准化轴值；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "若阈值为 1500，使用当前 RC_MAP 对应的原始 PWM；同时保留校准、死区、输入来源和 failsafe 有效性。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id=RC_MAP_THROTTLE,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "MANUAL_CONTROL 对应轴字段",
+        "PARAM_VALUE.param_id=RC_MAP_THROTTLE,param_value",
+        "RC_CHANNELS.chanN_raw,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-054",
+          "term": "Throttle_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.chanN_raw,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-055",
+          "term": "Throttle_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=RC_MAP_THROTTLE,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.ALTITUDE1",
+      "ap_id": "PX.ALTITUDE1-AP03",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t-1::SELECTED::ALT_t-1:global_amsl::PX4-TB-017",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_home::PX4-TB-018",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:local_ned::PX4-TB-019",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:distance_to_ground::PX4-TB-020",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_rtl_destination::PX4-TB-021",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_takeoff_reference::PX4-TB-022",
+        "ALT_t::SELECTED::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t-1：没有出现相对高度参数或 LAND/RTL 专用参考面，选择当前全球 AMSL 高度并要求有效性；ALT_t：没有出现相对高度参数或 LAND/RTL 专用参考面，选择当前全球 AMSL 高度并要求有效性；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.alt,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance 或 ALTITUDE.altitude_bottom",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "内部目的地加 GLOBAL_POSITION_INT.alt",
+        "轨迹捕获加 GLOBAL_POSITION_INT.alt"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-017",
+          "term": "ALT_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-009",
+          "term": "ALT_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-011",
+          "term": "ALT_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.POSITION1",
+      "ap_id": "PX.POSITION1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = POSITION",
+      "truth_meaning_zh": "当前 PX4 模式是位置控制模式。",
+      "terms": [
+        "Mode_t",
+        "POSITION"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-004"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-004"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "POSITION::SELECTED::POSITION:primary::PX4-TB-004"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；POSITION：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-004",
+          "term": "POSITION",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.POSITION1",
+      "ap_id": "PX.POSITION1-AP02",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-024",
+        "PX4-TB-025",
+        "PX4-TB-026"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-025"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-024",
+        "PX4-TB-026"
+      ],
+      "binding_group_summary": [
+        "Pos_t::SELECTED::Pos_t:global_wgs84::PX4-TB-023",
+        "Pos_t::ALTERNATIVE::Pos_t:local_ned::PX4-TB-024",
+        "Pos_t-1::SELECTED::Pos_t-1:global_wgs84::PX4-TB-025",
+        "Pos_t-1::ALTERNATIVE::Pos_t-1:local_ned::PX4-TB-026"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Pos_t：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；Pos_t-1：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "LOCAL_POSITION_NED.x,y,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-023",
+          "term": "Pos_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-025",
+          "term": "Pos_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = HOLD",
+      "truth_meaning_zh": "当前 PX4 模式是保持模式。",
+      "terms": [
+        "Mode_t",
+        "HOLD"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-005"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-005"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "HOLD::SELECTED::HOLD:primary::PX4-TB-005"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；HOLD：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-005",
+          "term": "HOLD",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP02",
+      "role": "consequent",
+      "expression": "Pos_t = Pos_t-1",
+      "truth_meaning_zh": "当前位置与上一观测位置严格相等。",
+      "terms": [
+        "Pos_t",
+        "Pos_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-024",
+        "PX4-TB-025",
+        "PX4-TB-026"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-023",
+        "PX4-TB-025"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-024",
+        "PX4-TB-026"
+      ],
+      "binding_group_summary": [
+        "Pos_t::SELECTED::Pos_t:global_wgs84::PX4-TB-023",
+        "Pos_t::ALTERNATIVE::Pos_t:local_ned::PX4-TB-024",
+        "Pos_t-1::SELECTED::Pos_t-1:global_wgs84::PX4-TB-025",
+        "Pos_t-1::ALTERNATIVE::Pos_t-1:local_ned::PX4-TB-026"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Pos_t：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；Pos_t-1：公式涉及 Home 或全球位置，选择 WGS84 全球位置；局部 NED 只保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.lat,lon,time_boot_ms",
+        "LOCAL_POSITION_NED.x,y,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-023",
+          "term": "Pos_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-025",
+          "term": "Pos_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.lat,lon,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP03",
+      "role": "consequent",
+      "expression": "Yaw_t = Yaw_t-1",
+      "truth_meaning_zh": "当前偏航与上一观测严格相等。",
+      "terms": [
+        "Yaw_t",
+        "Yaw_t-1"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-032",
+        "PX4-TB-033"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-032",
+        "PX4-TB-033"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Yaw_t::SELECTED::Yaw_t:primary::PX4-TB-032",
+        "Yaw_t-1::SELECTED::Yaw_t-1:primary::PX4-TB-033"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Yaw_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；Yaw_t-1：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.hdg,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.hdg,time_boot_ms"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-032",
+          "term": "Yaw_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.hdg,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-033",
+          "term": "Yaw_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.hdg,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD1",
+      "ap_id": "PX.HOLD1-AP04",
+      "role": "consequent",
+      "expression": "ALT_t-1 = ALT_t",
+      "truth_meaning_zh": "当前高度与上一观测高度严格相等。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t-1::SELECTED::ALT_t-1:global_amsl::PX4-TB-017",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_home::PX4-TB-018",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:local_ned::PX4-TB-019",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:distance_to_ground::PX4-TB-020",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_rtl_destination::PX4-TB-021",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_takeoff_reference::PX4-TB-022",
+        "ALT_t::SELECTED::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t-1：没有出现相对高度参数或 LAND/RTL 专用参考面，选择当前全球 AMSL 高度并要求有效性；ALT_t：没有出现相对高度参数或 LAND/RTL 专用参考面，选择当前全球 AMSL 高度并要求有效性；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.alt,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance 或 ALTITUDE.altitude_bottom",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "内部目的地加 GLOBAL_POSITION_INT.alt",
+        "轨迹捕获加 GLOBAL_POSITION_INT.alt"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-017",
+          "term": "ALT_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-009",
+          "term": "ALT_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-011",
+          "term": "ALT_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "INHERITANCE_NOT_PRINTED",
+        "MODE_SUBSTITUTION_REQUIRED",
+        "PREVIOUS_SAMPLE_NOT_TIME",
+        "STRICT_SAMPLE_EQUALITY"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP01",
+      "role": "antecedent",
+      "expression": "Mode_t = HOLD",
+      "truth_meaning_zh": "当前 PX4 模式是保持模式。",
+      "terms": [
+        "Mode_t",
+        "HOLD"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-005"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-005"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "HOLD::SELECTED::HOLD:primary::PX4-TB-005"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；HOLD：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-005",
+          "term": "HOLD",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": [
+        "ANTECEDENT_MISSING_ALTITUDE_BOUND",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP02",
+      "role": "antecedent",
+      "expression": "MIS_LTRMIN_ALT != -1",
+      "truth_meaning_zh": "最小盘旋高度参数没有使用禁用值负一。",
+      "terms": [
+        "MIS_LTRMIN_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-092",
+        "PX4-TB-100",
+        "PX4-TB-112"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-092",
+        "PX4-TB-100",
+        "PX4-TB-112"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "MIS_LTRMIN_ALT::SELECTED::MIS_LTRMIN_ALT:primary::PX4-TB-092,PX4-TB-100,PX4-TB-112"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "MIS_LTRMIN_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-092",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-100",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-112",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "ANTECEDENT_MISSING_ALTITUDE_BOUND",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP03",
+      "role": "antecedent_from_description",
+      "expression": "ALT_t < MIS_LTRMIN_ALT",
+      "truth_meaning_zh": "当前高度低于最小盘旋高度参数；该前件来自论文自然语言但被印刷公式遗漏。",
+      "terms": [
+        "ALT_t",
+        "MIS_LTRMIN_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-092",
+        "PX4-TB-100",
+        "PX4-TB-112"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-012",
+        "PX4-TB-092",
+        "PX4-TB-100",
+        "PX4-TB-112"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::SELECTED::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016",
+        "MIS_LTRMIN_ALT::SELECTED::MIS_LTRMIN_ALT:primary::PX4-TB-092,PX4-TB-100,PX4-TB-112"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t：NAV_MIN_LTR_ALT 当前元数据明确以 Home 为参考面；MIS_LTRMIN_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-012",
+          "term": "ALT_t",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.relative_alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-092",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-100",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-112",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "ANTECEDENT_MISSING_ALTITUDE_BOUND",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP04",
+      "role": "consequent",
+      "expression": "ALT_t-1 < ALT_t",
+      "truth_meaning_zh": "当前观测高度高于上一观测高度。",
+      "terms": [
+        "ALT_t-1",
+        "ALT_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-017",
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-018",
+        "PX4-TB-019",
+        "PX4-TB-020",
+        "PX4-TB-021",
+        "PX4-TB-022",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t-1::SELECTED::ALT_t-1:global_amsl::PX4-TB-017",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_home::PX4-TB-018",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:local_ned::PX4-TB-019",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:distance_to_ground::PX4-TB-020",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_rtl_destination::PX4-TB-021",
+        "ALT_t-1::ALTERNATIVE::ALT_t-1:relative_takeoff_reference::PX4-TB-022",
+        "ALT_t::SELECTED::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t-1：没有出现相对高度参数或 LAND/RTL 专用参考面，选择当前全球 AMSL 高度并要求有效性；ALT_t：没有出现相对高度参数或 LAND/RTL 专用参考面，选择当前全球 AMSL 高度并要求有效性；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "选择一个有证据的状态定义，按发送端时间保存前一有效样本；保持坐标系、单位、来源和重置计数一致后再比较。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.alt,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance 或 ALTITUDE.altitude_bottom",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "内部目的地加 GLOBAL_POSITION_INT.alt",
+        "轨迹捕获加 GLOBAL_POSITION_INT.alt"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-017",
+          "term": "ALT_t-1",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-009",
+          "term": "ALT_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-011",
+          "term": "ALT_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms"
+        }
+      ],
+      "property_issue_codes": [
+        "ANTECEDENT_MISSING_ALTITUDE_BOUND",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.HOLD2",
+      "ap_id": "PX.HOLD2-AP05",
+      "role": "target_from_description",
+      "expression": "Target_ALT = MIS_LTRMIN_ALT",
+      "truth_meaning_zh": "目标高度等于最小盘旋高度参数；该目标来自论文自然语言，印刷公式只保留了上升趋势。",
+      "terms": [
+        "Target_ALT",
+        "MIS_LTRMIN_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-078",
+        "PX4-TB-079",
+        "PX4-TB-080",
+        "PX4-TB-081",
+        "PX4-TB-082",
+        "PX4-TB-092",
+        "PX4-TB-100",
+        "PX4-TB-112"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-081",
+        "PX4-TB-092",
+        "PX4-TB-100",
+        "PX4-TB-112"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-078",
+        "PX4-TB-079",
+        "PX4-TB-080",
+        "PX4-TB-082"
+      ],
+      "binding_group_summary": [
+        "Target_ALT::ALTERNATIVE::Target_ALT:amsl_navigator_setpoint::PX4-TB-078,PX4-TB-079,PX4-TB-080",
+        "Target_ALT::SELECTED::Target_ALT:relative_home::PX4-TB-081",
+        "Target_ALT::ALTERNATIVE::Target_ALT:relative_takeoff_reference::PX4-TB-082",
+        "MIS_LTRMIN_ALT::SELECTED::MIS_LTRMIN_ALT:primary::PX4-TB-092,PX4-TB-100,PX4-TB-112"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Target_ALT：NAV_MIN_LTR_ALT 是 Home 以上高度，所以目标必须先由 AMSL 转为相对 Home；MIS_LTRMIN_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "HOME_POSITION.altitude,time_usec",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value",
+        "POSITION_TARGET_GLOBAL_INT.alt,time_boot_ms"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG.param7或COMMAND_INT.z",
+        "GLOBAL_POSITION_INT.alt",
+        "HOME_POSITION.altitude,time_usec",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value",
+        "POSITION_TARGET_GLOBAL_INT.alt",
+        "POSITION_TARGET_GLOBAL_INT.alt,time_boot_ms",
+        "TAKEOFF 关联事件"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-081",
+          "term": "Target_ALT",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "POSITION_TARGET_GLOBAL_INT.alt,time_boot_ms; HOME_POSITION.altitude,time_usec"
+        },
+        {
+          "binding_id": "PX4-TB-092",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-100",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-112",
+          "term": "MIS_LTRMIN_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=NAV_MIN_LTR_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "ANTECEDENT_MISSING_ALTITUDE_BOUND",
+        "UNTIL_LOST",
+        "PREVIOUS_SAMPLE_NOT_TIME"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF1",
+      "ap_id": "PX.TAKEOFF1-AP01",
+      "role": "antecedent",
+      "expression": "Command_t = takeoff",
+      "truth_meaning_zh": "当前处理的是起飞命令。",
+      "terms": [
+        "Command_t",
+        "takeoff"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-069",
+        "PX4-TB-070",
+        "PX4-TB-071",
+        "PX4-TB-072",
+        "PX4-TB-073",
+        "PX4-TB-074",
+        "PX4-TB-075",
+        "PX4-TB-076",
+        "PX4-TB-077"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-069",
+        "PX4-TB-070",
+        "PX4-TB-071",
+        "PX4-TB-072",
+        "PX4-TB-073",
+        "PX4-TB-077"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-074",
+        "PX4-TB-075",
+        "PX4-TB-076"
+      ],
+      "binding_group_summary": [
+        "Command_t::SELECTED::Command_t:input_event::PX4-TB-069,PX4-TB-070,PX4-TB-071,PX4-TB-072,PX4-TB-073",
+        "Command_t::ALTERNATIVE::Command_t:accepted_event::PX4-TB-074,PX4-TB-075",
+        "Command_t::ALTERNATIVE::Command_t:execution_state::PX4-TB-076",
+        "takeoff::SELECTED::takeoff:primary::PX4-TB-077"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Command_t：印刷前件只写收到 takeoff 命令，没有写 ACK 或执行状态；选择输入事件，但语义仍标为建模；takeoff：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "按所列源码实体、真值条件、有效性条件和观测换算判定。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "COMMAND_INT 输入记录",
+        "COMMAND_LONG 输入记录",
+        "COMMAND_LONG.command 或 COMMAND_INT.command",
+        "COMMAND_LONG.command=22或COMMAND_INT.command=22",
+        "COMMAND_LONG.param1–param7,target_system,target_component 或 COMMAND_INT.x,y,z",
+        "COMMAND_LONG/COMMAND_INT 输入记录"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_ACK.command,result,target_system,target_component",
+        "COMMAND_INT 输入记录",
+        "COMMAND_LONG 输入记录",
+        "COMMAND_LONG.command 或 COMMAND_INT.command",
+        "COMMAND_LONG.command=22或COMMAND_INT.command=22",
+        "COMMAND_LONG.param1–param7,target_system,target_component 或 COMMAND_INT.x,y,z",
+        "COMMAND_LONG/COMMAND_INT 输入记录",
+        "HEARTBEAT.custom_mode 解码为 AUTO_TAKEOFF"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-069",
+          "term": "Command_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG.command 或 COMMAND_INT.command"
+        },
+        {
+          "binding_id": "PX4-TB-070",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG.param1–param7,target_system,target_component 或 COMMAND_INT.x,y,z"
+        },
+        {
+          "binding_id": "PX4-TB-071",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG 输入记录"
+        },
+        {
+          "binding_id": "PX4-TB-072",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_INT 输入记录"
+        },
+        {
+          "binding_id": "PX4-TB-073",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG/COMMAND_INT 输入记录"
+        },
+        {
+          "binding_id": "PX4-TB-077",
+          "term": "takeoff",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "COMMAND_LONG.command=22或COMMAND_INT.command=22"
+        }
+      ],
+      "property_issue_codes": [
+        "TARGET_EQUALITY_WEAKENED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF1",
+      "ap_id": "PX.TAKEOFF1-AP02",
+      "role": "consequent_as_printed",
+      "expression": "ALT_t <= MIS_TAKEOFF_ALT",
+      "truth_meaning_zh": "当前高度不超过任务起飞高度参数。",
+      "terms": [
+        "ALT_t",
+        "MIS_TAKEOFF_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-014",
+        "PX4-TB-015",
+        "PX4-TB-016",
+        "PX4-TB-093",
+        "PX4-TB-101",
+        "PX4-TB-111"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-014",
+        "PX4-TB-093",
+        "PX4-TB-101",
+        "PX4-TB-111"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-009",
+        "PX4-TB-010",
+        "PX4-TB-011",
+        "PX4-TB-012",
+        "PX4-TB-013",
+        "PX4-TB-015",
+        "PX4-TB-016"
+      ],
+      "binding_group_summary": [
+        "ALT_t::ALTERNATIVE::ALT_t:global_amsl::PX4-TB-009,PX4-TB-010,PX4-TB-011",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_home::PX4-TB-012",
+        "ALT_t::ALTERNATIVE::ALT_t:relative_rtl_destination::PX4-TB-013",
+        "ALT_t::SELECTED::ALT_t:relative_takeoff_reference::PX4-TB-014",
+        "ALT_t::ALTERNATIVE::ALT_t:local_ned::PX4-TB-015",
+        "ALT_t::ALTERNATIVE::ALT_t:distance_to_ground::PX4-TB-016",
+        "MIS_TAKEOFF_ALT::SELECTED::MIS_TAKEOFF_ALT:primary::PX4-TB-093,PX4-TB-101,PX4-TB-111"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "ALT_t：MIS_TAKEOFF_ALT 是默认相对起飞高度，不能把 AMSL 高度直接与它比较；MIS_TAKEOFF_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG/COMMAND_INT 起飞事件",
+        "DISTANCE_SENSOR.current_distance,time_boot_ms 或 ALTITUDE.altitude_bottom,time_usec",
+        "GLOBAL_POSITION_INT.alt,time_boot_ms",
+        "GLOBAL_POSITION_INT.relative_alt,time_boot_ms",
+        "LOCAL_POSITION_NED.z,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-014",
+          "term": "ALT_t",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "GLOBAL_POSITION_INT.alt,time_boot_ms; COMMAND_LONG/COMMAND_INT 起飞事件"
+        },
+        {
+          "binding_id": "PX4-TB-093",
+          "term": "MIS_TAKEOFF_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-101",
+          "term": "MIS_TAKEOFF_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-111",
+          "term": "MIS_TAKEOFF_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "TARGET_EQUALITY_WEAKENED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF1",
+      "ap_id": "PX.TAKEOFF1-AP03",
+      "role": "target_from_description",
+      "expression": "Target_ALT = MIS_TAKEOFF_ALT",
+      "truth_meaning_zh": "起飞目标高度等于任务起飞高度参数；该等式来自论文自然语言。",
+      "terms": [
+        "Target_ALT",
+        "MIS_TAKEOFF_ALT"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-078",
+        "PX4-TB-079",
+        "PX4-TB-080",
+        "PX4-TB-081",
+        "PX4-TB-082",
+        "PX4-TB-093",
+        "PX4-TB-101",
+        "PX4-TB-111"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-082",
+        "PX4-TB-093",
+        "PX4-TB-101",
+        "PX4-TB-111"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-078",
+        "PX4-TB-079",
+        "PX4-TB-080",
+        "PX4-TB-081"
+      ],
+      "binding_group_summary": [
+        "Target_ALT::ALTERNATIVE::Target_ALT:amsl_navigator_setpoint::PX4-TB-078,PX4-TB-079,PX4-TB-080",
+        "Target_ALT::ALTERNATIVE::Target_ALT:relative_home::PX4-TB-081",
+        "Target_ALT::SELECTED::Target_ALT:relative_takeoff_reference::PX4-TB-082",
+        "MIS_TAKEOFF_ALT::SELECTED::MIS_TAKEOFF_ALT:primary::PX4-TB-093,PX4-TB-101,PX4-TB-111"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Target_ALT：MIS_TAKEOFF_ALT 是相对起飞参考高度，所以目标必须与同一起飞实例的参考高度关联；MIS_TAKEOFF_ALT：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。",
+      "mavlink_observability": "DERIVED",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.alt",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value",
+        "POSITION_TARGET_GLOBAL_INT.alt",
+        "TAKEOFF 关联事件"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_LONG.param7或COMMAND_INT.z",
+        "GLOBAL_POSITION_INT.alt",
+        "HOME_POSITION.altitude,time_usec",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value",
+        "POSITION_TARGET_GLOBAL_INT.alt",
+        "POSITION_TARGET_GLOBAL_INT.alt,time_boot_ms",
+        "TAKEOFF 关联事件"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-082",
+          "term": "Target_ALT",
+          "binding_role": "ALTERNATIVE_SEMANTICS",
+          "mavlink_observability": "DERIVED",
+          "message_fields_raw": "POSITION_TARGET_GLOBAL_INT.alt; GLOBAL_POSITION_INT.alt; TAKEOFF 关联事件"
+        },
+        {
+          "binding_id": "PX4-TB-093",
+          "term": "MIS_TAKEOFF_ALT",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-101",
+          "term": "MIS_TAKEOFF_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-111",
+          "term": "MIS_TAKEOFF_ALT",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=MIS_TAKEOFF_ALT,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "TARGET_EQUALITY_WEAKENED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF2",
+      "ap_id": "PX.TAKEOFF2-AP01",
+      "role": "antecedent",
+      "expression": "Command_t = takeoff",
+      "truth_meaning_zh": "当前处理的是起飞命令。",
+      "terms": [
+        "Command_t",
+        "takeoff"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-069",
+        "PX4-TB-070",
+        "PX4-TB-071",
+        "PX4-TB-072",
+        "PX4-TB-073",
+        "PX4-TB-074",
+        "PX4-TB-075",
+        "PX4-TB-076",
+        "PX4-TB-077"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-069",
+        "PX4-TB-070",
+        "PX4-TB-071",
+        "PX4-TB-072",
+        "PX4-TB-073",
+        "PX4-TB-077"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-074",
+        "PX4-TB-075",
+        "PX4-TB-076"
+      ],
+      "binding_group_summary": [
+        "Command_t::SELECTED::Command_t:input_event::PX4-TB-069,PX4-TB-070,PX4-TB-071,PX4-TB-072,PX4-TB-073",
+        "Command_t::ALTERNATIVE::Command_t:accepted_event::PX4-TB-074,PX4-TB-075",
+        "Command_t::ALTERNATIVE::Command_t:execution_state::PX4-TB-076",
+        "takeoff::SELECTED::takeoff:primary::PX4-TB-077"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "Command_t：印刷前件只写收到 takeoff 命令，没有写 ACK 或执行状态；选择输入事件，但语义仍标为建模；takeoff：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "按所列源码实体、真值条件、有效性条件和观测换算判定。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "COMMAND_INT 输入记录",
+        "COMMAND_LONG 输入记录",
+        "COMMAND_LONG.command 或 COMMAND_INT.command",
+        "COMMAND_LONG.command=22或COMMAND_INT.command=22",
+        "COMMAND_LONG.param1–param7,target_system,target_component 或 COMMAND_INT.x,y,z",
+        "COMMAND_LONG/COMMAND_INT 输入记录"
+      ],
+      "all_candidate_observation_fields": [
+        "COMMAND_ACK.command,result,target_system,target_component",
+        "COMMAND_INT 输入记录",
+        "COMMAND_LONG 输入记录",
+        "COMMAND_LONG.command 或 COMMAND_INT.command",
+        "COMMAND_LONG.command=22或COMMAND_INT.command=22",
+        "COMMAND_LONG.param1–param7,target_system,target_component 或 COMMAND_INT.x,y,z",
+        "COMMAND_LONG/COMMAND_INT 输入记录",
+        "HEARTBEAT.custom_mode 解码为 AUTO_TAKEOFF"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-069",
+          "term": "Command_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG.command 或 COMMAND_INT.command"
+        },
+        {
+          "binding_id": "PX4-TB-070",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG.param1–param7,target_system,target_component 或 COMMAND_INT.x,y,z"
+        },
+        {
+          "binding_id": "PX4-TB-071",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG 输入记录"
+        },
+        {
+          "binding_id": "PX4-TB-072",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_INT 输入记录"
+        },
+        {
+          "binding_id": "PX4-TB-073",
+          "term": "Command_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "COMMAND_LONG/COMMAND_INT 输入记录"
+        },
+        {
+          "binding_id": "PX4-TB-077",
+          "term": "takeoff",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "COMMAND_LONG.command=22或COMMAND_INT.command=22"
+        }
+      ],
+      "property_issue_codes": [
+        "EXACT_PHYSICAL_EQUALITY",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.TAKEOFF2",
+      "ap_id": "PX.TAKEOFF2-AP02",
+      "role": "consequent",
+      "expression": "Speed_vertical_t = MPC_TKO_SPEED",
+      "truth_meaning_zh": "垂直速度严格等于 PX4 起飞速度参数。",
+      "terms": [
+        "Speed_vertical_t",
+        "MPC_TKO_SPEED"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-034",
+        "PX4-TB-094",
+        "PX4-TB-099",
+        "PX4-TB-110"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-034",
+        "PX4-TB-094",
+        "PX4-TB-099",
+        "PX4-TB-110"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Speed_vertical_t::SELECTED::Speed_vertical_t:primary::PX4-TB-034",
+        "MPC_TKO_SPEED::SELECTED::MPC_TKO_SPEED:primary::PX4-TB-094,PX4-TB-099,PX4-TB-110"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Speed_vertical_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；MPC_TKO_SPEED：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "读取实际垂直速度，执行厘米/秒到米/秒及 NED 符号转换；参数使用本次运行实际值而非默认值。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "GLOBAL_POSITION_INT.vz,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MPC_TKO_SPEED,param_value"
+      ],
+      "all_candidate_observation_fields": [
+        "GLOBAL_POSITION_INT.vz,time_boot_ms",
+        "PARAM_VALUE.param_id,param_value",
+        "PARAM_VALUE.param_id=MPC_TKO_SPEED,param_value"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-034",
+          "term": "Speed_vertical_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GLOBAL_POSITION_INT.vz,time_boot_ms"
+        },
+        {
+          "binding_id": "PX4-TB-094",
+          "term": "MPC_TKO_SPEED",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-099",
+          "term": "MPC_TKO_SPEED",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "PARAM_VALUE.param_id=MPC_TKO_SPEED,param_value"
+        },
+        {
+          "binding_id": "PX4-TB-110",
+          "term": "MPC_TKO_SPEED",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "INSTRUMENTATION_REQUIRED",
+          "message_fields_raw": "PARAM_VALUE.param_id=MPC_TKO_SPEED,param_value"
+        }
+      ],
+      "property_issue_codes": [
+        "EXACT_PHYSICAL_EQUALITY",
+        "DIRECTION_OR_SIGN_UNDEFINED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS1",
+      "ap_id": "PX.GPS.FS1-AP01",
+      "role": "antecedent",
+      "expression": "GPS_loss = on",
+      "truth_meaning_zh": "论文抽象的 GPS 丢失事件已经发生。",
+      "terms": [
+        "GPS_loss"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-083",
+        "PX4-TB-084"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-083",
+        "PX4-TB-084"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "GPS_loss::SELECTED::GPS_loss:primary::PX4-TB-083,PX4-TB-084"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "GPS_loss：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "按所列源码实体、真值条件、有效性条件和观测换算判定。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "GPS_RAW_INT.fix_type,time_usec",
+        "GPS_RAW_INT.time_usec,fix_type,satellites_visible"
+      ],
+      "all_candidate_observation_fields": [
+        "GPS_RAW_INT.fix_type,time_usec",
+        "GPS_RAW_INT.time_usec,fix_type,satellites_visible"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-083",
+          "term": "GPS_loss",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GPS_RAW_INT.time_usec,fix_type,satellites_visible"
+        },
+        {
+          "binding_id": "PX4-TB-084",
+          "term": "GPS_loss",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "GPS_RAW_INT.fix_type,time_usec"
+        }
+      ],
+      "property_issue_codes": [
+        "SCHEDULE_MARGIN_UNPUBLISHED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS1",
+      "ap_id": "PX.GPS.FS1-AP02",
+      "role": "consequent",
+      "expression": "F_[0,COM_POS_FS_DELAY+k](GPS_fail = on)",
+      "truth_meaning_zh": "在位置故障延迟参数加调度余量内触发 GPS 故障保护。",
+      "terms": [
+        "GPS_fail",
+        "COM_POS_FS_DELAY",
+        "k"
+      ],
+      "binding_status": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-085",
+        "PX4-TB-086",
+        "PX4-TB-113",
+        "PX4-TB-114",
+        "PX4-TB-115",
+        "PX4-TB-116",
+        "PX4-TB-117",
+        "PX4-TB-087"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-085",
+        "PX4-TB-086",
+        "PX4-TB-113",
+        "PX4-TB-087"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-114",
+        "PX4-TB-117",
+        "PX4-TB-115",
+        "PX4-TB-116"
+      ],
+      "binding_group_summary": [
+        "GPS_fail::SELECTED::GPS_fail:global_position_invalid::PX4-TB-085,PX4-TB-086",
+        "COM_POS_FS_DELAY::SELECTED::COM_POS_FS_DELAY:primary::PX4-TB-113",
+        "COM_POS_FS_DELAY::ALTERNATIVE::COM_POS_FS_DELAY:ekf2_noaid_tout_non_equivalent::PX4-TB-114,PX4-TB-117",
+        "COM_POS_FS_DELAY::ALTERNATIVE::COM_POS_FS_DELAY:com_pos_fs_eph_non_equivalent::PX4-TB-115,PX4-TB-116",
+        "k::SELECTED::k:primary::PX4-TB-087"
+      ],
+      "binding_selection_status": "UNRESOLVED_PRIMARY",
+      "binding_selection_reason_zh": "GPS_fail：性质 PX.GPS.FS1 的表达式 F_[0,COM_POS_FS_DELAY+k](GPS_fail = on) 选择候选组 GPS_fail:global_position_invalid；其他组保持互斥，不参与当前真值计算；COM_POS_FS_DELAY：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；k：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "包含未公开时间上界、未定义航点空状态或已删除且无等价替代的参数。",
+      "evaluation_plan_zh": "保留原式和全部候选绑定；缺失定义或数值补证前不得给真值。",
+      "mavlink_observability": "UNRESOLVED",
+      "mavlink_observation_fields": [
+        "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+      ],
+      "all_candidate_observation_fields": [
+        "PARAM_VALUE.param_id=COM_POS_FS_EPH,param_value",
+        "PARAM_VALUE.param_id=EKF2_NOAID_TOUT,param_value",
+        "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-086",
+          "term": "GPS_fail",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+        }
+      ],
+      "property_issue_codes": [
+        "SCHEDULE_MARGIN_UNPUBLISHED"
+      ]
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS2",
+      "ap_id": "PX.GPS.FS2-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-085",
+        "PX4-TB-086"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-085",
+        "PX4-TB-086"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "GPS_fail::SELECTED::GPS_fail:global_position_invalid::PX4-TB-085,PX4-TB-086"
+      ],
+      "binding_selection_status": "UNRESOLVED_PRIMARY",
+      "binding_selection_reason_zh": "GPS_fail：性质 PX.GPS.FS2 的表达式 GPS_fail = on 选择候选组 GPS_fail:global_position_invalid；其他组保持互斥，不参与当前真值计算。",
+      "binding_status_reason_zh": "论文 GPS_fail 与当前位置/EKF 故障状态没有精确等价证据。",
+      "evaluation_plan_zh": "保留原式和全部候选绑定；缺失定义或数值补证前不得给真值。",
+      "mavlink_observability": "UNRESOLVED",
+      "mavlink_observation_fields": [
+        "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+      ],
+      "all_candidate_observation_fields": [
+        "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-086",
+          "term": "GPS_fail",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+        }
+      ],
+      "property_issue_codes": []
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS2",
+      "ap_id": "PX.GPS.FS2-AP02",
+      "role": "antecedent",
+      "expression": "RC_t = on",
+      "truth_meaning_zh": "遥控器输入被论文抽象为可用。",
+      "terms": [
+        "RC_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-059",
+        "PX4-TB-060",
+        "PX4-TB-061",
+        "PX4-TB-062",
+        "PX4-TB-063",
+        "PX4-TB-064",
+        "PX4-TB-065"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-062",
+        "PX4-TB-063",
+        "PX4-TB-064",
+        "PX4-TB-065"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-059",
+        "PX4-TB-060",
+        "PX4-TB-061"
+      ],
+      "binding_group_summary": [
+        "RC_t::ALTERNATIVE::RC_t:manual_control_availability::PX4-TB-059,PX4-TB-060,PX4-TB-061",
+        "RC_t::SELECTED::RC_t:physical_receiver::PX4-TB-062,PX4-TB-063,PX4-TB-064,PX4-TB-065"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "RC_t：论文写 RC on/off，当前先选择底层接收器链路解释；上层 manual-control 可用性保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "先选择物理接收器或上层手动控制可用性语义；物理接收器需联合 rc_lost、rc_failsafe、最后信号时间和 input_source。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "RC_CHANNELS 到达序列与 timestamp",
+        "RC_CHANNELS.time_boot_ms,rssi,chanN_raw"
+      ],
+      "all_candidate_observation_fields": [
+        "HIGH_LATENCY2.failure_flags & HL_FAILURE_FLAG_RC_RECEIVER",
+        "MANUAL_CONTROL或RC_CHANNELS到达序列，加 PARAM_VALUE(COM_RC_LOSS_T)",
+        "RC_CHANNELS 到达序列与 timestamp",
+        "RC_CHANNELS.time_boot_ms,rssi,chanN_raw"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-062",
+          "term": "RC_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.time_boot_ms,rssi,chanN_raw"
+        },
+        {
+          "binding_id": "PX4-TB-065",
+          "term": "RC_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS 到达序列与 timestamp"
+        }
+      ],
+      "property_issue_codes": []
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS2",
+      "ap_id": "PX.GPS.FS2-AP03",
+      "role": "consequent",
+      "expression": "Mode_t = ALTITUDE",
+      "truth_meaning_zh": "当前 PX4 模式是高度控制模式。",
+      "terms": [
+        "Mode_t",
+        "ALTITUDE"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-003"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-003"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "ALTITUDE::SELECTED::ALTITUDE:primary::PX4-TB-003"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ALTITUDE：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-003",
+          "term": "ALTITUDE",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": []
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS3",
+      "ap_id": "PX.GPS.FS3-AP01",
+      "role": "antecedent",
+      "expression": "GPS_fail = on",
+      "truth_meaning_zh": "论文抽象的 GPS 故障保护状态开启。",
+      "terms": [
+        "GPS_fail"
+      ],
+      "binding_status": "UNRESOLVED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-085",
+        "PX4-TB-086"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-085",
+        "PX4-TB-086"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "GPS_fail::SELECTED::GPS_fail:global_position_invalid::PX4-TB-085,PX4-TB-086"
+      ],
+      "binding_selection_status": "UNRESOLVED_PRIMARY",
+      "binding_selection_reason_zh": "GPS_fail：性质 PX.GPS.FS3 的表达式 GPS_fail = on 选择候选组 GPS_fail:global_position_invalid；其他组保持互斥，不参与当前真值计算。",
+      "binding_status_reason_zh": "论文 GPS_fail 与当前位置/EKF 故障状态没有精确等价证据。",
+      "evaluation_plan_zh": "保留原式和全部候选绑定；缺失定义或数值补证前不得给真值。",
+      "mavlink_observability": "UNRESOLVED",
+      "mavlink_observation_fields": [
+        "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+      ],
+      "all_candidate_observation_fields": [
+        "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-086",
+          "term": "GPS_fail",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "STATUSTEXT/EVENTS 仅可能提供条件性提示"
+        }
+      ],
+      "property_issue_codes": []
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS3",
+      "ap_id": "PX.GPS.FS3-AP02",
+      "role": "antecedent",
+      "expression": "RC_t = off",
+      "truth_meaning_zh": "遥控器输入被论文抽象为不可用。",
+      "terms": [
+        "RC_t"
+      ],
+      "binding_status": "MODELLED",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-059",
+        "PX4-TB-060",
+        "PX4-TB-061",
+        "PX4-TB-062",
+        "PX4-TB-063",
+        "PX4-TB-064",
+        "PX4-TB-065"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-062",
+        "PX4-TB-063",
+        "PX4-TB-064",
+        "PX4-TB-065"
+      ],
+      "alternative_term_binding_ids": [
+        "PX4-TB-059",
+        "PX4-TB-060",
+        "PX4-TB-061"
+      ],
+      "binding_group_summary": [
+        "RC_t::ALTERNATIVE::RC_t:manual_control_availability::PX4-TB-059,PX4-TB-060,PX4-TB-061",
+        "RC_t::SELECTED::RC_t:physical_receiver::PX4-TB-062,PX4-TB-063,PX4-TB-064,PX4-TB-065"
+      ],
+      "binding_selection_status": "PRIMARY_WITH_ALTERNATIVES",
+      "binding_selection_reason_zh": "RC_t：论文写 RC on/off，当前先选择底层接收器链路解释；上层 manual-control 可用性保留为替代；其余组保留为互斥替代解释，不作为合取条件。",
+      "binding_status_reason_zh": "需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。",
+      "evaluation_plan_zh": "先选择物理接收器或上层手动控制可用性语义；物理接收器需联合 rc_lost、rc_failsafe、最后信号时间和 input_source。",
+      "mavlink_observability": "CONDITIONAL",
+      "mavlink_observation_fields": [
+        "RC_CHANNELS 到达序列与 timestamp",
+        "RC_CHANNELS.time_boot_ms,rssi,chanN_raw"
+      ],
+      "all_candidate_observation_fields": [
+        "HIGH_LATENCY2.failure_flags & HL_FAILURE_FLAG_RC_RECEIVER",
+        "MANUAL_CONTROL或RC_CHANNELS到达序列，加 PARAM_VALUE(COM_RC_LOSS_T)",
+        "RC_CHANNELS 到达序列与 timestamp",
+        "RC_CHANNELS.time_boot_ms,rssi,chanN_raw"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-062",
+          "term": "RC_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS.time_boot_ms,rssi,chanN_raw"
+        },
+        {
+          "binding_id": "PX4-TB-065",
+          "term": "RC_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "CONDITIONAL",
+          "message_fields_raw": "RC_CHANNELS 到达序列与 timestamp"
+        }
+      ],
+      "property_issue_codes": []
+    },
+    {
+      "system": "PX4",
+      "property_id": "PX.GPS.FS3",
+      "ap_id": "PX.GPS.FS3-AP03",
+      "role": "consequent",
+      "expression": "Mode_t = LAND",
+      "truth_meaning_zh": "当前飞行模式是着陆模式。",
+      "terms": [
+        "Mode_t",
+        "LAND"
+      ],
+      "binding_status": "EXACT",
+      "implementation_satisfaction": "NOT_ASSESSED",
+      "term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "selected_term_binding_ids": [
+        "PX4-TB-001",
+        "PX4-TB-002",
+        "PX4-TB-007"
+      ],
+      "alternative_term_binding_ids": [],
+      "binding_group_summary": [
+        "Mode_t::SELECTED::Mode_t:primary::PX4-TB-001,PX4-TB-002",
+        "LAND::SELECTED::LAND:primary::PX4-TB-007"
+      ],
+      "binding_selection_status": "PRIMARY_SELECTED",
+      "binding_selection_reason_zh": "Mode_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；LAND：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用。",
+      "binding_status_reason_zh": "本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。",
+      "evaluation_plan_zh": "解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。",
+      "mavlink_observability": "DIRECT",
+      "mavlink_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "all_candidate_observation_fields": [
+        "HEARTBEAT.custom_mode"
+      ],
+      "mavlink_observation_bindings": [
+        {
+          "binding_id": "PX4-TB-001",
+          "term": "Mode_t",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-002",
+          "term": "Mode_t",
+          "binding_role": "SUPPORTING_EVIDENCE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        },
+        {
+          "binding_id": "PX4-TB-007",
+          "term": "LAND",
+          "binding_role": "PRIMARY_VALUE",
+          "mavlink_observability": "DIRECT",
+          "message_fields_raw": "HEARTBEAT.custom_mode"
+        }
+      ],
+      "property_issue_codes": []
+    }
+  ]
+}

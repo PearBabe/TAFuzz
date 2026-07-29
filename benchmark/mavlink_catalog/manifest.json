@@ -1,0 +1,466 @@
+{
+  "counts": {
+    "ArduPilot": {
+      "command_param_slots": 1512,
+      "commands": 216,
+      "configuration_parameter_rows": 16904,
+      "configuration_rows_by_scope": {
+        "Copter": 5702,
+        "Plane": 5747,
+        "Rover": 5455
+      },
+      "configuration_source_location_confidence": {
+        "ambiguous_suffix_only": 90,
+        "exact_metadata_multiple": 1346,
+        "exact_metadata_unique": 12948,
+        "unique_suffix_only": 174,
+        "unresolved": 2346
+      },
+      "message_fields": 2708,
+      "messages": 352,
+      "runtime_observed_entities": 0,
+      "static_referenced_entities": 326,
+      "static_referenced_entities_by_kind": {
+        "command": 129,
+        "message": 197
+      },
+      "static_scan_files": 2978,
+      "time_catalog_rows": 2628,
+      "time_rows_by_clock_domain": {
+        "OBC_clock_unspecified_epoch": 1,
+        "ambiguous_not_defined_by_xml": 18,
+        "ambiguous_unix_epoch_or_system_boot": 57,
+        "gps_epoch": 1,
+        "gps_time_of_week": 2,
+        "not_applicable_duration_or_rate": 2468,
+        "receiver_boot_or_receiver_local_clock": 1,
+        "system_boot": 54,
+        "unix_epoch": 10,
+        "unix_epoch_camera_clock": 1,
+        "unix_epoch_utc_as_described": 3,
+        "utc_unspecified_timescale_details": 10,
+        "vehicle_boot": 2
+      },
+      "time_rows_by_entity_kind": {
+        "command_param": 37,
+        "configuration_parameter": 2310,
+        "message_field": 281
+      },
+      "xml_files_in_entrypoint_union": 17
+    },
+    "PX4": {
+      "command_param_slots": 1232,
+      "commands": 176,
+      "configuration_parameter_rows": 1418,
+      "configuration_rows_by_scope": {
+        "full_static_metadata_universe_not_SITL_build_resolved": 1418
+      },
+      "configuration_source_location_confidence": {
+        "exact_definition_unique": 1418
+      },
+      "message_fields": 2018,
+      "messages": 251,
+      "runtime_observed_entities": 0,
+      "static_referenced_entities": 210,
+      "static_referenced_entities_by_kind": {
+        "command": 60,
+        "message": 150
+      },
+      "static_scan_files": 2667,
+      "time_catalog_rows": 463,
+      "time_rows_by_clock_domain": {
+        "ambiguous_not_defined_by_xml": 6,
+        "ambiguous_unix_epoch_or_system_boot": 60,
+        "gps_epoch": 1,
+        "gps_time_of_week": 2,
+        "not_applicable_duration_or_rate": 328,
+        "receiver_boot_or_receiver_local_clock": 1,
+        "system_boot": 49,
+        "unix_epoch": 8,
+        "unix_epoch_utc_as_described": 1,
+        "utc_unspecified_timescale_details": 7
+      },
+      "time_rows_by_entity_kind": {
+        "command_param": 33,
+        "configuration_parameter": 174,
+        "message_field": 256
+      },
+      "xml_files_in_entrypoint_union": 5
+    }
+  },
+  "documentation": {
+    "path": "benchmark/mavlink_catalog/README.md",
+    "sha256": "8b77b74b05807ee0fd36362b1a0e565137db2bba6482c853ae7133024f9ba366"
+  },
+  "evidence_levels": {
+    "default_runtime_observation": "NOT_RUN_NO_CAPTURE for every row",
+    "dialect_definition": "XML entrypoint include closure",
+    "static_support": "heuristic references in frozen production-like source scope"
+  },
+  "generation_is_deterministic": true,
+  "generator": {
+    "path": "benchmark/mavlink_catalog/generate_catalog.py",
+    "python": "3.10.12",
+    "sha256": "0eae4d7392e4d7b0270297505e7907cb01ca553af328e3ddbe583bdf0d98d7a4"
+  },
+  "inputs": {
+    "ArduPilot": {
+      "dialect_entrypoints": [
+        {
+          "evidence": "baseline/ardupilot/wscript:781-783",
+          "file": "all.xml",
+          "role": "primary_build_entrypoint"
+        }
+      ],
+      "mavlink_commit": "13f2f7351a9bdf5292a2c243eb9a2c19ff4b6472",
+      "sut_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "xml_files": [
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/all.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "cc467f6c8b2b03e5cd49d8056382647794724718973dae6cee338867b68a0fef"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "ardupilotmega.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/ardupilotmega.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "a124c7dce6f147443b3e69f71c4100b871bb8327b7c8a9f7e7dbc2a8ec1964a1"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "ASLUAV.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/ASLUAV.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "c5e15be9309138de988ee4a744bfb431cfa1aed52dd4bc93466fee484fe4197c"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "AVSSUAS.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/AVSSUAS.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "9ee1641e0c7f6be25faa817a1d17715dc79dfecbce0ba15833a0559cef1c1c1c"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "common.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "aead2b840e503bd30f0d175d0659b07fcecf11644e7abb826590a582aff4c850"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "csAirLink.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/csAirLink.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "f5b5ba62d0b65953438981ca95fc45dceb98d63601dfc0705ad91184227ee24d"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "cubepilot.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/cubepilot.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "b4f76d660b41b16746f67fa8e17321ea6b65448791045154105f29b3a70ce7b9"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "development.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/development.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "9d1fbd1130b3045c6b86a3532563acfcf1ce74b5fb5eaabcaea8380f9fa127b5"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "icarous.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/icarous.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "e40ec11a6d76b48eb815c101c96b1849c76a8ba5302a01d39f1941ff9c501bbb"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "loweheiser.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/loweheiser.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "31f20f01d436f2fbaaaf86f4a51c60cc01bc42722ae4c5ad403afeaaaa512deb"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "minimal.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "b3627df397e3354f26efe63559e1bcec4e72a4e4562ab52cbee1bab8f9e9999e"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "python_array_test.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/python_array_test.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "746802e2e2c45c55f8e862d59213668fe3f35db9241e304f723a669792e7ed13"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "standard.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/standard.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "1c92c50e0a4d4cc29e4125dff33b16062e1e285a6271292fb3a4266576487e65"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "storm32.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/storm32.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "7ec54b8ae07863e832ef4a1a110a2f287e12fbf38d7b77e52db6e3daf3a23619"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "test.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/test.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "20c62176c93f3a9fee8ce0af70facd7f9e5d9047df2cb2cbad3acfde902d8fbb"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "ualberta.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/ualberta.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "29560887777d00002b4d33b4cab4dc0637c1a324c2bdf7b967e52c7a07c7d237"
+        },
+        {
+          "include_chains": {
+            "all.xml": [
+              "all.xml",
+              "uAvionix.xml"
+            ]
+          },
+          "path": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/uAvionix.xml",
+          "reachable_from": [
+            "all.xml"
+          ],
+          "sha256": "288ce94228833ce7823d4775bc3c0ad3fedd3e0d01684119223a61c44eba9e9a"
+        }
+      ]
+    },
+    "PX4": {
+      "dialect_entrypoints": [
+        {
+          "evidence": "baseline/px4/boards/px4/sitl/default.px4board:38; baseline/px4/src/modules/mavlink/CMakeLists.txt:61-77",
+          "file": "development.xml",
+          "role": "primary_px4_sitl_default"
+        },
+        {
+          "evidence": "baseline/px4/src/modules/mavlink/CMakeLists.txt:40-57",
+          "file": "uAvionix.xml",
+          "role": "auxiliary_always_generated"
+        }
+      ],
+      "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+      "sut_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "xml_files": [
+        {
+          "include_chains": {
+            "development.xml": [
+              "development.xml",
+              "common.xml"
+            ],
+            "uAvionix.xml": [
+              "uAvionix.xml",
+              "common.xml"
+            ]
+          },
+          "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml",
+          "reachable_from": [
+            "development.xml",
+            "uAvionix.xml"
+          ],
+          "sha256": "bbc1c382a217209f2cb3922416539da3226878dd19c7549f928913a6f72b1498"
+        },
+        {
+          "include_chains": {
+            "development.xml": [
+              "development.xml"
+            ]
+          },
+          "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/development.xml",
+          "reachable_from": [
+            "development.xml"
+          ],
+          "sha256": "aa9f7f0955c0247fb0c9758d1171638679a698da3d9b768b4aaaf6fff28962da"
+        },
+        {
+          "include_chains": {
+            "development.xml": [
+              "development.xml",
+              "common.xml",
+              "standard.xml",
+              "minimal.xml"
+            ],
+            "uAvionix.xml": [
+              "uAvionix.xml",
+              "common.xml",
+              "standard.xml",
+              "minimal.xml"
+            ]
+          },
+          "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml",
+          "reachable_from": [
+            "development.xml",
+            "uAvionix.xml"
+          ],
+          "sha256": "dfc2e97198692dffab0fcdc7fbc0375f4dae37c661f0e2cab50cf2d2dba2a2ab"
+        },
+        {
+          "include_chains": {
+            "development.xml": [
+              "development.xml",
+              "common.xml",
+              "standard.xml"
+            ],
+            "uAvionix.xml": [
+              "uAvionix.xml",
+              "common.xml",
+              "standard.xml"
+            ]
+          },
+          "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/standard.xml",
+          "reachable_from": [
+            "development.xml",
+            "uAvionix.xml"
+          ],
+          "sha256": "baf3742c22ff8198d496215e1ba2d54281268edf5a1fcf3371b7e012407a4769"
+        },
+        {
+          "include_chains": {
+            "uAvionix.xml": [
+              "uAvionix.xml"
+            ]
+          },
+          "path": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/uAvionix.xml",
+          "reachable_from": [
+            "uAvionix.xml"
+          ],
+          "sha256": "288ce94228833ce7823d4775bc3c0ad3fedd3e0d01684119223a61c44eba9e9a"
+        }
+      ]
+    }
+  },
+  "known_limits": [
+    "No SITL process or MAVLink capture was run; runtime observation is intentionally empty.",
+    "Static source references are lexical evidence and do not prove reachability, direction, or support completeness.",
+    "PX4 configuration parameters are not filtered by the px4_sitl_default resolved CMake module list and omit YAML-generated serial/module parameters.",
+    "ArduPilot defaults are retained as unevaluated source macro expressions where mapping is possible.",
+    "A MAVLink XML time-like unit does not by itself define an epoch; ambiguous clocks remain marked ambiguous."
+  ],
+  "output_sha256": {
+    "commands.csv": "b64d5ed4987a8e0b8a204c9ec419c880fdf180bd138928e631028ee26d2ee69a",
+    "commands.json": "e61a74fc9566e40c4f932b07030d3c80f59fd6818bdfe66d315965e5eaca2f2d",
+    "configuration_parameters.csv": "6fbab3860caf5cce8ab2d0b734054c2cfe4b06098a223eeba5172b779b450377",
+    "configuration_parameters.json": "095b8c09e703f228f870ab488cfb16d4b56b715611d1931ec6e1d5ac6439c6d5",
+    "messages_and_fields.csv": "161725ff1c8bbc970b1402445141279b04dc31c59c4662043cbc608db4b43d67",
+    "messages_and_fields.json": "73e5ff288f17ab4d8204d6f64b9b1d7ce3dbc2772b7a47d5ffd426e47bf1f2f2",
+    "static_support_matrix.csv": "7eeb1eeb2c98a6a6a6c012a5a040c4e5434563314e5aebcaf0a9d0f067126ec7",
+    "time_fields.csv": "0c943f832c4f2d6beccbc81b59f597113ec0016b84059bbdbdf44015a630ef1f"
+  },
+  "schema_version": "1.0",
+  "source_freeze_timestamp": "2026-07-18T05:57:57+08:00",
+  "validator": {
+    "path": "benchmark/mavlink_catalog/validate_catalog.py",
+    "sha256": "b8b85a74c4fd98db7132ce30edd55dfaf62ef80de97419d992b3262a8ee3e4c1"
+  }
+}

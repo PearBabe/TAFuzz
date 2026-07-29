@@ -1,0 +1,1894 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-17T23:10:38.663122+00:00",
+  "host_clock": "CLOCK_MONOTONIC_NS",
+  "capture_start_host_monotonic_ns": 8146347386239,
+  "capture_start_host_wall_time_utc": "2026-07-17T23:09:59.885396+00:00",
+  "total_message_count": 14748,
+  "bad_data_record_count": 0,
+  "distinct_message_count": 54,
+  "baseline_distinct_message_count": 33,
+  "phase_message_counts": {
+    "BASELINE": 4310,
+    "PARAMETER_DOWNLOAD": 6997,
+    "REQUEST_SWEEP": 3257,
+    "STARTUP": 184
+  },
+  "source_sysid_compid_counts": {
+    "43:1": 14748
+  },
+  "messages": [
+    {
+      "message_id": 0,
+      "message_name": "HEARTBEAT",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 11,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9,
+        "STARTUP": 1
+      },
+      "field_names": [
+        "autopilot",
+        "base_mode",
+        "custom_mode",
+        "mavlink_version",
+        "system_status",
+        "type"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147662934936,
+      "last_host_monotonic_ns": 8184109485540,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.200940+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.565825+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 1,
+      "message_name": "SYS_STATUS",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "battery_remaining",
+        "current_battery",
+        "drop_rate_comm",
+        "errors_comm",
+        "errors_count1",
+        "errors_count2",
+        "errors_count3",
+        "errors_count4",
+        "load",
+        "onboard_control_sensors_enabled",
+        "onboard_control_sensors_enabled_extended",
+        "onboard_control_sensors_health",
+        "onboard_control_sensors_health_extended",
+        "onboard_control_sensors_present",
+        "onboard_control_sensors_present_extended",
+        "voltage_battery"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663805820,
+      "last_host_monotonic_ns": 8184110216002,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201811+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566554+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 2,
+      "message_name": "SYSTEM_TIME",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "time_boot_ms",
+        "time_unix_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8176786701122,
+      "last_host_monotonic_ns": 8176786701122,
+      "first_host_wall_time_utc": "2026-07-17T23:10:31.243040+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:31.243040+00:00",
+      "onboard_time_fields": {
+        "time_unix_usec": {
+          "first": 1784329831242403,
+          "last": 1784329831242403,
+          "samples": [
+            1784329831242403
+          ]
+        },
+        "time_boot_ms": {
+          "first": 29872,
+          "last": 29872,
+          "samples": [
+            29872
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 4,
+      "message_name": "PING",
+      "count_total": 4,
+      "count_by_phase": {
+        "BASELINE": 1,
+        "PARAMETER_DOWNLOAD": 1,
+        "REQUEST_SWEEP": 2
+      },
+      "field_names": [
+        "seq",
+        "target_component",
+        "target_system",
+        "time_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 4
+      },
+      "first_host_monotonic_ns": 8156777473383,
+      "last_host_monotonic_ns": 8177022349048,
+      "first_host_wall_time_utc": "2026-07-17T23:10:10.315479+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:31.478687+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 10104000,
+          "last": 30104000,
+          "samples": [
+            10104000,
+            20104000,
+            29872000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 8,
+      "message_name": "LINK_NODE_STATUS",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "messages_lost",
+        "messages_received",
+        "messages_sent",
+        "rx_buf",
+        "rx_overflows",
+        "rx_parse_err",
+        "rx_rate",
+        "timestamp",
+        "tx_buf",
+        "tx_overflows",
+        "tx_rate"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663914840,
+      "last_host_monotonic_ns": 8184110293211,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201921+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566631+00:00",
+      "onboard_time_fields": {
+        "timestamp": {
+          "first": 1104000,
+          "last": 37104000,
+          "samples": [
+            1104000,
+            2104000,
+            3104000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 22,
+      "message_name": "PARAM_VALUE",
+      "count_total": 941,
+      "count_by_phase": {
+        "BASELINE": 3,
+        "PARAMETER_DOWNLOAD": 919,
+        "STARTUP": 19
+      },
+      "field_names": [
+        "param_count",
+        "param_id",
+        "param_index",
+        "param_type",
+        "param_value"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 941
+      },
+      "first_host_monotonic_ns": 8147568936934,
+      "last_host_monotonic_ns": 8175427841861,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.106942+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:28.965848+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 24,
+      "message_name": "GPS_RAW_INT",
+      "count_total": 185,
+      "count_by_phase": {
+        "BASELINE": 60,
+        "PARAMETER_DOWNLOAD": 81,
+        "REQUEST_SWEEP": 41,
+        "STARTUP": 3
+      },
+      "field_names": [
+        "alt",
+        "alt_ellipsoid",
+        "cog",
+        "eph",
+        "epv",
+        "fix_type",
+        "h_acc",
+        "hdg_acc",
+        "lat",
+        "lon",
+        "satellites_visible",
+        "time_usec",
+        "v_acc",
+        "vel",
+        "vel_acc",
+        "yaw"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 185
+      },
+      "first_host_monotonic_ns": 8147060457605,
+      "last_host_monotonic_ns": 8184109857014,
+      "first_host_wall_time_utc": "2026-07-17T23:10:00.598464+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566196+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 384000,
+          "last": 37008000,
+          "samples": [
+            384000,
+            636000,
+            884000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 26,
+      "message_name": "SCALED_IMU",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "temperature",
+        "time_boot_ms",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8177133190652,
+      "last_host_monotonic_ns": 8177133190652,
+      "first_host_wall_time_utc": "2026-07-17T23:10:31.589530+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:31.589530+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 30208,
+          "last": 30208,
+          "samples": [
+            30208
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 29,
+      "message_name": "SCALED_PRESSURE",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "press_abs",
+        "press_diff",
+        "temperature",
+        "temperature_press_diff",
+        "time_boot_ms"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663762331,
+      "last_host_monotonic_ns": 8184110173838,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201768+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566512+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 908,
+          "last": 36908,
+          "samples": [
+            908,
+            1908,
+            2908
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 30,
+      "message_name": "ATTITUDE",
+      "count_total": 1779,
+      "count_by_phase": {
+        "BASELINE": 569,
+        "PARAMETER_DOWNLOAD": 815,
+        "REQUEST_SWEEP": 395
+      },
+      "field_names": [
+        "pitch",
+        "pitchspeed",
+        "roll",
+        "rollspeed",
+        "time_boot_ms",
+        "yaw",
+        "yawspeed"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1779
+      },
+      "first_host_monotonic_ns": 8148161383099,
+      "last_host_monotonic_ns": 8184142507313,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.699389+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.598849+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 1592,
+          "last": 37132,
+          "samples": [
+            1592,
+            1612,
+            1632
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 31,
+      "message_name": "ATTITUDE_QUATERNION",
+      "count_total": 1779,
+      "count_by_phase": {
+        "BASELINE": 569,
+        "PARAMETER_DOWNLOAD": 815,
+        "REQUEST_SWEEP": 395
+      },
+      "field_names": [
+        "pitchspeed",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "repr_offset_q",
+        "rollspeed",
+        "time_boot_ms",
+        "yawspeed"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1779
+      },
+      "first_host_monotonic_ns": 8148161483762,
+      "last_host_monotonic_ns": 8184142651962,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.699489+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.598991+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 1592,
+          "last": 37132,
+          "samples": [
+            1592,
+            1612,
+            1632
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 32,
+      "message_name": "LOCAL_POSITION_NED",
+      "count_total": 1843,
+      "count_by_phase": {
+        "BASELINE": 593,
+        "PARAMETER_DOWNLOAD": 815,
+        "REQUEST_SWEEP": 396,
+        "STARTUP": 39
+      },
+      "field_names": [
+        "time_boot_ms",
+        "vx",
+        "vy",
+        "vz",
+        "x",
+        "y",
+        "z"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1843
+      },
+      "first_host_monotonic_ns": 8146874074524,
+      "last_host_monotonic_ns": 8184155463626,
+      "first_host_wall_time_utc": "2026-07-17T23:10:00.412080+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.611802+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 324,
+          "last": 37140,
+          "samples": [
+            324,
+            340,
+            364
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 33,
+      "message_name": "GLOBAL_POSITION_INT",
+      "count_total": 1725,
+      "count_by_phase": {
+        "BASELINE": 514,
+        "PARAMETER_DOWNLOAD": 816,
+        "REQUEST_SWEEP": 395
+      },
+      "field_names": [
+        "alt",
+        "hdg",
+        "lat",
+        "lon",
+        "relative_alt",
+        "time_boot_ms",
+        "vx",
+        "vy",
+        "vz"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1725
+      },
+      "first_host_monotonic_ns": 8149254687482,
+      "last_host_monotonic_ns": 8184145795729,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.792693+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.602135+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 2676,
+          "last": 37132,
+          "samples": [
+            2676,
+            2692,
+            2716
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 36,
+      "message_name": "SERVO_OUTPUT_RAW",
+      "count_total": 1843,
+      "count_by_phase": {
+        "BASELINE": 592,
+        "PARAMETER_DOWNLOAD": 816,
+        "REQUEST_SWEEP": 395,
+        "STARTUP": 40
+      },
+      "field_names": [
+        "port",
+        "servo10_raw",
+        "servo11_raw",
+        "servo12_raw",
+        "servo13_raw",
+        "servo14_raw",
+        "servo15_raw",
+        "servo16_raw",
+        "servo1_raw",
+        "servo2_raw",
+        "servo3_raw",
+        "servo4_raw",
+        "servo5_raw",
+        "servo6_raw",
+        "servo7_raw",
+        "servo8_raw",
+        "servo9_raw",
+        "time_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1843
+      },
+      "first_host_monotonic_ns": 8146873702913,
+      "last_host_monotonic_ns": 8184145877779,
+      "first_host_wall_time_utc": "2026-07-17T23:10:00.411731+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.602216+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 316000,
+          "last": 37136000,
+          "samples": [
+            316000,
+            336000,
+            356000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 42,
+      "message_name": "MISSION_CURRENT",
+      "count_total": 36,
+      "count_by_phase": {
+        "BASELINE": 11,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 7,
+        "STARTUP": 1
+      },
+      "field_names": [
+        "fence_id",
+        "mission_id",
+        "mission_mode",
+        "mission_state",
+        "rally_points_id",
+        "seq",
+        "total"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 36
+      },
+      "first_host_monotonic_ns": 8147568860232,
+      "last_host_monotonic_ns": 8183224654044,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.106866+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.680992+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 49,
+      "message_name": "GPS_GLOBAL_ORIGIN",
+      "count_total": 2,
+      "count_by_phase": {
+        "BASELINE": 1,
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "altitude",
+        "latitude",
+        "longitude",
+        "time_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 2
+      },
+      "first_host_monotonic_ns": 8147663427440,
+      "last_host_monotonic_ns": 8177736091927,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201433+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:32.192431+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 636000,
+          "last": 636000,
+          "samples": [
+            636000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 69,
+      "message_name": "MANUAL_CONTROL",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "aux1",
+        "aux2",
+        "aux3",
+        "aux4",
+        "aux5",
+        "aux6",
+        "buttons",
+        "buttons2",
+        "enabled_extensions",
+        "r",
+        "s",
+        "t",
+        "target",
+        "x",
+        "y",
+        "z"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8178144104286,
+      "last_host_monotonic_ns": 8178144104286,
+      "first_host_wall_time_utc": "2026-07-17T23:10:32.600443+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:32.600443+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 74,
+      "message_name": "VFR_HUD",
+      "count_total": 149,
+      "count_by_phase": {
+        "BASELINE": 48,
+        "PARAMETER_DOWNLOAD": 65,
+        "REQUEST_SWEEP": 33,
+        "STARTUP": 3
+      },
+      "field_names": [
+        "airspeed",
+        "alt",
+        "climb",
+        "groundspeed",
+        "heading",
+        "throttle"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 149
+      },
+      "first_host_monotonic_ns": 8146904963782,
+      "last_host_monotonic_ns": 8184110257134,
+      "first_host_wall_time_utc": "2026-07-17T23:10:00.442973+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566595+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 77,
+      "message_name": "COMMAND_ACK",
+      "count_total": 244,
+      "count_by_phase": {
+        "BASELINE": 1,
+        "REQUEST_SWEEP": 243
+      },
+      "field_names": [
+        "command",
+        "progress",
+        "result",
+        "result_param2",
+        "target_component",
+        "target_system"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 244
+      },
+      "first_host_monotonic_ns": 8147731584116,
+      "last_host_monotonic_ns": 8184123138937,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.269592+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.579480+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 83,
+      "message_name": "ATTITUDE_TARGET",
+      "count_total": 1843,
+      "count_by_phase": {
+        "BASELINE": 593,
+        "PARAMETER_DOWNLOAD": 815,
+        "REQUEST_SWEEP": 396,
+        "STARTUP": 39
+      },
+      "field_names": [
+        "body_pitch_rate",
+        "body_roll_rate",
+        "body_yaw_rate",
+        "q",
+        "thrust",
+        "time_boot_ms",
+        "type_mask"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1843
+      },
+      "first_host_monotonic_ns": 8146873966595,
+      "last_host_monotonic_ns": 8184155361551,
+      "first_host_wall_time_utc": "2026-07-17T23:10:00.411972+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.611701+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 324,
+          "last": 37140,
+          "samples": [
+            324,
+            340,
+            364
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 85,
+      "message_name": "POSITION_TARGET_LOCAL_NED",
+      "count_total": 1843,
+      "count_by_phase": {
+        "BASELINE": 593,
+        "PARAMETER_DOWNLOAD": 815,
+        "REQUEST_SWEEP": 396,
+        "STARTUP": 39
+      },
+      "field_names": [
+        "afx",
+        "afy",
+        "afz",
+        "coordinate_frame",
+        "time_boot_ms",
+        "type_mask",
+        "vx",
+        "vy",
+        "vz",
+        "x",
+        "y",
+        "yaw",
+        "yaw_rate",
+        "z"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1843
+      },
+      "first_host_monotonic_ns": 8146874133442,
+      "last_host_monotonic_ns": 8184155510135,
+      "first_host_wall_time_utc": "2026-07-17T23:10:00.412139+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.611849+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 324,
+          "last": 37140,
+          "samples": [
+            324,
+            340,
+            364
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 93,
+      "message_name": "HIL_ACTUATOR_CONTROLS",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "controls",
+        "flags",
+        "mode",
+        "time_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8178708905496,
+      "last_host_monotonic_ns": 8178708905496,
+      "first_host_wall_time_utc": "2026-07-17T23:10:33.165247+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:33.165247+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 31764000,
+          "last": 31764000,
+          "samples": [
+            31764000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 105,
+      "message_name": "HIGHRES_IMU",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "abs_pressure",
+        "diff_pressure",
+        "fields_updated",
+        "id",
+        "pressure_alt",
+        "temperature",
+        "time_usec",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8178897704185,
+      "last_host_monotonic_ns": 8178897704185,
+      "first_host_wall_time_utc": "2026-07-17T23:10:33.354044+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:33.354044+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 31952000,
+          "last": 31952000,
+          "samples": [
+            31952000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 111,
+      "message_name": "TIMESYNC",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "target_component",
+        "target_system",
+        "tc1",
+        "ts1"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8179083122424,
+      "last_host_monotonic_ns": 8179083122424,
+      "first_host_wall_time_utc": "2026-07-17T23:10:33.539462+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:33.539462+00:00",
+      "onboard_time_fields": {
+        "tc1": {
+          "first": 0,
+          "last": 0,
+          "samples": [
+            0
+          ]
+        },
+        "ts1": {
+          "first": 32140000000,
+          "last": 32140000000,
+          "samples": [
+            32140000000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 115,
+      "message_name": "HIL_STATE_QUATERNION",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "alt",
+        "attitude_quaternion",
+        "ind_airspeed",
+        "lat",
+        "lon",
+        "pitchspeed",
+        "rollspeed",
+        "time_usec",
+        "true_airspeed",
+        "vx",
+        "vy",
+        "vz",
+        "xacc",
+        "yacc",
+        "yawspeed",
+        "zacc"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8179207530924,
+      "last_host_monotonic_ns": 8179207530924,
+      "first_host_wall_time_utc": "2026-07-17T23:10:33.663871+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:33.663871+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 0,
+          "last": 0,
+          "samples": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 132,
+      "message_name": "DISTANCE_SENSOR",
+      "count_total": 19,
+      "count_by_phase": {
+        "BASELINE": 6,
+        "PARAMETER_DOWNLOAD": 8,
+        "REQUEST_SWEEP": 5
+      },
+      "field_names": [
+        "covariance",
+        "current_distance",
+        "horizontal_fov",
+        "id",
+        "max_distance",
+        "min_distance",
+        "orientation",
+        "quaternion",
+        "signal_quality",
+        "time_boot_ms",
+        "type",
+        "vertical_fov"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 19
+      },
+      "first_host_monotonic_ns": 8148675468251,
+      "last_host_monotonic_ns": 8183099004383,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.213474+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.555343+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 2100,
+          "last": 36100,
+          "samples": [
+            2100,
+            4100,
+            6100
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 141,
+      "message_name": "ALTITUDE",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "altitude_amsl",
+        "altitude_local",
+        "altitude_monotonic",
+        "altitude_relative",
+        "altitude_terrain",
+        "bottom_clearance",
+        "time_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663157739,
+      "last_host_monotonic_ns": 8184109592758,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201163+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.565932+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 1104000,
+          "last": 37104000,
+          "samples": [
+            1104000,
+            2104000,
+            3104000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 147,
+      "message_name": "BATTERY_STATUS",
+      "count_total": 19,
+      "count_by_phase": {
+        "BASELINE": 6,
+        "PARAMETER_DOWNLOAD": 8,
+        "REQUEST_SWEEP": 5
+      },
+      "field_names": [
+        "battery_function",
+        "battery_remaining",
+        "charge_state",
+        "current_battery",
+        "current_consumed",
+        "energy_consumed",
+        "fault_bitmask",
+        "id",
+        "mode",
+        "temperature",
+        "time_remaining",
+        "type",
+        "voltages",
+        "voltages_ext"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 19
+      },
+      "first_host_monotonic_ns": 8148675289015,
+      "last_host_monotonic_ns": 8183098847491,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.213294+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.555186+00:00",
+      "onboard_time_fields": {
+        "time_remaining": {
+          "first": 0,
+          "last": 0,
+          "samples": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 148,
+      "message_name": "AUTOPILOT_VERSION",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "board_version",
+        "capabilities",
+        "flight_custom_version",
+        "flight_sw_version",
+        "middleware_custom_version",
+        "middleware_sw_version",
+        "os_custom_version",
+        "os_sw_version",
+        "product_id",
+        "uid",
+        "uid2",
+        "vendor_id"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8180252011438,
+      "last_host_monotonic_ns": 8180252011438,
+      "first_host_wall_time_utc": "2026-07-17T23:10:34.708351+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:34.708351+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 192,
+      "message_name": "MAG_CAL_REPORT",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "autosaved",
+        "cal_mask",
+        "cal_status",
+        "compass_id",
+        "diag_x",
+        "diag_y",
+        "diag_z",
+        "fitness",
+        "new_orientation",
+        "offdiag_x",
+        "offdiag_y",
+        "offdiag_z",
+        "ofs_x",
+        "ofs_y",
+        "ofs_z",
+        "old_orientation",
+        "orientation_confidence",
+        "scale_factor"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8180334667116,
+      "last_host_monotonic_ns": 8180334667116,
+      "first_host_wall_time_utc": "2026-07-17T23:10:34.791006+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:34.791006+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 230,
+      "message_name": "ESTIMATOR_STATUS",
+      "count_total": 19,
+      "count_by_phase": {
+        "BASELINE": 6,
+        "PARAMETER_DOWNLOAD": 8,
+        "REQUEST_SWEEP": 5
+      },
+      "field_names": [
+        "flags",
+        "hagl_ratio",
+        "mag_ratio",
+        "pos_horiz_accuracy",
+        "pos_horiz_ratio",
+        "pos_vert_accuracy",
+        "pos_vert_ratio",
+        "tas_ratio",
+        "time_usec",
+        "vel_ratio"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 19
+      },
+      "first_host_monotonic_ns": 8148675585287,
+      "last_host_monotonic_ns": 8183099050337,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.213591+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.555389+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 2100000,
+          "last": 36100000,
+          "samples": [
+            2100000,
+            4100000,
+            6100000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 235,
+      "message_name": "HIGH_LATENCY2",
+      "count_total": 2,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 2
+      },
+      "field_names": [
+        "airspeed",
+        "airspeed_sp",
+        "altitude",
+        "autopilot",
+        "battery",
+        "climb_rate",
+        "custom0",
+        "custom1",
+        "custom2",
+        "custom_mode",
+        "eph",
+        "epv",
+        "failure_flags",
+        "groundspeed",
+        "heading",
+        "latitude",
+        "longitude",
+        "target_altitude",
+        "target_distance",
+        "target_heading",
+        "temperature_air",
+        "throttle",
+        "timestamp",
+        "type",
+        "wind_heading",
+        "windspeed",
+        "wp_num"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 2
+      },
+      "first_host_monotonic_ns": 8180531973299,
+      "last_host_monotonic_ns": 8180535191598,
+      "first_host_wall_time_utc": "2026-07-17T23:10:34.988312+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:34.991531+00:00",
+      "onboard_time_fields": {
+        "timestamp": {
+          "first": 33568,
+          "last": 33572,
+          "samples": [
+            33568,
+            33572
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 241,
+      "message_name": "VIBRATION",
+      "count_total": 4,
+      "count_by_phase": {
+        "BASELINE": 1,
+        "PARAMETER_DOWNLOAD": 1,
+        "REQUEST_SWEEP": 2
+      },
+      "field_names": [
+        "clipping_0",
+        "clipping_1",
+        "clipping_2",
+        "time_usec",
+        "vibration_x",
+        "vibration_y",
+        "vibration_z"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 4
+      },
+      "first_host_monotonic_ns": 8156777729237,
+      "last_host_monotonic_ns": 8180538429055,
+      "first_host_wall_time_utc": "2026-07-17T23:10:10.315734+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:34.994768+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 10104000,
+          "last": 33572000,
+          "samples": [
+            10104000,
+            20104000,
+            30104000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 242,
+      "message_name": "HOME_POSITION",
+      "count_total": 19,
+      "count_by_phase": {
+        "BASELINE": 6,
+        "PARAMETER_DOWNLOAD": 8,
+        "REQUEST_SWEEP": 5
+      },
+      "field_names": [
+        "altitude",
+        "approach_x",
+        "approach_y",
+        "approach_z",
+        "latitude",
+        "longitude",
+        "q",
+        "time_usec",
+        "x",
+        "y",
+        "z"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 19
+      },
+      "first_host_monotonic_ns": 8148675854199,
+      "last_host_monotonic_ns": 8183099204629,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.213860+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.555543+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 2100000,
+          "last": 3816000,
+          "samples": [
+            2100000,
+            3816000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 244,
+      "message_name": "MESSAGE_INTERVAL",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "interval_us",
+        "message_id"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8180583191058,
+      "last_host_monotonic_ns": 8180583191058,
+      "first_host_wall_time_utc": "2026-07-17T23:10:35.039530+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:35.039530+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 245,
+      "message_name": "EXTENDED_SYS_STATE",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "landed_state",
+        "vtol_state"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663238688,
+      "last_host_monotonic_ns": 8184109674145,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201244+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566013+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 253,
+      "message_name": "STATUSTEXT",
+      "count_total": 1,
+      "count_by_phase": {
+        "BASELINE": 1
+      },
+      "field_names": [
+        "chunk_seq",
+        "id",
+        "severity",
+        "text"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8149080164419,
+      "last_host_monotonic_ns": 8149080164419,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.618172+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:02.618172+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 261,
+      "message_name": "STORAGE_INFORMATION",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "available_capacity",
+        "name",
+        "read_speed",
+        "status",
+        "storage_count",
+        "storage_id",
+        "storage_usage",
+        "time_boot_ms",
+        "total_capacity",
+        "type",
+        "used_capacity",
+        "write_speed"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8181096350706,
+      "last_host_monotonic_ns": 8181096350706,
+      "first_host_wall_time_utc": "2026-07-17T23:10:35.552690+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:35.552690+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 34128,
+          "last": 34128,
+          "samples": [
+            34128
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 264,
+      "message_name": "FLIGHT_INFORMATION",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "arming_time_utc",
+        "flight_uuid",
+        "landing_time",
+        "takeoff_time_utc",
+        "time_boot_ms"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8181178882670,
+      "last_host_monotonic_ns": 8181178882670,
+      "first_host_wall_time_utc": "2026-07-17T23:10:35.635223+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:35.635223+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 34208,
+          "last": 34208,
+          "samples": [
+            34208
+          ]
+        },
+        "landing_time": {
+          "first": 0,
+          "last": 0,
+          "samples": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 286,
+      "message_name": "AUTOPILOT_STATE_FOR_GIMBAL_DEVICE",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "angular_velocity_z",
+        "estimator_status",
+        "feed_forward_angular_velocity_z",
+        "landed_state",
+        "q",
+        "q_estimated_delay_us",
+        "target_component",
+        "target_system",
+        "time_boot_us",
+        "v_estimated_delay_us",
+        "vx",
+        "vy",
+        "vz"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8181774992135,
+      "last_host_monotonic_ns": 8181774992135,
+      "first_host_wall_time_utc": "2026-07-17T23:10:36.231332+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:36.231332+00:00",
+      "onboard_time_fields": {
+        "time_boot_us": {
+          "first": 34792000,
+          "last": 34792000,
+          "samples": [
+            34792000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 300,
+      "message_name": "PROTOCOL_VERSION",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "library_version_hash",
+        "max_version",
+        "min_version",
+        "spec_version_hash",
+        "version"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8182037860896,
+      "last_host_monotonic_ns": 8182037860896,
+      "first_host_wall_time_utc": "2026-07-17T23:10:36.494204+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:36.494204+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 331,
+      "message_name": "ODOMETRY",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "child_frame_id",
+        "estimator_type",
+        "frame_id",
+        "pitchspeed",
+        "pose_covariance",
+        "q",
+        "quality",
+        "reset_counter",
+        "rollspeed",
+        "time_usec",
+        "velocity_covariance",
+        "vx",
+        "vy",
+        "vz",
+        "x",
+        "y",
+        "yawspeed",
+        "z"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8182363996566,
+      "last_host_monotonic_ns": 8182363996566,
+      "first_host_wall_time_utc": "2026-07-17T23:10:36.820355+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:36.820355+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 35372000,
+          "last": 35372000,
+          "samples": [
+            35372000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 375,
+      "message_name": "ACTUATOR_OUTPUT_STATUS",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "active",
+        "actuator",
+        "time_usec"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8183025360399,
+      "last_host_monotonic_ns": 8183025360399,
+      "first_host_wall_time_utc": "2026-07-17T23:10:37.481700+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.481700+00:00",
+      "onboard_time_fields": {
+        "time_usec": {
+          "first": 36028000,
+          "last": 36028000,
+          "samples": [
+            36028000
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 380,
+      "message_name": "TIME_ESTIMATE_TO_TARGET",
+      "count_total": 18,
+      "count_by_phase": {
+        "BASELINE": 6,
+        "PARAMETER_DOWNLOAD": 8,
+        "REQUEST_SWEEP": 4
+      },
+      "field_names": [
+        "commanded_action",
+        "land",
+        "mission_end",
+        "mission_next_item",
+        "safe_return"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 18
+      },
+      "first_host_monotonic_ns": 8148585361492,
+      "last_host_monotonic_ns": 8183317822036,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.123367+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.774160+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 395,
+      "message_name": "COMPONENT_INFORMATION",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "general_metadata_file_crc",
+        "general_metadata_uri",
+        "peripherals_metadata_file_crc",
+        "peripherals_metadata_uri",
+        "time_boot_ms"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8183247285682,
+      "last_host_monotonic_ns": 8183247285682,
+      "first_host_wall_time_utc": "2026-07-17T23:10:37.703625+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.703625+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 36252,
+          "last": 36252,
+          "samples": [
+            36252
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 397,
+      "message_name": "COMPONENT_METADATA",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "file_crc",
+        "time_boot_ms",
+        "uri"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8183292030179,
+      "last_host_monotonic_ns": 8183292030179,
+      "first_host_wall_time_utc": "2026-07-17T23:10:37.748369+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.748369+00:00",
+      "onboard_time_fields": {
+        "time_boot_ms": {
+          "first": 36296,
+          "last": 36296,
+          "samples": [
+            36296
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 410,
+      "message_name": "EVENT",
+      "count_total": 13,
+      "count_by_phase": {
+        "BASELINE": 13
+      },
+      "field_names": [
+        "arguments",
+        "destination_component",
+        "destination_system",
+        "event_time_boot_ms",
+        "id",
+        "log_levels",
+        "sequence"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 13
+      },
+      "first_host_monotonic_ns": 8148659069212,
+      "last_host_monotonic_ns": 8150728102155,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.197075+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:04.266108+00:00",
+      "onboard_time_fields": {
+        "event_time_boot_ms": {
+          "first": 2088,
+          "last": 4128,
+          "samples": [
+            2088,
+            4128
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 411,
+      "message_name": "CURRENT_EVENT_SEQUENCE",
+      "count_total": 12,
+      "count_by_phase": {
+        "BASELINE": 4,
+        "PARAMETER_DOWNLOAD": 5,
+        "REQUEST_SWEEP": 3
+      },
+      "field_names": [
+        "flags",
+        "sequence"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 12
+      },
+      "first_host_monotonic_ns": 8149831466665,
+      "last_host_monotonic_ns": 8183288804814,
+      "first_host_wall_time_utc": "2026-07-17T23:10:03.369472+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:37.745144+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 435,
+      "message_name": "AVAILABLE_MODES",
+      "count_total": 26,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 26
+      },
+      "field_names": [
+        "custom_mode",
+        "mode_index",
+        "mode_name",
+        "number_modes",
+        "properties",
+        "standard_mode"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 26
+      },
+      "first_host_monotonic_ns": 8183622908785,
+      "last_host_monotonic_ns": 8183623706522,
+      "first_host_wall_time_utc": "2026-07-17T23:10:38.079248+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.080045+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 436,
+      "message_name": "CURRENT_MODE",
+      "count_total": 19,
+      "count_by_phase": {
+        "BASELINE": 6,
+        "PARAMETER_DOWNLOAD": 8,
+        "REQUEST_SWEEP": 5
+      },
+      "field_names": [
+        "custom_mode",
+        "intended_custom_mode",
+        "standard_mode"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 19
+      },
+      "first_host_monotonic_ns": 8148675402730,
+      "last_host_monotonic_ns": 8183626945856,
+      "first_host_wall_time_utc": "2026-07-17T23:10:02.213408+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.083286+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 441,
+      "message_name": "GNSS_INTEGRITY",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "authentication_state",
+        "corrections_quality",
+        "gnss_signal_quality",
+        "id",
+        "jamming_state",
+        "post_processing_quality",
+        "raim_hfom",
+        "raim_state",
+        "raim_vfom",
+        "spoofing_state",
+        "system_errors",
+        "system_status_summary"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663335835,
+      "last_host_monotonic_ns": 8184109740543,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201341+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566079+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 12900,
+      "message_name": "OPEN_DRONE_ID_BASIC_ID",
+      "count_total": 1,
+      "count_by_phase": {
+        "REQUEST_SWEEP": 1
+      },
+      "field_names": [
+        "id_or_mac",
+        "id_type",
+        "target_component",
+        "target_system",
+        "ua_type",
+        "uas_id"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 1
+      },
+      "first_host_monotonic_ns": 8183890342705,
+      "last_host_monotonic_ns": 8183890342705,
+      "first_host_wall_time_utc": "2026-07-17T23:10:38.346683+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.346683+00:00",
+      "onboard_time_fields": {}
+    },
+    {
+      "message_id": 12901,
+      "message_name": "OPEN_DRONE_ID_LOCATION",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "altitude_barometric",
+        "altitude_geodetic",
+        "barometer_accuracy",
+        "direction",
+        "height",
+        "height_reference",
+        "horizontal_accuracy",
+        "id_or_mac",
+        "latitude",
+        "longitude",
+        "speed_accuracy",
+        "speed_horizontal",
+        "speed_vertical",
+        "status",
+        "target_component",
+        "target_system",
+        "timestamp",
+        "timestamp_accuracy",
+        "vertical_accuracy"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663544573,
+      "last_host_monotonic_ns": 8184109933483,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201550+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566272+00:00",
+      "onboard_time_fields": {
+        "timestamp": {
+          "first": 65535.0,
+          "last": 65535.0,
+          "samples": [
+            65535.0
+          ]
+        },
+        "timestamp_accuracy": {
+          "first": 0,
+          "last": 0,
+          "samples": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "message_id": 12904,
+      "message_name": "OPEN_DRONE_ID_SYSTEM",
+      "count_total": 38,
+      "count_by_phase": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 17,
+        "REQUEST_SWEEP": 9
+      },
+      "field_names": [
+        "area_ceiling",
+        "area_count",
+        "area_floor",
+        "area_radius",
+        "category_eu",
+        "class_eu",
+        "classification_type",
+        "id_or_mac",
+        "operator_altitude_geo",
+        "operator_latitude",
+        "operator_location_type",
+        "operator_longitude",
+        "target_component",
+        "target_system",
+        "timestamp"
+      ],
+      "sysid_compid_counts": {
+        "43:1": 38
+      },
+      "first_host_monotonic_ns": 8147663688940,
+      "last_host_monotonic_ns": 8184110104304,
+      "first_host_wall_time_utc": "2026-07-17T23:10:01.201695+00:00",
+      "last_host_wall_time_utc": "2026-07-17T23:10:38.566443+00:00",
+      "onboard_time_fields": {
+        "timestamp": {
+          "first": 2748666496,
+          "last": 2748666496,
+          "samples": [
+            2748666496
+          ]
+        }
+      }
+    }
+  ]
+}

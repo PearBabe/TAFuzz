@@ -1,0 +1,8 @@
+﻿id,build_ok,all_commands_ok,positive_symbolic,negative_symbolic,positive_concrete,negative_concrete,expected_oracle_ok,symbolic_concrete_consistent,additional_positive_results,additional_negative_results,ap_order,ap_order_ok,positive_locations,positive_edges,positive_clocks,negative_locations,negative_edges,negative_clocks,build_ms,monitor_ms_positive,monitor_ms_negative,status
+SMTP-TIMEOUT-01,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_waiting_initial_220"", ""smtp_initial_220_timeout""]",True,5,34,2,7,48,2,15,0,0,PASS
+SMTP-TIMEOUT-02,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_mail_response_wait_started"", ""smtp_mail_response_timeout""]",True,5,34,2,7,48,2,14,0,0,PASS
+SMTP-TIMEOUT-03,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_rcpt_response_wait_started"", ""smtp_rcpt_response_timeout""]",True,5,34,2,7,48,2,14,0,0,PASS
+SMTP-TIMEOUT-04,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_data_354_wait_started"", ""smtp_data_354_timeout""]",True,5,34,2,7,48,2,15,0,0,PASS
+SMTP-TIMEOUT-05,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_data_block_send_wait_started"", ""smtp_data_block_send_timeout""]",True,5,34,2,7,48,2,15,0,0,PASS
+SMTP-TIMEOUT-06,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_final_250_wait_started"", ""smtp_final_250_timeout""]",True,5,34,2,7,48,2,14,0,0,PASS
+SMTP-TIMEOUT-07,True,True,POSITIVE,NEGATIVE,POSITIVE,NEGATIVE,True,True,{},{},"[""smtp_server_command_wait_started"", ""smtp_server_command_idle_timeout""]",True,5,34,2,7,48,2,23,0,0,PASS

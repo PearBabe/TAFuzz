@@ -1,0 +1,49 @@
+{
+  "id": "SIP-TX-07",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {
+    "superseded_by_noninvite_final_response_received": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    },
+    "superseded_by_noninvite_transport_error": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    },
+    "superseded_by_timer_e_rearmed_on_first_1xx": {
+      "symbolic": "POSITIVE",
+      "concrete": "POSITIVE"
+    }
+  },
+  "additional_negative_results": {
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "timer_e_armed_t1",
+    "timer_e_deadline",
+    "timer_e_rearmed_on_first_1xx",
+    "noninvite_final_response_received",
+    "noninvite_transport_error"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 11,
+  "positive_edges": 656,
+  "positive_clocks": 2,
+  "negative_locations": 9,
+  "negative_edges": 550,
+  "negative_clocks": 2,
+  "build_ms": 20,
+  "monitor_ms_positive": 1,
+  "monitor_ms_negative": 1,
+  "status": "PASS"
+}

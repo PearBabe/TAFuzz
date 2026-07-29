@@ -1,0 +1,612 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "SHOULD",
+    "text": "Also, the\n   Q-Block1 and Q-Block2 options support faster recovery should any of\n   the blocks get lost in transmission"
+  },
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   https://www"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "SHOULD",
+    "text": "The CoAP specification recommends that a CoAP message should fit\n   within a single IP packet (i"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": ", acknowledgment responses\n   may get dropped)"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "SHOULD",
+    "text": "In other words, this document provides a\n   missing piece of [RFC7959], namely the support of block-wise\n   transfers using Non-confirmable messages where an entire body of data\n   can be transmitted without the requirement that intermediate\n   acknowledgments be received from the peer (but recovery is available\n   should it be needed)"
+  },
+  {
+    "section": "2.  Terminology",
+    "keyword": "SHOULD",
+    "text": "Readers should be familiar with the terms and concepts defined in\n   [RFC7252], [RFC7959], and [RFC8132]"
+  },
+  {
+    "section": "3.  Alternative CoAP Block-Wise Transfer Options",
+    "keyword": "SHOULD",
+    "text": "*  They support faster recovery should any of the blocks get lost in\n      transmission"
+  },
+  {
+    "section": "3.2.  Applicability Scope",
+    "keyword": "MUST",
+    "text": "These guards MUST be followed in addition to the existing CoAP\n   congestion control, as specified in Section 4"
+  },
+  {
+    "section": "3.2.  Applicability Scope",
+    "keyword": "SHOULD",
+    "text": "Any usage outside the primary use case of Non-confirmable messages\n   with block transfers should be carefully weighed against the\n   potential loss of interoperability with generic CoAP applications\n   (see the disadvantages listed in Section 3)"
+  },
+  {
+    "section": "3.2.  Applicability Scope",
+    "keyword": "MAY",
+    "text": "However, even with OSCORE, using the NoSec mode with these\n   options may still be inadequate, for reasons discussed in Section 11"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": ", it must be the same for all payloads of the same\n   body)"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "A CoAP endpoint (or proxy) MUST support either both or neither of the\n   Q-Block1 and Q-Block2 options"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "SHOULD",
+    "text": ", POST),\n   or the Q-Block1 option in a PUT or similar request so that the server\n   knows that the client supports this Q-Block functionality should it\n   need to send back a body that spans multiple payloads"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "However, when a Q-Block1 or Q-Block2 option is present in\n   a CoAP message, it MUST be processed (or the message rejected)"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "That is, a\n   CoAP proxy that does not understand the Q-Block1 (or Q-Block2) option\n   must reject the request or response that uses either option (see\n   Section 5"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "Except for that case, any request\n   carrying multiple Q-Block1 (or Q-Block2) options MUST be handled\n   following the procedure specified in Section 5"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MAY",
+    "text": "The Q-Block1 (or Q-Block2) option MAY be an Inner or\n   Outer option (Section 4"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "+========+==========+===+===+\n                       | Number | Name     | E | U |\n                       +========+==========+===+===+\n                       | 19     | Q-Block1 | x | x |\n                       +--------+----------+---+---+\n                       | 31     | Q-Block2 | x | x |\n                       +--------+----------+---+---+\n\n                              Table 2: OSCORE\n                             Protection of the\n                           Q-Block1 and Q-Block2\n                                  Options\n\n   Note that, if the Q-Block1 or Q-Block2 options are included in a\n   packet as Inner options, the Block1 or Block2 options MUST NOT be\n   included as Inner options"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "Similarly, there MUST NOT be a mix of\n   Q-Block and Block options for the Outer options"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "Messages that do\n   not adhere to this behavior MUST be rejected with a 4"
+  },
+  {
+    "section": "4.1.  Properties of the Q-Block1 and Q-Block2 Options",
+    "keyword": "MUST",
+    "text": "For\n   clarity, if OSCORE is not being used, there MUST NOT be a mix of\n   Q-Block and Block options in the same packet"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "When the Q-Block1 option is used, the client MUST include a Request-\n   Tag option [RFC9175]"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The Request-Tag value MUST be the same for all\n   of the requests for the body of data that is being transferred"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The\n   Request-Tag is opaque, but the client MUST ensure that it is unique\n   for every different body of transmitted data"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MAY",
+    "text": "An\n      implementation may want to consider limiting this to 4 bytes to\n      reduce packet overhead size"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The client MUST send the payloads in order of increasing block\n   number, starting from zero, until the body is complete (subject to\n   any congestion control (Section 7))"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "In addition, any missing\n   payloads requested by the server must be separately transmitted with\n   increasing block numbers"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The token to use MUST be one\n      of the tokens that were received in a request for this block-wise\n      exchange"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "The client should then release all of the tokens used for this\n      body"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The token to use MUST be one of the tokens that\n      were received in a request for this block-wise exchange"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "The client should then release all of the tokens used\n      for this body"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The token to use MUST be one\n      of the tokens that were received in a request for this block-wise\n      exchange"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "The client should then release all of the\n      tokens used for this body"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "The\n      token to use MUST be one of the tokens that were received in a\n      request for this block-wise exchange"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "If the FETCH request includes the Observe option, then the server\n      MUST use the same token as used for the 2"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "The client should then release all of the tokens used for this\n      body apart from the one used for tracking an observed resource"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "The client should then release all of the tokens used for this\n      MAX_PAYLOADS_SET"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "A response using this response code MUST NOT be generated for\n      every received Q-Block1 option request"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "It SHOULD only be\n      generated when all the payload requests are Non-confirmable and a\n      MAX_PAYLOADS_SET has been received by the server"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "This response code SHOULD NOT be generated for CON, as this may\n      cause duplicated payloads to unnecessarily be sent"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "00 (Bad Request)\n      This response code MUST be returned if the request does not\n      include a Request-Tag option or a Size1 option but does include a\n      Q-Block1 option"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "02 (Bad Option)\n      This response code MUST be returned for a Confirmable request if\n      the server does not support the Q-Block options"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MAY",
+    "text": "Note that a\n      Reset message may be sent in case of a Non-confirmable request"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "08 (Request Entity Incomplete) response\n      MUST be one of the tokens that were received in a request for this\n      block-wise body exchange"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "If the server has not received all the blocks of a body, but one\n      or more NON payloads have been received, it SHOULD wait for\n      NON_RECEIVE_TIMEOUT (Section 7"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "If a server receives payloads with different Request-Tags for the\n   same resource, it should continue to process all the bodies, as it\n   has no way of determining which is the latest version or which body,\n   if any, the client is terminating the transmission for"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "If the client elects to stop the transmission of a complete body,\n   then absent any local policy, the client MUST \"forget\" all tracked\n   tokens associated with the body's Request-Tag so that a Reset message\n   is generated for the invalid token in the 4"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "On receipt of the Reset message, the server\n   SHOULD delete the partial body"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "MUST",
+    "text": "If the server receives a duplicate block with the same Request-Tag,\n   it MUST ignore the payload of the packet but MUST still respond as if\n   the block was received for the first time"
+  },
+  {
+    "section": "4.3.  Using the Q-Block1 Option",
+    "keyword": "SHOULD",
+    "text": "A server SHOULD maintain a partial body (missing payloads) for\n   NON_PARTIAL_TIMEOUT (Section 7"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MUST",
+    "text": ", combination of M being set (this and later blocks) and\n   unset (this individual block)), resulting in an individual block\n   being requested multiple times, the server MUST only send back one\n   instance of that block"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MUST",
+    "text": "The payloads sent back from the server as a response MUST all have\n   the same ETag (Section 5"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MUST",
+    "text": "The\n   server MUST NOT use the same ETag value for different representations\n   of a resource"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MUST",
+    "text": "The ETag is opaque, but the server MUST ensure that it is unique for\n   every different body of transmitted data"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MAY",
+    "text": "An\n      implementation may want to consider limiting this to 4 bytes to\n      reduce packet overhead size"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "The initial ETag value should be\n      randomly generated and then subsequently incremented by the server\n      whenever a new body of data is being transmitted between peers"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MAY",
+    "text": "The client may elect to request any detected missing blocks or just\n   ignore the partial body"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "For NON payloads, the client SHOULD wait for NON_RECEIVE_TIMEOUT\n   (Section 7"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "Generally, the M bit on the Q-Block2 option(s) SHOULD be\n   unset, although the M bit MAY be set to request this and later blocks\n   from this MAX_PAYLOADS_SET; see Section 10"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MUST",
+    "text": "The missing block numbers requested by the client MUST have an\n   increasing block number in each additional Q-Block2 option with no\n   duplicates"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD respond with a 4"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "A client SHOULD maintain a partial body (missing payloads) for\n   NON_PARTIAL_TIMEOUT (Section 7"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "The ETag option should not be used in the request for missing blocks,\n   as the server could respond with a 2"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD maintain a cached copy of the body when using the\n   Q-Block2 option to facilitate retransmission of any missing payloads"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MUST",
+    "text": "Any\n   subsequent missing block requests MUST be responded to using the\n   latest ETag and Size2 option values with the updated data"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "If the server responds during a body update with a different ETag\n   option value (as the resource representation has changed), then the\n   client should treat the partial body with the old ETag as no longer\n   being fresh"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "MAY",
+    "text": "The client may then request all of the new data by\n   specifying Q-Block2 with block number '0' and the M bit set"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": ", a triggered Observe\n   notification) with a new ETag to the same client as an additional\n   response, the client should remove any partially received body held\n   for a previous ETag for that resource, as it is unlikely the missing\n   blocks can be retrieved"
+  },
+  {
+    "section": "4.4.  Using the Q-Block2 Option",
+    "keyword": "SHOULD",
+    "text": "The server will detect failure to\n   send a packet and SHOULD terminate the body transfer, but the client\n   can issue, after a MAX_TRANSMIT_SPAN delay, a separate GET, POST,\n   PUT, FETCH, PATCH, or iPATCH for any missing blocks as needed"
+  },
+  {
+    "section": "4.5.  Using the Observe Option",
+    "keyword": "MUST",
+    "text": "For a request that uses Q-Block1, the Observe value [RFC7641] MUST be\n   the same for all the payloads of the same body"
+  },
+  {
+    "section": "4.5.  Using the Observe Option",
+    "keyword": "MUST",
+    "text": "For a response that uses Q-Block2, the Observe value MUST be the same\n   for all the payloads of the same body"
+  },
+  {
+    "section": "4.5.  Using the Observe Option",
+    "keyword": "MUST",
+    "text": "If a missing payload is requested by a client, then both\n   the request and response MUST NOT include the Observe option"
+  },
+  {
+    "section": "4.6.  Using the Size1 and Size2 Options",
+    "keyword": "MUST",
+    "text": "For the Q-Block1 and Q-Block2 options, the Size1 or Size2 option\n   values MUST exactly represent the size of the data on the body so\n   that any missing data can easily be determined"
+  },
+  {
+    "section": "4.6.  Using the Size1 and Size2 Options",
+    "keyword": "MUST",
+    "text": "The Size1 option MUST be used with the Q-Block1 option when used in a\n   request and MUST be present in all payloads of the request,\n   preserving the same value"
+  },
+  {
+    "section": "4.6.  Using the Size1 and Size2 Options",
+    "keyword": "MUST",
+    "text": "The Size2 option MUST be used with the\n   Q-Block2 option when used in a response and MUST be present in all\n   payloads of the response, preserving the same value"
+  },
+  {
+    "section": "4.8.  Using the Q-Block2 Option with Multicast",
+    "keyword": "MUST",
+    "text": "Servers MUST ignore multicast requests that contain the Q-Block2\n   option"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "Such messages must not be treated by the client as\n   a fatal error"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "The missing block numbers MUST be unique in each\n   4"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "08 (Request Entity Incomplete) response when created by the server;\n   the client MUST ignore any duplicates in the same 4"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "3 of [RFC7252]) MUST be used\n   in the 4"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "It MUST be set to\n   \"application/missing-blocks+cbor-seq\" (Section 12"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "1 of [RFC8742]) for the data describing these missing\n   blocks is as follows:\n\n   ; This defines an array, the elements of which are to be used\n   ; in a CBOR Sequence:\n   payload = [+ missing-block-number]\n   ; A unique block number not received:\n   missing-block-number = uint\n\n             Figure 1: Structure of the Missing Blocks Payload\n\n   This CDDL syntax MUST be followed"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "6 of [RFC7252], then the\n   number of reported missing blocks MUST be limited so that the\n   response can fit into a single packet"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "MUST",
+    "text": "The missing blocks MUST be reported in ascending order without any\n   duplicates"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "SHOULD",
+    "text": "The client SHOULD silently drop 4"
+  },
+  {
+    "section": "5.  The Use of the 4.08 (Request Entity Incomplete) Response Code",
+    "keyword": "SHOULD",
+    "text": "08 (Request Entity Incomplete) response with content type\n   \"application/missing-blocks+cbor-seq\" SHOULD NOT be used when using\n   Confirmable requests or a reliable connection [RFC8323], as the\n   client will be able to determine that there is a transmission failure\n   of a particular payload and hence that the server is missing that\n   payload"
+  },
+  {
+    "section": "7.  Congestion Control for Unreliable Transports",
+    "keyword": "MUST",
+    "text": "The transmission of all the blocks of a single body over an\n   unreliable transport MUST either all be Confirmable or all be Non-\n   confirmable"
+  },
+  {
+    "section": "7.1.  Confirmable (CON)",
+    "keyword": "SHOULD",
+    "text": "2 of [RFC7252]), it is\n   implementation specific as to whether there should be any further\n   requests for missing data"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "MAY",
+    "text": "Note: Randomness may naturally be provided based on the traffic\n      profile, how PROBING_RATE is computed (as this is an average), and\n      when the peer responds"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "MAX_PAYLOADS should be configurable with a default value of 10"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "MUST",
+    "text": "Both\n   CoAP endpoints MUST have the same value (otherwise, there will be\n   transmission delays in one direction), and the value MAY be\n   negotiated between the endpoints to a common value by using a higher-\n   level protocol (out of scope of this document)"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "MUST",
+    "text": "NON_RECEIVE_TIMEOUT MUST always be greater than NON_TIMEOUT_RANDOM by\n   at least one second so that the sender of the payloads has the\n   opportunity to start sending the next MAX_PAYLOADS_SET before the\n   receiver times out"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "MUST",
+    "text": "2 of [RFC7252]) but with ACK_TIMEOUT\n   and MAX_RETRANSMIT substituted with NON_TIMEOUT and\n   NON_MAX_RETRANSMIT, respectively:\n\n      NON_PARTIAL_TIMEOUT = NON_TIMEOUT * ((2 ** NON_MAX_RETRANSMIT) -\n      1) * ACK_RANDOM_FACTOR + (2 * MAX_LATENCY) + NON_TIMEOUT\n\n                +=====================+===================+\n                | Parameter Name      | Default Value     |\n                +=====================+===================+\n                | MAX_PAYLOADS        | 10                |\n                +---------------------+-------------------+\n                | NON_MAX_RETRANSMIT  | 4                 |\n                +---------------------+-------------------+\n                | NON_TIMEOUT         | 2 s               |\n                +---------------------+-------------------+\n                | NON_TIMEOUT_RANDOM  | between 2-3 s     |\n                +---------------------+-------------------+\n                | NON_RECEIVE_TIMEOUT | 4 s               |\n                +---------------------+-------------------+\n                | NON_PROBING_WAIT    | between 247-248 s |\n                +---------------------+-------------------+\n                | NON_PARTIAL_TIMEOUT | 247 s             |\n                +---------------------+-------------------+\n\n                   Table 3: Congestion Control Parameters\n\n   The PROBING_RATE parameter in CoAP indicates the average data rate\n   that must not be exceeded by a CoAP endpoint in sending to a peer\n   endpoint that does not respond"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "MUST",
+    "text": "As the sending of many payloads of a single body may itself cause\n   congestion, after transmission of every MAX_PAYLOADS_SET of a single\n   body, a delay of NON_TIMEOUT_RANDOM MUST be introduced before sending\n   the next MAX_PAYLOADS_SET, unless a 'Continue' is received from the\n   peer for the current MAX_PAYLOADS_SET, in which case the next\n   MAX_PAYLOADS_SET MAY start transmission immediately"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "08 (Request Entity\n   Incomplete) response code, then the missing payloads SHOULD be\n   retransmitted before going into another NON_TIMEOUT_RANDOM delay\n   prior to sending the next set of payloads"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "For the server receiving NON Q-Block1 requests, it SHOULD send back a\n   2"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "If not all of the MAX_PAYLOADS_SET\n   were received, the server SHOULD delay for NON_RECEIVE_TIMEOUT\n   (exponentially scaled based on the repeat request count for a\n   payload) before sending the 4"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "31 (Continue) response code had been sent, but no\n   more payloads were received for NON_RECEIVE_TIMEOUT (exponentially\n   scaled), the server SHOULD send a 4"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "08 (Request Entity Incomplete) exceeds\n   NON_MAX_RETRANSMIT, the server SHOULD discard the partial body and\n   stop requesting the missing payloads"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "On receipt of a payload from\n   the next MAX_PAYLOADS_SET, the server SHOULD send a 4"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "08 (Request\n   Entity Incomplete) response code, the client SHOULD send the missing\n   payloads before continuing to send the remainder of the\n   MAX_PAYLOADS_SET and then go into another NON_TIMEOUT_RANDOM delay\n   prior to sending the next MAX_PAYLOADS_SET"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "For the client receiving NON Q-Block2 responses, it SHOULD send a\n   'Continue' Q-Block2 request (Section 4"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "Otherwise, the client SHOULD delay for NON_RECEIVE_TIMEOUT\n   (exponentially scaled based on the repeat request count for a\n   payload) before sending the request for the missing payload(s)"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "If\n   the repeat request count for a missing payload exceeds\n   NON_MAX_RETRANSMIT, the client SHOULD discard the partial body and\n   stop requesting the missing payloads"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD recognize the 'Continue' Q-Block2 request per the\n   definition in Section 4"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "Upon receipt of a payload\n   from the new MAX_PAYLOADS_SET, the client SHOULD send a request\n   indicating any missing payloads from any previous MAX_PAYLOADS_SET"
+  },
+  {
+    "section": "7.2.  Non-confirmable (NON)",
+    "keyword": "SHOULD",
+    "text": "Upon receipt of such a request, the server SHOULD send the missing\n   payloads before continuing to send the remainder of the\n   MAX_PAYLOADS_SET and then go into another NON_TIMEOUT_RANDOM delay\n   prior to sending the next MAX_PAYLOADS_SET"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "MAY",
+    "text": "The onward\n   transmission of the body does not require the use of the Q-Block1 or\n   Q-Block2 options, as these options may not be supported in that link"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "MUST",
+    "text": "This means that the proxy must fully support the Q-Block1 and\n   Q-Block2 options"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "SHOULD",
+    "text": "For the onward transmission of the body using\n   CoAP, a new Request-Tag SHOULD be generated and used"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "SHOULD",
+    "text": "Ideally, this\n   new Request-Tag should replace the Request-Tag used by the client"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "MUST",
+    "text": "A proxy that supports the Q-Block2 option MUST be prepared to receive\n   a GET or similar request indicating one or more missing blocks"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "MUST",
+    "text": "If a body matching the cache key is not\n   available in the cache, the proxy MUST request the entire body from\n   the CoAP server using the information in the cache key"
+  },
+  {
+    "section": "8.  Caching Considerations",
+    "keyword": "MAY",
+    "text": ", it may be based on Max-Age)"
+  },
+  {
+    "section": "10.1.3.  Handling MAX_PAYLOADS with Recovery",
+    "keyword": "SHOULD",
+    "text": "The token used in the response should be the\n   token that was used in the last received payload"
+  },
+  {
+    "section": "11.  Security Considerations",
+    "keyword": "SHOULD",
+    "text": "Security considerations discussed in Section 7 of [RFC7959] should be\n   taken into account"
+  },
+  {
+    "section": "11.  Security Considerations",
+    "keyword": "SHOULD",
+    "text": "4 of\n   [RFC7252] should also be taken into account"
+  },
+  {
+    "section": "11.  Security Considerations",
+    "keyword": "MAY",
+    "text": "1 of [RFC8613],\n   applications need to consider that certain message fields and message\n   types are not protected end to end and may be spoofed or manipulated"
+  },
+  {
+    "section": "12.2.  Media Type Registration",
+    "keyword": "MUST",
+    "text": "Type name:  application\n\n   Subtype name:  missing-blocks+cbor-seq\n\n   Required parameters:  N/A\n\n   Optional parameters:  N/A\n\n   Encoding considerations:  Must be encoded as a CBOR Sequence\n      [RFC8742], as defined in Section 5 of RFC 9177"
+  },
+  {
+    "section": "13.1.  Normative References",
+    "keyword": "MAY",
+    "text": "17487/RFC8174,\n              May 2017, <https://www"
+  },
+  {
+    "section": "13.2.  Informative References",
+    "keyword": "SHOULD",
+    "text": "04\n     |          |\n\n     Figure 19: Example of a Reliable Request with the Q-Block1 Option\n\n   If transient network losses are possible, then the use of unreliable\n   transport with NON should be considered"
+  },
+  {
+    "section": "13.2.  Informative References",
+    "keyword": "SHOULD",
+    "text": "|\n\n        Figure 20: Example of Notifications with the Q-Block2 Option\n\n   If transient network losses are possible, then the use of unreliable\n   transport with NON should be considered"
+  }
+]

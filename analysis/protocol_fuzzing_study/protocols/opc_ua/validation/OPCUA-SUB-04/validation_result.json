@@ -1,0 +1,43 @@
+{
+  "id": "OPCUA-SUB-04",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {},
+  "additional_negative_results": {
+    "early_keepalive": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "disabled_keepalive_window_started",
+    "notification_response_while_disabled",
+    "keepalive_response_while_disabled",
+    "disabled_keepalive_generation_cancelled"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 19,
+  "positive_edges": 724,
+  "positive_clocks": 2,
+  "negative_locations": 11,
+  "negative_edges": 364,
+  "negative_clocks": 2,
+  "build_ms": 21,
+  "monitor_ms_positive": 1,
+  "monitor_ms_negative": 1,
+  "status": "PASS"
+}

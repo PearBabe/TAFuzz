@@ -1,0 +1,274 @@
+{
+  "clock_semantics": {
+    "boundary": "host receive time is not an internal firmware event timestamp",
+    "host_clock": "CLOCK_MONOTONIC_NS",
+    "host_clock_meaning": "harness ordering and observation-window boundaries only",
+    "onboard_time_fields": {
+      "ATTITUDE": [
+        "time_boot_ms"
+      ],
+      "BATTERY_STATUS": [
+        "time_remaining"
+      ],
+      "GLOBAL_POSITION_INT": [
+        "time_boot_ms"
+      ],
+      "GPS_RAW_INT": [
+        "time_usec"
+      ],
+      "SYSTEM_TIME": [
+        "time_unix_usec",
+        "time_boot_ms"
+      ]
+    }
+  },
+  "features": [
+    {
+      "absolute_tolerance": 0.0001,
+      "feature": "att.pitch",
+      "result_group": "pitch",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.0001,
+      "feature": "att.pitchspeed",
+      "result_group": "pitch",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.0001,
+      "feature": "att.roll",
+      "result_group": "roll",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.0001,
+      "feature": "att.rollspeed",
+      "result_group": "roll",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.0001,
+      "feature": "att.yaw",
+      "result_group": "yaw",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.0001,
+      "feature": "att.yawspeed",
+      "result_group": "yaw",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.001,
+      "feature": "battery.voltage",
+      "result_group": "status",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.5,
+      "feature": "event.gcs_failsafe_observed_latency",
+      "result_group": "status",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "global.lat",
+      "result_group": "position",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "global.lon",
+      "result_group": "position",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "global.vertical_speed",
+      "result_group": "altitude",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.001,
+      "feature": "gps.alt",
+      "result_group": "altitude",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "gps.satellites_visible",
+      "result_group": "GPS",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "heartbeat.armed",
+      "result_group": "status",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "heartbeat.custom_mode",
+      "result_group": "status",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "heartbeat.system_status",
+      "result_group": "status",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "mission.count",
+      "result_group": "mission",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "nav.nav_bearing",
+      "result_group": "yaw",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "nav.nav_pitch",
+      "result_group": "pitch",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "nav.nav_roll",
+      "result_group": "roll",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "nav.reference_airspeed",
+      "result_group": "speed",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "nav.reference_alt",
+      "result_group": "altitude",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "rc.chan1_raw",
+      "result_group": "roll",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "rc.chan2_raw",
+      "result_group": "pitch",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "rc.chan3_raw",
+      "result_group": "throttle",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "rc.chan4_raw",
+      "result_group": "yaw",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "vfr.airspeed",
+      "result_group": "speed",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "vfr.alt",
+      "result_group": "altitude",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "vfr.climb",
+      "result_group": "altitude",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 0.01,
+      "feature": "vfr.groundspeed",
+      "result_group": "speed",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "vfr.heading",
+      "result_group": "yaw",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    },
+    {
+      "absolute_tolerance": 1.0,
+      "feature": "vfr.throttle",
+      "result_group": "throttle",
+      "tolerance_source": "MAVLink field resolution or explicit state registry"
+    }
+  ],
+  "legacy_group_by_index": {
+    "0": "roll",
+    "1": "pitch",
+    "10": "position",
+    "11": "altitude",
+    "12": "roll",
+    "13": "pitch",
+    "14": "yaw",
+    "15": "roll",
+    "16": "pitch",
+    "17": "yaw",
+    "18": "roll",
+    "19": "pitch",
+    "2": "throttle",
+    "20": "yaw",
+    "21": "altitude",
+    "22": "speed",
+    "23": "status",
+    "24": "gyro",
+    "25": "accel",
+    "26": "baro",
+    "27": "GPS",
+    "28": "parachute",
+    "29": "pre_arm",
+    "3": "yaw",
+    "30": "mission",
+    "31": "GPS",
+    "32": "altitude",
+    "33": "altitude",
+    "4": "speed",
+    "5": "speed",
+    "6": "yaw",
+    "7": "throttle",
+    "8": "altitude",
+    "9": "position"
+  },
+  "legacy_raw_state_count": 34,
+  "legacy_result_groups": [
+    "roll",
+    "pitch",
+    "throttle",
+    "yaw",
+    "speed",
+    "altitude",
+    "position",
+    "status",
+    "gyro",
+    "accel",
+    "baro",
+    "GPS",
+    "parachute",
+    "pre_arm",
+    "mission"
+  ],
+  "schema_version": "1.0"
+}

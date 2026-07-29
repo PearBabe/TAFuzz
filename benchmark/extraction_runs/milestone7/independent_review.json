@@ -1,0 +1,430 @@
+{
+  "schema_version": "1.0",
+  "audit_id": "TAFUZZ-M7-INDEPENDENT-EVIDENCE-CLOSURE",
+  "generated_at": "2026-07-18T08:23:39+08:00",
+  "snapshot_kind": "POST_SEMANTIC_CORRECTION_PRE_ENRICHMENT_SNAPSHOT",
+  "snapshot_note": "This audit records the 13 property definitions after the final claims audit corrected two implementation-semantic bleed findings and before regenerated Milestone-7 enrichment. It intentionally stores no property-JSON hash because those records are regenerated; property_id, local path, formula text/status, and immutable frozen-source locators are the comparison keys.",
+  "reviewer": {
+    "reviewer_type": "AUTOMATED_INDEPENDENT_AUDIT",
+    "identity": "/root/adgfuzz_spec_audit",
+    "is_human": false,
+    "human_reviewer_count": 0,
+    "arbitration_performed": false,
+    "acceptance_claimed": false,
+    "decision": "NOT_PERFORMED",
+    "note": "This is not either of the two required human reviews and is not an ACCEPTED/REJECTED arbitration decision. PASS is only a gate-local evidence result."
+  },
+  "scope": {
+    "systems": ["ArduPilot", "PX4"],
+    "property_count": 13,
+    "atomic_proposition_count": 46,
+    "source_binding_count": 227,
+    "mavlink_observation_count": 77,
+    "implementation_satisfaction": "NOT_ASSESSED",
+    "write_scope": [
+      "benchmark/extraction_runs/milestone7/independent_review.json",
+      "benchmark/extraction_runs/milestone7/independent_review.md"
+    ]
+  },
+  "status_vocabulary": {
+    "PASS": "Gate-local evidence is closed in the inspected snapshot; this is not acceptance.",
+    "CANDIDATE": "Usable only as an explicitly low-authority, inactive, or provisional candidate.",
+    "NEEDS_CONTEXT": "Normative context, exception scope, event semantics, or formalization is unresolved.",
+    "NEEDS_BINDING": "Exact AP truth, source-to-AP identity, clock-aligned observation, or trace projection is not closed.",
+    "UNSUPPORTED": "The current artifact cannot enter this gate, for example no concrete formula or direct parser incompatibility."
+  },
+  "overall_status_counts": {
+    "PASS": 0,
+    "CANDIDATE": 1,
+    "NEEDS_CONTEXT": 12,
+    "NEEDS_BINDING": 0,
+    "UNSUPPORTED": 0
+  },
+  "common_evidence": {
+    "property_schema": "benchmark/schemas/property.schema.json",
+    "ardupilot_binding_audit": "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+    "px4_binding_audit": "benchmark/extraction_runs/milestone5/px4_binding_audit.json",
+    "mavlink_ap_audit": "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+    "source_binding_validation": "benchmark/extraction_runs/milestone5/source_binding_validation_summary.json",
+    "runtime_evidence": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+    "runtime_message_support": "benchmark/extraction_runs/milestone6/runtime_message_support_matrix.csv",
+    "runtime_time_fields": "benchmark/extraction_runs/milestone6/runtime_time_field_observations.csv",
+    "mitl_grammar": "tool/MightyPPL/Mitl.g4:14",
+    "trace_parser": "src/TAMonitor/TraceParser.cpp:46",
+    "monitor_runner": "src/TAMonitor/MonitorRunner.cpp:17"
+  },
+  "validation_runs": [
+    {
+      "command": "python3 benchmark/scripts/validate_property_catalog.py --stage 6",
+      "exit_code": 0,
+      "result": "PASS: properties=13 atomic_propositions=46 time_contracts=13; 15 runtime instances; 8 concrete properties"
+    },
+    {
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "exit_code": 0,
+      "result": "PASS: captures=4 statuses={COMPLETE:4} property_parameters=15 implementation=NOT_ASSESSED"
+    },
+    {
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "exit_code": 0,
+      "result": "PASS: properties=13 APs=46 bindings=227 observations=77 clangd=False"
+    },
+    {
+      "command": "python3 benchmark/scripts/validate_milestone6.py",
+      "exit_code": 0,
+      "result": "PASS: aggregate checks=1035; the side-effecting MAVLink catalog subvalidator was correctly NOT_RUN"
+    }
+  ],
+  "monitor_smoke": {
+    "tamonitor": {
+      "path": "tool/MightyPPL/build/TAMonitor",
+      "sha256": "e2dc4f9a77c49fe900e80d544078d9215c01d894a9396e689dd6fab6dd91d7f4"
+    },
+    "mitppl": {
+      "path": "tool/MightyPPL/build/mitppl",
+      "sha256": "8e2ae06959eec8d3624eb1ce1923cce03c9115790075f317e16658ed933c7951"
+    },
+    "concrete_property_ids": [
+      "ARD-COPTER-GCS-001",
+      "ARD-COPTER-GUID-002",
+      "ARD-COPTER-RTL-003",
+      "ARD-ROVER-CRASH-002",
+      "ARD-ROVER-RCFS-001",
+      "ARD-SHARED-BATT-001",
+      "PX4-MC-GCSLOSS-002",
+      "PX4-MC-RCLOSS-001"
+    ],
+    "catalog_formula_parse": {
+      "passed": 0,
+      "attempted": 8,
+      "reason": "Mitl.g4 requires &&/||, a modality immediately followed by an interval, integer bounds, and a parenthesized negated atom when it is the operand of G/F; catalog formulas use single &, G_/F_, decimal seconds in two formulas, and unparenthesized !atom."
+    },
+    "explicit_translation_build_only": {
+      "passed": 8,
+      "attempted": 8,
+      "satisfiability": "SAT for all eight positive formulas",
+      "translation": [
+        "replace single & and | with && and ||",
+        "remove the underscore between modality and interval",
+        "scale every interval bound from seconds to integer milliseconds",
+        "parenthesize a negated AP used directly under a temporal modality"
+      ],
+      "claim_limit": "A successful transformed build-only run is not parser validation of the catalog text, semantic-equivalence proof, non-tautology, non-vacuity, trace validation, or conformance."
+    },
+    "trace_smoke": {
+      "status": "UNVALIDATED_SEMANTICS",
+      "accepted_input_shapes": ["@time props", "time,props", "[low,high],props", "bits:..."],
+      "clock_limit": "TraceParser.cpp accepts unsigned integer time atoms only; a campaign must select and document one integer tick unit and one clock domain.",
+      "verdicts": ["POSITIVE", "NEGATIVE", "INCONCLUSIVE"],
+      "finding": "A representative finite GCS trace that sets the antecedent and gcs_failsafe_event together at time 0 still ended POSITIVE under the current runner. Under the intended point-valuation reading this appears to be an early-event counterexample, so the trace/finite-word interpretation requires calibrated oracle tests before any verdict is trusted.",
+      "temporary_output": "/tmp only; no smoke-test output was persisted in the workspace"
+    }
+  },
+  "gate_status_counts": {
+    "source_authority_version": {"PASS": 6, "CANDIDATE": 1, "NEEDS_CONTEXT": 6, "NEEDS_BINDING": 0, "UNSUPPORTED": 0},
+    "quote_context": {"PASS": 8, "CANDIDATE": 2, "NEEDS_CONTEXT": 3, "NEEDS_BINDING": 0, "UNSUPPORTED": 0},
+    "requirement_ir_exceptions": {"PASS": 4, "CANDIDATE": 3, "NEEDS_CONTEXT": 6, "NEEDS_BINDING": 0, "UNSUPPORTED": 0},
+    "event_relation_logic": {"PASS": 0, "CANDIDATE": 1, "NEEDS_CONTEXT": 11, "NEEDS_BINDING": 0, "UNSUPPORTED": 1},
+    "time_value_domain_unit_clock": {"PASS": 10, "CANDIDATE": 0, "NEEDS_CONTEXT": 3, "NEEDS_BINDING": 0, "UNSUPPORTED": 0},
+    "ap_truth_source_bindings": {"PASS": 9, "CANDIDATE": 0, "NEEDS_CONTEXT": 0, "NEEDS_BINDING": 4, "UNSUPPORTED": 0},
+    "mavlink_observation_conditions": {"PASS": 0, "CANDIDATE": 0, "NEEDS_CONTEXT": 0, "NEEDS_BINDING": 13, "UNSUPPORTED": 0},
+    "implementation_provenance": {"PASS": 12, "CANDIDATE": 1, "NEEDS_CONTEXT": 0, "NEEDS_BINDING": 0, "UNSUPPORTED": 0},
+    "monitor_readiness": {"PASS": 0, "CANDIDATE": 0, "NEEDS_CONTEXT": 0, "NEEDS_BINDING": 0, "UNSUPPORTED": 13}
+  },
+  "properties": [
+    {
+      "property_id": "ARD-COPTER-GCS-001",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-COPTER-GCS-001.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((gcs_heartbeat_gap_start & gcs_heartbeat_seen_before & gcs_fs_enabled) -> (G_[0,5) !gcs_failsafe_event & F_[5,infty) gcs_failsafe_event))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "NEEDS_CONTEXT", "evidence": ["property#/sources/0", "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/gcs-failsafe.rst:8", "property#/sources/1"], "blockers": ["The behavioral source is HIGH but MAIN_ONLY and is not release-paired to firmware commit 8f2e5d..."], "recommendation": "Pair the wiki revision to the frozen firmware release/commit or retain the property below review-ready."},
+        "quote_context": {"status": "PASS", "evidence": ["property#/sources/0/exact_quote"], "blockers": [], "recommendation": "Keep the four-sentence quote because it contains heartbeat trigger, FS_GCS_TIMEOUT, event, and never-connected exception."},
+        "requirement_ir_exceptions": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir/trigger", "property#/requirement_ir/scope_start", "property#/requirement_ir/exceptions", "property#/context_graph/unresolved_references"], "blockers": ["The normative trigger/reset is now source-faithful designated-GCS heartbeat, but exact enable/applicability and configuration-cancel semantics still lack version-paired official evidence."], "recommendation": "Retain heartbeat wording and obtain current-version official evidence for enable, mode exceptions, and cancellation before promotion."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir/event_relations", "property#/time_contracts/0/reset_event", "property#/mitl/concrete"], "blockers": ["The formula fires on heartbeat-gap start but does not encode reset by a new designated heartbeat or cancellation before T, so it can demand a later failsafe after the gap has ended."], "recommendation": "Encode continued-heartbeat-gap eligibility/cancel semantics in MITL or define and validate a trace slicer that terminates the obligation on reset."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0", "benchmark/extraction_runs/milestone6/ArduPilot/runs/Copter/parameters.json#FS_GCS_TIMEOUT"], "blockers": [], "recommendation": "Use runtime 5 s and instrument AP_HAL::millis at the exact heartbeat handler; the shared aggregate last-seen value is MODELLED only. Retain INCONCLUSIVE at sampling-sensitive equality and never substitute host arrival time."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#atomic_propositions/ARD-COPTER-GCS-001-*"], "blockers": [], "recommendation": "Use the exact heartbeat consumer for normative event identity; retain RC override/manual-control/shared-last-seen paths only as MODELLED implementation conflicts, and distinguish canonical failsafe.gcs from text/status consequences."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/mavlink_observations", "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json#ARD-COPTER-GCS-001-*"], "blockers": ["gcs_heartbeat_gap_start and the GCS-specific event require instrumentation; HEARTBEAT and STATUSTEXT have no exact event timestamp or cause identity.", "The aggregate last-seen implementation state is not heartbeat-exclusive."], "recommendation": "Instrument the designated-heartbeat handler and failsafe.gcs edge in the autopilot boot clock; use MAVLink only for controlled input history and corroboration."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/requirement_ir/trigger", "property#/atomic_propositions/0/source_bindings"], "blockers": [], "recommendation": "The Requirement IR is now heartbeat-specific. Preserve the explicit MODELLED labels on non-heartbeat refresh paths so later binding work cannot broaden the requirement."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax", "tool/MightyPPL/Mitl.g4:14"], "blockers": ["At this pre-enrichment snapshot the presentation formula required the recorded deterministic monitor-syntax transform; the later Stage-7 transformed trace suite is a separate gate."], "recommendation": "Retain the versioned monitor_syntax transform and its Stage-7 positive/negative/reset/boundary evidence; do not describe the presentation-syntax probe as the final monitor result."}
+      },
+      "blockers": ["MAIN_ONLY version gap", "enable/cancel context not version-closed", "heartbeat reset/cancel omitted from standalone formula", "heartbeat-exclusive internal AP observation absent", "presentation formula requires the recorded deterministic monitor-syntax transform"],
+      "recommendation": "Keep NEEDS_CONTEXT: the normative heartbeat trigger is corrected, while version, applicability, reset/cancel, and exact heartbeat-only observation gates remain open."
+    },
+    {
+      "property_id": "ARD-COPTER-GUID-002",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-COPTER-GUID-002.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((guided_gap_start & guided_variant_active) -> (G_[0,3) !timeout_response_started & F_[3,infty) timeout_response_started))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "NEEDS_CONTEXT", "evidence": ["property#/sources/0", "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/ac2_guidedmode.rst:115", "property#/sources/1"], "blockers": ["HIGH behavioral source is MAIN_ONLY rather than release-paired."], "recommendation": "Establish the wiki-to-firmware version relationship."},
+        "quote_context": {"status": "PASS", "evidence": ["property#/sources/0/exact_quote"], "blockers": [], "recommendation": "The quote correctly carries applicable command families, timeout, and the two response variants; retain the explicit absence of a completion bound."},
+        "requirement_ir_exceptions": {"status": "PASS", "evidence": ["property#/requirement_ir", "property#/context_graph/unresolved_references"], "blockers": [], "recommendation": "Continue splitting attitude and velocity/acceleration variants; do not invent a stopped/level completion deadline."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0/reset_event", "property#/time_contracts/0/cancel_event", "property#/mitl/concrete"], "blockers": ["A new applicable Guided command or exit from Guided ends the gap, but the formula still requires a future timeout response after a single gap_start."], "recommendation": "Add continued-gap/scope eligibility or formally validated obligation slicing."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Use runtime GUID_TIMEOUT=3 s on vehicle receipt millis; sender time_boot_ms is not the anchor."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#ARD-COPTER-GUID-002-*"], "blockers": [], "recommendation": "Keep all command consumers, controller-specific update_time_ms writes, submode values, and response-start sites."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["Transmitted setpoints do not prove acceptance; exact gap start and timeout-response start are internal.", "Outgoing target messages do not identify why the target changed."], "recommendation": "Instrument accepted update_time_ms and the first timeout response branch in one boot clock."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep source implementation confined to AP binding and variant coverage."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax", "tool/MightyPPL/Mitl.g4:14"], "blockers": ["Direct parse fails and no AP trace adapter exists."], "recommendation": "Compile to integer-tick monitor syntax and validate reset, each variant, early response, on-bound response, and no-response traces."}
+      },
+      "blockers": ["MAIN_ONLY version gap", "reset/cancel not represented", "internal acceptance/response APs", "monitor syntax and trace adapter absent"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT until scope-reset logic is monitor-explicit; preserve the source-backed choice not to invent a completion upper bound."
+    },
+    {
+      "property_id": "ARD-COPTER-RTL-003",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-COPTER-RTL-003.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G(enter_loiter_at_home -> (G_[0,5] rtl_loiter_eligible -> (G_[0,5) !begin_final_descent & F_[5,infty) begin_final_descent)))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "NEEDS_CONTEXT", "evidence": ["property#/sources/0", "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/rtl-mode.rst:65", "property#/sources/1"], "blockers": ["HIGH wiki source is MAIN_ONLY."], "recommendation": "Pair the documentation revision to the firmware snapshot."},
+        "quote_context": {"status": "PASS", "evidence": ["property#/sources/0/exact_quote"], "blockers": [], "recommendation": "The compact quote states location, pause, milliseconds, and final descent."},
+        "requirement_ir_exceptions": {"status": "CANDIDATE", "evidence": ["property#/requirement_ir/scope_end", "property#/requirement_ir/event_relations"], "blockers": ["Leaving RTL/non-landing cancellation is operationally necessary but is not explicit in the selected quote."], "recommendation": "Add official Return-mode context for cancellation/path exceptions or label them as monitor scoping assumptions."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0/cancel_event", "property#/mitl/concrete"], "blockers": ["rtl_loiter_eligible is required only through T; leaving RTL after T but before descent does not cancel the unbounded eventual descent obligation."], "recommendation": "Represent cancellation until the response occurs, or prove trace slicing semantics."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Retain the explicit 5000 ms runtime to 5 s formula conversion and vehicle sub-state-entry clock."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#ARD-COPTER-RTL-003-*"], "blockers": [], "recommendation": "Bindings correctly identify internal RTL substate transitions rather than coarse vehicle mode."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["All three APs require instrumentation; HEARTBEAT custom_mode only proves coarse RTL and has no timestamp."], "recommendation": "Expose substate entry, eligibility/cancel, and final-descent entry in the same boot clock."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep substate code as binding only."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax"], "blockers": ["Direct syntax fails; no substate trace exists."], "recommendation": "Compile syntax and add leave-RTL-before-T, leave-after-T, exact-T, and descent traces."}
+      },
+      "blockers": ["MAIN_ONLY version gap", "cancellation is not closed in source/formula", "all APs internal", "monitor syntax unsupported"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT; after official cancellation context is added, the remaining principal blocker is internal substate binding at runtime."
+    },
+    {
+      "property_id": "ARD-PLANE-TAKEOFF-001",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-PLANE-TAKEOFF-001.json",
+      "catalog_status_observed": "CANDIDATE",
+      "audit_status": "CANDIDATE",
+      "formula_observed": null,
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "CANDIDATE", "evidence": ["property#/sources/0", "baseline/ardupilot/ArduPlane/Parameters.cpp:1113"], "blockers": ["The only requirement source is LOW PARAM_METADATA inside the tested implementation."], "recommendation": "Do not promote without an independent official behavior source."},
+        "quote_context": {"status": "CANDIDATE", "evidence": ["property#/sources/0/exact_quote"], "blockers": ["The comment is complete but low-authority."], "recommendation": "Retain the full comment because it carries automatic takeoff, 4 m/s, timeout, abort/disarm, and zero-disable domain."},
+        "requirement_ir_exceptions": {"status": "CANDIDATE", "evidence": ["property#/requirement_ir", "property#/context_graph/unresolved_references"], "blockers": ["Automatic-takeoff start and leave-takeoff scope are not independently documented."], "recommendation": "Keep this as PARAM_METADATA_CANDIDATE and state monitor scoping assumptions."},
+        "event_relation_logic": {"status": "CANDIDATE", "evidence": ["property#/mitl/symbolic", "property#/time_contracts/0/cancel_event"], "blockers": ["The symbolic formula represents sustained low speed but does not explicitly encode leave-takeoff cancellation, and abort-to-disarm has no numeric upper bound."], "recommendation": "Preserve qualitative eventually-disarmed only; add cancellation before any active formula."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Runtime TKOFF_TIMEOUT=0 is source-backed disabled; do not generate a zero-second active formula."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#ARD-PLANE-TAKEOFF-001-*"], "blockers": [], "recommendation": "Maintain separate start, enable, ground-speed, abort, and disarm bindings."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["Automatic-takeoff start and abort are internal; GPS_RAW_INT.vel is conditional and its time_usec is not the takeoff clock."], "recommendation": "Instrument start and abort; correlate ground speed in the vehicle boot clock."},
+        "implementation_provenance": {"status": "CANDIDATE", "evidence": ["property#/sources/0/source_class"], "blockers": ["A source comment from the SUT is the sole requirement origin, creating direct circularity risk."], "recommendation": "Do not claim this tests an independently specified property until an external normative source is found."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/concrete", "property#/mitl/concrete_instances/0/status"], "blockers": ["Current profile disables the timeout and has no concrete formula."], "recommendation": "Capture an explicitly enabled profile only after source promotion and AP instrumentation."}
+      },
+      "blockers": ["sole LOW implementation metadata source", "current runtime disables property", "internal start/abort APs", "no concrete monitor formula"],
+      "recommendation": "Retain as CANDIDATE only; no acceptance or active benchmark promotion."
+    },
+    {
+      "property_id": "ARD-ROVER-CRASH-002",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-ROVER-CRASH-002.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((crash_condition_start & crash_check_enabled) -> (G_[0,2) !crash_action & F_[2,infty) crash_action))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "NEEDS_CONTEXT", "evidence": ["property#/sources/0", "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/rover/source/docs/rover-failsafes.rst:97", "property#/sources/1"], "blockers": ["HIGH behavioral source is MAIN_ONLY."], "recommendation": "Pair wiki revision with firmware snapshot."},
+        "quote_context": {"status": "PASS", "evidence": ["property#/sources/0/exact_quote"], "blockers": [], "recommendation": "The quote is necessarily longer because it carries all four conjuncts, duration, actions, and the separate immediate angle alternative."},
+        "requirement_ir_exceptions": {"status": "PASS", "evidence": ["property#/requirement_ir"], "blockers": [], "recommendation": "Continue excluding the immediate CRASH_ANGLE alternative from this timed property and keep condition-break reset."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir/event_relations", "property#/time_contracts/0/reset_event", "property#/mitl/concrete"], "blockers": ["The source requires all conditions continuously for T, but the formula only observes crash_condition_start and never cancels when any conjunct breaks."], "recommendation": "Add sustained crash_condition eligibility/reset to the formula or validate per-obligation trace slicing."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Use runtime CRASH_TIMEOUT=2 s and a single vehicle-side instrumentation clock."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#ARD-ROVER-CRASH-002-*"], "blockers": [], "recommendation": "The grouped bindings correctly preserve mode, velocity, turn rate, demanded throttle, enable, and action sites."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/mavlink_observations"], "blockers": ["VFR_HUD has no timestamp while ATTITUDE uses vehicle time_boot_ms; the exact same-sample conjunction cannot be reconstructed from wire messages.", "Demanded throttle and exact crash action are not directly represented."], "recommendation": "Emit the conjunction edge and action from a vehicle-side probe."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep implementation thresholds and sites as bindings, not proof of satisfaction."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax"], "blockers": ["Direct parse fails and no conjunction-reset trace exists."], "recommendation": "Add reset-before-T, exact-T, angle-only exclusion, and multi-stream-skew tests after syntax compilation."}
+      },
+      "blockers": ["MAIN_ONLY version gap", "continuous conjunction reset omitted", "wire clock mismatch", "monitor syntax unsupported"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT until the continuous-condition semantics are formalized."
+    },
+    {
+      "property_id": "ARD-ROVER-RCFS-001",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-ROVER-RCFS-001.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((low_throttle_start & valid_rc_frames & throttle_fs_enabled) -> (G_[0,1.5) !configured_failsafe_action & F_[1.5,infty) configured_failsafe_action))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "NEEDS_CONTEXT", "evidence": ["property#/sources/0", "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/rover/source/docs/rover-failsafes.rst:15", "property#/sources/1"], "blockers": ["HIGH behavioral source is MAIN_ONLY."], "recommendation": "Version-pair the wiki to firmware."},
+        "quote_context": {"status": "PASS", "evidence": ["property#/sources/0/exact_quote", "property#/sources/1/exact_quote"], "blockers": [], "recommendation": "The quotes expose the three loss alternatives and permit this property to isolate the low-throttle branch."},
+        "requirement_ir_exceptions": {"status": "CANDIDATE", "evidence": ["property#/requirement_ir"], "blockers": ["RCMAP_THROTTLE and valid-frame operational detail are not stated in the selected official quote."], "recommendation": "Label channel mapping and frame-validity as observation/scoping assumptions unless official context is added."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0/reset_event", "property#/mitl/concrete"], "blockers": ["The formula does not require throttle to remain below threshold for the full FS_TIMEOUT and does not cancel after recovery."], "recommendation": "Encode sustained low throttle with valid frames and recovery reset."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Use captured FS_TIMEOUT=1.5 s, not the wiki's 1 s default."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#ARD-ROVER-RCFS-001-*"], "blockers": [], "recommendation": "Preserve mapping, valid-frame, enable, threshold, mode, and configured-action bindings."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["All APs are conditional or derived; RC_CHANNELS alone does not establish the internal failsafe timer/action cause."], "recommendation": "Correlate mapped throttle, frame validity, timer reset, and action in vehicle boot time."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep source mappings separate from the normative low-throttle rule."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax"], "blockers": ["Direct formula parse fails; no recovery/reset oracle traces."], "recommendation": "Compile to milliseconds and add below/recover/re-enter and exact-bound tests."}
+      },
+      "blockers": ["MAIN_ONLY version gap", "sustained-threshold/reset omitted", "conditional MAVLink reconstruction", "monitor syntax unsupported"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT until continuous low-throttle semantics are explicit."
+    },
+    {
+      "property_id": "ARD-SHARED-BATT-001",
+      "system": "ArduPilot",
+      "property_path": "benchmark/ArduPilot/properties/ARD-SHARED-BATT-001.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((low_voltage_start & voltage_threshold_enabled) -> (G_[0,10] !battery_failsafe_event & F_(10,infty) battery_failsafe_event))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "NEEDS_CONTEXT", "evidence": ["property#/sources/0", "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/copter/source/docs/failsafe-battery.rst:93", "property#/sources/1"], "blockers": ["HIGH wiki source is MAIN_ONLY."], "recommendation": "Pair it to the frozen firmware version."},
+        "quote_context": {"status": "CANDIDATE", "evidence": ["property#/sources/0/exact_quote", "property#/sources/1/exact_quote"], "blockers": ["The metadata quote is complete but substantially includes unused capacity/critical fields rather than the shortest low-voltage excerpt."], "recommendation": "Split to the minimum LOW_TIMER, FS_VOLTSRC, LOW_VOLT, and selected action spans without losing continuity/disable semantics."},
+        "requirement_ir_exceptions": {"status": "PASS", "evidence": ["property#/requirement_ir", "property#/sources/1/exact_quote"], "blockers": [], "recommendation": "Keep per-battery instance, raw/sag source, zero-disable, continuous-below, and recovery reset."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0/reset_event", "property#/mitl/concrete"], "blockers": ["The source explicitly says continuously below threshold, but the formula lacks continued-low eligibility and recovery reset after low_voltage_start."], "recommendation": "Encode continuous selected-voltage-below-threshold until the event; retain strict greater-than boundary from the quote rather than inventing epsilon."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances"], "blockers": [], "recommendation": "Use captured BATTx_LOW_TIMER=10 s per profile/instance; preserve LOW_TIMER=0 and LOW_VOLT=0 disable domains."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json#ARD-SHARED-BATT-001-*"], "blockers": [], "recommendation": "Keep battery instance identity, selected raw/sag voltage, thresholds, timer, event, and action sites."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["Selected sag-corrected voltage and exact low-voltage event timing are not direct MAVLink fields; BATTERY_STATUS/STATUSTEXT are conditional consequences."], "recommendation": "Instrument selected voltage, per-instance timer start/reset, and event edge."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Use metadata only to parameterize and disambiguate the official behavior, not as implementation-satisfaction evidence."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax"], "blockers": ["Direct syntax fails and per-instance AP traces are absent."], "recommendation": "Add raw/sag, recovery-before-T, exactly-T versus strictly-after-T, and multiple-battery correlation traces."}
+      },
+      "blockers": ["MAIN_ONLY version gap", "continuous-low reset omitted", "selected voltage/event require instrumentation", "monitor syntax unsupported"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT; shorten the quote and repair continuous-condition semantics."
+    },
+    {
+      "property_id": "PX4-MC-AUTODISARM-004",
+      "system": "PX4",
+      "property_path": "benchmark/PX4/properties/PX4-MC-AUTODISARM-004.json",
+      "catalog_status_observed": "NEEDS_CONTEXT",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": null,
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "PASS", "evidence": ["property#/sources/0", "property#/sources/1", "property#/sources/2"], "blockers": [], "recommendation": "Retain both release-pinned official pages and the pinned metadata conflict witness."},
+        "quote_context": {"status": "NEEDS_CONTEXT", "evidence": ["baseline/px4/docs/en/advanced_config/prearm_arm_disarm.md:86", "baseline/px4/docs/en/flight_modes_mc/land.md:23", "baseline/px4/src/modules/commander/commander_params.c:215"], "blockers": ["Official text says -1 disables, while pinned metadata says zero or negative disables."], "recommendation": "Resolve the disable domain with authoritative version-specific documentation; do not silently choose either wording."},
+        "requirement_ir_exceptions": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir", "property#/context_graph/unresolved_references"], "blockers": ["auto_disarm_eligible exceptions are incomplete and cannot be promoted from Commander guards into normative requirements."], "recommendation": "Keep eligibility partial; source each exception or limit the property to a controlled campaign state."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/mitl/symbolic", "property#/time_contracts/0/reset_event"], "blockers": ["The symbolic formula does not cancel on landed becoming false or eligibility loss."], "recommendation": "Add continuous landed/eligible scope and takeoff/re-arm cancellation before concretization."},
+        "time_value_domain_unit_clock": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": ["Runtime 2 s is active, but the global disabled-value domain conflicts across pinned sources."], "recommendation": "It is safe to record 2 s for this capture, but not safe to close the parameter domain or generate a general formula."},
+        "ap_truth_source_bindings": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/1/status", "benchmark/extraction_runs/milestone5/px4_binding_audit.json#PX4-MC-AUTODISARM-004-*"], "blockers": ["auto_disarm_eligible is PARTIALLY_BOUND/UNRESOLVED."], "recommendation": "Close eligibility truth independently of implementation guards or explicitly fix the campaign preconditions."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/mavlink_observations", "benchmark/extraction_runs/milestone6/runtime_message_support_matrix.csv#PX4/EVENT"], "blockers": ["EXTENDED_SYS_STATE landed_state has no embedded timestamp; HEARTBEAT disarm has no reason; EVENT requires event metadata and correlation."], "recommendation": "Use PX4 boot-time EVENT only after event-ID metadata is frozen; otherwise instrument landed edge, eligibility, and disarm reason."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep Commander guards as binding/context conflict evidence, not normative exceptions."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/concrete", "property#/mitl/concrete_instances/0/status"], "blockers": ["No concrete formula by design and eligibility AP is unresolved."], "recommendation": "Do not generate monitor syntax until domain, eligibility, and cancellation are closed."}
+      },
+      "blockers": ["disable-domain source conflict", "eligibility exceptions incomplete", "cancel semantics absent", "PARTIALLY_BOUND AP", "no concrete monitor formula"],
+      "recommendation": "Keep NEEDS_CONTEXT; no rollback supplementation from implementation is allowed."
+    },
+    {
+      "property_id": "PX4-MC-FLIGHTTIME-005",
+      "system": "PX4",
+      "property_path": "benchmark/PX4/properties/PX4-MC-FLIGHTTIME-005.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": null,
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "PASS", "evidence": ["property#/sources/0", "property#/sources/1"], "blockers": [], "recommendation": "Official behavior and parameter metadata are release/commit pinned."},
+        "quote_context": {"status": "PASS", "evidence": ["baseline/px4/docs/en/config/safety.md:96", "baseline/px4/src/modules/commander/commander_params.c:884"], "blockers": [], "recommendation": "The combined excerpt contains takeoff anchor, 90% warning, one-minute repetition, Return at maximum, and -1 disable."},
+        "requirement_ir_exceptions": {"status": "PASS", "evidence": ["property#/requirement_ir"], "blockers": [], "recommendation": "Keep warning and Return obligations separate and retain manual-mode takeover context."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/mitl/symbolic", "property#/sources/1/exact_quote"], "blockers": ["The formula weakens events at 90% and T to unbounded eventually, emits only one warning instead of every minute, and does not encode flight-end cancellation."], "recommendation": "Formalize the first-warning boundary, repeated one-minute warnings, maximum-time Return, and landing/disarm scope separately."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Runtime COM_FLT_TIME_MAX=-1 is an explicit disabled domain; 90% and 60 s repetition both have sources."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/px4_binding_audit.json#PX4-MC-FLIGHTTIME-005-*"], "blockers": [], "recommendation": "Bindings cover takeoff, enabled value, warning event, and Return mode."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/mavlink_observations", "benchmark/extraction_runs/milestone6/runtime_message_support_matrix.csv#PX4/EVENT"], "blockers": ["Takeoff/warning EVENT IDs need frozen metadata; current run only proves EVENT frames exist, not that the required IDs and transitions occurred."], "recommendation": "Capture an enabled flight and event metadata, with EVENT boot time and mode transition correlation."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Do not use the flightTimeCheck implementation as the normative behavior."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/concrete", "property#/mitl/concrete_instances/0/status"], "blockers": ["Current profile disables the property; no concrete formula exists."], "recommendation": "Repair symbolic semantics before capturing a deliberately enabled runtime profile."}
+      },
+      "blockers": ["symbolic formula weakens boundary/repetition semantics", "current runtime disabled", "EVENT IDs not demonstrated", "no concrete monitor formula"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT; source/time evidence is strong, but the formalization is not faithful enough for promotion."
+    },
+    {
+      "property_id": "PX4-MC-GCSLOSS-002",
+      "system": "PX4",
+      "property_path": "benchmark/PX4/properties/PX4-MC-GCSLOSS-002.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((data_link_loss_gap_start & dl_loss_applicable) -> (G_[0,10) !gcs_connection_lost & F_[10,infty) gcs_connection_lost))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "PASS", "evidence": ["property#/sources/0", "property#/sources/1"], "blockers": [], "recommendation": "Sources are release/commit pinned."},
+        "quote_context": {"status": "PASS", "evidence": ["baseline/px4/docs/en/config/safety.md:136", "baseline/px4/src/modules/commander/commander_params.c:86"], "blockers": [], "recommendation": "The official excerpt states telemetry/data-connection loss, timeout, action, and mode exceptions."},
+        "requirement_ir_exceptions": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir/trigger", "property#/sources/0/exact_quote", "property#/context_graph/unresolved_references"], "blockers": ["The IR now preserves telemetry/data-connection loss, but the official source does not define the liveness predicate, connection identity/correlation, or precise restoration event."], "recommendation": "Keep source-faithful data-link wording and obtain an official version-specific event definition before closing the trigger/reset context."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0/reset_event", "property#/mitl/concrete"], "blockers": ["The formula does not require source-defined data-link loss to persist and does not cancel on connection restoration or a configured exception."], "recommendation": "Encode continued loss and cancellation or prove obligation slicing after the normative liveness event is resolved."},
+        "time_value_domain_unit_clock": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": ["Captured COM_DL_LOSS_T=10 s is authoritative for the bound, but the official source does not define the loss-start timestamp carrier or clock."], "recommendation": "Preserve the 10 s runtime value while keeping clock_domain=UNKNOWN; heartbeat HRT and host arrival remain MODELLED candidates only."},
+        "ap_truth_source_bindings": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/px4_binding_audit.json#PX4-MC-GCSLOSS-002-*"], "blockers": ["All current bindings for data_link_loss_gap_start are heartbeat-based MODELLED candidates, not an exact binding to the source-defined telemetry/data-connection event."], "recommendation": "Add an exact version-specific liveness-event identity or retain the AP as PARTIALLY_BOUND/UNRESOLVED."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["No selected MAVLink field proves the source-defined data-link-loss event or its clock.", "Incoming HEARTBEAT has no timestamp and is only a current implementation candidate; exact internal connection-lost edge requires instrumentation and EVENT metadata."], "recommendation": "Resolve the normative connection event first; then bind its timestamp and the connection-lost edge. Do not use controlled heartbeat traffic as proof of normative equivalence."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/requirement_ir/trigger", "property#/atomic_propositions/0/source_bindings"], "blockers": [], "recommendation": "The IR now retains official telemetry/data-connection wording, and every heartbeat/HRT path is explicitly MODELLED implementation evidence only."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax"], "blockers": ["Direct parse fails and the input-gap/event trace projection is absent."], "recommendation": "After source rollback and formula repair, compile syntax and calibrate reset/boundary traces."}
+      },
+      "blockers": ["official data-link liveness predicate/correlation/clock unresolved", "gap reset/cancel omitted", "heartbeat-only source bindings are MODELLED", "exact event observation absent", "monitor syntax unsupported"],
+      "recommendation": "Keep NEEDS_CONTEXT: official data-link wording is restored, while liveness identity, clock, reset/cancel, and exact AP binding remain unresolved."
+    },
+    {
+      "property_id": "PX4-MC-OFFBOARD-003",
+      "system": "PX4",
+      "property_path": "benchmark/PX4/properties/PX4-MC-OFFBOARD-003.json",
+      "catalog_status_observed": "NEEDS_CONTEXT",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": null,
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "PASS", "evidence": ["property#/sources/0", "property#/sources/1", "property#/sources/2"], "blockers": [], "recommendation": "All sources are release/commit pinned."},
+        "quote_context": {"status": "NEEDS_CONTEXT", "evidence": ["baseline/px4/docs/en/flight_modes/offboard.md:5", "baseline/px4/docs/en/flight_modes/offboard.md:24"], "blockers": ["The same frozen document uses continuous 2 Hz, >2 Hz, below 2 Hz, more than one second, and at least one second; equality/inclusivity cannot be chosen consistently."], "recommendation": "Resolve with an authoritative clarification or keep the boundaries symbolic/conflicted."},
+        "requirement_ir_exceptions": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir", "property#/context_graph/unresolved_references"], "blockers": ["Accepted proof stream, admission qualification, and exact rate-window semantics are unresolved."], "recommendation": "Separate admission and post-admission loss requirements and source each accepted message family/exception."},
+        "event_relation_logic": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/symbolic", "property#/mitl/concrete"], "blockers": ["No formula exists by design because the rate boundary is conflicted."], "recommendation": "Do not formalize until equality and one-second boundary are resolved."},
+        "time_value_domain_unit_clock": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": ["COM_OF_LOSS_T=1 s is captured, but it only parameterizes post-admission loss; the 2 Hz and admission-one-second timing remains conflicted."], "recommendation": "Keep the runtime value NOT_FORMALIZED."},
+        "ap_truth_source_bindings": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/1/status", "benchmark/extraction_runs/milestone5/px4_binding_audit.json#PX4-MC-OFFBOARD-003-*"], "blockers": ["offboard_proof_qualified is PARTIALLY_BOUND/UNRESOLVED."], "recommendation": "Close the exact qualification state and boundary independently of the current implementation."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/mavlink_observations", "benchmark/extraction_runs/milestone6/runtime_message_support_matrix.csv#PX4/SET_POSITION_TARGET_LOCAL_NED"], "blockers": ["Sender time_boot_ms and a transmitted setpoint do not prove PX4 acceptance; request-message denial is irrelevant to inbound command support and cannot be used as absence proof.", "Exact proof qualification is internal."], "recommendation": "Instrument accepted offboard_control_mode HRT updates and qualification; treat harness transmission only as candidate input."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep handlers and uORB sites as AP bindings only."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/concrete_instances/0/status"], "blockers": ["No symbolic/concrete formula and qualification AP is partial."], "recommendation": "Do not create a monitor until source conflict and AP qualification are closed."}
+      },
+      "blockers": ["same-version rate and inclusivity conflict", "qualification AP partial", "acceptance not wire-observable", "no formula"],
+      "recommendation": "Keep NEEDS_CONTEXT; the present hold is correct and must not be bypassed with implementation behavior."
+    },
+    {
+      "property_id": "PX4-MC-RCLOSS-001",
+      "system": "PX4",
+      "property_path": "benchmark/PX4/properties/PX4-MC-RCLOSS-001.json",
+      "catalog_status_observed": "REVIEW_READY",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": "G((manual_gap_start & rc_loss_applicable) -> (G_[0,0.5) !manual_control_lost & F_[0.5,infty) manual_control_lost))",
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "PASS", "evidence": ["property#/sources/0", "property#/sources/1"], "blockers": [], "recommendation": "Sources are release/commit pinned."},
+        "quote_context": {"status": "PASS", "evidence": ["baseline/px4/docs/en/config/safety.md:112", "baseline/px4/src/modules/commander/commander_params.c:125"], "blockers": [], "recommendation": "The excerpt distinguishes selected source timeout, reaction delay, action, and mode exceptions."},
+        "requirement_ir_exceptions": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir", "property#/sources/0/exact_quote", "property#/sources/1/exact_quote"], "blockers": ["rc_loss_applicable in the formula may suppress low-level manual_control_lost classification using COM_RCL_EXCEPT, while the sources do not clearly establish whether the exception changes classification or only the failsafe response."], "recommendation": "Separate selected-source connection-lost classification from action applicability and source each exception effect."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/time_contracts/0/reset_event", "property#/mitl/concrete"], "blockers": ["New selected setpoint or source switch resets the gap, but the formula does not encode persistence/reset."], "recommendation": "Add selected-source identity, source-switch reset, and continued gap to the formula/trace contract."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Use captured COM_RC_LOSS_T=0.5 s = 500 ms on selected ManualControlSetpoint HRT."},
+        "ap_truth_source_bindings": {"status": "PASS", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/px4_binding_audit.json#PX4-MC-RCLOSS-001-*"], "blockers": [], "recommendation": "Bindings cover selector, source timestamp/switch, exceptions, and internal lost state."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability", "benchmark/extraction_runs/milestone6/runtime_message_support_matrix.csv#PX4/MANUAL_CONTROL"], "blockers": ["A MANUAL_CONTROL frame has no timestamp and does not prove it became the selected source; lost classification is internal."], "recommendation": "Instrument selector identity, accepted timestamp/source switch, and lost edge in PX4 HRT."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep selector implementation as AP binding, not requirement source."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/monitor_syntax"], "blockers": ["Direct syntax fails; decimal bounds require an explicit tick conversion and selector trace is absent."], "recommendation": "Compile 0.5 s to 500 ms and calibrate source-switch, reset, exact-bound, exception, and lost-event traces."}
+      },
+      "blockers": ["classification versus action-exception ambiguity", "selected-source reset omitted", "selector/lost APs internal", "direct syntax unsupported"],
+      "recommendation": "Rollback REVIEW_READY to NEEDS_CONTEXT; separate connection classification from configured response applicability."
+    },
+    {
+      "property_id": "PX4-MC-RTLLOITER-006",
+      "system": "PX4",
+      "property_path": "benchmark/PX4/properties/PX4-MC-RTLLOITER-006.json",
+      "catalog_status_observed": "NEEDS_CONTEXT",
+      "audit_status": "NEEDS_CONTEXT",
+      "formula_observed": null,
+      "acceptance_claimed": false,
+      "gates": {
+        "source_authority_version": {"status": "PASS", "evidence": ["property#/sources/0", "property#/sources/1", "property#/sources/2"], "blockers": [], "recommendation": "Official pages and metadata are release/commit pinned."},
+        "quote_context": {"status": "NEEDS_CONTEXT", "evidence": ["baseline/px4/docs/en/flight_modes/return.md:183", "baseline/px4/docs/en/flight_modes/return.md:204", "baseline/px4/src/modules/navigator/rtl_params.c:63"], "blockers": ["Official parameter table says default 0.5 s while pinned metadata says default 0.0 s.", "Mission-landing and vehicle-type path context is essential."], "recommendation": "Retain both conflict witnesses and always use captured PARAM_VALUE for instances."},
+        "requirement_ir_exceptions": {"status": "NEEDS_CONTEXT", "evidence": ["property#/requirement_ir", "property#/context_graph/unresolved_references"], "blockers": ["Mission-landing exclusion, direct-return path, vehicle class, and exact destination-loiter phase need a frozen mission/campaign context."], "recommendation": "Capture mission/no-mission and RTL_TYPE/path choice before formalization."},
+        "event_relation_logic": {"status": "NEEDS_CONTEXT", "evidence": ["property#/mitl/symbolic", "property#/time_contracts/0/cancel_event"], "blockers": ["Symbolic formula does not encode leave-Return cancellation or the -1 indefinite override; mode_land conflates exact phase entry with coarse AUTO_LAND."], "recommendation": "Formalize path qualification, cancellation, indefinite domain, and exact land-phase event separately."},
+        "time_value_domain_unit_clock": {"status": "PASS", "evidence": ["property#/time_contracts/0", "property#/mitl/concrete_instances/0"], "blockers": [], "recommendation": "Captured RTL_LAND_DELAY=0.0 s is an immediate active boundary, not -1 indefinite; use Navigator HRT phase-entry time."},
+        "ap_truth_source_bindings": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions", "benchmark/extraction_runs/milestone5/px4_binding_audit.json#PX4-MC-RTLLOITER-006-*"], "blockers": ["Exact phase/path truth depends on a missing mission snapshot even though source sites are enumerated."], "recommendation": "Bind one frozen mission/path profile and distinguish DESCEND/loiter from AUTO_LAND."},
+        "mavlink_observation_conditions": {"status": "NEEDS_BINDING", "evidence": ["property#/atomic_propositions/*/observability"], "blockers": ["HEARTBEAT/CURRENT_MODE can show coarse Return/Land but not exact destination-loiter entry or selected mission landing path."], "recommendation": "Instrument Navigator phase entry and path decision; use mode messages as corroboration."},
+        "implementation_provenance": {"status": "PASS", "evidence": ["property#/sources", "property#/atomic_propositions/*/source_bindings"], "blockers": [], "recommendation": "Keep Navigator state flow as binding only."},
+        "monitor_readiness": {"status": "UNSUPPORTED", "evidence": ["property#/mitl/concrete", "property#/mitl/concrete_instances/0/status"], "blockers": ["No concrete formula; runtime instance remains NEEDS_CONTEXT."], "recommendation": "Resolve mission/path/phase context before generating a 0-second boundary monitor."}
+      },
+      "blockers": ["default conflict and essential path context", "mission snapshot missing", "phase/cancel/indefinite semantics unresolved", "exact phase not MAVLink-observable", "no concrete formula"],
+      "recommendation": "Keep NEEDS_CONTEXT; runtime PARAM_VALUE resolves only the numeric instance, not the path or phase semantics."
+    }
+  ],
+  "unresolved_global_items": [
+    "No property has two human reviewers or arbitration; this artifact cannot satisfy that process gate.",
+    "All eight concrete catalog formulas require a nontrivial syntax/unit translation before TAMonitor accepts them; monitor_syntax is null.",
+    "No semantic-equivalence, non-tautology, non-vacuity, or calibrated positive/negative trace suite exists.",
+    "Every property has at least one conditional, derived, unresolved, or instrumentation-required MAVLink observation; none is exact wire-only end to end.",
+    "ArduPilot behavioral wiki sources remain MAIN_ONLY and are not paired to the frozen firmware commit.",
+    "Implementation satisfaction remains NOT_ASSESSED and implementation paths must not be promoted into normative requirements."
+  ]
+}

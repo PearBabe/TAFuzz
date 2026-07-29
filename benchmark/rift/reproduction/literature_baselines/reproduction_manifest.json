@@ -1,0 +1,247 @@
+{
+  "schema_version": "rift.literature.reproduction-manifest.v1",
+  "generated_on": "2026-07-18",
+  "workspace": "/home/lqq/project/TAFuzz",
+  "scope": "RIFT-M1 literature baselines: LTL-Fuzzer target tuples and public-case smoke run, PGFuzz 56-policy silver maps, and MoonShine mlockall-to-msync implicit dependency",
+  "status_semantics": {
+    "PASS": "The stated command and evidence succeeded in the frozen environment.",
+    "PARTIAL": "A meaningful official component ran, but the complete original pipeline did not.",
+    "BLOCKED_RECORDED": "The attempted original command failed for a recorded environmental or artifact reason; the failure is retained.",
+    "SILVER_ONLY": "The data are published candidate mappings, not complete causal ground truth."
+  },
+  "environment": {
+    "kernel": "Linux 6.18.33.2-microsoft-standard-WSL2 x86_64",
+    "distribution": "Ubuntu 22.04",
+    "python": "3.10.12",
+    "clang": "18.1.8",
+    "gcc": "11.4.0",
+    "cmake": "3.22.1",
+    "ninja": "1.10.1",
+    "llvm_config_available": "14.0.6",
+    "spot": "2.9.7",
+    "required_but_absent": [
+      "LLVM/Clang 11 required by the LTL-Fuzzer artifact",
+      "Go required by MoonShine",
+      "Ragel required by MoonShine",
+      "goyacc required by MoonShine"
+    ]
+  },
+  "artifacts": {
+    "ltl_fuzzer": {
+      "paper": {
+        "title": "Linear-time Temporal Logic Guided Greybox Fuzzing",
+        "venue": "ICSE 2022",
+        "doi": "10.1145/3510003.3510082",
+        "artifact_property_pdf_sha256": "a1dc7ec43ce08f177538429f0a03a074e4bca3d99c820805a95061bb70d06fb7"
+      },
+      "repository": {
+        "url": "https://github.com/ltlfuzzer/LTL-Fuzzer",
+        "path": "benchmark/rift/external/ltl_fuzzer",
+        "commit": "716ac301fa3a8ea39814bc80eeebba49c19c1378",
+        "commit_date": "2022-05-27T09:25:58+08:00"
+      },
+      "steps": [
+        {
+          "name": "official_core_build",
+          "command": "cmake -S benchmark/rift/external/ltl_fuzzer -B benchmark/rift/external/ltl_fuzzer/build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo && cmake --build benchmark/rift/external/ltl_fuzzer/build -j2",
+          "status": "PASS",
+          "evidence": "results/ltl_fuzzer/core_build.log"
+        },
+        {
+          "name": "bundled_aflgo_build_and_instrumentation_smoke",
+          "command": "make -C benchmark/rift/external/ltl_fuzzer/AFLGo -j2",
+          "status": "PASS",
+          "evidence": "results/ltl_fuzzer/aflgo_build.log"
+        },
+        {
+          "name": "official_llvm_mode_with_available_llvm14",
+          "command": "make -C benchmark/rift/external/ltl_fuzzer/AFLGo/llvm_mode -j2 LLVM_CONFIG=llvm-config-14 CC=clang-14 CXX=clang++-14",
+          "status": "BLOCKED_RECORDED",
+          "exit_code": 2,
+          "reason": "The artifact pins LLVM 11. LLVM 14 rejects removed APIs and the source also lacks an explicit <map> include.",
+          "evidence": "results/ltl_fuzzer/llvm14_instrumentation_build.log"
+        },
+        {
+          "name": "public_rers_problem1_execution",
+          "command": "clang-18 -std=c11 -O0 -g -I benchmark/rift/external/ltl_fuzzer/include benchmark/rift/external/ltl_fuzzer/experiment/Problem1/src/Problem1.c -o /tmp/Problem1 && /tmp/Problem1 benchmark/rift/external/ltl_fuzzer/experiment/Problem1/input_folder/input",
+          "status": "PASS",
+          "observed": {
+            "input_bytes": 1000,
+            "stdout_lines": 107,
+            "stderr_lines": 894,
+            "exit_code": 0,
+            "stdout_event_counts": {
+              "16": 2,
+              "17": 1,
+              "18": 3,
+              "19": 1,
+              "20": 2,
+              "21": 1,
+              "24": 1,
+              "25": 90,
+              "26": 6
+            }
+          },
+          "evidence": [
+            "results/ltl_fuzzer/problem1.stdout",
+            "results/ltl_fuzzer/problem1.stderr"
+          ]
+        },
+        {
+          "name": "official_automata_component_on_public_property",
+          "compile_command": "g++ -std=c++17 -O2 -I /home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/include /home/lqq/project/TAFuzz/benchmark/rift/reproduction/literature_baselines/ltl_automata_smoke.cc /home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/build/src/automata/libautomata.a -lspot -lbddx -o /home/lqq/project/TAFuzz/benchmark/rift/reproduction/literature_baselines/results/ltl_fuzzer/ltl-automata-smoke",
+          "run_command": "/home/lqq/project/TAFuzz/benchmark/rift/reproduction/literature_baselines/results/ltl_fuzzer/ltl-automata-smoke /home/lqq/project/TAFuzz/benchmark/rift/external/ltl_fuzzer/experiment/Problem1/ltl_dir/ltl.txt /home/lqq/project/TAFuzz/benchmark/rift/reproduction/literature_baselines/rers_smoke_events.txt",
+          "status": "PASS",
+          "compile_exit_code": 0,
+          "run_exit_code": 0,
+          "binary_sha256": "5c4fd18734fa25c9fcd14ad8df2d8f97f5f732072bf7d9725fc25c971fc6ae62",
+          "stdout_sha256": "c4360800972379af4d5ed3482929520bf702036981f799631a9a8229c41888ae",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "observed": "The artifact Automata implementation consumed iH,oZ,iB,oZ and returned a successor for every event; results/ltl_fuzzer/automata_smoke.tsv ends with status PASS.",
+          "evidence": [
+            "results/ltl_fuzzer/automata_smoke.tsv",
+            "results/ltl_fuzzer/automata_smoke_receipt.txt"
+          ],
+          "claim_boundary": "This is execution of an original artifact component on a public case, not an end-to-end instrumented fuzz campaign."
+        },
+        {
+          "name": "complete_instrumented_fuzz_campaign",
+          "status": "BLOCKED_RECORDED",
+          "reason": "The artifact-specific LLVM 11 instrumentation pass was not buildable with the available LLVM 14; no end-to-end fuzz result is claimed."
+        }
+      ],
+      "target_tuple_import": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 literature_baselines/import_ltl_fuzzer_targets.py benchmark/rift/external/ltl_fuzzer",
+        "manifest": "ltl_fuzzer_ap_targets.json",
+        "manifest_sha256": "389ade92bb8a268da4ef466664411d3f66b4c6892547de41b068aee8f03e90a5",
+        "total": 49,
+        "exact": 46,
+        "unresolved": 3,
+        "unresolved_reason": "The Telnet source is an unconfigured gitlink (32b5b17f674232867c22916bb2e2534c8e9a92ff) and the repository has no .gitmodules file.",
+        "artifact_inconsistency": "Telnet uses WILLDISABLED in one event list and WILL_DISABLED in the formula event list."
+      },
+      "overall_status": "PARTIAL",
+      "cross_project_general": [
+        "Represent an AP target as a typed source-location/event tuple and retain resolution status.",
+        "Validate target tuples against source text and the AP/event dictionary instead of trusting line numbers blindly.",
+        "Exercise temporal-monitor construction independently from the full fuzz campaign as a reproducible smoke test."
+      ],
+      "project_specific": [
+        "Problem1 numeric-output-to-AP encoding and source line numbers.",
+        "The Telnet event vocabulary and its missing Contiki gitlink.",
+        "The artifact's LLVM 11 instrumentation implementation and build scripts."
+      ]
+    },
+    "pgfuzz": {
+      "paper": {
+        "title": "PGFUZZ: Policy-Guided Fuzzing for Robotic Vehicles",
+        "venue": "NDSS 2021",
+        "doi": "10.14722/ndss.2021.24096",
+        "pdf_sha256": "bb057be0069e9e764c8fb4bf963b09311cc914f3fb60da0b121afa94c90d7fcd"
+      },
+      "repository": {
+        "url": "https://github.com/purseclab/PGFuzz",
+        "path": "baseline/pgfuzz",
+        "commit": "7eaebf21116087249b8329d4ba7337a24a34ecb9",
+        "tree": "a8a8f4af20c6ea92f6e518ff8619e24acc571c44",
+        "read_only_during_import": true
+      },
+      "import": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 literature_baselines/import_pgfuzz_silver.py /home/lqq/project/TAFuzz",
+        "manifest": "pgfuzz_56_policy_silver.json",
+        "manifest_sha256": "98918c3f421e11b11a635c254a96eaef8a219beb3dc4d28e64370b93cac09970",
+        "status": "SILVER_ONLY",
+        "paper_policy_count": 56,
+        "policies_with_public_map": 51,
+        "policies_without_public_map": 5,
+        "artifact_map_directories": 49,
+        "grouped_or_renamed_policy_ids": [
+          "A.FLIPGeneral",
+          "A.CIRCLE4",
+          "A.CIRCLE5",
+          "A.CIRCLE6",
+          "A.CHUTE1",
+          "PX.ORBIT4",
+          "PX.ORBIT5"
+        ],
+        "missing_policy_ids": [
+          "PP.Hover",
+          "PP.HoverZ",
+          "PP.HoverC",
+          "PP.TAKEOFF1",
+          "PP.HOME1"
+        ],
+        "unreferenced_artifact_map_directory": "PX.CHUTE"
+      },
+      "cross_project_general": [
+        "Use separate parameter, command, environment, and prerequisite channels for frontier comparison.",
+        "Compute normalized set overlap while explicitly accounting for grouped policies and unavailable artifacts.",
+        "Treat policy-to-input maps as a silver comparison target, not causal truth."
+      ],
+      "project_specific": [
+        "ArduPilot/PX4 parameter names, commands, simulator variables, modes, and values.",
+        "Table XII policy identifiers and repository grouping aliases.",
+        "Repository-curated preconditions and exclusions."
+      ]
+    },
+    "moonshine": {
+      "paper": {
+        "title": "MoonShine: Optimizing OS Fuzzer Seed Selection with Trace Distillation",
+        "venue": "USENIX Security 2018",
+        "url": "https://www.usenix.org/conference/usenixsecurity18/presentation/pailoor",
+        "pdf_sha256": "b7705ad1f69b29d65ab42d875c001acda32d328b8bc08e2a9e6ba76093a2ae12"
+      },
+      "repository": {
+        "url": "https://github.com/shankarapailoor/moonshine",
+        "path": "benchmark/rift/external/moonshine",
+        "commit": "95e5f6dfd2760a9d763fc2bc90623c9e1e74e804",
+        "commit_date": "2019-05-09T11:02:42-07:00"
+      },
+      "official_precomputed_map": {
+        "path": "benchmark/rift/external/moonshine/implicit-dependencies/implicit_dependencies.json",
+        "sha256": "9410603d383da0ddbbbf277be0e7e4b8a6c24771db82119e94788a7393db8f06",
+        "reader_keys": 228,
+        "unique_edges": 9891,
+        "msync_dependency_count": 13,
+        "contains_mlockall_to_msync": true,
+        "status": "PASS"
+      },
+      "original_build": {
+        "command": "make -C benchmark/rift/external/moonshine",
+        "status": "BLOCKED_RECORDED",
+        "exit_code": 2,
+        "reason": "Ragel is absent; Go and goyacc are also absent from PATH.",
+        "evidence": "results/moonshine/official_build.log"
+      },
+      "published_rule_reproduction": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 python3 literature_baselines/moonshine_rw_micro.py --clang clang-18 --source literature_baselines/moonshine_mlockall_msync.c --official-map benchmark/rift/external/moonshine/implicit-dependencies/implicit_dependencies.json",
+        "status": "PASS",
+        "kind": "FAITHFUL_CLANG_MICRO_REPRODUCTION_NOT_ORIGINAL_SMATCH_EXTRACTOR",
+        "rule": "W(mlockall) intersection R_cond(msync) is non-empty",
+        "intersection": [
+          "vm_area_struct.vm_flags"
+        ],
+        "negative_control_intersection": [],
+        "evidence": "results/moonshine/moonshine_rw_result.json"
+      },
+      "artifact_limitation": "The public repository ships the generated implicit dependency JSON and its consumer, but not the paper's Smatch extraction hooks. Therefore no original static extractor execution is claimed.",
+      "overall_status": "PARTIAL",
+      "cross_project_general": [
+        "Summarize writes and conditional reads, close summaries interprocedurally, and add an implicit dependency when their intersection is non-empty.",
+        "Retain the producer-before-consumer order when materializing a seed or operation sequence.",
+        "Expose field/object, path-condition, alias, and thread/process precision as explicit dimensions when using the rule as a baseline."
+      ],
+      "project_specific": [
+        "Linux syscall entry points, Linux call graph, and vm_area_struct.vm_flags semantics.",
+        "The shipped Linux dependency table and its Smatch-derived field names.",
+        "Syzkaller trace representation and MoonShine's distillation format."
+      ]
+    }
+  },
+  "gate_assessment": {
+    "original_ccf_a_artifact_component_successfully_executed": true,
+    "evidence": "The unmodified LTL-Fuzzer Automata library was built and executed on the artifact's public Problem1 property, and the public Problem1 program was compiled and run on the shipped seed.",
+    "complete_original_end_to_end_fuzz_campaign_executed": false,
+    "non_claim": "This manifest does not claim an end-to-end LTL-Fuzzer campaign or execution of MoonShine's unpublished Smatch extractor."
+  }
+}

@@ -1,0 +1,37 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-012
+title: Configured geofence action after breach
+system: PX4
+vehicle_scope: multicopter SITL with an enabled cylindrical or uploaded geofence
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 155-186
+    original_text: "If the vehicle moves outside the radius or above the altitude the specified Failsafe Action will trigger."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/navigator/geofence_params.c
+    lines: 48-62
+    original_text: "GF_ACTION selects None, Warning, Hold, Return, Terminate, or Land."
+normalized_requirement:
+  context: a geofence limit is enabled and its selected position source and prediction mode are fixed for the run
+  trigger: max-distance, max-altitude or custom-fence breach according to that configuration
+  obligation: select the outcome configured by GF_ACTION, subject to documented Terminate circuit-breaker behavior
+  observation_warning: common.xml defines FENCE_STATUS, but no PX4 FENCE_STATUS output stream was found in the frozen source
+time_constraint:
+  expression: no numeric response bound is stated
+  qualitative_text: the configured action will trigger
+  epoch: first breach according to GF_SOURCE and GF_PREDICT
+  clock: internal geofence_result HRT timestamp if instrumented; otherwise one host-monotonic derived-position trace
+  boundary: NEEDS_TIME_BOUND
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G(geofence_breach -> F_[0,B_GEOFENCE] configured_geofence_action)"
+  note: B_GEOFENCE is unresolved and must not be assigned from the source check interval
+atomic_propositions:
+  - AP-PX4-GEOFENCE-BREACH
+  - AP-PX4-CONFIGURED-GEOFENCE-ACTION
+mavlink_observation_refs: [OBS-PX4-PARAM, OBS-PX4-GLOBAL-POSITION, OBS-PX4-EVENT, OBS-PX4-GEOFENCE-INTERNAL, OBS-PX4-MODE]
+blockers: [NEEDS_TIME_BOUND, NEEDS_BREACH_OBSERVATION, NEEDS_GF_SOURCE_BINDING, NEEDS_PREDICTIVE_GEOFENCE_SPLIT]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

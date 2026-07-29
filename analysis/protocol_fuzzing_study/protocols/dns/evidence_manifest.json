@@ -1,0 +1,418 @@
+{
+  "protocol": "DNS",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/ietf_app_protocols/dns/evidence.json",
+      "record": {
+        "protocol": "DNS",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE",
+        "admission_summary": {
+          "proposed": 0,
+          "admitted": 0,
+          "conclusion": "The base DNS RFCs use dynamic TTL/SOA/header values for most timed duties. Fixed retransmission and failure-cache rules either have no matching dnsmasq path or were standardized after the locked 2015 snapshot. No candidate simultaneously has a standard constant, a matching source timer, and a finite non-punctual pointwise formula."
+        },
+        "standards": [
+          {
+            "id": "RFC1034",
+            "title": "Domain Names - Concepts and Facilities",
+            "version": "RFC 1034 (November 1987)",
+            "url": "https://www.rfc-editor.org/rfc/rfc1034.html",
+            "source_type": "IETF Internet Standard",
+            "sections_reviewed": [
+              "3.6",
+              "4.3.4",
+              "4.4",
+              "5.3.3"
+            ]
+          },
+          {
+            "id": "RFC1035",
+            "title": "Domain Names - Implementation and Specification",
+            "version": "RFC 1035 (November 1987)",
+            "url": "https://www.rfc-editor.org/rfc/rfc1035.html",
+            "source_type": "IETF Internet Standard",
+            "sections_reviewed": [
+              "3.2.1",
+              "4.2.1",
+              "4.2.2",
+              "7.2"
+            ]
+          },
+          {
+            "id": "RFC1123",
+            "title": "Requirements for Internet Hosts -- Application and Support",
+            "version": "RFC 1123 (October 1989)",
+            "url": "https://www.rfc-editor.org/rfc/rfc1123.html",
+            "source_type": "IETF Internet Standard",
+            "sections_reviewed": [
+              "6.1.2.1",
+              "6.1.3.3"
+            ]
+          },
+          {
+            "id": "RFC2308",
+            "title": "Negative Caching of DNS Queries (DNS NCACHE)",
+            "version": "RFC 2308 (March 1998)",
+            "url": "https://www.rfc-editor.org/rfc/rfc2308.html",
+            "source_type": "IETF Standards Track",
+            "sections_reviewed": [
+              "3",
+              "5",
+              "6",
+              "7.1",
+              "7.2"
+            ]
+          },
+          {
+            "id": "RFC4035",
+            "title": "Protocol Modifications for the DNS Security Extensions",
+            "version": "RFC 4035 (March 2005)",
+            "url": "https://www.rfc-editor.org/rfc/rfc4035.html",
+            "source_type": "IETF Standards Track",
+            "sections_reviewed": [
+              "4.7",
+              "5.3.3"
+            ]
+          },
+          {
+            "id": "RFC4697",
+            "title": "Observed DNS Resolution Misbehavior",
+            "version": "RFC 4697 (October 2006)",
+            "url": "https://www.rfc-editor.org/rfc/rfc4697.html",
+            "source_type": "IETF Best Current Practice",
+            "sections_reviewed": [
+              "2.1",
+              "2.2",
+              "2.7"
+            ]
+          },
+          {
+            "id": "RFC7766",
+            "title": "DNS Transport over TCP - Implementation Requirements",
+            "version": "RFC 7766 (March 2016)",
+            "url": "https://www.rfc-editor.org/rfc/rfc7766.html",
+            "source_type": "IETF Standards Track",
+            "sections_reviewed": [
+              "6.1",
+              "6.2.3",
+              "6.2.4",
+              "8"
+            ]
+          },
+          {
+            "id": "RFC7828",
+            "title": "The edns-tcp-keepalive EDNS0 Option",
+            "version": "RFC 7828 (April 2016)",
+            "url": "https://www.rfc-editor.org/rfc/rfc7828.html",
+            "source_type": "IETF Standards Track",
+            "sections_reviewed": [
+              "3",
+              "4"
+            ]
+          },
+          {
+            "id": "RFC8767",
+            "title": "Serving Stale Data to Improve DNS Resiliency",
+            "version": "RFC 8767 (March 2020)",
+            "url": "https://www.rfc-editor.org/rfc/rfc8767.html",
+            "source_type": "IETF Standards Track",
+            "sections_reviewed": [
+              "4",
+              "5",
+              "6"
+            ]
+          },
+          {
+            "id": "RFC9520",
+            "title": "Negative Caching of DNS Resolution Failures",
+            "version": "RFC 9520 (December 2023)",
+            "url": "https://www.rfc-editor.org/rfc/rfc9520.html",
+            "source_type": "IETF Standards Track",
+            "sections_reviewed": [
+              "3.1",
+              "3.2"
+            ]
+          }
+        ],
+        "implementation": {
+          "repository": "imp/dnsmasq",
+          "version": "v2.73rc6",
+          "commit": "b8f16556d36924cd8dc7663cb4129d7b1f3fc2be",
+          "commit_date": "2015-04-22T21:14:31+01:00",
+          "url": "https://github.com/imp/dnsmasq/tree/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be",
+          "selection": "Exact ProFuzzBench DNS target snapshot, accessed through the imp/dnsmasq GitHub mirror.",
+          "repository_status": "imp/dnsmasq is a GitHub mirror of the upstream official dnsmasq Git repository. The pinned SHA is an official dnsmasq-history snapshot mirrored to GitHub; imp/dnsmasq is not presented as an official GitHub origin.",
+          "mirror_evidence_url": "https://github.com/imp/dnsmasq",
+          "upstream_official_url": "https://thekelleys.org.uk/dnsmasq/",
+          "upstream_official_commit_url": "https://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=commit;h=b8f16556d36924cd8dc7663cb4129d7b1f3fc2be",
+          "source_files_reviewed": [
+            {
+              "path": "src/config.h",
+              "symbols": [
+                "CHILD_LIFETIME",
+                "TIMEOUT",
+                "FORWARD_TIME",
+                "TTL_FLOOR_LIMIT"
+              ],
+              "lines": "17-30",
+              "url": "https://github.com/imp/dnsmasq/blob/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be/src/config.h#L17-L30"
+            },
+            {
+              "path": "src/forward.c",
+              "symbols": [
+                "forward_query",
+                "get_new_frec"
+              ],
+              "lines": "304-315,353-374,2166-2227",
+              "url": "https://github.com/imp/dnsmasq/blob/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be/src/forward.c"
+            },
+            {
+              "path": "src/cache.c",
+              "symbols": [
+                "is_expired",
+                "cache_insert",
+                "cache_find_by_name"
+              ],
+              "lines": "314-323,452-468,603-607,633-660",
+              "url": "https://github.com/imp/dnsmasq/blob/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be/src/cache.c"
+            },
+            {
+              "path": "src/rfc1035.c",
+              "symbols": [
+                "find_soa",
+                "extract_addresses"
+              ],
+              "lines": "866-917,1152-1168",
+              "url": "https://github.com/imp/dnsmasq/blob/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be/src/rfc1035.c"
+            },
+            {
+              "path": "src/dnsmasq.c",
+              "symbols": [
+                "check_dns_listeners"
+              ],
+              "lines": "1687-1723",
+              "url": "https://github.com/imp/dnsmasq/blob/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be/src/dnsmasq.c#L1687-L1723"
+            },
+            {
+              "path": "src/option.c",
+              "symbols": [
+                "read_opts"
+              ],
+              "lines": "4376-4398",
+              "url": "https://github.com/imp/dnsmasq/blob/b8f16556d36924cd8dc7663cb4129d7b1f3fc2be/src/option.c#L4376-L4398"
+            }
+          ]
+        },
+        "method": "Exhaustive numeric-timing screening of resolver retry/backoff, positive and negative TTL expiry, SOA refresh/retry/expire, failure and dead-server caching, DNS-over-TCP idle/keepalive, validation-derived expiry, and later serve-stale/failure-cache RFCs. Count-only limits and DHCP/TFTP timers in the combined dnsmasq codebase were outside DNS scope.",
+        "screening_records": [
+          {
+            "candidate_id": "DNS-UDP-RETX-2-5",
+            "standard_section": "RFC 1035 4.2.1",
+            "numeric_rule": "Without better history, the minimum UDP retransmission interval should be 2-5 seconds.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "src/config.h:24 defines TIMEOUT=10 for forwarding-record retirement, not retransmission.",
+              "src/forward.c:304-315 reacts to a repeated downstream query and has no autonomous 2-5-second retry task."
+            ]
+          },
+          {
+            "candidate_id": "DNS-UDP-RETX-5",
+            "standard_section": "RFC 1123 6.1.3.3",
+            "numeric_rule": "If RTT information is unavailable, retry default should be no less than 5 seconds and use bounded exponential backoff.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "The locked forwarder does not schedule its own upstream UDP retransmission; client retransmission triggers the retry path."
+            ]
+          },
+          {
+            "candidate_id": "DNS-TCP-IDLE-120",
+            "standard_section": "RFC 1035 4.2.2 and RFC 7766 6.2.3",
+            "numeric_rule": "RFC 1035 suggested an idle period on the order of two minutes; RFC 7766 replaces it with seconds and deliberately gives no particular value.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "VERSION_MISMATCH",
+              "NO_NUMERIC_BOUND",
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "src/config.h:19 and src/dnsmasq.c:1687-1723 impose a 150-second total child lifetime, not a reset-on-complete-message idle timer.",
+              "The locked snapshot predates RFC 7766."
+            ]
+          },
+          {
+            "candidate_id": "DNS-RR-TTL-DYNAMIC",
+            "standard_section": "RFC 1034 3.6 and RFC 1035 3.2.1",
+            "numeric_rule": "Cached RRs expire after their message-carried TTL in seconds; TTL is administrator/data selected rather than a standard constant.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_NUMERIC_BOUND"
+            ],
+            "source_evidence": [
+              "src/cache.c:452-468 and 603-607 compute ttd=now+ttl from the dynamic input.",
+              "src/cache.c:314-323 and 633-660 reject entries after that dynamic deadline."
+            ]
+          },
+          {
+            "candidate_id": "DNS-ZERO-TTL",
+            "standard_section": "RFC 1123 6.1.2.1",
+            "numeric_rule": "An RR with TTL zero is usable only for the current transaction and MUST NOT be cached.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "PUNCTUAL_ONLY"
+            ],
+            "source_evidence": [
+              "Any positive-width interval would invent an epsilon absent from the standard; a zero-width singleton is forbidden by the extraction schema."
+            ]
+          },
+          {
+            "candidate_id": "DNS-SOA-TIMERS-DYNAMIC",
+            "standard_section": "RFC 1034 4.4",
+            "numeric_rule": "Secondary refresh, retry, and expiry delays are the SOA REFRESH, RETRY, and EXPIRE fields.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_NUMERIC_BOUND",
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "The RFC gives dynamic zone fields, and the locked dnsmasq source has no secondary-zone transfer state machine to map them to."
+            ]
+          },
+          {
+            "candidate_id": "DNS-NEGATIVE-TTL-DYNAMIC",
+            "standard_section": "RFC 2308 3, 5, and 6",
+            "numeric_rule": "Negative-cache lifetime is min(SOA TTL, SOA.MINIMUM) and is decremented to zero.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_NUMERIC_BOUND"
+            ],
+            "source_evidence": [
+              "src/rfc1035.c:866-917 extracts the dynamic minimum and src/rfc1035.c:1152-1168 passes it to cache_insert."
+            ]
+          },
+          {
+            "candidate_id": "DNS-NEGATIVE-CAP-1-3H",
+            "standard_section": "RFC 2308 5",
+            "numeric_rule": "One to three hours is described as a sensible tunable default, not a universal mandatory value.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_NUMERIC_BOUND"
+            ],
+            "source_evidence": [
+              "src/option.c:4376-4398 zero-initializes neg_ttl; without an SOA, the locked default therefore does not select a 1-3-hour profile."
+            ]
+          },
+          {
+            "candidate_id": "DNS-SERVFAIL-CACHE-300",
+            "standard_section": "RFC 2308 7.1",
+            "numeric_rule": "If a resolver optionally caches a server failure, it MUST NOT do so longer than five minutes.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "No fixed SERVFAIL-cache object or five-minute expiry path exists in the locked source."
+            ]
+          },
+          {
+            "candidate_id": "DNS-DEAD-SERVER-120-300",
+            "standard_section": "RFC 2308 7.2",
+            "numeric_rule": "A server may be considered unreachable after 120 seconds and, if cached, MUST NOT remain so longer than five minutes.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "The locked forwarder has no matching per-server 120-second detection plus five-minute dead-server cache state."
+            ]
+          },
+          {
+            "candidate_id": "DNS-VALIDATION-TTL-DYNAMIC",
+            "standard_section": "RFC 4035 4.7 and 5.3.3",
+            "numeric_rule": "Validation-derived cache TTL is a minimum of received TTLs and signature expiration; validation-failure cache TTL is only required to be small.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_NUMERIC_BOUND"
+            ],
+            "source_evidence": [
+              "All endpoints are message-carried or unspecified; no fixed integer interval can be instantiated without inventing a profile."
+            ]
+          },
+          {
+            "candidate_id": "DNS-EDNS-KEEPALIVE-DYNAMIC",
+            "standard_section": "RFC 7828 3 and 4",
+            "numeric_rule": "The EDNS0 keepalive timeout is server selected in 100-millisecond units, not a fixed default.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "VERSION_MISMATCH",
+              "NO_NUMERIC_BOUND",
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "The locked 2015 snapshot predates RFC 7828 and has no edns-tcp-keepalive option path."
+            ]
+          },
+          {
+            "candidate_id": "DNS-SERVE-STALE-TIMERS",
+            "standard_section": "RFC 8767 4-6",
+            "numeric_rule": "The RFC recommends 30-second stale TTL and failure recheck, a 1.8-second client timer, a 7-day TTL clamp, and a 1-3-day stale window.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "VERSION_MISMATCH",
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "The locked 2015 snapshot predates RFC 8767 and contains no serve-stale state machine."
+            ]
+          },
+          {
+            "candidate_id": "DNS-RESOLUTION-FAILURE-CACHE",
+            "standard_section": "RFC 9520 3.1 and 3.2",
+            "numeric_rule": "Resolution failures MUST be cached for at least one second and no longer than five minutes.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "VERSION_MISMATCH",
+              "NO_FIXED_SOURCE_MAP"
+            ],
+            "source_evidence": [
+              "The locked 2015 snapshot predates RFC 9520 by more than eight years and has no matching failure-cache path."
+            ]
+          },
+          {
+            "candidate_id": "DNS-RFC4697-REQUERY",
+            "standard_section": "RFC 4697 2.1, 2.2, and 2.7",
+            "numeric_rule": "The BCP limits unnecessary requery behavior but supplies no fixed elapsed-time interval; zero-TTL handling reduces to the punctual case above.",
+            "decision": "EXCLUDED",
+            "rejection_reasons": [
+              "NO_NUMERIC_BOUND",
+              "PUNCTUAL_ONLY"
+            ],
+            "source_evidence": [
+              "No additional non-punctual numeric duty remains after the RFC 1035/1123 retry and TTL candidates."
+            ]
+          }
+        ],
+        "verification": {
+          "standard_text_retrieved": true,
+          "source_commit_checked_out": "b8f16556d36924cd8dc7663cb4129d7b1f3fc2be",
+          "source_tag_checked": "v2.73rc6",
+          "source_commit_author": "Simon Kelley <simon@thekelleys.org.uk>",
+          "source_paths_and_lines_checked": true,
+          "mirror_identity_checked": "GitHub page title identifies imp/dnsmasq as a mirror of the upstream dnsmasq repository.",
+          "service_started": false,
+          "protocol_messages_sent": false,
+          "formula_or_trace_execution": false
+        }
+      }
+    }
+  ],
+  "admitted_property_sources": []
+}

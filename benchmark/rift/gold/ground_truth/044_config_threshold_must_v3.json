@@ -1,0 +1,201 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 28
+      },
+      "token": "ap_primary"
+    },
+    "node_observed": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 26
+      },
+      "token": "node_observed"
+    },
+    "node_threshold": {
+      "kind": "NODE",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 24
+      },
+      "token": "node_threshold"
+    },
+    "source_configuration": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 20
+      },
+      "token": "source_configuration"
+    },
+    "source_observation": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 22
+      },
+      "token": "source_observation"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_observed >= node_threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 28
+      },
+      "role": "BOUND",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-044",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "config_threshold",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "The generated comparison explicitly separates the configurable bound from the observed value; negative variants replace only the bound with a constant.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "config_threshold",
+    "variant": 3
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "move threshold across observation",
+        "kind": "dynamic_threshold",
+        "relative_time_window": null,
+        "suggested_values": [
+          "12",
+          "13",
+          "14"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_configuration",
+            "kind": "data",
+            "to": "node_threshold"
+          },
+          {
+            "certainty": "must",
+            "from": "node_threshold",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_configuration",
+          "node_threshold",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_configuration"
+    },
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "cross active threshold",
+        "kind": "observation_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "12",
+          "13",
+          "14"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_observation",
+            "kind": "data",
+            "to": "node_observed"
+          },
+          {
+            "certainty": "must",
+            "from": "node_observed",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_observation",
+          "node_observed",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_observation"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/044_config_threshold_must_v3.cpp",
+  "source_sha256": "55458a8d65bb8d5b3ba682a8786ca519ba987841f0b9a3f7ceb54a7d8e904c99",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_configuration",
+      "kind": "configuration",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 20
+      },
+      "scope": "SESSION",
+      "symbol": "source_configuration"
+    },
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_observation",
+      "kind": "sensor_value",
+      "location": {
+        "column": 9,
+        "file": "cases/044_config_threshold_must_v3.cpp",
+        "line": 22
+      },
+      "scope": "SESSION",
+      "symbol": "source_observation"
+    }
+  ]
+}

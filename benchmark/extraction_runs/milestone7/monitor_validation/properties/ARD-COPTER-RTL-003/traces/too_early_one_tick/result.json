@@ -1,0 +1,70 @@
+{
+  "boundary_region": "before",
+  "case_kind": "too_early_one_tick",
+  "classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 7000,
+    "response_delta_ticks": 4999,
+    "threshold_ticks": 5000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "comparison_status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "Response occurs one exact monitor tick before the threshold.",
+    "tamonitor_infinite_prefix_verdict": "NEGATIVE",
+    "tamonitor_prefix_reason": "The prefix contains an irreversible pre-threshold/open-boundary safety violation."
+  },
+  "monitor_trace": {
+    "bytes": 164,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/monitor_trace.csv",
+    "sha256": "90c3cfa9d1925d0012cd880fb813efaf917697260227901e86b5329c8b55bab3"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-COPTER-RTL-003:trace:too_early_one_tick",
+    "error_excerpt": "TAMonitor error: BDD projection valuation limit exceeded",
+    "exit_code": 1,
+    "metadata": null,
+    "runtime_classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+    "status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+    "stderr": {
+      "bytes": 57,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/tamonitor.stderr.txt",
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/tamonitor.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "steps": null,
+    "terminal_step": null,
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": null
+  },
+  "trace": {
+    "bytes": 2698,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/too_early_one_tick/trace.json",
+    "sha256": "b4d06b04c1f58ea95d6750d7c2722207842cc40ece1cf82b2ed0f9fd8eb0f2b9"
+  },
+  "trace_id": "ARD-COPTER-RTL-003--too_early_one_tick"
+}

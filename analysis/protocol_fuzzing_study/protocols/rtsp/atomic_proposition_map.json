@@ -1,0 +1,179 @@
+{
+  "protocol": "RTSP",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "rtsp_liveness_generation_armed_65": {
+      "definition": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+      "properties": [
+        "RTSP-SESSION-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65",
+            "rtsp_inactivity_reclaim_callback_entered"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "liveMedia/GenericMediaServer.cpp",
+          "symbol": "GenericMediaServer::ClientSession::noteLiveness / GenericMediaServer::ClientSession::livenessTimeoutTask",
+          "lines": "283-297;303-312",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/GenericMediaServer.cpp#L283-L297",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "auxiliary:1",
+          "role": "65-second server profile declaration",
+          "event_predicate": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "liveMedia/include/RTSPServer.hh",
+          "symbol": "reclamationSeconds",
+          "lines": "31-41",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/include/RTSPServer.hh#L31-L41",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "auxiliary:2",
+          "role": "Session timeout advertisement",
+          "event_predicate": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "liveMedia/RTSPServer.cpp",
+          "symbol": "RTSPServer::RTSPClientSession::handleCmd_SETUP",
+          "lines": "1416-1499",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L1416-L1499",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "auxiliary:3",
+          "role": "valid Session request liveness refresh",
+          "event_predicate": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "liveMedia/RTSPServer.cpp",
+          "symbol": "RTSPServer::RTSPClientConnection::handleRequestBytes",
+          "lines": "726-733",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/RTSPServer.cpp#L726-L733",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "auxiliary:4",
+          "role": "task reschedule",
+          "event_predicate": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "UsageEnvironment/UsageEnvironment.cpp",
+          "symbol": "TaskScheduler::rescheduleDelayedTask",
+          "lines": "52-57",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/UsageEnvironment/UsageEnvironment.cpp#L52-L57",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "auxiliary:5",
+          "role": "delayed-task queue insertion",
+          "event_predicate": "After GenericMediaServer::ClientSession::noteLiveness returns from rescheduleDelayedTask for an established ClientSession whose successful SETUP response already declared timeout=65, the new non-null fLivenessCheckTask token defines this generation; the constructor's pre-response arm is excluded.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "BasicUsageEnvironment/BasicTaskScheduler0.cpp",
+          "symbol": "BasicTaskScheduler0::scheduleDelayedTask",
+          "lines": "59-68",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/BasicTaskScheduler0.cpp#L59-L68",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "rtsp_inactivity_reclaim_callback_entered": {
+      "definition": "GenericMediaServer::ClientSession::livenessTimeoutTask is entered for the exact captured fLivenessCheckTask generation, immediately before deletion of that ClientSession.",
+      "properties": [
+        "RTSP-SESSION-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "GenericMediaServer::ClientSession::livenessTimeoutTask is entered for the exact captured fLivenessCheckTask generation, immediately before deletion of that ClientSession.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_liveness_generation_armed_65",
+            "rtsp_inactivity_reclaim_callback_entered"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "liveMedia/GenericMediaServer.cpp",
+          "symbol": "GenericMediaServer::ClientSession::noteLiveness / GenericMediaServer::ClientSession::livenessTimeoutTask",
+          "lines": "283-297;303-312",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/liveMedia/GenericMediaServer.cpp#L283-L297",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTSP-SESSION-01",
+          "mapping": "auxiliary:6",
+          "role": "due delayed-task dispatch",
+          "event_predicate": "GenericMediaServer::ClientSession::livenessTimeoutTask is entered for the exact captured fLivenessCheckTask generation, immediately before deletion of that ClientSession.",
+          "instrumentation_timing": "Track that the ClientSession has completed a successful SETUP response declaring timeout=65; on a later noteLiveness call, emit the trigger after rescheduleDelayedTask returns and capture the new fLivenessCheckTask token. Emit the callback AP at livenessTimeoutTask entry before delete, only for that captured token generation. Do not synthesize a deadline from callback dispatch time.",
+          "atomic_propositions": [
+            "rtsp_inactivity_reclaim_callback_entered"
+          ],
+          "repository": "rgaufman/live555",
+          "commit": "ceeb4f462709695b145852de309d8cd25e2dca01",
+          "path": "BasicUsageEnvironment/DelayQueue.cpp",
+          "symbol": "DelayQueue::handleAlarm",
+          "lines": "179-189",
+          "url": "https://github.com/rgaufman/live555/blob/ceeb4f462709695b145852de309d8cd25e2dca01/BasicUsageEnvironment/DelayQueue.cpp#L179-L189",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/014_indirect_data_must_v3.cpp",
+        "line": 29
+      },
+      "token": "ap_primary"
+    },
+    "node_stage_one": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/014_indirect_data_must_v3.cpp",
+        "line": 25
+      },
+      "token": "node_stage_one"
+    },
+    "node_stage_two": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/014_indirect_data_must_v3.cpp",
+        "line": 27
+      },
+      "token": "node_stage_two"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/014_indirect_data_must_v3.cpp",
+        "line": 23
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_stage_two reaches generated affine threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/014_indirect_data_must_v3.cpp",
+        "line": 29
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-014",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "indirect_data",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "Two explicit helper stages mechanically define the interprocedural value path; negative variants use a separate constant-rooted helper chain.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "indirect_data",
+    "variant": 3
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "call",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "solve two-stage affine threshold",
+        "kind": "affine_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "2",
+          "3",
+          "4"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "call",
+            "to": "node_stage_one"
+          },
+          {
+            "certainty": "must",
+            "from": "node_stage_one",
+            "kind": "call",
+            "to": "node_stage_two"
+          },
+          {
+            "certainty": "must",
+            "from": "node_stage_two",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_stage_one",
+          "node_stage_two",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/014_indirect_data_must_v3.cpp",
+  "source_sha256": "b0745e8f4eb7b566722152206df19a5299c1f4576ebf102d4460156199edba1b",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 13,
+        "file": "cases/014_indirect_data_must_v3.cpp",
+        "line": 23
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    }
+  ]
+}

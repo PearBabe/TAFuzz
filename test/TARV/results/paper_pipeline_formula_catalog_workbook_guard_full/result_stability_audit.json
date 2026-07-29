@@ -1,0 +1,1931 @@
+{
+  "summary": {
+    "baseline_dir": "/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_cli_trace_header_contract_full",
+    "candidate_dir": "/home/lqq/project/TAFuzz/test/TARV/results/paper_pipeline_formula_catalog_workbook_guard_full",
+    "profile": "formula-catalog-integrated",
+    "rows": 190,
+    "pass": 190,
+    "fail": 0,
+    "warn": 0,
+    "expected_added_sheets": [
+      "MITL Runtime Catalog",
+      "MITL Semantic Catalog",
+      "MITL XML Candidates"
+    ],
+    "expected_manual_oracle_rows": 10,
+    "expected_verifier_delta": {
+      "check_rows": 1,
+      "pass": 1,
+      "warn": 0,
+      "fail": 0
+    },
+    "expected_repro_delta": {
+      "reproducibility_manifest_rows": 1,
+      "reproducibility_result_hashes": 0,
+      "reproducibility_source_hashes": 1,
+      "reproducibility_git_rows": 0
+    }
+  },
+  "rows": [
+    {
+      "check_id": "PIPELINE_STATUS_BASELINE",
+      "category": "pipeline",
+      "status": "PASS",
+      "baseline_value": "PASS/full/no failed steps",
+      "candidate_value": "PASS/full/[]",
+      "expected": "both packets are full passing pipeline runs",
+      "evidence": "baseline/pipeline_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "PIPELINE_STATUS_CANDIDATE",
+      "category": "pipeline",
+      "status": "PASS",
+      "baseline_value": "PASS/full/no failed steps",
+      "candidate_value": "PASS/full/[]",
+      "expected": "both packets are full passing pipeline runs",
+      "evidence": "candidate/pipeline_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_cases",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "87",
+      "candidate_value": "87",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_ran",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "87",
+      "candidate_value": "87",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "70",
+      "candidate_value": "70",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_correctness_verified",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "70",
+      "candidate_value": "70",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_finite_verified",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "34",
+      "candidate_value": "34",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_infinite_verified",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "36",
+      "candidate_value": "36",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_correctness_needs_manual_oracle",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_correctness_not_verified_resource_limit",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_correctness_not_verified_timeout",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_correctness_not_a_verdict_check",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_correctness_build_timeout_not_a_verdict_check",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_prefix_oracle_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "163",
+      "candidate_value": "163",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_prefix_oracle_match",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "146",
+      "candidate_value": "146",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_prefix_oracle_mismatch",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_prefix_oracle_missing_observed_step",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_prefix_final_verdict_only",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_prefix_carry_forward_steps",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "34",
+      "candidate_value": "34",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_oracle_derivation_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "87",
+      "candidate_value": "87",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_oracle_hand_verified",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "70",
+      "candidate_value": "70",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_oracle_construction_stats_only",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_oracle_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_oracle_prefix_mismatches",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_mitl_correctness_audit_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "150",
+      "candidate_value": "150",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_review",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_build_stats",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_build_timeout",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_resource_limit",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_timeout",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_error",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_review_unsupported",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_semantic_exclusion_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_internal_count_forms_excluded",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_syntax_coverage_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "45",
+      "candidate_value": "45",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_syntax_coverage_verified_runtime",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "36",
+      "candidate_value": "36",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_syntax_coverage_finite_and_infinite",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "36",
+      "candidate_value": "36",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_syntax_coverage_build_stats_only",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "1",
+      "candidate_value": "1",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_syntax_coverage_excluded_internal",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_syntax_coverage_missing",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_formula_input_policy_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_formula_input_policy_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_formula_input_policy_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_formula_input_policy_assert_like_failures",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_cli_contract_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "11",
+      "candidate_value": "11",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_cli_contract_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "11",
+      "candidate_value": "11",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_cli_contract_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_cli_contract_controlled_errors",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "5",
+      "candidate_value": "5",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_guide_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "15",
+      "candidate_value": "15",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_guide_p0",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "9",
+      "candidate_value": "9",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_guide_p1",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "6",
+      "candidate_value": "6",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_goal_completion_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_goal_completion_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "13",
+      "candidate_value": "13",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_goal_completion_pass_with_caveat",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "1",
+      "candidate_value": "1",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_goal_completion_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "2",
+      "candidate_value": "2",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_goal_completion_v1_deferred",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "1",
+      "candidate_value": "1",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_goal_completion_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "72",
+      "candidate_value": "72",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_human_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "55",
+      "candidate_value": "55",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_p0",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "44",
+      "candidate_value": "44",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_p1",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "10",
+      "candidate_value": "10",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_p2",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "2",
+      "candidate_value": "2",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_p3",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "16",
+      "candidate_value": "16",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_human_review_queue_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_signoff_template_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "56",
+      "candidate_value": "56",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_signoff_template_blank_decisions",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "56",
+      "candidate_value": "56",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_signoff_template_p0",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "44",
+      "candidate_value": "44",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_signoff_template_p1",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "10",
+      "candidate_value": "10",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_review_signoff_template_p2",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "2",
+      "candidate_value": "2",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "10",
+      "candidate_value": "10",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_pass_with_caveat",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "2",
+      "candidate_value": "2",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "4",
+      "candidate_value": "4",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_v1_deferred",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "1",
+      "candidate_value": "1",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_review_human_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "13",
+      "candidate_value": "13",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_templates",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "60",
+      "candidate_value": "60",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_transition_detail_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "386",
+      "candidate_value": "386",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_pairs",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidates",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "19",
+      "candidate_value": "19",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_benchmark_manifest_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_benchmark_manifest_strong_trace_level",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "15",
+      "candidate_value": "15",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_benchmark_manifest_single_trace_level",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_benchmark_manifest_approximate_trace_only",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "4",
+      "candidate_value": "4",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_benchmark_manifest_not_promoted",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_edge_guard_proof_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_edge_guard_proof_ready",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "15",
+      "candidate_value": "15",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_edge_guard_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_edge_guard_not_ready",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_edge_guard_incomplete",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_appendix_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_appendix_ready",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "15",
+      "candidate_value": "15",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_appendix_excluded",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_obligation_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "143",
+      "candidate_value": "143",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_obligation_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "126",
+      "candidate_value": "126",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_obligation_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_proof_obligation_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_trace_coverage_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "114",
+      "candidate_value": "114",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_trace_coverage_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "106",
+      "candidate_value": "106",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_trace_coverage_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_trace_coverage_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_original_trace_gap_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_original_trace_gap_review_required",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_xml_original_trace_gap_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_review_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_body_pattern_ready",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "15",
+      "candidate_value": "15",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_appendix_timeout_caveat",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_excluded",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_audit_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_audit_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_audit_warn",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_paper_claim_audit_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_requirements_audit_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_requirements_audit_pass",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "20",
+      "candidate_value": "20",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_requirements_audit_pass_with_caveat",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "2",
+      "candidate_value": "2",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_requirements_audit_v1_deferred",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "1",
+      "candidate_value": "1",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_requirements_audit_fail",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidate_runs",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidate_success",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidate_timeouts",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidate_baseline_matches",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidate_baseline_mismatches",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_translation_candidate_baseline_not_verified",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_candidate_prefix_observation_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "123028",
+      "candidate_value": "123028",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_candidate_step_audit_rows",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_candidate_step_all_trace_steps_recorded",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_candidate_step_missing_or_incomplete",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_candidate_prefix_carry_forward_steps",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "29989",
+      "candidate_value": "29989",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_baseline_runs",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "67",
+      "candidate_value": "67",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_baseline_timeouts",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_baseline_skipped_no_input",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_baseline_generated_empty_no_original_input",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "3",
+      "candidate_value": "3",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_embedded_benchmark_records",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "53",
+      "candidate_value": "53",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_workbook_status",
+      "category": "stable_experiment_metric",
+      "status": "PASS",
+      "baseline_value": "ok",
+      "candidate_value": "ok",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_oracle_guide_rows",
+      "category": "stable_manual_oracle_metric",
+      "status": "PASS",
+      "baseline_value": "10",
+      "candidate_value": "10",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json; manual_oracle_guide.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_oracle_guide_p0",
+      "category": "stable_manual_oracle_metric",
+      "status": "PASS",
+      "baseline_value": "7",
+      "candidate_value": "7",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json; manual_oracle_guide.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_manual_oracle_guide_p1",
+      "category": "stable_manual_oracle_metric",
+      "status": "PASS",
+      "baseline_value": "3",
+      "candidate_value": "3",
+      "expected": "candidate equals baseline",
+      "evidence": "experiment_summary.json; manual_oracle_guide.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_REPRO_DELTA_reproducibility_manifest_rows",
+      "category": "expected_reproducibility_growth",
+      "status": "PASS",
+      "baseline_value": "119",
+      "candidate_value": "120",
+      "expected": "candidate-baseline=1",
+      "evidence": "experiment_summary.json; reproducibility_manifest.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_REPRO_DELTA_reproducibility_result_hashes",
+      "category": "stable_reproducibility_metric",
+      "status": "PASS",
+      "baseline_value": "71",
+      "candidate_value": "71",
+      "expected": "candidate-baseline=0",
+      "evidence": "experiment_summary.json; reproducibility_manifest.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_REPRO_DELTA_reproducibility_source_hashes",
+      "category": "expected_reproducibility_growth",
+      "status": "PASS",
+      "baseline_value": "29",
+      "candidate_value": "30",
+      "expected": "candidate-baseline=1",
+      "evidence": "experiment_summary.json; reproducibility_manifest.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_REPRO_DELTA_reproducibility_git_rows",
+      "category": "stable_reproducibility_metric",
+      "status": "PASS",
+      "baseline_value": "6",
+      "candidate_value": "6",
+      "expected": "candidate-baseline=0",
+      "evidence": "experiment_summary.json; reproducibility_manifest.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_VERIFIER_DELTA_check_rows",
+      "category": "expected_verifier_growth",
+      "status": "PASS",
+      "baseline_value": "150",
+      "candidate_value": "151",
+      "expected": "candidate-baseline=1",
+      "evidence": "review_packet_verification.json",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_VERIFIER_DELTA_pass",
+      "category": "expected_verifier_growth",
+      "status": "PASS",
+      "baseline_value": "150",
+      "candidate_value": "151",
+      "expected": "candidate-baseline=1",
+      "evidence": "review_packet_verification.json",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_VERIFIER_DELTA_warn",
+      "category": "stable_verifier_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate-baseline=0",
+      "evidence": "review_packet_verification.json",
+      "notes": ""
+    },
+    {
+      "check_id": "EXPECTED_VERIFIER_DELTA_fail",
+      "category": "stable_verifier_metric",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate-baseline=0",
+      "evidence": "review_packet_verification.json",
+      "notes": ""
+    },
+    {
+      "check_id": "WORKBOOK_SHEET_DELTA",
+      "category": "expected_workbook_growth",
+      "status": "PASS",
+      "baseline_value": "[\"Summary\", \"Review Guide\", \"Review Queue\", \"Review Signoff\", \"Signoff Evidence\", \"Signoff Validation\", \"Signoff Roundtrip\", \"Goal Audit\", \"Manual Review\", \"Correctness Audit\", \"Prefix Oracle\", \"Oracle Derivations\", \"Manual Oracle Guide\", \"Semantic Results\", \"Semantic Cases\", \"Semantic Exclusions\", \"Syntax Coverage\", \"Input Policy\", \"CLI Contract\", \"XML Inventory\", \"Translation Review\", \"Benchmark Manifest\", \"XML Edge Proofs\", \"XML Proof Appendix\", \"XML Obligations\", \"XML Trace Coverage\", \"Original Trace Gaps\", \"Gear Original Audit\", \"Non-Gear Input Search\", \"Paper Claim Review\", \"Claim Audit\", \"Requirements Audit\", \"Repro Manifest\", \"Transition Details\", \"Candidate Results\", \"Candidate Step Audit\", \"Baseline Results\", \"Timeout Rerun Summary\", \"Timeout Rerun\", \"Embedded Benchmarks\", \"Hardcoded Benchmarks\", \"Benchmark Blockers\"]",
+      "candidate_value": "[\"Summary\", \"Review Guide\", \"Review Queue\", \"Review Signoff\", \"Signoff Evidence\", \"Signoff Validation\", \"Signoff Roundtrip\", \"Goal Audit\", \"Manual Review\", \"Correctness Audit\", \"Prefix Oracle\", \"Oracle Derivations\", \"Manual Oracle Guide\", \"MITL Semantic Catalog\", \"MITL XML Candidates\", \"MITL Runtime Catalog\", \"Semantic Results\", \"Semantic Cases\", \"Semantic Exclusions\", \"Syntax Coverage\", \"Input Policy\", \"CLI Contract\", \"XML Inventory\", \"Translation Review\", \"Benchmark Manifest\", \"XML Edge Proofs\", \"XML Proof Appendix\", \"XML Obligations\", \"XML Trace Coverage\", \"Original Trace Gaps\", \"Gear Original Audit\", \"Non-Gear Input Search\", \"Paper Claim Review\", \"Claim Audit\", \"Requirements Audit\", \"Repro Manifest\", \"Transition Details\", \"Candidate Results\", \"Candidate Step Audit\", \"Baseline Results\", \"Timeout Rerun Summary\", \"Timeout Rerun\", \"Embedded Benchmarks\", \"Hardcoded Benchmarks\", \"Benchmark Blockers\"]",
+      "expected": "added sheets=['MITL Runtime Catalog', 'MITL Semantic Catalog', 'MITL XML Candidates']; removed sheets=[]",
+      "evidence": "paper_review_results.xlsx",
+      "notes": "added=['MITL Runtime Catalog', 'MITL Semantic Catalog', 'MITL XML Candidates']; removed=[]"
+    },
+    {
+      "check_id": "MANUAL_ORACLE_REQUIRED_IDS",
+      "category": "expected_manual_oracle_growth",
+      "status": "PASS",
+      "baseline_value": "<absent>",
+      "candidate_value": "[\"MOG_BASELINE_NOT_HAND_ORACLE\", \"MOG_BUILD_STATS_BOUNDARY\", \"MOG_DEFINITION\", \"MOG_FINAL_VERDICT\", \"MOG_FIX_POLICY\", \"MOG_INDEPENDENCE\", \"MOG_OPERATOR_SPOT_CHECK\", \"MOG_SAT_CHECK\", \"MOG_SIGNOFF_BOUNDARY\", \"MOG_THREE_VALUED_PREFIX\"]",
+      "expected": "candidate manual oracle guide has 10 rows and required protocol IDs",
+      "evidence": "manual_oracle_guide.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "SIGNOFF_VALIDATION_PASS_BASELINE",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "mode=pre-review/fail=0",
+      "candidate_value": "{'mode': 'pre-review', 'fail': 0}",
+      "expected": "both stable packets include passing generated signoff validation",
+      "evidence": "baseline/review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "SIGNOFF_VALIDATION_PASS_CANDIDATE",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "mode=pre-review/fail=0",
+      "candidate_value": "{'mode': 'pre-review', 'fail': 0}",
+      "expected": "both stable packets include passing generated signoff validation",
+      "evidence": "candidate/review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_mode",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "pre-review",
+      "candidate_value": "pre-review",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_completion_state",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED",
+      "candidate_value": "READY_FOR_HUMAN_REVIEW_NOT_SIGNED",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_validation_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "16",
+      "candidate_value": "16",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_pass",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "16",
+      "candidate_value": "16",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_fail",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_signoff_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "56",
+      "candidate_value": "56",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_blank_decisions",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "56",
+      "candidate_value": "56",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_nonblank_decisions",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_invalid_decisions",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_policy_mismatch_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_forbidden_decision_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_unresolved_evidence_tokens",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_missing_queue_evidence_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_unresolved_queue_evidence_tokens",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_unresolved_source_sheet_tokens",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_unresolved_source_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_unresolved_queue_source_sheet_tokens",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "STABLE_SIGNOFF_unresolved_queue_source_rows",
+      "category": "stable_signoff_validation",
+      "status": "PASS",
+      "baseline_value": "0",
+      "candidate_value": "0",
+      "expected": "candidate equals baseline",
+      "evidence": "review_signoff_validation.json",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_semantic_regression_results_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "87",
+      "candidate_value": "87",
+      "expected": "candidate-baseline=0",
+      "evidence": "semantic_regression_results.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_semantic_prefix_oracle_review_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "163",
+      "candidate_value": "163",
+      "expected": "candidate-baseline=0",
+      "evidence": "semantic_prefix_oracle_review.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_semantic_oracle_derivations_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "87",
+      "candidate_value": "87",
+      "expected": "candidate-baseline=0",
+      "evidence": "semantic_oracle_derivations.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_mitl_correctness_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "150",
+      "candidate_value": "150",
+      "expected": "candidate-baseline=0",
+      "evidence": "mitl_correctness_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_mightyppl_syntax_coverage_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "45",
+      "candidate_value": "45",
+      "expected": "candidate-baseline=0",
+      "evidence": "mightyppl_syntax_coverage_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_formula_input_policy_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "8",
+      "candidate_value": "8",
+      "expected": "candidate-baseline=0",
+      "evidence": "formula_input_policy_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_cli_contract_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "11",
+      "candidate_value": "11",
+      "expected": "candidate-baseline=0",
+      "evidence": "cli_contract_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_benchmark_manifest_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate-baseline=0",
+      "evidence": "benchmark_manifest.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_monitaal_xml_inventory_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "60",
+      "candidate_value": "60",
+      "expected": "candidate-baseline=0",
+      "evidence": "monitaal_xml_inventory.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_monitaal_translation_review_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate-baseline=0",
+      "evidence": "monitaal_translation_review.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_monitaal_transition_details_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "386",
+      "candidate_value": "386",
+      "expected": "candidate-baseline=0",
+      "evidence": "monitaal_transition_details.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_xml_edge_guard_proofs_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate-baseline=0",
+      "evidence": "xml_edge_guard_proofs.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_xml_proof_appendix_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate-baseline=0",
+      "evidence": "xml_proof_appendix.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_translation_candidate_results_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate-baseline=0",
+      "evidence": "translation_candidate_results.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_candidate_prefix_observations_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "123028",
+      "candidate_value": "123028",
+      "expected": "candidate-baseline=0",
+      "evidence": "candidate_prefix_observations.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_candidate_step_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "63",
+      "candidate_value": "63",
+      "expected": "candidate-baseline=0",
+      "evidence": "candidate_step_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_monitaal_baseline_results_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "67",
+      "candidate_value": "67",
+      "expected": "candidate-baseline=0",
+      "evidence": "monitaal_baseline_results.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_review_guide_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "15",
+      "candidate_value": "15",
+      "expected": "candidate-baseline=0",
+      "evidence": "review_guide.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_goal_completion_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate-baseline=0",
+      "evidence": "goal_completion_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_manual_review_checklist_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "17",
+      "candidate_value": "17",
+      "expected": "candidate-baseline=0",
+      "evidence": "manual_review_checklist.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_paper_claim_consistency_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate-baseline=0",
+      "evidence": "paper_claim_consistency_audit.csv",
+      "notes": ""
+    },
+    {
+      "check_id": "CSV_ROW_COUNT_requirements_traceability_audit_csv",
+      "category": "stable_csv_row_count",
+      "status": "PASS",
+      "baseline_value": "23",
+      "candidate_value": "23",
+      "expected": "candidate-baseline=0",
+      "evidence": "requirements_traceability_audit.csv",
+      "notes": ""
+    }
+  ]
+}

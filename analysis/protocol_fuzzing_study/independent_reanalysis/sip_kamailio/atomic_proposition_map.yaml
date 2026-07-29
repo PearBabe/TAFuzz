@@ -1,0 +1,239 @@
+# Generated independent AP map for Kamailio/SIP MITL study.
+time_unit: ms
+valuation_policy: complete_pointwise; absent AP is false
+dynamic_fields_policy: Call-ID, CSeq, Via branch, sent-by, branch index, tags are correlation metadata only
+atomic_propositions:
+  - ap: accepted_rx_ack
+    kind: observable_or_derived_event
+    meaning: ACK matches an INVITE transaction in RFC6026 Accepted-equivalent profile.
+    primary_hooks: [HK_RX_PARSE_OK, HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: accepted_rx_invite_retransmission
+    kind: observable_or_derived_event
+    meaning: Retransmitted INVITE matches a transaction in RFC6026 Accepted-equivalent retention profile.
+    primary_hooks: [HK_TX_LOOKUP, HK_TX_NEW]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: ack_passed_to_tu
+    kind: observable_or_derived_event
+    meaning: ACK is delivered to the transaction user/route layer.
+    primary_hooks: [HK_RX_PARSE_OK, HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: branch_cancel_requested_without_provisional
+    kind: observable_or_derived_event
+    meaning: Branch cancellation is requested while branch has not received any provisional response.
+    primary_hooks: [HK_CANCEL_BRANCH]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: branch_cancel_sent
+    kind: illegal_derived
+    meaning: A downstream branch CANCEL request was actually sent.
+    primary_hooks: [HK_CANCEL_BRANCH, HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: cancel_matches_invite_before_final
+    kind: observable_or_derived_event
+    meaning: CANCEL matches an original INVITE before a final response has been sent.
+    primary_hooks: [HK_FORWARD_NONACK]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: cancel_matches_original_transaction
+    kind: observable_or_derived_event
+    meaning: CANCEL request is correlated to an existing original transaction.
+    primary_hooks: [HK_FORWARD_NONACK]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: cancel_tx_200_ok
+    kind: observable_or_derived_event
+    meaning: 200 OK response to the CANCEL request itself was actually sent.
+    primary_hooks: [HK_E2E_CANCEL, HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_2xx_response_from_tu
+    kind: observable_or_derived_event
+    meaning: TU/relay emits a 2xx final response for an INVITE server transaction.
+    primary_hooks: [HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_auto_100_obligation
+    kind: observable_or_derived_event
+    meaning: Profile guard: INVITE processing is expected to take longer than 200 ms and no earlier TU response has been emitted.
+    primary_hooks: [HK_RELAY_REPLY, HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_completed_rx_ack
+    kind: observable_or_derived_event
+    meaning: ACK matches an INVITE transaction currently in Completed.
+    primary_hooks: [HK_TIMER_STOP, HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_proceeding_tu_final_300_699
+    kind: observable_or_derived_event
+    meaning: TU/relay provides a 300-699 final response for an INVITE in Proceeding.
+    primary_hooks: [HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_proceeding_tu_provisional
+    kind: observable_or_derived_event
+    meaning: Transaction layer receives/selects a 101-199 response while the INVITE transaction is Proceeding.
+    primary_hooks: [HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_retransmission_in_proceeding_with_last_prov
+    kind: observable_or_derived_event
+    meaning: Retransmitted INVITE matches a Proceeding transaction with a stored provisional response.
+    primary_hooks: [HK_RETRANSMIT_REPLY, HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_retransmission_passed_to_tu
+    kind: illegal_derived
+    meaning: Illegal derived event: retransmitted INVITE reaches route/TU boundary again.
+    primary_hooks: [HK_TX_LOOKUP, HK_TX_NEW]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_tx_completed_non2xx
+    kind: observable_or_derived_event
+    meaning: A non-2xx final INVITE response was committed and sent; transaction enters Completed profile.
+    primary_hooks: [HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_tx_confirmed_ack_absorbed
+    kind: observable_or_derived_event
+    meaning: ACK is absorbed by transaction layer and response retransmission timers are stopped.
+    primary_hooks: [HK_TIMER_STOP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_tx_proceeding
+    kind: observable_or_derived_event
+    meaning: Derived RFC state event emitted after Kamailio creates the INVITE server transaction.
+    primary_hooks: [HK_TX_NEW]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: invite_tx_terminated_without_ack_or_timer_h
+    kind: illegal_derived
+    meaning: Illegal derived event: state is destroyed before matching ACK or Timer H expiry.
+    primary_hooks: [HK_PUT_ON_WAIT]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_final_response_retransmitted
+    kind: observable_or_derived_event
+    meaning: Stored final response for non-INVITE transaction was retransmitted.
+    primary_hooks: [HK_RETRANSMIT_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_retransmission_in_completed
+    kind: observable_or_derived_event
+    meaning: Retransmitted non-INVITE request matches a Completed transaction.
+    primary_hooks: [HK_RETRANSMIT_REPLY, HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_retransmission_in_trying
+    kind: observable_or_derived_event
+    meaning: Retransmitted non-INVITE request matches a transaction in Trying.
+    primary_hooks: [HK_TIMER_STOP, HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_retransmission_passed_to_tu
+    kind: illegal_derived
+    meaning: Illegal derived event: non-INVITE retransmission reaches route/TU boundary again.
+    primary_hooks: [HK_TIMER_STOP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_tu_final_response
+    kind: observable_or_derived_event
+    meaning: TU emits final response for non-INVITE transaction.
+    primary_hooks: [HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_tu_provisional
+    kind: observable_or_derived_event
+    meaning: TU emits a provisional response for a non-INVITE server transaction.
+    primary_hooks: [HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_tx_completed_final_sent
+    kind: observable_or_derived_event
+    meaning: Final response for non-INVITE transaction was sent and Completed/wait profile begins.
+    primary_hooks: [HK_PUT_ON_WAIT, HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_tx_proceeding_response_sent
+    kind: observable_or_derived_event
+    meaning: Non-INVITE transaction enters Proceeding profile and sends provisional response.
+    primary_hooks: [HK_RELAY_REPLY, HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: noninvite_tx_trying
+    kind: observable_or_derived_event
+    meaning: Derived RFC state event emitted after non-INVITE server transaction creation.
+    primary_hooks: [HK_TX_NEW]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: original_invite_tx_487
+    kind: observable_or_derived_event
+    meaning: 487 response to the original INVITE was actually sent.
+    primary_hooks: [HK_E2E_CANCEL, HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: proxy_forward_100_trying
+    kind: illegal_derived
+    meaning: Illegal event: stateful proxy forwards a 100 Trying response upstream.
+    primary_hooks: [HK_RELAY_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: proxy_rx_100_trying_response
+    kind: observable_or_derived_event
+    meaning: Stateful proxy receives/matches a downstream 100 Trying response.
+    primary_hooks: [HK_REPLY_RECEIVED]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: request_with_magic_cookie_matches_existing_tx
+    kind: observable_or_derived_event
+    meaning: Incoming request has RFC3261 magic-cookie branch and fields matching an existing transaction.
+    primary_hooks: [HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: server_rx_invite_new_tx
+    kind: observable_or_derived_event
+    meaning: Parsed inbound INVITE causes a new server transaction candidate after correlation finds no existing transaction.
+    primary_hooks: [HK_RX_PARSE_OK]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: server_rx_noninvite_new_tx
+    kind: observable_or_derived_event
+    meaning: Parsed inbound non-INVITE request creates a new non-INVITE server transaction candidate.
+    primary_hooks: [HK_RX_PARSE_OK]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: timer_l_64t1_armed
+    kind: observable_or_derived_event
+    meaning: Derived timer event: an RFC6026 Timer L-equivalent 64*T1 retention timer is successfully armed.
+    primary_hooks: [HK_TIMER_ARM]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: tx_lookup_existing_match
+    kind: observable_or_derived_event
+    meaning: Kamailio transaction lookup returns existing transaction rather than creating a new one.
+    primary_hooks: [HK_TX_LOOKUP]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: uas_retransmit_last_provisional
+    kind: observable_or_derived_event
+    meaning: Stored provisional response was retransmitted for the matched INVITE transaction.
+    primary_hooks: [HK_RETRANSMIT_REPLY]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: uas_tx_100_trying
+    kind: observable_or_derived_event
+    meaning: A 100 Trying response for the correlated INVITE was actually sent.
+    primary_hooks: [HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name
+  - ap: uas_tx_provisional_response
+    kind: observable_or_derived_event
+    meaning: A provisional response other than 100 Trying was actually sent for the correlated INVITE.
+    primary_hooks: [HK_SEND_PR_BUFFER]
+    correlation_metadata: [call_id_hash, cseq_number, cseq_method, via_branch_hash, sent_by_hash, transaction_id, branch_id]
+    alphabet_note: dynamic identifiers never appear in the AP name

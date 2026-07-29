@@ -1,0 +1,497 @@
+{
+  "protocol": "QUIC",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/transport_security_protocols/quic/evidence.json",
+      "record": {
+        "protocol": "QUIC",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_AND_ROOT_PROFILE_REVIEW",
+        "standards": [
+          {
+            "id": "RFC9000",
+            "title": "QUIC: A UDP-Based Multiplexed and Secure Transport",
+            "url": "https://www.rfc-editor.org/rfc/rfc9000.html",
+            "sections": [
+              "8.2.4",
+              "10.1",
+              "13.2.1",
+              "18.2"
+            ],
+            "source_type": "IETF Standards Track"
+          },
+          {
+            "id": "RFC9002",
+            "title": "QUIC Loss Detection and Congestion Control",
+            "url": "https://www.rfc-editor.org/rfc/rfc9002.html",
+            "sections": [
+              "6.2.1",
+              "6.2.2",
+              "6.2.4"
+            ],
+            "source_type": "IETF Standards Track"
+          },
+          {
+            "id": "RFC9001",
+            "title": "Using TLS to Secure QUIC",
+            "url": "https://www.rfc-editor.org/rfc/rfc9001.html",
+            "sections": [
+              "6.5"
+            ],
+            "source_type": "IETF Standards Track"
+          }
+        ],
+        "sources": [
+          {
+            "repository": "ngtcp2/ngtcp2",
+            "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+            "url": "https://github.com/ngtcp2/ngtcp2/tree/fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+            "role": "mature QUIC v1 implementation and example profile"
+          }
+        ],
+        "method": "Screened ACK delay, PTO/backoff, persistent congestion, path validation, idle, closing/draining and key-update timers; independently audited the initial set and root-reviewed two later fixed-profile no-early cards.",
+        "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md",
+        "atomic_proposition_source_mapping": {
+          "schema": "primary_source_atomic_propositions + auxiliary_source_mappings[]",
+          "status": "COMPLETE_FOR_ALL_ADMITTED_CANDIDATES",
+          "property_count": 7,
+          "atomic_proposition_count": 19,
+          "policy": "Every declared AP has at least one fixed-commit executable source mapping; dynamic identifiers remain correlation fields.",
+          "root_verification": "generate_multi_protocol_catalog.py candidate_gate_errors + verify_source + verify_auxiliary_sources"
+        }
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "QUIC-ACK-01",
+      "protocol": "QUIC",
+      "standard": "RFC 9000",
+      "standard_version": "RFC 9000 (QUIC v1)",
+      "section": "13.2.1, 18.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-13.2.1",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_conn.c",
+      "source_lines": "1847-1855",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L1847-L1855",
+      "auxiliary_source_mappings": [
+        {
+          "role": "default max_ack_delay profile constant",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/includes/ngtcp2/ngtcp2.h",
+          "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+          "lines": "1278-1285",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+          "atomic_propositions": [
+            "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+          ]
+        },
+        {
+          "role": "commit fully processed ack-eliciting packet number",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "pktns_commit_recv_pkt_num",
+          "lines": "6293-6337",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6293-L6337",
+          "atomic_propositions": [
+            "quic_1rtt_ack_eliciting_packet_processed_default_ack_delay"
+          ]
+        },
+        {
+          "role": "ACK frame range construction for outgoing packet",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_acktr.c",
+          "symbol": "ngtcp2_acktr_create_ack_frame",
+          "lines": "340-426",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_acktr.c#L340-L426",
+          "atomic_propositions": [
+            "quic_ack_covering_packet_sent"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "QUIC-IDLE-01",
+      "protocol": "QUIC",
+      "standard": "RFC 9000",
+      "standard_version": "RFC 9000 (QUIC v1)",
+      "section": "10.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-10.1",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_conn.c",
+      "source_lines": "14060-14092",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L14060-L14092",
+      "auxiliary_source_mappings": [
+        {
+          "role": "example server installs configured idle timeout transport parameter",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "examples/server.cc",
+          "symbol": "Handler::init",
+          "lines": "817-827",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/examples/server.cc#L817-L827",
+          "atomic_propositions": [
+            "quic_connection_became_idle_ngtcp2_30s_profile"
+          ],
+          "legacy_exact_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/examples/server_base.h#L70-L80"
+        },
+        {
+          "role": "read activity starts a new idle generation",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_restart_timer_on_read",
+          "lines": "2163-2166",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L2163-L2166",
+          "atomic_propositions": [
+            "quic_connection_became_idle_ngtcp2_30s_profile"
+          ]
+        },
+        {
+          "role": "write activity starts a new idle generation",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_restart_timer_on_write",
+          "lines": "2158-2161",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L2158-L2161",
+          "atomic_propositions": [
+            "quic_connection_became_idle_ngtcp2_30s_profile"
+          ]
+        },
+        {
+          "role": "connection-state disposal hook",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "ngtcp2_conn_del",
+          "lines": "1740-1845",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L1740-L1845",
+          "atomic_propositions": [
+            "quic_connection_state_discarded"
+          ]
+        },
+        {
+          "role": "peer CONNECTION_CLOSE transition to draining",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_recv_connection_close",
+          "lines": "6054-6084",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6054-L6084",
+          "atomic_propositions": [
+            "quic_explicit_close_or_terminal_received"
+          ]
+        },
+        {
+          "role": "validated stateless reset transition to draining",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_on_stateless_reset",
+          "lines": "8046-8074",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L8046-L8074",
+          "atomic_propositions": [
+            "quic_explicit_close_or_terminal_received"
+          ]
+        },
+        {
+          "role": "local CONNECTION_CLOSE transition to closing",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "ngtcp2_conn_write_connection_close_pkt",
+          "lines": "12688-12749",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L12688-L12749",
+          "atomic_propositions": [
+            "quic_explicit_close_or_terminal_received"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "QUIC-KU-01",
+      "protocol": "QUIC",
+      "standard": "RFC 9001",
+      "standard_version": "RFC 9001",
+      "section": "6.5",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9001.html#section-6.5",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_conn.c",
+      "source_lines": "11281-11297",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L11281-L11297",
+      "auxiliary_source_mappings": [
+        {
+          "role": "previous key-update ACK confirmation timestamp",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_handle_unconfirmed_key_update_from_remote",
+          "lines": "3455-3474",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L3455-L3474",
+          "atomic_propositions": [
+            "quic_previous_key_update_confirmed_initial_profile"
+          ]
+        },
+        {
+          "role": "default initial RTT input to key-update spacing profile",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/includes/ngtcp2/ngtcp2.h",
+          "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+          "lines": "434-439",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+          "atomic_propositions": [
+            "quic_previous_key_update_confirmed_initial_profile"
+          ]
+        },
+        {
+          "role": "default max_ack_delay input to key-update spacing profile",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/includes/ngtcp2/ngtcp2.h",
+          "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+          "lines": "1278-1285",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+          "atomic_propositions": [
+            "quic_previous_key_update_confirmed_initial_profile"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "QUIC-PC-01",
+      "protocol": "QUIC",
+      "standard": "RFC 9002",
+      "standard_version": "RFC 9002",
+      "section": "7.6.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9002.html#section-7.6.1",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_rtb.c",
+      "source_lines": "1045-1085",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c#L1045-L1085",
+      "auxiliary_source_mappings": [
+        {
+          "role": "persistent-congestion threshold constant",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_cc.h",
+          "symbol": "NGTCP2_PERSISTENT_CONGESTION_THRESHOLD",
+          "lines": "34-38",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_cc.h#L34-L38",
+          "atomic_propositions": [
+            "quic_app_loss_run_started_initial_profile",
+            "quic_persistent_congestion_declared"
+          ]
+        },
+        {
+          "role": "persistent-congestion decision and callback",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_rtb.c",
+          "symbol": "rtb_detect_lost_pkt",
+          "lines": "1162-1185",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_rtb.c#L1162-L1185",
+          "atomic_propositions": [
+            "quic_persistent_congestion_declared"
+          ]
+        },
+        {
+          "role": "default initial RTT input to fixed profile",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/includes/ngtcp2/ngtcp2.h",
+          "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+          "lines": "434-439",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+          "atomic_propositions": [
+            "quic_app_loss_run_started_initial_profile"
+          ]
+        },
+        {
+          "role": "default max_ack_delay input to fixed profile",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/includes/ngtcp2/ngtcp2.h",
+          "symbol": "NGTCP2_DEFAULT_MAX_ACK_DELAY",
+          "lines": "1278-1285",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L1278-L1285",
+          "atomic_propositions": [
+            "quic_app_loss_run_started_initial_profile"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "QUIC-PTO-01",
+      "protocol": "QUIC",
+      "standard": "RFC 9002",
+      "standard_version": "RFC 9002",
+      "section": "6.2.1-6.2.2",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9002.html#section-6.2.2",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_conn.c",
+      "source_lines": "954-979",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L954-L979",
+      "auxiliary_source_mappings": [
+        {
+          "role": "default initial RTT profile constant",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/includes/ngtcp2/ngtcp2.h",
+          "symbol": "NGTCP2_DEFAULT_INITIAL_RTT",
+          "lines": "434-439",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/includes/ngtcp2/ngtcp2.h#L434-L439",
+          "atomic_propositions": [
+            "quic_pto_armed_999ms_initial_profile"
+          ]
+        },
+        {
+          "role": "PTO selection, arm, cancellation, and replacement",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "ngtcp2_conn_set_loss_detection_timer",
+          "lines": "13427-13469",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13427-L13469",
+          "atomic_propositions": [
+            "quic_pto_armed_999ms_initial_profile",
+            "quic_pto_generation_superseded"
+          ]
+        },
+        {
+          "role": "loss-detection deadline dispatch",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "ngtcp2_conn_on_loss_detection_timer",
+          "lines": "13478-13546",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13478-L13546",
+          "atomic_propositions": [
+            "quic_pto_deadline_reached"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "QUIC-PTO-02",
+      "protocol": "QUIC",
+      "standard": "RFC 9002",
+      "standard_version": "RFC 9002",
+      "section": "6.2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9002.html#section-6.2.1",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_conn.c",
+      "source_lines": "13387-13424",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13387-L13424",
+      "auxiliary_source_mappings": [
+        {
+          "role": "PTO deadline, pto_count increment, and backoff rearm",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "ngtcp2_conn_on_loss_detection_timer",
+          "lines": "13478-13546",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13478-L13546",
+          "atomic_propositions": [
+            "quic_pto_backoff_armed_1998ms",
+            "quic_second_pto_deadline_reached"
+          ]
+        },
+        {
+          "role": "backoff timer replacement or cancellation",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "ngtcp2_conn_set_loss_detection_timer",
+          "lines": "13427-13469",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L13427-L13469",
+          "atomic_propositions": [
+            "quic_second_pto_superseded"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "QUIC-PV-01",
+      "protocol": "QUIC",
+      "standard": "RFC 9000",
+      "standard_version": "RFC 9000 + RFC 9002",
+      "section": "8.2.4",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9000.html#section-8.2.4",
+      "source_repository": "ngtcp2/ngtcp2",
+      "source_commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "source_path": "lib/ngtcp2_conn.c",
+      "source_lines": "995-1012",
+      "source_url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L995-L1012",
+      "auxiliary_source_mappings": [
+        {
+          "role": "path-validation object creation with timeout",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_pv.c",
+          "symbol": "ngtcp2_pv_new",
+          "lines": "46-68",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_pv.c#L46-L68",
+          "atomic_propositions": [
+            "quic_path_validation_armed_2997ms_profile"
+          ]
+        },
+        {
+          "role": "matching PATH_RESPONSE validation success",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_recv_path_response",
+          "lines": "6161-6268",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L6161-L6268",
+          "atomic_propositions": [
+            "quic_path_validated"
+          ]
+        },
+        {
+          "role": "path-validation timeout abandonment",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_write_path_challenge",
+          "lines": "5203-5232",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L5203-L5232",
+          "atomic_propositions": [
+            "quic_path_abandoned_by_timeout"
+          ]
+        },
+        {
+          "role": "migration/application replacement abort",
+          "repository": "ngtcp2/ngtcp2",
+          "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+          "path": "lib/ngtcp2_conn.c",
+          "symbol": "conn_abort_pv",
+          "lines": "5117-5132",
+          "url": "https://github.com/ngtcp2/ngtcp2/blob/fcb5cdaba44a8fb1c821319af306e3f38f18e738/lib/ngtcp2_conn.c#L5117-L5132",
+          "atomic_propositions": [
+            "quic_path_validation_superseded"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

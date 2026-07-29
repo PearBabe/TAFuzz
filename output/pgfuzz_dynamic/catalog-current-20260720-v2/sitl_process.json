@@ -1,0 +1,47 @@
+{
+  "command": [
+    "/home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arducopter",
+    "--wipe",
+    "--model",
+    "quad",
+    "--home",
+    "-35.363261,149.165230,584,353",
+    "--speedup",
+    "1",
+    "--base-port",
+    "20400",
+    "--rc-in-port",
+    "21401",
+    "--sim-port-in",
+    "22401",
+    "--sim-port-out",
+    "22402",
+    "--irlock-port",
+    "23401",
+    "--serial0",
+    "udpclient:127.0.0.1:19401",
+    "--sysid",
+    "151",
+    "--autotest-dir",
+    "/home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest"
+  ],
+  "outbound_records": [
+    {
+      "fields": {
+        "custom_mode": 0,
+        "source_component": 1,
+        "source_system": 151
+      },
+      "host_monotonic_ns": 24850768449197,
+      "host_wall_utc": "2026-07-20T15:31:55.397092+00:00",
+      "kind": "TARGET_HEARTBEAT"
+    },
+    {
+      "fields": {},
+      "host_monotonic_ns": 24850768674666,
+      "host_wall_utc": "2026-07-20T15:31:55.397314+00:00",
+      "kind": "PARAM_REQUEST_LIST"
+    }
+  ],
+  "return_code": -15
+}

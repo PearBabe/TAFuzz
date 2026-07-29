@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-07-17T23:10:38.832662+00:00",
+  "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+  "runtime_status": "COMPLETE",
+  "runtime_error": null,
+  "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+  "mavlink_commit": "33af200d25ec6f0925b49b1ba82bbf1294ea5f72",
+  "px4_instance": 42,
+  "expected_target_sysid": 43,
+  "observed_target_system": 43,
+  "observed_target_component": 1,
+  "gcs_source_system": 250,
+  "gcs_source_component": 190,
+  "ports_before_launch": {
+    "gcs_local": {
+      "port": 18612,
+      "available": true,
+      "error": null
+    },
+    "offboard_local": {
+      "port": 14622,
+      "available": true,
+      "error": null
+    },
+    "onboard_payload_local": {
+      "port": 14322,
+      "available": true,
+      "error": null
+    },
+    "onboard_gimbal_local": {
+      "port": 13072,
+      "available": true,
+      "error": null
+    },
+    "sih_mavlink_local": {
+      "port": 19492,
+      "available": true,
+      "error": null
+    }
+  },
+  "phases": [
+    {
+      "name": "STARTUP",
+      "start_host_monotonic_ns": 8146347386239,
+      "end_host_monotonic_ns": 8147663038940,
+      "traffic_origin": "PX4 startup and GCS discovery traffic",
+      "notes": "Pre-contract startup phase."
+    },
+    {
+      "name": "BASELINE",
+      "start_host_monotonic_ns": 8147663038940,
+      "end_host_monotonic_ns": 8159667030904,
+      "traffic_origin": "Default PX4 streams after GCS discovery; no PARAM or message request sent.",
+      "notes": "Duration 12.0s."
+    },
+    {
+      "name": "PARAMETER_DOWNLOAD",
+      "start_host_monotonic_ns": 8159667030904,
+      "end_host_monotonic_ns": 8176175644973,
+      "traffic_origin": "PARAM_REQUEST_LIST followed by explicit PARAM_REQUEST_READ for key parameters.",
+      "notes": "Runtime values only; no PARAM_SET is sent."
+    },
+    {
+      "name": "REQUEST_SWEEP",
+      "start_host_monotonic_ns": 8176175644973,
+      "end_host_monotonic_ns": 8184155993074,
+      "traffic_origin": "Sequential MAV_CMD_REQUEST_MESSAGE (512) plus default traffic that continued during windows.",
+      "notes": "Matching frames are temporal observations; default-stream presence is marked as causal ambiguity."
+    }
+  ],
+  "baseline_contract": {
+    "minimum_seconds": 10,
+    "configured_seconds": 12.0,
+    "explicit_message_or_parameter_requests_sent": false,
+    "gcs_heartbeat_sent_for_dynamic_peer_and_link_liveness": true
+  },
+  "parameter_status": "COMPLETE",
+  "required_parameters_missing": [],
+  "request_sweep_status": "COMPLETE",
+  "request_sweep_attempted": 243,
+  "message_count": 14748,
+  "distinct_message_count": 54,
+  "baseline_distinct_message_count": 33,
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

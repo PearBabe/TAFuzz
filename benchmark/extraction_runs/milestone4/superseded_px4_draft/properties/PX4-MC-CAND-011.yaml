@@ -1,0 +1,44 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-011
+title: Horizontal aiding timeout and multicopter fallback
+system: PX4
+vehicle_scope: multicopter SITL in a mode requiring position
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 188-209
+    original_text: "A timeout since the last sensor data was fused that provides direct speed or horizontal position measurements."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/ekf2/module.yaml
+    lines: 76-86
+    original_text: "Maximum lapsed time from last fusion of measurements that constrain velocity drift before the EKF reports horizontal nav invalid."
+normalized_requirement:
+  context: a multicopter mode requires an acceptable position estimate
+  trigger: no successful fusion from any enabled drift-constraining aiding source for T_noaid
+  obligation_primary: report the horizontal navigation solution invalid
+  obligation_fallback: use Altitude mode if a height estimate is available, otherwise Stabilized mode
+  source_cardinality: one logical proposition aggregates GNSS velocity/position, EV/VIO, optical flow, auxiliary global position and other enabled aiding paths
+time_constraint:
+  expression: T_noaid = runtime(EKF2_NOAID_TOUT) microseconds
+  compiled_default_instance: 5000000 microseconds
+  metadata_range: 500000 to 10000000 microseconds
+  epoch: last successful fusion that constrains velocity drift; receipt time is not accepted as equivalent
+  clock: EKF delayed-time/HRT domain internally; no direct pure-MAVLink epoch is available
+  boundary: NEEDS_RECEIVE_VS_FUSE_RECONCILIATION
+mitl:
+  status: NOT_VALIDATED
+  formula_candidates:
+    - "G(no_horizontal_aiding_for(T_noaid) -> F_[0,EPS_OBS] horizontal_nav_invalid)"
+    - "G((position_required & horizontal_nav_invalid & height_valid) -> F_[0,EPS_OBS] mode_altitude)"
+    - "G((position_required & horizontal_nav_invalid & !height_valid) -> F_[0,EPS_OBS] mode_stabilized)"
+atomic_propositions:
+  - AP-PX4-LAST-HORIZONTAL-AID-FUSION
+  - AP-PX4-HORIZONTAL-NAV-INVALID
+  - AP-PX4-HEIGHT-VALID
+  - AP-PX4-MODE-ALTITUDE
+  - AP-PX4-MODE-STABILIZED
+mavlink_observation_refs: [OBS-PX4-PARAM, OBS-PX4-MODE, OBS-PX4-LOCAL-POSITION, OBS-PX4-FUSION-INTERNAL]
+blockers: [NEEDS_FUSION_OBSERVATION, NEEDS_RECEIVE_VS_FUSE_RECONCILIATION, NEEDS_HEIGHT_VALID_OBSERVATION, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

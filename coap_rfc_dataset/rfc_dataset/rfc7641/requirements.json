@@ -1,0 +1,412 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   http://www"
+  },
+  {
+    "section": "1.2.  Protocol Overview",
+    "keyword": "MUST",
+    "text": "If multiple subjects are of interest\n   to an observer, the observer must register separately for all of\n   them"
+  },
+  {
+    "section": "1.2.  Protocol Overview",
+    "keyword": "MAY",
+    "text": "The\n   server may send a notification in a confirmable CoAP message to\n   request an acknowledgement from the client"
+  },
+  {
+    "section": "1.3.  Consistency Model",
+    "keyword": "MAY",
+    "text": "And third, the server may erroneously come to the conclusion that the\n   client is no longer interested in the resource, which will cause the\n   server to stop sending notifications and the client to assume an old\n   state until it eventually registers its interest again"
+  },
+  {
+    "section": "1.3.  Consistency Model",
+    "keyword": "SHOULD",
+    "text": "The protocol addresses this issue as follows:\n\n   o  It follows a best-effort approach for sending the current\n      representation to the client after a state change: clients should\n      see the new state after a state change as soon as possible, and\n      they should see as many states as possible"
+  },
+  {
+    "section": "2.  The Observe Option",
+    "keyword": "MUST",
+    "text": "When a stored\n   response with an Observe Option is used to satisfy a normal GET\n   request, the option MUST be removed before the response is returned"
+  },
+  {
+    "section": "3.1.  Request",
+    "keyword": "MUST",
+    "text": "A client\n   MUST aggregate such requests and MUST NOT register more than once for\n   the same target resource"
+  },
+  {
+    "section": "3.3.1.  Freshness",
+    "keyword": "MAY",
+    "text": "A client MAY store a notification like a response in its cache and\n   use a stored notification that is fresh without contacting the\n   server"
+  },
+  {
+    "section": "3.3.1.  Freshness",
+    "keyword": "MUST",
+    "text": "If the age of the latest notification becomes greater\n   than its indicated Max-Age, then the client MUST NOT assume that the\n   enclosed representation reflects the actual resource state"
+  },
+  {
+    "section": "3.3.1.  Freshness",
+    "keyword": "MAY",
+    "text": "To make sure it has a current representation and/or to re-register\n   its interest in a resource, a client MAY issue a new GET request with\n   the same token as the original at any time"
+  },
+  {
+    "section": "3.3.1.  Freshness",
+    "keyword": "MUST",
+    "text": "All options MUST be\n   identical to those in the original request except for the set of ETag\n   Options"
+  },
+  {
+    "section": "3.3.1.  Freshness",
+    "keyword": "SHOULD",
+    "text": "Additionally, the client SHOULD at least wait\n   for a random amount of time between 5 and 15 seconds after Max-Age\n   expired to reduce collisions with other clients"
+  },
+  {
+    "section": "3.3.2.  Validation",
+    "keyword": "MAY",
+    "text": "The client MAY include an ETag Option for each stored response that\n   is applicable in the GET request"
+  },
+  {
+    "section": "3.4.  Reordering",
+    "keyword": "MUST",
+    "text": "Since the goal is to keep the observed state as closely\n   in sync with the actual state as possible, a client MUST consider the\n   notification that was sent most recently as the freshest, regardless\n   of the order of arrival"
+  },
+  {
+    "section": "3.5.  Transmission",
+    "keyword": "MUST",
+    "text": "If a client does not recognize the token in a confirmable\n   notification, it MUST NOT acknowledge the message and SHOULD reject\n   it with a Reset message; otherwise, the client MUST acknowledge the\n   message as usual"
+  },
+  {
+    "section": "3.6.  Cancellation",
+    "keyword": "MAY",
+    "text": "Implementation Note:  Due to potential message loss, the Reset\n      message may not reach the server"
+  },
+  {
+    "section": "3.6.  Cancellation",
+    "keyword": "MAY",
+    "text": "The client may therefore have\n      to reject multiple notifications, each with one Reset message,\n      until the server finally removes the associated entry from the\n      list of observers and stops sending notifications"
+  },
+  {
+    "section": "3.6.  Cancellation",
+    "keyword": "MAY",
+    "text": "In some circumstances, it may be desirable to cancel an observation\n   and release the resources allocated by the server to it more eagerly"
+  },
+  {
+    "section": "3.6.  Cancellation",
+    "keyword": "MAY",
+    "text": "In this case, a client MAY explicitly deregister by issuing a GET\n   request that has the Token field set to the token of the observation\n   to be cancelled and includes an Observe Option with the value set to\n   1 (deregister)"
+  },
+  {
+    "section": "3.6.  Cancellation",
+    "keyword": "MUST",
+    "text": "All other options MUST be identical to those in the\n   registration request except for the set of ETag Options"
+  },
+  {
+    "section": "4.1.  Request",
+    "keyword": "MUST",
+    "text": "Upon success, the server returns a current representation\n   of the resource and MUST keep this representation updated (as\n   described in Section 1"
+  },
+  {
+    "section": "4.1.  Request",
+    "keyword": "MUST",
+    "text": "If an entry\n   with a matching endpoint/token pair is already present in the list\n   (which, for example, happens when the client wishes to reinforce its\n   interest in a resource), the server MUST NOT add a new entry but MUST\n   replace or update the existing one"
+  },
+  {
+    "section": "4.1.  Request",
+    "keyword": "MAY",
+    "text": "A server that is unable or unwilling to add a new entry to the list\n   of observers of a resource MAY silently ignore the registration\n   request and process the GET request as usual"
+  },
+  {
+    "section": "4.1.  Request",
+    "keyword": "MUST",
+    "text": "The resulting response\n   MUST NOT include an Observe Option, the absence of which signals to\n   the client that it will not be notified of changes to the resource\n   and, e"
+  },
+  {
+    "section": "4.1.  Request",
+    "keyword": "MUST",
+    "text": "If the Observe Option in a GET request is set to 1 (deregister), then\n   the server MUST remove any existing entry with a matching endpoint/\n   token pair from the list of observers and process the GET request as\n   usual"
+  },
+  {
+    "section": "4.1.  Request",
+    "keyword": "MUST",
+    "text": "The resulting response MUST NOT include an Observe Option"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "MUST",
+    "text": "Each such\n   notification response (including the initial response) MUST echo the\n   token specified by the client in the GET request"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "SHOULD",
+    "text": "A notification SHOULD have a 2"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "SHOULD",
+    "text": "xx response (for example, when the resource is deleted), the\n   server SHOULD notify the client by sending a notification with an\n\n\n\n\n\nHartke                       Standards Track                   [Page 14]\n\n\nRFC 7641               Observing Resources in CoAP        September 2015\n\n\n   appropriate response code (such as 4"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "MUST",
+    "text": "04 Not Found) and subsequently\n   MUST remove the associated entry from the list of observers of the\n   resource"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "MUST",
+    "text": "xx notification MUST be the same\n   as the one used in the initial response to the GET request"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "SHOULD",
+    "text": "If the\n   server is unable to continue sending notifications in this format, it\n   SHOULD send a notification with a 4"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "MUST",
+    "text": "06 (Not Acceptable) response code\n   and subsequently MUST remove the associated entry from the list of\n   observers of the resource"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "MUST",
+    "text": "xx notification MUST include an Observe Option with a sequence\n   number as specified in Section 4"
+  },
+  {
+    "section": "4.2.  Notifications",
+    "keyword": "MUST",
+    "text": "xx notification\n   MUST NOT include an Observe Option"
+  },
+  {
+    "section": "4.3.1.  Freshness",
+    "keyword": "MUST",
+    "text": "After returning the initial response, the server MUST keep the\n   resource state that is observed by the client as closely in sync with\n   the actual resource state as possible"
+  },
+  {
+    "section": "4.3.1.  Freshness",
+    "keyword": "MUST",
+    "text": "Since becoming out of sync at times cannot be avoided, the server\n   MUST indicate for each representation an age up to which it is\n   acceptable that the observed state and the actual state are\n   inconsistent"
+  },
+  {
+    "section": "4.3.1.  Freshness",
+    "keyword": "MUST",
+    "text": "This age is application dependent and MUST be\n   specified in notifications using the Max-Age Option"
+  },
+  {
+    "section": "4.3.1.  Freshness",
+    "keyword": "MAY",
+    "text": "The server MAY wish to prevent\n   that by sending a new notification with the unchanged representation\n   and a new Max-Age just before the Max-Age indicated earlier expires"
+  },
+  {
+    "section": "4.3.2.  Validation",
+    "keyword": "MAY",
+    "text": "05 (Content) notification, then\n   whenever that notification has an entity tag in the set of entity\n   tags specified by the client, the server MAY send a 2"
+  },
+  {
+    "section": "4.4.  Reordering",
+    "keyword": "MUST",
+    "text": "For this purpose, the server MUST set the value of the Observe Option\n   of each notification it sends to the 24 least significant bits of a\n   strictly increasing sequence number"
+  },
+  {
+    "section": "4.4.  Reordering",
+    "keyword": "MUST",
+    "text": "The sequence number MAY start\n   at any value and MUST NOT increase so fast that it increases by more\n   than 2^23 within less than 256 seconds"
+  },
+  {
+    "section": "4.4.  Reordering",
+    "keyword": "MUST",
+    "text": "The sequence number selected for a notification MUST be greater than\n   that of any preceding notification sent to the same client with the\n   same token for the same resource"
+  },
+  {
+    "section": "4.4.  Reordering",
+    "keyword": "MUST",
+    "text": "The value of the Observe Option\n   MUST be current at the time of transmission; if a notification is\n   retransmitted, the server MUST update the value of the option to the\n   sequence number that is current at that time before retransmission"
+  },
+  {
+    "section": "4.4.  Reordering",
+    "keyword": "MAY",
+    "text": "Constrained nodes often have\n      rather imprecise clocks, though, and inaccuracies of the client\n      and server side may cancel out or add in effect"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MAY",
+    "text": "The message type used is typically application dependent\n   and may be determined by the server for each notification\n   individually"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MAY",
+    "text": "A server MAY choose to skip sending a notification if it knows that\n   it will send another notification soon, for example, when the state\n   of a resource is changing frequently"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MAY",
+    "text": "It also MAY choose to send\n   more than one notification for the same resource state"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MUST",
+    "text": "However,\n   above all, the server MUST ensure that a client in the list of\n   observers of a resource eventually observes the latest state if the\n   resource does not undergo a new change in state"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MUST",
+    "text": "If\n   a client rejects a confirmable or non-confirmable notification with a\n   Reset message, or if the last attempt to retransmit a confirmable\n   notification times out, then the client is considered no longer\n   interested and the server MUST remove the associated entry from the\n   list of observers"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MAY",
+    "text": "This may be challenging for a server with constrained resources"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MUST",
+    "text": "However, since Reset messages are transmitted unreliably, the\n      client must be prepared in case the Reset messages are not\n      received by the server"
+  },
+  {
+    "section": "4.5.  Transmission",
+    "keyword": "MUST",
+    "text": "A server that transmits notifications mostly in non-confirmable\n   messages MUST send a notification in a confirmable message instead of\n   a non-confirmable message at least every 24 hours"
+  },
+  {
+    "section": "4.5.1.  Congestion Control",
+    "keyword": "MUST",
+    "text": "In order not to cause congestion, servers MUST strictly limit the\n   number of simultaneous outstanding notifications/responses that they\n   transmit to a given client to NSTART (1 by default; see Section 4"
+  },
+  {
+    "section": "4.5.1.  Congestion Control",
+    "keyword": "SHOULD",
+    "text": "The server SHOULD NOT send more than one non-confirmable notification\n   per round-trip time (RTT) to a client on average"
+  },
+  {
+    "section": "4.5.1.  Congestion Control",
+    "keyword": "SHOULD",
+    "text": "If the server\n   cannot maintain an RTT estimate for a client, it SHOULD NOT send more\n   than one non-confirmable notification every 3 seconds and SHOULD use\n   an even less aggressive rate when possible (see also Section 3"
+  },
+  {
+    "section": "4.5.2.  Advanced Transmission",
+    "keyword": "MAY",
+    "text": "The state of an observed resource may change while the number of\n   simultaneous outstanding notifications/responses to a client on the\n   list of observers is greater than or equal to NSTART"
+  },
+  {
+    "section": "4.5.2.  Advanced Transmission",
+    "keyword": "MAY",
+    "text": "For this purpose, the server MAY optimize the transmission process by\n   aborting the transmission of the old notification (but not before the\n   current transmission attempt is completed) and starting a new\n   transmission for the new notification (but with the retransmission\n   timer and counter of the aborted transmission retained)"
+  },
+  {
+    "section": "4.5.2.  Advanced Transmission",
+    "keyword": "MAY",
+    "text": "In more detail, a server MAY supersede an outstanding transmission\n   that pertains to an observation as follows:\n\n   1"
+  },
+  {
+    "section": "4.5.2.  Advanced Transmission",
+    "keyword": "SHOULD",
+    "text": "Should the resource have changed its state more than once\n       in the meantime, the notifications for the intermediate states\n       are silently skipped"
+  },
+  {
+    "section": "4.5.2.  Advanced Transmission",
+    "keyword": "SHOULD",
+    "text": "The server therefore\n   should avoid inadvertently removing the associated entry from the\n   list of observers"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "MAY",
+    "text": "A client may be interested in a resource in the namespace of a server\n   that is reached through a chain of one or more CoAP intermediaries"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "SHOULD",
+    "text": "To perform this task, the intermediary SHOULD make use of the\n   protocol specified in this document, taking the role of the client\n   and registering its own interest in the target resource with the next\n   hop towards the server"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "MAY",
+    "text": "If the response returned by the next hop\n   doesn't include an Observe Option, the intermediary MAY resort to\n   polling the next hop or MAY itself return a response without an\n   Observe Option"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "MUST",
+    "text": "The communication between each pair of hops is independent; each hop\n   in the server role MUST determine individually how many notifications\n   to send, of which message type, and so on"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "MUST",
+    "text": "Each hop MUST generate\n   its own values for the Observe Option in notifications and MUST set\n   the value of the Max-Age Option according to the age of the local\n   current representation"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "MUST",
+    "text": "If two or more clients have registered their interest in a resource\n   with an intermediary, the intermediary MUST register itself only once\n   with the next hop and fan out the notifications it receives to all\n   registered clients"
+  },
+  {
+    "section": "5.  Intermediaries",
+    "keyword": "MAY",
+    "text": "An intermediary is not required to act on behalf of a client to\n   observe a resource; an intermediary MAY observe a resource, for\n   example, just to keep its own cache up to date"
+  },
+  {
+    "section": "6.  Web Linking",
+    "keyword": "MAY",
+    "text": "A web link [RFC5988] to a resource accessible over CoAP (for example,\n   in a link-format document [RFC6690]) MAY include the target attribute\n   \"obs\""
+  },
+  {
+    "section": "6.  Web Linking",
+    "keyword": "SHOULD",
+    "text": "The \"obs\" attribute, when present, is a hint indicating that the\n   destination of a link is useful for observation and thus, for\n   example, should have a suitable graphical representation in a user\n   interface"
+  },
+  {
+    "section": "6.  Web Linking",
+    "keyword": "MAY",
+    "text": "A client may need to resort to polling the resource if the Observe\n   Option is not returned in the response to the GET request"
+  },
+  {
+    "section": "6.  Web Linking",
+    "keyword": "MUST",
+    "text": "A value MUST NOT be given for the \"obs\" attribute; any present value\n   MUST be ignored by parsers"
+  },
+  {
+    "section": "6.  Web Linking",
+    "keyword": "MUST",
+    "text": "The \"obs\" attribute MUST NOT appear more\n   than once in a given link-value; occurrences after the first MUST be\n   ignored by parsers"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MUST",
+    "text": ", any notifications sent in non-confirmable\n   messages MUST be interspersed with confirmable messages"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MAY",
+    "text": "Note that\n   an attacker may still spoof the acknowledgements if the confirmable\n   messages are sufficiently predictable"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MAY",
+    "text": "This may have the client and the server become out of sync at\n   times"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MUST",
+    "text": "The client\n   therefore must be careful not to use a representation after its Max-\n   Age expires, and the server must set the Max-Age Option to a sensible\n   value"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MAY",
+    "text": "As with any protocol that creates state, attackers may attempt to\n   exhaust the resources that the server has available for maintaining\n   the list of observers for each resource"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MAY",
+    "text": "Servers may want to apply\n   access controls to this creation of state"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MUST",
+    "text": "Intermediaries must be careful to ensure that notifications cannot be\n   employed to create a loop"
+  },
+  {
+    "section": "7.  Security Considerations",
+    "keyword": "MUST",
+    "text": "All notifications resulting from a GET\n   request with an Observe Option MUST be returned within the same epoch\n   of the same connection as the request"
+  },
+  {
+    "section": "9.2.  Informative References",
+    "keyword": "MAY",
+    "text": "17487/RFC7228, May 2014,\n              <http://www"
+  }
+]

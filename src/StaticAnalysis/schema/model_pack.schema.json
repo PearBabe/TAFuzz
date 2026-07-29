@@ -1,0 +1,153 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/model-pack/1.0.0",
+  "title": "RIFT versioned property-independent model-pack input boundary",
+  "description": "This schema defines the input boundary only; it does not imply a model execution engine.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "model_pack_id", "model_pack_version", "property_independent",
+    "rule_policy", "selectors", "rules"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "model_pack_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+    "model_pack_version": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/semver"},
+    "property_independent": {"const": true},
+    "rule_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract_id", "allowed_rule_classes", "forbidden_rule_classes"],
+      "properties": {
+        "contract_id": {"const": "RIFT-PORTABILITY-1"},
+        "allowed_rule_classes": {
+          "const": [
+            "external_input_boundary", "parameter_registry", "protocol_parser_output",
+            "callback_registration", "timer_lifecycle", "queue_lifecycle",
+            "scheduler_entry", "scope_key", "persistence_boundary"
+          ]
+        },
+        "forbidden_rule_classes": {
+          "const": [
+            "per_property_slice", "hand_selected_dependency_path",
+            "expected_answer_edge", "benchmark_case_id_branch"
+          ]
+        }
+      }
+    },
+    "selectors": {
+      "type": "array",
+      "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/selector"}
+    },
+    "rules": {
+      "type": "array",
+      "items": {"$ref": "#/definitions/rule"}
+    }
+  },
+  "definitions": {
+    "selector_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+    },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capture_id", "semantic_role", "selector_ref"],
+      "properties": {
+        "capture_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_role": {
+          "enum": [
+            "input", "output", "value", "key", "handle", "payload", "callback",
+            "context", "clock", "owner", "generation", "read", "write", "commit"
+          ]
+        },
+        "selector_ref": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_id", "rule_class", "match_selector_refs", "captures", "semantics", "evidence_note"],
+      "properties": {
+        "rule_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "rule_class": {
+          "enum": [
+            "external_input_boundary", "parameter_registry", "protocol_parser_output",
+            "callback_registration", "timer_lifecycle", "queue_lifecycle",
+            "scheduler_entry", "scope_key", "persistence_boundary"
+          ]
+        },
+        "match_selector_refs": {"$ref": "#/definitions/selector_refs"},
+        "captures": {"type": "array", "items": {"$ref": "#/definitions/capture"}},
+        "semantics": {"$ref": "#/definitions/rule_semantics"},
+        "evidence_note": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"rule_class": {"const": "external_input_boundary"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"const": "source"}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "parameter_registry"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"enum": ["lookup", "store"]}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "protocol_parser_output"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"const": "parse"}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "callback_registration"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"enum": ["register", "invoke"]}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "timer_lifecycle"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"enum": ["arm", "fire", "cancel"]}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "queue_lifecycle"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"enum": ["enqueue", "dequeue", "drop"]}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "scheduler_entry"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"const": "schedule"}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "scope_key"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"const": "scope"}}}}}
+        },
+        {
+          "if": {"properties": {"rule_class": {"const": "persistence_boundary"}}},
+          "then": {"properties": {"semantics": {"properties": {"operation": {"enum": ["load", "store", "commit"]}}}}}
+        }
+      ]
+    },
+    "rule_semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "certainty"],
+      "properties": {
+        "operation": {
+          "enum": [
+            "source", "lookup", "parse", "register", "invoke", "arm", "fire",
+            "cancel", "enqueue", "dequeue", "drop", "schedule", "scope",
+            "load", "store", "commit"
+          ]
+        },
+        "certainty": {"enum": ["modelled", "unknown"]},
+        "controllability": {"enum": ["direct", "sequence", "timing", "environment", "unknown"]},
+        "lifecycle_transition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from", "to"],
+          "properties": {
+            "from": {"enum": ["uninitialized", "active", "cancelled", "destroyed", "unknown"]},
+            "to": {"enum": ["active", "committed", "cancelled", "destroyed", "reused", "unknown"]}
+          }
+        },
+        "ordering": {"enum": ["before", "after", "same_task", "cross_task", "unknown"]}
+      }
+    }
+  }
+}

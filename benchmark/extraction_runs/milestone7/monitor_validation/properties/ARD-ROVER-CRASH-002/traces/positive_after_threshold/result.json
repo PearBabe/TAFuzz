@@ -1,0 +1,85 @@
+{
+  "boundary_region": "after",
+  "case_kind": "positive_after_threshold",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 5000,
+    "response_delta_ticks": 3000,
+    "threshold_ticks": 2000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Response occurs strictly after the lower threshold and no response occurs before it.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 185,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/monitor_trace.csv",
+    "sha256": "b8174819c2c77104236685a3293ad74d389a719ae9b78371449e5cada2e56a85"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-ROVER-CRASH-002:trace:positive_after_threshold",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1342,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor/metadata.json",
+      "sha256": "6392cd4e6ee4042e6b4fb041896fadb7e5b47c777435e14047788387b7633527"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1140,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor.stdout.txt",
+      "sha256": "4aba9fc269f663a335a1db41e73f788fa652b26a437f70a4ee8e56e2d7b86880"
+    },
+    "steps": {
+      "bytes": 467,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/tamonitor/steps.csv",
+      "sha256": "bd21ea20540b09887d2f180f56d4d953a68da7f08407365027ed62a4c094d59d"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 5000,
+      "monitor_advanced": true,
+      "negative_states": 3,
+      "positive_states": 2,
+      "step": 6,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 3168,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-CRASH-002/traces/positive_after_threshold/trace.json",
+    "sha256": "cdcf17c075600dce297d0545ff9822aeab1d0099635eb7c7481837516e7d6f21"
+  },
+  "trace_id": "ARD-ROVER-CRASH-002--positive_after_threshold"
+}

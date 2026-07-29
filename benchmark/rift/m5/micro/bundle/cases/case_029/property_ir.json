@@ -1,0 +1,176 @@
+{
+  "artifact_id": "artifact.property.case_029.m5.typed_predicate",
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_primary",
+      "description": "public source declaration: ap_primary = (v_ac822e66 == 8)",
+      "predicate": {
+        "node_kind": "comparison",
+        "operands": [
+          {
+            "node_kind": "cast",
+            "operands": [
+              {
+                "node_kind": "reference",
+                "operands": [],
+                "operator": "decl_ref",
+                "referenced_selector_id": "sel.case_029.ap_primary.ref000.DeclRefExpr",
+                "value_type": {
+                  "bit_width": 32,
+                  "canonical": "int",
+                  "kind": "integer",
+                  "signed": true
+                }
+              }
+            ],
+            "operator": "LValueToRValue",
+            "value_type": {
+              "bit_width": 32,
+              "canonical": "int",
+              "kind": "integer",
+              "signed": true
+            }
+          },
+          {
+            "literal": 8,
+            "node_kind": "literal",
+            "operands": [],
+            "operator": "IntegerLiteral",
+            "value_type": {
+              "bit_width": 32,
+              "canonical": "int",
+              "kind": "integer",
+              "signed": true
+            }
+          }
+        ],
+        "operator": "==",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "role_selector_groups": [
+        {
+          "all_of": [
+            "sel.case_029.ap_primary.location"
+          ],
+          "group_id": "grp.case_029.ap_primary.guard.ap_site",
+          "role": "guard"
+        },
+        {
+          "all_of": [
+            "sel.case_029.ap_primary.ref000.DeclRefExpr"
+          ],
+          "group_id": "grp.case_029.ap_primary.state.ref000",
+          "role": "state"
+        }
+      ],
+      "roles": [
+        "guard",
+        "state"
+      ],
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "formula": {
+    "ap_ref": "ap_primary",
+    "node_id": "formula.case_029.ap_primary",
+    "operands": [],
+    "operator": "atom"
+  },
+  "formula_text": "ap_primary := ((v_ac822e66 == 8))",
+  "logic": "MITL",
+  "property_id": "property.case_029",
+  "schema_version": "2.0.0",
+  "selectors": [
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 13,
+        "file": "sources/case_029.c",
+        "line": 36,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_029.ap_primary.location"
+    },
+    {
+      "expression_structure": {
+        "node_kind": "comparison",
+        "operands": [
+          {
+            "node_kind": "cast",
+            "operands": [
+              {
+                "node_kind": "reference",
+                "operands": [],
+                "operator": "decl_ref",
+                "referenced_selector_id": "sel.case_029.ap_primary.ref000.DeclRefExpr",
+                "value_type": {
+                  "bit_width": 32,
+                  "canonical": "int",
+                  "kind": "integer",
+                  "signed": true
+                }
+              }
+            ],
+            "operator": "LValueToRValue",
+            "value_type": {
+              "bit_width": 32,
+              "canonical": "int",
+              "kind": "integer",
+              "signed": true
+            }
+          },
+          {
+            "literal": 8,
+            "node_kind": "literal",
+            "operands": [],
+            "operator": "IntegerLiteral",
+            "value_type": {
+              "bit_width": 32,
+              "canonical": "int",
+              "kind": "integer",
+              "signed": true
+            }
+          }
+        ],
+        "operator": "==",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "kind": "expression_structure",
+      "selector_id": "sel.case_029.ap_primary.expression"
+    },
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 27,
+        "end_column": 36,
+        "end_line": 36,
+        "file": "sources/case_029.c",
+        "line": 36,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_029.ap_primary.ref000.DeclRefExpr",
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "time_domain": "dense"
+}

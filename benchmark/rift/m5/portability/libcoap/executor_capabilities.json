@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_id": "executor-capabilities.libcoap-portability-probe",
+  "executor_id": "executor.libcoap-portability-probe",
+  "executor_version": "1.0.0",
+  "capabilities": [
+    {
+      "capability_id": "capability.libcoap.ack-timeout",
+      "required_capability": "direct",
+      "action_schema_id": "action.libcoap.ack-timeout",
+      "controllability": "UNKNOWN",
+      "evidence_note": "The API boundary is static evidence; this portability probe does not ship or claim a replay harness."
+    },
+    {
+      "capability_id": "capability.libcoap.ack-random-factor",
+      "required_capability": "direct",
+      "action_schema_id": "action.libcoap.ack-random-factor",
+      "controllability": "UNKNOWN",
+      "evidence_note": "The API boundary is static evidence; this portability probe does not ship or claim a replay harness."
+    },
+    {
+      "capability_id": "capability.libcoap.pdu-type",
+      "required_capability": "direct",
+      "action_schema_id": "action.libcoap.pdu-type",
+      "controllability": "UNKNOWN",
+      "evidence_note": "The API boundary is static evidence; this portability probe does not ship or claim a replay harness."
+    },
+    {
+      "capability_id": "capability.libcoap.pdu-mid",
+      "required_capability": "direct",
+      "action_schema_id": "action.libcoap.pdu-mid",
+      "controllability": "UNKNOWN",
+      "evidence_note": "The API boundary is static evidence; this portability probe does not ship or claim a replay harness."
+    },
+    {
+      "capability_id": "capability.libcoap.send-pdu",
+      "required_capability": "sequence",
+      "action_schema_id": "action.libcoap.send-pdu",
+      "controllability": "UNKNOWN",
+      "evidence_note": "The public operation is callable, but no concrete operation-sequence executor is certified by this probe."
+    },
+    {
+      "capability_id": "capability.posix.read",
+      "required_capability": "direct",
+      "action_schema_id": "action.posix.read-bytes",
+      "controllability": "UNKNOWN",
+      "evidence_note": "No byte-stream replay executor is certified by this portability-only run."
+    },
+    {
+      "capability_id": "capability.posix.recv",
+      "required_capability": "timing",
+      "action_schema_id": "action.posix.recv-bytes",
+      "controllability": "UNKNOWN",
+      "evidence_note": "No socket timing/replay executor is certified by this portability-only run."
+    },
+    {
+      "capability_id": "capability.posix.recvfrom",
+      "required_capability": "timing",
+      "action_schema_id": "action.posix.recvfrom-datagram",
+      "controllability": "UNKNOWN",
+      "evidence_note": "No datagram timing/replay executor is certified by this portability-only run."
+    },
+    {
+      "capability_id": "capability.posix.recvmsg",
+      "required_capability": "timing",
+      "action_schema_id": "action.posix.recvmsg-message",
+      "controllability": "UNKNOWN",
+      "evidence_note": "No message-socket timing/replay executor is certified by this portability-only run."
+    },
+    {
+      "capability_id": "capability.posix.clock",
+      "required_capability": "timing",
+      "action_schema_id": "action.posix.clock-progress",
+      "controllability": "UNKNOWN",
+      "evidence_note": "No virtual-clock executor is certified by this portability-only run."
+    }
+  ],
+  "status": "CONSERVATIVE_INCOMPLETE",
+  "unsupported_constructs": [],
+  "diagnostics": [
+    "This manifest deliberately abstains from actionable controllability claims until a concrete replay harness is supplied."
+  ]
+}

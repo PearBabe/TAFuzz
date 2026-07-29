@@ -1,0 +1,70 @@
+{
+  "boundary_region": "after",
+  "case_kind": "positive_after_threshold",
+  "classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 8000,
+    "response_delta_ticks": 6000,
+    "threshold_ticks": 5000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "comparison_status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Response occurs strictly after the lower threshold and no response occurs before it.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 191,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/monitor_trace.csv",
+    "sha256": "1fbfc774c03d7199d655f8a33eb6507725dee6b93742bfea8e48f3c53c51d484"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-COPTER-RTL-003:trace:positive_after_threshold",
+    "error_excerpt": "TAMonitor error: BDD projection valuation limit exceeded",
+    "exit_code": 1,
+    "metadata": null,
+    "runtime_classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+    "status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+    "stderr": {
+      "bytes": 57,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/tamonitor.stderr.txt",
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/tamonitor.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "steps": null,
+    "terminal_step": null,
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": null
+  },
+  "trace": {
+    "bytes": 3190,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/positive_after_threshold/trace.json",
+    "sha256": "1c568db460e69b9826751ca6042d6f98d0db61d1c5423beed3e3695a316a665a"
+  },
+  "trace_id": "ARD-COPTER-RTL-003--positive_after_threshold"
+}

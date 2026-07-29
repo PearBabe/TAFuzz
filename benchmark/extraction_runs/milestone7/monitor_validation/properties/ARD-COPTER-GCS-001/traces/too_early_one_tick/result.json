@@ -1,0 +1,85 @@
+{
+  "boundary_region": "before",
+  "case_kind": "too_early_one_tick",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 7000,
+    "response_delta_ticks": 4999,
+    "threshold_ticks": 5000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_DECISIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "Response occurs one exact monitor tick before the threshold.",
+    "tamonitor_infinite_prefix_verdict": "NEGATIVE",
+    "tamonitor_prefix_reason": "The prefix contains an irreversible pre-threshold/open-boundary safety violation."
+  },
+  "monitor_trace": {
+    "bytes": 250,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/monitor_trace.csv",
+    "sha256": "355d61fd9488f2479b5803816e32b5d5cf90d4cea205fd1ed9ad82f93dbf7d3c"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-COPTER-GCS-001:trace:too_early_one_tick",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1527,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor/metadata.json",
+      "sha256": "e591df7c028a9180322c43b529d1bf1253ebd868081158fff45204686eb70901"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1070,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor.stdout.txt",
+      "sha256": "d73ed6ab89b1bb61c9213bf3c7bbc8998e3496c7bcdea173416d3f77dd4348dc"
+    },
+    "steps": {
+      "bytes": 494,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/tamonitor/steps.csv",
+      "sha256": "de88794d4fdb3f9ad7491c3f01be9ad4411d963049bb3a43faf8c9370305bcfd"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 7000,
+      "monitor_advanced": false,
+      "negative_states": 3,
+      "positive_states": 0,
+      "step": 5,
+      "verdict": "NEGATIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "NEGATIVE"
+  },
+  "trace": {
+    "bytes": 2899,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-GCS-001/traces/too_early_one_tick/trace.json",
+    "sha256": "9aebe12f05ac7d8cfb51ef2865e38f2d06b5288425f18ed4667ae05129881a03"
+  },
+  "trace_id": "ARD-COPTER-GCS-001--too_early_one_tick"
+}

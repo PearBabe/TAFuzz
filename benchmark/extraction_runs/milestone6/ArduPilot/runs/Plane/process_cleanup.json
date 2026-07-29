@@ -1,0 +1,26 @@
+{
+  "cleaned_only_owned_process_group": true,
+  "completed_at": "2026-07-17T23:10:53.293745+00:00",
+  "pid": 738634,
+  "pid_exists_after_wait": false,
+  "post_cleanup_process_tree": {
+    "command": "ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738634",
+    "exit_code": 1,
+    "stderr": "",
+    "stdout": ""
+  },
+  "pre_cleanup_process_tree": {
+    "command": "ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738634",
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": " 738634  738202  738634  738634 Ssl  arduplane       /home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arduplane --wipe --model plane --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20200 --rc-in-port 21201 --sim-port-in 22201 --sim-port-out 22202 --irlock-port 23201 --serial0 udpclient:127.0.0.1:19102 --sysid 152 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest\n"
+  },
+  "process_group": 738634,
+  "return_code": -2,
+  "signals": [
+    {
+      "sent_at": "2026-07-17T23:10:53.288169+00:00",
+      "signal": "SIGINT"
+    }
+  ]
+}

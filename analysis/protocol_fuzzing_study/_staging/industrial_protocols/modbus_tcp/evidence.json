@@ -1,0 +1,47 @@
+{
+  "protocol": "Modbus/TCP",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+  "independent_audit_report": "analysis/protocol_fuzzing_study/_audit/industrial_audit.md",
+  "scope": "Official V1.0b timing screening plus a locked libmodbus implementation check; no normative numeric MITL property survived audit.",
+  "proposal_summary": {
+    "emitted": 0,
+    "approve": 0,
+    "fix_applied": 0,
+    "rejected": 1
+  },
+  "standards": [
+    {
+      "title": "MODBUS Messaging on TCP/IP Implementation Guide",
+      "version": "V1.0b (2006-10-24)",
+      "url": "https://www.modbus.org/file/secure/messagingimplementationguide.pdf",
+      "sha256": "065d71170475642e82f370c648bf5135263cb20f61ce92c921add975fab6f669",
+      "sections_reviewed": [
+        "4.3.2",
+        "4.4.1.4"
+      ],
+      "finding": "Section 4.4.1.4 deliberately specifies no required transaction response time."
+    }
+  ],
+  "sources": [
+    {
+      "repository": "stephane/libmodbus",
+      "version": "v3.1.11",
+      "commit": "5190e5e141780ae481f24be16d7b39a5f3ad8f8f",
+      "url": "https://github.com/stephane/libmodbus"
+    }
+  ],
+  "profile_differences": [
+    "libmodbus defaults response_timeout and byte_timeout to 500 ms, but they are separate timer generations.",
+    "After initial bytes arrive, _modbus_receive_msg reloads byte_timeout; full confirmation may exceed 500 ms."
+  ],
+  "rejected_candidates": [
+    {
+      "id": "MODBUS-TCP-01",
+      "independent_audit_status": "REJECT_OR_FIX",
+      "decision_code": "NO_PROTOCOL_BOUND_AND_INCORRECT_IMPLEMENTATION_ORACLE",
+      "reason": "MODBUS/TCP V1.0b deliberately defines no universal response time. In libmodbus, response_timeout governs the initial read and byte_timeout is reloaded for subsequent chunks, so a full confirmation need not complete within 500 ms.",
+      "repair_gate": "Keep only an implementation appendix split into initial-response and inter-byte timer generations; it cannot count as a normative Modbus/TCP property."
+    }
+  ]
+}

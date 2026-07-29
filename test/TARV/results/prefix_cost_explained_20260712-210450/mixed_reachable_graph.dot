@@ -1,0 +1,20 @@
+digraph RZG {
+  graph [rankdir=LR, bgcolor="white", splines=true, nodesep=0.7, ranksep=1.1];
+  node [shape=box, fontname="DejaVu Sans", fontsize=10, style="rounded,filled", fillcolor="#f8fafc"];
+  edge [fontname="DejaVu Sans", fontsize=9, color="#64748b"];
+  N0 [fillcolor="#dbeafe", label="N0: L0\\nZone: x >= 0"];
+  N1 [fillcolor="#f8fafc", label="N1: L1\\nZone: x >= 0"];
+  N2 [fillcolor="#f8fafc", label="N2: L3\\nZone: x >= 5"];
+  N3 [fillcolor="#dcfce7", label="N3: L4 GOAL\\nZone: x >= 0"];
+  N4 [fillcolor="#dcfce7", label="N4: L2 GOAL\\nZone: x >= 0"];
+  N0 -> N1 [label="arc 0 / e(0,0)",color="#2563eb", penwidth=3];
+  N0 -> N1 [label="arc 1 / e(0,1)"];
+  N1 -> N1 [label="arc 2 / e(1,0)",color="#16a34a", style=dashed, penwidth=2];
+  N1 -> N1 [label="arc 3 / e(1,1)",color="#16a34a", style=dashed, penwidth=2];
+  N1 -> N2 [label="arc 4 / e(1,3)"];
+  N1 -> N2 [label="arc 5 / e(1,4)"];
+  N1 -> N3 [label="arc 6 / e(1,5)",color="#dc2626", penwidth=3];
+  N2 -> N1 [label="arc 7 / e(3,0)"];
+  N2 -> N1 [label="arc 8 / e(3,1)"];
+  N2 -> N4 [label="arc 9 / e(3,2)"];
+}

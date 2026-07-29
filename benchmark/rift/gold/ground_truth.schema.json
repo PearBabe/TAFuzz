@@ -1,0 +1,241 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.local/schemas/rift-mechanical-gold-case-v1.json",
+  "title": "RIFT mechanical influence gold case",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "category",
+    "language",
+    "case_relation",
+    "source_file",
+    "source_sha256",
+    "entry_point",
+    "sources",
+    "aps",
+    "relations",
+    "anchors",
+    "oracle",
+    "human_validation"
+  ],
+  "properties": {
+    "schema_version": {"const": "rift.mechanical-gold.case.v1"},
+    "case_id": {"type": "string", "pattern": "^RIFT-GOLD-[0-9]{3}$"},
+    "category": {
+      "enum": [
+        "direct_data",
+        "indirect_data",
+        "control_only",
+        "alias_object_field",
+        "config_threshold",
+        "message_parser_state",
+        "async_timer_callback_queue",
+        "setup_mode_prerequisite",
+        "timing_drop_repeat_reorder",
+        "uncontrollable_false_correlation",
+        "one_input_multi_ap",
+        "joint_inputs"
+      ]
+    },
+    "language": {"enum": ["c11", "c++20"]},
+    "case_relation": {
+      "enum": ["MUST_INFLUENCE", "MAY_INFLUENCE", "NO_INFLUENCE"]
+    },
+    "source_file": {"type": "string", "pattern": "^cases/.+\\.(c|cpp)$"},
+    "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "entry_point": {"const": "main"},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/definitions/source"}
+    },
+    "aps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/definitions/ap"}
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/definitions/relation"}
+    },
+    "anchors": {
+      "type": "object",
+      "minProperties": 2,
+      "additionalProperties": {"$ref": "#/definitions/anchor"}
+    },
+    "oracle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "generator_version", "template_id", "variant", "derivation", "limitations"],
+      "properties": {
+        "kind": {"const": "MECHANICAL_TEMPLATE_ORACLE"},
+        "generator_version": {"const": "1.0.0"},
+        "template_id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "variant": {"type": "integer", "minimum": 0, "maximum": 9},
+        "derivation": {"type": "string", "minLength": 20},
+        "limitations": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"type": "string", "minLength": 8}
+        }
+      }
+    },
+    "human_validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "required_annotators", "arbitration_required", "note"],
+      "properties": {
+        "status": {"const": "PENDING"},
+        "required_annotators": {"const": 2},
+        "arbitration_required": {"const": true},
+        "note": {"type": "string", "minLength": 20}
+      }
+    }
+  },
+  "definitions": {
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "line", "column"],
+      "properties": {
+        "file": {"type": "string"},
+        "line": {"type": "integer", "minimum": 1},
+        "column": {"type": "integer", "minimum": 1}
+      }
+    },
+    "anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "token", "location"],
+      "properties": {
+        "kind": {"enum": ["SOURCE", "NODE", "AP"]},
+        "token": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "location": {"$ref": "#/definitions/location"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "symbol", "kind", "controllability", "fuzzable_frontier", "scope", "location"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^source_[a-z0-9_]+$"},
+        "symbol": {"type": "string"},
+        "kind": {
+          "enum": [
+            "external_argument",
+            "configuration",
+            "message_field",
+            "sensor_value",
+            "time_input",
+            "event_operation",
+            "setup_operation",
+            "callback_payload",
+            "queue_operation",
+            "internal_state"
+          ]
+        },
+        "controllability": {"enum": ["EXTERNAL", "INTERNAL", "MODELLED"]},
+        "fuzzable_frontier": {"type": "boolean"},
+        "scope": {"enum": ["PROCESS", "OBJECT", "SESSION", "EVENT_SEQUENCE"]},
+        "location": {"$ref": "#/definitions/location"}
+      }
+    },
+    "ap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "symbol", "expression", "role", "location"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^ap_[a-z0-9_]+$"},
+        "symbol": {"type": "string"},
+        "expression": {"type": "string", "minLength": 1},
+        "role": {"enum": ["STATE", "GUARD", "BOUND", "TIMING"]},
+        "location": {"$ref": "#/definitions/location"}
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "kind", "certainty"],
+      "properties": {
+        "from": {"type": "string"},
+        "to": {"type": "string"},
+        "kind": {
+          "enum": [
+            "data",
+            "control",
+            "call",
+            "return",
+            "alias",
+            "field",
+            "parse",
+            "state_commit",
+            "timer",
+            "callback",
+            "enqueue",
+            "dequeue",
+            "setup",
+            "timing",
+            "event_order"
+          ]
+        },
+        "certainty": {"enum": ["must", "may", "modelled"]}
+      }
+    },
+    "recipe": {
+      "type": ["object", "null"],
+      "properties": {
+        "kind": {"type": "string"},
+        "direction": {"type": "string"},
+        "suggested_values": {"type": "array", "items": {"type": "string"}},
+        "relative_time_window": {"type": ["string", "null"]}
+      },
+      "required": ["kind", "direction", "suggested_values", "relative_time_window"],
+      "additionalProperties": false
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "ap_id",
+        "relation",
+        "channels",
+        "path",
+        "preconditions",
+        "mutation_recipe",
+        "joint_group",
+        "negative_reason"
+      ],
+      "properties": {
+        "source_id": {"type": "string"},
+        "ap_id": {"type": "string"},
+        "relation": {"enum": ["MUST_INFLUENCE", "MAY_INFLUENCE", "NO_INFLUENCE"]},
+        "channels": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "path": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nodes", "edges"],
+          "properties": {
+            "nodes": {"type": "array", "items": {"type": "string"}},
+            "edges": {"type": "array", "items": {"$ref": "#/definitions/edge"}}
+          }
+        },
+        "preconditions": {"type": "array", "items": {"type": "string"}},
+        "mutation_recipe": {"$ref": "#/definitions/recipe"},
+        "joint_group": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string"}
+        },
+        "negative_reason": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

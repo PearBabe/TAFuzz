@@ -1,0 +1,146 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 17,
+        "file": "cases/032_alias_object_field_must_v1.cpp",
+        "line": 30
+      },
+      "token": "ap_primary"
+    },
+    "node_alias": {
+      "kind": "NODE",
+      "location": {
+        "column": 35,
+        "file": "cases/032_alias_object_field_must_v1.cpp",
+        "line": 25
+      },
+      "token": "node_alias"
+    },
+    "node_field": {
+      "kind": "NODE",
+      "location": {
+        "column": 17,
+        "file": "cases/032_alias_object_field_must_v1.cpp",
+        "line": 28
+      },
+      "token": "node_field"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 17,
+        "file": "cases/032_alias_object_field_must_v1.cpp",
+        "line": 22
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "first.observed != 0",
+      "id": "ap_primary",
+      "location": {
+        "column": 17,
+        "file": "cases/032_alias_object_field_must_v1.cpp",
+        "line": 30
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-032",
+  "case_relation": "MUST_INFLUENCE",
+  "category": "alias_object_field",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "Named objects and fields make the alias oracle exact: positive variants share the AP object/field; negative variants differ in both object and field.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "alias_object_field",
+    "variant": 1
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [
+        "alias",
+        "field",
+        "data"
+      ],
+      "joint_group": [],
+      "mutation_recipe": {
+        "direction": "toggle aliased field around zero",
+        "kind": "field_boundary",
+        "relative_time_window": null,
+        "suggested_values": [
+          "0",
+          "1",
+          "-1"
+        ]
+      },
+      "negative_reason": null,
+      "path": {
+        "edges": [
+          {
+            "certainty": "must",
+            "from": "source_primary",
+            "kind": "alias",
+            "to": "node_alias"
+          },
+          {
+            "certainty": "must",
+            "from": "node_alias",
+            "kind": "field",
+            "to": "node_field"
+          },
+          {
+            "certainty": "must",
+            "from": "node_field",
+            "kind": "data",
+            "to": "ap_primary"
+          }
+        ],
+        "nodes": [
+          "source_primary",
+          "node_alias",
+          "node_field",
+          "ap_primary"
+        ]
+      },
+      "preconditions": [],
+      "relation": "MUST_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/032_alias_object_field_must_v1.cpp",
+  "source_sha256": "0781b8280b9ccea92e2feda250b8ac116a7b1935b304664096ce168275ef79a8",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 17,
+        "file": "cases/032_alias_object_field_must_v1.cpp",
+        "line": 22
+      },
+      "scope": "OBJECT",
+      "symbol": "source_primary"
+    }
+  ]
+}

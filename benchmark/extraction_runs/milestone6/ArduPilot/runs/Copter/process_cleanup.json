@@ -1,0 +1,26 @@
+{
+  "cleaned_only_owned_process_group": true,
+  "completed_at": "2026-07-17T23:09:59.451745+00:00",
+  "pid": 738302,
+  "pid_exists_after_wait": false,
+  "post_cleanup_process_tree": {
+    "command": "ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738302",
+    "exit_code": 1,
+    "stderr": "",
+    "stdout": ""
+  },
+  "pre_cleanup_process_tree": {
+    "command": "ps -o pid=,ppid=,pgid=,sid=,stat=,comm=,args= --sid 738302",
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": " 738302  738202  738302  738302 Ssl  arducopter      /home/lqq/project/TAFuzz/baseline/ardupilot/build/sitl/bin/arducopter --wipe --model quad --home -35.363261,149.165230,584,353 --speedup 1 --base-port 20100 --rc-in-port 21101 --sim-port-in 22101 --sim-port-out 22102 --irlock-port 23101 --serial0 udpclient:127.0.0.1:19101 --sysid 151 --autotest-dir /home/lqq/project/TAFuzz/baseline/ardupilot/Tools/autotest\n"
+  },
+  "process_group": 738302,
+  "return_code": -2,
+  "signals": [
+    {
+      "sent_at": "2026-07-17T23:09:59.441475+00:00",
+      "signal": "SIGINT"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "id": "COAP-MCAST-01",
+  "build_ok": true,
+  "all_commands_ok": true,
+  "positive_symbolic": "POSITIVE",
+  "negative_symbolic": "NEGATIVE",
+  "positive_concrete": "POSITIVE",
+  "negative_concrete": "NEGATIVE",
+  "expected_oracle_ok": true,
+  "symbolic_concrete_consistent": true,
+  "additional_positive_results": {},
+  "additional_negative_results": {
+    "late_or_missing_response": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    },
+    "negative_late_or_missing": {
+      "symbolic": "NEGATIVE",
+      "concrete": "NEGATIVE"
+    }
+  },
+  "ap_order": [
+    "coap_multicast_response_committed_default_leisure",
+    "coap_multicast_response_sent"
+  ],
+  "ap_order_ok": true,
+  "positive_locations": 7,
+  "positive_edges": 40,
+  "positive_clocks": 2,
+  "negative_locations": 7,
+  "negative_edges": 54,
+  "negative_clocks": 2,
+  "build_ms": 63,
+  "monitor_ms_positive": 0,
+  "monitor_ms_negative": 0,
+  "status": "PASS"
+}

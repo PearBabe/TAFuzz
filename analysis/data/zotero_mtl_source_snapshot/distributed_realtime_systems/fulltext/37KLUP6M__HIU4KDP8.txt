@@ -1,0 +1,62 @@
+MONAA: a Tool for Timed Pattern Matching with Automata-Based Acceleration
+Masaki Waga∗, Ichiro Hasuo†, and Kohei Suenaga‡,
+∗The University of Tokyo, Tokyo Japan Email: mwaga@is.s.u-tokyo.ac.jp †National Institute of Informatics, Tokyo, Japan Email: i.hasuo@acm.org ‡Kyoto University Kyoto, Japan Email: ksuenaga@fos.kuis.kyoto-u.ac.jp
+Keywords-Monitoring; Timed Automata; Pattern Matching
+I. MONITORING
+Monitoring over a real-time specification is an actively studied topic with a lot of industrial applications, such as monitoring of simulation traces of a Simulink model, and a HILS (hardware-in-the-loop simulation) with a system prototype. Given a log (a timed word or a signal) and a specification (a timed automaton (TA) [1], a timed regular expression (TRE) [2], or a formula in metric temporal logic [7]), a monitor finds all the segments of the log that satisfy the given specification. A monitoring procedure has the online property if it starts the procedure before the entire log is given. This property is essential in monitoring a system that is currently running. The efficiency of a monitoring procedure is also important because recent trends such as autonomous driving have drastically increased the size of logs and the number of properties to monitor. Also, when the procedure is executed on a cloud server, an efficient monitor can reduce the payas-you-go cost. One possible formalization of such monitoring problems is given by timed pattern matching, and both offline and online algorithms are proposed. See [9] and [10]; their theoretical results have led to their tool Montre [8]. Besides this series of works, the current authors have investigated efficient algorithms for timed pattern matching with automatabased acceleration: see [11] and [12]. The acceleration in our algorithms is based on the idea of skipping that comes originally from string matching (e.g., the KMP algorithm [6] and the BM algorithm [3]). The optimization there is by pre-computing a skip value table, and skipping unnecessary matching trials accordingly.
+II. TIMED PATTERN MATCHING
+We take an “event-based” formalization of timed pattern matching in [11], [12], unlike a “state-based” one in [9], [10]. To represent a log of a real-time system, we employ a timed word, which is a sequence of characters each of which is equipped with a real-valued timestamp.
+Definition 1 (timed word). For an alphabet Σ, a timed word over Σ is a sequence w = (a1, τ1), (a2, τ2), . . . , (an, τn) ∈ (Σ × R≥0)∗ satisfying τi ≤ τi+1 for any i ∈ [1, n − 1].
+We let w|(t,t′) denote the restriction of w to an interval (t, t′). See [12] for details. To represent a real-time specification, we employ a TA, which is an NFA equipped with timing constraints. Since a TRE [2] can be translated to a TA [2], we can also use a TRE as a specification. The set of timed words accepted by a TA A is denoted by L(A). Finally, our problem is formalized as follows.
+Definition 2 (timed pattern matching). For a TA A and a timed word w, the timed pattern matching problem asks for the set of matching intervals {(t, t′) | w|(t,t′) ∈ L(A)}.
+III. MONAA—A MONITORING TOOL ACCELERATED BY
+AUTOMATA
+We present a tool MONAA for timed pattern matching. In MONAA, our timed FJS algorithm [12] is implemented. It has the online property and enjoys the constant speedup by skipping, typically twice or three times faster than without skipping. MONAA has two interfaces, the commandline interface MONAA and the C++ API libmonaa. Algorithm Description: At the beginning of the timed FJS algorithm, it pre-constructs a skip value table. The table shows the number of matching trials to be skipped, depending on the observations obtained in the matching trial so far. The original FJS algorithm is for string matching [4]; there a skip value table is constructed comparing strings, exploiting finiteness of the pattern string. In our timed FJS algorithm—where a pattern is an infinite set L(A) of words rather than a single string—defining a finite skip value table itself is a challenge. We use discrete states of TA for overapproximation, and construct a skip value table by checking emptiness of the intersection of the original TA A and its variant where the initial state is shifted. In this process we crucially rely on TA constructions such as zones. During the actual search, the timed FJS algorithm skips unnecessary matching trials using the pre-constructed skip value table. We remark that the runtime overhead of skipping is only by memory access and thus small.
+The Command-Line Interface: In the command-line interface, MONAA reads a specification in either : a TA given in a file; or a TRE given as a command line argument. Reading a timed word from the standard input, MONAA writes the result of the timed pattern matching procedure to the
+14
+2018 3rd Workshop on Monitoring and Testing of Cyber-Physical Systems
+978-1-5386-6748-4/18/$31.00 ©2018 IEEE
+DOI 10.1109/MT-CPS.2018.00014
+Authorized licensed use limited to: National Univ of Defense Tech. Downloaded on November 06,2025 at 13:07:45 UTC from IEEE Xplore. Restrictions apply.
+
+
+standard output. Since MONAA reads the timed word lazily, it can process a partial log provided by a system that is currently running. It can also notify a user of detection of matching behaviors before the whole matching is complete. The C++ API: : We also provide a C++ API called libmonaa. Because of the modularity, this API allows a user to write a program which performs the timed pattern matching procedure as part of the program. For example, one can implement a controller monitored in parallel, and the monitor changes the control mode when an unsafe behavior is detected. In addition to the modularity, it also turns out that our C++ API is beneficial for performance. By hard-coding a TA in C++ code, we benefit from compiler optimization, and monitoring becomes faster.
+IV. A PERFORMANCE COMPARISON WITH MONTRE
+We compare the performance of MONAA with that of the existing tool Montre [8], by monitoring real-time behaviors of a Simulink model from an automotive domain. The input timed words are generated from an automatic transmission model [5]. The input specification is the following TRE or a corresponding TA (modulo minor rewriting for readability).
+〈(g1g2g3g4[ω ≥ 2500]) ∨ (g1g2g3[ω ≥ 2500]g4)
+∨(g1g2[ω ≥ 2500]g3g4) ∨ (g1[ω ≥ 2500]g2g3g4)
+∨([ω ≥ 2500]g1g2g3g4)〉(0,10)
+〈(g3 ∨ g4 ∨ [ω < 2500] ∨ [ω ≥ 2500])+〉(1,1000)
+This means that the gear changes from the first (g1) to the forth (g4) and the engine rotation becomes high ([ω ≥ 2500]) within 10 seconds, and in the next 1 second, the gear keeps being the third (g3) or the forth (g4) but the velocity does not get high ([v ≥ 100]). We compared MONAA giving either a TRE or a TA, and a libmonaa-based timed pattern matching program (in which a TA is hard-coded), with Montre’s online and offline modes. Our programs are compiled by GCC 7.1.0 with optimization flag -O3 and the experiments are conducted on an Amazon EC2 c4.large instance (January 2018, 2 vCPUs and 3.75 GiB RAM) that runs Ubuntu 16.04.2 LTS (64 bit). The results of our experiments are in Table I–II. Table I shows that libmonaa-based monitor performs the fastest and the online mode of Montre performs the slowest. We remark that MONAA constantly takes about 7 seconds extra when a TRE is given. This is because of the translation from a TRE to a TA, which does not affect the remaining procedure. The execution time of MONAA grows only linearly with respect to the length of the input timed word, a characteristic desired for monitoring algorithms. Table II shows that the memory usage of MONAA is independent of the length of the timed word, while that of Montre offline depends.
+Table I EXECUTION TIME (SEC.)
+Length of timed word
+MONAA (TRE)
+MONAA (TA)
+libmonaa (TA is hard coded)
+Montre (online)
+Montre (offline)
+708 7.03 0.80 0.20 0.13 0.03 218,247 7.55 1.27 0.31 37.45 1.56 436,611 8.05 1.73 0.42 75.93 3.13 655,237 8.54 2.21 0.53 115.88 4.69 870,967 9.16 2.69 0.64 153.71 6.21 1,087,411 9.53 3.14 0.75 189.55 7.75 1,304,404 10.05 3.60 0.85 216.92 9.33 1,527,632 10.53 4.06 0.97 260.77 10.88 1,739,525 11.05 4.56 1.07 289.63 12.39
+Table II MEMORY USAGE (KBYTES)
+Length of timed word
+MONAA (TRE)
+MONAA (TA)
+libmonaa (TA is hard coded)
+Montre (offline)
+708 16,468 10,808 7,308 27,456 218,247 16,312 10,808 7,464 45,700 436,611 16,312 10,752 7,308 65,764 655,237 16,344 10,692 7,308 87,928 870,967 16,468 10,840 7,288 99,540 1,087,411 16,280 10,900 7,452 109,076 1,304,404 16,340 10,768 7,292 147,048 1,527,632 16,468 10,696 7,440 153,992 1,739,525 16,312 10,808 7,288 166,660
+ACKNOWLEDGMENT
+The authors are supported by JSPS Grant-in-Aid 15KT0012. M.W. and I.H. are supported by JST ERATO HASUO Metamathematics for Systems Design Project (No. JPMJER1603), and JSPS Grant-in-Aid No. 15K11984. K.S. is supported by JST PRESTO (No. JPMJPR15E5) and JSPS Grant-in-Aid No. 70633692.
+REFERENCES
+[1] R. Alur and D.L. Dill. A theory of timed automata. Theor. Comput. Sci., 126(2):183–235, 1994.
+[2] E. Asarin, P. Caspi and O. Maler. Timed regular expressions. J. ACM, 49(2):172–206, 2002.
+[3] R.S. Boyer and J.S. Moore. A fast string searching algorithm. Commun. ACM, 20(10):762–772, 1977.
+[4] F. Franek, C.G. Jennings and W.F. Smyth. A simple fast hybrid pattern-matching algorithm. J. Discrete Algorithms, 5(4):682–695, 2007.
+[5] B. Hoxha, H. Abbas and G.E. Fainekos. Benchmarks for temporal logic requirements for automotive systems. In Proc. ARCH@CPSWeek 2014 / ARCH@CPSWeek 2015, vol. 34 of EPiC Series in Computing, pp. 25–30. EasyChair, 2014.
+[6] D.E. Knuth, J.H.M. Jr. and V.R. Pratt. Fast pattern matching in strings. SIAM J. Comput., 6(2):323–350, 1977.
+[7] R. Koymans. Specifying real-time properties with metric temporal logic. Real-Time Systems, 2(4):255–299, 1990.
+[8] D. Ulus. Montre: A tool for monitoring timed regular expressions. In CAV (1), vol. 10426 of Lecture Notes in Computer Science, pp. 329–335. Springer, 2017.
+[9] D. Ulus, T. Ferr`ere, E. Asarin and O. Maler. Timed pattern matching. In Proc. FORMATS 2014, vol. 8711 of LNCS, pp. 222–236. Springer, 2014.
+[10] D. Ulus, T. Ferre`re, E. Asarin and O. Maler. Online timed pattern matching using derivatives. In Proc. TACAS 2016, vol. 9636 of LNCS, pp. 736–751. Springer, 2016.
+[11] M. Waga, T. Akazaki and I. Hasuo. A Boyer-Moore type algorithm for timed pattern matching. In Proc. FORMATS 2016, vol. 9884 of LNCS, pp. 121–139. Springer, 2016.
+[12] M. Waga, I. Hasuo and K. Suenaga. Efficient online timed pattern matching by automata-based skipping. In Proc. FORMATS 2017, vol. 10419 of LNCS, pp. 224–243. Springer, 2017.
+15
+Authorized licensed use limited to: National Univ of Defense Tech. Downloaded on November 06,2025 at 13:07:45 UTC from IEEE Xplore. Restrictions apply.

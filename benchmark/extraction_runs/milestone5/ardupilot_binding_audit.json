@@ -1,0 +1,486 @@
+{
+  "schema_version": "1.0",
+  "audit_kind": "READ_ONLY_CURRENT_SOURCE_SEMANTIC_BINDING",
+  "generated_at": "2026-07-18T06:32:22+08:00",
+  "system": "ArduPilot",
+  "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+  "scope": "Semantic identity and observation-site audit only. This file does not assess implementation satisfaction and does not modify the property catalog.",
+  "implementation_satisfaction": "NOT_ASSESSED",
+  "compile_database": {
+    "path": "baseline/ardupilot/build/sitl/compile_commands.json",
+    "sha256": "57c2097fbe9dc7fa60c143a2ff2552d926a7cc4de2610db0bda09cf25cca6c60",
+    "entries": 1543,
+    "duplicate_normalized_files": 0,
+    "build_command": "/home/lqq/anaconda3/bin/python ./waf plane rover",
+    "build_working_directory": "baseline/ardupilot",
+    "build_exit_code": 0,
+    "build_result": "plane and rover finished successfully; existing Copter entries were retained",
+    "target_counts": {
+      "ArduCopter": 74,
+      "ArduPlane": 64,
+      "Rover": 38,
+      "AP_BattMonitor": 29
+    },
+    "covered_targets": [
+      {"file":"ArduCopter/events.cpp","entry_index":1357,"command_sha256":"7649c9f428daed3741b32dd5d8835c2d4c1dfbd9357ddb7d5b5cecb244430bfa"},
+      {"file":"ArduCopter/AP_State.cpp","entry_index":1337,"command_sha256":"c40a5b33bf7e6a7a3516120d2d8aae2ca9fb96fabbc4a9962c18be5213234e4b"},
+      {"file":"ArduCopter/Copter.cpp","entry_index":1339,"command_sha256":"a48fa520135e38a722a44d3b862c46014d93aa228f7bdc38b848e2dabb2f0bb1"},
+      {"file":"ArduCopter/mode_guided.cpp","entry_index":1378,"command_sha256":"5ef528d6edc6127c7b51d70e5d783124551623b977e8de885f27f2317f20e056"},
+      {"file":"ArduCopter/GCS_MAVLink_Copter.cpp","entry_index":1341,"command_sha256":"b7c537c97e7e6cc39f23ec62d16ff8ea87704f6fb3c1d7c6745d1af2788ab99a"},
+      {"file":"ArduCopter/mode_rtl.cpp","entry_index":1384,"command_sha256":"350f6762bfdda4ff43b3f7fff517530d1005ec7b30a03831660ce86fa82d9ed8"},
+      {"file":"ArduPlane/takeoff.cpp","entry_index":1489,"command_sha256":"e443a82c1d18749911b4874cbeff2995627f538414949a0259b8a988f144fef3"},
+      {"file":"ArduPlane/mode_takeoff.cpp","entry_index":1472,"command_sha256":"a55f14665496cdc69691f49ee075fdff417c06a370119e2defb8b42a735f5c1b"},
+      {"file":"ArduPlane/commands_logic.cpp","entry_index":1442,"command_sha256":"3f48f0aa1dfa35ddef473b79592d652dd45eb5498a13a336770374de700ad50e"},
+      {"file":"ArduPlane/AP_Arming_Plane.cpp","entry_index":1428,"command_sha256":"bce8ba8788fc3283c2d3b4b83bea98dfb6a34da11a39e7fe4ae4c062725fb564"},
+      {"file":"Rover/radio.cpp","entry_index":1539,"command_sha256":"9637b3144326609299051eb239e273716b31f66071a88609a55ba129985f45fd"},
+      {"file":"Rover/failsafe.cpp","entry_index":1521,"command_sha256":"c28008a4c8a2cb4b8b5f072f5e9df07d215151affa7626cb18651b9313807bc4"},
+      {"file":"Rover/crash_check.cpp","entry_index":1518,"command_sha256":"b2d8ed89d91ff5bf17360f6f401151b9867ea8c8347b30ac6170cdc51ec2c85a"},
+      {"file":"Rover/system.cpp","entry_index":1542,"command_sha256":"cfc5eb0a5b33f61e3cb1fe83a4f2c2692400caa46516703e0fcdece63f4dad1e"},
+      {"file":"libraries/GCS_MAVLink/GCS_Common.cpp","entry_index":1267,"command_sha256":"e764b397e419c9fa6e55a4a78afdaecfc34993ef61130abaf36c56a76c69ccf3"},
+      {"file":"libraries/GCS_MAVLink/GCS.cpp","entry_index":1266,"command_sha256":"d5a27bf53be2935437c755d8c3c82aac8168bf3625bca44a9ec6af18dbb2639d"},
+      {"file":"libraries/RC_Channel/RC_Channels.cpp","entry_index":911,"command_sha256":"89a079a5e6b08a9bd75f6e31c93984b2cac1d4a9ad4bbb7193272551cbf78eb3"},
+      {"file":"libraries/AP_Arming/AP_Arming.cpp","entry_index":1305,"command_sha256":"40de032060afd65204a8a38d93217c3a7992aa1f88ecbd797a92b0eb3da31d48"},
+      {"file":"libraries/AP_BattMonitor/AP_BattMonitor.cpp","entry_index":1228,"command_sha256":"e2d44f33b3d0f0145db2645e65de4f11e800aecfc63277465fc247751acb1f40"},
+      {"file":"libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","entry_index":267,"command_sha256":"eea998e3a6ab77a7d9bc6461c9f360afd96417d4c37a88379db8c9ec850c8229"},
+      {"file":"libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp","entry_index":1229,"command_sha256":"069a07841cf8234c58fe8ca378fcf3a27c5216324b9db31cc8bc844ee2193d3c"}
+    ],
+    "header_note": "Header declarations are bound below for type identity; compile_commands has direct entries only for translation units. Every selected translation unit listed above has a real entry."
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-01",
+      "name": "gcs_heartbeat_gap_start",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Instrument the designated-GCS HEARTBEAT handler in the vehicle receipt clock or derive the edge from a complete controlled heartbeat trace. The aggregate last-seen state is shared with non-heartbeat refresh paths and is not an exact normative carrier.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GCS-001-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp","line":4357,"column":null,"symbol":"GCS_MAVLINK::handle_heartbeat","semantic_identity":"Accepted HEARTBEAT from a configured GCS system ID refreshes designated-GCS last-seen time.","entity_kind":"MESSAGE_CONSUMER","function":"GCS_MAVLINK::handle_heartbeat","role":"CONSUMER","type":"void(const mavlink_message_t&)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 4359-4363 test sysid_is_gcs and call sysid_mygcs_seen(AP_HAL::millis())."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp","line":4243,"column":null,"symbol":"MAVLINK_MSG_ID_RC_CHANNELS_OVERRIDE -> sysid_mygcs_seen","semantic_identity":"Current implementation conflict: accepted RC_CHANNELS_OVERRIDE refreshes the shared last-seen clock, but it is not a normative designated-GCS heartbeat event.","entity_kind":"MESSAGE_CONSUMER","function":"GCS_MAVLINK::handle_rc_channels_override","role":"CONSUMER","type":"mavlink_rc_channels_override_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"After GCS sysid validation and override application, line 4243 calls sysid_mygcs_seen(tnow). This path is retained to expose non-heartbeat interference, not as AP truth."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp","line":7655,"column":null,"symbol":"MAVLINK_MSG_ID_MANUAL_CONTROL -> sysid_mygcs_seen","semantic_identity":"Current implementation conflict: accepted MANUAL_CONTROL refreshes the shared last-seen clock, but it is not a normative designated-GCS heartbeat event.","entity_kind":"MESSAGE_CONSUMER","function":"GCS_MAVLINK::handle_manual_control","role":"CONSUMER","type":"mavlink_manual_control_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Lines 7638-7647 validate GCS sysid and target; line 7655 records tnow as seen. This path is retained to expose non-heartbeat interference, not as AP truth."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-01-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp","line":7660,"column":null,"symbol":"GCS_MAVLINK::sysid_mygcs_seen","semantic_identity":"Shared implementation sink for aggregate GCS last-seen timestamps; it is not heartbeat-exclusive and therefore only models the normative heartbeat receipt state.","entity_kind":"ASSIGNMENT","function":"GCS_MAVLINK::sysid_mygcs_seen","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Lines 7662-7663 write GCS::_sysid_gcs_last_seen_time_ms and GCS_MAVLINK::_sysid_gcs_last_seen_time_ms for heartbeat and non-heartbeat producers."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-01-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":140,"column":null,"symbol":"last_gcs_update_ms = millis() - gcs_last_seen_ms","semantic_identity":"Elapsed interval since the shared implementation last-seen state; it can model but cannot exactly prove the normative designated-heartbeat gap.","entity_kind":"VARIABLE","function":"Copter::failsafe_gcs_check","role":"DERIVATION","type":"const uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Lines 133-141 read the aggregate timestamp and derive elapsed time and runtime timeout; the aggregate can include non-heartbeat refreshes."}
+      ],
+      "unresolved": [
+        "No explicit designated_gcs_heartbeat_gap_start object is stored; exact AP truth requires heartbeat-handler instrumentation or a complete controlled heartbeat trace.",
+        "The current shared implementation clock is also refreshed by accepted MANUAL_CONTROL and RC_CHANNELS_OVERRIDE. This is an implementation conflict, not a broader normative event set.",
+        "At last_gcs_update_ms == gcs_timeout_ms none of the four strict less-than/greater-than branches at events.cpp:144-158 is selected."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-02",
+      "name": "gcs_heartbeat_seen_before",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Derive designated-heartbeat history from the exact heartbeat consumer or a complete controlled input trace. The aggregate nonzero timestamp is only a model because non-heartbeat producers share it.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GCS-001-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS.h","line":1359,"column":null,"symbol":"GCS::_sysid_gcs_last_seen_time_ms","semantic_identity":"Aggregate current-source last-seen field. It is not heartbeat-exclusive, so nonzero only models designated-heartbeat history.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"GCS.h lines 1356-1359 define the aggregate field; heartbeat, RC override, and manual-control paths can write it."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":134,"column":null,"symbol":"gcs_last_seen_ms == 0","semantic_identity":"Aggregate implementation sentinel for no shared GCS refresh; it is not an exact sentinel for no designated heartbeat.","entity_kind":"OTHER","function":"Copter::failsafe_gcs_check","role":"GUARD","type":"bool over uint32_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Lines 133-136 return when the aggregate last-seen timestamp is zero; non-heartbeat refreshes can make it nonzero."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp","line":7662,"column":null,"symbol":"gcs().sysid_mygcs_seen(seen_time_ms)","semantic_identity":"Shared aggregate write sink reached by the normative heartbeat handler and non-normative refresh paths; only a model for heartbeat-seen history.","entity_kind":"ASSIGNMENT","function":"GCS_MAVLINK::sysid_mygcs_seen","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"This is the common sink reached by HEARTBEAT, RC_CHANNELS_OVERRIDE, and MANUAL_CONTROL consumers; exact heartbeat history must be separated upstream."}
+      ],
+      "unresolved": [
+        "The source implements seen-before as timestamp != 0 rather than an event count; an update received at boot-time value zero is not distinguishable by this sentinel.",
+        "A harness-derived normative count must include designated-GCS heartbeat receipts only and must not reclassify the two implementation-only refresh families as heartbeat events."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-03",
+      "name": "gcs_fs_enabled",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Separate event enablement from post-event action selection: FS_GCS_ENABLE and seen-before gate the flag, while FS_OPTIONS, mode, armed state, and landing state alter the chosen response.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GCS-001-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/Parameters.cpp","line":102,"column":null,"symbol":"FS_GCS_ENABLE / Parameters::failsafe_gcs","semantic_identity":"Runtime enum selecting disabled or a GCS failsafe response class.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Enum<Parameters::FS_GCS_Action>","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:173","macro_expansion_location":"baseline/ardupilot/ArduCopter/Parameters.cpp:102","confidence":"EXACT","evidence":"GSCALAR registers FS_GCS_ENABLE; enum and field are declared at Parameters.h:407-418."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":129,"column":null,"symbol":"g.failsafe_gcs == FS_GCS_Action::DISABLED","semantic_identity":"Direct event-enable guard; disabled bypasses GCS failsafe evaluation.","entity_kind":"OTHER","function":"Copter::failsafe_gcs_check","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 128-135 bypass when disabled or never connected."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/Parameters.cpp","line":787,"column":null,"symbol":"FS_OPTIONS / ParametersG2::fs_options","semantic_identity":"Bitmask used to allow continuation in landing, Auto, or pilot-controlled modes after a failsafe event.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Int32","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:152","macro_expansion_location":"baseline/ardupilot/ArduCopter/Parameters.cpp:787","confidence":"EXACT","evidence":"AP_GROUPINFO registers FS_OPTIONS; option use is at events.cpp:213-226."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-03-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":170,"column":null,"symbol":"switch ((FS_GCS_Action)g.failsafe_gcs)","semantic_identity":"Maps FS_GCS_ENABLE to the candidate FailsafeAction.","entity_kind":"FUNCTION","function":"Copter::failsafe_gcs_on_event","role":"DERIVATION","type":"FailsafeAction","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 170-195 map enum values to RTL, SmartRTL, Land, Auto land-start, or Brake/Land actions."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-03-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":197,"column":null,"symbol":"GCS failsafe response deviation conditions","semantic_identity":"Armed, ground, landing, Auto, pilot-control, battery-failsafe, and FS_OPTIONS state can replace or suppress the selected response.","entity_kind":"FUNCTION","function":"Copter::failsafe_gcs_on_event","role":"DERIVATION","type":"FailsafeAction","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 197-232 derive the final desired_action and call do_failsafe_action."}
+      ],
+      "unresolved": [
+        "Current control flow sets the GCS-specific event flag independently of FS_OPTIONS and current mode once FS_GCS_ENABLE is non-disabled and a GCS was seen; options and mode affect the response action, not the flag edge.",
+        "The AP truth condition should retain separate identities for event enabled and configured response applicable rather than treating them as one stored boolean."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-GCS-001-AP-04",
+      "name": "gcs_failsafe_event",
+      "binding_recommendation": "BOUND_INTERNAL_EVENT",
+      "observation": "Bind the event to the false-to-true write of Copter::failsafe.gcs; AP_Notify and log/text outputs are mirrors or consequences.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GCS-001-AP-04-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":155,"column":null,"symbol":"new GCS failsafe branch","semantic_identity":"Detects elapsed time above timeout while the GCS failsafe flag is false and initiates the event.","entity_kind":"EVENT","function":"Copter::failsafe_gcs_check","role":"PRODUCER","type":"bool edge","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 155-158 call set_failsafe_gcs(true) then failsafe_gcs_on_event()."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-04-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/AP_State.cpp","line":75,"column":null,"symbol":"Copter::failsafe.gcs = b","semantic_identity":"Canonical vehicle-local GCS failsafe state write.","entity_kind":"ASSIGNMENT","function":"Copter::set_failsafe_gcs","role":"WRITE","type":"uint8_t bit-field interpreted as bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Copter.h:403 declares the bit; AP_State.cpp:73-79 writes it and its AP_Notify mirror."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-04-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/AP_State.cpp","line":78,"column":null,"symbol":"AP_Notify::flags.failsafe_gcs = b","semantic_identity":"Global notification mirror of the vehicle-local GCS failsafe state.","entity_kind":"ASSIGNMENT","function":"Copter::set_failsafe_gcs","role":"OBSERVATION_SITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MAY","evidence":"The mirror is exact for this setter but is a shared notification surface, not the canonical Copter field."},
+        {"binding_id":"ARD-COPTER-GCS-001-AP-04-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/events.cpp","line":165,"column":null,"symbol":"LOGGER_WRITE_ERROR(FAILSAFE_GCS, FAILSAFE_OCCURRED)","semantic_identity":"DataFlash log producer for occurrence of the GCS failsafe response handler.","entity_kind":"MESSAGE_PRODUCER","function":"Copter::failsafe_gcs_on_event","role":"PRODUCER","type":"LogErrorSubsystem/LogErrorCode","macro_spelling_location":"baseline/ardupilot/ArduCopter/events.cpp:165","macro_expansion_location":"baseline/ardupilot/ArduCopter/events.cpp:165","confidence":"EXACT","evidence":"The first operation in failsafe_gcs_on_event records FAILSAFE_GCS/FAILSAFE_OCCURRED."}
+      ],
+      "unresolved": [
+        "No dedicated standard MAVLink field carries the canonical failsafe.gcs edge; STATUSTEXT and system status are lossy consequences.",
+        "The event timestamp is the checker invocation time, sampled by Copter::three_hz_loop at Copter.cpp:739-742, not the exact timeout boundary."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-GUID-002-AP-01",
+      "name": "guided_gap_start",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Bind accepted applicable commands to the controller-specific update_time_ms writes; derive the gap edge when those writes stop.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/GCS_MAVLink_Copter.cpp","line":890,"column":null,"symbol":"GCS_MAVLINK_Copter::handle_message_set_attitude_target","semantic_identity":"Validates Guided mode, type mask, quaternion, body rates, and thrust before calling ModeGuided::set_angle.","entity_kind":"MESSAGE_CONSUMER","function":"GCS_MAVLINK_Copter::handle_message_set_attitude_target","role":"CONSUMER","type":"mavlink_set_attitude_target_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 890-963 decode and validate the packet; line 962 calls set_angle."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/GCS_MAVLink_Copter.cpp","line":966,"column":null,"symbol":"GCS_MAVLINK_Copter::handle_message_set_position_target_local_ned","semantic_identity":"Validates local frame and type mask, then dispatches accepted position/velocity/acceleration combinations.","entity_kind":"MESSAGE_CONSUMER","function":"GCS_MAVLINK_Copter::handle_message_set_position_target_local_ned","role":"CONSUMER","type":"mavlink_set_position_target_local_ned_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 966-1074 validate; lines 1063-1070 dispatch supported combinations."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/GCS_MAVLink_Copter.cpp","line":1077,"column":null,"symbol":"GCS_MAVLINK_Copter::handle_message_set_position_target_global_int","semantic_identity":"Validates global target inputs and dispatches accepted position/velocity/acceleration combinations.","entity_kind":"MESSAGE_CONSUMER","function":"GCS_MAVLINK_Copter::handle_message_set_position_target_global_int","role":"CONSUMER","type":"mavlink_set_position_target_global_int_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 1077-1173 decode, validate, and dispatch accepted combinations."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":569,"column":null,"symbol":"update_time_ms = millis()","semantic_identity":"Receipt-clock update for accepted acceleration-only targets.","entity_kind":"ASSIGNMENT","function":"ModeGuided::set_accel_NED_mss","role":"WRITE","type":"static uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 554-569 select Accel submode, store targets, and update time."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":601,"column":null,"symbol":"update_time_ms = millis()","semantic_identity":"Receipt-clock update for accepted velocity-plus-acceleration targets.","entity_kind":"ASSIGNMENT","function":"ModeGuided::set_vel_accel_NED_m","role":"WRITE","type":"static uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 586-601 select VelAccel submode, store targets, and update time."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B06","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":638,"column":null,"symbol":"update_time_ms = millis()","semantic_identity":"Receipt-clock update for accepted position-velocity-acceleration targets.","entity_kind":"ASSIGNMENT","function":"ModeGuided::set_pos_vel_accel_NED_m","role":"WRITE","type":"static uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 617-642 validate/store the combined target and update time."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-01-B07","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":704,"column":null,"symbol":"guided_angle_state.update_time_ms = millis()","semantic_identity":"Receipt-clock update for accepted attitude/angular-rate targets.","entity_kind":"ASSIGNMENT","function":"ModeGuided::set_angle","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 682-704 select Angle submode, store targets, and update the separate angle timestamp."}
+      ],
+      "unresolved": [
+        "No explicit guided_gap_start event is stored; it is a modelled edge after the last setter timestamp update.",
+        "Position-only and waypoint Guided commands also update the shared update_time_ms at mode_guided.cpp:432 and 541 but GUID_TIMEOUT is documented for velocity, acceleration, angle, or angular rate combinations; campaign input classification must exclude or separately model them.",
+        "Incoming MAVLink time_boot_ms is a sender clock and is not the vehicle receipt timestamp used by these setters."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-GUID-002-AP-02",
+      "name": "guided_variant_active",
+      "binding_recommendation": "BOUND_INTERNAL_ENUM",
+      "observation": "Use ModeGuided::guided_mode with the timed subset Accel, VelAccel, PosVelAccel, and Angle.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GUID-002-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode.h","line":1163,"column":null,"symbol":"ModeGuided::SubMode","semantic_identity":"Internal enum for TakeOff, WP, Pos, PosVelAccel, VelAccel, Accel, and Angle controllers.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"enum class ModeGuided::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"mode.h:1163-1171 defines the variants; mode.h:1236 stores guided_mode."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":287,"column":null,"symbol":"guided_mode = SubMode::Accel","semantic_identity":"Activates acceleration-only Guided control.","entity_kind":"ASSIGNMENT","function":"ModeGuided::accel_control_start","role":"WRITE","type":"ModeGuided::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"accel_control_start assigns Accel before initializing PVA control."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":297,"column":null,"symbol":"guided_mode = SubMode::VelAccel","semantic_identity":"Activates velocity-plus-acceleration Guided control.","entity_kind":"ASSIGNMENT","function":"ModeGuided::velaccel_control_start","role":"WRITE","type":"ModeGuided::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"velaccel_control_start assigns VelAccel before initializing PVA control."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-02-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":307,"column":null,"symbol":"guided_mode = SubMode::PosVelAccel","semantic_identity":"Activates combined position-velocity-acceleration Guided control.","entity_kind":"ASSIGNMENT","function":"ModeGuided::posvelaccel_control_start","role":"WRITE","type":"ModeGuided::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"posvelaccel_control_start assigns PosVelAccel before initializing PVA control."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-02-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":346,"column":null,"symbol":"guided_mode = SubMode::Angle","semantic_identity":"Activates attitude and/or angular-rate Guided control.","entity_kind":"ASSIGNMENT","function":"ModeGuided::angle_control_start","role":"WRITE","type":"ModeGuided::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"angle_control_start assigns Angle and initializes its timestamp and targets."}
+      ],
+      "unresolved": [
+        "The enum alone does not preserve which individual velocity/acceleration fields were ignored; retain incoming type_mask if sub-variant granularity is required.",
+        "Pos and WP are valid Guided variants but are outside the documented GUID_TIMEOUT applicability unless combined with timed target components."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-GUID-002-AP-03",
+      "name": "timeout_response_started",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Derive the event edge from the first true timeout guard and the corresponding target-reset writes; no one-shot response flag exists.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-GUID-002-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":1195,"column":null,"symbol":"ModeGuided::get_timeout_ms","semantic_identity":"Converts runtime GUID_TIMEOUT to a minimum 0.1-second timeout in milliseconds.","entity_kind":"FUNCTION","function":"ModeGuided::get_timeout_ms","role":"DERIVATION","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Line 1197 returns MAX(copter.g2.guided_timeout, 0.1) * 1000."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":796,"column":null,"symbol":"Accel timeout response","semantic_identity":"On timeout, zeros velocity and acceleration targets and immediately feeds zero targets to both position-controller axes.","entity_kind":"ASSIGNMENT","function":"ModeGuided::accel_control_run","role":"WRITE","type":"Vector3f target reset","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 796-803 execute the zero-target response while the strict greater-than guard remains true."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":841,"column":null,"symbol":"tnow - update_time_ms > get_timeout_ms()","semantic_identity":"On timeout, zeros velocity and acceleration targets and changes rate/angle-rate yaw to hold.","entity_kind":"ASSIGNMENT","function":"ModeGuided::velaccel_control_run","role":"WRITE","type":"Vector3f target reset","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 841-846 apply the response."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-03-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":926,"column":null,"symbol":"tnow - update_time_ms > get_timeout_ms()","semantic_identity":"On timeout, zeros velocity and acceleration targets while retaining/adjusting position according to stabilization options.","entity_kind":"ASSIGNMENT","function":"ModeGuided::posvelaccel_control_run","role":"WRITE","type":"Vector3f target reset","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 926-931 apply target and yaw response; lines 934-959 feed controller targets."},
+        {"binding_id":"ARD-COPTER-GUID-002-AP-03-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_guided.cpp","line":984,"column":null,"symbol":"Angle timeout response","semantic_identity":"On timeout, commands level roll/pitch with current target yaw, zeros angular velocity and climb rate, and exits direct-thrust mode.","entity_kind":"ASSIGNMENT","function":"ModeGuided::angle_control_run","role":"WRITE","type":"Quaternion/Vector3f/float/bool reset","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 984-992 perform the attitude/rate response."}
+      ],
+      "unresolved": [
+        "There is no explicit timeout_response_started flag; each run loop repeats the timeout branch after the threshold, so instrumentation must emit only the false-to-true guard edge.",
+        "The guards use strict greater-than and are sampled by the active Guided controller loop; exact boundary time is not stored.",
+        "The source defines response initiation only; it does not provide a completion event for fully stopped or level."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-01",
+      "name": "enter_loiter_at_home",
+      "binding_recommendation": "BOUND_INTERNAL_EVENT",
+      "observation": "Bind the edge to ModeRTL::_state becoming LOITER_AT_HOME and _loiter_start_time receiving millis().",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-RTL-003-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":148,"column":null,"symbol":"RETURN_HOME -> loiterathome_start","semantic_identity":"State-machine transition call after RETURN_HOME reports complete.","entity_kind":"EVENT","function":"ModeRTL::run","role":"PRODUCER","type":"ModeRTL::SubMode transition","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 138-150 dispatch loiterathome_start when _state_complete is true in RETURN_HOME."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":258,"column":null,"symbol":"_state = SubMode::LOITER_AT_HOME","semantic_identity":"Canonical internal sub-state write for entering the Home loiter stage.","entity_kind":"ASSIGNMENT","function":"ModeRTL::loiterathome_start","role":"WRITE","type":"ModeRTL::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"loiterathome_start writes the state and clears _state_complete."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":260,"column":null,"symbol":"_loiter_start_time = millis()","semantic_identity":"Autopilot monotonic-boot epoch for this LOITER_AT_HOME entry.","entity_kind":"ASSIGNMENT","function":"ModeRTL::loiterathome_start","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The timer is initialized in the same function immediately after the state write."}
+      ],
+      "unresolved": [
+        "Standard HEARTBEAT reports RTL mode but not ModeRTL::_state; exact observation requires internal instrumentation.",
+        "The state assignment and timestamp assignment are adjacent but not an atomic externally visible event."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-02",
+      "name": "rtl_loiter_eligible",
+      "binding_recommendation": "BOUND_AS_DERIVED_STATE",
+      "observation": "Derive eligibility from active RTL LOITER_AT_HOME state, a non-landing path, no radio-failsafe override, armed state, and no external mode cancellation.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-RTL-003-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode.h","line":1534,"column":null,"symbol":"ModeRTL::SubMode and ModeRTL::_state","semantic_identity":"Internal RTL state enum and current-state field; LOITER_AT_HOME is the timed stage.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"enum class ModeRTL::SubMode : uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"mode.h:1534-1542 defines enum/accessor and mode.h:1603 stores _state."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":462,"column":null,"symbol":"rtl_path.land = alt_final_m.get() <= 0","semantic_identity":"Path-selection field: true chooses direct landing after loiter; false permits FINAL_DESCENT when radio failsafe is also false.","entity_kind":"ASSIGNMENT","function":"ModeRTL::build_path","role":"WRITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"build_path derives land from runtime RTL_ALT_FINAL_M."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":152,"column":null,"symbol":"rtl_path.land || copter.failsafe.radio","semantic_identity":"Transition guard selecting LAND versus FINAL_DESCENT after Home loiter completes.","entity_kind":"OTHER","function":"ModeRTL::run","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 151-156 call land_start on true and descent_start on false."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-02-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":134,"column":null,"symbol":"motors->armed()","semantic_identity":"RTL run stops state progression when motors are not armed.","entity_kind":"OTHER","function":"ModeRTL::run","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 132-136 return immediately when disarmed."}
+      ],
+      "unresolved": [
+        "No single rtl_loiter_eligible field is stored; continuous eligibility also depends on remaining in RTL and avoiding cancellation by an external mode change.",
+        "rtl_path.land is computed once by build_path from RTL_ALT_FINAL_M; radio failsafe is consulted at the transition, not latched at loiter entry.",
+        "RTL_ALT_FINAL_M greater than zero selects FINAL_DESCENT; zero or negative selects LAND directly."
+      ]
+    },
+    {
+      "ap_id": "ARD-COPTER-RTL-003-AP-03",
+      "name": "begin_final_descent",
+      "binding_recommendation": "BOUND_INTERNAL_EVENT",
+      "observation": "Bind the event to descent_start writing FINAL_DESCENT after the loiter completion and path guard.",
+      "bindings": [
+        {"binding_id":"ARD-COPTER-RTL-003-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":294,"column":null,"symbol":"RTL loiter completion guard","semantic_identity":"After elapsed RTL_LOIT_TIME and yaw-reset completion, sets _state_complete true.","entity_kind":"OTHER","function":"ModeRTL::loiterathome_run","role":"GUARD","type":"bool over uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 294-304 compare elapsed time with runtime rtl_loiter_time and complete the stage."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":155,"column":null,"symbol":"descent_start()","semantic_identity":"State-machine producer chosen when Home loiter is complete, rtl_path.land is false, and radio failsafe is false.","entity_kind":"EVENT","function":"ModeRTL::run","role":"PRODUCER","type":"ModeRTL transition","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 151-156 choose between land_start and descent_start."},
+        {"binding_id":"ARD-COPTER-RTL-003-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduCopter/mode_rtl.cpp","line":311,"column":null,"symbol":"_state = SubMode::FINAL_DESCENT","semantic_identity":"Canonical internal sub-state write for final descent start.","entity_kind":"ASSIGNMENT","function":"ModeRTL::descent_start","role":"WRITE","type":"ModeRTL::SubMode","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"descent_start writes FINAL_DESCENT, clears completion, and initializes vertical/yaw controllers."}
+      ],
+      "unresolved": [
+        "Yaw reset can delay _state_complete beyond RTL_LOIT_TIME when AutoYaw remains RESET_TO_ARMED_YAW and heading is outside two degrees.",
+        "No standard MAVLink message distinguishes FINAL_DESCENT from other RTL sub-states."
+      ]
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-01",
+      "name": "automatic_takeoff_start",
+      "binding_recommendation": "BOUND_INTERNAL_EVENT",
+      "observation": "Two current-source paths set the same takeoff_state.start_time_ms epoch: AUTO launch detection and TAKEOFF-mode setup.",
+      "bindings": [
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/Plane.h","line":447,"column":null,"symbol":"Plane::takeoff_state.start_time_ms","semantic_identity":"Per-attempt autopilot monotonic-boot start epoch used by TKOFF_TIMEOUT.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Plane.h:439-452 defines takeoff_state and its timers."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":130,"column":null,"symbol":"takeoff_state.start_time_ms = now","semantic_identity":"AUTO takeoff start after launch acceleration/delay/speed/attitude checks trigger.","entity_kind":"ASSIGNMENT","function":"Plane::auto_takeoff_check","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 124-134 accept the launch and initialize start, level-off, and throttle-max timers."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/mode_takeoff.cpp","line":132,"column":null,"symbol":"plane.takeoff_state.start_time_ms = millis()","semantic_identity":"TAKEOFF-mode start after position/home setup, throttle unsuppressed, and sufficient groundspeed.","entity_kind":"ASSIGNMENT","function":"ModeTakeoff::update","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 128-136 initialize the takeoff attempt timers and course."}
+      ],
+      "unresolved": [
+        "The two producers have different entry conditions and must share one attempt correlation policy.",
+        "start_time_ms uses zero as unset and is cleared both on reaching 4 m/s and on timeout.",
+        "No standard MAVLink message carries this exact internal receipt/start epoch."
+      ]
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-02",
+      "name": "timeout_enabled",
+      "binding_recommendation": "BOUND_PARAMETER_COMPARISON",
+      "observation": "Bind directly to ParametersG2::takeoff_timeout and the greater-than-zero guard in check_takeoff_timeout.",
+      "bindings": [
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/Parameters.cpp","line":1120,"column":null,"symbol":"TKOFF_TIMEOUT / ParametersG2::takeoff_timeout","semantic_identity":"Runtime automatic-takeoff timeout in seconds; zero disables.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Int8","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:152","macro_expansion_location":"baseline/ardupilot/ArduPlane/Parameters.cpp:1120","confidence":"EXACT","evidence":"AP_GROUPINFO binds TKOFF_TIMEOUT; field type is at Parameters.h:522."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":393,"column":null,"symbol":"g2.takeoff_timeout > 0","semantic_identity":"Direct runtime enable predicate combined with a valid start epoch.","entity_kind":"OTHER","function":"Plane::check_takeoff_timeout","role":"GUARD","type":"bool over AP_Int8","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The function enters timeout logic only when start_time_ms is nonzero and TKOFF_TIMEOUT is positive."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":401,"column":null,"symbol":"1000U * g2.takeoff_timeout","semantic_identity":"Seconds-to-milliseconds conversion for the runtime timeout.","entity_kind":"OTHER","function":"Plane::check_takeoff_timeout","role":"DERIVATION","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The strict greater-than elapsed-time comparison performs the conversion inline."}
+      ],
+      "unresolved": [
+        "The source parameter type is integer seconds even though the catalog AP value_type is float; runtime PARAM_VALUE transports it as a float representation.",
+        "The guard uses strict greater-than, not greater-than-or-equal."
+      ]
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-03",
+      "name": "speed_below_4mps",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Bind the numeric comparison exactly; bind GPS validity and freshness separately because check_takeoff_timeout does not test them.",
+      "bindings": [
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_GPS/AP_GPS.h","line":197,"column":null,"symbol":"AP_GPS::GPS_State::ground_speed","semantic_identity":"Backend-populated primary GPS ground speed in metres per second.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"float m/s","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"GPS_State is filled by the selected backend; inline accessor is at AP_GPS.h:369-373."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":394,"column":null,"symbol":"ground_speed = AP::gps().ground_speed()","semantic_identity":"Reads the primary GPS ground-speed sample used by the timeout check.","entity_kind":"VARIABLE","function":"Plane::check_takeoff_timeout","role":"READ","type":"const float m/s","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 394-396 bind the GPS value, literal 4 m/s threshold, and comparison."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":396,"column":null,"symbol":"ground_speed >= takeoff_min_ground_speed","semantic_identity":"Clears the timeout epoch at 4 m/s or above; the else path is the source identity for below 4 m/s.","entity_kind":"OTHER","function":"Plane::check_takeoff_timeout","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Threshold is const float 4 at line 395; lines 396-399 clear the timer on reaching it."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-03-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_GPS/AP_GPS.h","line":448,"column":null,"symbol":"AP_GPS::last_message_time_ms","semantic_identity":"Candidate freshness carrier for the primary GPS instance, separate from ground_speed.","entity_kind":"FUNCTION","function":"AP_GPS::last_message_time_ms","role":"OBSERVATION_SITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MAY","evidence":"AP_GPS.h:446-452 exposes last processed GPS-message time; check_takeoff_timeout does not read it."}
+      ],
+      "unresolved": [
+        "Plane::check_takeoff_timeout does not test GPS fix status, health, or last_message_time_ms when reading ground_speed.",
+        "AUTO launch entry checks GPS status >= 3D at takeoff.cpp:58-61, but TAKEOFF-mode start has a different setup path; validity/freshness must be archived independently.",
+        "Exactly 4 m/s is the non-below branch and clears the timer."
+      ]
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-04",
+      "name": "takeoff_aborted",
+      "binding_recommendation": "BOUND_AS_CORRELATED_INTERNAL_EVENT",
+      "observation": "Correlate timeout branch, TAKEOFFTIMEOUT disarm method, immediate timer clear, and the caller-specific mission/stage reset.",
+      "bindings": [
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-04-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":401,"column":null,"symbol":"takeoff timeout branch","semantic_identity":"Elapsed time above runtime TKOFF_TIMEOUT while ground speed remains below 4 m/s.","entity_kind":"EVENT","function":"Plane::check_takeoff_timeout","role":"PRODUCER","type":"bool edge","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 401-405 emit text, disarm with TAKEOFFTIMEOUT, clear the epoch, and return true."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-04-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":402,"column":null,"symbol":"Takeoff timeout STATUSTEXT","semantic_identity":"Human-readable timeout consequence including measured ground speed.","entity_kind":"MESSAGE_PRODUCER","function":"Plane::check_takeoff_timeout","role":"PRODUCER","type":"STATUSTEXT text","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MAY","evidence":"send_text queues a text message; it is not a typed attempt identifier or exact clock carrier."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-04-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/takeoff.cpp","line":403,"column":null,"symbol":"arming.disarm(AP_Arming::Method::TAKEOFFTIMEOUT)","semantic_identity":"Cause-specific disarm request for this timeout event.","entity_kind":"FUNCTION","function":"Plane::check_takeoff_timeout","role":"PRODUCER","type":"AP_Arming::Method::TAKEOFFTIMEOUT","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Method value 27 is declared at AP_Arming.h:80."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-04-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/mode_takeoff.cpp","line":141,"column":null,"symbol":"plane.check_takeoff_timeout()","semantic_identity":"On true, leaves TAKEOFF flight stage and clears takeoff_mode_setup.","entity_kind":"RETURN","function":"ModeTakeoff::update","role":"CONSUMER","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 140-144 consume check_takeoff_timeout()."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-04-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/commands_logic.cpp","line":601,"column":null,"symbol":"AUTO mission takeoff timeout consumer","semantic_identity":"On true, resets the current mission after the timeout event.","entity_kind":"RETURN","function":"Plane::verify_takeoff","role":"CONSUMER","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 600-603 consume the timeout return and call mission.reset()."}
+      ],
+      "unresolved": [
+        "No persistent takeoff_aborted field or attempt ID is stored; start_time_ms is cleared before check_takeoff_timeout returns.",
+        "The response differs by caller: TAKEOFF mode resets flight stage/setup, while AUTO mission resets the mission.",
+        "STATUSTEXT provides no embedded timestamp or correlation key."
+      ]
+    },
+    {
+      "ap_id": "ARD-PLANE-TAKEOFF-001-AP-05",
+      "name": "disarmed",
+      "binding_recommendation": "BOUND_INTERNAL_STATE",
+      "observation": "Use the raw AP_Arming::armed field for the requested false state and retain the Plane override for observable consequences.",
+      "bindings": [
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-05-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_Arming/AP_Arming.cpp","line":1970,"column":null,"symbol":"AP_Arming::armed = false","semantic_identity":"Canonical raw armed-state transition to false after disarm checks pass.","entity_kind":"ASSIGNMENT","function":"AP_Arming::disarm","role":"WRITE","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 1954-1974 reject already-disarmed/invalid rudder requests, then write armed=false and record the method."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-05-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/ArduPlane/AP_Arming_Plane.cpp","line":336,"column":null,"symbol":"AP_Arming::disarm(method, do_disarm_checks)","semantic_identity":"Plane-specific disarm path delegates the raw state transition, then changes throttle/mode-related state.","entity_kind":"FUNCTION","function":"AP_Arming_Plane::disarm","role":"CONSUMER","type":"bool(AP_Arming::Method,bool)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 325-371 implement the Plane override; line 370 emits Throttle disarmed text after success."},
+        {"binding_id":"ARD-PLANE-TAKEOFF-001-AP-05-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_Arming/AP_Arming.cpp","line":308,"column":null,"symbol":"AP_Arming::is_armed","semantic_identity":"Public armed-state accessor used throughout vehicle logic.","entity_kind":"FUNCTION","function":"AP_Arming::is_armed","role":"READ","type":"bool() const","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Line 310 returns raw armed OR arming_required()==Required::NO."}
+      ],
+      "unresolved": [
+        "AP_Arming::is_armed can return true when arming is not required even if the raw armed field is false; choose and document whether the AP means raw state or public effective state.",
+        "Outgoing HEARTBEAT armed bit and STATUSTEXT are observations of consequences, not the raw assignment timestamp."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-01",
+      "name": "low_throttle_start",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Bind mapped throttle PWM and threshold comparison, but derive the rising edge only on a successful read_input cycle to exclude stale-frame timeout.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/radio.cpp","line":11,"column":null,"symbol":"channel_throttle = &rc().get_throttle_channel()","semantic_identity":"Resolves the runtime RCMAP_THROTTLE channel to the Rover throttle input object.","entity_kind":"ASSIGNMENT","function":"Rover::set_control_channels","role":"WRITE","type":"RC_Channel*","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"RC_Channels::get_throttle_channel maps AP::rcmap()->throttle() at RC_Channels.cpp:418-424."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/radio.cpp","line":74,"column":null,"symbol":"radio_failsafe_check(channel_throttle->get_radio_in())","semantic_identity":"Consumes mapped raw PWM after read_input returned true and last_valid_rc_ms was refreshed.","entity_kind":"FUNCTION","function":"Rover::read_radio","role":"CONSUMER","type":"uint16_t PWM","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 66-75 separate unsuccessful and successful input cycles."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/radio.cpp","line":85,"column":null,"symbol":"failed = pwm < g.fs_throttle_value","semantic_identity":"Direct low-throttle comparison against runtime FS_THR_VALUE.","entity_kind":"OTHER","function":"Rover::radio_failsafe_check","role":"DERIVATION","type":"bool over uint16_t/AP_Int16","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Line 85 initializes failed from the low-PWM predicate; lines 86-89 can also force it for stale input."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-01-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/failsafe.cpp","line":55,"column":null,"symbol":"failsafe.bits 0 -> nonzero; failsafe.start_time = millis()","semantic_identity":"Shared failsafe interval epoch when the first active failsafe bit begins.","entity_kind":"EVENT","function":"Rover::failsafe_trigger","role":"PRODUCER","type":"uint8_t bitmask and uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"Lines 49-58 update bits and initialize start_time only when the aggregate mask transitions from zero."}
+      ],
+      "unresolved": [
+        "radio_failsafe_check sets the same failed boolean for low PWM and for no valid input longer than RC_FS_TIMEOUT; low_throttle_start must require the successful read_input path.",
+        "failsafe.start_time is the earliest aggregate failsafe epoch, not necessarily the low-throttle epoch when another bit is already active.",
+        "RC_Channels::read_input treats new MAVLink overrides as input as well as physical receiver input; define whether valid RC frame includes overrides."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-02",
+      "name": "valid_rc_frames",
+      "binding_recommendation": "BOUND_AS_FRESHNESS_DERIVATION",
+      "observation": "Use read_input success and Rover::failsafe.last_valid_rc_ms; the public read path accepts either receiver updates or new overrides.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/RC_Channel/RC_Channels.cpp","line":89,"column":null,"symbol":"RC_Channels::read_input","semantic_identity":"Returns true when new receiver input or new overrides produce at least one channel update.","entity_kind":"FUNCTION","function":"RC_Channels::read_input","role":"CONSUMER","type":"bool()","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 91-100 accept receiver input or has_new_overrides; lines 104-119 update channels and return success."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/radio.cpp","line":72,"column":null,"symbol":"failsafe.last_valid_rc_ms = AP_HAL::millis()","semantic_identity":"Vehicle receipt-clock timestamp of the most recent successful RC input update.","entity_kind":"ASSIGNMENT","function":"Rover::read_radio","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The write occurs only after rc().read_input() returns true."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/radio.cpp","line":86,"column":null,"symbol":"millis() - last_valid_rc_ms > rc().get_fs_timeout_ms()","semantic_identity":"Current-source freshness predicate used to classify RC input as stale.","entity_kind":"OTHER","function":"Rover::radio_failsafe_check","role":"GUARD","type":"bool over uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 86-89 force failed=true after the runtime RC freshness timeout."}
+      ],
+      "unresolved": [
+        "The property phrase valid RC frame is narrower than RC_Channels::read_input if MAVLink overrides are permitted.",
+        "The AP requires a chosen freshness window; source provides RC_FS_TIMEOUT for failsafe staleness but does not store per-frame history."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-03",
+      "name": "throttle_fs_enabled",
+      "binding_recommendation": "BOUND_AS_DERIVED_STATE",
+      "observation": "Combine FS_THR_ENABLE with the current-mode exclusions and FS_OPTIONS/continue-mission branch in failsafe_trigger.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/Parameters.cpp","line":114,"column":null,"symbol":"FS_THR_ENABLE / Parameters::fs_throttle_enabled","semantic_identity":"Runtime throttle-failsafe mode: disabled, enabled, or enabled-continue-mission-in-Auto.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Int8 / enum fs_thr_enable","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:173","macro_expansion_location":"baseline/ardupilot/Rover/Parameters.cpp:114","confidence":"EXACT","evidence":"GSCALAR registers the parameter; enum values are Rover/defines.h:55-60."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/radio.cpp","line":79,"column":null,"symbol":"!g.fs_throttle_enabled","semantic_identity":"Direct disabled guard; clears AP_Notify radio flag and bypasses throttle-failsafe evaluation.","entity_kind":"OTHER","function":"Rover::radio_failsafe_check","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 79-83 return when FS_THR_ENABLE is zero."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/failsafe.cpp","line":70,"column":null,"symbol":"failsafe.triggered == 0 && failsafe.bits != 0","semantic_identity":"Action is delayed by FS_TIMEOUT and suppressed in RTL and normally in Hold.","entity_kind":"OTHER","function":"Rover::failsafe_trigger","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 70-75 require no prior trigger, active bits, elapsed FS_TIMEOUT, non-RTL mode, and Hold option if in Hold."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-03-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/failsafe.cpp","line":81,"column":null,"symbol":"FS_THR_ENABLED_CONTINUE_MISSION Auto exception","semantic_identity":"When in Auto with FS_THR_ENABLE=2, records the failsafe but continues the mission rather than applying FS_ACTION.","entity_kind":"OTHER","function":"Rover::failsafe_trigger","role":"DERIVATION","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 81-86 implement the continue-mission exception."}
+      ],
+      "unresolved": [
+        "Enabled event detection and enabled action execution are distinct: bits can be set while RTL/Hold suppresses action or Auto continuation bypasses FS_ACTION.",
+        "FS_OPTIONS bit 0 can re-enable action while already in Hold."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-04",
+      "name": "configured_failsafe_action",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Bind the triggered bit edge and full FS_ACTION switch, then correlate resulting mode/reason or disarm method with the throttle bit.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-04-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/Parameters.cpp","line":98,"column":null,"symbol":"FS_ACTION / Parameters::fs_action","semantic_identity":"Runtime enum selecting None, RTL, Hold, SmartRTL, Terminate, or Loiter/Hold fallback.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Int8 / Rover::FailsafeAction","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:173","macro_expansion_location":"baseline/ardupilot/Rover/Parameters.cpp:98","confidence":"EXACT","evidence":"GSCALAR registers FS_ACTION; enum is Rover.h:404-412."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-04-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/failsafe.cpp","line":75,"column":null,"symbol":"failsafe.triggered = failsafe.bits","semantic_identity":"Latches all currently active failsafe bits when the shared persistence timeout expires.","entity_kind":"ASSIGNMENT","function":"Rover::failsafe_trigger","role":"WRITE","type":"uint8_t bitmask","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Line 76 also produces a warning STATUSTEXT with the caller type string."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-04-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/failsafe.cpp","line":87,"column":null,"symbol":"switch ((FailsafeAction)g.fs_action.get())","semantic_identity":"Maps runtime FS_ACTION to None, mode transitions with fallbacks, or disarm.","entity_kind":"FUNCTION","function":"Rover::failsafe_trigger","role":"DERIVATION","type":"Rover::FailsafeAction","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 87-116 implement every action and fallback."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-04-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/system.cpp","line":269,"column":null,"symbol":"control_mode = &new_mode","semantic_identity":"Canonical successful Rover mode-result write for RTL/Hold/SmartRTL/Loiter actions.","entity_kind":"ASSIGNMENT","function":"Rover::set_mode","role":"WRITE","type":"Mode*","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"On successful entry, lines 269 and 284 write the mode and ModeReason; line 288 queues HEARTBEAT."},
+        {"binding_id":"ARD-ROVER-RCFS-001-AP-04-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/failsafe.cpp","line":114,"column":null,"symbol":"arming.disarm(AP_Arming::Method::FAILSAFE_ACTION_TERMINATE)","semantic_identity":"Terminate action result with cause-specific disarm method.","entity_kind":"FUNCTION","function":"Rover::failsafe_trigger","role":"PRODUCER","type":"AP_Arming::Method","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"FailsafeAction::Terminate directly requests disarm."}
+      ],
+      "unresolved": [
+        "failsafe.bits and failsafe.triggered aggregate throttle, GCS, and other active causes; an action can be correlated to multiple simultaneous bits.",
+        "FailsafeAction::None has a triggered event without a mode/disarm result; SmartRTL/RTL/Loiter actions can fall back to another mode.",
+        "failsafe.start_time belongs to the earliest active bit, so exact low-throttle correlation requires a per-cause instrumentation key."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-01",
+      "name": "crash_condition_start",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Derive the start edge from crash_counter changing from zero to one after all persistence guards pass; no timestamp or explicit conjunction flag exists.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":11,"column":null,"symbol":"crash_counter","semantic_identity":"Static sample counter for consecutive crash-condition checks.","entity_kind":"VARIABLE","function":"Rover::crash_check","role":"DEFINITION","type":"static uint16_t samples","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The function is scheduled at 10 Hz and resets/increments this counter."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":15,"column":null,"symbol":"armed/enabled/eligible-mode guard","semantic_identity":"Requires armed, FS_CRASH_CHECK nonzero, and autopilot mode unless the vehicle is a balancebot.","entity_kind":"OTHER","function":"Rover::crash_check","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 14-18 reset the counter and return when ineligible."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":28,"column":null,"symbol":"persistence crash conjunction","semantic_identity":"When enabled, continued counting requires low groundspeed, low absolute yaw rate, and absolute demanded throttle at or above their runtime thresholds, subject to zero-threshold disable rules.","entity_kind":"OTHER","function":"Rover::crash_check","role":"DERIVATION","type":"bool over AP_Float and sensor/actuator values","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 28-35 reset on any threshold-negating disjunct."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-01-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":38,"column":null,"symbol":"crash_counter++","semantic_identity":"First increment from zero is the modelled crash_condition_start edge; subsequent increments represent persistence.","entity_kind":"ASSIGNMENT","function":"Rover::crash_check","role":"WRITE","type":"uint16_t samples","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MODELLED","evidence":"No separate edge flag or timestamp is written."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-01-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/Rover.cpp","line":130,"column":null,"symbol":"SCHED_TASK(crash_check, 10, ...)","semantic_identity":"Nominal 10-Hz sampling schedule used to convert CRASH_TIMEOUT seconds to counter ticks.","entity_kind":"FUNCTION","function":"Rover::scheduler_tasks","role":"DERIVATION","type":"10 Hz scheduled callback","macro_spelling_location":"baseline/ardupilot/Rover/Rover.cpp:130","macro_expansion_location":"baseline/ardupilot/Rover/Rover.cpp:130","confidence":"EXACT","evidence":"crash_check compares crash_counter with crash_timeout * 10 at crash_check.cpp:41."}
+      ],
+      "unresolved": [
+        "No explicit crash_condition_start timestamp exists; deriving time from a nominal 10-Hz schedule does not record scheduler jitter.",
+        "Threshold value zero disables its associated check, so the full conjunction is only the active identity when CRASH_THR_MIN, CRASH_TIMEOUT, CRASH_VEL_MIN, and CRASH_TRAT_MIN are configured consistently.",
+        "The source uses fabsf(motors.get_throttle()), so reverse demanded throttle also contributes by magnitude."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-02",
+      "name": "crash_check_enabled",
+      "binding_recommendation": "BOUND_AS_DERIVED_STATE",
+      "observation": "Combine FS_CRASH_CHECK in {1,2}, eligible mode/armed state, positive persistence thresholds, and isolation of the independent crash-angle path.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/Parameters.cpp","line":136,"column":null,"symbol":"FS_CRASH_CHECK / Parameters::fs_crash_check","semantic_identity":"Runtime action enum: disabled, Hold, or HoldAndDisarm.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Int8 / enum fs_crash_action","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:173","macro_expansion_location":"baseline/ardupilot/Rover/Parameters.cpp:136","confidence":"EXACT","evidence":"Enum values are Rover/defines.h:69-73."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/Parameters.cpp","line":454,"column":null,"symbol":"CRASH_ANGLE / ParametersG2::crash_angle","semantic_identity":"Independent roll/pitch crash threshold; zero disables this path.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Int8 degrees","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:152","macro_expansion_location":"baseline/ardupilot/Rover/Parameters.cpp:454","confidence":"EXACT","evidence":"Metadata and macro define the angle threshold."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":21,"column":null,"symbol":"crash-angle path","semantic_identity":"Sets crashed immediately when nonzero CRASH_ANGLE is exceeded, independently of persistence completion.","entity_kind":"OTHER","function":"Rover::crash_check","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 20-23 compare pitch and roll and set crashed=true."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-02-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":28,"column":null,"symbol":"crash_thr_min > 0 && crash_timeout > 0","semantic_identity":"Enables the persistence counter path; velocity and turn-rate subchecks are individually enabled by positive thresholds.","entity_kind":"OTHER","function":"Rover::crash_check","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 28-44 contain the persistence path."}
+      ],
+      "unresolved": [
+        "CRASH_ANGLE=0 is the clean source-level isolation for the persistence path; otherwise an angle event can cause the same action before the counter timeout.",
+        "Balancebot bypasses the ordinary autopilot-mode eligibility rule and has a different action path."
+      ]
+    },
+    {
+      "ap_id": "ARD-ROVER-CRASH-002-AP-03",
+      "name": "crash_action",
+      "binding_recommendation": "BOUND_WITH_VARIANTS",
+      "observation": "Bind ordinary Rover to Hold with CRASH_FAILSAFE reason and optional CRASH-method disarm; retain balancebot as an explicit alternate variant.",
+      "bindings": [
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":46,"column":null,"symbol":"crashed action branch","semantic_identity":"Common action producer after angle or persistence crash detection.","entity_kind":"EVENT","function":"Rover::crash_check","role":"PRODUCER","type":"bool crashed","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 46-63 log and select balancebot or ordinary Rover action."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":58,"column":null,"symbol":"set_mode(mode_hold, ModeReason::CRASH_FAILSAFE)","semantic_identity":"Ordinary Rover requests Hold with a cause-specific mode reason.","entity_kind":"FUNCTION","function":"Rover::crash_check","role":"PRODUCER","type":"bool mode transition request","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Line 56 also produces Crash: Going to HOLD STATUSTEXT."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":59,"column":null,"symbol":"FS_CRASH_HOLD_AND_DISARM branch","semantic_identity":"When FS_CRASH_CHECK=2, requests disarm with AP_Arming::Method::CRASH after Hold request.","entity_kind":"FUNCTION","function":"Rover::crash_check","role":"PRODUCER","type":"AP_Arming::Method::CRASH","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 59-60 implement the optional disarm."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-03-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/system.cpp","line":284,"column":null,"symbol":"control_mode_reason = reason","semantic_identity":"Successful Hold transition records CRASH_FAILSAFE as the canonical cause and logs/sends mode state.","entity_kind":"ASSIGNMENT","function":"Rover::set_mode","role":"WRITE","type":"ModeReason","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Rover::is_crashed reads this reason at crash_check.cpp:69-72."},
+        {"binding_id":"ARD-ROVER-CRASH-002-AP-03-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/Rover/crash_check.cpp","line":50,"column":null,"symbol":"balancebot crash action","semantic_identity":"Balancebot variant emits Crash: Disarming and disarms directly without entering Hold.","entity_kind":"EVENT","function":"Rover::crash_check","role":"PRODUCER","type":"AP_Arming::Method::CRASH","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 50-54 are the explicit alternate branch."}
+      ],
+      "unresolved": [
+        "The ordinary Hold set_mode return value is ignored; source action request, successful mode result, and optional disarm should be observed separately.",
+        "Balancebot does not implement the Hold part of this AP and must be excluded or represented as a separate variant.",
+        "STATUSTEXT has no embedded time and is not a reliable exact event carrier."
+      ]
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-01",
+      "name": "low_voltage_start",
+      "binding_recommendation": "BOUND_INTERNAL_EDGE",
+      "observation": "Bind per-instance selected voltage, threshold predicate, and low_voltage_start_ms zero-to-now assignment; preserve raw versus sag-compensated source selection.",
+      "bindings": [
+        {"binding_id":"ARD-SHARED-BATT-001-AP-01-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":243,"column":null,"symbol":"failsafe_voltage_source switch","semantic_identity":"Per-instance selection of raw state.voltage or sag-compensated voltage_resting_estimate.","entity_kind":"FUNCTION","function":"AP_BattMonitor_Backend::check_failsafe_types","role":"DERIVATION","type":"float voltage_used","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 243-250 select the voltage source from BATTx_FS_VOLTSRC."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-01-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":268,"column":null,"symbol":"low_voltage predicate","semantic_identity":"Per-instance predicate voltage_used > 0, LOW_VOLT > 0, and voltage_used < LOW_VOLT.","entity_kind":"OTHER","function":"AP_BattMonitor_Backend::check_failsafe_types","role":"GUARD","type":"bool","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 268-272 set low_voltage true or false."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-01-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.h","line":120,"column":null,"symbol":"BattMonitor_State::low_voltage_start_ms","semantic_identity":"Per-backend low-voltage persistence start epoch in autopilot boot milliseconds.","entity_kind":"FIELD","function":null,"role":"DEFINITION","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"BattMonitor_State also stores instance at line 140 and failsafe level at line 130."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-01-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":177,"column":null,"symbol":"_state.low_voltage_start_ms = now","semantic_identity":"Canonical low_voltage_start edge when the predicate is true and the per-instance timer is unset.","entity_kind":"ASSIGNMENT","function":"AP_BattMonitor_Backend::update_failsafes","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 175-181 start the timer or return Low after persistence."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-01-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":185,"column":null,"symbol":"_state.low_voltage_start_ms = 0","semantic_identity":"Cancels/resets the low-voltage interval when the predicate becomes false.","entity_kind":"ASSIGNMENT","function":"AP_BattMonitor_Backend::update_failsafes","role":"WRITE","type":"uint32_t milliseconds","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The reset is in the else branch for low_voltage=false."}
+      ],
+      "unresolved": [
+        "FS_VOLTSRC=1 selects voltage_resting_estimate, while standard BATTERY_STATUS voltage reporting is controlled by a different GCS_Resting_Voltage option; wire voltage may not equal the predicate operand.",
+        "The timer uses zero as unset and a strict greater-than persistence comparison.",
+        "Each backend instance has an independent timer and instance index; correlation must not use an aggregate battery flag."
+      ]
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-02",
+      "name": "voltage_threshold_enabled",
+      "binding_recommendation": "BOUND_PARAMETER_COMPARISON",
+      "observation": "Bind per-instance AP_Float _low_voltage and its positive-value guard.",
+      "bindings": [
+        {"binding_id":"ARD-SHARED-BATT-001-AP-02-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp","line":117,"column":null,"symbol":"BATTx_LOW_VOLT / AP_BattMonitor_Params::_low_voltage","semantic_identity":"Per-instance low-voltage threshold in volts; zero disables.","entity_kind":"PARAMETER","function":null,"role":"DEFINITION","type":"AP_Float volts","macro_spelling_location":"baseline/ardupilot/libraries/AP_Param/AP_Param.h:152","macro_expansion_location":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Params.cpp:117","confidence":"EXACT","evidence":"AP_GROUPINFO registers LOW_VOLT inside each monitor parameter subgroup; field is Params.h:72."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-02-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":268,"column":null,"symbol":"_params._low_voltage > 0","semantic_identity":"Direct runtime threshold-enable comparison for this backend instance.","entity_kind":"OTHER","function":"AP_BattMonitor_Backend::check_failsafe_types","role":"GUARD","type":"bool over AP_Float","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"The threshold must be positive along with a positive selected voltage."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-02-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp","line":904,"column":null,"symbol":"for each battery instance","semantic_identity":"Frontend preserves the per-instance parameter/backend identity when checking failsafes.","entity_kind":"FUNCTION","function":"AP_BattMonitor::check_failsafes","role":"DERIVATION","type":"uint8_t instance index","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 904-909 iterate drivers and invoke the matching backend."}
+      ],
+      "unresolved": [
+        "Parameter spelling is BATT_LOW_VOLT for instance 1 and BATT2_LOW_VOLT, BATT3_LOW_VOLT, and so on for later subgroups; bind runtime PARAM_VALUE by both instance and param_id.",
+        "LOW_TIMER=0 independently disables voltage-error return even when LOW_VOLT is positive; this AP intentionally covers only threshold enablement."
+      ]
+    },
+    {
+      "ap_id": "ARD-SHARED-BATT-001-AP-03",
+      "name": "battery_failsafe_event",
+      "binding_recommendation": "PARTIALLY_BOUND",
+      "observation": "Bind per-instance backend Failsafe return, frontend severity transition, typed state write, text producer, callback, and BATTERY_STATUS charge-state observation.",
+      "bindings": [
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B01","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":179,"column":null,"symbol":"return AP_BattMonitor::Failsafe::Low","semantic_identity":"Per-instance Low severity producer after low voltage persists longer than LOW_TIMER.","entity_kind":"RETURN","function":"AP_BattMonitor_Backend::update_failsafes","role":"PRODUCER","type":"AP_BattMonitor::Failsafe","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 179-181 use strict greater-than and positive LOW_TIMER."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B02","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor_Backend.cpp","line":162,"column":null,"symbol":"return AP_BattMonitor::Failsafe::Critical","semantic_identity":"Per-instance Critical severity producer after critical voltage persists longer than the same LOW_TIMER.","entity_kind":"RETURN","function":"AP_BattMonitor_Backend::update_failsafes","role":"PRODUCER","type":"AP_BattMonitor::Failsafe","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 158-164 maintain the independent critical-voltage timer."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B03","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp","line":909,"column":null,"symbol":"drivers[i]->update_failsafes()","semantic_identity":"Frontend consumes the per-instance backend severity and ignores non-increasing severity.","entity_kind":"FUNCTION","function":"AP_BattMonitor::check_failsafes","role":"CONSUMER","type":"AP_BattMonitor::Failsafe","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 909-912 compare the returned enum to state[i].failsafe."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B04","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp","line":934,"column":null,"symbol":"Battery instance/severity STATUSTEXT","semantic_identity":"Produces a warning text with one-based battery number, low/critical label, voltage, and used capacity.","entity_kind":"MESSAGE_PRODUCER","function":"AP_BattMonitor::check_failsafes","role":"PRODUCER","type":"STATUSTEXT text","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MAY","evidence":"Lines 934-935 include instance and severity but no embedded event timestamp or cause subtype."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B05","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp","line":940,"column":null,"symbol":"state[i].failsafe = type","semantic_identity":"Canonical per-instance monotonic severity-state write, with _has_triggered_failsafe and AP_Notify aggregate mirrors.","entity_kind":"ASSIGNMENT","function":"AP_BattMonitor::check_failsafes","role":"WRITE","type":"AP_BattMonitor::Failsafe : uint8_t","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 936-940 set aggregate flags and the typed per-instance state."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B06","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/AP_BattMonitor/AP_BattMonitor.cpp","line":957,"column":null,"symbol":"_battery_failsafe_handler_fn(type_str, action)","semantic_identity":"Vehicle callback producer for the selected low/critical action when its priority is high enough.","entity_kind":"CALLBACK","function":"AP_BattMonitor::check_failsafes","role":"PRODUCER","type":"void(const char*, int8_t)","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"EXACT","evidence":"Lines 942-958 map action priority and invoke the bound vehicle handler."},
+        {"binding_id":"ARD-SHARED-BATT-001-AP-03-B07","commit":"8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e","file":"baseline/ardupilot/libraries/GCS_MAVLink/GCS_Common.cpp","line":419,"column":null,"symbol":"BATTERY_STATUS.charge_state producer","semantic_identity":"Outgoing per-instance charge_state derived from state[i].failsafe; Low and Critical map to corresponding MAV_BATTERY_CHARGE_STATE values.","entity_kind":"MESSAGE_PRODUCER","function":"GCS_MAVLINK::send_battery_status","role":"OBSERVATION_SITE","type":"MAV_BATTERY_CHARGE_STATE","macro_spelling_location":null,"macro_expansion_location":null,"confidence":"MAY","evidence":"AP_BattMonitor.cpp:1169-1182 maps the enum; GCS_Common.cpp:408-422 sends BATTERY_STATUS with instance id."}
+      ],
+      "unresolved": [
+        "Failsafe::Low can also be returned by low-capacity logic at AP_BattMonitor_Backend.cpp:188-189, and Critical can also come from critical capacity at lines 171-173; the stored severity enum does not retain voltage-versus-capacity cause.",
+        "check_failsafes runs only while soft armed at AP_BattMonitor.cpp:903; backend timers are updated through this path.",
+        "state[i].failsafe is monotonic until an explicit reset_remaining path; define event as an increasing per-instance severity edge, not a continuously true level.",
+        "BATTERY_STATUS charge_state exposes per-instance severity conditionally but not the exact event time or voltage/capacity cause."
+      ]
+    }
+  ],
+  "audit_unresolved": [
+    "Bindings identify current-source semantics and observation sites only; no runtime capture, monitor verdict, or conformance decision was performed.",
+    "Macro expansion coordinates are represented by the call site when the binding is a parameter-registration macro; detailed compiler source-manager spelling columns were not extracted.",
+    "Headers provide canonical type declarations but do not have standalone compile_commands entries; all selected translation units containing executable bindings are covered."
+  ],
+  "verification": {
+    "json_parse": "PASS: python3 -m json.tool",
+    "ap_catalog_bijection": "PASS: 25/25 exact AP IDs and names",
+    "binding_schema_shape": "PASS: 107 unique bindings; all 15 required fields, enum values, and commit pins validated",
+    "paths_lines_symbols": "PASS: 28 source files; 107/107 paths and line bounds valid; 107/107 symbols have an identifier anchor within +/-8 lines",
+    "compile_database_coverage": "PASS: SHA-256, 1543-entry count, zero normalized duplicates, target-family counts, and 21 selected translation-unit entry/command hashes reproduced",
+    "firmware_head": "PASS: 8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "worktree_status": "PASS: incremental build introduced no tracked source change; only pre-existing ' m modules/CrashDebug' remains"
+  }
+}

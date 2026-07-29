@@ -1,0 +1,71 @@
+{
+  "artifact_id": "artifact.property.case_004",
+  "atomic_propositions": [
+    {
+      "ap_id": "ap_primary",
+      "description": "public source declaration: ap_primary = (v_8609a18b != 0)",
+      "predicate": {
+        "node_kind": "comparison",
+        "operands": [],
+        "operator": "!=",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "roles": [
+        "guard"
+      ],
+      "selector_refs": [
+        "sel.case_004.ap_primary.location",
+        "sel.case_004.ap_primary.expression"
+      ],
+      "value_type": {
+        "bit_width": 32,
+        "canonical": "int",
+        "kind": "integer",
+        "signed": true
+      }
+    }
+  ],
+  "formula": {
+    "ap_ref": "ap_primary",
+    "node_id": "formula.case_004.ap_primary",
+    "operands": [],
+    "operator": "atom"
+  },
+  "formula_text": "ap_primary := ((v_8609a18b != 0))",
+  "logic": "MITL",
+  "property_id": "property.case_004",
+  "schema_version": "1.0.0",
+  "selectors": [
+    {
+      "kind": "source_location",
+      "location": {
+        "column": 17,
+        "file": "sources/case_004.cpp",
+        "line": 30,
+        "location_kind": "spelling"
+      },
+      "selector_id": "sel.case_004.ap_primary.location"
+    },
+    {
+      "expression_structure": {
+        "node_kind": "comparison",
+        "operands": [],
+        "operator": "!=",
+        "value_type": {
+          "bit_width": 32,
+          "canonical": "int",
+          "kind": "integer",
+          "signed": true
+        }
+      },
+      "kind": "expression_structure",
+      "selector_id": "sel.case_004.ap_primary.expression"
+    }
+  ],
+  "time_domain": "dense"
+}

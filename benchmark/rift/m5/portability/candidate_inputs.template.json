@@ -1,0 +1,74 @@
+{
+  "schema_version": "rift.portability-matrix-input/1.0.0",
+  "seal_intent": "CANDIDATE_TEMPLATE_NOT_EVIDENCE",
+  "contract_path": "../../portability_contract.json",
+  "core_root_path": "../../../../src/StaticAnalysis",
+  "schema_root_path": "../../../../src/StaticAnalysis/schema",
+  "analyzer_binary_path": "/tmp/tafuzz-sa-m5-schema3-75cc7f4d74d8507dacd4e2919393406d15e867d8422efec2519c89a344327f0a",
+  "build_manifest_path": "/tmp/tafuzz-sa-m5-final-clang18-v2/generated/rift_build_manifest.json",
+  "verifier_path": "../../../../src/StaticAnalysis/tests/verify_m5_certificate.py",
+  "python_interpreter_path": "/usr/bin/python3",
+  "toolchain_component_paths": [],
+  "projects": [
+    {
+      "project_id": "libcoap",
+      "repository_id": "https://github.com/obgm/libcoap",
+      "repository_root_path": "../../../coap/libcoap",
+      "result_root_path": "/tmp/rift-m5-libcoap-final-75cc.LxN8Jx/result",
+      "detached_report_path": "${FINAL_LIBCOAP_DETACHED_REPORT}",
+      "full_compile_database_path": "/tmp/tafuzz-rift-libcoap-fixed/compile_commands.json",
+      "analysis_scope": "FULL_COMPILE_DB",
+      "selection_reason": "All 38 frozen libcoap translation units are analyzed.",
+      "analysis_time_receipt_path": "/tmp/rift-m5-libcoap-final-75cc.LxN8Jx/recipes.time",
+      "detached_time_receipt_path": "${FINAL_LIBCOAP_DETACHED_GNU_TIME}",
+      "adaptation_effort": {
+        "setup_minutes": 0,
+        "property_binding_minutes": 0,
+        "adapter_authoring_minutes": 0,
+        "model_validation_minutes": 0,
+        "notes": "Replace zero placeholders with the measured human effort before a final seal."
+      },
+      "additional_core_forbidden_literals": ["coap_tx_01"]
+    },
+    {
+      "project_id": "svf-3.2",
+      "repository_id": "https://github.com/SVF-tools/SVF.git",
+      "repository_root_path": "../../../rift/external/svf",
+      "result_root_path": "/tmp/rift-m5-svf-final-75cc.SzL7NL/result",
+      "detached_report_path": "${FINAL_SVF_DETACHED_REPORT}",
+      "full_compile_database_path": "../../../rift/reproduction/svf/build/compile_commands.json",
+      "analysis_scope": "SELECTED_REAL_TU",
+      "selection_reason": "The exact real AE translation unit is selected from the 111-entry full SVF compile database.",
+      "analysis_time_receipt_path": "/tmp/rift-m5-svf-final-75cc.SzL7NL/recipes.time",
+      "detached_time_receipt_path": "${FINAL_SVF_DETACHED_GNU_TIME}",
+      "adaptation_effort": {
+        "setup_minutes": 0,
+        "property_binding_minutes": 0,
+        "adapter_authoring_minutes": 0,
+        "model_validation_minutes": 0,
+        "notes": "Replace zero placeholders with the measured human effort before a final seal."
+      },
+      "additional_core_forbidden_literals": ["property.svf.ae.portability_probe"]
+    },
+    {
+      "project_id": "ltl-fuzzer",
+      "repository_id": "https://github.com/ltlfuzzer/LTL-Fuzzer.git",
+      "repository_root_path": "../../../rift/external/ltl_fuzzer",
+      "result_root_path": "/tmp/rift-m5-ltl-schema3-full-fixed.I4A0YL/result",
+      "detached_report_path": "/tmp/rift-m5-ltl-schema3-full-fixed.I4A0YL/certificate_verification.json",
+      "full_compile_database_path": "/tmp/rift-m5-ltl-fuzzer-clang18/compile_commands.json",
+      "analysis_scope": "FULL_COMPILE_DB",
+      "selection_reason": "All 13 frozen LTL-Fuzzer translation units are analyzed.",
+      "analysis_time_receipt_path": "${FINAL_LTL_ANALYSIS_GNU_TIME}",
+      "detached_time_receipt_path": "${FINAL_LTL_DETACHED_GNU_TIME}",
+      "adaptation_effort": {
+        "setup_minutes": 0,
+        "property_binding_minutes": 0,
+        "adapter_authoring_minutes": 0,
+        "model_validation_minutes": 0,
+        "notes": "Replace zero placeholders with the measured human effort before a final seal."
+      },
+      "additional_core_forbidden_literals": ["property.ltl-fuzzer.main.argc-guard.portability-probe"]
+    }
+  ]
+}

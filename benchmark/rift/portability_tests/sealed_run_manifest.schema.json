@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schema/rift-sealed-portability-run-v3.json",
+  "title": "RIFT sealed portability run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "manifest_kind", "run_id", "project", "execution",
+    "artifacts", "toolchain", "embedded_identities"
+  ],
+  "properties": {
+    "schema_version": {"const": "3.0.0"},
+    "manifest_kind": {"const": "rift.sealed-portability-run"},
+    "run_id": {"type": "string", "minLength": 1},
+    "project": {
+      "type": "object",
+      "required": [
+        "project_id", "repository_id", "source_revision", "source_snapshot",
+        "source_repository_manifest", "typed_property_ir", "compile_database",
+        "model_pack", "setup_minutes", "unsupported_constructs"
+      ]
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "exit_code", "analysis_status", "wall_seconds", "peak_rss_bytes",
+        "analyzer_binary", "build_manifest", "schema_bundle", "core_before",
+        "core_after"
+      ],
+      "properties": {
+        "exit_code": {"const": 0},
+        "analysis_status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE"]}
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "required": [
+        "semantic_index", "ap_bindings", "contextual_influence_graph",
+        "ap_influence_cones", "analysis_certificate", "source_input_manifest"
+      ]
+    },
+    "toolchain": {
+      "type": "object",
+      "required": ["semantic_configuration", "components", "semantics_sha256"]
+    },
+    "embedded_identities": {
+      "type": "object",
+      "required": [
+        "analyzer_binary_sha256", "build_manifest_sha256", "core_tree_sha256",
+        "schema_bundle_sha256", "toolchain_semantics_sha256"
+      ]
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 17,
+        "file": "cases/040_alias_object_field_negative_v9.cpp",
+        "line": 31
+      },
+      "token": "ap_primary"
+    },
+    "node_alias": {
+      "kind": "NODE",
+      "location": {
+        "column": 35,
+        "file": "cases/040_alias_object_field_negative_v9.cpp",
+        "line": 26
+      },
+      "token": "node_alias"
+    },
+    "node_field": {
+      "kind": "NODE",
+      "location": {
+        "column": 17,
+        "file": "cases/040_alias_object_field_negative_v9.cpp",
+        "line": 29
+      },
+      "token": "node_field"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 17,
+        "file": "cases/040_alias_object_field_negative_v9.cpp",
+        "line": 22
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "first.observed != 0",
+      "id": "ap_primary",
+      "location": {
+        "column": 17,
+        "file": "cases/040_alias_object_field_negative_v9.cpp",
+        "line": 31
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-040",
+  "case_relation": "NO_INFLUENCE",
+  "category": "alias_object_field",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "Named objects and fields make the alias oracle exact: positive variants share the AP object/field; negative variants differ in both object and field.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "alias_object_field",
+    "variant": 9
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The source writes a different field of a different object than the field read by the AP.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/040_alias_object_field_negative_v9.cpp",
+  "source_sha256": "94dd7cbe3f8ba25a2880ff5f4eb6168fbb65da04eedb42db35814d5cca6ed28b",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 17,
+        "file": "cases/040_alias_object_field_negative_v9.cpp",
+        "line": 22
+      },
+      "scope": "OBJECT",
+      "symbol": "source_primary"
+    }
+  ]
+}

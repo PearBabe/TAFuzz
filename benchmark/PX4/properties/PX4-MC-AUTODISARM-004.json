@@ -1,0 +1,1054 @@
+{
+  "schema_version": "1.0",
+  "property_id": "PX4-MC-AUTODISARM-004",
+  "title_zh": "PX4 落地后自动 disarm",
+  "title_en": "PX4 automatic disarm after landing",
+  "system_scope": {
+    "system": "PX4",
+    "vehicles": [
+      "multicopter SITL"
+    ],
+    "firmware_release": "v1.17.0",
+    "firmware_commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "PX4 multicopter SITL；vehicle airborne 后落地；mission/override configuration 已归档。"
+  },
+  "status": "NEEDS_CONTEXT",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "PX4-MC-AUTODISARM-004-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Arming/Disarming",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/advanced_config/prearm_arm_disarm.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "23e06ca80b9a01629ac9b28bc240575ea13eb98c1cab9bdf9fd8df939f351c27",
+      "locator": {
+        "page": null,
+        "section": "Auto-Disarming",
+        "anchor": null,
+        "line_start": 86,
+        "line_end": 94,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+      "context_summary_zh": "定义落地后自动 disarm 的时间参数和文档禁用值。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-AUTODISARM-004-S2",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "PX4 Multicopter Land Mode",
+      "version": "v1.17.0",
+      "path_or_url": "baseline/px4/docs/en/flight_modes_mc/land.md",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "16fcdf6dbeb3ea286ae61d5f0642687f965343d8f75120ca4501870e19708d87",
+      "locator": {
+        "page": null,
+        "section": "Landing Sequence",
+        "anchor": null,
+        "line_start": 23,
+        "line_end": 37,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "## Technical Summary\n\nThe vehicle will land at the location at which the mode was engaged.\nThe vehicle descends at the rate specified in [MPC_LAND_SPEED](#MPC_LAND_SPEED) and will disarm after landing (by [default](#COM_DISARM_LAND)).\n\nRC stick movement will change the vehicle to [Position mode](../flight_modes_mc/position.md) (by [default](#COM_RC_OVERRIDE)).\n\n### Parameters\n\nLand mode behaviour can be configured using the parameters below.\n\n| Parameter                                                                                                | Description                                                                                                                                                                                                                                                  |\n| -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| <a id=\"MPC_LAND_SPEED\"></a>[MPC_LAND_SPEED](../advanced_config/parameter_reference.md#MPC_LAND_SPEED)    | The rate of descent during landing. This should be kept fairly low as the ground conditions are not known.                                                                                                                                                   |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND) | Time-out for auto disarm after landing, in seconds. If set to -1 the vehicle will not disarm on landing.                                                                                                                                                     |",
+      "context_summary_zh": "说明 landed 状态和 COM_DISARM_LAND 触发自动 disarm。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    },
+    {
+      "source_id": "PX4-MC-AUTODISARM-004-S3",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "PX4 COM_DISARM_LAND metadata",
+      "version": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "path_or_url": "baseline/px4/src/modules/commander/commander_params.c",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "4e83db4e821aac5fb5ad96aa7755bac8dffac0714581d0895688198c8e41902a",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 215,
+        "line_end": 227,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "*\n * A non-zero, positive value specifies the time-out period in seconds after which the vehicle will be\n * automatically disarmed in case a landing situation has been detected during this period.\n *\n * A zero or negative value means that automatic disarming triggered by landing detection is disabled.\n *\n * @group Commander\n * @unit s\n * @decimal 1\n * @increment 0.1\n */\n\nPARAM_DEFINE_FLOAT(COM_DISARM_LAND, 2.0f);",
+      "context_summary_zh": "参数元数据将零或负值均列为禁用，与文档 -1 表述不同。",
+      "language": "en",
+      "document_status": "RELEASE_PINNED"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "PX4-MC-AUTODISARM-004-S1",
+      "PX4-MC-AUTODISARM-004-S2",
+      "PX4-MC-AUTODISARM-004-S3"
+    ],
+    "edges": [
+      {
+        "from": "PX4-MC-AUTODISARM-004-S1",
+        "relation": "refers_to",
+        "to": "PX4-MC-AUTODISARM-004-S2",
+        "evidence_source_id": "PX4-MC-AUTODISARM-004-S2",
+        "confidence": "REVIEWED"
+      },
+      {
+        "from": "PX4-MC-AUTODISARM-004-S1",
+        "relation": "parameterizes",
+        "to": "PX4-MC-AUTODISARM-004-S3",
+        "evidence_source_id": "PX4-MC-AUTODISARM-004-S3",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "规范前提不完整；不能从 Commander guard 反向补齐。",
+      "disable domain 冲突。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "PX4 Commander auto-disarm",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-AUTODISARM-004-S1",
+          "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "armed vehicle 的 landed 状态开始连续成立。",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-AUTODISARM-004-S1",
+          "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "运行时 COM_DISARM_LAND 启用。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "只使用官方来源确认的 eligibility/exception；实现 guard 不反推为规范。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "连续 landed 达 COM_DISARM_LAND 后自动 disarm。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在时间结束前不得仅由 landing timer 自动 disarm。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "mission/config overrides 和 throw-launch 等例外尚需官方上下文。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "文档 -1 与参数元数据 <=0 的禁用域冲突。",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "landed transition while armed",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-AUTODISARM-004-S1",
+          "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "landed false、disarm、eligibility cancel 或 run 结束",
+      "evidence": [
+        {
+          "source_id": "PX4-MC-AUTODISARM-004-S1",
+          "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "landed",
+        "relation": "TRIGGERS",
+        "right": "auto_disarm_timer",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "landed_false",
+        "relation": "RESETS",
+        "right": "auto_disarm_timer",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "规范前提不完整；不能从 Commander guard 反向补齐。",
+      "disable domain 冲突。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_disarm_land",
+      "semantic_start_event": "landed_interval_start",
+      "semantic_end_event": "automatic_disarm",
+      "cancel_event": "eligibility_cancel_or_run_end",
+      "reset_event": "landed_false",
+      "raw_expression": "runtime(COM_DISARM_LAND)",
+      "lower": "runtime(COM_DISARM_LAND)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "PX4-MC-AUTODISARM-004-S3",
+      "source_span": {
+        "source_id": "PX4-MC-AUTODISARM-004-S3",
+        "quote": "*\n * A non-zero, positive value specifies the time-out period in seconds after which the vehicle will be\n * automatically disarmed in case a landing situation has been detected during this period.\n *\n * A zero or negative value means that automatic disarming triggered by landing detection is disabled.\n *\n * @group Commander\n * @unit s\n * @decimal 1\n * @increment 0.1\n */\n\nPARAM_DEFINE_FLOAT(COM_DISARM_LAND, 2.0f);",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "COM_DISARM_LAND",
+      "formula": "T_disarm_land = runtime(COM_DISARM_LAND)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 2.0,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/PX4-MC-AUTODISARM-004"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 2.0,
+          "unit": "s",
+          "source_id": "PX4-MC-AUTODISARM-004-S3"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "PX4 HRT land-detector/commander events",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((landed_start & auto_disarm_eligible) -> (G_[0,T_disarm_land) armed & F_[T_disarm_land,infty) disarmed))",
+    "concrete": null,
+    "concrete_instances": [
+      {
+        "profile": "PX4/multicopter — px4_sitl_default sihsim_quadx internal headless SIH instance 42",
+        "capture_id": "PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+        "parameter_id": "COM_DISARM_LAND",
+        "raw_value": 2.0,
+        "raw_unit": "s",
+        "normalized_value": 2.0,
+        "formula_time_unit": "s",
+        "conversion": "identity: 2 s = 2 s",
+        "formula": "G((landed_start & auto_disarm_eligible) -> (G_[0,2) armed & F_[2,infty) disarmed))",
+        "status": "NEEDS_CONTEXT",
+        "source_path": "benchmark/extraction_runs/milestone6/PX4/parameters_runtime.json",
+        "source_sha256": "42d4fae5d576488a3584526c725330411f03dc438df24db7ab7ad7bdeb61af44",
+        "source_param_index": 256,
+        "source_param_count": 900,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "数值代换可复现，但例外/eligibility/phase 上下文尚未闭合；不能进入监视器门禁。"
+      }
+    ],
+    "monitor_syntax": null,
+    "monitor_contract": null,
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((landed_start & auto_disarm_eligible) -> (G_[0,T_disarm_land) armed & F_[T_disarm_land,infty) disarmed))",
+        "evidence": [
+          {
+            "source_id": "PX4-MC-AUTODISARM-004-S1",
+            "quote": "## Auto-Disarming\n\nBy default vehicles will automatically disarm on landing, or if you take too long to take off after arming.\nThe feature is configured using the following timeouts.\n\n| Parameter                                                                                                   | Description                                                                     |\n| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |\n| <a id=\"COM_DISARM_LAND\"></a>[COM_DISARM_LAND](../advanced_config/parameter_reference.md#COM_DISARM_LAND)    | Time-out for auto disarm after landing. Default: 2s (-1 to disable).            |\n| <a id=\"COM_DISARM_PRFLT\"></a>[COM_DISARM_PRFLT](../advanced_config/parameter_reference.md#COM_DISARM_PRFLT) | Time-out for auto disarm if too slow to takeoff. Default: 10s (<=0 to disable). |",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "NEEDS_CONTEXT"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-01",
+      "name": "landed_start",
+      "controlled_natural_language": "land detector 进入 landed。",
+      "truth_condition": "vehicle landed 从 false 变 true。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-01-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleLandDetected.msg",
+          "line": 8,
+          "column": 1,
+          "symbol": "landed",
+          "semantic_identity": "Vehicle landed state whose false-to-true transition defines the AP.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The message defines the final land-detector stage state. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleLandDetected.msg#L8"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-01-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/land_detector/LandDetector.cpp",
+          "line": 148,
+          "column": 2,
+          "symbol": "landDetected",
+          "semantic_identity": "Hysteresis-qualified landed-state derivation.",
+          "entity_kind": "VARIABLE",
+          "function": "LandDetector::Run",
+          "role": "DERIVATION",
+          "type": "const bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The value is read from the landed hysteresis state. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/land_detector/LandDetector.cpp#L148"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-01-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/land_detector/LandDetector.cpp",
+          "line": 169,
+          "column": 3,
+          "symbol": "_land_detected.landed",
+          "semantic_identity": "Assignment of the qualified state to vehicle_land_detected.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "LandDetector::Run",
+          "role": "WRITE",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The state change is committed here before publication. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/land_detector/LandDetector.cpp#L169"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-01-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/land_detector/LandDetector.cpp",
+          "line": 182,
+          "column": 3,
+          "symbol": "_vehicle_land_detected_pub.publish",
+          "semantic_identity": "uORB producer for landed state with a vehicle timestamp.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "LandDetector::Run",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<vehicle_land_detected_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Internal instrumentation can observe the exact state transition. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/land_detector/LandDetector.cpp#L182"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-01-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2134,
+          "column": 5,
+          "symbol": "commander_landing_detected",
+          "semantic_identity": "Named Commander event emitted on armed false-to-true landed transition.",
+          "entity_kind": "EVENT",
+          "function": "Commander::landDetectorUpdate",
+          "role": "PRODUCER",
+          "type": "events::ID",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Commander compares the prior and current landed states before sending this event. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2134"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-01-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp",
+          "line": 101,
+          "column": 4,
+          "symbol": "land_detected.landed",
+          "semantic_identity": "Wire projection mapping internal landed true to MAV_LANDED_STATE_ON_GROUND.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkStreamExtendedSysState::send",
+          "role": "DERIVATION",
+          "type": "mavlink_extended_sys_state_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The stream consumes vehicle_land_detected and sends EXTENDED_SYS_STATE. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/streams/EXTENDED_SYS_STATE.hpp#L101"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "EXTENDED_SYS_STATE",
+          "message_id": 245,
+          "field": "landed_state",
+          "direction": "OUTGOING",
+          "derivation": "MAV_LANDED_STATE_ON_GROUND directly reports state; message has no timestamp, so the transition epoch needs EVENT/internal HRT for strict timing.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-02",
+      "name": "auto_disarm_eligible",
+      "controlled_natural_language": "官方规范定义的 auto-disarm eligibility 全部成立。",
+      "truth_condition": "待补全官方例外后定义；不能使用实现 guard 充当来源。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/commander_params.c",
+          "line": 227,
+          "column": 1,
+          "symbol": "COM_DISARM_LAND",
+          "semantic_identity": "Runtime landed auto-disarm delay parameter; positive enables one implementation input.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "float",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Source default is not substituted for the campaign runtime value. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/commander_params.c#L227"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2279,
+          "column": 6,
+          "symbol": "Commander::handleAutoDisarm",
+          "semantic_identity": "Implementation function evaluating automatic disarm guards.",
+          "entity_kind": "FUNCTION",
+          "function": "Commander::handleAutoDisarm",
+          "role": "DERIVATION",
+          "type": "void()",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The function is implementation identity only; catalog truth awaits complete official eligibility. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2279"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2282,
+          "column": 2,
+          "symbol": "isArmed",
+          "semantic_identity": "Implementation guard requiring the vehicle to be armed.",
+          "entity_kind": "OTHER",
+          "function": "Commander::handleAutoDisarm",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Recorded as implementation guard, not as normative source. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2282"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2287,
+          "column": 4,
+          "symbol": "auto_disarm_land_enabled",
+          "semantic_identity": "Implementation conjunction of positive delay, no mission in progress, and no disable override.",
+          "entity_kind": "VARIABLE",
+          "function": "Commander::handleAutoDisarm",
+          "role": "DERIVATION",
+          "type": "const bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This implementation conjunction cannot fill missing official exceptions. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2287"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2290,
+          "column": 4,
+          "symbol": "_have_taken_off_since_arming",
+          "semantic_identity": "Implementation guard requiring a detected takeoff since arming.",
+          "entity_kind": "VARIABLE",
+          "function": "Commander::handleAutoDisarm",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "This guard is recorded for identity only. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2290"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2291,
+          "column": 5,
+          "symbol": "_auto_disarm_landed.set_hysteresis_time_from",
+          "semantic_identity": "Implementation delay configuration from COM_DISARM_LAND.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::handleAutoDisarm",
+          "role": "DERIVATION",
+          "type": "Hysteresis",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The landed false-to-true hysteresis duration is set at this site. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2291"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B07",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2300,
+          "column": 4,
+          "symbol": "isThrowLaunchInProgress",
+          "semantic_identity": "Implementation exclusion while multicopter throw launch is in progress.",
+          "entity_kind": "OTHER",
+          "function": "Commander::handleAutoDisarm",
+          "role": "GUARD",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The exclusion appears immediately before the disarm call. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2300"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-02-B08",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 2302,
+          "column": 6,
+          "symbol": "auto_disarm_land",
+          "semantic_identity": "Implementation call-site reason for landed auto-disarm after guards and hysteresis.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::handleAutoDisarm",
+          "role": "OBSERVATION_SITE",
+          "type": "arm_disarm_reason_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "The call identifies the implementation outcome but not a complete official eligibility definition. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L2302"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects COM_DISARM_LAND; capture value and disable-domain conflict",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "UNRESOLVED",
+      "status": "PARTIALLY_BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-03",
+      "name": "armed",
+      "controlled_natural_language": "PX4 当前 armed。",
+      "truth_condition": "HEARTBEAT armed bit 对目标 autopilot 为 true。",
+      "kind": "STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-03-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 10,
+          "column": 1,
+          "symbol": "arming_state",
+          "semantic_identity": "Current vehicle arming-state field.",
+          "entity_kind": "FIELD",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The AP is true when arming_state equals ARMING_STATE_ARMED. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L10"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-03-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 12,
+          "column": 1,
+          "symbol": "ARMING_STATE_ARMED",
+          "semantic_identity": "VehicleStatus enum value for armed.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8 constant",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Direct internal state identity. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L12"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-03-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 622,
+          "column": 2,
+          "symbol": "_vehicle_status.arming_state",
+          "semantic_identity": "Commander assignment entering armed state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::arm",
+          "role": "WRITE",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The assignment is paired with armed_time and arming reason. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L622"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-03-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 1945,
+          "column": 4,
+          "symbol": "_vehicle_status_pub.publish",
+          "semantic_identity": "uORB producer for current arming_state.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "Commander::Run",
+          "role": "PRODUCER",
+          "type": "uORB::Publication<vehicle_status_s>",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Internal state publication includes a vehicle timestamp. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L1945"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-03-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/streams/HEARTBEAT.hpp",
+          "line": 82,
+          "column": 4,
+          "symbol": "ARMING_STATE_ARMED",
+          "semantic_identity": "Wire derivation guard setting MAV_MODE_FLAG_SAFETY_ARMED.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkStreamHeartbeat::send",
+          "role": "DERIVATION",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "HEARTBEAT base_mode is derived directly from vehicle_status.arming_state. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/streams/HEARTBEAT.hpp#L82"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "base_mode",
+          "direction": "OUTGOING",
+          "derivation": "MAV_MODE_FLAG_SAFETY_ARMED reports state; no timestamp or disarm reason.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "PX4-MC-AUTODISARM-004-AP-04",
+      "name": "disarmed",
+      "controlled_natural_language": "PX4 当前 disarmed。",
+      "truth_condition": "HEARTBEAT armed bit 为 false。",
+      "kind": "STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-04-B01",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/msg/versioned/VehicleStatus.msg",
+          "line": 11,
+          "column": 1,
+          "symbol": "ARMING_STATE_DISARMED",
+          "semantic_identity": "VehicleStatus enum value for disarmed.",
+          "entity_kind": "OTHER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "uint8 constant",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Direct internal state identity. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/msg/versioned/VehicleStatus.msg#L11"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-04-B02",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 638,
+          "column": 21,
+          "symbol": "Commander::disarm",
+          "semantic_identity": "Commander state-transition function for disarming.",
+          "entity_kind": "FUNCTION",
+          "function": "Commander::disarm",
+          "role": "DERIVATION",
+          "type": "transition_result_t(arm_disarm_reason_t,bool)",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Successful calls write DISARMED and clear armed/takeoff time. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L638"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-04-B03",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 667,
+          "column": 2,
+          "symbol": "_vehicle_status.arming_state",
+          "semantic_identity": "Commander assignment entering disarmed state.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::disarm",
+          "role": "WRITE",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "This is the direct state write for the AP. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L667"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-04-B04",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 668,
+          "column": 2,
+          "symbol": "latest_disarming_reason",
+          "semantic_identity": "VehicleStatus reason assignment allowing auto_disarm_land to be distinguished internally.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Commander::disarm",
+          "role": "WRITE",
+          "type": "uint8_t",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The AP itself is state-based; reason is supplementary correlation evidence. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L668"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-04-B05",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/commander/Commander.cpp",
+          "line": 678,
+          "column": 2,
+          "symbol": "commander_disarmed_by",
+          "semantic_identity": "Named event carrying arm_disarm_reason_t for a disarm transition.",
+          "entity_kind": "EVENT",
+          "function": "Commander::disarm",
+          "role": "PRODUCER",
+          "type": "events::ID with enum argument",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Argument value AUTO_DISARM_LAND identifies the landed auto-disarm reason when applicable. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/commander/Commander.cpp#L678"
+        },
+        {
+          "binding_id": "PX4-MC-AUTODISARM-004-AP-04-B06",
+          "commit": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+          "file": "baseline/px4/src/modules/mavlink/streams/HEARTBEAT.hpp",
+          "line": 82,
+          "column": 4,
+          "symbol": "vehicle_status.arming_state",
+          "semantic_identity": "HEARTBEAT producer tests armed state; the absence of MAV_MODE_FLAG_SAFETY_ARMED projects disarmed for the target autopilot.",
+          "entity_kind": "MESSAGE_PRODUCER",
+          "function": "MavlinkStreamHeartbeat::send",
+          "role": "DERIVATION",
+          "type": "bool expression",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The base-mode armed bit is set only for ARMING_STATE_ARMED. Fixed permalink: https://github.com/PX4/PX4-Autopilot/blob/d6f12ad1c4f70ad3230afd7d86e971421e02fef4/src/modules/mavlink/streams/HEARTBEAT.hpp#L82"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "base_mode",
+          "direction": "OUTGOING",
+          "derivation": "MAV_MODE_FLAG_SAFETY_ARMED reports state; no timestamp or disarm reason.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "EVENT",
+          "message_id": 410,
+          "field": "id",
+          "direction": "OUTGOING",
+          "derivation": "May carry automatic-disarm reason and event timestamp. Requires firmware-matched component metadata to decode id/arguments.",
+          "time_field": "event_time_boot_ms (PX4 system boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/px4/src/modules/mavlink/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DIRECT",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [],
+    "boundary_negative": [],
+    "late_or_missing": [],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone7-monitor-and-independent-audit-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "benchmark/extraction_runs/milestone4/superseded_px4_draft/properties/*.yaml (SUPERSEDED_NON_CANONICAL_DRAFT; immutable historical input only)",
+      "benchmark/extraction_runs/milestone5/px4_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "benchmark/extraction_runs/milestone7/independent_review.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction. Milestone 7 recorded a non-human independent rollback recommendation and synthetic monitor evidence; neither was used as a firmware-conformance or human-acceptance decision."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "satisfiable": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_tautology": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "non_vacuity": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "NOT_APPLICABLE",
+      "command": null,
+      "evidence": "No enabled, context-closed concrete formula entered the monitor gate."
+    },
+    "independent_review": {
+      "status": "INCONCLUSIVE",
+      "command": null,
+      "evidence": "Automated non-human audit completed 9 gates and recommends NEEDS_CONTEXT; blockers=disable-domain source conflict; eligibility exceptions incomplete; cancel semantics absent; PARTIALLY_BOUND AP; no concrete monitor formula. No human reviewer or arbitration was claimed."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Automated independent evidence audit recommends NEEDS_CONTEXT and records unresolved gates in benchmark/extraction_runs/milestone7/independent_review.json (SHA-256 5241806569500e593552cf50667d6de9e7e409961bd6ea131ff255571c98ec5c). It is not a human review or arbitration; decision remains PENDING.",
+    "conflicts": [
+      "COM_DISARM_LAND 禁用域冲突。",
+      "eligibility 官方上下文尚未闭合。",
+      "M7 automated independent audit: disable-domain source conflict",
+      "M7 automated independent audit: eligibility exceptions incomplete",
+      "M7 automated independent audit: cancel semantics absent",
+      "M7 automated independent audit: PARTIALLY_BOUND AP",
+      "M7 automated independent audit: no concrete monitor formula"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "rift.portability.svf.schema2-union-summary.v1",
+  "run_label": "SCHEMA2_UNION_SINGLE_TU_SEAL_ATTEMPT",
+  "status": "RECIPES_AND_DETACHED_CERTIFICATE_PASS",
+  "analyzer": {
+    "binary_sha256": "13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+    "production_core_sha256": "c61e38afb3408767a01916f6100091f670ec64cd0fb997677aa36ebc6d14dd8b",
+    "schema_bundle_sha256": "84c56cc3bb808024d6ad691668ac00d7d03793d69c9a8027faa428b8ba4f59e7",
+    "build_manifest_sha256": "ed674c9c8ec3279f2d1f875672235901a473982b5dd6e2495fac7a88e8c75999"
+  },
+  "recipes_run": {
+    "exit_code": 0,
+    "status": "CONSERVATIVE_INCOMPLETE",
+    "wall_seconds": 31.87,
+    "user_seconds": 21.06,
+    "system_seconds": 10.80,
+    "peak_rss_kib": 1366464,
+    "frontier_schema_version": "2.0.0",
+    "fuzzable_frontier_schema_version": "1.1.0",
+    "frontier_candidates": 4,
+    "actionable_candidates": 2,
+    "witnesses": 2,
+    "meets": 5,
+    "recipes": 2,
+    "recipes_unknown": 2
+  },
+  "detached_certificate": {
+    "exit_code": 0,
+    "certificate_sha256": "04d59472c06de0847262bcfec440d36cad5278a8be19f5e66010c277e8aa9194",
+    "checks": 62,
+    "failures": 0,
+    "physical_files_rehashed": 665,
+    "verdict": "PASS",
+    "schema_validation_failures": 0,
+    "occurrence_semantic_closure_failures": 0,
+    "wall_seconds": 26.26,
+    "peak_rss_kib": 788832
+  },
+  "pre_contract_fix_replay": {
+    "exit_code": 1,
+    "checks": 65,
+    "failures": 4,
+    "verdict": "FAIL",
+    "report": "benchmark/rift/m5/portability/svf/after_schema2/preflight/certificate_verification.pre_contract_fix.json",
+    "interpretation": "the verifier incorrectly applied exact type closure to every member of an UNKNOWN ambiguous candidate ledger"
+  },
+  "closure_diagnosis": {
+    "occurrence_id": "predicate-occurrence:8e6d69bdb780406bfabd3e7d8e5e0450e322f6c5251c646db208a126a7ce6fd4",
+    "selector_id": "sel.svf.ae.copy.arg_value",
+    "resolution": "UNKNOWN",
+    "certainty": "unknown",
+    "expected_value_type": {"kind": "pointer", "canonical": "char **", "bit_width": 64},
+    "matching_candidate": {"node_id": "node:884e5ef09f444fac1412ad19f31438786bb9a69f894b0d85a049a0982ce974b2", "node_kind": "declaration", "ast_kind": "Var", "canonical": "char **", "line": 847},
+    "mismatching_candidates": [
+      {"node_id": "node:74b4e71cd3d9b41eff78ff8f1a3edb2cfdddd107fa7cc75eba9dd821e834ed6e", "node_kind": "memory", "ast_kind": "ArraySubscriptExpr", "canonical": "char *", "line": 854},
+      {"node_id": "node:767e0c4b8df122578bd2a6c22d60bc578062dc634052fcc3ad47e2c3e7a680db", "node_kind": "memory", "ast_kind": "ArraySubscriptExpr", "canonical": "char *", "line": 853},
+      {"node_id": "node:ad0610fdd75fd32ab375327a04960b34d499a1f2a501649dcc3b082313f2fc9a", "node_kind": "memory", "ast_kind": "ArraySubscriptExpr", "canonical": "char *", "line": 850},
+      {"node_id": "node:d3a38ea2f699bdd60c24aa6c2469e2bf4650eea2cfd0889a9e42b3fe93a48fdc", "node_kind": "memory", "ast_kind": "ArraySubscriptExpr", "canonical": "char *", "line": 855}
+    ],
+    "interpretation": "semantic_node_ids is an ambiguous candidate set on an UNKNOWN occurrence, not an exact binding claim; the corrected verifier requires at least one compatible candidate while retaining strict all-node closure for EXACT occurrences"
+  },
+  "claim_boundary": {
+    "schema2_union_shape_validated": true,
+    "detached_certificate_sealed": true,
+    "full_111_tu_run_attempted": false,
+    "gold_accuracy_claim": false,
+    "runtime_recipe_claim": false
+  }
+}

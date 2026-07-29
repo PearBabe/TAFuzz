@@ -1,0 +1,85 @@
+{
+  "boundary_region": "after",
+  "case_kind": "late_response_unbounded_legal",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 6500,
+    "response_delta_ticks": 4500,
+    "threshold_ticks": 1500,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_INCONCLUSIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "The source formula has no finite upper response bound; a late response is legal, not a violation.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 276,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/monitor_trace.csv",
+    "sha256": "033a4f97fdfe5d4d129b88d2a7b43368a02c3158bbfdbca6272b608828f1df6a"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-ROVER-RCFS-001:trace:late_response_unbounded_legal",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1553,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor/metadata.json",
+      "sha256": "701fb8d56eab6f80da2dcb16db582ff3646fb98a7ac9bc8147af44d65793e6af"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 1241,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor.stdout.txt",
+      "sha256": "d2ab1213aef8db1599767ddaf52d615cf8e6ef82a93dbbaf64f0d9b30e1a1070"
+    },
+    "steps": {
+      "bytes": 564,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/tamonitor/steps.csv",
+      "sha256": "4220207a929e0fc2d94ff91b169ca8327edf12fcb1735f9f6b8f860c5c6012b9"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 6500,
+      "monitor_advanced": true,
+      "negative_states": 1,
+      "positive_states": 2,
+      "step": 6,
+      "verdict": "INCONCLUSIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "INCONCLUSIVE"
+  },
+  "trace": {
+    "bytes": 3467,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/trace.json",
+    "sha256": "61c3a03079efd083790078370f97eab785ea26a2faee3f69e324dad0dc0f591a"
+  },
+  "trace_id": "ARD-ROVER-RCFS-001--late_response_unbounded_legal"
+}

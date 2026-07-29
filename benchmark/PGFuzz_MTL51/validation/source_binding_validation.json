@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "validator": "validate_source_bindings.py",
+  "result": "PASS",
+  "checks": 11700,
+  "failures": [],
+  "counts": {
+    "term_binding_rows": 227,
+    "term_binding_rows_by_system": {
+      "ArduPilot": 110,
+      "PX4": 117
+    },
+    "unique_system_terms": 107,
+    "unique_system_terms_by_system": {
+      "ArduPilot": 67,
+      "PX4": 40
+    },
+    "atomic_proposition_occurrences": 178,
+    "atomic_proposition_occurrences_by_system": {
+      "ArduPilot": 110,
+      "PX4": 68
+    },
+    "validated_source_locations": 178,
+    "trace_previous_sample_bindings": 22,
+    "unresolved_term_binding_rows": 13,
+    "unresolved_atomic_propositions": 14,
+    "formula_parameter_coverage_rows": 20,
+    "unique_formula_parameters": 15,
+    "explained_data_types": 100,
+    "explained_unit_coordinates": 61,
+    "explained_current_input_types": 7,
+    "explained_current_input_units": 28,
+    "type_unit_dictionary_rows": 196
+  },
+  "status_counts": {
+    "term_confidence": {
+      "EXACT": 132,
+      "MODELLED": 82,
+      "UNRESOLVED": 13
+    },
+    "term_observability": {
+      "DIRECT": 83,
+      "DERIVED": 29,
+      "CONDITIONAL": 50,
+      "INSTRUMENTATION_REQUIRED": 59,
+      "UNRESOLVED": 6
+    },
+    "term_binding_role": {
+      "PRIMARY_VALUE": 107,
+      "SUPPORTING_EVIDENCE": 76,
+      "ALTERNATIVE_SEMANTICS": 44
+    },
+    "ap_binding_status": {
+      "MODELLED": 107,
+      "EXACT": 57,
+      "UNRESOLVED": 14
+    },
+    "ap_observability": {
+      "CONDITIONAL": 57,
+      "DIRECT": 62,
+      "UNRESOLVED": 14,
+      "DERIVED": 11,
+      "INSTRUMENTATION_REQUIRED": 34
+    },
+    "ap_binding_selection": {
+      "PRIMARY_SELECTED": 123,
+      "PRIMARY_WITH_ALTERNATIVES": 41,
+      "UNRESOLVED_PRIMARY": 14
+    }
+  },
+  "frozen_source_commits": {
+    "ArduPilot": {
+      "expected": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "manifest": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "checkout": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e"
+    },
+    "PX4": {
+      "expected": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "manifest": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "checkout": "d6f12ad1c4f70ad3230afd7d86e971421e02fef4"
+    }
+  },
+  "frozen_source_worktree_status": {
+    "ArduPilot": [
+      " m modules/CrashDebug"
+    ],
+    "PX4": []
+  },
+  "scope_note_zh": "通过只证明源码绑定、主/替代语义组选择、原子命题引用、分拆制品、固定版本、历史样本语义、参数关联以及类型/单位字典对来源原值的覆盖内部一致；不证明论文性质正确，也不证明当前固件满足性质。"
+}

@@ -1,0 +1,85 @@
+{
+  "boundary_region": "before",
+  "case_kind": "too_early_one_tick",
+  "classification_reason": "TAMonitor produced the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "UNKNOWN",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 12000,
+    "response_delta_ticks": 9999,
+    "threshold_ticks": 10000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "EXPECTED_DECISIVE_MATCH",
+  "comparison_status": "PASS",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "NEGATIVE",
+    "reference_oracle_reason": "Response occurs one exact monitor tick before the threshold.",
+    "tamonitor_infinite_prefix_verdict": "NEGATIVE",
+    "tamonitor_prefix_reason": "The prefix contains an irreversible pre-threshold/open-boundary safety violation."
+  },
+  "monitor_trace": {
+    "bytes": 167,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/monitor_trace.csv",
+    "sha256": "ef868cfeec94a8aacd8e0ee2ce458a480a5f6cf2b00a7bfb2173b037a721ac2e"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "NEGATIVE"
+  },
+  "tamonitor": {
+    "command_id": "PX4-MC-GCSLOSS-002:trace:too_early_one_tick",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1419,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor/metadata.json",
+      "sha256": "b5c5aad81f82bb84de1dcc8b97dd795214d932a75d9a66c16099538974d23c8d"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 982,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor.stdout.txt",
+      "sha256": "9258f55a1ea0994fde3b39797ce8884ed08e72c844d1a14c32421361886a6667"
+    },
+    "steps": {
+      "bytes": 406,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/tamonitor/steps.csv",
+      "sha256": "64265df725380d31af33e28577395f2d576b1e0e7ac4f2ee71937f2d38850cc9"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 12000,
+      "monitor_advanced": false,
+      "negative_states": 3,
+      "positive_states": 0,
+      "step": 5,
+      "verdict": "NEGATIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "NEGATIVE"
+  },
+  "trace": {
+    "bytes": 2699,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-GCSLOSS-002/traces/too_early_one_tick/trace.json",
+    "sha256": "e8ffb25bd8b2c458c276422867b3f15f3daadfb1a46e2882286261d36ec730e4"
+  },
+  "trace_id": "PX4-MC-GCSLOSS-002--too_early_one_tick"
+}

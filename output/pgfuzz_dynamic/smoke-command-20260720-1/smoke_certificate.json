@@ -1,0 +1,26 @@
+{
+  "checks": [
+    {
+      "case": "command",
+      "effect_status": "MISSING",
+      "expected_group": "roll",
+      "input": "RC1",
+      "passed": false,
+      "result_file_contains_exact_name": false
+    }
+  ],
+  "clock_boundary": "host-observed timing is not internal firmware event time",
+  "errors": [
+    {
+      "case": "command",
+      "error": "RuntimeError: vehicle did not arm through the normal GCS command: {'verified': False, 'command': 400, 'result': 4, 'result_name': 'MAV_RESULT_FAILED', 'sent_host_monotonic_ns': 25689947645143, 'ack_host_monotonic_ns': 25689951557546}"
+    }
+  ],
+  "full_campaign_executed": false,
+  "generated_at": "2026-07-20T15:45:35.380862+00:00",
+  "schema_version": "1.0",
+  "selected_cases": [
+    "command"
+  ],
+  "status": "FAIL"
+}

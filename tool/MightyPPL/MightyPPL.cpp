@@ -848,6 +848,7 @@ namespace mightypplcpp {
         MitlToNNFVisitor to_nnf_visitor;
 
         nnf_in = std::any_cast<std::string>(to_nnf_visitor.visitMain(phi_));
+        last_nnf_formula = nnf_in;
 
         std::cout << "\nInput formula (in NNF):\n" << std::endl;
 
@@ -974,6 +975,7 @@ namespace mightypplcpp {
         for (const auto& [k, v] : nnf_formula->props) {
             props_to_keep.insert(v);
         }
+        last_props_by_name = nnf_formula->props;
 
         std::cout << "\nGenerating BDDs for labels...\n";
 
@@ -2793,6 +2795,13 @@ namespace mightypplcpp {
 
             // return TA, but not the generated output for components 
 
+            if (canonical_projection_enabled) {
+                auto [projected, valuation_count] = product.projection_expanded(props_to_remove, canonical_projection_max_valuations);
+                last_projection_valuation_count = valuation_count;
+                return { projected, std::string{} };
+            }
+
+            last_projection_valuation_count = 0;
             return { product.projection(props_to_remove), std::string{} };
 
         } else { // out_format.has_value() && !out_flatten

@@ -1,0 +1,65 @@
+property_id: RFC7252-MITL-013
+title: matching ACK/RST 后停止重传 Confirmable separate response
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "5.2.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1861
+      end: 1865
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: 如果 server 发送 Confirmable response，client 对该 response 的 ACK 必须是 Empty；server 必须在任何 matching ACK 或 RST 上停止重传 response。
+  normative_keyword: MUST
+mitl: |
+  G( MATCHING_ACK_OR_RST_FOR_CONFIRMABLE_RESPONSE ->
+     F[0,0] RESPONSE_RETRANSMISSION_STOPPED )
+informal_semantics: >
+  对 server 发出的 Confirmable separate response，一旦收到 matching ACK 或 RST，
+  server 必须在同一处理步骤终止该 response 的重传状态。
+role: server
+temporal_pattern: immediate_terminal
+events:
+  start_event: MATCHING_ACK_OR_RST_FOR_CONFIRMABLE_RESPONSE
+  required_event: RESPONSE_RETRANSMISSION_STOPPED
+atomic_propositions:
+  - name: MATCHING_ACK_OR_RST_FOR_CONFIRMABLE_RESPONSE
+    semantic: 收到与 server 先前发送的 Confirmable response 匹配的 ACK 或 RST。
+    fields:
+      - session
+      - peer
+      - response.message_id
+      - incoming.message_type
+      - incoming.message_id
+    future_source_mapping:
+      - message field
+      - internal state
+      - data structure
+      - function event
+  - name: RESPONSE_RETRANSMISSION_STOPPED
+    semantic: 该 Confirmable response 的重传状态被移除或标记为终止。
+    fields:
+      - session
+      - peer
+      - response.message_id
+      - retransmission_state
+    future_source_mapping:
+      - internal state
+      - timer
+      - data structure
+      - function event
+correlation_key:
+  key: [session, peer, response_message_id]
+  reason: RFC7252 5.2.2 中 client ACK/RST 对 Confirmable response 的匹配是 message-layer 终止条件；Message ID 和 endpoint 用于识别同一 response exchange。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: MATCHING_ACK_OR_RST_FOR_CONFIRMABLE_RESPONSE
+  end: response retransmission terminal update
+  interval: "[0,0]"
+  rfc_parameters: []
+  default_values: {}
+confidence: high
+verification_notes:
+  - 该性质来自重新扫描 5.2.2 后补入，不依赖旧 libcoap 映射结果。
+  - ACK 中携带的 Response Code 或 payload 应被 silently ignored；本性质只检查停止重传。

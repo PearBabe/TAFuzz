@@ -1,0 +1,24 @@
+{
+  "schema_version": "rift.m4.command-adapter.v1",
+  "stages": [
+    {
+      "argv": [
+        "{analyzer}",
+        "influence",
+        "--compile-db",
+        "{compile_database}",
+        "--property",
+        "{property_ir}",
+        "--output-dir",
+        "{output_directory}"
+      ],
+      "name": "influence",
+      "produces": [
+        "semantic_index",
+        "ap_bindings",
+        "contextual_influence_graph",
+        "ap_influence_cones"
+      ]
+    }
+  ]
+}

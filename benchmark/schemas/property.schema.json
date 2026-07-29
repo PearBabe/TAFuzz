@@ -1,0 +1,540 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tafuzz.local/schemas/property.schema.json",
+  "title": "TAFuzz auditable MITL property",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "property_id",
+    "system_scope",
+    "status",
+    "classification",
+    "sources",
+    "context_graph",
+    "requirement_ir",
+    "time_contracts",
+    "mitl",
+    "atomic_propositions",
+    "examples",
+    "validation",
+    "review",
+    "implementation_satisfaction"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "property_id": {"type": "string", "pattern": "^(ARD|PX4)-[A-Z0-9][A-Z0-9_-]*-[0-9]{3}$"},
+    "title_zh": {"type": "string"},
+    "title_en": {"type": "string"},
+    "system_scope": {"$ref": "#/$defs/systemScope"},
+    "status": {
+      "enum": [
+        "ACCEPTED",
+        "REVIEW_READY",
+        "CANDIDATE",
+        "NEEDS_CONTEXT",
+        "NEEDS_TIME_BOUND",
+        "NEEDS_BINDING",
+        "UNSUPPORTED_BY_MONITOR",
+        "AUXILIARY_ORACLE",
+        "REJECTED",
+        "DEPRECATED"
+      ]
+    },
+    "classification": {
+      "enum": [
+        "NORMATIVE_REQUIREMENT",
+        "OFFICIAL_BEHAVIOR",
+        "PARAMETERIZED_BEHAVIOR",
+        "SOURCE_COMMENT_CANDIDATE",
+        "PARAM_METADATA_CANDIDATE",
+        "MAVLINK_INTERFACE_CANDIDATE",
+        "AUXILIARY_ORACLE",
+        "HEURISTIC_FILTER",
+        "HISTORICAL_LEAD",
+        "EXCLUSION"
+      ]
+    },
+    "sources": {"type": "array", "items": {"$ref": "#/$defs/sourceEvidence"}},
+    "context_graph": {"$ref": "#/$defs/contextGraph"},
+    "requirement_ir": {"$ref": "#/$defs/requirementIR"},
+    "time_contracts": {"type": "array", "items": {"$ref": "#/$defs/timeContract"}},
+    "mitl": {"$ref": "#/$defs/mitl"},
+    "atomic_propositions": {"type": "array", "items": {"$ref": "#/$defs/atomicProposition"}},
+    "examples": {"$ref": "#/$defs/examples"},
+    "extraction_record": {"$ref": "#/$defs/extractionRecord"},
+    "validation": {"$ref": "#/$defs/validation"},
+    "review": {"$ref": "#/$defs/review"},
+    "implementation_satisfaction": {"const": "NOT_ASSESSED"}
+  },
+  "$defs": {
+    "systemScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "vehicles", "firmware_commit", "configuration_snapshot", "mission_snapshot", "initial_state"],
+      "properties": {
+        "system": {"enum": ["ArduPilot", "PX4"]},
+        "vehicles": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+        "firmware_release": {"type": ["string", "null"]},
+        "firmware_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "configuration_snapshot": {"$ref": "#/$defs/snapshot"},
+        "mission_snapshot": {"$ref": "#/$defs/snapshot"},
+        "initial_state": {"type": "string"}
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "path", "sha256"],
+      "properties": {
+        "status": {"enum": ["CAPTURED", "NOT_REQUIRED", "PENDING", "UNAVAILABLE"]},
+        "path": {"type": ["string", "null"]},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "notes": {"type": "string"}
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id", "source_class", "authority", "title", "version", "path_or_url",
+        "retrieved_at", "sha256", "locator", "exact_quote", "language", "document_status"
+      ],
+      "properties": {
+        "source_id": {"type": "string"},
+        "source_class": {
+          "enum": [
+            "FORMAL_REQUIREMENT", "OFFICIAL_BEHAVIOR", "PARAM_METADATA", "SOURCE_COMMENT",
+            "MAVLINK_INTERFACE_DEFINITION", "PAPER_AUTHOR_EXPERIENCE", "HISTORICAL_PAPER", "OTHER"
+          ]
+        },
+        "authority": {"enum": ["HIGH", "MEDIUM", "LOW", "AUXILIARY"]},
+        "title": {"type": "string"},
+        "version": {"type": "string"},
+        "path_or_url": {"type": "string"},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["page", "section", "anchor", "line_start", "line_end", "char_start", "char_end"],
+          "properties": {
+            "page": {"type": ["integer", "null"], "minimum": 1},
+            "section": {"type": ["string", "null"]},
+            "anchor": {"type": ["string", "null"]},
+            "line_start": {"type": ["integer", "null"], "minimum": 1},
+            "line_end": {"type": ["integer", "null"], "minimum": 1},
+            "char_start": {"type": ["integer", "null"], "minimum": 0},
+            "char_end": {"type": ["integer", "null"], "minimum": 0}
+          }
+        },
+        "exact_quote": {"type": "string"},
+        "context_summary_zh": {"type": "string"},
+        "language": {"type": "string"},
+        "document_status": {"enum": ["CURRENT", "RELEASE_PINNED", "MAIN_ONLY", "HISTORICAL", "DEPRECATED", "UNKNOWN"]}
+      }
+    },
+    "contextGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_ids", "edges", "unresolved_references"],
+      "properties": {
+        "node_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["from", "relation", "to", "evidence_source_id"],
+            "properties": {
+              "from": {"type": "string"},
+              "relation": {
+                "enum": [
+                  "parent_of", "defines", "refers_to", "parameterizes", "exception_to", "corefers_to",
+                  "precondition_of", "triggers", "before", "after", "overlaps", "during", "supersedes", "observed_by"
+                ]
+              },
+              "to": {"type": "string"},
+              "evidence_source_id": {"type": ["string", "null"]},
+              "confidence": {"enum": ["EXACT", "REVIEWED", "MODEL_PROPOSED", "UNRESOLVED"]}
+            }
+          }
+        },
+        "unresolved_references": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evidenceSpan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "quote", "char_start", "char_end"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "quote": {"type": "string"},
+        "char_start": {"type": ["integer", "null"], "minimum": 0},
+        "char_end": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "irClause": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "evidence"],
+      "properties": {
+        "text": {"type": "string"},
+        "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceSpan"}}
+      }
+    },
+    "requirementIR": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor", "modality", "trigger", "preconditions", "obligations", "prohibitions", "exceptions",
+        "scope_start", "scope_end", "correlation_keys", "event_relations", "unresolved"
+      ],
+      "properties": {
+        "actor": {"$ref": "#/$defs/irClause"},
+        "modality": {"enum": ["MUST", "MUST_NOT", "SHOULD", "SHOULD_NOT", "BEHAVIORAL_DESCRIPTION", "UNKNOWN"]},
+        "trigger": {"$ref": "#/$defs/irClause"},
+        "preconditions": {"type": "array", "items": {"$ref": "#/$defs/irClause"}},
+        "obligations": {"type": "array", "items": {"$ref": "#/$defs/irClause"}},
+        "prohibitions": {"type": "array", "items": {"$ref": "#/$defs/irClause"}},
+        "exceptions": {"type": "array", "items": {"$ref": "#/$defs/irClause"}},
+        "scope_start": {"$ref": "#/$defs/irClause"},
+        "scope_end": {"$ref": "#/$defs/irClause"},
+        "correlation_keys": {"type": "array", "items": {"type": "string"}},
+        "event_relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["left", "relation", "right", "evidence"],
+            "properties": {
+              "left": {"type": "string"},
+              "relation": {"enum": ["BEFORE", "AFTER", "MEETS", "OVERLAPS", "DURING", "EQUALS", "TRIGGERS", "CANCELS", "RESETS"]},
+              "right": {"type": "string"},
+              "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceSpan"}}
+            }
+          }
+        },
+        "unresolved": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "timeContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "time_id", "semantic_start_event", "semantic_end_event", "cancel_event", "reset_event", "raw_expression",
+        "lower", "upper", "lower_closed", "upper_closed", "unit", "source_type", "source_id", "source_span",
+        "parameter_id", "formula", "operands", "clock_domain", "timestamp_carrier", "conversion",
+        "measurement_uncertainty", "freshness", "status"
+      ],
+      "properties": {
+        "time_id": {"type": "string"},
+        "semantic_start_event": {"type": "string"},
+        "semantic_end_event": {"type": "string"},
+        "cancel_event": {"type": ["string", "null"]},
+        "reset_event": {"type": ["string", "null"]},
+        "raw_expression": {"type": "string"},
+        "lower": {"type": ["number", "string", "null"]},
+        "upper": {"type": ["number", "string", "null"]},
+        "lower_closed": {"type": ["boolean", "null"]},
+        "upper_closed": {"type": ["boolean", "null"]},
+        "unit": {"enum": ["s", "ms", "us", "Hz", "cycle", "sample", "UNKNOWN", "QUALITATIVE"]},
+        "source_type": {
+          "enum": [
+            "DOCUMENT_LITERAL", "PARAMETER_DEFAULT", "RUNTIME_PARAMETER", "DERIVED", "PAPER_EMPIRICAL",
+            "SOURCE_COMMENT", "MAVLINK_INTERFACE", "UNKNOWN", "NOT_APPLICABLE"
+          ]
+        },
+        "source_id": {"type": ["string", "null"]},
+        "source_span": {"anyOf": [{"$ref": "#/$defs/evidenceSpan"}, {"type": "null"}]},
+        "parameter_id": {"type": ["string", "null"]},
+        "formula": {"type": ["string", "null"]},
+        "operands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "value", "unit", "source_id"],
+            "properties": {
+              "name": {"type": "string"},
+              "value": {"type": ["number", "string", "null"]},
+              "unit": {"type": "string"},
+              "source_id": {"type": ["string", "null"]}
+            }
+          }
+        },
+        "clock_domain": {
+          "enum": [
+            "AUTOPILOT_MONOTONIC_BOOT", "SITL_SIMULATION", "MAVLINK_SENDER_BOOT", "UNIX_UTC", "GPS",
+            "GCS_MONOTONIC_ARRIVAL", "GCS_WALL_CLOCK", "INSTRUMENTATION_MONOTONIC", "AMBIGUOUS", "UNKNOWN"
+          ]
+        },
+        "timestamp_carrier": {"type": ["string", "null"]},
+        "conversion": {"type": ["string", "null"]},
+        "measurement_uncertainty": {"type": ["string", "null"]},
+        "freshness": {"type": ["string", "null"]},
+        "status": {"enum": ["RESOLVED", "SYMBOLIC", "NEEDS_TIME_BOUND", "QUALITATIVE_ONLY", "INCONCLUSIVE_AT_BOUNDARY", "NOT_APPLICABLE"]}
+      }
+    },
+    "mitl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["symbolic", "concrete", "monitor_syntax", "monitor_contract", "compiler_version", "subformula_evidence", "status"],
+      "properties": {
+        "symbolic": {"type": ["string", "null"]},
+        "concrete": {"type": ["string", "null"]},
+        "monitor_syntax": {"type": ["string", "null"]},
+        "monitor_contract": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/monitorContract"}
+          ]
+        },
+        "compiler_version": {"type": ["string", "null"]},
+        "subformula_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["subformula", "evidence"],
+            "properties": {
+              "subformula": {"type": "string"},
+              "evidence": {"type": "array", "items": {"$ref": "#/$defs/evidenceSpan"}}
+            }
+          }
+        },
+        "concrete_instances": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/concreteInstance"}
+        },
+        "status": {"enum": ["COMPILED", "CONCRETE_UNVALIDATED", "MONITOR_VALIDATED", "MONITOR_VALIDATION_FAILED", "SYMBOLIC_ONLY", "NEEDS_CONTEXT", "NEEDS_TIME_BOUND", "UNSUPPORTED_BY_MONITOR", "NOT_FORMALIZED"]}
+      }
+    },
+    "monitorContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_formula_time_unit", "monitor_tick_unit", "ticks_per_source_unit",
+        "exact_rescaling", "interval_openness_preserved", "finite_word_semantics",
+        "tool", "artifact_path", "artifact_sha256"
+      ],
+      "properties": {
+        "source_formula_time_unit": {"const": "s"},
+        "monitor_tick_unit": {"type": "string"},
+        "ticks_per_source_unit": {"type": "integer", "minimum": 1},
+        "exact_rescaling": {"type": "string"},
+        "interval_openness_preserved": {"const": true},
+        "finite_word_semantics": {"type": "string"},
+        "tool": {"type": "string"},
+        "artifact_path": {"type": "string"},
+        "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "concreteInstance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile", "capture_id", "parameter_id", "raw_value", "raw_unit",
+        "normalized_value", "formula_time_unit", "conversion", "formula", "status",
+        "source_path", "source_sha256", "source_param_index", "source_param_count",
+        "clock_domain", "notes"
+      ],
+      "properties": {
+        "profile": {"type": "string"},
+        "capture_id": {"type": "string"},
+        "parameter_id": {"type": "string"},
+        "raw_value": {"type": "number"},
+        "raw_unit": {"type": "string"},
+        "normalized_value": {"type": "number"},
+        "formula_time_unit": {"const": "s"},
+        "conversion": {"type": "string"},
+        "formula": {"type": ["string", "null"]},
+        "status": {
+          "enum": [
+            "INSTANTIATED_UNVALIDATED",
+            "INSTANTIATED_FORMULA_VALIDATED",
+            "DISABLED_BY_RUNTIME_CONFIGURATION",
+            "NEEDS_CONTEXT",
+            "NOT_FORMALIZED"
+          ]
+        },
+        "source_path": {"type": "string"},
+        "source_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "source_param_index": {"type": "integer", "minimum": 0},
+        "source_param_count": {"type": "integer", "minimum": 0},
+        "clock_domain": {
+          "enum": [
+            "AUTOPILOT_MONOTONIC_BOOT", "SITL_SIMULATION", "MAVLINK_SENDER_BOOT", "UNIX_UTC", "GPS",
+            "GCS_MONOTONIC_ARRIVAL", "GCS_WALL_CLOCK", "INSTRUMENTATION_MONOTONIC", "AMBIGUOUS", "UNKNOWN"
+          ]
+        },
+        "notes": {"type": "string"}
+      }
+    },
+    "atomicProposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ap_id", "name", "controlled_natural_language", "truth_condition", "kind", "value_type", "unit",
+        "coordinate_frame", "validity_guard", "freshness", "scope", "aggregation", "correlation_key",
+        "source_bindings", "mavlink_observations", "observability", "status"
+      ],
+      "properties": {
+        "ap_id": {"type": "string"},
+        "name": {"type": "string"},
+        "controlled_natural_language": {"type": "string"},
+        "truth_condition": {"type": "string"},
+        "kind": {"enum": ["EVENT", "STATE", "VALUE_COMPARISON", "DERIVED_STATE", "FRESHNESS", "CORRELATION"]},
+        "value_type": {"type": "string"},
+        "unit": {"type": ["string", "null"]},
+        "coordinate_frame": {"type": ["string", "null"]},
+        "validity_guard": {"type": "string"},
+        "freshness": {"type": "string"},
+        "scope": {"type": "string"},
+        "aggregation": {"type": ["string", "null"]},
+        "correlation_key": {"type": ["string", "null"]},
+        "source_bindings": {"type": "array", "items": {"$ref": "#/$defs/sourceBinding"}},
+        "mavlink_observations": {"type": "array", "items": {"$ref": "#/$defs/mavlinkObservation"}},
+        "observability": {"enum": ["DIRECT", "DERIVED", "CONDITIONAL", "INSTRUMENTATION_REQUIRED", "UNRESOLVED"]},
+        "status": {"enum": ["BOUND", "PARTIALLY_BOUND", "NEEDS_BINDING", "UNRESOLVED"]}
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding_id", "commit", "file", "line", "column", "symbol", "semantic_identity", "entity_kind",
+        "function", "role", "type", "macro_spelling_location", "macro_expansion_location", "confidence", "evidence"
+      ],
+      "properties": {
+        "binding_id": {"type": "string"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "file": {"type": "string"},
+        "line": {"type": "integer", "minimum": 1},
+        "column": {"type": ["integer", "null"], "minimum": 1},
+        "symbol": {"type": "string"},
+        "semantic_identity": {"type": ["string", "null"]},
+        "entity_kind": {"enum": ["VARIABLE", "FIELD", "PARAMETER", "FUNCTION", "RETURN", "CALLBACK", "ASSIGNMENT", "MESSAGE_PRODUCER", "MESSAGE_CONSUMER", "EVENT", "TOPIC", "OTHER"]},
+        "function": {"type": ["string", "null"]},
+        "role": {"enum": ["DEFINITION", "READ", "WRITE", "DERIVATION", "PRODUCER", "CONSUMER", "GUARD", "OBSERVATION_SITE"]},
+        "type": {"type": ["string", "null"]},
+        "macro_spelling_location": {"type": ["string", "null"]},
+        "macro_expansion_location": {"type": ["string", "null"]},
+        "confidence": {"enum": ["EXACT", "MAY", "MODELLED", "NAME_ONLY"]},
+        "evidence": {"type": "string"}
+      }
+    },
+    "mavlinkObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["message", "message_id", "field", "direction", "derivation", "time_field", "support", "evidence"],
+      "properties": {
+        "message": {"type": "string"},
+        "message_id": {"type": ["integer", "null"], "minimum": 0},
+        "field": {"type": ["string", "null"]},
+        "direction": {"enum": ["INCOMING", "OUTGOING", "REQUESTABLE", "BIDIRECTIONAL", "UNKNOWN"]},
+        "derivation": {"type": ["string", "null"]},
+        "time_field": {"type": ["string", "null"]},
+        "support": {"enum": ["RUNTIME_OBSERVED", "STATIC_SUPPORTED", "DIALECT_ONLY", "CONDITIONAL", "UNKNOWN"]},
+        "evidence": {"type": "string"}
+      }
+    },
+    "traceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trace_id", "path", "sha256", "expected", "monitor_result"],
+      "properties": {
+        "trace_id": {"type": "string"},
+        "path": {"type": "string"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "expected": {"enum": ["SATISFIED", "VIOLATED", "INCONCLUSIVE"]},
+        "monitor_result": {"enum": ["SATISFIED", "VIOLATED", "INCONCLUSIVE", "NOT_RUN"]},
+        "mutation": {"type": ["string", "null"]}
+      }
+    },
+    "examples": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["positive", "boundary_negative", "late_or_missing", "wrong_exception", "wrong_correlation"],
+      "properties": {
+        "positive": {"type": "array", "items": {"$ref": "#/$defs/traceReference"}},
+        "boundary_negative": {"type": "array", "items": {"$ref": "#/$defs/traceReference"}},
+        "late_or_missing": {"type": "array", "items": {"$ref": "#/$defs/traceReference"}},
+        "wrong_exception": {"type": "array", "items": {"$ref": "#/$defs/traceReference"}},
+        "wrong_correlation": {"type": "array", "items": {"$ref": "#/$defs/traceReference"}}
+      }
+    },
+    "extractionRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "extractor", "model", "prompt_hash", "temperature", "seed", "raw_outputs", "adjudication"],
+      "properties": {
+        "run_id": {"type": "string"},
+        "extractor": {"type": "string"},
+        "model": {"type": ["string", "null"]},
+        "prompt_hash": {"type": ["string", "null"]},
+        "temperature": {"type": ["number", "null"]},
+        "seed": {"type": ["integer", "string", "null"]},
+        "raw_outputs": {"type": "array", "items": {"type": "string"}},
+        "adjudication": {"type": "string"}
+      }
+    },
+    "checkResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "command", "evidence"],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "INCONCLUSIVE", "NOT_RUN", "NOT_APPLICABLE"]},
+        "command": {"type": ["string", "null"]},
+        "evidence": {"type": "string"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "source", "type_unit", "temporal_graph", "parser", "satisfiable", "non_tautology", "non_vacuity", "source_lines", "permalinks", "monitor", "independent_review"],
+      "properties": {
+        "schema": {"$ref": "#/$defs/checkResult"},
+        "source": {"$ref": "#/$defs/checkResult"},
+        "type_unit": {"$ref": "#/$defs/checkResult"},
+        "temporal_graph": {"$ref": "#/$defs/checkResult"},
+        "parser": {"$ref": "#/$defs/checkResult"},
+        "satisfiable": {"$ref": "#/$defs/checkResult"},
+        "non_tautology": {"$ref": "#/$defs/checkResult"},
+        "non_vacuity": {"$ref": "#/$defs/checkResult"},
+        "source_lines": {"$ref": "#/$defs/checkResult"},
+        "permalinks": {"$ref": "#/$defs/checkResult"},
+        "monitor": {"$ref": "#/$defs/checkResult"},
+        "independent_review": {"$ref": "#/$defs/checkResult"}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision", "reviewer", "reviewed_at", "rationale", "conflicts", "confidence_vector"],
+      "properties": {
+        "decision": {"enum": ["PENDING", "ACCEPT", "RETURN_TO_CANDIDATE", "REJECT", "AUXILIARY_ONLY"]},
+        "reviewer": {"type": ["string", "null"]},
+        "reviewed_at": {"type": ["string", "null"], "format": "date-time"},
+        "rationale": {"type": "string"},
+        "conflicts": {"type": "array", "items": {"type": "string"}},
+        "confidence_vector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["authority", "fidelity", "context", "modality", "time_source", "event_graph", "formalization", "source_binding", "observability"],
+          "properties": {
+            "authority": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "fidelity": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "context": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "modality": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "time_source": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "event_graph": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "formalization": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "source_binding": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+            "observability": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+          }
+        }
+      }
+    }
+  }
+}

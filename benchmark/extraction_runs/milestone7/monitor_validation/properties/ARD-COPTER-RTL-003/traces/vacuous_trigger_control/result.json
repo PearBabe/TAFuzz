@@ -1,0 +1,70 @@
+{
+  "boundary_region": "vacuous",
+  "case_kind": "vacuous_trigger_control",
+  "classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 7000,
+    "response_delta_ticks": 4999,
+    "threshold_ticks": 5000,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "comparison_status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Control trace disables the trigger while retaining the early response; it is paired with the non-vacuous counterexample.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 143,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/monitor_trace.csv",
+    "sha256": "4cbc232aa1d488a69b7bc39daaced30d37182ce6f106c4a7d514f184a8119cf3"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 0,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "ARD-COPTER-RTL-003:trace:vacuous_trigger_control",
+    "error_excerpt": "TAMonitor error: BDD projection valuation limit exceeded",
+    "exit_code": 1,
+    "metadata": null,
+    "runtime_classification_reason": "TAMonitor rejected the trace because its BDD projection valuation limit was exceeded.",
+    "status": "UNSUPPORTED_TAMONITOR_BDD_PROJECTION_VALUATION_LIMIT",
+    "stderr": {
+      "bytes": 57,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/tamonitor.stderr.txt",
+      "sha256": "3a7e9146c16de5c040d3b655ceea93eb7104b6b5d35a3d2fd8a9c46514e3c39a"
+    },
+    "stdout": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/tamonitor.stdout.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "steps": null,
+    "terminal_step": null,
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": null
+  },
+  "trace": {
+    "bytes": 2789,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-COPTER-RTL-003/traces/vacuous_trigger_control/trace.json",
+    "sha256": "972bc93bc73fde6c9a6e7a63eef29e9cadc5d3c011b0a007c6898dedfb639fb5"
+  },
+  "trace_id": "ARD-COPTER-RTL-003--vacuous_trigger_control"
+}

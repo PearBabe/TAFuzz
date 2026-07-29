@@ -1,0 +1,89 @@
+{
+  "schema_version": "rift.portability.resource_failure.v1",
+  "status": "RESOURCE_FAIL",
+  "claim_label": "PORTABILITY_ENGINEERING_RUN_NOT_GOLD",
+  "source": {
+    "name": "libcoap",
+    "commit": "94bacc8939dd6711169cd2332a002a361ec62531",
+    "translation_units": 38,
+    "source_patches": []
+  },
+  "analyzer": {
+    "path": "/tmp/tafuzz-sa-m5-schema2-union-13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+    "sha256": "13ad31bea45259236199462613066d5c15e0d34ee821bfb10527d00543fb4e6b",
+    "embedded_core_sha256": "c61e38afb3408767a01916f6100091f670ec64cd0fb997677aa36ebc6d14dd8b",
+    "embedded_schema_sha256": "84c56cc3bb808024d6ad691668ac00d7d03793d69c9a8027faa428b8ba4f59e7",
+    "frontier_schema_version": "2.0.0",
+    "fuzzable_frontier_schema_version": "1.1.0",
+    "immutable_snapshot": true
+  },
+  "inputs": {
+    "compile_database_sha256": "3bf8dfee452381ad99363c17420d7e26e51ddf3755eda2c1109b10de8f30bc3a",
+    "property_ir_sha256": "5949ccdd901d22172eaab8061b64f230d685c989b82a3a514c4778aeecf741c4",
+    "platform_model_pack_sha256": "c532d54ab0e3e2cb62d82393164aa5497be8e6a39cc9c1e60c516a8a39266da0",
+    "project_adapter_model_pack_sha256": "083b46b375b5f2bccdd96dc024953f8a672ed9bb900abdbcf062a390cb5a2efb",
+    "executor_capabilities_sha256": "36cf0de135054a6ffe827331f7a1c1d128d4b13088162d1f31a41c13bdb3c8b0"
+  },
+  "run": {
+    "command": "recipes",
+    "exit_code": 1,
+    "failure": "std::bad_alloc",
+    "wall_seconds": 338.81,
+    "user_seconds": 316.56,
+    "system_seconds": 17.18,
+    "peak_rss_kib": 12211308,
+    "address_space_limit_bytes": 12884901888,
+    "atomic_bundle_created": false,
+    "certificate_created": false
+  },
+  "phase_trace": [
+    {"phase": "index-built", "vm_rss_kib": 248352, "vm_size_kib": 424176},
+    {"phase": "model-overlay-staged", "vm_rss_kib": 235100, "vm_size_kib": 1517720},
+    {"phase": "predicate-occurrences-staged", "vm_rss_kib": 235612, "vm_size_kib": 1517720},
+    {"phase": "graph-built", "vm_rss_kib": 978420, "vm_size_kib": 1517584},
+    {"phase": "cones-staged", "vm_rss_kib": 1479584, "vm_size_kib": 1757368}
+  ],
+  "failure_localization": {
+    "last_completed_phase": "cones-staged",
+    "first_unreached_phase": "frontier-staged",
+    "operation": "frontier computation/materialization",
+    "observed_scale_from_equivalent_staged_inputs": {
+      "contextual_nodes": 136509,
+      "contextual_edges": 405759,
+      "ap_cones": 4,
+      "cone_members_total": 202524,
+      "external_actions": 24,
+      "boundary_attachments": 24
+    },
+    "report": "frontier_scaling_analysis.md"
+  },
+  "detached_verification": {
+    "verifier_sha256": "feeaf572ef258b77971cb7a820b07b2f564ffad2f04bcedfad8330d11970ff35",
+    "invoked": true,
+    "exit_code": 1,
+    "verdict": "FAIL",
+    "reason": "No M5 certificate was atomically published.",
+    "report": "certificate_verification.json"
+  },
+  "gates": {
+    "same_binary_schema_core": "PASS_IMMUTABLE_IDENTITY",
+    "portable_core_zero_edits": "PASS_FOR_RUN_SETUP",
+    "recipes_completed": "FAIL_RESOURCE_LIMIT",
+    "detached_certificate": "FAIL_NO_CERTIFICATE",
+    "libcoap_60_seconds_2_gib": "FAIL",
+    "real_project_accuracy": "NOT_ASSESSED_PENDING_TWO_HUMANS_AND_ARBITRATION"
+  },
+  "semantic_results": {
+    "predicate_occurrences": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "frontier_candidates": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "actionable_frontier": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "mutation_recipes": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE",
+    "unknown_recipes": "NOT_AVAILABLE_NO_ATOMIC_BUNDLE"
+  },
+  "claim_boundary": {
+    "portability_engineering_verdict": "RESOURCE_FAIL",
+    "accuracy_metrics_reported": false,
+    "fuzz_effectiveness_reported": false,
+    "executor_actionability_reported": false
+  }
+}

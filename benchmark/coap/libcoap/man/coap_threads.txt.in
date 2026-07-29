@@ -1,0 +1,375 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc tw=0
+
+coap_threads(3)
+===============
+:doctype: manpage
+:man source:   coap_threads
+:man version:  @PACKAGE_VERSION@
+:man manual:   libcoap Manual
+
+NAME
+----
+coap_threads,
+coap_io_process_loop,
+coap_io_process_terminate_loop,
+coap_io_process_configure_threads,
+coap_io_process_remove_threads
+- Work with CoAP threads
+
+SYNOPSIS
+--------
+*#include <coap@LIBCOAP_API_VERSION@/coap.h>*
+
+*int coap_io_process_loop(coap_context_t *_context_,
+coap_io_process_thread_t _main_loop_code_, void *_main_loop_code_arg_,
+uint32_t _timeout_ms_, uint32_t _thread_count_);*
+
+*void coap_io_process_terminate_loop(void);*
+
+*int coap_io_process_configure_threads(coap_context_t *_context_,
+uint32_t _thread_count_);*
+
+*void coap_io_process_remove_threads(coap_context_t *_context_);*
+
+For specific (D)TLS library support, link with
+*-lcoap-@LIBCOAP_API_VERSION@-notls*, *-lcoap-@LIBCOAP_API_VERSION@-gnutls*,
+*-lcoap-@LIBCOAP_API_VERSION@-openssl*, *-lcoap-@LIBCOAP_API_VERSION@-mbedtls*,
+*-lcoap-@LIBCOAP_API_VERSION@-wolfssl*,
+*-lcoap-@LIBCOAP_API_VERSION@-tinydtls*
+or *-lcoap-@LIBCOAP_API_VERSION@-openhitls*. Otherwise, link with
+*-lcoap-@LIBCOAP_API_VERSION@* to get the default (D)TLS library support.
+
+DESCRIPTION
+-----------
+This man page focuses on setting up and supporting multiple threads, each one
+invoking *coap_io_process*(3) in a loop.  There is no reason why an
+application cannot set up and manage its own threading model.
+
+Each thread calling *coap_io_process*(3) can receive a packet (a different packet
+for each thread), call the appropriate application call-back handler and
+potentially be spending time of consequence in that handler without blocking the
+reciept of other input traffic.
+
+These above listed functions should be called from the main thread.  It is
+assumed that thread-safe code has been enabled.
+
+*CAUTION:* The thread interaction lock protection is done within the libcoap
+library. There are several things that can cause thread interaction issues.
+
+Any application thread that is not executing in the libcoap library or in
+a libcoap call-back function must not modify any libcoap structure other
+than by calling a libcoap Public API as there is no locking protection.
+Furthermore, if a reference to some libcoap held data item is obtained, and then
+data associated with reference is modified (even with a Public API call) then
+this is not thread safe.
+
+There are two types of libcoap call-back.
+
+The first type of call-back is executing under the libcoap library lock protections
+and so changes can safely be made to any structure that libcoap is using including
+invoking any libcoap Public API calls.
+
+The second type of call-back is executing without the libcoap lock protections and
+so no modications must take place other than by using the libcoap Public API that
+is not modifying a determined reference. The second type is used when there is a
+likelyhood that the call-back may block on an external event and libcoap in general
+should not be blocked.
+
+The list of the second type of call-backs are set up by the following functions:
+
+[source, c]
+----
+coap_io_process_loop()
+coap_register_request_handler()
+coap_register_dynamic_resource_handler()
+coap_register_response_handler()
+coap_register_proxy_response_handler()
+coap_lwip_set_input_wait_handler()
+----
+
+*coap_io_process*(3) must not be called from within a call-back handler as
+*coap_io_process*(3) may then recursively call the same call-back handler.
+
+Calling a Public API that initiates a process that will invoke a call-back
+(potentially on a different thread) that requires external information to
+be already set up may fail if this information is provided in a subsequent
+Public API call (which may be done too late) sequentially done by the caller
+of the initial Public API. An example of this is calling
+*coap_new_client_session_psk2*(3) followed by *coap_session_set_app_data2*(3)
+and the (D)TLS Identity call-cack is called before
+*coap_session_set_app_data2*(3) completes. Use *coap_new_client_session_psk3*(3)
+instead.
+
+FUNCTIONS
+---------
+
+*Function: coap_io_process_loop()*
+
+The *coap_io_process_loop*() function is used to set up additional threads that
+are in a loop just calling *coap_io_process*(3) with COAP_IO_WAIT.  These
+threads are terminated when *coap_io_process_terminate_loop*() is called.
+The thread calling *coap_io_process_loop*() will also be in a separate loop
+that is calling *coap_io_process*(3), optionally calling _main_loop_code_
+(if not NULL) with argument _main_loop_code_arg_. For the thread calling
+*coap_io_process_loop*(), it will call _main_loop_code_ at least every
+_timeout_ms_ milli-secs, with the call to _main_loop_code_ start time is rounded
+down to the nearest second if _timeout_ms_ is >= 1000.
+
+_context_ defines the context to associate the threads with. _thread_count_
+is the number of threads to be running *coap_io_process*(3) which includes the
+*coap_io_process_loop*() calling thread in the count.
+
+*Function: coap_io_process_terminate_loop()*
+
+The *coap_io_process_terminate_loop*() function is used to terminate any added
+threads running under the control of *coap_io_process_loop*() and causing the
+thread that called *coap_io_process_loop*() to return.
+
+*Function: coap_io_process_configure_threads()*
+
+The *coap_io_process_configure_threads*() function is used to set up
+_thread_count_ threads for _context_ which loop doing a
+*coap_io_process*(3) until told to exit. Usually *coap_io_process_loop*()
+would be called, but *coap_io_process_configure_threads*() can be used to wrap
+with *coap_io_process_remove_threads*() a complex version
+of _main_loop_code_.
+
+*NOTE:* Calling *coap_io_process_configure_threads*() more than once with the
+same _context_ will cause the threads associated with the previous call to
+get terminated.
+
+*NOTE:* *coap_io_process_configure_threads*() sets up its own *signal*(3) /
+*sigaction*(3) handler to handle the additional threads shutdown using SIGINT.
+This handler will also call any handler set up by *signal*(3) / *sigaction*(3)
+for SIGINT prior to the call to *coap_io_process_configure_threads*().
+Ideally, *signal*(3) / *sigaction*(3) for SIGINT should not be called after
+calling *coap_io_process_configure_threads*().
+
+*coap_io_process_loop*() uses *coap_io_process_configure_threads*() and
+*coap_io_process_remove_threads*() to wrap the call to _main_loop_code_ until
+told to exit..
+
+*Function: coap_io_process_remove_threads()*
+
+The *coap_io_process_remove_threads*() function is used stop and remove
+threads created by *coap_io_process_configure_threads*() for _context_.
+For most environments, the additional threads are killed off with SIGINT.
+*coap_io_process_remove_threads*() is always called by *coap_free_context*(3).
+
+RETURN VALUES
+-------------
+*coap_io_process_loop*(), *coap_io_process_configure_threads*() return 1 on success
+else 0 on failure.
+
+EXAMPLES
+--------
+*coap_io_process_loop()*
+
+[source, c]
+----
+#include <inttypes.h>
+#include <string.h>
+#include <stdio.h>
+#include <signal.h>
+#include <time.h>
+#include <coap@LIBCOAP_API_VERSION@/coap.h>
+#include <coap3/coap_defines.h>
+
+#if COAP_THREAD_SAFE
+/* Define the number of coap_io_process() threads required */
+#ifndef NUM_SERVER_THREADS
+#define NUM_SERVER_THREADS 3
+#endif /* NUM_SERVER_THREADS */
+#endif /* COAP_THREAD_SAFE */
+
+static volatile int quit = 0;
+coap_resource_t *time_resource;
+static time_t my_clock_base = 0;
+
+/* SIGINT handler: set quit to 1 for graceful termination */
+static void
+handle_sigint(int signum COAP_UNUSED) {
+  quit = 1;
+#if NUM_SERVER_THREADS
+  coap_io_process_terminate_loop();
+#endif /* NUM_SERVER_THREADS */
+}
+
+static void
+hnd_get_fetch_time(coap_resource_t *resource,
+                   coap_session_t *session,
+                   const coap_pdu_t *request,
+                   const coap_string_t *query,
+                   coap_pdu_t *response) {
+  unsigned char buf[40];
+  size_t len;
+  time_t now;
+  coap_tick_t t;
+  (void)request;
+  coap_pdu_code_t code = coap_pdu_get_code(request);
+  size_t size;
+  const uint8_t *data;
+  coap_str_const_t *ticks = coap_make_str_const("ticks");
+
+  if (my_clock_base) {
+
+    /* calculate current time */
+    coap_ticks(&t);
+    now = my_clock_base + (t / COAP_TICKS_PER_SECOND);
+
+    /* coap_get_data() sets size to 0 on error */
+    (void)coap_get_data(request, &size, &data);
+
+    if (code == COAP_REQUEST_CODE_GET && query != NULL &&
+        coap_string_equal(query, ticks)) {
+      /* parameter is in query, output ticks */
+      len = snprintf((char *)buf, sizeof(buf), "%" PRIi64, (int64_t)now);
+    } else if (code == COAP_REQUEST_CODE_FETCH && size == ticks->length &&
+               memcmp(data, ticks->s, ticks->length) == 0) {
+      /* parameter is in data, output ticks */
+      len = snprintf((char *)buf, sizeof(buf), "%" PRIi64, (int64_t)now);
+    } else {      /* output human-readable time */
+      struct tm *tmp;
+      tmp = gmtime(&now);
+      if (!tmp) {
+        /* If 'now' is not valid */
+        coap_pdu_set_code(response, COAP_RESPONSE_CODE_NOT_FOUND);
+        return;
+      } else {
+        len = strftime((char *)buf, sizeof(buf), "%b %d %H:%M:%S", tmp);
+      }
+    }
+    coap_pdu_set_code(response, COAP_RESPONSE_CODE_CONTENT);
+    coap_add_data_large_response(resource, session, request, response,
+                                 query, COAP_MEDIATYPE_TEXT_PLAIN, 1, 0,
+                                 len,
+                                 buf, NULL, NULL);
+  } else {
+    /* if my_clock_base was deleted, we pretend to have no such resource */
+    coap_pdu_set_code(response, COAP_RESPONSE_CODE_NOT_FOUND);
+  }
+}
+
+/*
+ * This function sends off an Observe unsolicited response when the time
+ * (based on seconds) changes.
+ */
+static void
+do_time_observe_code(void *arg) {
+  static coap_time_t t_last = 0;
+  coap_time_t t_now;
+  coap_tick_t now;
+
+  (void)arg;
+  coap_ticks(&now);
+  t_now = coap_ticks_to_rt(now);
+  if (t_now != t_last) {
+    t_last = t_now;
+    coap_resource_notify_observers(time_resource, NULL);
+  }
+}
+
+static void
+init_resources(coap_context_t *ctx) {
+  coap_resource_t *r;
+
+  my_clock_base = time(NULL);
+  r = coap_resource_init(coap_make_str_const("time"), 0);
+  coap_register_request_handler(r, COAP_REQUEST_GET, hnd_get_fetch_time);
+  coap_register_request_handler(r, COAP_REQUEST_FETCH, hnd_get_fetch_time);
+  coap_resource_set_get_observable(r, 1);
+
+  coap_add_attr(r, coap_make_str_const("ct"), coap_make_str_const("0"), 0);
+  coap_add_attr(r, coap_make_str_const("title"), coap_make_str_const("\"Internal Clock\""), 0);
+  coap_add_attr(r, coap_make_str_const("rt"), coap_make_str_const("\"ticks\""), 0);
+  coap_add_attr(r, coap_make_str_const("if"), coap_make_str_const("\"clock\""), 0);
+
+  coap_add_resource(ctx, r);
+  time_resource = r;
+}
+
+int
+main(int argc, char **argv) {
+  unsigned wait_ms;
+  coap_context_t *ctx;
+
+  (void)argc;
+  (void)argv;
+
+  ctx = coap_new_context(NULL);
+  signal(SIGINT, handle_sigint);
+
+  init_resources(ctx);
+
+  /* Other general start up code */
+
+  wait_ms = 1000;
+#if NUM_SERVER_THREADS
+  if (!coap_io_process_loop(ctx, do_time_observe_code, NULL, wait_ms,
+                            NUM_SERVER_THREADS)) {
+    coap_log_err("coap_io_process_loop: Startup failed\n");
+  }
+#else /* ! NUM_SERVER_THREADS */
+  while (!quit) {
+    unsigned int next_sec_ms;
+    int result;
+    coap_tick_t now;
+
+    /*
+     * result is time spent in coap_io_process()
+     */
+    result = coap_io_process(ctx, wait_ms);
+    if (result < 0) {
+      break;
+    } else if (result && (unsigned)result < wait_ms) {
+      /* decrement if there is a result wait time returned */
+      wait_ms -= result;
+    } else {
+      /*
+       * result == 0, or result >= wait_ms
+       * (wait_ms could have decremented to a small value, below
+       * the granularity of the timer in coap_io_process() and hence
+       * result == 0)
+       */
+      wait_ms = 1000;
+    }
+
+    do_time_observe_code(NULL);
+
+    /* need to wait until next second starts if wait_ms is too large */
+    coap_ticks(&now);
+    next_sec_ms = 1000 - (now % COAP_TICKS_PER_SECOND) *
+                  1000 / COAP_TICKS_PER_SECOND;
+    if (next_sec_ms && next_sec_ms < wait_ms)
+      wait_ms = next_sec_ms;
+  }
+#endif /* ! NUM_SERVER_THREADS */
+
+  /* General close down code */
+}
+----
+
+SEE ALSO
+--------
+*coap_io_process*(3)
+
+FURTHER INFORMATION
+-------------------
+See
+
+"https://rfc-editor.org/rfc/rfc7252[RFC7252: The Constrained Application Protocol (CoAP)]"
+
+for further information.
+
+BUGS
+----
+Please raise an issue on GitHub at
+https://github.com/obgm/libcoap/issues to report any bugs.
+
+Please raise a Pull Request at https://github.com/obgm/libcoap/pulls
+for any fixes.
+
+AUTHORS
+-------
+The libcoap project <libcoap-developers@lists.sourceforge.net>

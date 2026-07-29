@@ -1,0 +1,109 @@
+{
+  "anchors": {
+    "ap_primary": {
+      "kind": "AP",
+      "location": {
+        "column": 13,
+        "file": "cases/018_indirect_data_negative_v7.cpp",
+        "line": 30
+      },
+      "token": "ap_primary"
+    },
+    "node_stage_one": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/018_indirect_data_negative_v7.cpp",
+        "line": 26
+      },
+      "token": "node_stage_one"
+    },
+    "node_stage_two": {
+      "kind": "NODE",
+      "location": {
+        "column": 13,
+        "file": "cases/018_indirect_data_negative_v7.cpp",
+        "line": 28
+      },
+      "token": "node_stage_two"
+    },
+    "source_primary": {
+      "kind": "SOURCE",
+      "location": {
+        "column": 13,
+        "file": "cases/018_indirect_data_negative_v7.cpp",
+        "line": 23
+      },
+      "token": "source_primary"
+    }
+  },
+  "aps": [
+    {
+      "expression": "node_stage_two reaches generated affine threshold",
+      "id": "ap_primary",
+      "location": {
+        "column": 13,
+        "file": "cases/018_indirect_data_negative_v7.cpp",
+        "line": 30
+      },
+      "role": "STATE",
+      "symbol": "ap_primary"
+    }
+  ],
+  "case_id": "RIFT-GOLD-018",
+  "case_relation": "NO_INFLUENCE",
+  "category": "indirect_data",
+  "entry_point": "main",
+  "human_validation": {
+    "arbitration_required": true,
+    "note": "Real-project labels require two independent human annotations and arbitration; none are claimed here.",
+    "required_annotators": 2,
+    "status": "PENDING"
+  },
+  "language": "c++20",
+  "oracle": {
+    "derivation": "Two explicit helper stages mechanically define the interprocedural value path; negative variants use a separate constant-rooted helper chain.",
+    "generator_version": "1.0.0",
+    "kind": "MECHANICAL_TEMPLATE_ORACLE",
+    "limitations": [
+      "The oracle is exact only for the generated template and declared source/AP pairs.",
+      "Compilation does not independently prove semantic influence or mutation effectiveness."
+    ],
+    "template_id": "indirect_data",
+    "variant": 7
+  },
+  "relations": [
+    {
+      "ap_id": "ap_primary",
+      "channels": [],
+      "joint_group": [],
+      "mutation_recipe": null,
+      "negative_reason": "The source reaches a discarded helper result, while the AP chain starts from a constant.",
+      "path": {
+        "edges": [],
+        "nodes": []
+      },
+      "preconditions": [],
+      "relation": "NO_INFLUENCE",
+      "source_id": "source_primary"
+    }
+  ],
+  "schema_version": "rift.mechanical-gold.case.v1",
+  "source_file": "cases/018_indirect_data_negative_v7.cpp",
+  "source_sha256": "ee59a517f4bec8c324ae6b0df8486295edb6bcb780406408a41b0dfbff5e2874",
+  "sources": [
+    {
+      "controllability": "EXTERNAL",
+      "fuzzable_frontier": true,
+      "id": "source_primary",
+      "kind": "external_argument",
+      "location": {
+        "column": 13,
+        "file": "cases/018_indirect_data_negative_v7.cpp",
+        "line": 23
+      },
+      "scope": "PROCESS",
+      "symbol": "source_primary"
+    }
+  ]
+}

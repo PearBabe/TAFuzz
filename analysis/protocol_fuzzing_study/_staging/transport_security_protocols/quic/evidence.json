@@ -1,0 +1,57 @@
+{
+  "protocol": "QUIC",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_INDEPENDENT_AUDIT_AND_ROOT_PROFILE_REVIEW",
+  "standards": [
+    {
+      "id": "RFC9000",
+      "title": "QUIC: A UDP-Based Multiplexed and Secure Transport",
+      "url": "https://www.rfc-editor.org/rfc/rfc9000.html",
+      "sections": [
+        "8.2.4",
+        "10.1",
+        "13.2.1",
+        "18.2"
+      ],
+      "source_type": "IETF Standards Track"
+    },
+    {
+      "id": "RFC9002",
+      "title": "QUIC Loss Detection and Congestion Control",
+      "url": "https://www.rfc-editor.org/rfc/rfc9002.html",
+      "sections": [
+        "6.2.1",
+        "6.2.2",
+        "6.2.4"
+      ],
+      "source_type": "IETF Standards Track"
+    },
+    {
+      "id": "RFC9001",
+      "title": "Using TLS to Secure QUIC",
+      "url": "https://www.rfc-editor.org/rfc/rfc9001.html",
+      "sections": [
+        "6.5"
+      ],
+      "source_type": "IETF Standards Track"
+    }
+  ],
+  "sources": [
+    {
+      "repository": "ngtcp2/ngtcp2",
+      "commit": "fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "url": "https://github.com/ngtcp2/ngtcp2/tree/fcb5cdaba44a8fb1c821319af306e3f38f18e738",
+      "role": "mature QUIC v1 implementation and example profile"
+    }
+  ],
+  "method": "Screened ACK delay, PTO/backoff, persistent congestion, path validation, idle, closing/draining and key-update timers; independently audited the initial set and root-reviewed two later fixed-profile no-early cards.",
+  "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md",
+  "atomic_proposition_source_mapping": {
+    "schema": "primary_source_atomic_propositions + auxiliary_source_mappings[]",
+    "status": "COMPLETE_FOR_ALL_ADMITTED_CANDIDATES",
+    "property_count": 7,
+    "atomic_proposition_count": 19,
+    "policy": "Every declared AP has at least one fixed-commit executable source mapping; dynamic identifiers remain correlation fields.",
+    "root_verification": "generate_multi_protocol_catalog.py candidate_gate_errors + verify_source + verify_auxiliary_sources"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "property_id": "EXAMPLE.UNBOUNDED_RESPONSE",
+  "property_kind": "UNBOUNDED_LIVENESS",
+  "zone_signature_contract": "PROPERTY_CLOCKS_ONLY",
+  "state_projection_fields": [
+    "flight_mode",
+    "armed",
+    "altitude_bucket"
+  ],
+  "min_cycle_time_us": 1000000,
+  "cycle_time_quantum_us": 1000,
+  "replay_confirmations": 2,
+  "edge_mutations": {
+    "0:0": [
+      {
+        "input_id": "EXAMPLE_ONLY:mode_change",
+        "static_relevance": 1.0,
+        "dynamic_effect": 0.8,
+        "dynamic_status": "CONFIRMED_EFFECT",
+        "direction_match": true,
+        "reversible": true,
+        "evidence_role": "SYNTHETIC_BINDING_FOR_PROTOTYPE"
+      }
+    ]
+  }
+}

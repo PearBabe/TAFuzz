@@ -1,0 +1,39 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-008
+title: Maximum flight-time warning and Return
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/config/safety.md
+    lines: 96-110
+    original_text: "At the maximum flight time after takeoff the vehicle will automatically enter return mode; it will warn at 90% of this time."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 884-897
+    original_text: "Starting from 90% of the maximum flight time, a warning message will be sent. Set to -1 to disable."
+normalized_requirement:
+  context: COM_FLT_TIME_MAX is enabled and takeoff has been detected
+  trigger: elapsed flight time reaches 0.9*T_flight and T_flight
+  obligations: issue a warning from 90 percent; enter Return at the maximum time
+  split_required: warning and Return are separate monitor obligations with different observability
+time_constraint:
+  expression: T_flight = runtime(COM_FLT_TIME_MAX) seconds; T_warn = 0.9*T_flight
+  compiled_default_instance: disabled at -1
+  epoch: takeoff-detected transition, not arming and not first throttle command
+  clock: PX4 HRT; black-box adapter may use EXTENDED_SYS_STATE transition on host monotonic clock
+  boundary: NEEDS_OBSERVER_TOLERANCE
+mitl:
+  status: NOT_VALIDATED
+  formula_candidates:
+    - "G(takeoff -> F_[0.9*T_flight,0.9*T_flight+EPS_OBS] flight_time_warning)"
+    - "G(takeoff -> F_[T_flight,T_flight+EPS_OBS] mode_rtl)"
+atomic_propositions:
+  - AP-PX4-TAKEOFF-DETECTED
+  - AP-PX4-FLIGHT-TIME-WARNING
+  - AP-PX4-MODE-RTL
+mavlink_observation_refs: [OBS-PX4-LANDED, OBS-PX4-PARAM, OBS-PX4-EVENT, OBS-PX4-MODE]
+blockers: [NEEDS_WARNING_OBSERVATION, NEEDS_TAKEOFF_EVENT_DEFINITION, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

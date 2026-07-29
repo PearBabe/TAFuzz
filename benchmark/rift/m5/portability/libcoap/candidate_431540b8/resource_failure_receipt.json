@@ -1,0 +1,52 @@
+{
+  "schema_version": "rift.portability.resource_failure.v1",
+  "status": "TERMINATED_AFTER_DEFINITIVE_RESOURCE_GATE_FAILURE",
+  "claim_label": "PERFORMANCE_DIAGNOSTIC_NOT_FINAL_SEAL",
+  "analyzer": {
+    "path": "/tmp/tafuzz-sa-m5-portability-431540b8b46d6341db1f96a4069317e2a56a0e506a90c3b044bf930a3c79a137",
+    "sha256": "431540b8b46d6341db1f96a4069317e2a56a0e506a90c3b044bf930a3c79a137"
+  },
+  "run": {
+    "command": "recipes",
+    "translation_units": 38,
+    "started_at": "2026-07-18T14:19:01+08:00",
+    "terminated_at": "2026-07-18T14:25:58+08:00",
+    "termination": "EXTERNAL_SIGTERM_AFTER_RESOURCE_GATE_WAS_IRREVOCABLY_EXCEEDED",
+    "exit_code": 143,
+    "wall_seconds": 417.05,
+    "user_seconds": 402.12,
+    "system_seconds": 14.90,
+    "peak_rss_kib": 11848420,
+    "registered_gate": {
+      "wall_seconds_max": 60,
+      "peak_rss_kib_max": 2097152,
+      "verdict": "FAIL"
+    }
+  },
+  "phase_trace": [
+    {"phase": "index-built", "vm_rss_kib": 248592, "vm_size_kib": 424156},
+    {"phase": "model-overlay-staged", "vm_rss_kib": 235320, "vm_size_kib": 1517716},
+    {"phase": "predicate-occurrences-staged", "vm_rss_kib": 235844, "vm_size_kib": 1517716},
+    {"phase": "graph-built", "vm_rss_kib": 978668, "vm_size_kib": 1517580},
+    {"phase": "cones-staged", "vm_rss_kib": 1479780, "vm_size_kib": 1757380}
+  ],
+  "failure_localization": {
+    "last_completed_phase": "cones-staged",
+    "phase_at_termination": "frontier-computation-before-frontier-staged",
+    "finding": "RSS grew from 1,479,780 KiB after cones to 11,848,420 KiB without reaching frontier-staged.",
+    "analyzer_self_failure": false
+  },
+  "detached_verification": {
+    "invoked": true,
+    "exit_code": 1,
+    "verdict": "FAIL",
+    "reason": "No M5 certificate was atomically published before external termination.",
+    "report": "certificate_verification.json"
+  },
+  "claim_boundary": {
+    "portability_result": "RESOURCE_FAIL",
+    "semantic_accuracy_assessed": false,
+    "actionability_assessed": false,
+    "reason": "No completed bundle and no two-human gold labels."
+  }
+}

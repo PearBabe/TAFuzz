@@ -1,0 +1,101 @@
+{
+  "sha": "2648eb330b133a20f1398d59a28c53532106cad3",
+  "node_id": "MDY6Q29tbWl0MTUxMDE1Nzk6MjY0OGViMzMwYjEzM2EyMGYxMzk4ZDU5YTI4YzUzNTMyMTA2Y2FkMw==",
+  "commit": {
+    "author": {
+      "name": "Daniel-Constantin Mierla",
+      "email": "miconda@gmail.com",
+      "date": "2020-10-09T19:59:49Z"
+    },
+    "committer": {
+      "name": "Daniel-Constantin Mierla",
+      "email": "miconda@gmail.com",
+      "date": "2020-10-09T20:00:47Z"
+    },
+    "message": "core: parser - print lenghts in to header parsing debug message",
+    "tree": {
+      "sha": "25dded16333a2a862286512ba620143892f1b379",
+      "url": "https://api.github.com/repos/kamailio/kamailio/git/trees/25dded16333a2a862286512ba620143892f1b379"
+    },
+    "url": "https://api.github.com/repos/kamailio/kamailio/git/commits/2648eb330b133a20f1398d59a28c53532106cad3",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "url": "https://api.github.com/repos/kamailio/kamailio/commits/2648eb330b133a20f1398d59a28c53532106cad3",
+  "html_url": "https://github.com/kamailio/kamailio/commit/2648eb330b133a20f1398d59a28c53532106cad3",
+  "comments_url": "https://api.github.com/repos/kamailio/kamailio/commits/2648eb330b133a20f1398d59a28c53532106cad3/comments",
+  "author": {
+    "login": "miconda",
+    "id": 184809,
+    "node_id": "MDQ6VXNlcjE4NDgwOQ==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/184809?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/miconda",
+    "html_url": "https://github.com/miconda",
+    "followers_url": "https://api.github.com/users/miconda/followers",
+    "following_url": "https://api.github.com/users/miconda/following{/other_user}",
+    "gists_url": "https://api.github.com/users/miconda/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/miconda/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/miconda/subscriptions",
+    "organizations_url": "https://api.github.com/users/miconda/orgs",
+    "repos_url": "https://api.github.com/users/miconda/repos",
+    "events_url": "https://api.github.com/users/miconda/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/miconda/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "miconda",
+    "id": 184809,
+    "node_id": "MDQ6VXNlcjE4NDgwOQ==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/184809?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/miconda",
+    "html_url": "https://github.com/miconda",
+    "followers_url": "https://api.github.com/users/miconda/followers",
+    "following_url": "https://api.github.com/users/miconda/following{/other_user}",
+    "gists_url": "https://api.github.com/users/miconda/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/miconda/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/miconda/subscriptions",
+    "organizations_url": "https://api.github.com/users/miconda/orgs",
+    "repos_url": "https://api.github.com/users/miconda/repos",
+    "events_url": "https://api.github.com/users/miconda/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/miconda/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "a9ede56b35990fcc9164af0775f503e49e33377e",
+      "url": "https://api.github.com/repos/kamailio/kamailio/commits/a9ede56b35990fcc9164af0775f503e49e33377e",
+      "html_url": "https://github.com/kamailio/kamailio/commit/a9ede56b35990fcc9164af0775f503e49e33377e"
+    }
+  ],
+  "stats": {
+    "total": 6,
+    "additions": 3,
+    "deletions": 3
+  },
+  "files": [
+    {
+      "sha": "13ab6c14e21f3379747644de12dd917236e8bc66",
+      "filename": "src/core/parser/msg_parser.c",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 3,
+      "changes": 6,
+      "blob_url": "https://github.com/kamailio/kamailio/blob/2648eb330b133a20f1398d59a28c53532106cad3/src%2Fcore%2Fparser%2Fmsg_parser.c",
+      "raw_url": "https://github.com/kamailio/kamailio/raw/2648eb330b133a20f1398d59a28c53532106cad3/src%2Fcore%2Fparser%2Fmsg_parser.c",
+      "contents_url": "https://api.github.com/repos/kamailio/kamailio/contents/src%2Fcore%2Fparser%2Fmsg_parser.c?ref=2648eb330b133a20f1398d59a28c53532106cad3",
+      "patch": "@@ -169,9 +169,9 @@ char* get_hdr_field(char* const buf, char* const end, struct hdr_field* const hd\n \t\t\thdr->body.len=tmp-hdr->body.s;\n \t\t\tDBG(\"<%.*s> [%d]; uri=[%.*s]\\n\", hdr->name.len, ZSW(hdr->name.s),\n \t\t\t\t\thdr->body.len, to_b->uri.len, ZSW(to_b->uri.s));\n-\t\t\tDBG(\"to body [%.*s], to tag [%.*s]\\n\", to_b->body.len,\n-\t\t\t\t\tZSW(to_b->body.s), to_b->tag_value.len,\n-\t\t\t\t\tZSW(to_b->tag_value.s));\n+\t\t\tDBG(\"to body (%d)[%.*s], to tag (%d)[%.*s]\\n\", to_b->body.len,\n+\t\t\t\t\tto_b->body.len, ZSW(to_b->body.s), to_b->tag_value.len,\n+\t\t\t\t\tto_b->tag_value.len, ZSW(to_b->tag_value.s));\n \t\t\tbreak;\n \t\tcase HDR_CONTENTLENGTH_T:\n \t\t\thdr->body.s=tmp;"
+    }
+  ]
+}

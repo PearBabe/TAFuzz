@@ -1,0 +1,2486 @@
+{
+  "baseline_distinct_message_key_count": 33,
+  "capture_start_host_monotonic_ns": 8145932524788,
+  "distinct_message_key_count": 52,
+  "host_clock": "CLOCK_MONOTONIC_NS",
+  "messages": [
+    {
+      "count": 5,
+      "fields": [
+        "data",
+        "reason"
+      ],
+      "first_host_monotonic_ns": 8145935848803,
+      "first_host_wall_utc": "2026-07-17T23:09:59.473857+00:00",
+      "last_host_monotonic_ns": 8145966518701,
+      "last_host_wall_utc": "2026-07-17T23:09:59.504525+00:00",
+      "message_id": -1,
+      "message_name": "BAD_DATA",
+      "phase_counts": {
+        "STARTUP": 5
+      },
+      "source_identities": [
+        {
+          "count": 5,
+          "system_component": "0:0"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 116,
+      "fields": [
+        "autopilot",
+        "base_mode",
+        "custom_mode",
+        "mavlink_version",
+        "system_status",
+        "type"
+      ],
+      "first_host_monotonic_ns": 8146948257732,
+      "first_host_wall_utc": "2026-07-17T23:10:00.486263+00:00",
+      "last_host_monotonic_ns": 8198643174362,
+      "last_host_wall_utc": "2026-07-17T23:10:53.099517+00:00",
+      "message_id": 0,
+      "message_name": "HEARTBEAT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 1,
+        "RELEVANT_STREAM_SAMPLE": 76,
+        "REQUEST_SWEEP": 22,
+        "STARTUP": 5
+      },
+      "source_identities": [
+        {
+          "count": 116,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 113,
+      "fields": [
+        "battery_remaining",
+        "current_battery",
+        "drop_rate_comm",
+        "errors_comm",
+        "errors_count1",
+        "errors_count2",
+        "errors_count3",
+        "errors_count4",
+        "load",
+        "onboard_control_sensors_enabled",
+        "onboard_control_sensors_enabled_extended",
+        "onboard_control_sensors_health",
+        "onboard_control_sensors_health_extended",
+        "onboard_control_sensors_present",
+        "onboard_control_sensors_present_extended",
+        "voltage_battery"
+      ],
+      "first_host_monotonic_ns": 8147981226301,
+      "first_host_wall_utc": "2026-07-17T23:10:01.519232+00:00",
+      "last_host_monotonic_ns": 8198801177364,
+      "last_host_wall_utc": "2026-07-17T23:10:53.257516+00:00",
+      "message_id": 1,
+      "message_name": "SYS_STATUS",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 76,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 113,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 112,
+      "fields": [
+        "time_boot_ms",
+        "time_unix_usec"
+      ],
+      "first_host_monotonic_ns": 8147992269871,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530276+00:00",
+      "last_host_monotonic_ns": 8198806412419,
+      "last_host_wall_utc": "2026-07-17T23:10:53.262751+00:00",
+      "message_id": 2,
+      "message_name": "SYSTEM_TIME",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 75,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 112,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52864,
+          "sample_count": 112,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147992269871,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149012789613,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149992506807,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151012847611,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151992629387,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        },
+        "time_unix_usec": {
+          "clock_domain": "unix_epoch",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 0,
+          "last_value": 1784329851836612,
+          "sample_count": 112,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147992269871,
+              "phase": "STARTUP",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8149012789613,
+              "phase": "STARTUP",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8149992506807,
+              "phase": "BASELINE",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8151012847611,
+              "phase": "BASELINE",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8151992629387,
+              "phase": "BASELINE",
+              "value": 0
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 1447,
+      "fields": [
+        "param_count",
+        "param_id",
+        "param_index",
+        "param_type",
+        "param_value"
+      ],
+      "first_host_monotonic_ns": 8161999532986,
+      "first_host_wall_utc": "2026-07-17T23:10:15.537539+00:00",
+      "last_host_monotonic_ns": 8197663691448,
+      "last_host_wall_utc": "2026-07-17T23:10:52.120030+00:00",
+      "message_id": 22,
+      "message_name": "PARAM_VALUE",
+      "phase_counts": {
+        "PARAMETER_DOWNLOAD": 1440,
+        "RELEVANT_STREAM_SAMPLE": 4,
+        "REQUEST_SWEEP": 3
+      },
+      "source_identities": [
+        {
+          "count": 1447,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 112,
+      "fields": [
+        "alt",
+        "alt_ellipsoid",
+        "cog",
+        "eph",
+        "epv",
+        "fix_type",
+        "h_acc",
+        "hdg_acc",
+        "lat",
+        "lon",
+        "satellites_visible",
+        "time_usec",
+        "v_acc",
+        "vel",
+        "vel_acc",
+        "yaw"
+      ],
+      "first_host_monotonic_ns": 8147992143154,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530149+00:00",
+      "last_host_monotonic_ns": 8198806311161,
+      "last_host_wall_utc": "2026-07-17T23:10:53.262650+00:00",
+      "message_id": 24,
+      "message_name": "GPS_RAW_INT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 75,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 112,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 0,
+          "last_value": 52828000,
+          "sample_count": 112,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147992143154,
+              "phase": "STARTUP",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8149012634581,
+              "phase": "STARTUP",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8149992384755,
+              "phase": "BASELINE",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8151012747075,
+              "phase": "BASELINE",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8151992530662,
+              "phase": "BASELINE",
+              "value": 0
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 1,
+      "fields": [
+        "temperature",
+        "time_boot_ms",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "first_host_monotonic_ns": 8163801051206,
+      "first_host_wall_utc": "2026-07-17T23:10:17.339057+00:00",
+      "last_host_monotonic_ns": 8163801051206,
+      "last_host_wall_utc": "2026-07-17T23:10:17.339057+00:00",
+      "message_id": 26,
+      "message_name": "SCALED_IMU",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 17864,
+          "last_value": 17864,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8163801051206,
+              "phase": "REQUEST_SWEEP",
+              "value": 17864
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "id",
+        "temperature",
+        "time_usec",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "first_host_monotonic_ns": 8147986510738,
+      "first_host_wall_utc": "2026-07-17T23:10:01.524516+00:00",
+      "last_host_monotonic_ns": 8197984702750,
+      "last_host_wall_utc": "2026-07-17T23:10:52.441041+00:00",
+      "message_id": 27,
+      "message_name": "RAW_IMU",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045015,
+          "last_value": 52045007,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147986510738,
+              "phase": "STARTUP",
+              "value": 2045015
+            },
+            {
+              "host_monotonic_ns": 8149007061739,
+              "phase": "STARTUP",
+              "value": 3064607
+            },
+            {
+              "host_monotonic_ns": 8149986899491,
+              "phase": "BASELINE",
+              "value": 4045048
+            },
+            {
+              "host_monotonic_ns": 8151007092694,
+              "phase": "BASELINE",
+              "value": 5064640
+            },
+            {
+              "host_monotonic_ns": 8151986899263,
+              "phase": "BASELINE",
+              "value": 6045081
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "press_abs",
+        "press_diff",
+        "temperature",
+        "temperature_press_diff",
+        "time_boot_ms"
+      ],
+      "first_host_monotonic_ns": 8147991929341,
+      "first_host_wall_utc": "2026-07-17T23:10:01.529936+00:00",
+      "last_host_monotonic_ns": 8197989825346,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446165+00:00",
+      "message_id": 29,
+      "message_name": "SCALED_PRESSURE",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52045,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147991929341,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149007344044,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149992142580,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151007413053,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151992301937,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 111,
+      "fields": [
+        "pitch",
+        "pitchspeed",
+        "roll",
+        "rollspeed",
+        "time_boot_ms",
+        "yaw",
+        "yawspeed"
+      ],
+      "first_host_monotonic_ns": 8147980906595,
+      "first_host_wall_utc": "2026-07-17T23:10:01.518912+00:00",
+      "last_host_monotonic_ns": 8198800737386,
+      "last_host_wall_utc": "2026-07-17T23:10:53.257082+00:00",
+      "message_id": 30,
+      "message_name": "ATTITUDE",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 74,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 111,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52864,
+          "sample_count": 111,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147980906595,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149001385235,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149981054606,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151001466642,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151981292854,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 1,
+      "fields": [
+        "pitchspeed",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "repr_offset_q",
+        "rollspeed",
+        "time_boot_ms",
+        "yawspeed"
+      ],
+      "first_host_monotonic_ns": 8163900248656,
+      "first_host_wall_utc": "2026-07-17T23:10:17.438254+00:00",
+      "last_host_monotonic_ns": 8163900248656,
+      "last_host_wall_utc": "2026-07-17T23:10:17.438254+00:00",
+      "message_id": 31,
+      "message_name": "ATTITUDE_QUATERNION",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 17964,
+          "last_value": 17964,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8163900248656,
+              "phase": "REQUEST_SWEEP",
+              "value": 17964
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 101,
+      "fields": [
+        "time_boot_ms",
+        "vx",
+        "vy",
+        "vz",
+        "x",
+        "y",
+        "z"
+      ],
+      "first_host_monotonic_ns": 8157018882625,
+      "first_host_wall_utc": "2026-07-17T23:10:10.556889+00:00",
+      "last_host_monotonic_ns": 8198806503148,
+      "last_host_wall_utc": "2026-07-17T23:10:53.262842+00:00",
+      "message_id": 32,
+      "message_name": "LOCAL_POSITION_NED",
+      "phase_counts": {
+        "BASELINE": 5,
+        "RELEVANT_STREAM_SAMPLE": 73,
+        "REQUEST_SWEEP": 23
+      },
+      "source_identities": [
+        {
+          "count": 101,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 11064,
+          "last_value": 52864,
+          "sample_count": 101,
+          "samples": [
+            {
+              "host_monotonic_ns": 8157018882625,
+              "phase": "BASELINE",
+              "value": 11064
+            },
+            {
+              "host_monotonic_ns": 8158016679334,
+              "phase": "BASELINE",
+              "value": 12064
+            },
+            {
+              "host_monotonic_ns": 8159018965771,
+              "phase": "BASELINE",
+              "value": 13064
+            },
+            {
+              "host_monotonic_ns": 8160016360295,
+              "phase": "BASELINE",
+              "value": 14064
+            },
+            {
+              "host_monotonic_ns": 8161019330109,
+              "phase": "BASELINE",
+              "value": 15064
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 108,
+      "fields": [
+        "alt",
+        "hdg",
+        "lat",
+        "lon",
+        "relative_alt",
+        "time_boot_ms",
+        "vx",
+        "vy",
+        "vz"
+      ],
+      "first_host_monotonic_ns": 8147981028579,
+      "first_host_wall_utc": "2026-07-17T23:10:01.519034+00:00",
+      "last_host_monotonic_ns": 8198800951424,
+      "last_host_wall_utc": "2026-07-17T23:10:53.257290+00:00",
+      "message_id": 33,
+      "message_name": "GLOBAL_POSITION_INT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 71,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 108,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52864,
+          "sample_count": 108,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147981028579,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149001494284,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149981155425,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151001567743,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151981396955,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 183,
+      "fields": [
+        "port",
+        "servo10_raw",
+        "servo11_raw",
+        "servo12_raw",
+        "servo13_raw",
+        "servo14_raw",
+        "servo15_raw",
+        "servo16_raw",
+        "servo1_raw",
+        "servo2_raw",
+        "servo3_raw",
+        "servo4_raw",
+        "servo5_raw",
+        "servo6_raw",
+        "servo7_raw",
+        "servo8_raw",
+        "servo9_raw",
+        "time_usec"
+      ],
+      "first_host_monotonic_ns": 8146137614467,
+      "first_host_wall_utc": "2026-07-17T23:09:59.675625+00:00",
+      "last_host_monotonic_ns": 8198801323095,
+      "last_host_wall_utc": "2026-07-17T23:10:53.257662+00:00",
+      "message_id": 36,
+      "message_name": "SERVO_OUTPUT_RAW",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 71,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 77
+      },
+      "source_identities": [
+        {
+          "count": 183,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 200753,
+          "last_value": 52864679,
+          "sample_count": 183,
+          "samples": [
+            {
+              "host_monotonic_ns": 8146137614467,
+              "phase": "STARTUP",
+              "value": 200753
+            },
+            {
+              "host_monotonic_ns": 8146155290505,
+              "phase": "STARTUP",
+              "value": 221578
+            },
+            {
+              "host_monotonic_ns": 8146172721493,
+              "phase": "STARTUP",
+              "value": 242403
+            },
+            {
+              "host_monotonic_ns": 8146196149734,
+              "phase": "STARTUP",
+              "value": 263228
+            },
+            {
+              "host_monotonic_ns": 8146219439239,
+              "phase": "STARTUP",
+              "value": 284053
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "mission_mode",
+        "mission_state",
+        "seq",
+        "total"
+      ],
+      "first_host_monotonic_ns": 8147986162737,
+      "first_host_wall_utc": "2026-07-17T23:10:01.524169+00:00",
+      "last_host_monotonic_ns": 8197984590876,
+      "last_host_wall_utc": "2026-07-17T23:10:52.440929+00:00",
+      "message_id": 42,
+      "message_name": "MISSION_CURRENT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 1,
+      "fields": [
+        "seq"
+      ],
+      "first_host_monotonic_ns": 8164617542147,
+      "first_host_wall_utc": "2026-07-17T23:10:18.155548+00:00",
+      "last_host_monotonic_ns": 8164617542147,
+      "last_host_wall_utc": "2026-07-17T23:10:18.155548+00:00",
+      "message_id": 46,
+      "message_name": "MISSION_ITEM_REACHED",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 7,
+      "fields": [
+        "altitude",
+        "latitude",
+        "longitude",
+        "time_usec"
+      ],
+      "first_host_monotonic_ns": 8165421868284,
+      "first_host_wall_utc": "2026-07-17T23:10:18.959878+00:00",
+      "last_host_monotonic_ns": 8197680897713,
+      "last_host_wall_utc": "2026-07-17T23:10:52.137237+00:00",
+      "message_id": 49,
+      "message_name": "GPS_GLOBAL_ORIGIN",
+      "phase_counts": {
+        "RELEVANT_STREAM_SAMPLE": 3,
+        "REQUEST_SWEEP": 4
+      },
+      "source_identities": [
+        {
+          "count": 7,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 19484703,
+          "last_value": 51745127,
+          "sample_count": 7,
+          "samples": [
+            {
+              "host_monotonic_ns": 8165421868284,
+              "phase": "REQUEST_SWEEP",
+              "value": 19484703
+            },
+            {
+              "host_monotonic_ns": 8167678943134,
+              "phase": "REQUEST_SWEEP",
+              "value": 21744632
+            },
+            {
+              "host_monotonic_ns": 8173679302530,
+              "phase": "REQUEST_SWEEP",
+              "value": 27744731
+            },
+            {
+              "host_monotonic_ns": 8179679821501,
+              "phase": "REQUEST_SWEEP",
+              "value": 33744830
+            },
+            {
+              "host_monotonic_ns": 8185680173364,
+              "phase": "RELEVANT_STREAM_SAMPLE",
+              "value": 39744929
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 107,
+      "fields": [
+        "chan10_raw",
+        "chan11_raw",
+        "chan12_raw",
+        "chan13_raw",
+        "chan14_raw",
+        "chan15_raw",
+        "chan16_raw",
+        "chan17_raw",
+        "chan18_raw",
+        "chan1_raw",
+        "chan2_raw",
+        "chan3_raw",
+        "chan4_raw",
+        "chan5_raw",
+        "chan6_raw",
+        "chan7_raw",
+        "chan8_raw",
+        "chan9_raw",
+        "chancount",
+        "rssi",
+        "time_boot_ms"
+      ],
+      "first_host_monotonic_ns": 8147986379511,
+      "first_host_wall_utc": "2026-07-17T23:10:01.524385+00:00",
+      "last_host_monotonic_ns": 8198806182660,
+      "last_host_wall_utc": "2026-07-17T23:10:53.262522+00:00",
+      "message_id": 65,
+      "message_name": "RC_CHANNELS",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 70,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 107,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52864,
+          "sample_count": 107,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147986379511,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149006947606,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149986780916,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151006976915,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151986783951,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 106,
+      "fields": [
+        "airspeed",
+        "alt",
+        "climb",
+        "groundspeed",
+        "heading",
+        "throttle"
+      ],
+      "first_host_monotonic_ns": 8147981131999,
+      "first_host_wall_utc": "2026-07-17T23:10:01.519138+00:00",
+      "last_host_monotonic_ns": 8198801068772,
+      "last_host_wall_utc": "2026-07-17T23:10:53.257408+00:00",
+      "message_id": 74,
+      "message_name": "VFR_HUD",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 69,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 106,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 369,
+      "fields": [
+        "command",
+        "progress",
+        "result",
+        "result_param2",
+        "target_component",
+        "target_system"
+      ],
+      "first_host_monotonic_ns": 8163113260443,
+      "first_host_wall_utc": "2026-07-17T23:10:16.651266+00:00",
+      "last_host_monotonic_ns": 8186822895581,
+      "last_host_wall_utc": "2026-07-17T23:10:41.279235+00:00",
+      "message_id": 77,
+      "message_name": "COMMAND_ACK",
+      "phase_counts": {
+        "RELEVANT_STREAM_SAMPLE": 17,
+        "REQUEST_SWEEP": 352
+      },
+      "source_identities": [
+        {
+          "count": 369,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 1,
+      "fields": [
+        "abs_pressure",
+        "diff_pressure",
+        "fields_updated",
+        "id",
+        "pressure_alt",
+        "temperature",
+        "time_usec",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "first_host_monotonic_ns": 8167521508122,
+      "first_host_wall_utc": "2026-07-17T23:10:21.059514+00:00",
+      "last_host_monotonic_ns": 8167521508122,
+      "last_host_wall_utc": "2026-07-17T23:10:21.059514+00:00",
+      "message_id": 105,
+      "message_name": "HIGHRES_IMU",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 21584696,
+          "last_value": 21584696,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8167521508122,
+              "phase": "REQUEST_SWEEP",
+              "value": 21584696
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 1,
+      "fields": [
+        "alt",
+        "lat",
+        "lat_int",
+        "lon",
+        "lon_int",
+        "pitch",
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "roll",
+        "std_dev_horz",
+        "std_dev_vert",
+        "vd",
+        "ve",
+        "vn",
+        "xacc",
+        "xgyro",
+        "yacc",
+        "yaw",
+        "ygyro",
+        "zacc",
+        "zgyro"
+      ],
+      "first_host_monotonic_ns": 8167579747852,
+      "first_host_wall_utc": "2026-07-17T23:10:21.117753+00:00",
+      "last_host_monotonic_ns": 8167579747852,
+      "last_host_wall_utc": "2026-07-17T23:10:21.117753+00:00",
+      "message_id": 108,
+      "message_name": "SIM_STATE",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 5,
+      "fields": [
+        "tc1",
+        "ts1"
+      ],
+      "first_host_monotonic_ns": 8155940469606,
+      "first_host_wall_utc": "2026-07-17T23:10:09.478480+00:00",
+      "last_host_monotonic_ns": 8196025048710,
+      "last_host_wall_utc": "2026-07-17T23:10:50.481388+00:00",
+      "message_id": 111,
+      "message_name": "TIMESYNC",
+      "phase_counts": {
+        "BASELINE": 1,
+        "RELEVANT_STREAM_SAMPLE": 2,
+        "REQUEST_SWEEP": 2
+      },
+      "source_identities": [
+        {
+          "count": 5,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "tc1": {
+          "clock_domain": "ambiguous_not_defined_by_xml",
+          "clock_semantics_explicit_in_definition": "false",
+          "first_value": 0,
+          "last_value": 0,
+          "sample_count": 5,
+          "samples": [
+            {
+              "host_monotonic_ns": 8155940469606,
+              "phase": "BASELINE",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8165958504512,
+              "phase": "REQUEST_SWEEP",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8175982362267,
+              "phase": "REQUEST_SWEEP",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8186000939723,
+              "phase": "RELEVANT_STREAM_SAMPLE",
+              "value": 0
+            },
+            {
+              "host_monotonic_ns": 8196025048710,
+              "phase": "RELEVANT_STREAM_SAMPLE",
+              "value": 0
+            }
+          ],
+          "units": "ns"
+        },
+        "ts1": {
+          "clock_domain": "ambiguous_not_defined_by_xml",
+          "clock_semantics_explicit_in_definition": "false",
+          "first_value": 10004330152,
+          "last_value": 50084958152,
+          "sample_count": 5,
+          "samples": [
+            {
+              "host_monotonic_ns": 8155940469606,
+              "phase": "BASELINE",
+              "value": 10004330152
+            },
+            {
+              "host_monotonic_ns": 8165958504512,
+              "phase": "REQUEST_SWEEP",
+              "value": 20024487152
+            },
+            {
+              "host_monotonic_ns": 8175982362267,
+              "phase": "REQUEST_SWEEP",
+              "value": 30044644152
+            },
+            {
+              "host_monotonic_ns": 8186000939723,
+              "phase": "RELEVANT_STREAM_SAMPLE",
+              "value": 40064801152
+            },
+            {
+              "host_monotonic_ns": 8196025048710,
+              "phase": "RELEVANT_STREAM_SAMPLE",
+              "value": 50084958152
+            }
+          ],
+          "units": "ns"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "temperature",
+        "time_boot_ms",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "first_host_monotonic_ns": 8147986604953,
+      "first_host_wall_utc": "2026-07-17T23:10:01.524611+00:00",
+      "last_host_monotonic_ns": 8197984803307,
+      "last_host_wall_utc": "2026-07-17T23:10:52.441142+00:00",
+      "message_id": 116,
+      "message_name": "SCALED_IMU2",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52045,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147986604953,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149007157659,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149986997768,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151007190942,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151986994716,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "Vcc",
+        "Vservo",
+        "flags"
+      ],
+      "first_host_monotonic_ns": 8147981325055,
+      "first_host_wall_utc": "2026-07-17T23:10:01.519331+00:00",
+      "last_host_monotonic_ns": 8197984401714,
+      "last_host_wall_utc": "2026-07-17T23:10:52.440740+00:00",
+      "message_id": 125,
+      "message_name": "POWER_STATUS",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "temperature",
+        "time_boot_ms",
+        "xacc",
+        "xgyro",
+        "xmag",
+        "yacc",
+        "ygyro",
+        "ymag",
+        "zacc",
+        "zgyro",
+        "zmag"
+      ],
+      "first_host_monotonic_ns": 8147986702461,
+      "first_host_wall_utc": "2026-07-17T23:10:01.524708+00:00",
+      "last_host_monotonic_ns": 8197984898935,
+      "last_host_wall_utc": "2026-07-17T23:10:52.441238+00:00",
+      "message_id": 129,
+      "message_name": "SCALED_IMU3",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52045,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147986702461,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149007252010,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149987094447,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151007284339,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151987089535,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 28,
+      "fields": [
+        "grid_spacing",
+        "lat",
+        "lon",
+        "mask"
+      ],
+      "first_host_monotonic_ns": 8147992554854,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530561+00:00",
+      "last_host_monotonic_ns": 8196007862384,
+      "last_host_wall_utc": "2026-07-17T23:10:50.464201+00:00",
+      "message_id": 133,
+      "message_name": "TERRAIN_REQUEST",
+      "phase_counts": {
+        "BASELINE": 9,
+        "RELEVANT_STREAM_SAMPLE": 7,
+        "REQUEST_SWEEP": 10,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 28,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "current_height",
+        "lat",
+        "loaded",
+        "lon",
+        "pending",
+        "spacing",
+        "terrain_height"
+      ],
+      "first_host_monotonic_ns": 8147992645388,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530651+00:00",
+      "last_host_monotonic_ns": 8197990240769,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446579+00:00",
+      "message_id": 136,
+      "message_name": "TERRAIN_REPORT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "press_abs",
+        "press_diff",
+        "temperature",
+        "temperature_press_diff",
+        "time_boot_ms"
+      ],
+      "first_host_monotonic_ns": 8147992043504,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530049+00:00",
+      "last_host_monotonic_ns": 8197989944136,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446283+00:00",
+      "message_id": 137,
+      "message_name": "SCALED_PRESSURE2",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045,
+          "last_value": 52045,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147992043504,
+              "phase": "STARTUP",
+              "value": 2045
+            },
+            {
+              "host_monotonic_ns": 8149012526642,
+              "phase": "STARTUP",
+              "value": 3064
+            },
+            {
+              "host_monotonic_ns": 8149992284083,
+              "phase": "BASELINE",
+              "value": 4045
+            },
+            {
+              "host_monotonic_ns": 8151012627682,
+              "phase": "BASELINE",
+              "value": 5064
+            },
+            {
+              "host_monotonic_ns": 8151992427739,
+              "phase": "BASELINE",
+              "value": 6045
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 104,
+      "fields": [
+        "battery_function",
+        "battery_remaining",
+        "charge_state",
+        "current_battery",
+        "current_consumed",
+        "energy_consumed",
+        "fault_bitmask",
+        "id",
+        "mode",
+        "temperature",
+        "time_remaining",
+        "type",
+        "voltages",
+        "voltages_ext"
+      ],
+      "first_host_monotonic_ns": 8147997835156,
+      "first_host_wall_utc": "2026-07-17T23:10:01.535841+00:00",
+      "last_host_monotonic_ns": 8198806639869,
+      "last_host_wall_utc": "2026-07-17T23:10:53.262979+00:00",
+      "message_id": 147,
+      "message_name": "BATTERY_STATUS",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 67,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 104,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 64,
+      "fields": [
+        "board_version",
+        "capabilities",
+        "flight_custom_version",
+        "flight_sw_version",
+        "middleware_custom_version",
+        "middleware_sw_version",
+        "os_custom_version",
+        "os_sw_version",
+        "product_id",
+        "uid",
+        "uid2",
+        "vendor_id"
+      ],
+      "first_host_monotonic_ns": 8170658712765,
+      "first_host_wall_utc": "2026-07-17T23:10:24.196719+00:00",
+      "last_host_monotonic_ns": 8198812103585,
+      "last_host_wall_utc": "2026-07-17T23:10:53.268445+00:00",
+      "message_id": 148,
+      "message_name": "AUTOPILOT_VERSION",
+      "phase_counts": {
+        "RELEVANT_STREAM_SAMPLE": 63,
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 64,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "brkval",
+        "freemem",
+        "freemem32"
+      ],
+      "first_host_monotonic_ns": 8147986043373,
+      "first_host_wall_utc": "2026-07-17T23:10:01.524050+00:00",
+      "last_host_monotonic_ns": 8197984491615,
+      "last_host_wall_utc": "2026-07-17T23:10:52.440830+00:00",
+      "message_id": 152,
+      "message_name": "MEMINFO",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "accel_weight",
+        "error_rp",
+        "error_yaw",
+        "omegaIx",
+        "omegaIy",
+        "omegaIz",
+        "renorm_val"
+      ],
+      "first_host_monotonic_ns": 8147980681932,
+      "first_host_wall_utc": "2026-07-17T23:10:01.518688+00:00",
+      "last_host_monotonic_ns": 8197984097396,
+      "last_host_wall_utc": "2026-07-17T23:10:52.440441+00:00",
+      "message_id": 163,
+      "message_name": "AHRS",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "lat",
+        "lng",
+        "pitch",
+        "roll",
+        "xacc",
+        "xgyro",
+        "yacc",
+        "yaw",
+        "ygyro",
+        "zacc",
+        "zgyro"
+      ],
+      "first_host_monotonic_ns": 8147992361807,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530368+00:00",
+      "last_host_monotonic_ns": 8197990041780,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446381+00:00",
+      "message_id": 164,
+      "message_name": "SIMSTATE",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "direction",
+        "speed",
+        "speed_z"
+      ],
+      "first_host_monotonic_ns": 8147992462519,
+      "first_host_wall_utc": "2026-07-17T23:10:01.530468+00:00",
+      "last_host_monotonic_ns": 8197990146106,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446485+00:00",
+      "message_id": 168,
+      "message_name": "WIND",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "altitude",
+        "lat",
+        "lng",
+        "pitch",
+        "roll",
+        "yaw"
+      ],
+      "first_host_monotonic_ns": 8147980787085,
+      "first_host_wall_utc": "2026-07-17T23:10:01.518793+00:00",
+      "last_host_monotonic_ns": 8197984296843,
+      "last_host_wall_utc": "2026-07-17T23:10:52.440636+00:00",
+      "message_id": 178,
+      "message_name": "AHRS2",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 51,
+      "fields": [
+        "airspeed_variance",
+        "compass_variance",
+        "flags",
+        "pos_horiz_variance",
+        "pos_vert_variance",
+        "terrain_alt_variance",
+        "velocity_variance"
+      ],
+      "first_host_monotonic_ns": 8149018266540,
+      "first_host_wall_utc": "2026-07-17T23:10:02.556273+00:00",
+      "last_host_monotonic_ns": 8197990337546,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446676+00:00",
+      "message_id": 193,
+      "message_name": "EKF_STATUS_REPORT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 1
+      },
+      "source_identities": [
+        {
+          "count": 51,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 1,
+      "fields": [
+        "airspeed",
+        "airspeed_sp",
+        "altitude",
+        "autopilot",
+        "battery",
+        "climb_rate",
+        "custom0",
+        "custom1",
+        "custom2",
+        "custom_mode",
+        "eph",
+        "epv",
+        "failure_flags",
+        "groundspeed",
+        "heading",
+        "latitude",
+        "longitude",
+        "target_altitude",
+        "target_distance",
+        "target_heading",
+        "temperature_air",
+        "throttle",
+        "timestamp",
+        "type",
+        "wind_heading",
+        "windspeed",
+        "wp_num"
+      ],
+      "first_host_monotonic_ns": 8175102080218,
+      "first_host_wall_utc": "2026-07-17T23:10:28.640086+00:00",
+      "last_host_monotonic_ns": 8175102080218,
+      "last_host_wall_utc": "2026-07-17T23:10:28.640086+00:00",
+      "message_id": 235,
+      "message_name": "HIGH_LATENCY2",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "timestamp": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 29164,
+          "last_value": 29164,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8175102080218,
+              "phase": "REQUEST_SWEEP",
+              "value": 29164
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "clipping_0",
+        "clipping_1",
+        "clipping_2",
+        "time_usec",
+        "vibration_x",
+        "vibration_y",
+        "vibration_z"
+      ],
+      "first_host_monotonic_ns": 8147997710610,
+      "first_host_wall_utc": "2026-07-17T23:10:01.535717+00:00",
+      "last_host_monotonic_ns": 8197990443635,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446782+00:00",
+      "message_id": 241,
+      "message_name": "VIBRATION",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045015,
+          "last_value": 52045007,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147997710610,
+              "phase": "STARTUP",
+              "value": 2045015
+            },
+            {
+              "host_monotonic_ns": 8149018375190,
+              "phase": "STARTUP",
+              "value": 3064607
+            },
+            {
+              "host_monotonic_ns": 8149998005173,
+              "phase": "BASELINE",
+              "value": 4045048
+            },
+            {
+              "host_monotonic_ns": 8151018424578,
+              "phase": "BASELINE",
+              "value": 5064640
+            },
+            {
+              "host_monotonic_ns": 8151998307192,
+              "phase": "BASELINE",
+              "value": 6045081
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 71,
+      "fields": [
+        "altitude",
+        "approach_x",
+        "approach_y",
+        "approach_z",
+        "latitude",
+        "longitude",
+        "q",
+        "time_usec",
+        "x",
+        "y",
+        "z"
+      ],
+      "first_host_monotonic_ns": 8156057071290,
+      "first_host_wall_utc": "2026-07-17T23:10:09.595080+00:00",
+      "last_host_monotonic_ns": 8198806751870,
+      "last_host_wall_utc": "2026-07-17T23:10:53.263090+00:00",
+      "message_id": 242,
+      "message_name": "HOME_POSITION",
+      "phase_counts": {
+        "BASELINE": 2,
+        "RELEVANT_STREAM_SAMPLE": 65,
+        "REQUEST_SWEEP": 4
+      },
+      "source_identities": [
+        {
+          "count": 71,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 10125115,
+          "last_value": 52864679,
+          "sample_count": 71,
+          "samples": [
+            {
+              "host_monotonic_ns": 8156057071290,
+              "phase": "BASELINE",
+              "value": 10125115
+            },
+            {
+              "host_monotonic_ns": 8161678355624,
+              "phase": "BASELINE",
+              "value": 15744533
+            },
+            {
+              "host_monotonic_ns": 8167679072638,
+              "phase": "REQUEST_SWEEP",
+              "value": 21744632
+            },
+            {
+              "host_monotonic_ns": 8173679437528,
+              "phase": "REQUEST_SWEEP",
+              "value": 27744731
+            },
+            {
+              "host_monotonic_ns": 8175142673669,
+              "phase": "REQUEST_SWEEP",
+              "value": 29204980
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 1,
+      "fields": [
+        "interval_us",
+        "message_id"
+      ],
+      "first_host_monotonic_ns": 8175177786026,
+      "first_host_wall_utc": "2026-07-17T23:10:28.715794+00:00",
+      "last_host_monotonic_ns": 8175177786026,
+      "last_host_wall_utc": "2026-07-17T23:10:28.715794+00:00",
+      "message_id": 244,
+      "message_name": "MESSAGE_INTERVAL",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 62,
+      "fields": [
+        "landed_state",
+        "vtol_state"
+      ],
+      "first_host_monotonic_ns": 8175201289606,
+      "first_host_wall_utc": "2026-07-17T23:10:28.739295+00:00",
+      "last_host_monotonic_ns": 8198806867017,
+      "last_host_wall_utc": "2026-07-17T23:10:53.263206+00:00",
+      "message_id": 245,
+      "message_name": "EXTENDED_SYS_STATE",
+      "phase_counts": {
+        "RELEVANT_STREAM_SAMPLE": 61,
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 62,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 31,
+      "fields": [
+        "chunk_seq",
+        "id",
+        "severity",
+        "text"
+      ],
+      "first_host_monotonic_ns": 8147677756282,
+      "first_host_wall_utc": "2026-07-17T23:10:01.215762+00:00",
+      "last_host_monotonic_ns": 8191500131770,
+      "last_host_wall_utc": "2026-07-17T23:10:45.956471+00:00",
+      "message_id": 253,
+      "message_name": "STATUSTEXT",
+      "phase_counts": {
+        "BASELINE": 12,
+        "PARAMETER_DOWNLOAD": 2,
+        "RELEVANT_STREAM_SAMPLE": 3,
+        "REQUEST_SWEEP": 8,
+        "STARTUP": 6
+      },
+      "source_identities": [
+        {
+          "count": 31,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 1,
+      "fields": [
+        "arming_time_utc",
+        "flight_uuid",
+        "landing_time",
+        "takeoff_time_utc",
+        "time_boot_ms"
+      ],
+      "first_host_monotonic_ns": 8177020610972,
+      "first_host_wall_utc": "2026-07-17T23:10:31.476950+00:00",
+      "last_host_monotonic_ns": 8177020610972,
+      "last_host_wall_utc": "2026-07-17T23:10:31.476950+00:00",
+      "message_id": 264,
+      "message_name": "FLIGHT_INFORMATION",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "arming_time_utc": {
+          "clock_domain": "utc_unspecified_timescale_details",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 0,
+          "last_value": 0,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8177020610972,
+              "phase": "REQUEST_SWEEP",
+              "value": 0
+            }
+          ],
+          "units": "us"
+        },
+        "landing_time": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 0,
+          "last_value": 0,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8177020610972,
+              "phase": "REQUEST_SWEEP",
+              "value": 0
+            }
+          ],
+          "units": "ms"
+        },
+        "takeoff_time_utc": {
+          "clock_domain": "utc_unspecified_timescale_details",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 0,
+          "last_value": 0,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8177020610972,
+              "phase": "REQUEST_SWEEP",
+              "value": 0
+            }
+          ],
+          "units": "us"
+        },
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 31085,
+          "last_value": 31085,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8177020610972,
+              "phase": "REQUEST_SWEEP",
+              "value": 31085
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 1,
+      "fields": [
+        "angular_velocity_z",
+        "estimator_status",
+        "feed_forward_angular_velocity_z",
+        "landed_state",
+        "q",
+        "q_estimated_delay_us",
+        "target_component",
+        "target_system",
+        "time_boot_us",
+        "v_estimated_delay_us",
+        "vx",
+        "vy",
+        "vz"
+      ],
+      "first_host_monotonic_ns": 8179702926418,
+      "first_host_wall_utc": "2026-07-17T23:10:34.159265+00:00",
+      "last_host_monotonic_ns": 8179702926418,
+      "last_host_wall_utc": "2026-07-17T23:10:34.159265+00:00",
+      "message_id": 286,
+      "message_name": "AUTOPILOT_STATE_FOR_GIMBAL_DEVICE",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_us": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 33764822,
+          "last_value": 33764822,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8179702926418,
+              "phase": "REQUEST_SWEEP",
+              "value": 33764822
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 52,
+      "fields": [
+        "airspeed",
+        "flags",
+        "id",
+        "raw_press",
+        "temperature"
+      ],
+      "first_host_monotonic_ns": 8147998115210,
+      "first_host_wall_utc": "2026-07-17T23:10:01.536121+00:00",
+      "last_host_monotonic_ns": 8197995712127,
+      "last_host_wall_utc": "2026-07-17T23:10:52.452051+00:00",
+      "message_id": 295,
+      "message_name": "AIRSPEED",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 1,
+      "fields": [
+        "alt",
+        "flags",
+        "flight_state",
+        "h_acc",
+        "lat",
+        "lon",
+        "next_alt",
+        "next_lat",
+        "next_lon",
+        "relative_alt",
+        "time",
+        "uas_id",
+        "update_rate",
+        "v_acc",
+        "vel_acc",
+        "vx",
+        "vy",
+        "vz"
+      ],
+      "first_host_monotonic_ns": 8180280332927,
+      "first_host_wall_utc": "2026-07-17T23:10:34.736672+00:00",
+      "last_host_monotonic_ns": 8180280332927,
+      "last_host_wall_utc": "2026-07-17T23:10:34.736672+00:00",
+      "message_id": 340,
+      "message_name": "UTM_GLOBAL_POSITION",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time": {
+          "clock_domain": "unix_epoch",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 1784329833316523,
+          "last_value": 1784329833316523,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8180280332927,
+              "phase": "REQUEST_SWEEP",
+              "value": 1784329833316523
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 1,
+      "fields": [
+        "on",
+        "present",
+        "time_boot_ms"
+      ],
+      "first_host_monotonic_ns": 8180840605969,
+      "first_host_wall_utc": "2026-07-17T23:10:35.296949+00:00",
+      "last_host_monotonic_ns": 8180840605969,
+      "last_host_wall_utc": "2026-07-17T23:10:35.296949+00:00",
+      "message_id": 376,
+      "message_name": "RELAY_STATUS",
+      "phase_counts": {
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 1,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_boot_ms": {
+          "clock_domain": "system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 34904,
+          "last_value": 34904,
+          "sample_count": 1,
+          "samples": [
+            {
+              "host_monotonic_ns": 8180840605969,
+              "phase": "REQUEST_SWEEP",
+              "value": 34904
+            }
+          ],
+          "units": "ms"
+        }
+      }
+    },
+    {
+      "count": 18,
+      "fields": [
+        "custom_mode",
+        "mode_index",
+        "mode_name",
+        "number_modes",
+        "properties",
+        "standard_mode"
+      ],
+      "first_host_monotonic_ns": 8180980207643,
+      "first_host_wall_utc": "2026-07-17T23:10:35.436546+00:00",
+      "last_host_monotonic_ns": 8182601282529,
+      "last_host_wall_utc": "2026-07-17T23:10:37.057621+00:00",
+      "message_id": 435,
+      "message_name": "AVAILABLE_MODES",
+      "phase_counts": {
+        "REQUEST_SWEEP": 18
+      },
+      "source_identities": [
+        {
+          "count": 18,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 4,
+      "fields": [
+        "seq"
+      ],
+      "first_host_monotonic_ns": 8181021450664,
+      "first_host_wall_utc": "2026-07-17T23:10:35.477789+00:00",
+      "last_host_monotonic_ns": 8195983998725,
+      "last_host_wall_utc": "2026-07-17T23:10:50.440354+00:00",
+      "message_id": 437,
+      "message_name": "AVAILABLE_MODES_MONITOR",
+      "phase_counts": {
+        "RELEVANT_STREAM_SAMPLE": 3,
+        "REQUEST_SWEEP": 1
+      },
+      "source_identities": [
+        {
+          "count": 4,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    },
+    {
+      "count": 52,
+      "fields": [
+        "AOA",
+        "SSA",
+        "time_usec"
+      ],
+      "first_host_monotonic_ns": 8147997984460,
+      "first_host_wall_utc": "2026-07-17T23:10:01.535990+00:00",
+      "last_host_monotonic_ns": 8197990543675,
+      "last_host_wall_utc": "2026-07-17T23:10:52.446882+00:00",
+      "message_id": 11020,
+      "message_name": "AOA_SSA",
+      "phase_counts": {
+        "BASELINE": 12,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23,
+        "STARTUP": 2
+      },
+      "source_identities": [
+        {
+          "count": 52,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {
+        "time_usec": {
+          "clock_domain": "ambiguous_unix_epoch_or_system_boot",
+          "clock_semantics_explicit_in_definition": "true",
+          "first_value": 2045015,
+          "last_value": 52045007,
+          "sample_count": 52,
+          "samples": [
+            {
+              "host_monotonic_ns": 8147997984460,
+              "phase": "STARTUP",
+              "value": 2045015
+            },
+            {
+              "host_monotonic_ns": 8149018601002,
+              "phase": "STARTUP",
+              "value": 3064607
+            },
+            {
+              "host_monotonic_ns": 8149998239771,
+              "phase": "BASELINE",
+              "value": 4045048
+            },
+            {
+              "host_monotonic_ns": 8151018671088,
+              "phase": "BASELINE",
+              "value": 5064640
+            },
+            {
+              "host_monotonic_ns": 8151998530492,
+              "phase": "BASELINE",
+              "value": 6045081
+            }
+          ],
+          "units": "us"
+        }
+      }
+    },
+    {
+      "count": 48,
+      "fields": [
+        "count",
+        "current",
+        "rpm",
+        "temperature",
+        "totalcurrent",
+        "voltage"
+      ],
+      "first_host_monotonic_ns": 8151998629528,
+      "first_host_wall_utc": "2026-07-17T23:10:05.536635+00:00",
+      "last_host_monotonic_ns": 8197995577753,
+      "last_host_wall_utc": "2026-07-17T23:10:52.451917+00:00",
+      "message_id": 11030,
+      "message_name": "ESC_TELEMETRY_1_TO_4",
+      "phase_counts": {
+        "BASELINE": 10,
+        "RELEVANT_STREAM_SAMPLE": 15,
+        "REQUEST_SWEEP": 23
+      },
+      "source_identities": [
+        {
+          "count": 48,
+          "system_component": "152:1"
+        }
+      ],
+      "time_fields": {}
+    }
+  ],
+  "schema_version": "1.0",
+  "total_message_count": 4326
+}

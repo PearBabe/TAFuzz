@@ -1,0 +1,47 @@
+property_id: RFC7252-MITL-008
+title: NON message 不得被 ACK
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.3"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1239
+      end: 1255
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: Non-confirmable message 不需要可靠传输，recipient MUST NOT acknowledge it；拒绝 NON 可发送 matching RST。
+  normative_keyword: MUST NOT
+mitl: |
+  G( NON_RECEIVED ->
+     G[0,0] !ACK_SENT_FOR_NON )
+informal_semantics: >
+  收到 Non-confirmable message 后，recipient 不得发送 ACK 来确认它；若拒绝，可选择 matching RST。
+role: client/server/both
+temporal_pattern: immediate_forbidden
+events:
+  start_event: NON_RECEIVED
+  forbidden_event: ACK_SENT_FOR_NON
+atomic_propositions:
+  - name: NON_RECEIVED
+    semantic: 收到 type 为 Non-confirmable 的 CoAP message。
+    fields: [session, peer, message.type, message.id]
+    future_source_mapping: [message field, function event]
+  - name: ACK_SENT_FOR_NON
+    semantic: 实现针对该 NON 发送 ACK。
+    fields: [session, peer, response.type, response.id, triggering_message.id]
+    future_source_mapping: [message field, function event]
+correlation_key:
+  key: [session, peer, message_id]
+  reason: ACK 是否针对该 NON 需要按 triggering message 的 Message ID 和 endpoint 判断。
+time_parameters:
+  bound_kind: immediate_bounded
+  start: NON_RECEIVED
+  end: outgoing ACK decision
+  interval: "[0,0]"
+  rfc_parameters: []
+  default_values: {}
+confidence: high
+verification_notes:
+  - matching RST 不被该性质禁止。
+  - 该性质只约束 ACK，不约束响应 message 的业务语义。

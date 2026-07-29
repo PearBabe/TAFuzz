@@ -1,0 +1,64 @@
+property_id: RFC7252-MITL-003
+title: CON 重传序列必须留在 MAX_TRANSMIT_SPAN 内
+rfc_reference:
+  rfc: RFC7252
+  sections:
+    - "4.2"
+    - "4.8.2"
+  line_ranges:
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1191
+      end: 1198
+    - path: /home/lqq/project/TAFuzz/coap_rfc_dataset/rfc_dataset/rfc7252/rfc7252.txt
+      start: 1553
+      end: 1559
+original_requirement:
+  text_handling: 完整 RFC 原文由 line_ranges 回查；本数据集不复制长段落。
+  context_summary: 任意下一次重传前至少等待 ACK_TIMEOUT，整个重传序列必须留在 MAX_TRANSMIT_SPAN 包络内。
+  normative_keyword: MUST
+mitl: |
+  G( CON_TRANSMISSION ->
+     G(0, ACK_TIMEOUT) !CON_RETRANSMITTED )
+  &&
+  G( CON_INITIAL_TRANSMISSION ->
+     G(MAX_TRANSMIT_SPAN, *) !CON_RETRANSMITTED )
+informal_semantics: >
+  同一 CON exchange 的重传不能早于 ACK_TIMEOUT；从首次发送起超过
+  MAX_TRANSMIT_SPAN 后，不得再出现同一 exchange 的重传。
+role: client/server/both
+temporal_pattern: timed_forbidden
+events:
+  start_event: CON_INITIAL_TRANSMISSION
+  forbidden_event: CON_RETRANSMITTED
+atomic_propositions:
+  - name: CON_INITIAL_TRANSMISSION
+    semantic: 同一 CON exchange 的首次发送。
+    fields: [session, peer, message.id]
+    future_source_mapping: [message field, function event]
+  - name: CON_TRANSMISSION
+    semantic: 同一 CON exchange 的任意一次发送，包括首次发送和重传。
+    fields: [session, peer, message.id, retransmission_counter]
+    future_source_mapping: [message field, timer, function event]
+  - name: CON_RETRANSMITTED
+    semantic: 同一 CON exchange 的非首次发送。
+    fields: [session, peer, message.id, retransmission_counter]
+    future_source_mapping: [message field, timer, function event]
+correlation_key:
+  key: [session, peer, message_id]
+  reason: RFC7252 message-layer 重传由 Message ID 和 endpoint 关联到同一 exchange。
+time_parameters:
+  bound_kind: nonzero_bounded
+  start: CON_INITIAL_TRANSMISSION
+  end: latest allowed retransmission
+  rfc_parameters:
+    - ACK_TIMEOUT
+    - MAX_TRANSMIT_SPAN
+  default_values:
+    ACK_TIMEOUT: 2 seconds
+    MAX_TRANSMIT_SPAN: 45 seconds
+  derived_formula:
+    MAX_TRANSMIT_SPAN: ACK_TIMEOUT * ((2 ** MAX_RETRANSMIT) - 1) * ACK_RANDOM_FACTOR
+confidence: high
+verification_notes:
+  - "G(MAX_TRANSMIT_SPAN, *) 表示超过包络后禁止重传；可执行监控可 lower 成 RETRANSMIT_AFTER_SPAN violation AP。"
+  - RFC 允许具体重传因调度迟到，但仍要求序列留在包络内。

@@ -1,0 +1,7 @@
+﻿baseline,source,version,kamailio_compatibility,sut,adapter,license,budget_evidence
+AFLnwe,ProFuzzBench,8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074,DIRECT,Kamailio,Docker/run.sh,Apache-2.0,1h tutorial; use 24h x4 full
+AFLNet,aflnet/aflnet,96032f86d0005dfeeb41ea7b31103f1d1ff8f168,DIRECT,Kamailio,ProFuzzBench SIP adapter,Apache-2.0,24h x4 in StateAFL/NSFuzz comparisons
+StateAFL,stateafl/stateafl,d923e22f7b2688db45b08f3fa3a29a566e7ff3a4,DIRECT,Kamailio,Dockerfile-stateafl,GPL-2.0,13 targets x3 fuzzers x4 repeats x24h
+NSFuzz,paper artifact,DOI:10.1145/3580598,PAPER_DIRECT,Kamailio,all 13 ProFuzzBench targets,verify artifact,4 runs x24h; adapter reproduction deferred
+SGFuzz,github.com/bajinsheng/SGFuzz,8f45141,NOT_DIRECT,not Kamailio by default,state-variable annotations,verify repository,23h average; secondary only
+ChatAFL,Zenodo 10115151,artifact record,DEFER_LARGE,not admitted as primary,LLM/API + large artifact,artifact terms,38.2GB artifact; no download in this phase

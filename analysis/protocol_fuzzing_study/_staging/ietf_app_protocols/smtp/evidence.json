@@ -1,0 +1,88 @@
+{
+  "protocol": "SMTP",
+  "access_date": "2026-07-13",
+  "status": "FIXED_AFTER_INDEPENDENT_AUDIT_COMPLETE",
+  "standards": [
+    {
+      "title": "Simple Mail Transfer Protocol",
+      "version": "RFC 5321",
+      "url": "https://www.rfc-editor.org/rfc/rfc5321.html",
+      "sections_reviewed": [
+        "4.5.3.2",
+        "4.5.3.2.1",
+        "4.5.3.2.2",
+        "4.5.3.2.3",
+        "4.5.3.2.4",
+        "4.5.3.2.5",
+        "4.5.3.2.6",
+        "4.5.3.2.7",
+        "4.5.4.1"
+      ]
+    }
+  ],
+  "implementation": {
+    "repository": "Exim/exim",
+    "version": "exim-4_89 / ProFuzzBench pin",
+    "commit": "38903fb5b864ee99904d035337c66891604d9678",
+    "url": "https://github.com/Exim/exim/tree/38903fb5b864ee99904d035337c66891604d9678",
+    "selection": "exact ProFuzzBench SMTP target version",
+    "anchors": [
+      "src/src/transports/smtp.c:189-225 command/data/final defaults",
+      "src/src/transports/smtp.c:508-525 timeout classification",
+      "src/src/transports/smtp.c:734-930 phase-specific response reads",
+      "src/src/transports/smtp.c:1451-1643 initial greeting connection and response",
+      "src/src/transports/smtp.c:2340-2480 MAIL/RCPT enqueue, flush, and response correlation",
+      "src/src/transports/smtp.c:2535-2827 classic DATA profile selection, body, and final response",
+      "src/src/smtp_out.c:326-430 command flush",
+      "src/src/smtp_out.c:457-520,548-608 response reader and errno propagation",
+      "src/src/ip.c:478-524,548-570 absolute read deadline and ETIMEDOUT",
+      "src/src/transport.c:216-306 per-block alarm and ETIMEDOUT path",
+      "src/src/globals.c:1325 smtp_receive_timeout=5*60",
+      "src/src/smtp_in.c:416-430,838-850,1424-1450 plaintext server command alarm/read/handler"
+    ],
+    "common_timeout_chain": {
+      "client_response": "smtp_read_response -> read_response_line -> ip_recv/fd_ready -> errno=ETIMEDOUT -> phase-specific check_response",
+      "client_block_write": "transport_write_block alarm -> write -> SIGALRM/timeout -> errno=ETIMEDOUT, guarded by the active outbound SMTP transport context",
+      "server_plaintext_command": "smtp_read_command -> smtp_getc alarm(smtp_receive_timeout) -> command_timeout_handler"
+    }
+  },
+  "benchmark": {
+    "repository": "profuzzbench/profuzzbench",
+    "commit": "8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+    "url": "https://github.com/profuzzbench/profuzzbench/tree/8573ec81d68f2c1ffc8f5e605dfdd9c61fbeb074",
+    "version_pin_evidence": "subjects/SMTP/Exim/Dockerfile:82-102 checks out Exim commit 38903fb5b864ee99904d035337c66891604d9678",
+    "runtime_role_evidence": "subjects/SMTP/Exim/run.sh:25-35 starts exim -bd as an inbound SMTP server",
+    "patch_line_audit": "The ProFuzzBench Exim patches do not shift the cited timer/source ranges at the fixed source commit."
+  },
+  "sut_roles": {
+    "SMTP_CLIENT": {
+      "property_ids": [
+        "SMTP-TIMEOUT-01",
+        "SMTP-TIMEOUT-02",
+        "SMTP-TIMEOUT-03",
+        "SMTP-TIMEOUT-04",
+        "SMTP-TIMEOUT-05",
+        "SMTP-TIMEOUT-06"
+      ],
+      "benchmark_reachability": "NOT_REACHED_BY_PROFUZZBENCH_EXIM_SERVER",
+      "required_harness": "Exim outbound delivery/queue runner plus a controlled peer SMTP server that can withhold phase responses or reads"
+    },
+    "SMTP_SERVER": {
+      "property_ids": ["SMTP-TIMEOUT-07"],
+      "benchmark_reachability": "ROLE_REACHED_BUT_DEADLINE_IMPRACTICAL_PER_TESTCASE",
+      "required_harness": "plaintext inbound SMTP connection that withholds the next command while the command-read handler is active"
+    }
+  },
+  "independent_audit": {
+    "report": "analysis/protocol_fuzzing_study/_audit/smtp_audit.md",
+    "original_dispositions": {"FIX": 7, "APPROVE": 0, "REJECT": 0},
+    "resolved_status": {"FIXED_AFTER_AUDIT": 7},
+    "formula_validation": "7/7 build success; each positive trace accepted and each negative trace rejected in symbolic and concrete modes"
+  },
+  "screening_result": {
+    "proposed": 7,
+    "fixed_after_audit": 7,
+    "claim_scope": "Seven distinct RFC 5321 section 4.5.3.2 phase-specific recommended minimums expressed as lower-bound MITL properties and separated by SMTP client/server role; they do not require timeout at the boundary.",
+    "triggerability": "LOW for all seven with unscaled RFC values (120000-600000 ms); no virtual-clock acceleration has been validated"
+  }
+}

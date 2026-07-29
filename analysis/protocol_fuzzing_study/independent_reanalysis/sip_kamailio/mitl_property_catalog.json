@@ -1,0 +1,1254 @@
+[
+  {
+    "pid": "SIP-KAM-001",
+    "category": "INVITE server transaction",
+    "role": "UAS/server transaction",
+    "requirement": "A newly constructed INVITE server transaction enters Proceeding and exposes the request to the transaction user.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.1",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "When a server transaction is constructed for an INVITE request, it starts in Proceeding and the request is passed upward.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion for same callback, not an RFC tolerance",
+    "kind": "eventual",
+    "trigger": "server_rx_invite_new_tx",
+    "outcome": "invite_tx_proceeding",
+    "formula": "G* (server_rx_invite_new_tx -> F [0,2] invite_tx_proceeding)",
+    "math_formula": "G(server_rx_invite_new_tx -> F_[0,2ms] invite_tx_proceeding)",
+    "aps": [
+      "server_rx_invite_new_tx",
+      "invite_tx_proceeding"
+    ],
+    "hooks": [
+      "HK_RX_PARSE_OK",
+      "HK_TX_NEW"
+    ],
+    "aux_hooks": [
+      "HK_TX_LOOKUP"
+    ],
+    "correlation_key": "Call-ID + CSeq number/method + top Via branch/sent-by",
+    "positive_trace": [
+      [
+        0,
+        [
+          "server_rx_invite_new_tx"
+        ]
+      ],
+      [
+        1,
+        [
+          "invite_tx_proceeding"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "server_rx_invite_new_tx"
+        ]
+      ],
+      [
+        3,
+        [
+          "invite_tx_proceeding"
+        ]
+      ]
+    ],
+    "observability": "white-box hook after parser and transaction creation",
+    "oracle_value": "high: catches transaction creation/routing regressions",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Should the benchmark count parser-rejected INVITEs separately from malformed-message oracles?"
+  },
+  {
+    "pid": "SIP-KAM-002",
+    "category": "INVITE provisional response",
+    "role": "UAS/server transaction",
+    "requirement": "If INVITE processing may take longer than the RFC 200 ms window and no earlier TU response exists, emit 100 Trying.",
+    "strength": "SHOULD with timer bound",
+    "rfc": "RFC3261",
+    "section": "17.2.1",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "The server transaction generates 100 Trying unless it knows the TU will respond within 200 ms.",
+    "time_bound_ms": "200",
+    "time_source": "RFC3261 section 17.2.1",
+    "kind": "eventual",
+    "trigger": "invite_auto_100_obligation",
+    "outcome": "uas_tx_100_trying",
+    "formula": "G* (invite_auto_100_obligation -> F [0,200] uas_tx_100_trying)",
+    "math_formula": "G(invite_auto_100_obligation -> F_[0,200ms] uas_tx_100_trying)",
+    "aps": [
+      "invite_auto_100_obligation",
+      "uas_tx_100_trying"
+    ],
+    "hooks": [
+      "HK_RELAY_REPLY",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_TX_NEW"
+    ],
+    "correlation_key": "same INVITE server transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_auto_100_obligation"
+        ]
+      ],
+      [
+        100,
+        [
+          "uas_tx_100_trying"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_auto_100_obligation"
+        ]
+      ],
+      [
+        201,
+        [
+          "uas_tx_100_trying"
+        ]
+      ]
+    ],
+    "observability": "white-box send hook; black-box packet capture can cross-check",
+    "oracle_value": "medium/high: detects loss of early provisional feedback",
+    "confidence": "MEDIUM",
+    "caveat": "Kamailio auto_inv_100 and route-script behavior must be fixed in experiment profile.",
+    "review_question": "Does the chosen Kamailio cfg always enable auto_inv_100, or should this be a profile-specific property?"
+  },
+  {
+    "pid": "SIP-KAM-003",
+    "category": "INVITE provisional relay",
+    "role": "UAS/proxy transaction",
+    "requirement": "A provisional 101-199 response selected by the transaction layer while INVITE is Proceeding is passed to transport.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.1",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "In Proceeding, provisional responses from the TU are passed to the transport layer.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "invite_proceeding_tu_provisional",
+    "outcome": "uas_tx_provisional_response",
+    "formula": "G* (invite_proceeding_tu_provisional -> F [0,2] uas_tx_provisional_response)",
+    "math_formula": "G(invite_proceeding_tu_provisional -> F_[0,2ms] uas_tx_provisional_response)",
+    "aps": [
+      "invite_proceeding_tu_provisional",
+      "uas_tx_provisional_response"
+    ],
+    "hooks": [
+      "HK_RELAY_REPLY",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_REPLY_RECEIVED"
+    ],
+    "correlation_key": "same INVITE transaction and response branch",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_proceeding_tu_provisional"
+        ]
+      ],
+      [
+        1,
+        [
+          "uas_tx_provisional_response"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_proceeding_tu_provisional"
+        ]
+      ],
+      [
+        3,
+        [
+          "uas_tx_provisional_response"
+        ]
+      ]
+    ],
+    "observability": "send hook plus optional pcap",
+    "oracle_value": "high: detects swallowed provisional responses",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Confirm whether ProfuzzBench route exposes upstream provisional responses during fuzzing."
+  },
+  {
+    "pid": "SIP-KAM-004",
+    "category": "INVITE retransmission suppression",
+    "role": "UAS/server transaction",
+    "requirement": "A retransmitted INVITE in Proceeding retransmits the most recent provisional response instead of creating a fresh TU event.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.1",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "If a request retransmission is received in Proceeding, the most recent provisional response is retransmitted.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "invite_retransmission_in_proceeding_with_last_prov",
+    "outcome": "uas_retransmit_last_provisional",
+    "formula": "G* (invite_retransmission_in_proceeding_with_last_prov -> F [0,2] uas_retransmit_last_provisional)",
+    "math_formula": "G(invite_retransmission_in_proceeding_with_last_prov -> F_[0,2ms] uas_retransmit_last_provisional)",
+    "aps": [
+      "invite_retransmission_in_proceeding_with_last_prov",
+      "uas_retransmit_last_provisional"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP",
+      "HK_RETRANSMIT_REPLY"
+    ],
+    "aux_hooks": [
+      "HK_SEND_PR_BUFFER"
+    ],
+    "correlation_key": "same branch/sent-by/method transaction key",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_retransmission_in_proceeding_with_last_prov"
+        ]
+      ],
+      [
+        1,
+        [
+          "uas_retransmit_last_provisional"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_retransmission_in_proceeding_with_last_prov"
+        ]
+      ],
+      [
+        3,
+        [
+          "uas_retransmit_last_provisional"
+        ]
+      ]
+    ],
+    "observability": "white-box transaction lookup and send hook",
+    "oracle_value": "high: catches duplicate transaction/TU re-entry bugs",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Need auxiliary counter to prove TU was not re-entered if using this as a bug claim."
+  },
+  {
+    "pid": "SIP-KAM-005",
+    "category": "INVITE final response",
+    "role": "UAS/server transaction",
+    "requirement": "A 300-699 final response from the TU moves INVITE server transaction to Completed and is sent.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.1",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "When a 300 to 699 response is passed to the server transaction, it enters Completed and passes the response to transport.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "invite_proceeding_tu_final_300_699",
+    "outcome": "invite_tx_completed_non2xx",
+    "formula": "G* (invite_proceeding_tu_final_300_699 -> F [0,2] invite_tx_completed_non2xx)",
+    "math_formula": "G(invite_proceeding_tu_final_300_699 -> F_[0,2ms] invite_tx_completed_non2xx)",
+    "aps": [
+      "invite_proceeding_tu_final_300_699",
+      "invite_tx_completed_non2xx"
+    ],
+    "hooks": [
+      "HK_RELAY_REPLY",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_TIMER_ARM"
+    ],
+    "correlation_key": "same INVITE server transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_proceeding_tu_final_300_699"
+        ]
+      ],
+      [
+        1,
+        [
+          "invite_tx_completed_non2xx"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_proceeding_tu_final_300_699"
+        ]
+      ],
+      [
+        3,
+        [
+          "invite_tx_completed_non2xx"
+        ]
+      ]
+    ],
+    "observability": "send hook and transaction status update",
+    "oracle_value": "high: detects final-response loss or wrong state",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "For proxy mode, distinguish final response selected for upstream UAS from downstream branch final."
+  },
+  {
+    "pid": "SIP-KAM-006",
+    "category": "INVITE Timer H/lifetime",
+    "role": "UAS/server transaction",
+    "requirement": "After non-2xx Completed, the transaction must not be destroyed before ACK or Timer H expiry.",
+    "strength": "MUST/state-machine timer",
+    "rfc": "RFC3261",
+    "section": "17.2.1 and Table 4",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "Timer H is 64*T1 for INVITE server transactions in Completed; ACK or timeout governs termination.",
+    "time_bound_ms": "32000",
+    "time_source": "64*T1 using RFC default T1=500 ms",
+    "kind": "safety",
+    "trigger": "invite_tx_completed_non2xx",
+    "outcome": "invite_tx_terminated_without_ack_or_timer_h",
+    "formula": "G* (invite_tx_completed_non2xx -> G [0,32000) (!invite_tx_terminated_without_ack_or_timer_h))",
+    "math_formula": "G(invite_tx_completed_non2xx -> G_[0,32000ms) not early_terminated)",
+    "aps": [
+      "invite_tx_completed_non2xx",
+      "invite_tx_terminated_without_ack_or_timer_h"
+    ],
+    "hooks": [
+      "HK_SEND_PR_BUFFER",
+      "HK_PUT_ON_WAIT"
+    ],
+    "aux_hooks": [
+      "HK_TIMER_ARM",
+      "HK_TIMER_STOP"
+    ],
+    "correlation_key": "same INVITE server transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_tx_completed_non2xx"
+        ]
+      ],
+      [
+        1,
+        []
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_tx_completed_non2xx"
+        ]
+      ],
+      [
+        1,
+        [
+          "invite_tx_terminated_without_ack_or_timer_h"
+        ]
+      ]
+    ],
+    "observability": "white-box wait/timer hooks; pcap alone cannot prove early destroy",
+    "oracle_value": "medium: detects premature state drop",
+    "confidence": "MEDIUM",
+    "caveat": "ProfuzzBench patch disables timer processes; callback expiry needs reference build, but early destroy remains observable.",
+    "review_question": "Should a test watchdog close the trace at 32s, or should unfinished obligations be UNKNOWN?"
+  },
+  {
+    "pid": "SIP-KAM-007",
+    "category": "INVITE ACK handling",
+    "role": "UAS/server transaction",
+    "requirement": "An ACK matching a Completed INVITE server transaction moves it to Confirmed and stops response retransmission.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.1",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.1",
+    "excerpt": "When an ACK is received in Completed, the server transaction transitions to Confirmed.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "invite_completed_rx_ack",
+    "outcome": "invite_tx_confirmed_ack_absorbed",
+    "formula": "G* (invite_completed_rx_ack -> F [0,2] invite_tx_confirmed_ack_absorbed)",
+    "math_formula": "G(invite_completed_rx_ack -> F_[0,2ms] invite_tx_confirmed_ack_absorbed)",
+    "aps": [
+      "invite_completed_rx_ack",
+      "invite_tx_confirmed_ack_absorbed"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP",
+      "HK_TIMER_STOP"
+    ],
+    "aux_hooks": [
+      "HK_T_REPLY_MATCHING"
+    ],
+    "correlation_key": "same INVITE transaction; ACK matches INVITE method exception",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_completed_rx_ack"
+        ]
+      ],
+      [
+        1,
+        [
+          "invite_tx_confirmed_ack_absorbed"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_completed_rx_ack"
+        ]
+      ],
+      [
+        3,
+        [
+          "invite_tx_confirmed_ack_absorbed"
+        ]
+      ]
+    ],
+    "observability": "white-box lookup/timer-stop hook",
+    "oracle_value": "high: detects ACK misclassification",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Need separate AP for 2xx ACK, because RFC6026 Accepted ACK is passed upward rather than absorbed."
+  },
+  {
+    "pid": "SIP-KAM-008",
+    "category": "INVITE 2xx Accepted",
+    "role": "UAS/server transaction",
+    "requirement": "Under RFC6026, a 2xx to INVITE transitions the server transaction to Accepted and arms Timer L.",
+    "strength": "MUST/update state-machine",
+    "rfc": "RFC6026",
+    "section": "7.1 and 8.7",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-7.1",
+    "excerpt": "The update adds Accepted and Timer L; 2xx in Proceeding transitions to Accepted and Timer L is 64*T1.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion for transition; Timer L value is 64*T1=32000 ms",
+    "kind": "eventual",
+    "trigger": "invite_2xx_response_from_tu",
+    "outcome": "timer_l_64t1_armed",
+    "formula": "G* (invite_2xx_response_from_tu -> F [0,2] timer_l_64t1_armed)",
+    "math_formula": "G(invite_2xx_response_from_tu -> F_[0,2ms] timer_l_64t1_armed)",
+    "aps": [
+      "invite_2xx_response_from_tu",
+      "timer_l_64t1_armed"
+    ],
+    "hooks": [
+      "HK_RELAY_REPLY",
+      "HK_TIMER_ARM"
+    ],
+    "aux_hooks": [
+      "HK_SEND_PR_BUFFER"
+    ],
+    "correlation_key": "same INVITE server transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "invite_2xx_response_from_tu"
+        ]
+      ],
+      [
+        1,
+        [
+          "timer_l_64t1_armed"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "invite_2xx_response_from_tu"
+        ]
+      ],
+      [
+        3,
+        [
+          "timer_l_64t1_armed"
+        ]
+      ]
+    ],
+    "observability": "white-box timer arm and response hook",
+    "oracle_value": "medium/high: RFC6026 conformance oracle",
+    "confidence": "MEDIUM",
+    "caveat": "Likely requires reference profile and manual audit because Kamailio may encode Accepted differently from RFC names.",
+    "review_question": "Can we observe an explicit Timer L equivalent, or must this be an excluded/extended property?"
+  },
+  {
+    "pid": "SIP-KAM-009",
+    "category": "RFC6026 retransmitted INVITE in Accepted",
+    "role": "UAS/server transaction",
+    "requirement": "Retransmitted INVITEs in Accepted are absorbed by the transaction and not re-delivered to the TU.",
+    "strength": "MUST/update state-machine",
+    "rfc": "RFC6026",
+    "section": "8.7",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.7",
+    "excerpt": "The Accepted state absorbs retransmissions of the original INVITE and does not pass them to the TU.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "safety",
+    "trigger": "accepted_rx_invite_retransmission",
+    "outcome": "invite_retransmission_passed_to_tu",
+    "formula": "G* (accepted_rx_invite_retransmission -> G [0,2] (!invite_retransmission_passed_to_tu))",
+    "math_formula": "G(accepted_rx_invite_retransmission -> G_[0,2ms] not passed_to_tu)",
+    "aps": [
+      "accepted_rx_invite_retransmission",
+      "invite_retransmission_passed_to_tu"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP",
+      "HK_TX_NEW"
+    ],
+    "aux_hooks": [
+      "HK_RETRANSMIT_REPLY"
+    ],
+    "correlation_key": "same INVITE branch/sent-by/method transaction key",
+    "positive_trace": [
+      [
+        0,
+        [
+          "accepted_rx_invite_retransmission"
+        ]
+      ],
+      [
+        1,
+        []
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "accepted_rx_invite_retransmission"
+        ]
+      ],
+      [
+        1,
+        [
+          "invite_retransmission_passed_to_tu"
+        ]
+      ]
+    ],
+    "observability": "white-box lookup plus route/TU boundary hook",
+    "oracle_value": "medium: detects duplicate TU delivery",
+    "confidence": "MEDIUM",
+    "caveat": "Requires route-boundary hook to prove non-delivery; absence of event alone is UNKNOWN if hooks dropped.",
+    "review_question": "Where should the TU delivery hook sit in Kamailio route execution for minimal perturbation?"
+  },
+  {
+    "pid": "SIP-KAM-010",
+    "category": "RFC6026 ACK in Accepted",
+    "role": "UAS/server transaction",
+    "requirement": "ACKs in Accepted are passed directly to the TU rather than absorbed by the transaction layer.",
+    "strength": "MUST/update state-machine",
+    "rfc": "RFC6026",
+    "section": "8.7",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc6026.html#section-8.7",
+    "excerpt": "ACK requests that match an Accepted transaction are passed directly to the TU.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "accepted_rx_ack",
+    "outcome": "ack_passed_to_tu",
+    "formula": "G* (accepted_rx_ack -> F [0,2] ack_passed_to_tu)",
+    "math_formula": "G(accepted_rx_ack -> F_[0,2ms] ack_passed_to_tu)",
+    "aps": [
+      "accepted_rx_ack",
+      "ack_passed_to_tu"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP",
+      "HK_RX_PARSE_OK"
+    ],
+    "aux_hooks": [
+      "HK_TIMER_STOP"
+    ],
+    "correlation_key": "same INVITE accepted transaction and ACK matching key",
+    "positive_trace": [
+      [
+        0,
+        [
+          "accepted_rx_ack"
+        ]
+      ],
+      [
+        1,
+        [
+          "ack_passed_to_tu"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "accepted_rx_ack"
+        ]
+      ],
+      [
+        3,
+        [
+          "ack_passed_to_tu"
+        ]
+      ]
+    ],
+    "observability": "white-box transaction lookup plus route/TU hook",
+    "oracle_value": "medium: detects wrong ACK absorption",
+    "confidence": "MEDIUM",
+    "caveat": "Needs manual confirmation of Kamailio route callback representing TU delivery.",
+    "review_question": "Should ACK-to-TU be considered a route-level event or a tm callback event in this SUT?"
+  },
+  {
+    "pid": "SIP-KAM-011",
+    "category": "non-INVITE server transaction",
+    "role": "UAS/server transaction",
+    "requirement": "A newly constructed non-INVITE server transaction enters Trying and passes the request upward.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+    "excerpt": "For non-INVITE requests, the server transaction starts in Trying and passes the request to the TU.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "server_rx_noninvite_new_tx",
+    "outcome": "noninvite_tx_trying",
+    "formula": "G* (server_rx_noninvite_new_tx -> F [0,2] noninvite_tx_trying)",
+    "math_formula": "G(server_rx_noninvite_new_tx -> F_[0,2ms] noninvite_tx_trying)",
+    "aps": [
+      "server_rx_noninvite_new_tx",
+      "noninvite_tx_trying"
+    ],
+    "hooks": [
+      "HK_RX_PARSE_OK",
+      "HK_TX_NEW"
+    ],
+    "aux_hooks": [
+      "HK_TX_LOOKUP"
+    ],
+    "correlation_key": "Call-ID + CSeq + top Via branch/sent-by",
+    "positive_trace": [
+      [
+        0,
+        [
+          "server_rx_noninvite_new_tx"
+        ]
+      ],
+      [
+        1,
+        [
+          "noninvite_tx_trying"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "server_rx_noninvite_new_tx"
+        ]
+      ],
+      [
+        3,
+        [
+          "noninvite_tx_trying"
+        ]
+      ]
+    ],
+    "observability": "white-box transaction creation",
+    "oracle_value": "high: covers OPTIONS/BYE/CANCEL class setup",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "CANCEL is handled specially; property should exclude CANCEL when original-transaction semantics are being tested separately."
+  },
+  {
+    "pid": "SIP-KAM-012",
+    "category": "non-INVITE retransmission discard",
+    "role": "UAS/server transaction",
+    "requirement": "A retransmitted non-INVITE request in Trying is discarded, not delivered again to the TU.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+    "excerpt": "In Trying, retransmissions of non-INVITE requests are discarded.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "safety",
+    "trigger": "noninvite_retransmission_in_trying",
+    "outcome": "noninvite_retransmission_passed_to_tu",
+    "formula": "G* (noninvite_retransmission_in_trying -> G [0,2] (!noninvite_retransmission_passed_to_tu))",
+    "math_formula": "G(noninvite_retransmission_in_trying -> G_[0,2ms] not passed_to_tu)",
+    "aps": [
+      "noninvite_retransmission_in_trying",
+      "noninvite_retransmission_passed_to_tu"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP",
+      "HK_TIMER_STOP"
+    ],
+    "aux_hooks": [
+      "HK_RX_PARSE_OK"
+    ],
+    "correlation_key": "same non-INVITE transaction key",
+    "positive_trace": [
+      [
+        0,
+        [
+          "noninvite_retransmission_in_trying"
+        ]
+      ],
+      [
+        1,
+        []
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "noninvite_retransmission_in_trying"
+        ]
+      ],
+      [
+        1,
+        [
+          "noninvite_retransmission_passed_to_tu"
+        ]
+      ]
+    ],
+    "observability": "white-box lookup plus route/TU boundary hook",
+    "oracle_value": "medium/high: detects duplicate request processing",
+    "confidence": "MEDIUM",
+    "caveat": "PENDING",
+    "review_question": "Needs a route/TU delivery hook to avoid interpreting missing events under event drop as pass."
+  },
+  {
+    "pid": "SIP-KAM-013",
+    "category": "non-INVITE provisional response",
+    "role": "UAS/server transaction",
+    "requirement": "A provisional response for a non-INVITE transaction moves it to Proceeding and sends the response.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+    "excerpt": "If a provisional response is passed to the non-INVITE server transaction, it enters Proceeding and passes it to transport.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "noninvite_tu_provisional",
+    "outcome": "noninvite_tx_proceeding_response_sent",
+    "formula": "G* (noninvite_tu_provisional -> F [0,2] noninvite_tx_proceeding_response_sent)",
+    "math_formula": "G(noninvite_tu_provisional -> F_[0,2ms] noninvite_tx_proceeding_response_sent)",
+    "aps": [
+      "noninvite_tu_provisional",
+      "noninvite_tx_proceeding_response_sent"
+    ],
+    "hooks": [
+      "HK_RELAY_REPLY",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_TX_LOOKUP"
+    ],
+    "correlation_key": "same non-INVITE transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "noninvite_tu_provisional"
+        ]
+      ],
+      [
+        1,
+        [
+          "noninvite_tx_proceeding_response_sent"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "noninvite_tu_provisional"
+        ]
+      ],
+      [
+        3,
+        [
+          "noninvite_tx_proceeding_response_sent"
+        ]
+      ]
+    ],
+    "observability": "send hook plus status class",
+    "oracle_value": "medium: useful for OPTIONS/BYE provisional edge cases",
+    "confidence": "MEDIUM",
+    "caveat": "PENDING",
+    "review_question": "RFC says UAS SHOULD NOT generally send provisional for non-INVITE; this property applies only if TU emits one."
+  },
+  {
+    "pid": "SIP-KAM-014",
+    "category": "non-INVITE final response",
+    "role": "UAS/server transaction",
+    "requirement": "A final response to a non-INVITE server transaction enters Completed and is sent.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+    "excerpt": "Final responses 200-699 cause Completed and are passed to transport.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "noninvite_tu_final_response",
+    "outcome": "noninvite_tx_completed_final_sent",
+    "formula": "G* (noninvite_tu_final_response -> F [0,2] noninvite_tx_completed_final_sent)",
+    "math_formula": "G(noninvite_tu_final_response -> F_[0,2ms] noninvite_tx_completed_final_sent)",
+    "aps": [
+      "noninvite_tu_final_response",
+      "noninvite_tx_completed_final_sent"
+    ],
+    "hooks": [
+      "HK_RELAY_REPLY",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_PUT_ON_WAIT"
+    ],
+    "correlation_key": "same non-INVITE transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "noninvite_tu_final_response"
+        ]
+      ],
+      [
+        1,
+        [
+          "noninvite_tx_completed_final_sent"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "noninvite_tu_final_response"
+        ]
+      ],
+      [
+        3,
+        [
+          "noninvite_tx_completed_final_sent"
+        ]
+      ]
+    ],
+    "observability": "send hook plus wait-state hook",
+    "oracle_value": "high: core non-INVITE response oracle",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Need distinguish server-side final response from proxied branch final selected for forwarding."
+  },
+  {
+    "pid": "SIP-KAM-015",
+    "category": "non-INVITE retransmission in Completed",
+    "role": "UAS/server transaction",
+    "requirement": "A retransmitted non-INVITE request in Completed gets the stored final response retransmitted.",
+    "strength": "MUST/state-machine",
+    "rfc": "RFC3261",
+    "section": "17.2.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.2",
+    "excerpt": "In Completed, retransmissions are passed the final response previously sent.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "noninvite_retransmission_in_completed",
+    "outcome": "noninvite_final_response_retransmitted",
+    "formula": "G* (noninvite_retransmission_in_completed -> F [0,2] noninvite_final_response_retransmitted)",
+    "math_formula": "G(noninvite_retransmission_in_completed -> F_[0,2ms] noninvite_final_response_retransmitted)",
+    "aps": [
+      "noninvite_retransmission_in_completed",
+      "noninvite_final_response_retransmitted"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP",
+      "HK_RETRANSMIT_REPLY"
+    ],
+    "aux_hooks": [
+      "HK_SEND_PR_BUFFER"
+    ],
+    "correlation_key": "same non-INVITE transaction key",
+    "positive_trace": [
+      [
+        0,
+        [
+          "noninvite_retransmission_in_completed"
+        ]
+      ],
+      [
+        1,
+        [
+          "noninvite_final_response_retransmitted"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "noninvite_retransmission_in_completed"
+        ]
+      ],
+      [
+        3,
+        [
+          "noninvite_final_response_retransmitted"
+        ]
+      ]
+    ],
+    "observability": "lookup and send retransmission hook",
+    "oracle_value": "high: catches response cache/retransmission bugs",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Timer J expiry must be handled as legal supersession in long traces."
+  },
+  {
+    "pid": "SIP-KAM-016",
+    "category": "transaction matching",
+    "role": "UAS/proxy transaction layer",
+    "requirement": "Requests with RFC3261 magic-cookie branch and matching sent-by/method map to the existing transaction.",
+    "strength": "MUST/matching rule",
+    "rfc": "RFC3261",
+    "section": "17.2.3",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-17.2.3",
+    "excerpt": "With magic-cookie branch, matching uses branch, sent-by, and method, except ACK matches INVITE.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "request_with_magic_cookie_matches_existing_tx",
+    "outcome": "tx_lookup_existing_match",
+    "formula": "G* (request_with_magic_cookie_matches_existing_tx -> F [0,2] tx_lookup_existing_match)",
+    "math_formula": "G(magic_cookie_match_candidate -> F_[0,2ms] tx_lookup_existing_match)",
+    "aps": [
+      "request_with_magic_cookie_matches_existing_tx",
+      "tx_lookup_existing_match"
+    ],
+    "hooks": [
+      "HK_TX_LOOKUP"
+    ],
+    "aux_hooks": [
+      "HK_RX_PARSE_OK"
+    ],
+    "correlation_key": "top Via branch/sent-by + CSeq method exception + transaction bucket/hash",
+    "positive_trace": [
+      [
+        0,
+        [
+          "request_with_magic_cookie_matches_existing_tx"
+        ]
+      ],
+      [
+        1,
+        [
+          "tx_lookup_existing_match"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "request_with_magic_cookie_matches_existing_tx"
+        ]
+      ],
+      [
+        3,
+        [
+          "tx_lookup_existing_match"
+        ]
+      ]
+    ],
+    "observability": "white-box lookup; pcap can provide candidate fields",
+    "oracle_value": "high: prevents transaction-key explosion/ambiguity",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "AP names exclude dynamic branch values; fields live only in correlation metadata."
+  },
+  {
+    "pid": "SIP-KAM-017",
+    "category": "CANCEL matched response",
+    "role": "UAS/proxy transaction layer",
+    "requirement": "A CANCEL that matches an existing transaction receives a 200 OK to the CANCEL itself.",
+    "strength": "SHOULD/MUST behavior",
+    "rfc": "RFC3261",
+    "section": "9.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-9.2",
+    "excerpt": "If a matching transaction exists, the UAS first processes the CANCEL and then answers the CANCEL with 200 OK.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "cancel_matches_original_transaction",
+    "outcome": "cancel_tx_200_ok",
+    "formula": "G* (cancel_matches_original_transaction -> F [0,2] cancel_tx_200_ok)",
+    "math_formula": "G(cancel_matches_original_transaction -> F_[0,2ms] cancel_tx_200_ok)",
+    "aps": [
+      "cancel_matches_original_transaction",
+      "cancel_tx_200_ok"
+    ],
+    "hooks": [
+      "HK_FORWARD_NONACK",
+      "HK_E2E_CANCEL",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_TX_LOOKUP"
+    ],
+    "correlation_key": "CANCEL transaction + matched original transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "cancel_matches_original_transaction"
+        ]
+      ],
+      [
+        1,
+        [
+          "cancel_tx_200_ok"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "cancel_matches_original_transaction"
+        ]
+      ],
+      [
+        3,
+        [
+          "cancel_tx_200_ok"
+        ]
+      ]
+    ],
+    "observability": "white-box cancel path plus send hook",
+    "oracle_value": "high: explicit SIP CANCEL oracle",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Separate this from 487 to the original INVITE; both may occur in the same callback."
+  },
+  {
+    "pid": "SIP-KAM-018",
+    "category": "CANCEL effect on INVITE",
+    "role": "UAS/proxy transaction layer",
+    "requirement": "A matching CANCEL received before final response to an INVITE causes the original INVITE to receive 487.",
+    "strength": "SHOULD behavior",
+    "rfc": "RFC3261",
+    "section": "9.2",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-9.2",
+    "excerpt": "If no final response has been sent for the INVITE, the UAS behavior SHOULD generate a 487 response.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "eventual",
+    "trigger": "cancel_matches_invite_before_final",
+    "outcome": "original_invite_tx_487",
+    "formula": "G* (cancel_matches_invite_before_final -> F [0,2] original_invite_tx_487)",
+    "math_formula": "G(cancel_matches_invite_before_final -> F_[0,2ms] original_invite_tx_487)",
+    "aps": [
+      "cancel_matches_invite_before_final",
+      "original_invite_tx_487"
+    ],
+    "hooks": [
+      "HK_FORWARD_NONACK",
+      "HK_E2E_CANCEL",
+      "HK_SEND_PR_BUFFER"
+    ],
+    "aux_hooks": [
+      "HK_CANCEL_BRANCH"
+    ],
+    "correlation_key": "CANCEL transaction + original INVITE transaction",
+    "positive_trace": [
+      [
+        0,
+        [
+          "cancel_matches_invite_before_final"
+        ]
+      ],
+      [
+        1,
+        [
+          "original_invite_tx_487"
+        ]
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "cancel_matches_invite_before_final"
+        ]
+      ],
+      [
+        3,
+        [
+          "original_invite_tx_487"
+        ]
+      ]
+    ],
+    "observability": "white-box cancel effect and send hook; pcap cross-check",
+    "oracle_value": "high: protocol-visible violation",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "If downstream branch already sent a final response, this obligation must be suppressed by correlation state."
+  },
+  {
+    "pid": "SIP-KAM-019",
+    "category": "proxy branch CANCEL gating",
+    "role": "stateful proxy/client transaction",
+    "requirement": "A stateful proxy should only generate branch CANCEL after a provisional response makes that branch cancelable.",
+    "strength": "MUST/MAY constrained by RFC9.1/16.10",
+    "rfc": "RFC3261",
+    "section": "9.1 and 16.10",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-16.10",
+    "excerpt": "A stateful proxy cancels pending client transactions, subject to the caller-side CANCEL rule that a provisional response was received.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "safety",
+    "trigger": "branch_cancel_requested_without_provisional",
+    "outcome": "branch_cancel_sent",
+    "formula": "G* (branch_cancel_requested_without_provisional -> G [0,2] (!branch_cancel_sent))",
+    "math_formula": "G(branch_cancel_requested_without_provisional -> G_[0,2ms] not branch_cancel_sent)",
+    "aps": [
+      "branch_cancel_requested_without_provisional",
+      "branch_cancel_sent"
+    ],
+    "hooks": [
+      "HK_CANCEL_BRANCH",
+      "HK_E2E_CANCEL"
+    ],
+    "aux_hooks": [
+      "HK_REPLY_RECEIVED"
+    ],
+    "correlation_key": "client branch id derived after transaction correlation",
+    "positive_trace": [
+      [
+        0,
+        [
+          "branch_cancel_requested_without_provisional"
+        ]
+      ],
+      [
+        1,
+        []
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "branch_cancel_requested_without_provisional"
+        ]
+      ],
+      [
+        1,
+        [
+          "branch_cancel_sent"
+        ]
+      ]
+    ],
+    "observability": "white-box branch state and send hook",
+    "oracle_value": "medium/high: avoids illegal early downstream CANCEL",
+    "confidence": "MEDIUM",
+    "caveat": "Manual review must classify force/local-cancel modes that intentionally deviate.",
+    "review_question": "Should forced local CANCEL paths be excluded from the main property or modeled as legal supersession?"
+  },
+  {
+    "pid": "SIP-KAM-020",
+    "category": "proxy 100 Trying forwarding",
+    "role": "stateful proxy",
+    "requirement": "A stateful proxy must not immediately forward 100 Trying responses upstream.",
+    "strength": "MUST NOT/proxy response processing",
+    "rfc": "RFC3261",
+    "section": "16.7",
+    "rfc_url": "https://www.rfc-editor.org/rfc/rfc3261.html#section-16.7",
+    "excerpt": "Stateful proxies forward provisional responses except 100 Trying; 100 Trying is not immediately forwarded.",
+    "time_bound_ms": "2",
+    "time_source": "adapter microstep expansion",
+    "kind": "safety",
+    "trigger": "proxy_rx_100_trying_response",
+    "outcome": "proxy_forward_100_trying",
+    "formula": "G* (proxy_rx_100_trying_response -> G [0,2] (!proxy_forward_100_trying))",
+    "math_formula": "G(proxy_rx_100_trying_response -> G_[0,2ms] not proxy_forward_100_trying)",
+    "aps": [
+      "proxy_rx_100_trying_response",
+      "proxy_forward_100_trying"
+    ],
+    "hooks": [
+      "HK_REPLY_RECEIVED",
+      "HK_RELAY_REPLY"
+    ],
+    "aux_hooks": [
+      "HK_SEND_PR_BUFFER"
+    ],
+    "correlation_key": "response branch matched to proxy response context",
+    "positive_trace": [
+      [
+        0,
+        [
+          "proxy_rx_100_trying_response"
+        ]
+      ],
+      [
+        1,
+        []
+      ]
+    ],
+    "negative_trace": [
+      [
+        0,
+        [
+          "proxy_rx_100_trying_response"
+        ]
+      ],
+      [
+        1,
+        [
+          "proxy_forward_100_trying"
+        ]
+      ]
+    ],
+    "observability": "upstream response hook plus actual send hook",
+    "oracle_value": "high: externally visible proxy violation",
+    "confidence": "HIGH",
+    "caveat": "PENDING",
+    "review_question": "Needs send-direction metadata to avoid confusing downstream 100 generation with upstream forwarding."
+  }
+]

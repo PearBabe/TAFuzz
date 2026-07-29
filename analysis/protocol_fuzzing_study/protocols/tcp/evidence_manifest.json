@@ -1,0 +1,396 @@
+{
+  "protocol": "TCP",
+  "access_date": "2026-07-13",
+  "standard_url_check_scope": "reachability only; section/excerpt/time semantics rely on the recorded review/audit and are not inferred from HTTP success",
+  "screening_records": [
+    {
+      "file": "_staging/transport_security_protocols/tcp/evidence.json",
+      "record": {
+        "protocol": "TCP",
+        "access_date": "2026-07-13",
+        "status": "COMPLETE_WITH_INDEPENDENT_AUDIT",
+        "standards": [
+          {
+            "id": "RFC6298",
+            "title": "Computing TCP's Retransmission Timer",
+            "url": "https://www.rfc-editor.org/rfc/rfc6298.html",
+            "sections": [
+              "2.1",
+              "5"
+            ],
+            "source_type": "IETF Standards Track"
+          },
+          {
+            "id": "RFC9293",
+            "title": "Transmission Control Protocol",
+            "url": "https://www.rfc-editor.org/rfc/rfc9293.html",
+            "sections": [
+              "3.6.1",
+              "3.8.3",
+              "3.8.4",
+              "3.8.6.1",
+              "3.8.6.3"
+            ],
+            "source_type": "IETF Internet Standard"
+          }
+        ],
+        "sources": [
+          {
+            "repository": "torvalds/linux",
+            "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+            "url": "https://github.com/torvalds/linux/tree/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+            "role": "fixed implementation source"
+          }
+        ],
+        "method": "Exhaustive keyword/section screening plus independent standard/formula/source audit of RTO, retransmission, delayed ACK, zero-window, keep-alive and TIME-WAIT timers; rejected cards remain in the exclusion ledger.",
+        "independent_audit": "analysis/protocol_fuzzing_study/_audit/transport_security_audit.md",
+        "atomic_proposition_source_mapping": {
+          "schema": "primary_source_atomic_propositions + auxiliary_source_mappings[]",
+          "status": "COMPLETE_FOR_ALL_ADMITTED_CANDIDATES",
+          "property_count": 9,
+          "atomic_proposition_count": 23,
+          "policy": "Every declared AP has at least one fixed-commit executable source mapping; dynamic identifiers remain correlation fields.",
+          "root_verification": "generate_multi_protocol_catalog.py candidate_gate_errors + verify_source + verify_auxiliary_sources"
+        }
+      }
+    }
+  ],
+  "admitted_property_sources": [
+    {
+      "property_id": "TCP-ACK-01",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.8.6.3",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.3",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "net/ipv4/tcp_output.c",
+      "source_lines": "4409-4463",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4409-L4463",
+      "auxiliary_source_mappings": [
+        {
+          "role": "pure ACK construction and transmission handoff",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "__tcp_send_ack",
+          "lines": "4466-4506",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4466-L4506",
+          "atomic_propositions": [
+            "tcp_ack_sent"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-KA-01",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.8.4",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.4",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "include/net/tcp.h",
+      "source_lines": "175-180",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L175-L180",
+      "auxiliary_source_mappings": [
+        {
+          "role": "SO_KEEPALIVE enable and default timer arm",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_set_keepalive",
+          "lines": "768-777",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L768-L777",
+          "atomic_propositions": [
+            "tcp_default_keepalive_enabled_on_idle_connection"
+          ]
+        },
+        {
+          "role": "keep-alive expiry and probe send attempt",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_keepalive_timer",
+          "lines": "779-866",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L779-L866",
+          "atomic_propositions": [
+            "tcp_keepalive_probe_sent"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-R2-01",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.8.3",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.3",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "net/ipv4/tcp_timer.c",
+      "source_lines": "242-305",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L242-L305",
+      "auxiliary_source_mappings": [
+        {
+          "role": "first attempted data retransmission timestamp",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_retransmit_skb",
+          "lines": "3695-3717",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L3695-L3717",
+          "atomic_propositions": [
+            "tcp_data_r2_episode_started"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-RTO-01",
+      "protocol": "TCP",
+      "standard": "RFC 6298",
+      "standard_version": "RFC 6298",
+      "section": "2.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6298.html#section-2.1",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "include/net/tcp.h",
+      "source_lines": "160-173",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L160-L173",
+      "auxiliary_source_mappings": [
+        {
+          "role": "initial RTO timer arm after active-open send",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_connect",
+          "lines": "4393-4398",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4393-L4398",
+          "atomic_propositions": [
+            "tcp_initial_rto_armed_1000ms_profile"
+          ]
+        },
+        {
+          "role": "retransmission timer deadline dispatch",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timer_handler",
+          "lines": "695-728",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+          "atomic_propositions": [
+            "tcp_initial_rto_deadline_reached"
+          ]
+        },
+        {
+          "role": "ACK-driven retransmission timer cancellation or replacement",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_input.c",
+          "symbol": "tcp_rearm_rto",
+          "lines": "3524-3550",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+          "atomic_propositions": [
+            "tcp_initial_rto_superseded"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-RTO-03",
+      "protocol": "TCP",
+      "standard": "RFC 6298",
+      "standard_version": "RFC 6298",
+      "section": "5.5-5.6",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc6298.html#section-5",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "net/ipv4/tcp_timer.c",
+      "source_lines": "657-685",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L657-L685",
+      "auxiliary_source_mappings": [
+        {
+          "role": "retransmission timer deadline dispatch",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timer_handler",
+          "lines": "695-728",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+          "atomic_propositions": [
+            "tcp_second_rto_deadline_reached"
+          ]
+        },
+        {
+          "role": "ACK-driven retransmission timer cancellation or replacement",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_input.c",
+          "symbol": "tcp_rearm_rto",
+          "lines": "3524-3550",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+          "atomic_propositions": [
+            "tcp_second_rto_superseded"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-SYN-01",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.8.3",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.3",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "net/ipv4/tcp_timer.c",
+      "source_lines": "242-298",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L242-L298",
+      "auxiliary_source_mappings": [
+        {
+          "role": "initial active-open SYN transmission and retransmission timer arm",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_connect",
+          "lines": "4360-4398",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4360-L4398",
+          "atomic_propositions": [
+            "tcp_active_open_syn_r2_started"
+          ]
+        },
+        {
+          "role": "locked Linux SYN retry-policy deviation evidence",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "TCP_SYN_RETRIES",
+          "lines": "124-131",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L124-L131",
+          "atomic_propositions": [
+            "tcp_active_open_syn_r2_started",
+            "tcp_open_failed_by_syn_r2_expiry"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-TW-01",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.6.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.6.1",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "include/net/tcp.h",
+      "source_lines": "140-148",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L140-L148",
+      "auxiliary_source_mappings": [
+        {
+          "role": "TIME-WAIT bucket creation and scheduling",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_minisocks.c",
+          "symbol": "tcp_time_wait",
+          "lines": "326-394",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L326-L394",
+          "atomic_propositions": [
+            "tcp_time_wait_entered_linux_profile"
+          ]
+        },
+        {
+          "role": "ordinary TIME-WAIT expiry destruction",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/inet_timewait_sock.c",
+          "symbol": "tw_timer_handler",
+          "lines": "161-166",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/inet_timewait_sock.c#L161-L166",
+          "atomic_propositions": [
+            "tcp_time_wait_state_destroyed"
+          ]
+        },
+        {
+          "role": "guarded direct reopen and exceptional early removal classification",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_minisocks.c",
+          "symbol": "tcp_timewait_state_process",
+          "lines": "186-261",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L186-L261",
+          "atomic_propositions": [
+            "tcp_valid_timewait_reopen_or_admin_cleanup"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-ZWP-01",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.8.6.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.1",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "include/net/tcp.h",
+      "source_lines": "1640-1667",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L1640-L1667",
+      "auxiliary_source_mappings": [
+        {
+          "role": "PROBE0 deadline dispatch and attempt entry",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timer_handler",
+          "lines": "695-728",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+          "atomic_propositions": [
+            "tcp_probe0_deadline_or_attempt"
+          ]
+        },
+        {
+          "role": "window-open clear or probe-timer rearm",
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_input.c",
+          "symbol": "tcp_ack_probe",
+          "lines": "3807-3828",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3807-L3828",
+          "atomic_propositions": [
+            "tcp_probe0_superseded"
+          ]
+        }
+      ],
+      "accessed": "2026-07-13"
+    },
+    {
+      "property_id": "TCP-ZWP-02",
+      "protocol": "TCP",
+      "standard": "RFC 9293",
+      "standard_version": "RFC 9293",
+      "section": "3.8.6.1",
+      "standard_url": "https://www.rfc-editor.org/rfc/rfc9293.html#section-3.8.6.1",
+      "source_repository": "torvalds/linux",
+      "source_commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+      "source_path": "net/ipv4/tcp_output.c",
+      "source_lines": "4601-4635",
+      "source_url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4601-L4635",
+      "auxiliary_source_mappings": [],
+      "accessed": "2026-07-13"
+    }
+  ]
+}

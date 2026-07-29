@@ -1,0 +1,46 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-009
+title: RTL loiter at destination before landing
+system: PX4
+vehicle_scope: multicopter SITL using direct Return rather than a mission landing pattern
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes/return.md
+    lines: 183-194
+    original_text: "At RTL_DESCEND_ALT it will loiter for RTL_LAND_DELAY before landing. If RTL_LAND_DELAY=-1 it will loiter indefinitely."
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes/return.md
+    lines: 204-218
+    original_text: "Time to wait at RTL_DESCEND_ALT before landing (default: 0.5s)."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/navigator/rtl_params.c
+    lines: 63-89
+    original_text: "Delay before landing (after initial descent) in Return mode. If set to -1 the system will not land but loiter."
+normalized_requirement:
+  context: direct multicopter Return reaches its destination and descent altitude without a mission landing pattern
+  trigger: arrival in the RTL loiter-at-descent-altitude phase
+  obligation_positive: for T_rtl greater than zero, loiter for T_rtl and then enter Land
+  obligation_negative: for T_rtl equal to -1, remain loitering until another authorized transition
+  zero_case: runtime zero means no configured loiter delay; observer scheduling still needs tolerance
+time_constraint:
+  expression: T_rtl = runtime(RTL_LAND_DELAY) seconds
+  compiled_default_instance: 0.0 seconds in parameter metadata
+  conflicting_documented_default: 0.5 seconds in return.md:213
+  epoch: entry to the destination loiter phase at RTL_DESCEND_ALT, not initial RTL activation
+  clock: PX4 HRT internally; host monotonic only after deriving the phase from wire data
+  boundary: NEEDS_DEFAULT_RECONCILIATION and NEEDS_PHASE_OBSERVATION
+mitl:
+  status: NOT_VALIDATED
+  formula_candidates:
+    - "G((rtl_loiter_phase_enter & T_rtl>0) -> (mode_hold U_[T_rtl,T_rtl+EPS_OBS] mode_land))"
+    - "G((rtl_loiter_phase_enter & T_rtl=-1) -> (mode_hold W authorized_transition))"
+atomic_propositions:
+  - AP-PX4-RTL-LOITER-PHASE
+  - AP-PX4-MODE-HOLD
+  - AP-PX4-MODE-LAND
+  - AP-PX4-AUTHORIZED-MODE-TRANSITION
+mavlink_observation_refs: [OBS-PX4-PARAM, OBS-PX4-MODE, OBS-PX4-GLOBAL-POSITION, OBS-PX4-LOCAL-TARGET]
+blockers: [NEEDS_DEFAULT_RECONCILIATION, NEEDS_PHASE_OBSERVATION, NEEDS_MISSION_LANDING_EXCLUSION, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

@@ -1,0 +1,272 @@
+[
+  {
+    "id": "SSH-REKEY-01",
+    "protocol": "SSH",
+    "protocol_extension": "SSH Transport Layer Protocol",
+    "title": "One-hour KEXINIT initiation proxy under a controlled OpenSSH profile",
+    "category": "time-based rekey",
+    "natural_language": "显式配置一小时 rekey_interval，认证完成、当前不在 KEX、peer 允许 rekey 且已有可发送 packet 时，本地应在一小时内发起 KEXINIT 或连接已关闭。",
+    "normative_strength": "CONTROLLED_PROXY_FOR_RFC_RECOMMENDATION",
+    "standard": "RFC 4253",
+    "standard_version": "RFC 4253",
+    "standard_section": "9",
+    "standard_url": "https://www.rfc-editor.org/rfc/rfc4253.html#section-9",
+    "standard_excerpt": "keys be changed after each gigabyte or after each hour",
+    "time_value_ms": "3600000",
+    "time_parameter": "time-based rekey interval",
+    "time_source": "RFC 4253 Section 9 recommended one-hour alternative",
+    "instantiation_basis": "NORMATIVE_RECOMMENDED_PROFILE",
+    "mathematical_mitl": "G (ssh_rekey_eligible_one_hour_profile -> F [0,3600000] (ssh_local_kexinit_started || ssh_connection_closed))",
+    "mightyppl_formula": "G* (ssh_rekey_eligible_one_hour_profile -> F [0,3600000] (ssh_local_kexinit_started || ssh_connection_closed))",
+    "interval_class": "NON_PUNCTUAL",
+    "pointwise_semantics": "pointwise event positions with absolute integer milliseconds; mathematical_mitl uses standard MITL, while mightyppl_formula uses MightyPPL's weak finite-word G* operator",
+    "finite_end_semantics": "one correlated obligation generation per finite word; append a terminal position strictly beyond every bounded deadline so the supplied oracle is decisive; no overlapping trigger generations",
+    "atomic_propositions": [
+      "ssh_rekey_eligible_one_hour_profile",
+      "ssh_local_kexinit_started",
+      "ssh_connection_closed"
+    ],
+    "ap_definitions": {
+      "ssh_rekey_eligible_one_hour_profile": "Authenticated OpenSSH connection has rekey_interval=3600, is not already in KEX, peer permits rekey, and a packet-processing opportunity exists.",
+      "ssh_local_kexinit_started": "The local endpoint actually begins KEXINIT for the next key exchange.",
+      "ssh_connection_closed": "The correlated SSH transport closes before the local initiation deadline."
+    },
+    "correlation_key": "OpenSSH ssh/session_state pointer + connection tuple; packet sequence counters remain fields",
+    "projection_rule": "correlate first, then project one connection/transaction/flight; dynamic identifiers never enter AP names",
+    "source_repository": "vegard/openssh-portable",
+    "source_commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+    "source_path": "packet.c",
+    "source_symbol": "ssh_packet_need_rekeying",
+    "source_lines": "1043-1085",
+    "source_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1043-L1085",
+    "instrumentation_timing": "At ssh_packet_need_rekeying's time-profile true branch, emit eligibility only after confirming rekey_interval=3600 and the declared role/peer guards. Emit ssh_local_kexinit_started only after ssh_packet_send2 successfully passes the KEXINIT packet to ssh_packet_send2_wrapped. Emit ssh_connection_closed when ssh_packet_close begins closing the correlated descriptors.",
+    "observability": "HYBRID",
+    "oracle_value": "MEDIUM",
+    "triggerability": "LOW",
+    "confidence": "MEDIUM",
+    "positive_trace": [
+      {
+        "time": 0,
+        "props": [
+          "ssh_rekey_eligible_one_hour_profile"
+        ]
+      },
+      {
+        "time": 3600000,
+        "props": [
+          "ssh_local_kexinit_started"
+        ]
+      },
+      {
+        "time": 3600001,
+        "props": []
+      }
+    ],
+    "negative_trace": [
+      {
+        "time": 0,
+        "props": [
+          "ssh_rekey_eligible_one_hour_profile"
+        ]
+      },
+      {
+        "time": 3600001,
+        "props": []
+      }
+    ],
+    "review_question": "ProFuzzBench OpenSSH 默认 rekey_interval=0；请确认实验显式配置 RekeyLimit default 1h，并把该差异列为 baseline modification。",
+    "limitations": "This is a controllable local-initiation proxy, not proof that new keys were installed; peer stall/completion is classified separately and no RFC-equivalence claim is made.",
+    "human_review_status": "PENDING",
+    "rekey_start_source_url": "",
+    "profile_setter_source_url": "",
+    "benchmark_default_source_url": "",
+    "independent_audit_status": "APPROVE_WITH_CAVEAT",
+    "independent_audit_note": "AP-to-source mapping completed at fixed OpenSSH commit. The one-hour value is an explicit experiment profile installed through ssh_packet_set_rekey_limits; servconf.c proves the server default is zero, so the property is not presented as an OpenSSH default. Historical broad source URLs are retained only as nested legacy_exact_url evidence.",
+    "protocol_slug": "ssh",
+    "additional_negative_traces": {
+      "negative_late_or_missing": [
+        {
+          "time": 0,
+          "props": [
+            "ssh_rekey_eligible_one_hour_profile"
+          ]
+        },
+        {
+          "time": 3600001,
+          "props": []
+        }
+      ]
+    },
+    "additional_positive_traces": {},
+    "auxiliary_source_mappings": [
+      {
+        "role": "successful local KEXINIT start/send path",
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "packet.c",
+        "symbol": "ssh_packet_send2",
+        "lines": "1313-1360",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1360",
+        "legacy_exact_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1351",
+        "atomic_propositions": [
+          "ssh_local_kexinit_started"
+        ]
+      },
+      {
+        "role": "one-hour profile installation into packet state",
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "packet.c",
+        "symbol": "ssh_packet_set_rekey_limits",
+        "lines": "2429-2435",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2429-L2435",
+        "legacy_exact_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2428-L2445",
+        "atomic_propositions": [
+          "ssh_rekey_eligible_one_hour_profile"
+        ]
+      },
+      {
+        "role": "server default disables time rekey unless the benchmark installs the declared profile",
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "servconf.c",
+        "symbol": "fill_default_server_options",
+        "lines": "284-289",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/servconf.c#L284-L289",
+        "atomic_propositions": [
+          "ssh_rekey_eligible_one_hour_profile"
+        ]
+      },
+      {
+        "role": "correlated transport close action",
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "packet.c",
+        "symbol": "ssh_packet_close",
+        "lines": "574-588",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L574-L588",
+        "atomic_propositions": [
+          "ssh_connection_closed"
+        ]
+      }
+    ],
+    "primary_source_atomic_propositions": [
+      "ssh_rekey_eligible_one_hour_profile"
+    ],
+    "allows_equal_timestamp_microsteps": false,
+    "microstep_ordering": "",
+    "monitor_instantiation": "one correlated obligation instance per timed word; if the trigger can repeat, the adapter spawns a new projection keyed by timer/request generation",
+    "auto_generated_late_negative": true,
+    "auxiliary_source_verification": [
+      {
+        "index": 1,
+        "role": "successful local KEXINIT start/send path",
+        "atomic_propositions": [
+          "ssh_local_kexinit_started"
+        ],
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "packet.c",
+        "symbol": "ssh_packet_send2",
+        "lines": "1313-1360",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1360",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/vegard/openssh-portable/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c; verified_symbols=['ssh_packet_send2']; failed_symbols=[]; cited_ranges=[(1313, 1360)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 2,
+        "role": "one-hour profile installation into packet state",
+        "atomic_propositions": [
+          "ssh_rekey_eligible_one_hour_profile"
+        ],
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "packet.c",
+        "symbol": "ssh_packet_set_rekey_limits",
+        "lines": "2429-2435",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2429-L2435",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/vegard/openssh-portable/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c; verified_symbols=['ssh_packet_set_rekey_limits']; failed_symbols=[]; cited_ranges=[(2429, 2435)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 3,
+        "role": "server default disables time rekey unless the benchmark installs the declared profile",
+        "atomic_propositions": [
+          "ssh_rekey_eligible_one_hour_profile"
+        ],
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "servconf.c",
+        "symbol": "fill_default_server_options",
+        "lines": "284-289",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/servconf.c#L284-L289",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/vegard/openssh-portable/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/servconf.c; verified_symbols=['fill_default_server_options']; failed_symbols=[]; cited_ranges=[(284, 289)]; uncovered_ranges=[]"
+      },
+      {
+        "index": 4,
+        "role": "correlated transport close action",
+        "atomic_propositions": [
+          "ssh_connection_closed"
+        ],
+        "repository": "vegard/openssh-portable",
+        "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+        "path": "packet.c",
+        "symbol": "ssh_packet_close",
+        "lines": "574-588",
+        "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L574-L588",
+        "source_file_verified": true,
+        "source_line_verified": true,
+        "source_symbol_verified": true,
+        "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/vegard/openssh-portable/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c; verified_symbols=['ssh_packet_close']; failed_symbols=[]; cited_ranges=[(574, 588)]; uncovered_ranges=[]"
+      }
+    ],
+    "sut_role": "",
+    "benchmark_reachability": "",
+    "scope": "",
+    "standard_url_reachable": true,
+    "source_file_verified": true,
+    "source_line_verified": true,
+    "source_symbol_verified": true,
+    "source_verification_note": "HTTP 200: https://raw.githubusercontent.com/vegard/openssh-portable/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c; verified_symbols=['ssh_packet_need_rekeying']; failed_symbols=[]; cited_ranges=[(1043, 1085)]; uncovered_ranges=[]",
+    "mapping_audit_status": "SOURCE_MAPPED_AT_FIXED_COMMIT",
+    "standard_url_verification_note": "HTTP 200",
+    "validation_build_ok": true,
+    "validation_all_commands_ok": true,
+    "validation_positive_symbolic": "POSITIVE",
+    "validation_negative_symbolic": "NEGATIVE",
+    "validation_positive_concrete": "POSITIVE",
+    "validation_negative_concrete": "NEGATIVE",
+    "validation_expected_oracle_ok": true,
+    "validation_symbolic_concrete_consistent": true,
+    "validation_additional_positive_results": {},
+    "validation_additional_negative_results": {
+      "negative_late_or_missing": {
+        "symbolic": "NEGATIVE",
+        "concrete": "NEGATIVE"
+      }
+    },
+    "validation_ap_order": [
+      "ssh_rekey_eligible_one_hour_profile",
+      "ssh_local_kexinit_started",
+      "ssh_connection_closed"
+    ],
+    "validation_ap_order_ok": true,
+    "validation_positive_locations": 7,
+    "validation_positive_edges": 80,
+    "validation_positive_clocks": 2,
+    "validation_negative_locations": 7,
+    "validation_negative_edges": 102,
+    "validation_negative_clocks": 2,
+    "validation_build_ms": 14,
+    "validation_monitor_ms_positive": 0,
+    "validation_monitor_ms_negative": 0,
+    "validation_status": "PASS"
+  }
+]

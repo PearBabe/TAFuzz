@@ -1,0 +1,9 @@
+claim=AD_HOC_EXTERNAL_API_DIAGNOSTIC_NOT_ACCEPTANCE_METRIC
+command=LD_LIBRARY_PATH=benchmark/rift/reproduction/svf/install/lib benchmark/rift/reproduction/svf/api-build/svf_api_smoke benchmark/rift/reproduction/svf/results/alias_valueflow_smoke.bc
+exit_code=0
+SVF_API_SMOKE=PASS
+SVFIR_NODES=87
+ICFG_NODES=46
+SVFG_NODES=78
+SVFG_EDGES=0
+interpretation=The installed API loaded the bitcode and constructed the requested objects, but getTotalEdgeNum returned 0 while official wpa -svfg -stat reported 75 edges. This diagnostic is excluded from acceptance; no API edge-count correctness claim is made.

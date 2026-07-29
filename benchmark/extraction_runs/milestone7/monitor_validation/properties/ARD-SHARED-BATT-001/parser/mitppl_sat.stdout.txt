@@ -1,0 +1,697 @@
+
+<<<<<< Pre-processing input formula... >>>>>>
+
+
+Input formula (as read from input):
+
+G((low_voltage_start && voltage_threshold_enabled) -> (G[0,10000] (!battery_failsafe_event) && F(10000,infty) battery_failsafe_event))
+
+Input formula (getText() on the parse tree):
+
+G((low_voltage_start&&voltage_threshold_enabled)->(G[0,10000](!battery_failsafe_event)&&F(10000,infty)battery_failsafe_event))<EOF>
+
+The input formula is not in negation normal form (i.e. AND and OR only, and all negations
+appear just before letters).
+
+Rewriting into NNF...
+
+Input formula (in NNF):
+
+G ((!low_voltage_start || !voltage_threshold_enabled) || (G[0, 10000] ((!battery_failsafe_event)) && F(10000, infty) battery_failsafe_event))
+
+Re-parsing...
+
+toStringTree:
+
+(main 
+        (formula 
+            (atom G 
+                (atom ( 
+                    (formula 
+                        (formula 
+                            (atom ( 
+                                (formula 
+                                    (formula ! 
+                                        (atom low_voltage_start)) || 
+                                    (formula ! 
+                                        (atom voltage_threshold_enabled))) ))) || 
+                        (formula 
+                            (atom ( 
+                                (formula 
+                                    (formula 
+                                        (atom G 
+                                            (interval [ 
+                                                (bound 0) , 
+                                                (bound 10000) ]) 
+                                            (atom ( 
+                                                (formula 
+                                                    (atom ( 
+                                                        (formula ! 
+                                                            (atom battery_failsafe_event)) ))) )))) && 
+                                    (formula 
+                                        (atom F 
+                                            (interval ( 
+                                                (bound 10000) , 
+                                                (bound infty) )) 
+                                            (atom battery_failsafe_event)))) )))) )))) <EOF>)
+
+
+<<<<<< Numbering temporal subformulae... >>>>>>
+
+
+# of atomic propositions:
+3
+
+# of other bits:
+3
+
+props:
+
+5: battery_failsafe_event
+2: low_voltage_start
+3: voltage_threshold_enabled
+
+temporals:
+
+6 (  ): F(10000,infty)battery_failsafe_event
+4 (  ): G[0,10000]((!battery_failsafe_event))
+1 (TE): G((!low_voltage_start||!voltage_threshold_enabled)||(G[0,10000]((!battery_failsafe_event))&&F(10000,infty)battery_failsafe_event))
+
+repeats:
+
+
+Generating BDDs for labels...
+
+Computing GCD of constants...
+1 (TE): G((!low_voltage_start||!voltage_threshold_enabled)||(G[0,10000]((!battery_failsafe_event))&&F(10000,infty)battery_failsafe_event))
+4 (  ): G[0,10000]((!battery_failsafe_event))
+6 (  ): F(10000,infty)battery_failsafe_event
+
+<<<<<< Converting into TAs... >>>>>>
+
+
+Generating TA_0...
+
+                TA_0
+    # of locations:          2
+       # of clocks: 4294967295
+
+  location:          0 (s0)
+        # outgoing:          1
+        # incoming:          0
+  location:          1 (s1) *ACCEPTING*
+        # outgoing:          1
+        # incoming:          2
+
+Generating TA_div...
+
+              TA_div
+    # of locations:          2
+       # of clocks:          0
+
+  location:          0 (ell_0) *ACCEPTING*
+        # outgoing:          1
+        # incoming:          1
+  location:          1 (ell_1)
+        # outgoing:          2
+        # incoming:          2
+
+Generating TA_1_0...
+
+              TA_1_0
+    # of locations:          2
+       # of clocks: 4294967295
+
+  location:          0 (s0) *ACCEPTING*
+        # outgoing:          2
+        # incoming:          2
+  location:          1 (s1) *ACCEPTING*
+        # outgoing:          3
+        # incoming:          3
+
+Generating TA_4_0...
+
+              TA_4_0
+    # of locations:          2
+       # of clocks:          0
+
+  location:          0 (s0) *ACCEPTING*
+        # outgoing:          2
+        # incoming:          3
+  location:          1 (s1) *ACCEPTING*
+        # outgoing:          5
+        # incoming:          4
+
+Generating TA_6_0...
+
+              TA_6_0
+    # of locations:          3
+       # of clocks:          0
+
+  location:          0 (s0) *ACCEPTING*
+        # outgoing:          2
+        # incoming:          3
+  location:          1 (s1)
+        # outgoing:          8
+        # incoming:          9
+  location:          2 (s2) *ACCEPTING*
+        # outgoing:          8
+        # incoming:          6
+
+Generating M...
+
+                   M
+    # of locations:          1
+       # of clocks: 4294967295
+
+  location:          0 (s0) *ACCEPTING*
+        # outgoing:          1
+        # incoming:          1
+
+<<<<<< Taking intersection... >>>>>>
+
+Doing intersection for 6 components...
+Adding location 0
+Adding location 1 *ACCEPTING*
+Adding edge from 0 (s0_ell_0*_s0*_s0*_s0*_s0*_0) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding location 2
+Adding edge from 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding location 3
+Adding edge from 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding location 4
+Adding edge from 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding location 5
+Adding edge from 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding location 6
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding location 7
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding location 8
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding location 9
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding location 10
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding location 11
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 3 (s1*_ell_1_s1*_s1*_s1_s0*_1) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding location 12 *ACCEPTING*
+Adding edge from 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding location 13
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding location 14
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding location 15
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding location 16
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding location 17
+Adding edge from 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 7 (s1*_ell_1_s1*_s0*_s1_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding location 18 *ACCEPTING*
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding location 19 *ACCEPTING*
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding location 20 *ACCEPTING*
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 12 (s1*_ell_1_s1*_s1*_s1_s0*_0) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding location 21
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding location 22
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4)
+Adding location 23
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4)
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4)
+Adding location 24
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4)
+Adding location 25
+Adding edge from 13 (s1*_ell_1_s1*_s1*_s1_s0*_4) -> 25 (s1*_ell_0*_s1*_s0*_s0*_s0*_4)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding location 26 *ACCEPTING*
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding location 27 *ACCEPTING*
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0)
+Adding location 28 *ACCEPTING*
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0)
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0)
+Adding location 29 *ACCEPTING*
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0)
+Adding location 30 *ACCEPTING*
+Adding edge from 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4) -> 30 (s1*_ell_0*_s1*_s0*_s0*_s0*_0)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 25 (s1*_ell_0*_s1*_s0*_s0*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4)
+Adding edge from 15 (s1*_ell_1_s1*_s0*_s1_s0*_4) -> 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 30 (s1*_ell_0*_s1*_s0*_s0*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0)
+Adding edge from 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4) -> 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0)
+Adding edge from 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4) -> 30 (s1*_ell_0*_s1*_s0*_s0*_s0*_0)
+Adding edge from 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4) -> 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 19 (s1*_ell_1_s1*_s0*_s1_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) -> 9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 21 (s1*_ell_0*_s1*_s1*_s1_s0*_4) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 23 (s1*_ell_0*_s1*_s0*_s1_s0*_4) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 25 (s1*_ell_0*_s1*_s0*_s0*_s0*_4) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 25 (s1*_ell_0*_s1*_s0*_s0*_s0*_4) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) -> 14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 19 (s1*_ell_1_s1*_s0*_s1_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 20 (s1*_ell_1_s1*_s0*_s2*_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) -> 18 (s1*_ell_1_s1*_s1*_s2*_s0*_0)
+Adding edge from 30 (s1*_ell_0*_s1*_s0*_s0*_s0*_0) -> 1 (s1*_ell_1_s1*_s0*_s0*_s0*_0)
+Adding edge from 30 (s1*_ell_0*_s1*_s0*_s0*_s0*_0) -> 12 (s1*_ell_1_s1*_s1*_s1_s0*_0)
+Constructed product: TA_0 x TA_div x TA_1_0 x TA_4_0 x TA_6_0 x M
+new_clocks.size() == 1
+locations_reachable.size() == 31
+bdd_edges_reachable.size() == 379
+
+    # of locations:         31
+       # of clocks: 4294967295
+
+  location:          0 (s0_ell_0*_s0*_s0*_s0*_s0*_0)
+        # outgoing:          1
+        # incoming:          0
+  location:          1 (s1*_ell_1_s1*_s0*_s0*_s0*_0) *ACCEPTING*
+        # outgoing:          4
+        # incoming:         13
+  location:          2 (s1*_ell_1_s1*_s0*_s0*_s0*_1)
+        # outgoing:          4
+        # incoming:         10
+  location:          3 (s1*_ell_1_s1*_s1*_s1_s0*_1)
+        # outgoing:         24
+        # incoming:         34
+  location:          4 (s1*_ell_0*_s1*_s0*_s0*_s0*_1)
+        # outgoing:          2
+        # incoming:         10
+  location:          5 (s1*_ell_0*_s1*_s1*_s1_s0*_1)
+        # outgoing:         12
+        # incoming:         34
+  location:          6 (s1*_ell_1_s1*_s1*_s2*_s0*_1)
+        # outgoing:         24
+        # incoming:         16
+  location:          7 (s1*_ell_1_s1*_s0*_s1_s0*_1)
+        # outgoing:         16
+        # incoming:         16
+  location:          8 (s1*_ell_1_s1*_s0*_s2*_s0*_1)
+        # outgoing:         16
+        # incoming:          8
+  location:          9 (s1*_ell_0*_s1*_s1*_s2*_s0*_1)
+        # outgoing:         12
+        # incoming:         16
+  location:         10 (s1*_ell_0*_s1*_s0*_s1_s0*_1)
+        # outgoing:          8
+        # incoming:         16
+  location:         11 (s1*_ell_0*_s1*_s0*_s2*_s0*_1)
+        # outgoing:          8
+        # incoming:          8
+  location:         12 (s1*_ell_1_s1*_s1*_s1_s0*_0) *ACCEPTING*
+        # outgoing:         24
+        # incoming:         36
+  location:         13 (s1*_ell_1_s1*_s1*_s1_s0*_4)
+        # outgoing:         24
+        # incoming:         32
+  location:         14 (s1*_ell_1_s1*_s1*_s2*_s0*_4)
+        # outgoing:         24
+        # incoming:         16
+  location:         15 (s1*_ell_1_s1*_s0*_s1_s0*_4)
+        # outgoing:         16
+        # incoming:         16
+  location:         16 (s1*_ell_1_s1*_s0*_s2*_s0*_4)
+        # outgoing:         16
+        # incoming:          8
+  location:         17 (s1*_ell_1_s1*_s0*_s0*_s0*_4)
+        # outgoing:          4
+        # incoming:          8
+  location:         18 (s1*_ell_1_s1*_s1*_s2*_s0*_0) *ACCEPTING*
+        # outgoing:         24
+        # incoming:         16
+  location:         19 (s1*_ell_1_s1*_s0*_s1_s0*_0) *ACCEPTING*
+        # outgoing:         16
+        # incoming:         16
+  location:         20 (s1*_ell_1_s1*_s0*_s2*_s0*_0) *ACCEPTING*
+        # outgoing:         16
+        # incoming:          8
+  location:         21 (s1*_ell_0*_s1*_s1*_s1_s0*_4)
+        # outgoing:         12
+        # incoming:          8
+  location:         22 (s1*_ell_0*_s1*_s1*_s2*_s0*_4)
+        # outgoing:         12
+        # incoming:          4
+  location:         23 (s1*_ell_0*_s1*_s0*_s1_s0*_4)
+        # outgoing:          8
+        # incoming:          4
+  location:         24 (s1*_ell_0*_s1*_s0*_s2*_s0*_4)
+        # outgoing:          8
+        # incoming:          2
+  location:         25 (s1*_ell_0*_s1*_s0*_s0*_s0*_4)
+        # outgoing:          2
+        # incoming:          2
+  location:         26 (s1*_ell_0*_s1*_s1*_s1_s0*_0) *ACCEPTING*
+        # outgoing:         12
+        # incoming:          9
+  location:         27 (s1*_ell_0*_s1*_s1*_s2*_s0*_0) *ACCEPTING*
+        # outgoing:         12
+        # incoming:          4
+  location:         28 (s1*_ell_0*_s1*_s0*_s1_s0*_0) *ACCEPTING*
+        # outgoing:          8
+        # incoming:          4
+  location:         29 (s1*_ell_0*_s1*_s0*_s2*_s0*_0) *ACCEPTING*
+        # outgoing:          8
+        # incoming:          2
+  location:         30 (s1*_ell_0*_s1*_s0*_s0*_s0*_0) *ACCEPTING*
+        # outgoing:          2
+        # incoming:          3
+
+Projected TA: 
+clocks.size() == 2
+locations.size() == 31
+bdd_edges.size() == 379
+Constructing flattened product TA took = 6[ms]
+<<<<<< Calculating fixpoint >>>>>>
+
+
+[32mSATISFIABLE (by an [1minfinite[22m timed word)[0m
+
+
+Fixpoint took = 1[ms]

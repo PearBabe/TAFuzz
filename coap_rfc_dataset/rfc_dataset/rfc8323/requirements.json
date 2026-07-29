@@ -1,0 +1,342 @@
+[
+  {
+    "section": "ROOT",
+    "keyword": "MAY",
+    "text": "Information about the current status of this document, any errata,\n   and how to provide feedback on it may be obtained at\n   https://www"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "The introduction of CoAP over TCP also leads to some additional\n   effects that may be desirable in a specific deployment:\n\n   o  Where NATs are present along the communication path, CoAP over TCP\n      leads to different NAT traversal behavior than CoAP over UDP"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "Furthermore, CoAP may be integrated into a web environment where the\n   front end uses CoAP over UDP from IoT devices to a cloud\n   infrastructure and then CoAP over TCP between the back-end services"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "Finally, CoAP applications running inside a web browser may be\n   without access to connectivity other than HTTP"
+  },
+  {
+    "section": "1.  Introduction",
+    "keyword": "MAY",
+    "text": "In this case, the\n   WebSocket Protocol [RFC6455] may be used to transport CoAP requests\n   and responses, as opposed to cross-proxying them via HTTP to an\n   HTTP-to-CoAP cross-proxy"
+  },
+  {
+    "section": "3.  CoAP over TCP",
+    "keyword": "MAY",
+    "text": "In\n   implementations of this kind, connection releases or aborts may not\n   be indicated as errors to the application but may simply be handled\n   by automatic reconnection once the need arises again"
+  },
+  {
+    "section": "3.  CoAP over TCP",
+    "keyword": "MAY",
+    "text": "Other\n   implementations may be based on configured connections that are kept\n   open continuously and lead to management system notifications on\n   release or abort"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "Once a Transport Connection is established, each endpoint MUST send a\n   CSM (see Section 5"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "To avoid a deadlock, the Connection Initiator MUST NOT wait for the\n   Connection Acceptor to send its initial CSM before sending its own\n   initial CSM"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MAY",
+    "text": "Conversely, the Connection Acceptor MAY wait for the\n   Connection Initiator to send its initial CSM before sending its own\n   initial CSM"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MAY",
+    "text": "To avoid unnecessary latency, a Connection Initiator MAY send\n   additional messages after its initial CSM without waiting to receive\n   the Connection Acceptor's CSM; however, it is important to note that\n   the Connection Acceptor's CSM might indicate capabilities that impact\n   how the Connection Initiator is expected to communicate with the\n   Connection Acceptor"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "Standards Track                   [Page 11]\n\n\nRFC 8323         TCP/TLS/WebSockets Transports for CoAP    February 2018\n\n\n   Endpoints MUST treat a missing or invalid CSM as a connection error\n   and abort the connection (see Section 5"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "Responses MUST be returned over the same\n   connection as the originating request"
+  },
+  {
+    "section": "3.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "If one side\n   does not implement a CoAP server, an error response MUST be returned\n   for all CoAP requests from the other side"
+  },
+  {
+    "section": "3.4.  Connection Health",
+    "keyword": "MUST",
+    "text": "00) can always be sent and MUST be ignored by\n   the recipient"
+  },
+  {
+    "section": "3.4.  Connection Health",
+    "keyword": "MAY",
+    "text": "Messages that are\n   in flight may or may not be lost"
+  },
+  {
+    "section": "4.  CoAP over WebSockets",
+    "keyword": "SHOULD",
+    "text": "Because the WebSocket server is the only way to reach the CoAP\n   server, the CoAP proxy should be a reverse-proxy"
+  },
+  {
+    "section": "4.1.  Opening Handshake",
+    "keyword": "MUST",
+    "text": "The WebSocket client MUST include the subprotocol name \"coap\" in the\n   list of protocols; this indicates support for the protocol defined in\n   this document"
+  },
+  {
+    "section": "4.2.  Message Format",
+    "keyword": "MUST",
+    "text": "2), with one change: the\n   Length (Len) field MUST be set to zero, because the WebSocket frame\n   contains the length"
+  },
+  {
+    "section": "4.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "As with CoAP over TCP, each endpoint MUST send a CSM (see\n   Section 5"
+  },
+  {
+    "section": "4.3.  Message Transmission",
+    "keyword": "MUST",
+    "text": "Responses MUST be returned over the same\n   connection as the originating request"
+  },
+  {
+    "section": "4.4.  Connection Health",
+    "keyword": "SHOULD",
+    "text": "5 of [RFC6455]) SHOULD NOT be used"
+  },
+  {
+    "section": "5.2.  Signaling Option Numbers",
+    "keyword": "MUST",
+    "text": "If a Signaling Option is critical and\n   not understood by the receiver, it MUST abort the connection (see\n   Section 5"
+  },
+  {
+    "section": "5.3.  Capabilities and Settings Messages (CSMs)",
+    "keyword": "MUST",
+    "text": "One CSM MUST be sent by each endpoint at the start of the Transport\n   Connection"
+  },
+  {
+    "section": "5.3.  Capabilities and Settings Messages (CSMs)",
+    "keyword": "MAY",
+    "text": "Additional CSMs MAY be sent at any other time by either\n   endpoint over the lifetime of the connection"
+  },
+  {
+    "section": "5.3.1.  Max-Message-Size Capability Option",
+    "keyword": "MAY",
+    "text": "(Note that there is no relationship of the message size to the\n   overall request or response body size that may be achievable in\n   block-wise transfer"
+  },
+  {
+    "section": "5.3.2.  Block-Wise-Transfer Capability Option",
+    "keyword": "MAY",
+    "text": ")\n\n   Implementation note: When indicating a value of the Max-Message-Size\n   Option with an intention to enable BERT, the indicating\n   implementation may want to (1) choose a particular BERT block size it\n   wants to encourage and (2) add a delta for the header and any options\n   that may also need to be included in the message with a BERT block of\n   that size"
+  },
+  {
+    "section": "5.3.2.  Block-Wise-Transfer Capability Option",
+    "keyword": "MAY",
+    "text": "A\n   BERT-enabled implementation may want to indicate a BERT block size of\n   2048 or a higher multiple of 1024 and at the same time be more\n   generous with the size of the header and options added (say, 256 or\n   512)"
+  },
+  {
+    "section": "5.4.  Ping and Pong Messages",
+    "keyword": "MUST",
+    "text": "00) can\n   always be sent and MUST be ignored by the recipient"
+  },
+  {
+    "section": "5.4.  Ping and Pong Messages",
+    "keyword": "MUST",
+    "text": "Upon receipt of a Ping message, the receiver MUST return a Pong\n   message with an identical Token in response"
+  },
+  {
+    "section": "5.4.  Ping and Pong Messages",
+    "keyword": "SHOULD",
+    "text": "Unless the Ping carries\n   an option with delaying semantics such as the Custody Option, it\n   SHOULD respond as soon as practical"
+  },
+  {
+    "section": "5.4.  Ping and Pong Messages",
+    "keyword": "MUST",
+    "text": "As with all Signaling messages,\n   the recipient of a Ping or Pong message MUST ignore elective options\n   it does not understand"
+  },
+  {
+    "section": "5.4.1.  Custody Option",
+    "keyword": "SHOULD",
+    "text": "(Note\n   that there is no definition of specific application semantics for\n   \"processed\", but there is an expectation that the receiver of a Pong\n   message with a Custody Option should be able to free buffers based on\n   this indication"
+  },
+  {
+    "section": "5.4.1.  Custody Option",
+    "keyword": "SHOULD",
+    "text": "In that case, the receiver\n   SHOULD delay its Pong message until it finishes processing all the\n   request/response messages received prior to the Ping message on the\n   current connection"
+  },
+  {
+    "section": "5.5.  Release Messages",
+    "keyword": "MAY",
+    "text": "2 of [RFC7252]) MAY be included"
+  },
+  {
+    "section": "5.5.  Release Messages",
+    "keyword": "MAY",
+    "text": "(In case that does not happen, the sender of\n   the release may want to implement a timeout mechanism if getting rid\n   of the connection is actually important to it"
+  },
+  {
+    "section": "5.5.  Release Messages",
+    "keyword": "MAY",
+    "text": "Standards Track                   [Page 21]\n\n\nRFC 8323         TCP/TLS/WebSockets Transports for CoAP    February 2018\n\n\n   Messages may be in flight or responses outstanding when the sender\n   decides to send a Release message (which is one reason the sender had\n   decided to wait before closing the connection)"
+  },
+  {
+    "section": "5.5.  Release Messages",
+    "keyword": "SHOULD",
+    "text": "The peer responding\n   to the Release message SHOULD delay the closing of the connection\n   until it has responded to all requests received by it before the\n   Release message"
+  },
+  {
+    "section": "5.5.  Release Messages",
+    "keyword": "MAY",
+    "text": "It also MAY wait for the responses to its own\n   requests"
+  },
+  {
+    "section": "5.6.  Abort Messages",
+    "keyword": "MAY",
+    "text": "The sender shuts down the connection immediately\n   after the Abort message (and may or may not wait for a Release\n   message, Abort message, or connection shutdown in the inverse\n   direction)"
+  },
+  {
+    "section": "5.6.  Abort Messages",
+    "keyword": "SHOULD",
+    "text": "2 of [RFC7252])\n   SHOULD be included in the Abort message"
+  },
+  {
+    "section": "5.6.  Abort Messages",
+    "keyword": "MAY",
+    "text": "Messages may be in flight\n   or responses outstanding when the sender decides to send an Abort\n   message"
+  },
+  {
+    "section": "5.6.  Abort Messages",
+    "keyword": "SHOULD",
+    "text": "More detailed information SHOULD be included as a\n   diagnostic payload"
+  },
+  {
+    "section": "6.  Block-Wise Transfer and Reliable Transports",
+    "keyword": "MAY",
+    "text": "While this suggests that the block-wise transfer\n   protocol [RFC7959] is also no longer needed, it remains applicable\n   for a number of cases:\n\n   o  Large messages, such as firmware downloads, may cause undesired\n      head-of-line blocking when a single transport connection is used"
+  },
+  {
+    "section": "6.  Block-Wise Transfer and Reliable Transports",
+    "keyword": "MAY",
+    "text": "o  A UDP-to-TCP gateway may simply not have the context to convert a\n      message with a Block Option into the equivalent exchange without\n      any use of a Block Option (it would need to convert the entire\n      block-wise exchange from start to end into a single exchange)"
+  },
+  {
+    "section": "7.1.  Notifications and Reordering",
+    "keyword": "MUST",
+    "text": "xx notifications MAY be empty on\n   transmission and MUST be ignored on reception"
+  },
+  {
+    "section": "7.2.  Transmission and Acknowledgments",
+    "keyword": "MAY",
+    "text": "If the client does not recognize\n   the Token in a notification, it MAY immediately abort the connection\n   (see Section 5"
+  },
+  {
+    "section": "7.3.  Freshness",
+    "keyword": "MAY",
+    "text": "A proxy MAY maintain its own\n   schedule for confirming the interests that it relies on being\n   registered toward the origin server; however, it is generally\n   inadvisable for a proxy to generate a large number of outgoing checks\n   based on a single incoming check"
+  },
+  {
+    "section": "7.4.  Cancellation",
+    "keyword": "MUST",
+    "text": "For CoAP over reliable transports, a client MUST explicitly\n   deregister by issuing a GET request that has the Token field set to\n   the Token of the observation to be canceled and includes an Observe\n   Option with the value set to 1 (deregister)"
+  },
+  {
+    "section": "7.4.  Cancellation",
+    "keyword": "MUST",
+    "text": "If the client observes one or more resources over a reliable\n   transport, then the CoAP server (or intermediary in the role of the\n   CoAP server) MUST remove all entries associated with the client\n   endpoint from the lists of observers when the connection either\n   times out or is closed"
+  },
+  {
+    "section": "8.2.  coaps+tcp URI Scheme",
+    "keyword": "MAY",
+    "text": "o  If a TLS server does not support the Application-Layer Protocol\n      Negotiation (ALPN) extension [RFC7301] or wishes to accommodate\n      TLS clients that do not support ALPN, it MAY offer a coaps+tcp\n      endpoint on TCP port 5684"
+  },
+  {
+    "section": "8.2.  coaps+tcp URI Scheme",
+    "keyword": "MAY",
+    "text": "This endpoint MAY also be ALPN\n      enabled"
+  },
+  {
+    "section": "8.2.  coaps+tcp URI Scheme",
+    "keyword": "MUST",
+    "text": "A TLS server MAY offer coaps+tcp endpoints on ports\n      other than TCP port 5684, which MUST be ALPN enabled"
+  },
+  {
+    "section": "8.2.  coaps+tcp URI Scheme",
+    "keyword": "MUST",
+    "text": "o  For TCP ports other than port 5684, the TLS client MUST use the\n      ALPN extension to advertise the \"coap\" protocol identifier (see\n      Section 11"
+  },
+  {
+    "section": "8.2.  coaps+tcp URI Scheme",
+    "keyword": "MUST",
+    "text": "If the TLS server either does not negotiate the ALPN\n      extension or returns a no_application_protocol alert, the TLS\n      client MUST close the connection"
+  },
+  {
+    "section": "8.2.  coaps+tcp URI Scheme",
+    "keyword": "MAY",
+    "text": "o  For TCP port 5684, a TLS client MAY use the ALPN extension to\n      advertise the \"coap\" protocol identifier in the list of protocols\n      in its ClientHello"
+  },
+  {
+    "section": "9.  Securing CoAP",
+    "keyword": "MUST",
+    "text": "A security solution MUST be implemented to protect CoAP over reliable\n   transports and MUST be enabled by default"
+  },
+  {
+    "section": "9.  Securing CoAP",
+    "keyword": "MAY",
+    "text": "This document defines the\n   TLS binding, but alternative solutions at different layers in the\n   protocol stack MAY be used to protect CoAP over reliable transports\n\n\n\n\n\nBormann, et al"
+  },
+  {
+    "section": "9.2.  TLS Usage for CoAP over WebSockets",
+    "keyword": "MUST",
+    "text": "The client MUST perform a TLS handshake after opening the connection\n   to the server"
+  },
+  {
+    "section": "9.2.  TLS Usage for CoAP over WebSockets",
+    "keyword": "MUST",
+    "text": "WebSocket servers that provide secure CoAP over\n   WebSockets for the browser use case will need to follow the browser\n   preferences and MUST follow [RFC7525]"
+  },
+  {
+    "section": "10.1.  Signaling Messages",
+    "keyword": "MUST",
+    "text": "In particular, a peer MUST NOT assume that a\n   successful connection to the Alternative-Address inherits all the\n   security properties of the current connection"
+  },
+  {
+    "section": "11.1.  Signaling Codes",
+    "keyword": "MUST",
+    "text": "Each entry in the subregistry must include the Signaling Code in the\n   range 7"
+  },
+  {
+    "section": "11.2.  CoAP Signaling Option Numbers Registry",
+    "keyword": "MUST",
+    "text": "Each entry in the subregistry must include one or more of the codes\n   in the \"CoAP Signaling Codes\" subregistry (Section 11"
+  },
+  {
+    "section": "11.2.  CoAP Signaling Option Numbers Registry",
+    "keyword": "SHOULD",
+    "text": ")\n\n   The documentation for a Signaling Option Number should specify the\n   semantics of an option with that number, including the following\n   properties:\n\n   o  Whether the option is critical or elective, as determined by the\n      Option Number"
+  },
+  {
+    "section": "11.5.  URI Scheme Registration",
+    "keyword": "SHOULD",
+    "text": "This approach runs counter to the WWW\n      principle that a URI identifies a resource and that multiple URIs\n      for identifying the same resource should be avoided\n      <https://www"
+  },
+  {
+    "section": "12.1.  Normative References",
+    "keyword": "MAY",
+    "text": "17487/RFC7525,\n              May 2015, <https://www"
+  },
+  {
+    "section": "12.1.  Normative References",
+    "keyword": "MAY",
+    "text": "17487/RFC8174, May 2017,\n              <https://www"
+  },
+  {
+    "section": "12.2.  Informative References",
+    "keyword": "MAY",
+    "text": "17487/RFC7540, May 2015,\n              <https://www"
+  }
+]

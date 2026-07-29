@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_id": "artifact.executor.ltl-fuzzer.process-start.portability-probe",
+  "executor_id": "executor.ltl-fuzzer.process-start.portability-probe",
+  "executor_version": "1.0.0",
+  "capabilities": [
+    {
+      "capability_id": "capability.ltl-fuzzer.process-start.argc",
+      "required_capability": "environment",
+      "action_schema_id": "action.posix.argc",
+      "controllability": "ENVIRONMENT",
+      "evidence_note": "The probe runner can start the analyzed executable with a chosen number of process arguments."
+    }
+  ],
+  "status": "COMPLETE",
+  "unsupported_constructs": [],
+  "diagnostics": [
+    "PORTABILITY_PROBE_NOT_REQUIREMENT: this manifest attests only process-start argument-count control; it is not a project model pack and does not claim an observed AP flip."
+  ]
+}

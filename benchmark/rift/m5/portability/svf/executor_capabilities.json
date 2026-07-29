@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "artifact_id": "artifact.executor.process_start.portability_probe",
+  "executor_id": "executor.process_start.portability_probe",
+  "executor_version": "1.0.0",
+  "capabilities": [
+    {
+      "capability_id": "capability.process_start.argc",
+      "required_capability": "environment",
+      "action_schema_id": "action.posix.argc",
+      "controllability": "ENVIRONMENT",
+      "evidence_note": "The probe runner can start the analyzed executable with a chosen number of process arguments."
+    },
+    {
+      "capability_id": "capability.process_start.argv",
+      "required_capability": "environment",
+      "action_schema_id": "action.posix.argv",
+      "controllability": "ENVIRONMENT",
+      "evidence_note": "The probe runner can start the analyzed executable with chosen process argument strings."
+    }
+  ],
+  "status": "COMPLETE",
+  "unsupported_constructs": [],
+  "diagnostics": [
+    "PORTABILITY_PROBE_NOT_REQUIREMENT: this manifest attests only process-start argc/argv control; it is not a project model pack and does not claim replay of a mutation recipe."
+  ]
+}

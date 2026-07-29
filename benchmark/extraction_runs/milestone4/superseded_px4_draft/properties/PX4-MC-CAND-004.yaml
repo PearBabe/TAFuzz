@@ -1,0 +1,39 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-004
+title: Offboard admission requires sustained proof of life
+system: PX4
+vehicle_scope: multicopter SITL with MAVLink Offboard input
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes/offboard.md
+    lines: 5-18
+    original_text: "PX4 enables offboard control only after receiving the signal for more than a second."
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes/offboard.md
+    lines: 24-31
+    original_text: "The stream must be sent for at least a second before PX4 will arm in offboard mode, or switch to offboard mode."
+normalized_requirement:
+  context: MAVLink Offboard admission through a supported setpoint-message family
+  trigger: PX4 reports armed-in-Offboard or enters Offboard
+  obligation: a qualifying accepted proof stream must have existed continuously for the required prehistory
+  safety_only: this candidate forbids premature admission; it does not promise admission when other prerequisites fail
+time_constraint:
+  duration_text: more than one second at lines 8-9; at least one second at lines 26-27
+  rate_text: continuous 2 Hz at line 8; greater than 2 Hz at line 16; at 2 Hz at line 26
+  epoch: admission event, looking backward over accepted proof messages
+  clock: one monotonic observer clock; message acceptance needs an internal event or faithful input adapter
+  boundary: NEEDS_RATE_BOUNDARY_RECONCILIATION
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G(offboard_admitted -> offboard_proof_qualified_previously)"
+  note: the derived past-time AP is not defined until strict/equality boundaries and accepted-message semantics are fixed
+atomic_propositions:
+  - AP-PX4-OFFBOARD-PROOF
+  - AP-PX4-OFFBOARD-PROOF-QUALIFIED
+  - AP-PX4-MODE-OFFBOARD
+  - AP-PX4-ARMED
+mavlink_observation_refs: [OBS-PX4-OFFBOARD-INPUT, OBS-PX4-MODE, OBS-PX4-ARMED]
+blockers: [NEEDS_RATE_BOUNDARY_RECONCILIATION, NEEDS_DURATION_BOUNDARY_RECONCILIATION, NEEDS_ACCEPTANCE_EVENT]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

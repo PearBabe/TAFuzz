@@ -1,0 +1,42 @@
+schema_version: 0.1-draft
+property_id: PX4-MC-CAND-006
+title: Auto-disarm after continuous landed state
+system: PX4
+vehicle_scope: multicopter SITL
+status: CANDIDATE_NEEDS_REVIEW
+implementation_satisfaction: NOT_ASSESSED
+normative_basis:
+  - kind: official_repository_documentation
+    path: docs/en/advanced_config/prearm_arm_disarm.md
+    lines: 86-94
+    original_text: "Time-out for auto disarm after landing. Default: 2s (-1 to disable)."
+  - kind: official_repository_documentation
+    path: docs/en/flight_modes_mc/land.md
+    lines: 23-37
+    original_text: "The vehicle descends at the configured rate and will disarm after landing."
+  - kind: user_facing_parameter_metadata
+    path: src/modules/commander/commander_params.c
+    lines: 215-227
+    original_text: "A zero or negative value means that automatic disarming triggered by landing detection is disabled."
+normalized_requirement:
+  context: armed vehicle has taken off, then remains continuously landed, with runtime auto-disarm enabled
+  trigger: landed becomes true and stays true
+  obligation: become disarmed after T_land
+  source_binding_warning: current source contains mission and configuration-override exceptions not enumerated in the cited external text
+time_constraint:
+  expression: T_land = runtime(COM_DISARM_LAND) seconds when T_land > 0
+  compiled_default_instance: 2.0 seconds
+  epoch: first sample of the continuous landed interval
+  clock: PX4 HRT internally; host-monotonic receipt timestamps for HEARTBEAT and EXTENDED_SYS_STATE externally
+  boundary: NEEDS_OBSERVER_TOLERANCE
+mitl:
+  status: NOT_VALIDATED
+  formula_candidate: "G((armed & landed_continuous_for(T_land)) -> F_[0,EPS_OBS] disarmed)"
+atomic_propositions:
+  - AP-PX4-ARMED
+  - AP-PX4-DISARMED
+  - AP-PX4-LANDED
+  - AP-PX4-TAKEOFF-DETECTED
+mavlink_observation_refs: [OBS-PX4-ARMED, OBS-PX4-LANDED, OBS-PX4-PARAM]
+blockers: [NEEDS_EXCEPTION_RECONCILIATION, NEEDS_DISABLE_DOMAIN_RECONCILIATION, NEEDS_OBSERVER_TOLERANCE]
+validation: {syntax: NOT_RUN, trace: NOT_RUN, sitl: NOT_RUN}

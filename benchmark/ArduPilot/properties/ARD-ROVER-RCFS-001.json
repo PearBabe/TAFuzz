@@ -1,0 +1,953 @@
+{
+  "schema_version": "1.0",
+  "property_id": "ARD-ROVER-RCFS-001",
+  "title_zh": "Rover 低油门持续触发 failsafe",
+  "title_en": "Rover low-throttle persistence failsafe",
+  "system_scope": {
+    "system": "ArduPilot",
+    "vehicles": [
+      "Rover"
+    ],
+    "firmware_release": null,
+    "firmware_commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "configuration_snapshot": {
+      "status": "CAPTURED",
+      "path": "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "sha256": "6c01b52d879b641ac4dcaf6350336a3cb8cf018810174015e9a366adf885bccb",
+      "notes": "具体实例逐 profile 引用保存的 PARAM_VALUE 文件、SHA-256、param_index/param_count；源码默认值未被代替为运行值。"
+    },
+    "mission_snapshot": {
+      "status": "PENDING",
+      "path": null,
+      "sha256": null,
+      "notes": "Capture the exact test mission or explicit no-mission setup before validation."
+    },
+    "initial_state": "SITL Rover；RCMAP、FS_* 参数、模式和有效 RC input path 已归档。"
+  },
+  "status": "NEEDS_CONTEXT",
+  "classification": "OFFICIAL_BEHAVIOR",
+  "sources": [
+    {
+      "source_id": "ARD-ROVER-RCFS-001-S1",
+      "source_class": "OFFICIAL_BEHAVIOR",
+      "authority": "HIGH",
+      "title": "Rover Radio Failsafe",
+      "version": "209e532bc97e5a41966f8c9ab483323c264cae08",
+      "path_or_url": "benchmark/extraction_runs/corpus_sources/ardupilot_wiki/rover/source/docs/rover-failsafes.rst",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "f68a1c10ab43b3f831d2600a4233d3bc1e1cec6326bcdc57b03baf3c8afd1576",
+      "locator": {
+        "page": null,
+        "section": "Radio Failsafe",
+        "anchor": null,
+        "line_start": 15,
+        "line_end": 22,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+      "context_summary_zh": "列出连接丢失、低油门和 RC override 丢失三种来源及持续时间。",
+      "language": "en",
+      "document_status": "MAIN_ONLY"
+    },
+    {
+      "source_id": "ARD-ROVER-RCFS-001-S2",
+      "source_class": "PARAM_METADATA",
+      "authority": "LOW",
+      "title": "Rover FS_TIMEOUT/FS_THR metadata",
+      "version": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+      "path_or_url": "baseline/ardupilot/Rover/Parameters.cpp",
+      "retrieved_at": "2026-07-18T06:25:00+08:00",
+      "sha256": "84ffa3f20ff0acb1f1125a66b272e64fb82c6cc50b103688b996e15ca5ef462f",
+      "locator": {
+        "page": null,
+        "section": null,
+        "anchor": null,
+        "line_start": 100,
+        "line_end": 122,
+        "char_start": null,
+        "char_end": null
+      },
+      "exact_quote": "// @Param: FS_TIMEOUT\n    // @DisplayName: Failsafe timeout\n    // @Description: The time in seconds that a failsafe condition must persist before the failsafe action is triggered\n    // @Units: s\n    // @Range: 1 100\n    // @Increment: 0.5\n    // @User: Standard\n    GSCALAR(fs_timeout,    \"FS_TIMEOUT\",     1.5),\n\n    // @Param: FS_THR_ENABLE\n    // @DisplayName: Throttle Failsafe Enable\n    // @Description: The throttle failsafe allows you to configure a software failsafe activated by a setting on the throttle input channel to a low value. This can be used to detect the RC transmitter going out of range. Failsafe will be triggered when the throttle channel goes below the FS_THR_VALUE for FS_TIMEOUT seconds.\n    // @Values: 0:Disabled,1:Enabled,2:Enabled Continue with Mission in Auto\n    // @User: Standard\n    GSCALAR(fs_throttle_enabled,    \"FS_THR_ENABLE\",     FS_THR_ENABLED),\n\n    // @Param: FS_THR_VALUE\n    // @DisplayName: Throttle Failsafe Value\n    // @Description: The PWM level on the throttle channel below which throttle failsafe triggers.\n    // @Range: 910 1100\n    // @Increment: 1\n    // @User: Standard\n    GSCALAR(fs_throttle_value,      \"FS_THR_VALUE\",     910),",
+      "context_summary_zh": "冻结源码中 FS_TIMEOUT、FS_THR_ENABLE 和 FS_THR_VALUE 的参数语义。",
+      "language": "en",
+      "document_status": "CURRENT"
+    }
+  ],
+  "context_graph": {
+    "node_ids": [
+      "ARD-ROVER-RCFS-001-S1",
+      "ARD-ROVER-RCFS-001-S2"
+    ],
+    "edges": [
+      {
+        "from": "ARD-ROVER-RCFS-001-S1",
+        "relation": "parameterizes",
+        "to": "ARD-ROVER-RCFS-001-S2",
+        "evidence_source_id": "ARD-ROVER-RCFS-001-S2",
+        "confidence": "REVIEWED"
+      }
+    ],
+    "unresolved_references": [
+      "wiki 的 default=1s 与冻结 FS_TIMEOUT metadata default=1.5s 冲突；只读取运行时值。",
+      "最终 action 由 FS_ACTION/模式决定，不能硬编码单一 mode。"
+    ]
+  },
+  "requirement_ir": {
+    "actor": {
+      "text": "ArduRover radio/throttle failsafe",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-RCFS-001-S1",
+          "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "modality": "BEHAVIORAL_DESCRIPTION",
+    "trigger": {
+      "text": "有效 RC throttle channel 持续低于运行时 FS_THR_VALUE。",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-RCFS-001-S1",
+          "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "preconditions": [
+      {
+        "text": "FS_THR_ENABLE 对当前模式生效。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "持续发送有效 RC frame，以隔离独立的 RC_FS_TIMEOUT 路径。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "throttle channel 由运行时 RCMAP_THROTTLE 决定。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "obligations": [
+      {
+        "text": "条件持续运行时 FS_TIMEOUT 后触发配置的 failsafe action。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "prohibitions": [
+      {
+        "text": "在 FS_TIMEOUT 结束前不得仅由该低 PWM 条件触发 action。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "exceptions": [
+      {
+        "text": "低值条件中断会重置持续时间。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "text": "FS_THR_ENABLE 的 Auto 例外配置必须尊重。",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "scope_start": {
+      "text": "有效 throttle PWM 首次低于 FS_THR_VALUE",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-RCFS-001-S1",
+          "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "scope_end": {
+      "text": "PWM 恢复、frame 无效、failsafe 禁用、action 或 run 结束",
+      "evidence": [
+        {
+          "source_id": "ARD-ROVER-RCFS-001-S1",
+          "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+          "char_start": null,
+          "char_end": null
+        }
+      ]
+    },
+    "correlation_keys": [
+      "vehicle_system_id",
+      "campaign_run_id"
+    ],
+    "event_relations": [
+      {
+        "left": "throttle_below_threshold",
+        "relation": "TRIGGERS",
+        "right": "persistence_timer",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      },
+      {
+        "left": "throttle_recovers",
+        "relation": "RESETS",
+        "right": "persistence_timer",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "unresolved": [
+      "wiki 的 default=1s 与冻结 FS_TIMEOUT metadata default=1.5s 冲突；只读取运行时值。",
+      "最终 action 由 FS_ACTION/模式决定，不能硬编码单一 mode。"
+    ]
+  },
+  "time_contracts": [
+    {
+      "time_id": "T_rover_fs",
+      "semantic_start_event": "low_throttle_interval_start",
+      "semantic_end_event": "configured_failsafe_action",
+      "cancel_event": "failsafe_disabled_or_run_end",
+      "reset_event": "throttle_recovers",
+      "raw_expression": "runtime(FS_TIMEOUT)",
+      "lower": "runtime(FS_TIMEOUT)",
+      "upper": null,
+      "lower_closed": true,
+      "upper_closed": null,
+      "unit": "s",
+      "source_type": "RUNTIME_PARAMETER",
+      "source_id": "ARD-ROVER-RCFS-001-S2",
+      "source_span": {
+        "source_id": "ARD-ROVER-RCFS-001-S2",
+        "quote": "// @Param: FS_TIMEOUT\n    // @DisplayName: Failsafe timeout\n    // @Description: The time in seconds that a failsafe condition must persist before the failsafe action is triggered\n    // @Units: s\n    // @Range: 1 100\n    // @Increment: 0.5\n    // @User: Standard\n    GSCALAR(fs_timeout,    \"FS_TIMEOUT\",     1.5),\n\n    // @Param: FS_THR_ENABLE\n    // @DisplayName: Throttle Failsafe Enable\n    // @Description: The throttle failsafe allows you to configure a software failsafe activated by a setting on the throttle input channel to a low value. This can be used to detect the RC transmitter going out of range. Failsafe will be triggered when the throttle channel goes below the FS_THR_VALUE for FS_TIMEOUT seconds.\n    // @Values: 0:Disabled,1:Enabled,2:Enabled Continue with Mission in Auto\n    // @User: Standard\n    GSCALAR(fs_throttle_enabled,    \"FS_THR_ENABLE\",     FS_THR_ENABLED),\n\n    // @Param: FS_THR_VALUE\n    // @DisplayName: Throttle Failsafe Value\n    // @Description: The PWM level on the throttle channel below which throttle failsafe triggers.\n    // @Range: 910 1100\n    // @Increment: 1\n    // @User: Standard\n    GSCALAR(fs_throttle_value,      \"FS_THR_VALUE\",     910),",
+        "char_start": null,
+        "char_end": null
+      },
+      "parameter_id": "FS_TIMEOUT",
+      "formula": "T_rover_fs = runtime(FS_TIMEOUT)",
+      "operands": [
+        {
+          "name": "runtime_value",
+          "value": 1.5,
+          "unit": "s",
+          "source_id": "benchmark/extraction_runs/milestone6/runtime_evidence.json#property_parameters/ARD-ROVER-RCFS-001"
+        },
+        {
+          "name": "source_default_not_runtime",
+          "value": 1.5,
+          "unit": "s",
+          "source_id": "ARD-ROVER-RCFS-001-S2"
+        }
+      ],
+      "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+      "timestamp_carrier": "vehicle millis for failsafe condition",
+      "conversion": "MITL interval unit is seconds; runtime seconds use identity conversion.",
+      "measurement_uncertainty": "No numeric tolerance has a normative source. If transport, scheduling, or sampling uncertainty can change a boundary verdict, the verdict is INCONCLUSIVE.",
+      "freshness": "Start/end observations must be fresh in the same clock domain; host arrival time is not silently substituted.",
+      "status": "RESOLVED"
+    }
+  ],
+  "mitl": {
+    "symbolic": "G((low_throttle_start & valid_rc_frames & throttle_fs_enabled) -> (G_[0,T_rover_fs) !configured_failsafe_action & F_[T_rover_fs,infty) configured_failsafe_action))",
+    "concrete": "G((low_throttle_start & valid_rc_frames & throttle_fs_enabled) -> (G_[0,1.5) !configured_failsafe_action & F_[1.5,infty) configured_failsafe_action))",
+    "concrete_instances": [
+      {
+        "profile": "ArduPilot/Rover — rover",
+        "capture_id": "ardupilot-rover-m6",
+        "parameter_id": "FS_TIMEOUT",
+        "raw_value": 1.5,
+        "raw_unit": "s",
+        "normalized_value": 1.5,
+        "formula_time_unit": "s",
+        "conversion": "identity: 1.5 s = 1.5 s",
+        "formula": "G((low_throttle_start & valid_rc_frames & throttle_fs_enabled) -> (G_[0,1.5) !configured_failsafe_action & F_[1.5,infty) configured_failsafe_action))",
+        "status": "INSTANTIATED_FORMULA_VALIDATED",
+        "source_path": "benchmark/extraction_runs/milestone6/ArduPilot/runs/Rover/parameters.json",
+        "source_sha256": "ed4de8b303095cf19449c9e6181678863cf25ba3eee8ff47ae5bf683e432fd79",
+        "source_param_index": 11,
+        "source_param_count": 1271,
+        "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+        "notes": "Stage 7 已完成 parser、正/负公式可满足性、独立完整词 oracle 与 TAMonitor 无限前缀合成轨迹门禁；只验证该公式编码和适配器，不验证自然语言上下文或飞控实现符合性。"
+      }
+    ],
+    "monitor_syntax": "G((low_throttle_start && valid_rc_frames && throttle_fs_enabled) -> (G[0,1500) (!configured_failsafe_action) && F[1500,infty) configured_failsafe_action))",
+    "monitor_contract": {
+      "source_formula_time_unit": "s",
+      "monitor_tick_unit": "ms",
+      "ticks_per_source_unit": 1000,
+      "exact_rescaling": "All finite seconds bounds are multiplied exactly by 1000 into integer milliseconds; no rounding or epsilon is introduced.",
+      "interval_openness_preserved": true,
+      "finite_word_semantics": "Reference oracle: complete pointwise finite word. TAMonitor: infinite-word prefix. Both adapters use monotonically increasing absolute synthetic global-clock ticks, not inter-event delays. The two verdict domains are stored separately; unsupported executions and mismatches are not replaced by oracle verdicts.",
+      "tool": "TAMonitor via MightyPPL/MoniTAal; exact binary hashes are in the referenced artifact",
+      "artifact_path": "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "artifact_sha256": "06cfc09caafc2776e7ebc4a6dd1534fab9aba1337d10eb75ad031184ad6502e4"
+    },
+    "compiler_version": "tafuzz-evidence-ir-compiler/1.0",
+    "subformula_evidence": [
+      {
+        "subformula": "G((low_throttle_start & valid_rc_frames & throttle_fs_enabled) -> (G_[0,T_rover_fs) !configured_failsafe_action & F_[T_rover_fs,infty) configured_failsafe_action))",
+        "evidence": [
+          {
+            "source_id": "ARD-ROVER-RCFS-001-S1",
+            "quote": "This failsafe is triggered if the connection between the user's transmitter and the receiver on the vehicle is lost for at least :ref:`FS_TIMEOUT <FS_TIMEOUT>` seconds (default = 1 sec).\n\n- the loss of transmitter/receiver connection is detected by:\n\n  - no signals being sent from the receiver to the autopilot board OR\n  - the throttle channel (normally input channel 3) value falling below the :ref:`FS_THR_VALUE <FS_THR_VALUE>` parameter value OR\n  - RC_OVERRIDES are lost if :ref:`using a GCS only <common-gcs-only-operation>` is being used,",
+            "char_start": null,
+            "char_end": null
+          }
+        ]
+      }
+    ],
+    "status": "MONITOR_VALIDATED"
+  },
+  "atomic_propositions": [
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-01",
+      "name": "low_throttle_start",
+      "controlled_natural_language": "映射后的 throttle PWM 进入低于阈值的连续区间。",
+      "truth_condition": "valid RC frame 且 chan[RCMAP_THROTTLE] < PARAM_VALUE(FS_THR_VALUE) 的上升沿。",
+      "kind": "EVENT",
+      "value_type": "bool",
+      "unit": "us PWM",
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-01-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/radio.cpp",
+          "line": 11,
+          "column": null,
+          "symbol": "channel_throttle = &rc().get_throttle_channel()",
+          "semantic_identity": "Resolves the runtime RCMAP_THROTTLE channel to the Rover throttle input object.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Rover::set_control_channels",
+          "role": "WRITE",
+          "type": "RC_Channel*",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "RC_Channels::get_throttle_channel maps AP::rcmap()->throttle() at RC_Channels.cpp:418-424. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/radio.cpp#L11"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-01-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/radio.cpp",
+          "line": 74,
+          "column": null,
+          "symbol": "radio_failsafe_check(channel_throttle->get_radio_in())",
+          "semantic_identity": "Consumes mapped raw PWM after read_input returned true and last_valid_rc_ms was refreshed.",
+          "entity_kind": "FUNCTION",
+          "function": "Rover::read_radio",
+          "role": "CONSUMER",
+          "type": "uint16_t PWM",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 66-75 separate unsuccessful and successful input cycles. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/radio.cpp#L74"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-01-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/radio.cpp",
+          "line": 85,
+          "column": null,
+          "symbol": "failed = pwm < g.fs_throttle_value",
+          "semantic_identity": "Direct low-throttle comparison against runtime FS_THR_VALUE.",
+          "entity_kind": "OTHER",
+          "function": "Rover::radio_failsafe_check",
+          "role": "DERIVATION",
+          "type": "bool over uint16_t/AP_Int16",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Line 85 initializes failed from the low-PWM predicate; lines 86-89 can also force it for stale input. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/radio.cpp#L85"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-01-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/failsafe.cpp",
+          "line": 55,
+          "column": null,
+          "symbol": "failsafe.bits 0 -> nonzero; failsafe.start_time = millis()",
+          "semantic_identity": "Shared failsafe interval epoch when the first active failsafe bit begins.",
+          "entity_kind": "EVENT",
+          "function": "Rover::failsafe_trigger",
+          "role": "PRODUCER",
+          "type": "uint8_t bitmask and uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "MODELLED",
+          "evidence": "Lines 49-58 update bits and initialize start_time only when the aggregate mask transitions from zero. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/failsafe.cpp#L55"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "RC_CHANNELS",
+          "message_id": 65,
+          "field": "chan3_raw",
+          "direction": "OUTGOING",
+          "derivation": "Use chanN_raw where N=runtime(RCMAP_THROTTLE), not hard-coded channel 3; time_boot_ms is vehicle boot time.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects RCMAP_THROTTLE, FS_THR_VALUE; select chanN_raw and threshold",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-02",
+      "name": "valid_rc_frames",
+      "controlled_natural_language": "低 PWM 区间内仍持续有有效 RC frame。",
+      "truth_condition": "每个 freshness 窗口内存在被接收器接受的 RC frame。",
+      "kind": "FRESHNESS",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-02-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/libraries/RC_Channel/RC_Channels.cpp",
+          "line": 89,
+          "column": null,
+          "symbol": "RC_Channels::read_input",
+          "semantic_identity": "Returns true when new receiver input or new overrides produce at least one channel update.",
+          "entity_kind": "FUNCTION",
+          "function": "RC_Channels::read_input",
+          "role": "CONSUMER",
+          "type": "bool()",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 91-100 accept receiver input or has_new_overrides; lines 104-119 update channels and return success. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/libraries/RC_Channel/RC_Channels.cpp#L89"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-02-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/radio.cpp",
+          "line": 72,
+          "column": null,
+          "symbol": "failsafe.last_valid_rc_ms = AP_HAL::millis()",
+          "semantic_identity": "Vehicle receipt-clock timestamp of the most recent successful RC input update.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Rover::read_radio",
+          "role": "WRITE",
+          "type": "uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "The write occurs only after rc().read_input() returns true. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/radio.cpp#L72"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-02-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/radio.cpp",
+          "line": 86,
+          "column": null,
+          "symbol": "millis() - last_valid_rc_ms > rc().get_fs_timeout_ms()",
+          "semantic_identity": "Current-source freshness predicate used to classify RC input as stale.",
+          "entity_kind": "OTHER",
+          "function": "Rover::radio_failsafe_check",
+          "role": "GUARD",
+          "type": "bool over uint32_t milliseconds",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 86-89 force failed=true after the runtime RC freshness timeout. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/radio.cpp#L86"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "RC_CHANNELS",
+          "message_id": 65,
+          "field": "chan3_raw",
+          "direction": "OUTGOING",
+          "derivation": "Use chanN_raw where N=runtime(RCMAP_THROTTLE), not hard-coded channel 3; time_boot_ms is vehicle boot time.",
+          "time_field": "time_boot_ms (vehicle boot clock)",
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-03",
+      "name": "throttle_fs_enabled",
+      "controlled_natural_language": "throttle failsafe 对当前模式生效。",
+      "truth_condition": "运行时 FS_THR_ENABLE 和模式不属于例外。",
+      "kind": "DERIVED_STATE",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-03-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/Parameters.cpp",
+          "line": 114,
+          "column": null,
+          "symbol": "FS_THR_ENABLE / Parameters::fs_throttle_enabled",
+          "semantic_identity": "Runtime throttle-failsafe mode: disabled, enabled, or enabled-continue-mission-in-Auto.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Int8 / enum fs_thr_enable",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:173",
+          "macro_expansion_location": "baseline/ardupilot/Rover/Parameters.cpp:114",
+          "confidence": "EXACT",
+          "evidence": "GSCALAR registers the parameter; enum values are Rover/defines.h:55-60. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/Parameters.cpp#L114"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-03-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/radio.cpp",
+          "line": 79,
+          "column": null,
+          "symbol": "!g.fs_throttle_enabled",
+          "semantic_identity": "Direct disabled guard; clears AP_Notify radio flag and bypasses throttle-failsafe evaluation.",
+          "entity_kind": "OTHER",
+          "function": "Rover::radio_failsafe_check",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 79-83 return when FS_THR_ENABLE is zero. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/radio.cpp#L79"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-03-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/failsafe.cpp",
+          "line": 70,
+          "column": null,
+          "symbol": "failsafe.triggered == 0 && failsafe.bits != 0",
+          "semantic_identity": "Action is delayed by FS_TIMEOUT and suppressed in RTL and normally in Hold.",
+          "entity_kind": "OTHER",
+          "function": "Rover::failsafe_trigger",
+          "role": "GUARD",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 70-75 require no prior trigger, active bits, elapsed FS_TIMEOUT, non-RTL mode, and Hold option if in Hold. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/failsafe.cpp#L70"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-03-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/failsafe.cpp",
+          "line": 81,
+          "column": null,
+          "symbol": "FS_THR_ENABLED_CONTINUE_MISSION Auto exception",
+          "semantic_identity": "When in Auto with FS_THR_ENABLE=2, records the failsafe but continues the mission rather than applying FS_ACTION.",
+          "entity_kind": "OTHER",
+          "function": "Rover::failsafe_trigger",
+          "role": "DERIVATION",
+          "type": "bool",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 81-86 implement the continue-mission exception. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/failsafe.cpp#L81"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_THR_ENABLE; combine with mode exceptions",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Current mode only. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "DERIVED",
+      "status": "BOUND"
+    },
+    {
+      "ap_id": "ARD-ROVER-RCFS-001-AP-04",
+      "name": "configured_failsafe_action",
+      "controlled_natural_language": "FS_ACTION 对应的 action 已发生。",
+      "truth_condition": "运行时 FS_ACTION 映射到的结果 mode/action 成立，并与本次低油门 event 关联。",
+      "kind": "CORRELATION",
+      "value_type": "bool",
+      "unit": null,
+      "coordinate_frame": null,
+      "validity_guard": "Only evaluate inside the property scope and after configuration capture.",
+      "freshness": "Must be sampled in the selected property clock domain; stale observations are invalid.",
+      "scope": "one vehicle instance and one campaign run",
+      "aggregation": null,
+      "correlation_key": "vehicle_system_id + campaign_run_id",
+      "source_bindings": [
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-04-B01",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/Parameters.cpp",
+          "line": 98,
+          "column": null,
+          "symbol": "FS_ACTION / Parameters::fs_action",
+          "semantic_identity": "Runtime enum selecting None, RTL, Hold, SmartRTL, Terminate, or Loiter/Hold fallback.",
+          "entity_kind": "PARAMETER",
+          "function": null,
+          "role": "DEFINITION",
+          "type": "AP_Int8 / Rover::FailsafeAction",
+          "macro_spelling_location": "baseline/ardupilot/libraries/AP_Param/AP_Param.h:173",
+          "macro_expansion_location": "baseline/ardupilot/Rover/Parameters.cpp:98",
+          "confidence": "EXACT",
+          "evidence": "GSCALAR registers FS_ACTION; enum is Rover.h:404-412. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/Parameters.cpp#L98"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-04-B02",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/failsafe.cpp",
+          "line": 75,
+          "column": null,
+          "symbol": "failsafe.triggered = failsafe.bits",
+          "semantic_identity": "Latches all currently active failsafe bits when the shared persistence timeout expires.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Rover::failsafe_trigger",
+          "role": "WRITE",
+          "type": "uint8_t bitmask",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Line 76 also produces a warning STATUSTEXT with the caller type string. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/failsafe.cpp#L75"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-04-B03",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/failsafe.cpp",
+          "line": 87,
+          "column": null,
+          "symbol": "switch ((FailsafeAction)g.fs_action.get())",
+          "semantic_identity": "Maps runtime FS_ACTION to None, mode transitions with fallbacks, or disarm.",
+          "entity_kind": "FUNCTION",
+          "function": "Rover::failsafe_trigger",
+          "role": "DERIVATION",
+          "type": "Rover::FailsafeAction",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "Lines 87-116 implement every action and fallback. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/failsafe.cpp#L87"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-04-B04",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/system.cpp",
+          "line": 269,
+          "column": null,
+          "symbol": "control_mode = &new_mode",
+          "semantic_identity": "Canonical successful Rover mode-result write for RTL/Hold/SmartRTL/Loiter actions.",
+          "entity_kind": "ASSIGNMENT",
+          "function": "Rover::set_mode",
+          "role": "WRITE",
+          "type": "Mode*",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "On successful entry, lines 269 and 284 write the mode and ModeReason; line 288 queues HEARTBEAT. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/system.cpp#L269"
+        },
+        {
+          "binding_id": "ARD-ROVER-RCFS-001-AP-04-B05",
+          "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+          "file": "baseline/ardupilot/Rover/failsafe.cpp",
+          "line": 114,
+          "column": null,
+          "symbol": "arming.disarm(AP_Arming::Method::FAILSAFE_ACTION_TERMINATE)",
+          "semantic_identity": "Terminate action result with cause-specific disarm method.",
+          "entity_kind": "FUNCTION",
+          "function": "Rover::failsafe_trigger",
+          "role": "PRODUCER",
+          "type": "AP_Arming::Method",
+          "macro_spelling_location": null,
+          "macro_expansion_location": null,
+          "confidence": "EXACT",
+          "evidence": "FailsafeAction::Terminate directly requests disarm. Fixed permalink: https://github.com/ArduPilot/ardupilot/blob/8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e/Rover/failsafe.cpp#L114"
+        }
+      ],
+      "mavlink_observations": [
+        {
+          "message": "PARAM_VALUE",
+          "message_id": 22,
+          "field": "param_value",
+          "direction": "OUTGOING",
+          "derivation": "PARAM_VALUE.param_id selects FS_ACTION; maps expected action",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "HEARTBEAT",
+          "message_id": 0,
+          "field": "custom_mode",
+          "direction": "OUTGOING",
+          "derivation": "Observe resulting mode. HEARTBEAT has no embedded timestamp.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/minimal.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        },
+        {
+          "message": "STATUSTEXT",
+          "message_id": 253,
+          "field": "text",
+          "direction": "OUTGOING",
+          "derivation": "May announce failsafe but has no timestamp/cause-complete guarantee.",
+          "time_field": null,
+          "support": "STATIC_SUPPORTED",
+          "evidence": "baseline/ardupilot/modules/mavlink/message_definitions/v1.0/common.xml; static_support_matrix=STATIC_REFERENCE_FOUND; static_catalog_runtime_column=NOT_RUN_NO_CAPTURE"
+        }
+      ],
+      "observability": "CONDITIONAL",
+      "status": "BOUND"
+    }
+  ],
+  "examples": {
+    "positive": [
+      {
+        "trace_id": "ARD-ROVER-RCFS-001--positive_after_threshold",
+        "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/positive_after_threshold/trace.json",
+        "sha256": "3ca11e5dd4b54182c200fbb2d5395a7f45a0516cbc97c7d4c0aa617c499a77d0",
+        "expected": "SATISFIED",
+        "monitor_result": "INCONCLUSIVE",
+        "mutation": "positive_after_threshold: Response occurs strictly after the lower threshold and no response occurs before it. TAMonitor prefix expectation=INCONCLUSIVE; comparison=PASS."
+      },
+      {
+        "trace_id": "ARD-ROVER-RCFS-001--boundary_exact_legal",
+        "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/boundary_exact_legal/trace.json",
+        "sha256": "cdbd26fa926e019f8758aae2576bc20fd9586f954753bfd6828e0bd45eba7fc8",
+        "expected": "SATISFIED",
+        "monitor_result": "INCONCLUSIVE",
+        "mutation": "boundary_exact_legal: Closed eventual lower bound and open pre-threshold prohibition make the exact threshold legal. TAMonitor prefix expectation=INCONCLUSIVE; comparison=PASS."
+      }
+    ],
+    "boundary_negative": [
+      {
+        "trace_id": "ARD-ROVER-RCFS-001--too_early_one_tick",
+        "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/too_early_one_tick/trace.json",
+        "sha256": "961173680ed8955378e1febc1e9dda45d08e4c481019394476ca2dc6bb7491f0",
+        "expected": "VIOLATED",
+        "monitor_result": "VIOLATED",
+        "mutation": "too_early_one_tick: Response occurs one exact monitor tick before the threshold. TAMonitor prefix expectation=NEGATIVE; comparison=PASS."
+      }
+    ],
+    "late_or_missing": [
+      {
+        "trace_id": "ARD-ROVER-RCFS-001--late_response_unbounded_legal",
+        "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/late_response_unbounded_legal/trace.json",
+        "sha256": "61c3a03079efd083790078370f97eab785ea26a2faee3f69e324dad0dc0f591a",
+        "expected": "SATISFIED",
+        "monitor_result": "INCONCLUSIVE",
+        "mutation": "late_response_unbounded_legal: The source formula has no finite upper response bound; a late response is legal, not a violation. TAMonitor prefix expectation=INCONCLUSIVE; comparison=PASS."
+      },
+      {
+        "trace_id": "ARD-ROVER-RCFS-001--missing_completed_trace",
+        "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/ARD-ROVER-RCFS-001/traces/missing_completed_trace/trace.json",
+        "sha256": "c462314fa4b89499339e4df54be8765bb4aca921f62e3100a5e7bd22196ca1f8",
+        "expected": "VIOLATED",
+        "monitor_result": "INCONCLUSIVE",
+        "mutation": "missing_completed_trace: The independent oracle treats this synthetic finite word as complete and no required response occurs. TAMonitor prefix expectation=INCONCLUSIVE; comparison=PASS."
+      }
+    ],
+    "wrong_exception": [],
+    "wrong_correlation": []
+  },
+  "extraction_record": {
+    "run_id": "milestone7-monitor-and-independent-audit-v1",
+    "extractor": "evidence-bound manual/LLM-assisted context review with deterministic schema compilation",
+    "model": "GPT-5.6",
+    "prompt_hash": null,
+    "temperature": null,
+    "seed": null,
+    "raw_outputs": [
+      "read-only ArduPilot source audit agent result",
+      "benchmark/extraction_runs/milestone5/ardupilot_binding_audit.json",
+      "benchmark/extraction_runs/milestone5/mavlink_ap_observation_audit.json",
+      "benchmark/extraction_runs/milestone6/runtime_evidence.json",
+      "benchmark/extraction_runs/milestone7/monitor_validation/monitor_validation.json",
+      "benchmark/extraction_runs/milestone7/independent_review.json"
+    ],
+    "adjudication": "Evidence spans and unresolved conflicts were manually reviewed; implementation control flow did not originate a requirement. Milestone 5 added frozen-source identity and observation mappings without changing the source-derived requirement. Milestone 6 added per-profile runtime parameter instances without changing Requirement IR or assessing satisfaction. Milestone 7 recorded a non-human independent rollback recommendation and synthetic monitor evidence; neither was used as a firmware-conformance or human-acceptance decision."
+  },
+  "validation": {
+    "schema": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_property_catalog.py",
+      "evidence": "Generated object is validated against property.schema.json."
+    },
+    "source": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "All source files, hashes, line ranges, and exact quotes are checked by the validator."
+    },
+    "type_unit": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_runtime_capture.py",
+      "evidence": "Runtime wire value, decoded value, raw unit, seconds normalization, param index/count, source path, and SHA-256 are retained per profile."
+    },
+    "temporal_graph": {
+      "status": "PASS",
+      "command": null,
+      "evidence": "Relations contain no self-edge or inverse-cycle in this property record."
+    },
+    "parser": {
+      "status": "PASS",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check",
+      "evidence": "The presentation formula probe is preserved as unsupported; the explicit integer-ms monitor encoding parses/builds."
+    },
+    "satisfiable": {
+      "status": "PASS",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check",
+      "evidence": "TAMonitor build metadata reports the transformed positive formula SAT."
+    },
+    "non_tautology": {
+      "status": "PASS",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check",
+      "evidence": "TAMonitor build metadata reports the negated transformed formula SAT; this excludes a tautology under the compiled syntax."
+    },
+    "non_vacuity": {
+      "status": "PASS",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check",
+      "evidence": "The explicitly identified complete-word reference oracle distinguishes a triggered counterexample from a trigger-disabled control; it is not TAMonitor."
+    },
+    "source_lines": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Every binding path/line/symbol is validated against the frozen checkout."
+    },
+    "permalinks": {
+      "status": "PASS",
+      "command": "python3 benchmark/scripts/validate_source_bindings.py",
+      "evidence": "Binding commit/path/line can be converted deterministically to a fixed GitHub commit permalink."
+    },
+    "monitor": {
+      "status": "PASS",
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 benchmark/scripts/build_monitor_validation.py --check",
+      "evidence": "TAMonitor infinite-prefix status=PASS; trace comparisons={\"PASS\": 6}. All synthetic infinite-prefix trace verdicts matched the separately recorded TAMonitor expectations. This validates only the encoded formula/test adapter, not the requirement context or firmware. Exact stdout/stderr and result metadata are retained."
+    },
+    "independent_review": {
+      "status": "INCONCLUSIVE",
+      "command": null,
+      "evidence": "Automated non-human audit completed 9 gates and recommends NEEDS_CONTEXT; blockers=MAIN_ONLY version gap; sustained-threshold/reset omitted; conditional MAVLink reconstruction; monitor syntax unsupported. No human reviewer or arbitration was claimed."
+    }
+  },
+  "review": {
+    "decision": "PENDING",
+    "reviewer": null,
+    "reviewed_at": null,
+    "rationale": "Automated independent evidence audit recommends NEEDS_CONTEXT and records unresolved gates in benchmark/extraction_runs/milestone7/independent_review.json (SHA-256 5241806569500e593552cf50667d6de9e7e409961bd6ea131ff255571c98ec5c). It is not a human review or arbitration; decision remains PENDING.",
+    "conflicts": [
+      "ArduPilot wiki MAIN_ONLY 且默认值与冻结源码不一致。",
+      "RC_FS_TIMEOUT 是另一条性质，不与 FS_TIMEOUT 合并。",
+      "M7 automated independent audit: MAIN_ONLY version gap",
+      "M7 automated independent audit: sustained-threshold/reset omitted",
+      "M7 automated independent audit: conditional MAVLink reconstruction",
+      "M7 automated independent audit: monitor syntax unsupported"
+    ],
+    "confidence_vector": {
+      "authority": null,
+      "fidelity": null,
+      "context": null,
+      "modality": null,
+      "time_source": null,
+      "event_graph": null,
+      "formalization": null,
+      "source_binding": null,
+      "observability": null
+    }
+  },
+  "implementation_satisfaction": "NOT_ASSESSED"
+}

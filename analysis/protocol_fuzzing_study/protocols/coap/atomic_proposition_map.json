@@ -1,0 +1,607 @@
+{
+  "protocol": "CoAP",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "coap_multicast_response_committed_default_leisure": {
+      "definition": "The request arrived via multicast, the resource handler committed a response, delay suppression is off, and the default leisure queue path is selected.",
+      "properties": [
+        "COAP-MCAST-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-MCAST-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The request arrived via multicast, the resource handler committed a response, delay suppression is off, and the default leisure queue path is selected.",
+          "instrumentation_timing": "emit the trigger after the random delay is stored and coap_wait_ack inserts the multicast node; emit sent after the delayed write succeeds",
+          "atomic_propositions": [
+            "coap_multicast_response_committed_default_leisure"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "handle_request",
+          "lines": "3552-3604",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3552-L3604",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_multicast_response_sent": {
+      "definition": "The queued unicast response for that requester token and responder endpoint is successfully written.",
+      "properties": [
+        "COAP-MCAST-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-MCAST-01",
+          "mapping": "auxiliary:1",
+          "role": "delayed multicast response send",
+          "event_predicate": "The queued unicast response for that requester token and responder endpoint is successfully written.",
+          "instrumentation_timing": "emit the trigger after the random delay is stored and coap_wait_ack inserts the multicast node; emit sent after the delayed write succeeds",
+          "atomic_propositions": [
+            "coap_multicast_response_sent"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-1969",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_mid_first_used": {
+      "definition": "A new outbound CON or NON generation first uses the tracked Message ID for one fixed local/remote endpoint pair.",
+      "properties": [
+        "COAP-MID-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-MID-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A new outbound CON or NON generation first uses the tracked Message ID for one fixed local/remote endpoint pair.",
+          "instrumentation_timing": "emit after a newly allocated MID is attached to a first-send PDU; the adapter retains endpoint-pair MID history for 247000 ms",
+          "atomic_propositions": [
+            "coap_mid_first_used",
+            "coap_same_mid_reused"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_send_pdu",
+          "lines": "1014-1050",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1014-L1050",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-MID-01",
+          "mapping": "auxiliary:1",
+          "role": "Message ID allocation prerequisite",
+          "event_predicate": "A new outbound CON or NON generation first uses the tracked Message ID for one fixed local/remote endpoint pair.",
+          "instrumentation_timing": "emit after a newly allocated MID is attached to a first-send PDU; the adapter retains endpoint-pair MID history for 247000 ms",
+          "atomic_propositions": [
+            "coap_mid_first_used",
+            "coap_same_mid_reused"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_session.c",
+          "symbol": "coap_new_message_id_lkd",
+          "lines": "1909-1915",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_session.c#L1909-L1915",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_same_mid_reused": {
+      "definition": "A distinct outbound message generation uses that same Message ID with the same endpoint pair before the window ends.",
+      "properties": [
+        "COAP-MID-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-MID-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A distinct outbound message generation uses that same Message ID with the same endpoint pair before the window ends.",
+          "instrumentation_timing": "emit after a newly allocated MID is attached to a first-send PDU; the adapter retains endpoint-pair MID history for 247000 ms",
+          "atomic_propositions": [
+            "coap_mid_first_used",
+            "coap_same_mid_reused"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_send_pdu",
+          "lines": "1014-1050",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1014-L1050",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-MID-01",
+          "mapping": "auxiliary:1",
+          "role": "Message ID allocation prerequisite",
+          "event_predicate": "A distinct outbound message generation uses that same Message ID with the same endpoint pair before the window ends.",
+          "instrumentation_timing": "emit after a newly allocated MID is attached to a first-send PDU; the adapter retains endpoint-pair MID history for 247000 ms",
+          "atomic_propositions": [
+            "coap_mid_first_used",
+            "coap_same_mid_reused"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_session.c",
+          "symbol": "coap_new_message_id_lkd",
+          "lines": "1909-1915",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_session.c#L1909-L1915",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_con_wait_started": {
+      "definition": "The initial CON PDU is sent and its per-exchange retransmission node is inserted into the send queue.",
+      "properties": [
+        "COAP-TX-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The initial CON PDU is sent and its per-exchange retransmission node is inserted into the send queue.",
+          "instrumentation_timing": "emit the trigger after the node timeout and absolute queue deadline are committed; emit deadline-reached when monotonic time crosses that stored absolute deadline, not when the event-loop callback runs; emit discharge after queue removal",
+          "atomic_propositions": [
+            "coap_con_wait_started",
+            "coap_first_retransmit_deadline_reached"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_calc_timeout / coap_wait_ack / coap_send_internal",
+          "lines": "1123-1180;1883-1901",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1123-L1180",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_first_retransmit_deadline_reached": {
+      "definition": "Monotonic time reaches the absolute first-retransmission deadline stored for this queue-node generation, independently of when the callback is dispatched.",
+      "properties": [
+        "COAP-TX-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Monotonic time reaches the absolute first-retransmission deadline stored for this queue-node generation, independently of when the callback is dispatched.",
+          "instrumentation_timing": "emit the trigger after the node timeout and absolute queue deadline are committed; emit deadline-reached when monotonic time crosses that stored absolute deadline, not when the event-loop callback runs; emit discharge after queue removal",
+          "atomic_propositions": [
+            "coap_con_wait_started",
+            "coap_first_retransmit_deadline_reached"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_calc_timeout / coap_wait_ack / coap_send_internal",
+          "lines": "1123-1180;1883-1901",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1123-L1180",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_matching_ack_or_reset_received": {
+      "definition": "coap_dispatch receives an ACK or RST whose endpoint and Message ID match the current exchange, and coap_remove_from_queue removes that exact queue-node generation.",
+      "properties": [
+        "COAP-TX-01",
+        "COAP-TX-02",
+        "COAP-TX-03",
+        "COAP-TX-05"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-01",
+          "mapping": "auxiliary:1",
+          "role": "matching ACK/RST queue removal",
+          "event_predicate": "coap_dispatch receives an ACK or RST whose endpoint and Message ID match the current exchange, and coap_remove_from_queue removes that exact queue-node generation.",
+          "instrumentation_timing": "emit the trigger after the node timeout and absolute queue deadline are committed; emit deadline-reached when monotonic time crosses that stored absolute deadline, not when the event-loop callback runs; emit discharge after queue removal",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4128-4133",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-02",
+          "mapping": "auxiliary:1",
+          "role": "matching ACK/RST queue removal",
+          "event_predicate": "coap_dispatch receives an ACK or RST whose endpoint and Message ID match the current exchange, and coap_remove_from_queue removes that exact queue-node generation.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt increments and the next absolute deadline is committed; emit deadline-reached when monotonic time crosses that stored value, not when the callback runs",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4128-4133",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-03",
+          "mapping": "auxiliary:1",
+          "role": "matching ACK/RST queue removal",
+          "event_predicate": "coap_dispatch receives an ACK or RST whose endpoint and Message ID match the current exchange, and coap_remove_from_queue removes that exact queue-node generation.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt becomes 4 and the final absolute deadline is committed; emit deadline-reached when monotonic time crosses it; separately record the later COAP_NACK_TOO_MANY_RETRIES callback as a diagnostic Boolean, not as the bounded result",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4128-4133",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-05",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "coap_dispatch receives an ACK or RST whose endpoint and Message ID match the current exchange, and coap_remove_from_queue removes that exact queue-node generation.",
+          "instrumentation_timing": "emit ACK/RST only after coap_remove_from_queue returns the matching node; mark that generation closed before any later send event is projected",
+          "atomic_propositions": [
+            "coap_matching_ack_or_reset_received"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_dispatch",
+          "lines": "3983-3993;4089-4139",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L3983-L3993",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_attempt_cancelled": {
+      "definition": "An allowed non-ACK/RST local cancellation path removes the current queue-node generation before its stored deadline.",
+      "properties": [
+        "COAP-TX-01",
+        "COAP-TX-02",
+        "COAP-TX-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-01",
+          "mapping": "auxiliary:2",
+          "role": "explicit local exchange cancellation",
+          "event_predicate": "An allowed non-ACK/RST local cancellation path removes the current queue-node generation before its stored deadline.",
+          "instrumentation_timing": "emit the trigger after the node timeout and absolute queue deadline are committed; emit deadline-reached when monotonic time crosses that stored absolute deadline, not when the event-loop callback runs; emit discharge after queue removal",
+          "atomic_propositions": [
+            "coap_attempt_cancelled"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_cancel_session_messages / coap_cancel_all_messages",
+          "lines": "2573-2613;2616-2646",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L2573-L2613",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-02",
+          "mapping": "auxiliary:2",
+          "role": "explicit local exchange cancellation",
+          "event_predicate": "An allowed non-ACK/RST local cancellation path removes the current queue-node generation before its stored deadline.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt increments and the next absolute deadline is committed; emit deadline-reached when monotonic time crosses that stored value, not when the callback runs",
+          "atomic_propositions": [
+            "coap_attempt_cancelled"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_cancel_session_messages / coap_cancel_all_messages",
+          "lines": "2573-2613;2616-2646",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L2573-L2613",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-03",
+          "mapping": "auxiliary:2",
+          "role": "explicit local exchange cancellation",
+          "event_predicate": "An allowed non-ACK/RST local cancellation path removes the current queue-node generation before its stored deadline.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt becomes 4 and the final absolute deadline is committed; emit deadline-reached when monotonic time crosses it; separately record the later COAP_NACK_TOO_MANY_RETRIES callback as a diagnostic Boolean, not as the bounded result",
+          "atomic_propositions": [
+            "coap_attempt_cancelled"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_cancel_session_messages / coap_cancel_all_messages",
+          "lines": "2573-2613;2616-2646",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L2573-L2613",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_first_retransmission_completed": {
+      "definition": "The first retransmission for the correlated CON is written and retransmit_cnt becomes 1 before the next deadline is queued.",
+      "properties": [
+        "COAP-TX-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The first retransmission for the correlated CON is written and retransmit_cnt becomes 1 before the next deadline is queued.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt increments and the next absolute deadline is committed; emit deadline-reached when monotonic time crosses that stored value, not when the callback runs",
+          "atomic_propositions": [
+            "coap_first_retransmission_completed",
+            "coap_second_retransmit_deadline_reached"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-1969",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_second_retransmit_deadline_reached": {
+      "definition": "Monotonic time reaches the next absolute deadline stored for the same queue-node generation after retransmit_cnt becomes 1, independently of callback dispatch.",
+      "properties": [
+        "COAP-TX-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Monotonic time reaches the next absolute deadline stored for the same queue-node generation after retransmit_cnt becomes 1, independently of callback dispatch.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt increments and the next absolute deadline is committed; emit deadline-reached when monotonic time crosses that stored value, not when the callback runs",
+          "atomic_propositions": [
+            "coap_first_retransmission_completed",
+            "coap_second_retransmit_deadline_reached"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-1969",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_fourth_retransmission_completed": {
+      "definition": "The correlated CON has just been retransmitted with retransmit_cnt incremented to 4 and its final wait is queued.",
+      "properties": [
+        "COAP-TX-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The correlated CON has just been retransmitted with retransmit_cnt incremented to 4 and its final wait is queued.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt becomes 4 and the final absolute deadline is committed; emit deadline-reached when monotonic time crosses it; separately record the later COAP_NACK_TOO_MANY_RETRIES callback as a diagnostic Boolean, not as the bounded result",
+          "atomic_propositions": [
+            "coap_fourth_retransmission_completed",
+            "coap_final_wait_deadline_reached",
+            "coap_fifth_retransmission_sent"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-2007",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L2007",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_final_wait_deadline_reached": {
+      "definition": "Monotonic time reaches the absolute final-wait deadline stored after retransmit_cnt becomes 4, before any event-loop dispatch or nack callback completion.",
+      "properties": [
+        "COAP-TX-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Monotonic time reaches the absolute final-wait deadline stored after retransmit_cnt becomes 4, before any event-loop dispatch or nack callback completion.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt becomes 4 and the final absolute deadline is committed; emit deadline-reached when monotonic time crosses it; separately record the later COAP_NACK_TOO_MANY_RETRIES callback as a diagnostic Boolean, not as the bounded result",
+          "atomic_propositions": [
+            "coap_fourth_retransmission_completed",
+            "coap_final_wait_deadline_reached",
+            "coap_fifth_retransmission_sent"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-2007",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L2007",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_fifth_retransmission_sent": {
+      "definition": "A fifth network send is performed for the same queue-node generation; this must remain false.",
+      "properties": [
+        "COAP-TX-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A fifth network send is performed for the same queue-node generation; this must remain false.",
+          "instrumentation_timing": "emit the trigger after retransmit_cnt becomes 4 and the final absolute deadline is committed; emit deadline-reached when monotonic time crosses it; separately record the later COAP_NACK_TOO_MANY_RETRIES callback as a diagnostic Boolean, not as the bounded result",
+          "atomic_propositions": [
+            "coap_fourth_retransmission_completed",
+            "coap_final_wait_deadline_reached",
+            "coap_fifth_retransmission_sent"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-2007",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L2007",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_con_initial_sent": {
+      "definition": "The first datagram of one correlated Confirmable exchange is successfully written.",
+      "properties": [
+        "COAP-TX-04"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-04",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The first datagram of one correlated Confirmable exchange is successfully written.",
+          "instrumentation_timing": "timestamp each successful coap_send_pdu completion and retain the queue-node generation until ACK/RST/cancel/failure",
+          "atomic_propositions": [
+            "coap_con_initial_sent",
+            "coap_same_con_retransmitted"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_send_internal / coap_retransmit",
+          "lines": "1855-1969",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1855-L1969",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-04",
+          "mapping": "auxiliary:1",
+          "role": "MAX_TRANSMIT_SPAN implementation expression",
+          "event_predicate": "The first datagram of one correlated Confirmable exchange is successfully written.",
+          "instrumentation_timing": "timestamp each successful coap_send_pdu completion and retain the queue-node generation until ACK/RST/cancel/failure",
+          "atomic_propositions": [
+            "coap_con_initial_sent"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "include/coap3/coap_session_internal.h",
+          "symbol": "COAP_MAX_TRANSMIT_SPAN",
+          "lines": "618-628",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/include/coap3/coap_session_internal.h#L618-L628",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "coap_same_con_retransmitted": {
+      "definition": "coap_send_pdu successfully writes a later datagram for the same queue-node generation and Message ID.",
+      "properties": [
+        "COAP-TX-04",
+        "COAP-TX-05"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "COAP-TX-04",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "coap_send_pdu successfully writes a later datagram for the same queue-node generation and Message ID.",
+          "instrumentation_timing": "timestamp each successful coap_send_pdu completion and retain the queue-node generation until ACK/RST/cancel/failure",
+          "atomic_propositions": [
+            "coap_con_initial_sent",
+            "coap_same_con_retransmitted"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_send_internal / coap_retransmit",
+          "lines": "1855-1969",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1855-L1969",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "COAP-TX-05",
+          "mapping": "auxiliary:1",
+          "role": "subsequent send for the same queue-node generation",
+          "event_predicate": "coap_send_pdu successfully writes a later datagram for the same queue-node generation and Message ID.",
+          "instrumentation_timing": "emit ACK/RST only after coap_remove_from_queue returns the matching node; mark that generation closed before any later send event is projected",
+          "atomic_propositions": [
+            "coap_same_con_retransmitted"
+          ],
+          "repository": "obgm/libcoap",
+          "commit": "7cf7465b784baded4de183290c547d582becfd28",
+          "path": "src/coap_net.c",
+          "symbol": "coap_retransmit",
+          "lines": "1908-1969",
+          "url": "https://github.com/obgm/libcoap/blob/7cf7465b784baded4de183290c547d582becfd28/src/coap_net.c#L1908-L1969",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

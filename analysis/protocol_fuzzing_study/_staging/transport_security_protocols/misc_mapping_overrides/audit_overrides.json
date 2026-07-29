@@ -1,0 +1,294 @@
+{
+  "overrides": [
+    {
+      "id": "SSH-REKEY-01",
+      "primary_source_atomic_propositions": [
+        "ssh_rekey_eligible_one_hour_profile"
+      ],
+      "auxiliary_source_mappings": [
+        {
+          "role": "successful local KEXINIT start/send path",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "packet.c",
+          "symbol": "ssh_packet_send2",
+          "lines": "1313-1360",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1360",
+          "legacy_exact_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L1313-L1351",
+          "atomic_propositions": [
+            "ssh_local_kexinit_started"
+          ]
+        },
+        {
+          "role": "one-hour profile installation into packet state",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "packet.c",
+          "symbol": "ssh_packet_set_rekey_limits",
+          "lines": "2429-2435",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2429-L2435",
+          "legacy_exact_url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L2428-L2445",
+          "atomic_propositions": [
+            "ssh_rekey_eligible_one_hour_profile"
+          ]
+        },
+        {
+          "role": "server default disables time rekey unless the benchmark installs the declared profile",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "servconf.c",
+          "symbol": "fill_default_server_options",
+          "lines": "284-289",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/servconf.c#L284-L289",
+          "atomic_propositions": [
+            "ssh_rekey_eligible_one_hour_profile"
+          ]
+        },
+        {
+          "role": "correlated transport close action",
+          "repository": "vegard/openssh-portable",
+          "commit": "7cfea58cb313a27b90aa4563cf65904bdf2fc5f3",
+          "path": "packet.c",
+          "symbol": "ssh_packet_close",
+          "lines": "574-588",
+          "url": "https://github.com/vegard/openssh-portable/blob/7cfea58cb313a27b90aa4563cf65904bdf2fc5f3/packet.c#L574-L588",
+          "atomic_propositions": [
+            "ssh_connection_closed"
+          ]
+        }
+      ],
+      "rekey_start_source_url": "",
+      "profile_setter_source_url": "",
+      "benchmark_default_source_url": "",
+      "instrumentation_timing": "At ssh_packet_need_rekeying's time-profile true branch, emit eligibility only after confirming rekey_interval=3600 and the declared role/peer guards. Emit ssh_local_kexinit_started only after ssh_packet_send2 successfully passes the KEXINIT packet to ssh_packet_send2_wrapped. Emit ssh_connection_closed when ssh_packet_close begins closing the correlated descriptors.",
+      "independent_audit_note": "AP-to-source mapping completed at fixed OpenSSH commit. The one-hour value is an explicit experiment profile installed through ssh_packet_set_rekey_limits; servconf.c proves the server default is zero, so the property is not presented as an OpenSSH default. Historical broad source URLs are retained only as nested legacy_exact_url evidence.",
+      "mapping_audit_status": "SOURCE_MAPPED_AT_FIXED_COMMIT"
+    },
+    {
+      "id": "DICOM-ARTIM-01",
+      "primary_source_atomic_propositions": [
+        "dicom_tcp_connection_accepted_dcmtk_30s_profile",
+        "dicom_artim_expired",
+        "dicom_associate_rq_received",
+        "dicom_transport_closed_or_parse_abort"
+      ],
+      "auxiliary_source_mappings": [
+        {
+          "role": "storescp ACSE timeout profile constant",
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/apps/storescp.cc",
+          "symbol": "opt_acse_timeout",
+          "lines": "173",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L173",
+          "legacy_exact_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L165-L175",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        },
+        {
+          "role": "storescp passes the 30-second ACSE profile into the acceptor network",
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/apps/storescp.cc",
+          "symbol": "main",
+          "lines": "928-940",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/apps/storescp.cc#L928-L940",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        },
+        {
+          "role": "DUL FSM transport-connection response transition",
+          "repository": "DCMTK/dcmtk",
+          "commit": "7f8564cf11e5531689dd329523fb16023aeda3ed",
+          "path": "dcmnet/libsrc/dulfsm.cc",
+          "symbol": "AE_5_TransportConnectResponse",
+          "lines": "1118-1127",
+          "url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dulfsm.cc#L1118-L1127",
+          "legacy_exact_url": "https://github.com/DCMTK/dcmtk/blob/7f8564cf11e5531689dd329523fb16023aeda3ed/dcmnet/libsrc/dulfsm.cc#L1096-L1127",
+          "atomic_propositions": [
+            "dicom_tcp_connection_accepted_dcmtk_30s_profile"
+          ]
+        }
+      ],
+      "profile_source_url": "",
+      "fsm_action_source_url": "",
+      "profile_use_source_url": "",
+      "instrumentation_timing": "Emit the trigger after receiveTransportConnection has succeeded and immediately before PRV_StateMachine/PRV_NextPDUType in DUL_ReceiveAssociationRQ, after checking association->timeout=30. Emit timeout, valid A-ASSOCIATE-RQ, transport-close, and parse-abort outcomes from the mutually exclusive branches at dul.cc:698-707; do not synthesize them from wall-clock time alone.",
+      "independent_audit_note": "Fixed-commit mapping now covers every AP in DUL_ReceiveAssociationRQ: successful transport acceptance, DUL_READTIMEOUT to ARTIM_TIMER_EXPIRED, A-ASSOCIATE-RQ recognition, and close/parse-error termination. storescp profile declaration/use and the historical FSM anchor are structured auxiliary evidence; broad legacy URLs are nested rather than top-level.",
+      "mapping_audit_status": "SOURCE_MAPPED_AT_FIXED_COMMIT"
+    },
+    {
+      "id": "DTLS12-RTX-01",
+      "ap_definitions": {
+        "dtls12_timer_armed_1000ms_default_profile": "A non-SCTP DTLS 1.2 flight with no timer callback actually stores timeout_duration_us=1000000 and next_timeout in dtls1_start_timer.",
+        "dtls12_timer_deadline_reached": "DERIVED adapter event at the exact next_timeout stored for this timer generation; it is not OpenSSL's callback or its sub-15-ms coalescing decision.",
+        "dtls12_timer_superseded": "A later dtls1_start_timer replaces this active generation or dtls1_stop_timer clears it; adapter generation IDs prevent the replacement from satisfying the old deadline AP."
+      },
+      "primary_source_atomic_propositions": [
+        "dtls12_timer_armed_1000ms_default_profile",
+        "dtls12_timer_deadline_reached"
+      ],
+      "auxiliary_source_mappings": [
+        {
+          "role": "restart overwrites an active timer generation",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/d1_lib.c",
+          "symbol": "dtls1_start_timer",
+          "lines": "242-284",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L242-L284",
+          "atomic_propositions": [
+            "dtls12_timer_superseded"
+          ]
+        },
+        {
+          "role": "timer stop clears the active generation",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/d1_lib.c",
+          "symbol": "dtls1_stop_timer",
+          "lines": "352-362",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L352-L362",
+          "atomic_propositions": [
+            "dtls12_timer_superseded"
+          ]
+        },
+        {
+          "role": "expected peer-handshake processing invokes timer stop",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/statem/statem.c",
+          "symbol": "read_state_machine",
+          "lines": "637-683",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/statem/statem.c#L637-L683",
+          "atomic_propositions": [
+            "dtls12_timer_superseded"
+          ]
+        }
+      ],
+      "instrumentation_timing": "After dtls1_start_timer stores next_timeout, emit the arm only for non-SCTP, timer_cb=NULL, timeout_duration_us=1000000. Schedule the logical deadline AP from that stored absolute timestamp. If dtls1_stop_timer clears it or another dtls1_start_timer overwrites it first, emit superseded for the old adapter generation and close that projection.",
+      "independent_audit_note": "Every AP is mapped at the fixed OpenSSL commit. The deadline is explicitly derived from the implementation's stored next_timeout and is kept separate from dtls1_is_timer_expired, which intentionally coalesces less than 15 ms; stop and replacement mappings close the old generation.",
+      "mapping_audit_status": "SOURCE_MAPPED_AT_FIXED_COMMIT"
+    },
+    {
+      "id": "DTLS12-RTX-03",
+      "ap_definitions": {
+        "dtls12_timer_rearmed_2000ms": "After the first expiry, dtls1_double_timeout changes timeout_duration_us from 1000000 to 2000000 and calls dtls1_start_timer for this generation.",
+        "dtls12_second_deadline_reached": "DERIVED adapter event at the exact next_timeout stored by dtls1_start_timer for this 2000-ms generation; not callback dispatch.",
+        "dtls12_second_timer_superseded": "A later dtls1_start_timer replaces this active 2000-ms generation or dtls1_stop_timer clears it; generation IDs keep the old and new deadlines distinct."
+      },
+      "primary_source_atomic_propositions": [
+        "dtls12_timer_rearmed_2000ms"
+      ],
+      "auxiliary_source_mappings": [
+        {
+          "role": "store the rearmed generation's absolute deadline and detect restart replacement",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/d1_lib.c",
+          "symbol": "dtls1_start_timer",
+          "lines": "242-284",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L242-L284",
+          "atomic_propositions": [
+            "dtls12_second_deadline_reached",
+            "dtls12_second_timer_superseded"
+          ]
+        },
+        {
+          "role": "timer stop clears the active 2000-ms generation",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/d1_lib.c",
+          "symbol": "dtls1_stop_timer",
+          "lines": "352-362",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L352-L362",
+          "atomic_propositions": [
+            "dtls12_second_timer_superseded"
+          ]
+        },
+        {
+          "role": "expected peer-handshake processing invokes timer stop",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/statem/statem.c",
+          "symbol": "read_state_machine",
+          "lines": "637-683",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/statem/statem.c#L637-L683",
+          "atomic_propositions": [
+            "dtls12_second_timer_superseded"
+          ]
+        }
+      ],
+      "instrumentation_timing": "Emit the trigger only after dtls1_double_timeout has produced timeout_duration_us=2000000 and dtls1_start_timer stores its next_timeout. Derive the deadline from that stored timestamp. Close the old generation as superseded when a later start overwrites it or stop_timer clears it.",
+      "independent_audit_note": "All three APs now have fixed-commit implementation mappings. Deadline is a derived event from stored next_timeout, while restart/stop are real OpenSSL calls correlated by SSL pointer plus adapter timer generation.",
+      "mapping_audit_status": "SOURCE_MAPPED_AT_FIXED_COMMIT"
+    },
+    {
+      "id": "DTLS12-RTX-04",
+      "ap_definitions": {
+        "dtls12_timer_rearmed_60000ms_cap": "dtls1_double_timeout clamps timeout_duration_us to 60000000 and calls dtls1_start_timer for this capped generation.",
+        "dtls12_capped_deadline_reached": "DERIVED adapter event at the exact next_timeout stored by dtls1_start_timer for this capped generation; not callback dispatch.",
+        "dtls12_capped_timer_superseded": "A later dtls1_start_timer replaces this active capped generation or dtls1_stop_timer clears it; generation IDs keep the old and new deadlines distinct."
+      },
+      "primary_source_atomic_propositions": [
+        "dtls12_timer_rearmed_60000ms_cap"
+      ],
+      "auxiliary_source_mappings": [
+        {
+          "role": "store the capped generation's absolute deadline and detect restart replacement",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/d1_lib.c",
+          "symbol": "dtls1_start_timer",
+          "lines": "242-284",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L242-L284",
+          "atomic_propositions": [
+            "dtls12_capped_deadline_reached",
+            "dtls12_capped_timer_superseded"
+          ]
+        },
+        {
+          "role": "timer stop clears the active capped generation",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/d1_lib.c",
+          "symbol": "dtls1_stop_timer",
+          "lines": "352-362",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/d1_lib.c#L352-L362",
+          "atomic_propositions": [
+            "dtls12_capped_timer_superseded"
+          ]
+        },
+        {
+          "role": "expected peer-handshake processing invokes timer stop",
+          "repository": "openssl/openssl",
+          "commit": "0437435a960123be1ced766d18d715f939698345",
+          "path": "ssl/statem/statem.c",
+          "symbol": "read_state_machine",
+          "lines": "637-683",
+          "url": "https://github.com/openssl/openssl/blob/0437435a960123be1ced766d18d715f939698345/ssl/statem/statem.c#L637-L683",
+          "atomic_propositions": [
+            "dtls12_capped_timer_superseded"
+          ]
+        }
+      ],
+      "instrumentation_timing": "Emit the trigger only after dtls1_double_timeout clamps timeout_duration_us=60000000 and dtls1_start_timer stores its next_timeout. Derive the deadline from that timestamp. Close the generation as superseded if a later start overwrites it or stop_timer clears it.",
+      "independent_audit_note": "All three APs now have fixed-commit implementation mappings. The exact 60-second value remains an OpenSSL profile cap as already stated; restart/stop are correlated per adapter timer generation.",
+      "mapping_audit_status": "SOURCE_MAPPED_AT_FIXED_COMMIT"
+    },
+    {
+      "id": "TLS13-TICKET-01",
+      "independent_audit_status": "REJECT_OR_FIX",
+      "independent_audit_note": "Rejected and deliberately left without fabricated AP mappings: the fixed source observes PSK eligibility but does not expose a transition proving seven-day cache removal/non-use; tls13_ticket_became_unusable was adapter-derived and self-fulfilling, and tls13_ticket_removed lacks a fixed cache-eviction hook.",
+      "mapping_audit_status": "REJECTED_MAPPING_GAP"
+    },
+    {
+      "id": "DTLS12-FINAL-01",
+      "independent_audit_status": "REJECT_OR_FIX",
+      "independent_audit_note": "Rejected and deliberately left without fabricated AP mappings: rec_layer_d1.c proves a repeated-Finished retransmission path, but the locked implementation source does not prove that the final-flight buffer is retained for 240000 ms, and the same-position formula invented an unsupported zero-delay response bound.",
+      "mapping_audit_status": "REJECTED_MAPPING_GAP"
+    }
+  ]
+}

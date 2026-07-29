@@ -3,7 +3,101 @@
 #include "types.h"
 #include "Fixpoint.h"
 
+#include <algorithm>
+#include <functional>
+#include <set>
+#include <stdexcept>
+#include <string>
+
 namespace monitaal {
+
+    namespace {
+
+        pardibaal::bound_t normalize_product_bound(const pardibaal::bound_t& bound) {
+            if (!mightypplcpp::last_intersection || mightypplcpp::out_format.has_value() ||
+                !mightypplcpp::scale_product_bounds_by_gcd || mightypplcpp::gcd == 0) {
+                return bound;
+            }
+            if (std::gcd(mightypplcpp::gcd, bound.get_bound()) != mightypplcpp::gcd) {
+                throw std::runtime_error("GCD of the formula incompatible with a constant in product construction");
+            }
+            return pardibaal::bound_t(bound.get_bound() / mightypplcpp::gcd, bound.is_strict());
+        }
+
+        template <typename EdgeRange>
+        clock_map_t copy_referenced_clocks(const TAwithBDDEdges& source, const locations_t& locations, const EdgeRange& edges) {
+            clock_index_t max_clock = source.number_of_clocks() == 0 ? 0 : source.number_of_clocks() - 1;
+            auto observe_constraint = [&](const constraint_t& constraint) {
+                max_clock = std::max(max_clock, constraint._i);
+                max_clock = std::max(max_clock, constraint._j);
+            };
+            for (const auto& location : locations) {
+                for (const auto& invariant : location.invariant()) {
+                    observe_constraint(invariant);
+                }
+            }
+            for (const auto& edge : edges) {
+                for (const auto& guard : edge.guard()) {
+                    observe_constraint(guard);
+                }
+                for (const auto& reset : edge.reset()) {
+                    max_clock = std::max(max_clock, reset);
+                }
+            }
+
+            clock_map_t clocks;
+            for (clock_index_t i = 0; i <= max_clock; ++i) {
+                if (i < source.number_of_clocks()) {
+                    clocks.insert({i, source.clock_name(i)});
+                } else {
+                    clocks.insert({i, "x_" + std::to_string(i)});
+                }
+            }
+            return clocks;
+        }
+
+        template <typename EdgeRange>
+        void validate_projected_shape(const TAwithBDDEdges& source,
+                                      const clock_map_t& clocks,
+                                      const locations_t& locations,
+                                      const EdgeRange& edges,
+                                      const std::string& projection_name) {
+            std::set<location_id_t> location_ids;
+            for (const auto& location : locations) {
+                location_ids.insert(location.id());
+            }
+            if (!location_ids.count(source.initial_location())) {
+                throw std::runtime_error(projection_name + " produced an initial location outside the location set");
+            }
+
+            auto validate_constraint = [&](const constraint_t& constraint) {
+                if (constraint._i >= clocks.size() || constraint._j >= clocks.size()) {
+                    throw std::runtime_error(projection_name + " produced a clock index outside the copied clock map");
+                }
+            };
+            for (const auto& location : locations) {
+                for (const auto& invariant : location.invariant()) {
+                    validate_constraint(invariant);
+                }
+            }
+            for (const auto& edge : edges) {
+                if (!location_ids.count(edge.from()) || !location_ids.count(edge.to())) {
+                    throw std::runtime_error(projection_name + " produced an edge with an unknown location");
+                }
+                for (const auto& guard : edge.guard()) {
+                    validate_constraint(guard);
+                }
+                for (const auto& reset : edge.reset()) {
+                    if (reset >= clocks.size()) {
+                        throw std::runtime_error(
+                            projection_name + " produced reset clock " + std::to_string(reset) +
+                            " outside copied clock map of size " + std::to_string(clocks.size()));
+                    }
+                }
+            }
+        }
+
+    }
 
     bdd_edge_t::bdd_edge_t(location_id_t from, location_id_t to, const constraints_t& guard, const clocks_t& reset, const bdd_label_t& bdd_label) :
             edge_t(from, to, guard, reset, label_t{}), _bdd_label(bdd_label) {}
@@ -196,9 +290,8 @@ namespace monitaal {
         for (size_t i = 0; i < components.size(); ++i) {
 
             for (const auto& c : components[i].locations().at(location_ids[i]).invariant()) {
-                assert(("GCD of the formula incompatible with a constant in (hard-coded) M", std::gcd(mightypplcpp::gcd, c._bound.get_bound()) == mightypplcpp::gcd));
                 constr.push_back(constraint_t((c._i == 0 ? 0 : c._i + clock_offsets[i]),
-                                              (c._j == 0 ? 0 : c._j + clock_offsets[i]), !mightypplcpp::last_intersection || mightypplcpp::out_format.has_value() ? c._bound : pardibaal::bound_t(c._bound.get_bound() / mightypplcpp::gcd, c._bound.is_strict())));
+                                              (c._j == 0 ? 0 : c._j + clock_offsets[i]), normalize_product_bound(c._bound)));
             }
 
         }
@@ -245,12 +338,12 @@ namespace monitaal {
 
         while (!fringe.empty()) {
 
-            auto lid = fringe.begin();
-            fringe.erase(lid);
+            const location_id_t lid = *fringe.begin();
+            fringe.erase(fringe.begin());
 
-            location_ids = id_location_ids_map.at(*lid);
-            curr_i = id_i_map.at(*lid);
-            new_location_ids_expanded.insert(*lid);
+            location_ids = id_location_ids_map.at(lid);
+            curr_i = id_i_map.at(lid);
+            new_location_ids_expanded.insert(lid);
 
             bool stucked = false;
             for (size_t i = 0; i < components.size(); ++i) {
@@ -297,9 +390,8 @@ namespace monitaal {
                         for (size_t i = 0; i < components.size(); ++i) {
 
                             for (const auto& c : components[i].bdd_edges_from(location_ids[i]).at(bdd_edge_indices[i]).guard()) {
-                                assert(("GCD of the formula incompatible with a constant in (hard-coded) M", std::gcd(mightypplcpp::gcd, c._bound.get_bound()) == mightypplcpp::gcd));
                                 guard.push_back(constraint_t((c._i == 0 ? 0 : c._i + clock_offsets[i]),
-                                                              (c._j == 0 ? 0 : c._j + clock_offsets[i]), !mightypplcpp::last_intersection || mightypplcpp::out_format.has_value() ? c._bound : pardibaal::bound_t(c._bound.get_bound() / mightypplcpp::gcd, c._bound.is_strict())));
+                                                              (c._j == 0 ? 0 : c._j + clock_offsets[i]), normalize_product_bound(c._bound)));
                             }
 
                         }
@@ -321,9 +413,8 @@ namespace monitaal {
                         for (size_t i = 0; i < components.size(); ++i) {
 
                             for (const auto& c : components[i].locations().at(dest_location_ids[i]).invariant()) {
-                                assert(("GCD of the formula incompatible with a constant in (hard-coded) M", std::gcd(mightypplcpp::gcd, c._bound.get_bound()) == mightypplcpp::gcd));
                                 constr.push_back(constraint_t((c._i == 0 ? 0 : c._i + clock_offsets[i]),
-                                                              (c._j == 0 ? 0 : c._j + clock_offsets[i]), !mightypplcpp::last_intersection || mightypplcpp::out_format.has_value() ? c._bound : pardibaal::bound_t(c._bound.get_bound() / mightypplcpp::gcd, c._bound.is_strict())));
+                                                              (c._j == 0 ? 0 : c._j + clock_offsets[i]), normalize_product_bound(c._bound)));
                             }
 
                         }
@@ -629,6 +720,7 @@ namespace monitaal {
 
                 // std::cout << "After projection: " << projected_e << std::endl;
 
+                mightypplcpp::sat_paths.clear();
                 bdd_allsat(projected_e, *mightypplcpp::allsat_print_handler);
 
                 for (const auto& p : mightypplcpp::sat_paths) {
@@ -667,19 +759,12 @@ namespace monitaal {
 
         }
 
-        clock_map_t clocks;
-
-        // TODO: This is a temporary adjustment in response to the off-by-one error
-        // introduced by https://github.com/DEIS-Tools/MoniTAal/commit/2207cb9
-
-        for (clock_index_t i = 0; i < this->number_of_clocks() - 1; ++i) {
-            clocks.insert({i, this->clock_name(i)});
-        }
-
         locations_t locations;
         for (const auto& [id, l] : this->locations()) {
             locations.push_back(l);
         }
+        clock_map_t clocks = copy_referenced_clocks(*this, locations, edges);
+        validate_projected_shape(*this, clocks, locations, edges, "Projection");
 
         std::cout << "\nProjected TA: " << std::endl;
         std::cout << "clocks.size() == " << clocks.size() << std::endl;
@@ -687,6 +772,77 @@ namespace monitaal {
         std::cout << "bdd_edges.size() == " << edges.size() << std::endl;
 
         return TA(this->name(), clocks, locations, edges, this->initial_location());
+
+    }
+
+    std::pair<TA, size_t> TAwithBDDEdges::projection_expanded(const std::set<int>& props_to_remove, size_t max_valuations) {
+
+        std::vector<int> kept_props;
+        for (int j = 1; j < bdd_varnum(); ++j) {
+            if (!props_to_remove.count(j)) {
+                kept_props.push_back(j);
+            }
+        }
+
+        edges_t edges;
+        size_t valuation_count = 0;
+        bdd quantified_props = bdd_true();
+        for (const auto& i : props_to_remove) {
+            quantified_props = quantified_props & bdd_ithvar(i);
+        }
+
+        for (const auto& [id, l] : this->locations()) {
+            for (const auto& e : this->bdd_edges_from(id)) {
+                bdd projected_e = bdd_exist(e.bdd_label(), quantified_props);
+                mightypplcpp::sat_paths.clear();
+                bdd_allsat(projected_e, *mightypplcpp::allsat_print_handler);
+
+                std::set<std::string> edge_labels;
+                for (const auto& pattern : mightypplcpp::sat_paths) {
+                    std::string bits(kept_props.size(), '0');
+
+                    std::function<void(size_t)> expand = [&](size_t index) {
+                        if (index == kept_props.size()) {
+                            edge_labels.insert("bits:" + bits);
+                            return;
+                        }
+
+                        const int var = kept_props[index];
+                        const char value = var < static_cast<int>(pattern.size()) ? pattern[var] : 'X';
+                        if (value == '0' || value == '1') {
+                            bits[index] = value;
+                            expand(index + 1);
+                        } else {
+                            bits[index] = '0';
+                            expand(index + 1);
+                            bits[index] = '1';
+                            expand(index + 1);
+                        }
+                    };
+
+                    expand(0);
+                }
+                mightypplcpp::sat_paths.clear();
+
+                for (const auto& label : edge_labels) {
+                    if (valuation_count >= max_valuations) {
+                        throw std::runtime_error("BDD projection valuation limit exceeded");
+                    }
+                    edges.push_back(monitaal::edge_t(e.from(), e.to(), e.guard(), e.reset(), label));
+                    ++valuation_count;
+                }
+            }
+        }
+
+        locations_t locations;
+        for (const auto& [id, l] : this->locations()) {
+            locations.push_back(l);
+        }
+
+        clock_map_t clocks = copy_referenced_clocks(*this, locations, edges);
+        validate_projected_shape(*this, clocks, locations, edges, "Canonical projection");
+
+        return { TA(this->name(), clocks, locations, edges, this->initial_location()), valuation_count };
 
     }
 
@@ -713,19 +869,12 @@ namespace monitaal {
 
         }
 
-        clock_map_t clocks;
-
-        // TODO: This is a temporary adjustment in response to the off-by-one error
-        // introduced by https://github.com/DEIS-Tools/MoniTAal/commit/2207cb9
-
-        for (clock_index_t i = 0; i < this->number_of_clocks() - 1; ++i) {
-            clocks.insert({i, this->clock_name(i)});
-        }
-
         locations_t locations;
         for (const auto& [id, l] : this->locations()) {
             locations.push_back(l);
         }
+        clock_map_t clocks = copy_referenced_clocks(*this, locations, bdd_edges);
+        validate_projected_shape(*this, clocks, locations, bdd_edges, "BDD projection");
 
         std::cout << "\nProjected TAwithBDDEdges: " << std::endl;
         std::cout << "clocks.size() == " << clocks.size() << std::endl;

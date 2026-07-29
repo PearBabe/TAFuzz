@@ -1,0 +1,20 @@
+  -h [ --help ]                 Dispay this help message
+                                Example: monitaal-bin --pos <name> <path> --neg
+                                <name> <path>
+  -p [ --pos ] arg              <name of template> <path to xml file> : 
+                                Property automaton.
+  -n [ --neg ] arg              <name of template> <path to xml file> : Negated
+                                property automaton.
+  -t [ --type ] arg (=concrete) Input type (concrete or interval) default = 
+                                concrete.
+  -i [ --input ] arg            Monitor events contained in file.
+  -u [ --inclusion ]            Enable inclusion checking for duplicate states
+  -c [ --clock-abstraction ]    Enable abstraction of inactive clocks 
+                                (Automatically enables inclusion)
+  -v [ --verbose ]              Prints more information on the monitoring 
+                                procedure.
+  -s [ --silent ]               removes all outputs
+  -o [ --print-dot ]            Prints the dot graphs of the given automata.
+  -d [ --div ] arg              <list of labels> : Take time divergence into 
+                                account.
+

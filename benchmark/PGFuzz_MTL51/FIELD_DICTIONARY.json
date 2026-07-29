@@ -1,0 +1,1556 @@
+{
+  "schema_version": "1.0",
+  "dictionary_purpose_zh": "逐项解释当前 51 个性质 JSON 中实际出现的全部唯一字段键。",
+  "semantic_limit_zh": "本字典只说明字段结构、值形态和审核边界；字段覆盖完整、JSON Schema 校验通过或路径存在均不证明论文性质正确，也不证明 ArduPilot/PX4 满足性质。",
+  "generated_from_property_records": 51,
+  "field_count": 221,
+  "fields": [
+    {
+      "field": "CANDIDATE_ASSOCIATION",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "候选关联状态键；表示作者把输入列入某条性质，但没有公开逐项因果或数据流证明。",
+      "value_type_zh": "字符串、整数；当前常见值：候选关联；作者列入输入文件，但未公开逐项因果证明、238、239",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "COMMAND_XML_DEFINITION_FOUND",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "命令 XML 定义已找到状态键；只表示冻结 MAVLink 方言中存在同名命令定义。",
+      "value_type_zh": "字符串、整数；当前常见值：当前 MAVLink 命令 XML 定义已找到、47、20、46、4、34",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "COMMAND_XML_DEFINITION_NOT_FOUND",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "命令 XML 定义未找到状态键；表示冻结 MAVLink 方言搜索中未找到同名定义。",
+      "value_type_zh": "字符串、整数；当前常见值：当前 MAVLink 命令 XML 定义未找到、13、3",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "CONDITIONAL",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "有条件可观测状态键；只有消息启用、实例、有效性、配置或运行阶段条件成立时才能观测。",
+      "value_type_zh": "整数、字符串；当前常见值：1、有条件可观测；消息、实例、有效性或配置条件必须成立、2、4",
+      "audit_effect_zh": "缺少启用、有效性或运行阶段证据时，观测结论应为不可用或无结论。"
+    },
+    {
+      "field": "CURRENT_DEFINITION_NOT_FOUND",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "当前定义未找到状态键；表示冻结源码和元数据搜索没有定位到可靠定义。",
+      "value_type_zh": "字符串、整数；当前常见值：当前定义未找到、4、2、1、5、6",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "DERIVED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "派生可观测状态键；需要组合字段、保存历史样本或执行换算才能得到命题值。",
+      "value_type_zh": "整数、字符串；当前常见值：1、派生可观测；需要组合字段、保存历史或换算、2",
+      "audit_effect_zh": "必须保存换算、输入字段和历史窗口，不能把派生值冒充直接源码变量。"
+    },
+    {
+      "field": "DIRECT",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "直接可观测状态键；列出的消息字段直接携带所需值，但仍需解码、关联和有效性检查。",
+      "value_type_zh": "整数、字符串；当前常见值：1、直接可观测；字段直接携带所需值，仍需解码和有效性检查、2、3",
+      "audit_effect_zh": "只表示字段承载能力；仍要检查消息实际出现、单位、枚举、时间和关联键。"
+    },
+    {
+      "field": "EXACT",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "精确绑定状态键；只保证某条绑定记录的局部实体身份和该行局部含义有直接证据。",
+      "value_type_zh": "整数、字符串；当前常见值：1、精确绑定；该绑定行的局部实体身份及该行所述局部含义有直接证据，不代表整条命题或性质正确、3、2",
+      "audit_effect_zh": "只能作为局部绑定证据；禁止据此宣称整个命题等价或固件符合性质。"
+    },
+    {
+      "field": "EXACT_CURRENT_DEFINITION",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "当前同名定义已找到状态键；表示冻结版本中定位到同名参数或输入定义。",
+      "value_type_zh": "字符串、整数；当前常见值：当前同名定义已找到、136、137、122、100、141",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "EXPLICIT_PRECONDITION",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "明确前置设置状态键；表示作者旧制品显式要求先设置该输入。",
+      "value_type_zh": "字符串、整数；当前常见值：明确前置设置；只证明作者旧实验先设置该值、5",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "HISTORICAL_PROPERTY_SEED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "历史性质种子状态键；性质来自 PGFuzz 论文，尚未由当前官方材料重新确认为现行要求。",
+      "value_type_zh": "字符串；当前常见值：历史性质种子；来自论文，尚未被当前官方材料重新确认为规范",
+      "audit_effect_zh": "防止把论文历史公式误标成当前 ArduPilot/PX4 官方规范。"
+    },
+    {
+      "field": "INSTRUMENTATION_REQUIRED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "需要插桩状态键；标准 MAVLink 没有等价外部字段，需要内部订阅或观测探针。",
+      "value_type_zh": "字符串、整数；当前常见值：需要插桩；标准 MAVLink 没有等价字段、2、1",
+      "audit_effect_zh": "没有内部探针时不能声称该命题已从标准 MAVLink 轨迹判定。"
+    },
+    {
+      "field": "InputC",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "命令输入类别键；包括命令、模式切换或遥控输入。",
+      "value_type_zh": "字符串、整数；当前常见值：命令、模式或遥控输入、52、25、51、9、53",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "InputE",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "环境输入类别键；包括软件在环仿真中的传感器、天气或故障扰动输入。",
+      "value_type_zh": "字符串、整数；当前常见值：仿真环境或故障输入、124、125、86、77、32",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "InputP",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "配置参数输入类别键；表示通过飞控参数接口提供的输入。",
+      "value_type_zh": "字符串、整数；当前常见值：配置参数输入、62、63、30、31",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "MODELLED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "建模绑定状态键；实体可定位，但需要单位、坐标、上下文、历史或语义假设。",
+      "value_type_zh": "字符串、整数；当前常见值：建模绑定；需要单位、坐标、上下文或历史样本解释、3、2、4、5、1",
+      "audit_effect_zh": "审核时必须读取转换和假设；禁止把建模近似当作精确等价。"
+    },
+    {
+      "field": "NOT_ASSESSED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "未评估实现符合性状态键；不表示满足，也不表示违反。",
+      "value_type_zh": "字符串；当前常见值：未评估；不表示当前固件满足或违反该性质",
+      "audit_effect_zh": "这是全局符合性边界；任何验证通过计数都不得改变该值。"
+    },
+    {
+      "field": "PRECONDITION",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "前置输入类别键；表示作者制品中保存的测试前设置。",
+      "value_type_zh": "字符串、整数；当前常见值：作者制品明确保存的前置设置、5",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "PRIMARY_SELECTED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "唯一主语义组已选状态键；当前没有其他互斥候选组。",
+      "value_type_zh": "字符串；当前常见值：已选定唯一主语义组",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "PRIMARY_WITH_ALTERNATIVES",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "主语义已选但仍有替代组状态键；替代组默认不同时参与判真。",
+      "value_type_zh": "字符串；当前常见值：已选主语义组，同时保留互斥替代解释",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "RENAMED_CURRENT_DEFINITION",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "当前更名或迁移定义已找到状态键；严格等价程度还要结合匹配置信度。",
+      "value_type_zh": "字符串、整数；当前常见值：当前更名或迁移后的定义已找到、46、22、37、18、19",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "SPECIAL_CONTROL_INPUT",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "特殊控制输入状态键；表示该输入不是普通配置参数。",
+      "value_type_zh": "字符串、整数；当前常见值：特殊控制输入；不是普通配置参数、5、6",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "UNRESOLVED",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "未解决状态键；证据不足时保留未知，不猜测实体、数值或可观测性。",
+      "value_type_zh": "字符串、整数；当前常见值：未解决；证据不足，禁止猜测、1、2、3",
+      "audit_effect_zh": "该值要求保留未知并停止自动判真，不能用名称相似或经验值补齐。"
+    },
+    {
+      "field": "UNRESOLVED_PRIMARY",
+      "family_zh": "机器状态值与动态统计键",
+      "meaning_zh": "主语义未解决状态键；补证前不能计算该原子命题真值。",
+      "value_type_zh": "字符串；当前常见值：主语义未解决，补证前不能判真",
+      "audit_effect_zh": "该键可能同时用于状态中文图例或数量统计；必须结合所在 JSON 路径读取，计数不代表性质质量。"
+    },
+    {
+      "field": "additional_limit_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间上界或参数迁移的额外中文限制说明。",
+      "value_type_zh": "字符串；当前常见值：COM_POS_FS_DELAY 是历史 PX4 参数；当前冻结版本未找到等价定义。即使保留加法表达式，也不能…",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "all_candidate_observation_fields",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "某原子命题全部候选语义组可能使用的观测字段集合。",
+      "value_type_zh": "数组；当前长度范围 0–8",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "alternative_binding_count",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "整条性质中互斥备选源码绑定标识符的数量。",
+      "value_type_zh": "整数；当前常见值：5、0、2",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "alternative_source_bindings",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "某原子命题未被当前选择、但保留供人工切换的源码绑定记录数组。",
+      "value_type_zh": "数组；当前长度范围 0–12",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "alternative_term_binding_ids",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "某原子命题互斥备选词项绑定标识符数组。",
+      "value_type_zh": "数组；当前长度范围 0–12",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "ap_count",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "性质包含的原子命题出现次数。",
+      "value_type_zh": "整数；当前常见值：3、5、2、4、8",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "ap_id",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题出现的唯一标识符。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1-AP01、A.ALT_HOLD1-AP02、A.ALT_HOLD1-AP03",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "appears_as_exact_formula_term",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "作者输入名称是否以完全相同词形直接出现在论文公式中。",
+      "value_type_zh": "布尔值；当前常见值：False、True",
+      "audit_effect_zh": "同名只说明词形覆盖，不证明该输入真实影响命题。"
+    },
+    {
+      "field": "artifact_column_6_interpretation",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "PGFuzz 参数文件第六列的解释状态。",
+      "value_type_zh": "字符串；当前常见值：AUTHOR_PARSER_CALLS_UNITS_BUT_ARTIFACT_VALUES_MAY_BE_IN…",
+      "audit_effect_zh": "防止把作者可能表示步进量的第六列无依据地写成单位。"
+    },
+    {
+      "field": "artifact_column_6_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "PGFuzz 参数文件第六列的原始文本。",
+      "value_type_zh": "字符串；当前常见值：1、0.1、0.5",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_default_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品保存的默认值原文；在参数值契约对象中同名键保存该字段的中文解释。",
+      "value_type_zh": "字符串；当前常见值：作者旧制品保存的默认栏，不等于当前源码默认值。、0、1500",
+      "audit_effect_zh": "必须结合完整 JSON 路径读取；作者旧默认不能替代当前默认或运行值。"
+    },
+    {
+      "field": "artifact_file_sha256",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入制品文件的 SHA-256 内容散列值。",
+      "value_type_zh": "字符串；当前常见值：86cd4587e0e9ca721a0fdbc8b106d5bcc22e620ba91fa585341c8f4…、bcbdf48fcc97bf2129f33a8bd125d010defe4dc080808b210949424…、8fcbc9937327d538a6884892da2be67ab85fc79070212e9364171e6…",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_max_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品保存的最大值原文。",
+      "value_type_zh": "字符串；当前常见值：X、2、10",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_min_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品保存的最小值原文。",
+      "value_type_zh": "字符串；当前常见值：X、0、200",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_name",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品中的历史输入名称。",
+      "value_type_zh": "字符串；当前常见值：GND_TEMP、GND_ALT_OFFSET、GND_PRIMARY",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_numeric_id_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品中命令或输入的数字标识原文。",
+      "value_type_zh": "字符串；当前常见值：、2、208",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_policy_directory",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "该逻辑性质读取的 PGFuzz 作者性质目录名。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1、A.ALT_HOLD2、A.AUTO1",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_precondition_value_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者前置条件文件保存的目标值原文。",
+      "value_type_zh": "字符串；当前常见值：、1、10、27、9",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入文件整行原文。",
+      "value_type_zh": "字符串；当前常见值：GND_TEMP,X,0,X,X,1、GND_ALT_OFFSET,X,0,X,X,0.1、GND_PRIMARY,X,0,0,2,1",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_raw_variants",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "同一历史输入身份在作者制品中出现过的不同原始行集合。",
+      "value_type_zh": "字符串；当前常见值：Flight_Mode,1 || Flight_Mode,11 || Flight_Mode,13 || Fl…、MAV_CMD_COMPONENT_ARM_DISARM,400、MAV_CMD_CONDITION_DELAY,112",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_reboot_raw",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者参数文件保存的重启标记原文。",
+      "value_type_zh": "字符串；当前常见值：X、TRUE、",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_source_files",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "同一历史输入身份出现过的作者制品源文件集合。",
+      "value_type_zh": "字符串；当前常见值：baseline/pgfuzz/ArduPilot/policies/A.ALT_HOLD1/cmds.txt…、baseline/pgfuzz/ArduPilot/policies/A.ALT_HOLD1/cmds.txt…、baseline/pgfuzz/ArduPilot/policies/A.ALT_HOLD1/cmds.txt…",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_source_line",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品原始输入所在的一基行号。",
+      "value_type_zh": "整数；当前常见值：1、2、3",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "artifact_source_path",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者制品原始输入所在的相对文件路径。",
+      "value_type_zh": "字符串；当前常见值：baseline/pgfuzz/ArduPilot/policies/A.ALT_HOLD1/paramete…、baseline/pgfuzz/ArduPilot/policies/A.ALT_HOLD1/cmds.txt、baseline/pgfuzz/ArduPilot/policies/A.ALT_HOLD1/envs.txt",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "association_count",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "某性质包含的作者性质—输入关联总行数。",
+      "value_type_zh": "整数；当前常见值：238、239、173",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "association_id",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "一条性质—作者输入关联的唯一标识符。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1:InputP:0001、A.ALT_HOLD1:InputP:0002、A.ALT_HOLD1:InputP:0003",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "association_occurrences",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "某去重输入身份在全部性质关联中出现的次数。",
+      "value_type_zh": "整数；当前常见值：36、22、30",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "atomic_propositions",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "性质的原子命题审计记录数组。",
+      "value_type_zh": "数组；当前长度范围 2–8",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "audit_boundary_zh",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "性质审核边界的中文说明对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "author_dependency_summary",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "某性质作者候选依赖输入的汇总对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "author_input_classes",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "某公式直接参数在作者输入文件中出现过的输入类别集合。",
+      "value_type_zh": "字符串；当前常见值：、InputP",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "author_input_dependencies",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "该性质全部作者输入关联记录数组；保留重复行。",
+      "value_type_zh": "数组；当前长度范围 50–251",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "binding_formula_interpretation",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "为词项绑定而展开或解释后的公式；不得覆盖论文原样公式。",
+      "value_type_zh": "字符串；当前常见值：G((ALT_src = Baro) -> ((ALT_t = ALT_Baro) & (ALT_t != A…、G(((Mode_t = ALT_HOLD) & (Throttle_t = 1500)) -> (ALT_t…、G((Mode_t = AUTO) -> ((RC_roll_t/RC_pitch_t/RC_throttle…",
+      "audit_effect_zh": "只用于展开绑定；与论文原式不同时不得覆盖原始证据。"
+    },
+    {
+      "field": "binding_group_summary",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题各词项候选语义组及选择情况的汇总数组。",
+      "value_type_zh": "数组；当前长度范围 1–12",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_id",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "一条当前源码词项绑定记录的唯一标识符。",
+      "value_type_zh": "字符串；当前常见值：ARD-TB-022、ARD-TB-023、ARD-TB-024",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_kind",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定的实体种类，例如状态字段、函数返回、赋值或参数消费点。",
+      "value_type_zh": "字符串；当前常见值：STATE_FIELD、FUNCTION_RETURN、SELECTION_GUARD",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_role",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定在候选组中的角色：主真值、辅助证据或替代语义。",
+      "value_type_zh": "字符串；当前常见值：PRIMARY_VALUE、SUPPORTING_EVIDENCE、ALTERNATIVE_SEMANTICS",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_selection_reason_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "为何为该原子命题选择当前候选语义组的中文理由。",
+      "value_type_zh": "字符串；当前常见值：ALT_src：性质询问实际高度来源，因此选择 EKF 运行时 activeHgtSource，而不是三套配置…、ALT_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ALT_Baro：该词项只有一个当前主…、ALT_t：该词项只有一个当前主语义组，按其真值、有效性和观测限制使用；ALT_GPS：该词项只有一个当前主语…",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_selection_status",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题主语义组的选择状态。",
+      "value_type_zh": "字符串；当前常见值：PRIMARY_WITH_ALTERNATIVES、PRIMARY_SELECTED、UNRESOLVED_PRIMARY",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_status",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题或汇总对象的源码绑定证据状态。",
+      "value_type_zh": "字符串；当前常见值：MODELLED、EXACT、UNRESOLVED",
+      "audit_effect_zh": "这是证据绑定分级，不是性质判定结果。"
+    },
+    {
+      "field": "binding_status_counts",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "按绑定状态统计的原子命题数量对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "binding_status_reason_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题获得当前绑定状态的中文理由。",
+      "value_type_zh": "字符串；当前常见值：需要历史样本、坐标/单位换算、有效性条件、容差或上下文选择。、本原子命题可按列出的当前枚举、布尔状态或参数值直接判真。、包含未公开时间上界、未定义航点空状态或已删除且无等价替代的参数。、论文 GPS_fail 与当前位置/EKF 故障状态没有精确等价证据。、命题实体可定位，但所在性质存在论文公式冲突，不能据此修复整条公式。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "by_current_identity_status",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入关联按当前身份状态统计的数量对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "by_dependency_strength",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入关联按依赖证据强度统计的数量对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "by_input_class",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入关联按输入类别统计的数量对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "cancel_reset_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间义务取消、重置和重复触发语义的中文说明。",
+      "value_type_zh": "字符串；当前常见值：论文未说明取消、重置或重复触发语义。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "candidate_group",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "同一论文词项的一种互斥候选语义组标识符。",
+      "value_type_zh": "字符串；当前常见值：ALT_src:runtime_active、Baro:source_enum、ALT_src:configured_source_set_1",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "claim_limit_zh",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者依赖输入汇总能够支持何种结论的中文限制。",
+      "value_type_zh": "字符串；当前常见值：PGFuzz 输入文件是高召回候选关联。除明确前置设置外，公开制品没有给出每行到命题的完整数据流证明。",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "clock_carrier_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间值由哪种时间戳或观察时刻承载的中文说明。",
+      "value_type_zh": "字符串；当前常见值：论文未公开是仿真时钟、机载启动时钟还是观察端到达时钟。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "clock_domain",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间比较采用的时钟域状态。",
+      "value_type_zh": "字符串；当前常见值：TRACE_ORDER、UNSPECIFIED_BY_PAPER",
+      "audit_effect_zh": "时钟域未知时不能比较来自不同时间载体的时间差。"
+    },
+    {
+      "field": "code",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文公式问题的机器可读问题代码。",
+      "value_type_zh": "字符串；当前常见值：SOURCE_ABSTRACTION_UNDEFINED、EXACT_PHYSICAL_EQUALITY、PREVIOUS_SAMPLE_NOT_TIME",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "command_id_consistency",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "作者数字命令标识与当前 MAVLink XML 定义的一致性状态。",
+      "value_type_zh": "字符串；当前常见值：NOT_APPLICABLE、MATCH、MISMATCH_OR_MULTIPLE",
+      "audit_effect_zh": "数字一致只证明定义对齐；不证明固件处理、接受或执行命令。"
+    },
+    {
+      "field": "commit",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "冻结源码仓库的提交散列标识。",
+      "value_type_zh": "字符串；当前常见值：8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e、d6f12ad1c4f70ad3230afd7d86e971421e02fef4",
+      "audit_effect_zh": "确保行号和符号可复核；提交变化后映射必须重新校验。"
+    },
+    {
+      "field": "conclusion_limit_zh",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "性质绑定汇总结论的中文边界。",
+      "value_type_zh": "字符串；当前常见值：绑定只回答实体位置与观测方法，不评估固件是否满足公式。",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "concrete_time_policy_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "本数据集允许保存哪些具体时间值的中文策略。",
+      "value_type_zh": "字符串；当前常见值：仅保存论文明确写出的 2.5 秒；k、参数加 k 和 t-1 均不补人工秒数。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "concrete_value_status",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间边界是否具有可追溯具体数值的状态。",
+      "value_type_zh": "字符串；当前常见值：UNKNOWN、AVAILABLE",
+      "audit_effect_zh": "UNKNOWN 时禁止产生数值实例；AVAILABLE 仍必须检查来源类型。"
+    },
+    {
+      "field": "confidence",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "单条源码绑定记录的证据置信状态。",
+      "value_type_zh": "字符串；当前常见值：MODELLED、EXACT、UNRESOLVED",
+      "audit_effect_zh": "这是单条绑定记录置信度，不得与整条命题或性质状态混淆。"
+    },
+    {
+      "field": "confidence_reason_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "单条源码绑定为何获得当前置信状态的中文理由。",
+      "value_type_zh": "字符串；当前常见值：运行字段明确，但当前活动估计器和多核选择需要上下文。、当前内联访问器直接返回每个核的活动源集。、活动源集到垂直位置配置的访问路径直接可证。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "conformance",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "审核边界中关于实现符合性检查范围的说明。",
+      "value_type_zh": "字符串；当前常见值：没有执行完整轨迹监测、fuzz campaign 或实现符合性判断。",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "current_alias_evidence",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "历史输入更名或迁移到当前身份的证据位置。",
+      "value_type_zh": "字符串；当前常见值：baseline/ardupilot/libraries/AP_Baro/AP_Baro.cpp:103、baseline/ardupilot/libraries/AP_Baro/AP_Baro.cpp:115、baseline/ardupilot/libraries/AP_Baro/AP_Baro.cpp:123",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_alias_note_zh",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "历史名称与当前名称关系的中文说明。",
+      "value_type_zh": "字符串；当前常见值：当前地面温度参数位于 BARO 参数组。、当前气压计参数组采用 BARO 前缀；未发现完整单项迁移证明。、当前主气压计参数采用 BARO 前缀。",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_build_inclusion_status",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数或输入是否纳入冻结构建或运行配置的证据状态。",
+      "value_type_zh": "字符串；当前常见值：not_compile_option_resolved、、not_px4_sitl_module_list_resolved、confirmed_by_frozen_runtime_snapshot",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_command_description",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前 MAVLink XML 给出的命令英文描述原文。",
+      "value_type_zh": "字符串；当前常见值：、Mission item/command to release a parachute or enable/d…、Reply with the version banner.",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_command_id",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前 MAVLink XML 中的命令数字标识。",
+      "value_type_zh": "字符串；当前常见值：、208、42428",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_command_origin",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前命令定义所在的冻结 XML 文件及行号。",
+      "value_type_zh": "字符串；当前常见值：、baseline/ardupilot/modules/mavlink/message_definitions/…、baseline/ardupilot/modules/mavlink/message_definitions/…",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_default",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前源码或元数据得到的默认值；在参数值契约对象中同名键保存该字段的中文解释。",
+      "value_type_zh": "字符串；当前常见值：规范化或经冻结源码复核的当前默认值；其证据状态和源位置必须同时查看。、、EK3_PRIMARY_DEFAULT",
+      "audit_effect_zh": "必须结合完整 JSON 路径、证据状态和原始目录值读取，不能与运行值混用。"
+    },
+    {
+      "field": "current_default_evidence_note_zh",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前默认值证据的中文说明和限制。",
+      "value_type_zh": "字符串；当前常见值：当前目录没有可用默认值证据。、保存参数目录解析出的字面值或未求值源码表达式；它不是运行值，宏表达式不能冒充已求值数值。、RTL_ALT_M_DEFAULT 在冻结源码中直接定义为 15 米。、FS_THR_VALUE_DEFAULT 在冻结源码中直接定义为 975 微秒 PWM。、AP_PARACHUTE_ALT_MIN_DEFAULT 在冻结源码中直接定义为 10 米。、默认宏为 FS_EKF_Action::LAND；该冻结枚举值对应 1，运行快照也为 1。",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_default_evidence_source",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前默认值证据所在的冻结源码或元数据位置。",
+      "value_type_zh": "字符串；当前常见值：、baseline/ardupilot/ArduPlane/Parameters.cpp:229、baseline/ardupilot/libraries/AP_NavEKF3/AP_NavEKF3.cpp:…",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_default_evidence_status",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前默认值的证据来源与可求值程度状态。",
+      "value_type_zh": "字符串；当前常见值：UNKNOWN、SOURCE_METADATA_LITERAL_OR_EXPRESSION、CURATED_FROZEN_SOURCE_RESOLUTION",
+      "audit_effect_zh": "区分未知、源码或元数据字面式和人工冻结源码求值；宏原文不能冒充已求值数值。"
+    },
+    {
+      "field": "current_default_raw_catalog",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "参数目录解析器保留的当前默认值原始文本。",
+      "value_type_zh": "字符串；当前常见值：参数目录解析器的原始默认字段；部分 ArduPilot 行带有已知的额外右括号。、、EK3_PRIMARY_DEFAULT)",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_identity_status",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "作者历史输入在当前冻结版本中的身份定位状态。",
+      "value_type_zh": "字符串；当前常见值：RENAMED_CURRENT_DEFINITION、EXACT_CURRENT_DEFINITION、CURRENT_DEFINITION_NOT_FOUND、SPECIAL_CONTROL_INPUT、COMMAND_XML_DEFINITION_FOUND、COMMAND_XML_DEFINITION_NOT_FOUND",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_increment",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数元数据中的建议步进值。",
+      "value_type_zh": "字符串；当前常见值：1、0.1、、0.5、0.01、0.05",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_input_identities",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "该性质涉及的去重当前输入身份记录数组。",
+      "value_type_zh": "数组；当前长度范围 49–242",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_match_confidence",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "历史输入名称映射到当前身份的匹配置信类别。",
+      "value_type_zh": "字符串；当前常见值：CURATED_MIGRATION_MODELLED、EXACT_NAME_DEFINITION、CURATED_RENAME_EXACT、UNRESOLVED、MODELLED_SPECIAL_INPUT、EXACT_NAME_XML_DEFINITION",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_mavlink_parameter_transport",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数通过 MAVLink 参数协议的观测证据状态。",
+      "value_type_zh": "字符串；当前常见值：protocol_capable_runtime_presence_not_observed、、observed_in_frozen_runtime_parameter_download",
+      "audit_effect_zh": "参数协议可传输或快照出现都不证明飞行中可写、即时生效或影响目标路径。"
+    },
+    {
+      "field": "current_maximum",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数元数据中的最大值原文。",
+      "value_type_zh": "字符串；当前常见值：、10、10.0",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_minimum",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数元数据中的最小值原文。",
+      "value_type_zh": "字符串；当前常见值：、0、0.0",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_name",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "作者历史输入对应的当前参数、命令或特殊输入名称。",
+      "value_type_zh": "字符串；当前常见值：BARO_GND_TEMP、BARO_ALT_OFFSET、BARO_PRIMARY",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_parameter_name",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码词项绑定对应的当前飞控配置参数名；空值表示不是参数绑定。",
+      "value_type_zh": "字符串；当前常见值：、EK3_SRC1_POSZ、EK3_SRC2_POSZ",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "current_reboot_required",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数元数据中的重启要求原文。",
+      "value_type_zh": "字符串；当前常见值：、True",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_runtime_capture",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "冻结运行参数值来源的捕获记录标识。",
+      "value_type_zh": "字符串；当前常见值：ardupilot-copter-m6、、PX4-M6-MC-SIHSIM-QUADX-I42-20260718",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_runtime_profile",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "冻结软件在环运行所用的机型或配置档案名称。",
+      "value_type_zh": "字符串；当前常见值：quad、",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_runtime_value",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "冻结软件在环参数下载中的实际值；在参数值契约对象中同名键保存该字段的中文解释。",
+      "value_type_zh": "字符串；当前常见值：冻结 SITL 参数下载中的实际值，只代表该运行配置。、0.0、0",
+      "audit_effect_zh": "只代表指定冻结运行快照，不能当作不可修改的默认值或所有运行通用值。"
+    },
+    {
+      "field": "current_source_location_confidence",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前源码或元数据位置定位的证据置信状态。",
+      "value_type_zh": "字符串；当前常见值：unresolved、exact_metadata_unique、、exact_metadata_multiple、exact_definition_unique、exact_definition_curated",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_source_locations",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数、命令或输入定义的一个或多个冻结源码位置。",
+      "value_type_zh": "字符串；当前常见值：、baseline/ardupilot/ArduPlane/Parameters.cpp:229、baseline/ardupilot/libraries/AP_NavEKF3/AP_NavEKF3.cpp:…",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_type",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数或输入的类型元数据。",
+      "value_type_zh": "字符串；当前常见值：not_exposed_by_param_metadata_parser、、Float、enum、float、bitmask",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "current_units",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前参数元数据中的单位原文。",
+      "value_type_zh": "字符串；当前常见值：degC、m、",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "data_type",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "当前源码绑定实体的程序数据类型。",
+      "value_type_zh": "字符串；当前常见值：AP_NavEKF_Source::SourceZ enum、uint8_t source-set index、SourceZ enum",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "dataset_id",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "本数据集的稳定机器标识符。",
+      "value_type_zh": "字符串；当前常见值：PGFUZZ_TABLE_XII_ARDUPILOT_PX4_51",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "dataset_role",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "性质在本数据集中的证据角色。",
+      "value_type_zh": "字符串；当前常见值：HISTORICAL_PROPERTY_SEED",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "dependency_claim_limit_zh",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "单条作者输入关联能够支持何种依赖结论的中文限制。",
+      "value_type_zh": "字符串；当前常见值：作者 policy 文件中的高召回候选关联；没有逐项公开真实数据依赖证明。、作者制品明确要求先设置的值；只对旧制品实验流程成立。",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "dependency_evidence",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入关联的证据来源类别。",
+      "value_type_zh": "字符串；当前常见值：PGFUZZ_ARTIFACT_ASSOCIATION",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "dependency_strength",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入关联的依赖证据强度状态。",
+      "value_type_zh": "字符串；当前常见值：CANDIDATE_ASSOCIATION、EXPLICIT_PRECONDITION",
+      "audit_effect_zh": "候选关联和明确前置设置都不是当前源码因果依赖证明。"
+    },
+    {
+      "field": "description_en",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "PGFuzz 论文表十二中的最短完整英文性质描述。",
+      "value_type_zh": "字符串；当前常见值：If the altitude source is the barometer, the vehicle mu…、If the throttle stick is in the middle (i.e., 1,500) th…、The pilot's roll, pitch and throttle inputs must be ign…",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "description_zh",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文英文性质描述的中文解释。",
+      "value_type_zh": "字符串；当前常见值：高度来源为气压计时采用气压计高度而非 GPS 高度。、定高模式中油门位于中值时保持高度。、自动模式忽略横滚、俯仰和油门输入，但允许偏航覆盖。",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "document_id",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "一条官方文档语境记录的唯一标识符。",
+      "value_type_zh": "字符串；当前常见值：ARD-DOC-ALTHOLD、ARD-DOC-AUTO、ARD-DOC-BRAKE",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "elapsed_time_value",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "相邻观测关系对应的实际经过时间值；未知时为空。",
+      "value_type_zh": "空值；当前常见值：null",
+      "audit_effect_zh": "空值表示没有可追溯经过时间，不能把样本索引解释为秒。"
+    },
+    {
+      "field": "end_event_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间窗口终点事件的中文说明。",
+      "value_type_zh": "字符串；当前常见值：相应 eventually 后件第一次成立的观测点。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "evaluation_plan_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "如何依据绑定、有效性和观测换算判定原子命题的中文方案。",
+      "value_type_zh": "字符串；当前常见值：按所列源码实体、真值条件、有效性条件和观测换算判定。、解码当前模式字段并与当前枚举比较；若还有其他词项，再按各自绑定条件合取。、保留原式和全部候选绑定；缺失定义或数值补证前不得给真值。、从当前运行实例读取参数值并按元数据单位解释；不要硬编码作者历史默认值或源码默认值。、明确选择内部目标量或实际测量量，保持前后样本定义一致，并按半径符号解析方向。、读取实际垂直速度，执行厘米/秒到米/秒及 NED 符号转换；参数使用本次运行实际值而非默认值。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "evidence_role",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档在本性质中的证据角色状态。",
+      "value_type_zh": "字符串；当前常见值：CONTEXT_ONLY_NOT_CURRENT_REQUIREMENT_CONFIRMATION",
+      "audit_effect_zh": "官方页面仅作语境时，禁止把它写成对论文公式的当前规范确认。"
+    },
+    {
+      "field": "explanation_zh",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文公式问题代码的中文解释。",
+      "value_type_zh": "字符串；当前常见值：高度来源、Baro/GPS 高度的坐标系和融合语义没有定义。、要求物理状态精确等于常量或参数，未给容差和采样语义。、t-1 仅是上一观测索引，论文没有给出固定采样周期。",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "explicit_eventually_windows",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "公式中显式有界最终发生时间窗口的记录数组。",
+      "value_type_zh": "数组；当前长度范围 0–3",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "expression",
+      "family_zh": "汇总与复用结构",
+      "meaning_zh": "原子命题表达式原文。",
+      "value_type_zh": "字符串；当前常见值：ALT_src = Baro、ALT_t = ALT_Baro、ALT_t != ALT_GPS",
+      "audit_effect_zh": "用于导航、统计或复用子结构；数量和结构完整不等于语义正确。"
+    },
+    {
+      "field": "formula_parameter",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "论文公式直接出现的配置参数词项。",
+      "value_type_zh": "字符串；当前常见值：CHUTE_ALT_MIN、FS_EKF_ACTION、LAND_SPEED_HIGH",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "formula_parameters",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "该性质全部公式直接参数的当前身份与数值证据数组。",
+      "value_type_zh": "数组；当前长度范围 0–2",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "freshness_requirement_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "相邻样本或观测必须满足的数据新鲜度条件。",
+      "value_type_zh": "字符串；当前常见值：两个样本必须属于同一运行、同一坐标系和同一有效性阶段；跨重置比较无结论。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "frozen_current_source",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "当前系统冻结源码身份、提交和范围对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "function_context",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定所在函数的完整上下文签名。",
+      "value_type_zh": "字符串；当前常见值：、AP_NavEKF_Source::getActiveSourceSet(uint8_t) const、AP_NavEKF_Source::getPosZSource(uint8_t) const",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "historical_current_relation",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "论文历史词项与当前源码实体之间的关系状态。",
+      "value_type_zh": "字符串；当前常见值：NOT_APPLICABLE、EXACT_SAME_NAME、RENAMED_AND_SCALED_0.01、REMOVED_NO_EQUIVALENT、NON_EQUIVALENT_CANDIDATE、SEMANTIC_SUCCESSOR_NOT_PROVEN_RENAME",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "identity_limit_zh",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "当前输入身份映射能够支持何种结论的中文限制。",
+      "value_type_zh": "字符串；当前常见值：参数身份和定义位置已找到；这不证明它与该性质存在真实数据依赖，也未执行写入变更测试。、当前只发现弃用槽位，没有可证明等价的现行参数。、只确认协议 XML 定义；未由此证明当前飞控构建接受、执行或影响该性质。、当前冻结参数目录中没有找到可信同名或重命名定义；没有使用字符串相似度猜测。、当前固定 MAVLink XML 未找到同名命令；没有据此猜测替代命令。、该参数在 PX4 1.16 发行说明中已删除，不能自动用其他估计器超时参数替代。",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "implementation_satisfaction",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "当前固件是否满足性质的评估状态；本数据集固定为未评估。",
+      "value_type_zh": "字符串；当前常见值：NOT_ASSESSED",
+      "audit_effect_zh": "始终保持 NOT_ASSESSED，源码定位和结构校验都不能提升它。"
+    },
+    {
+      "field": "inherits_from",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文该行继承公式结构的来源性质标识；无继承时为空。",
+      "value_type_zh": "空值、字符串；当前常见值：null、A.ALT_HOLD2、A.LOITER1、A.CIRCLE1、A.CIRCLE2、A.CIRCLE3",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "input_class",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入类别机器值。",
+      "value_type_zh": "字符串；当前常见值：InputP、InputC、InputE、PRECONDITION",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "input_class_zh",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者输入类别的中文解释和任务作用。",
+      "value_type_zh": "字符串；当前常见值：Parameter Input，配置参数输入；作者把该参数列为性质的候选变异输入。、Command Input，命令输入；包括 MAVLink 命令、模式切换或遥控通道输入。、前置条件；作者要求先设置该值，再执行目标测试输入。",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "interval_brackets_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "论文时间区间括号及监视器转换状态的中文说明。",
+      "value_type_zh": "字符串；当前常见值：论文印刷使用方括号；本数据集保留原样，尚未据此运行监视器语义转换。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "issues",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "该性质已登记论文公式问题的代码和解释数组。",
+      "value_type_zh": "数组；当前长度范围 0–4",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "lower_bound",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "一个显式时间窗口的下界记录对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "mavlink_message_fields",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "单条源码绑定可使用的 MAVLink 消息字段原文。",
+      "value_type_zh": "字符串；当前常见值：、PARAM_VALUE.param_id=EK3_SRC1_POSZ,param_value、PARAM_VALUE.param_id=EK3_SRC2_POSZ,param_value",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "mavlink_observability",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题或源码绑定的 MAVLink 外部可观测性状态。",
+      "value_type_zh": "字符串；当前常见值：INSTRUMENTATION_REQUIRED、DIRECT、CONDITIONAL、DERIVED、UNRESOLVED",
+      "audit_effect_zh": "这是观测分级，不是实现符合性；必须同时读取消息字段和限制。"
+    },
+    {
+      "field": "mavlink_observation_bindings",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题选定源码绑定与其消息字段的结构化对应数组。",
+      "value_type_zh": "数组；当前长度范围 0–6",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "mavlink_observation_fields",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题当前选定语义组使用的去重消息字段数组。",
+      "value_type_zh": "数组；当前长度范围 0–6",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "meaning_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "相邻观测关系的中文语义。",
+      "value_type_zh": "字符串；当前常见值：t-1 表示监视轨迹中同一信号的上一有效样本，不表示一秒以前。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "measurement_uncertainty_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间测量、采样和传输不确定度的中文说明。",
+      "value_type_zh": "字符串；当前常见值：UNKNOWN；论文未公开采样周期、传输延迟和测量不确定度。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "message_fields_raw",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "结构化观测对应的原始消息字段字符串。",
+      "value_type_zh": "字符串；当前常见值：GLOBAL_POSITION_INT.relative_alt,time_boot_ms、GLOBAL_POSITION_INT.relative_alt、GPS_RAW_INT.alt,time_usec,fix_type",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "observability_counts",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "按 MAVLink 可观测性状态统计的原子命题数量对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "observation_conversion_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "从消息字段换算为命题值的中文方法。",
+      "value_type_zh": "字符串；当前常见值：、按 SourceZ 枚举解码参数值。、relative_alt 从毫米除以 1000 得到米。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "observation_limit_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "外部观测不能证明或无法区分的中文限制。",
+      "value_type_zh": "字符串；当前常见值：标准 MAVLink 没有直接发布 activeHgtSource。、标准 MAVLink 不发布每个 EKF 核的活动源集。、",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "official_context_limit_zh",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档语境不能被当作当前性质确认的中文限制。",
+      "value_type_zh": "字符串；当前常见值：官方页面只用于解释模式、参数或消息的当前语境；没有逐句重新提取并确认本论文公式，因此本条仍是历史性质种子。",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "official_document_context",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "与该性质相关的官方文档语境记录数组。",
+      "value_type_zh": "数组；当前长度范围 1–2",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "operator",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间逻辑运算符机器符号。",
+      "value_type_zh": "字符串；当前常见值：F",
+      "audit_effect_zh": "必须按对应时间逻辑语义解释，不能把字符 F 当作普通函数或字段。"
+    },
+    {
+      "field": "operator_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间逻辑运算符的中文含义。",
+      "value_type_zh": "字符串；当前常见值：最终发生：要求后件在印刷区间内某次成立",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "page_count",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文 PDF 的总页数。",
+      "value_type_zh": "整数；当前常见值：18",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "page_one_based",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "证据在论文中的一基页码。",
+      "value_type_zh": "整数；当前常见值：18",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "paper",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "冻结论文文件身份对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "paper_evidence",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "性质对应的论文原文、公式、模板和问题对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "paper_formula_transcription",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "严格按论文表十二转录的公式原文。",
+      "value_type_zh": "字符串；当前常见值：G((ALT_src = Baro) -> ((ALT_t = ALT_Baro) & (ALT_t != A…、G(((Mode_t = ALT_HOLD) & (Throttle_t = 1500)) -> (ALT_t…、G((Mode_t = AUTO) -> ((RC_roll_t/RC_pitch_t/RC_throttle…",
+      "audit_effect_zh": "这是不可静默修复的论文证据基线；所有解释必须与其分栏。"
+    },
+    {
+      "field": "paper_order",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "性质在论文表十二中的顺序号。",
+      "value_type_zh": "整数；当前常见值：9、10、20",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "parameter_value_contract_zh",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "作者默认、当前默认、运行值及可变性的中文区分契约。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "path",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "冻结源码或论文文件相对于工作区的路径。",
+      "value_type_zh": "字符串；当前常见值：baseline/ardupilot、baseline/px4",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "policies",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "某去重输入身份关联到的性质标识集合。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1|A.ALT_HOLD2|A.AUTO1|A.BRAKE1|A.CHUTE1|A.CIR…、A.ALT_HOLD1|A.ALT_HOLD2|A.BRAKE1|A.CHUTE1|A.DRIFT1|A.FL…、A.ALT_HOLD1|A.ALT_HOLD2|A.AUTO1|A.BRAKE1|A.CHUTE1|A.CIR…",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "policy_id",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "作者依赖记录所属的性质标识符。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1、A.ALT_HOLD2、A.AUTO1",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "present_in_author_input_files",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "公式直接参数是否出现在作者公开输入文件中。",
+      "value_type_zh": "布尔值；当前常见值：False、True",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "previous_observation_contract",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "公式中上一有效观测关系的契约对象；未使用时为空。",
+      "value_type_zh": "空值、对象；当前常见值：null",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "property_binding_summary",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "整条性质的绑定、观测和数量汇总对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "property_id",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "性质的稳定机器标识符。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1、A.ALT_HOLD2、A.AUTO1",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "property_ids",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档语境记录覆盖的性质标识数组。",
+      "value_type_zh": "数组；当前长度范围 1–14",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "property_issue_codes",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "原子命题所属性质继承的论文问题代码数组。",
+      "value_type_zh": "数组；当前长度范围 0–4",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "provenance_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间数值或符号上界来源的中文溯源说明。",
+      "value_type_zh": "字符串；当前常见值：数值 2.5 和秒单位直接来自 PGFuzz 表十二该行公式与描述；不是当前固件参数。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "raw",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间边界操作数的论文原始文本。",
+      "value_type_zh": "字符串；当前常见值：0、k、2.5、COM_POS_FS_DELAY+k",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "raw_fragment",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "从论文公式识别出的完整时间窗口片段。",
+      "value_type_zh": "字符串；当前常见值：F_[0,k]、F_[0,2.5]、F_[0,COM_POS_FS_DELAY+k]",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "relation_type",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "相邻观测关系的机器类型。",
+      "value_type_zh": "字符串；当前常见值：PREVIOUS_OBSERVATION",
+      "audit_effect_zh": "PREVIOUS_OBSERVATION 只给顺序，不给固定经过时间。"
+    },
+    {
+      "field": "release",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "冻结软件发布版本标签。",
+      "value_type_zh": "字符串；当前常见值：v1.17.0",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "relevance_zh",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档与性质相关性的中文说明。",
+      "value_type_zh": "字符串；当前常见值：解释中位油门保持高度及气压计通常作为主要高度来源；不证明融合高度与气压/GPS 高度严格相等或不等。、解释自动执行任务的总体语义；不支持所有遥控轴逐采样严格不变的历史表达。、解释尽快停止、忽略输入和需要位置估计；没有给位置严格相等或每条性质专用 k。",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "requirement_origin",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "审核边界中性质要求来源的说明。",
+      "value_type_zh": "字符串；当前常见值：性质来自 PGFuzz 论文表十二，不由当前源码控制流反推。",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "role",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题在公式中的角色机器值。",
+      "value_type_zh": "字符串；当前常见值：antecedent、consequent、negated_consequent、consequent_disjunct、condition_from_description、antecedent_from_description",
+      "audit_effect_zh": "决定该命题是触发还是义务；角色来自描述时不能冒充印刷公式内容。"
+    },
+    {
+      "field": "row_property_id",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文表格行对应的性质标识符。",
+      "value_type_zh": "字符串；当前常见值：A.ALT_HOLD1、A.ALT_HOLD2、A.AUTO1",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "runtime_mutability",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "参数默认值是否可覆盖、运行中能否修改和何时生效的中文限制。",
+      "value_type_zh": "字符串；当前常见值：默认值不是固定运行值。参数协议可传输只说明接口能力；是否允许飞行中修改、是否需要重启、何时被模块重新读取及修改…",
+      "audit_effect_zh": "用于区分历史名称、当前定义、默认值和运行快照；任何身份匹配都不证明性质依赖或可变性。"
+    },
+    {
+      "field": "runtime_write_change_verification",
+      "family_zh": "当前输入身份、参数与命令",
+      "meaning_zh": "是否实际执行参数写入及生效验证的状态。",
+      "value_type_zh": "字符串；当前常见值：NOT_TESTED",
+      "audit_effect_zh": "NOT_TESTED 只表示未测试，不能解释为可修改或不可修改。"
+    },
+    {
+      "field": "schema_version",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "性质记录数据结构的版本号。",
+      "value_type_zh": "字符串；当前常见值：1.0",
+      "audit_effect_zh": "用于选择兼容的读取器和校验规则；版本相同也不证明内容语义正确。"
+    },
+    {
+      "field": "scope",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "冻结源码绑定覆盖的飞行器类型或组件范围数组。",
+      "value_type_zh": "数组；当前长度范围 1–1",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "selected_binding_count",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "整条性质当前选定源码绑定标识符的数量。",
+      "value_type_zh": "整数；当前常见值：13、8、15",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "selected_source_bindings",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "某原子命题当前用于判真的源码绑定记录数组。",
+      "value_type_zh": "数组；当前长度范围 1–6",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "selected_term_binding_ids",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "某原子命题当前选择的词项绑定标识符数组。",
+      "value_type_zh": "数组；当前长度范围 1–6",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "selection_note_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "单条源码绑定参与候选组选择的中文说明。",
+      "value_type_zh": "字符串；当前常见值：该行是其候选组的核心真值实体；只有该组被性质选择时才参与判真。、该行只说明形成、消费、关联或发送路径，不会单独改善主值的可观测性。、该行属于互斥替代解释；只有人工切换到本候选组后才参与判真。、配置源只是实际源的候选，不能替代 activeHgtSource。、只在公式把 Command_t 定义为“已接受命令”时选用。、只在公式把 Command_t 定义为“正在执行起飞”时选用。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "sha256",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "冻结文件内容的 SHA-256 散列值。",
+      "value_type_zh": "字符串；当前常见值：bb057be0069e9e764c8fb4bf963b09311cc914f3fb60da0b121afa9…",
+      "audit_effect_zh": "仅检测内容漂移，不证明文档权威性或公式正确。"
+    },
+    {
+      "field": "shared_artifact_directory_policy_count",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "共享同一作者制品目录的逻辑性质数量。",
+      "value_type_zh": "整数；当前常见值：1、3、2",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "source_binding",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "审核边界中当前源码绑定用途的说明。",
+      "value_type_zh": "字符串；当前常见值：当前源码只用于身份、真值条件、有效性和观测方案。",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "source_end_line",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码证据范围的结束行号；与起始行共同形成闭区间。",
+      "value_type_zh": "整数；当前常见值：1481、68、247",
+      "audit_effect_zh": "防止只引用范围首行而遗漏赋值、条件或函数上下文。"
+    },
+    {
+      "field": "source_line",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码证据范围的起始行号。",
+      "value_type_zh": "整数；当前常见值：1481、66、239",
+      "audit_effect_zh": "必须与 source_end_line、source_path 和冻结提交一起定位证据。"
+    },
+    {
+      "field": "source_path",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定证据相对于工作区的冻结文件路径。",
+      "value_type_zh": "字符串；当前常见值：baseline/ardupilot/libraries/AP_NavEKF3/AP_NavEKF3_core…、baseline/ardupilot/libraries/AP_NavEKF/AP_NavEKF_Source…、baseline/ardupilot/libraries/AP_NavEKF/AP_NavEKF_Source…",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "source_type",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间边界数值或符号的来源类型状态。",
+      "value_type_zh": "字符串；当前常见值：PAPER_LITERAL、SYMBOLIC_UNRESOLVED",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "specific_current_fields",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档语境记录特别涉及的当前参数、消息或状态字段数组。",
+      "value_type_zh": "数组；当前长度范围 0–6",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "start_event_zh",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间窗口起点事件的中文说明。",
+      "value_type_zh": "字符串；当前常见值：论文只给当前前件成立的采样点，没有更精细的触发关联事件。",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "static_analysis",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "审核边界中下一阶段静态分析是否已执行的说明。",
+      "value_type_zh": "字符串；当前常见值：尚未执行用户下一阶段要求的当前源码依赖静态分析。",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "status_legend_zh",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "当前记录实际使用状态值的中文图例对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "symbol",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "当前源码变量、字段、函数、表达式或参数的原样符号。",
+      "value_type_zh": "字符串；当前常见值：AP_NavEKF3_core::activeHgtSource、AP_NavEKF_Source::getActiveSourceSet(core_index)、AP_NavEKF_Source::getPosZSource(core_index)",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "system",
+      "family_zh": "数据集身份、冻结版本与审核边界",
+      "meaning_zh": "性质所属被测飞控系统。",
+      "value_type_zh": "字符串；当前常见值：ArduPilot、PX4",
+      "audit_effect_zh": "用于锁定证据版本和结论边界；结构或版本一致不表示固件满足性质。"
+    },
+    {
+      "field": "table",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "论文证据所在表格名称。",
+      "value_type_zh": "字符串；当前常见值：Table XII",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "template",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "PGFuzz 论文采用的 T1、T2 或 T3 公式模板标签。",
+      "value_type_zh": "字符串；当前常见值：T3、T1、T2、T1&T3",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "temporal_semantics",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "性质的时间窗口和相邻观测语义对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "term",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "论文公式中的状态、参数、命令或环境词项。",
+      "value_type_zh": "字符串；当前常见值：ALT_src、Baro、ALT_t",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "term_binding_ids",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题涉及的全部词项源码绑定标识符数组。",
+      "value_type_zh": "数组；当前长度范围 1–14",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "terms",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题拆分出的论文词项数组。",
+      "value_type_zh": "数组；当前长度范围 1–3",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "title_en",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档页面的英文标题原文。",
+      "value_type_zh": "字符串；当前常见值：Altitude Hold Mode — Copter documentation、Auto Mode — Copter documentation、Brake Mode — Copter documentation",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "title_zh",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档页面标题的中文说明。",
+      "value_type_zh": "字符串；当前常见值：ArduPilot Copter 定高模式、ArduPilot Copter 自动任务模式、ArduPilot Copter 制动模式",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "truth_condition_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "单条源码绑定怎样判定真假的中文条件。",
+      "value_type_zh": "字符串；当前常见值：读取当前 EKF3 核实际生效的高度源。、根据当前 EKF 核索引读取正在使用的源集编号。、从活动源集读取垂直位置配置，并在没有气压计实例时把 BARO 配置退化为 NONE。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "truth_meaning_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "原子命题表达式的中文真值含义。",
+      "value_type_zh": "字符串；当前常见值：论文抽象的高度来源被标记为气压计。、当前高度严格等于气压计高度。、当前高度不等于 GPS 高度。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "unique_input_identity_count",
+      "family_zh": "PGFuzz 作者依赖输入制品",
+      "meaning_zh": "某性质作者输入关联去重后的当前输入身份数量。",
+      "value_type_zh": "整数；当前常见值：228、229、164",
+      "audit_effect_zh": "用于完整保留作者高召回候选输入；重复、同名或作者列入都不证明因果依赖。"
+    },
+    {
+      "field": "unit",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间边界的单位说明。",
+      "value_type_zh": "字符串；当前常见值：秒（按论文的经过时间轴解释时）、秒（仅在论文实验确实使用秒时；当前具体值不可得）、s",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "unit_coordinate",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定值的单位、坐标系或参考面说明。",
+      "value_type_zh": "字符串；当前常见值：、0..2 selecting EK3 source set 1..3、0:none, 1:barometer, 2:rangefinder, 3:GPS, 4:beacon, 6:…",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "upper_bound",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "一个显式时间窗口的上界记录对象。",
+      "value_type_zh": "对象；子字段见本字典相应条目",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "url",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档页面的网络地址。",
+      "value_type_zh": "字符串；当前常见值：https://ardupilot.org/copter/docs/altholdmode.html、https://ardupilot.org/copter/docs/auto-mode.html、https://ardupilot.org/copter/docs/brake-mode.html",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    },
+    {
+      "field": "uses_previous_observation",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "公式是否使用上一有效观测记号。",
+      "value_type_zh": "布尔值；当前常见值：False、True",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "validity_freshness_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定值有效、同源且足够新所需的中文条件。",
+      "value_type_zh": "字符串；当前常见值：必须知道当前活动 EKF 核；参数配置源不等于运行时实际源。、必须与同一 core_index 的 getPosZSource() 和 activeHgtSource 配对。、返回的是活动源集的配置选择；selectHeightForFusion() 仍可能按新鲜度和回退规则形成实际 …",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "value",
+      "family_zh": "时间窗口与相邻观测",
+      "meaning_zh": "时间边界经证据确认的具体数值；未知时为空。",
+      "value_type_zh": "整数、空值、数值；当前常见值：0、null、2.5",
+      "audit_effect_zh": "用于保持时间来源、时钟和相邻样本边界；缺值时不得人工补秒数。"
+    },
+    {
+      "field": "version_note_zh",
+      "family_zh": "原子命题、源码绑定与外部观测",
+      "meaning_zh": "源码绑定相对历史论文或版本迁移的中文说明。",
+      "value_type_zh": "字符串；当前常见值：、历史 LAND_SPEED_HIGH 厘米/秒迁移到 LAND_SPD_HIGH_MS 米/秒。、历史 LAND_SPEED 厘米/秒迁移到 LAND_SPD_MS 米/秒。、历史 RTL_ALT 厘米值迁移到 RTL_ALT_M 米值。、历史 PILOT_SPEED_UP 迁移到 PILOT_SPD_UP。、旧 MIS_LTRMIN_ALT 当前不存在；源码语义相近，但没有本地历史证明一对一迁移。",
+      "audit_effect_zh": "用于复核命题真值实体和观测路径；源码绑定不能反向生成要求或符合性结论。"
+    },
+    {
+      "field": "version_scope",
+      "family_zh": "论文公式与官方文档证据",
+      "meaning_zh": "官方文档语境记录适用的版本范围。",
+      "value_type_zh": "字符串；当前常见值：current Copter documentation observed 2026-07-18、PX4 v1.17",
+      "audit_effect_zh": "用于追溯论文或官方语境；官方语境不能自动确认论文公式为当前规范。"
+    }
+  ]
+}

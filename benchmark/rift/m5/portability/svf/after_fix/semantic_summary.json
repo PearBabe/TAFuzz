@@ -1,0 +1,181 @@
+{
+  "schema_version": "rift.portability.svf.semantic-fix-summary.v1",
+  "run_label": "SEMANTIC_FIX_VALIDATION",
+  "status": "SEMANTIC_FIX_VALIDATION_PARTIAL_FULL_BUDGET_MEMORY_FAIL",
+  "analyzer": {
+    "binary_sha256": "bc926729d86cb35fa3c9ab8ace76a3aaaf72e66aefacb7a4faff3de2dcae1b70",
+    "production_core_sha256": "a450e52bb4cdcadcd4c01bb4539f518658a98a12df134ad5b51a9a245841089a",
+    "schema_bundle_sha256": "096368c0b0b795dbae6c8000dd0ce60f67c2f3e6021a51c122c3c5f0700a4167",
+    "build_manifest_sha256": "7bb1e271c223af5aae5f90503126f58c858d82369334fc6bcdfceed5b30b2da8",
+    "final_exact_binary_portability_seal": false,
+    "later_live_binary_sha256": "d32c0d591c0cd3f70e9dcea92375981d7a31d27adf0e839446b2222a809a37ef"
+  },
+  "single_tu": {
+    "status": "CONSERVATIVE_INCOMPLETE",
+    "empty_caller_function_id": 0,
+    "artifact_totals": {
+      "translation_units": 1,
+      "input_files": 648,
+      "entities": 21682,
+      "function_summaries": 5341,
+      "callsites": 7430,
+      "semantic_nodes": 16277,
+      "semantic_relations": 2815,
+      "unsupported_constructs": 14804,
+      "contextual_graph_nodes": 17867,
+      "contextual_graph_edges": 18469,
+      "influence_cones": 2,
+      "predicate_occurrences": 6,
+      "predicate_occurrences_exact": 4,
+      "predicate_occurrences_unknown": 2,
+      "frontier_candidates": 4,
+      "frontier_actionable": 2,
+      "frontier_pending": 2,
+      "recipes": 2,
+      "recipes_unknown": 2,
+      "replay_obligations": 2,
+      "replay_obligations_unknown": 2
+    },
+    "solver": {
+      "queries": 0,
+      "timeouts": 0,
+      "unsupported": 2
+    },
+    "precision_gaps": [
+      "legacy source-location binding maps several selectors to the enclosing main node",
+      "arg_value predicate occurrence is UNKNOWN: M4 node ambiguity and pointer type mismatch",
+      "argv predicate occurrence is UNKNOWN: pointer type mismatch",
+      "both recipes are UNKNOWN_DIRECTION with no compatible exact occurrence value path"
+    ]
+  },
+  "synthetic_nonfunction_owner_analysis": {
+    "definition": "entity qualified_signature starts with translation-unit-nonfunction:; related relations are the union of relations whose callsite belongs to such an owner or whose source, target, or condition node is owner-owned",
+    "owner_entities": 5137,
+    "owner_function_summaries": 5137,
+    "owner_callsites": 6619,
+    "owner_owned_nodes": 12757,
+    "owner_related_relations_union": 797,
+    "owner_related_relation_kinds": {
+      "data": 797
+    },
+    "owner_related_relations_callsite_linked": 0,
+    "owner_related_relations_endpoint_linked": 797,
+    "distinct_owner_source_files": 78,
+    "distinct_callsite_source_files": 78,
+    "distinct_owned_node_source_files": 82,
+    "distinct_relation_evidence_source_files": 49,
+    "owners_with_one_callsite": 4348,
+    "owners_with_one_node": 2034,
+    "owner_callsites_without_candidate_callee": 1371,
+    "matches_before_fix_empty_caller_count": true,
+    "top_sources": [
+      {
+        "file": "riftpath://v1/source/svf-llvm/tools/AE/ae.cpp",
+        "owners": 556,
+        "callsites": 900,
+        "nodes": 2660,
+        "relations": 106
+      },
+      {
+        "file": "riftpath://v1/source/svf/include/SVFIR/SVFVariables.h",
+        "owners": 240,
+        "callsites": 279,
+        "nodes": 386
+      },
+      {
+        "file": "riftpath://v1/source/svf/include/MemoryModel/ConditionalPT.h",
+        "owners": 205,
+        "callsites": 231,
+        "nodes": 314,
+        "relations": 53
+      },
+      {
+        "file": "riftpath://v1/source/svf/include/MemoryModel/MutablePointsToDS.h",
+        "owners": 205,
+        "callsites": 246,
+        "nodes": 507,
+        "relations": 33
+      },
+      {
+        "file": "riftpath://v1/source/svf/include/Graphs/VFG.h",
+        "owners": 190,
+        "callsites": 262,
+        "nodes": 519,
+        "relations": 40
+      }
+    ],
+    "projection_111x_if_ae_density_repeated": {
+      "owner_entities": 570207,
+      "owner_callsites": 734709,
+      "owner_nodes": 1416027,
+      "relations": 88467,
+      "semantic_index_json_bytes": 7549139304,
+      "interpretation": "diagnostic projection only; actual per-TU density is unknown"
+    },
+    "diagnosis": "Evidence is consistent with TU-qualified synthetic-owner identities preventing cross-TU dedup of widely included header facts and materially contributing to the 12 GiB growth; the failed full run cannot prove exclusivity."
+  },
+  "full_111_tu": {
+    "exit_code": 1,
+    "timeout_reached": false,
+    "address_space_limit_bytes": 12884901888,
+    "wall_seconds": 559.87,
+    "user_seconds": 418.54,
+    "system_seconds": 137.44,
+    "peak_rss_kib": 11747472,
+    "failure": "std::bad_alloc",
+    "empty_caller_diagnostics_observed": 0,
+    "structural_empty_caller_count": null,
+    "output_artifact_created": false
+  },
+  "bulk_artifacts": {
+    "base_path": "/tmp/rift-svf-portability-after-fix-recipes-bc926729",
+    "semantic_index.json": {
+      "size": 68010264,
+      "sha256": "c93f98a9ba365644b5ad0b56c1a443e81a7212615e3ffd21dfbe1921c18e6a36"
+    },
+    "contextual_influence_graph.json": {
+      "size": 79103472,
+      "sha256": "fabc54400f2b68d2bf6157adf99d8b8db1d2afed42f22a4c9c31536c15124a9b"
+    },
+    "ap_influence_cones.json": {
+      "size": 15282655,
+      "sha256": "70074cfb6bbd082e0aced180cdf6859f4167d39921ef36df7f807e25f5c9e7c8"
+    },
+    "frontier_candidates.json": {
+      "size": 23600911,
+      "sha256": "c0192430153b0295b8fd1082af2ed26e4f4fc91a405f3ff3e6d510b63e4f3f5d"
+    },
+    "fuzzable_frontier.json": {
+      "size": 4733,
+      "sha256": "5139b957aad02f182204a5c35630cf9d8cf53c2f886743ea94acde491f3b77f8"
+    },
+    "mutation_recipes.json": {
+      "size": 16330702,
+      "sha256": "4b855966d1b83f4e082a1ffec6952a4149b53f5ac550396cc9b1056ef3806c79"
+    },
+    "analysis_certificate.json": {
+      "size": 15594229,
+      "sha256": "0bb2bc57dd751c82050c88cfa5c52e9f5a2fc240b6f7a3cf28afbf952d405bf6"
+    },
+    "m5_analysis_certificate.json": {
+      "size": 12640,
+      "sha256": "a1793cfade7c9aceff8ecaa804166df3dafda99882223dbd643aaa1732e896ae"
+    },
+    "predicate_occurrence_bindings.json": {
+      "size": 14086,
+      "sha256": "711672cc15d13278e8efd3fdbf5bb7d26ace0e07f58d40f1cb5fe7c4c45e1c0e"
+    },
+    "recipe_replay_obligations.json": {
+      "size": 1988,
+      "sha256": "9e4e30b768468d1b4636d48699c163ca51fb5c2af3accf64910f69221ed00ad6"
+    }
+  },
+  "claim_boundary": {
+    "single_tu_semantic_owner_fix_validated": true,
+    "full_portability_gate_passed": false,
+    "gold_accuracy_claim": false,
+    "mutation_direction_claim": false,
+    "runtime_recipe_claim": false,
+    "fuzz_gain_claim": false
+  }
+}

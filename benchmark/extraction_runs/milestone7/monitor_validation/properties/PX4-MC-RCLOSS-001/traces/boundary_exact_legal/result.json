@@ -1,0 +1,85 @@
+{
+  "boundary_region": "exact",
+  "case_kind": "boundary_exact_legal",
+  "classification_reason": "TAMonitor produced a verdict different from the expected infinite-extension prefix verdict.",
+  "clock": {
+    "domain": "AUTOPILOT_MONOTONIC_BOOT",
+    "epoch": "synthetic_zero_integer_milliseconds",
+    "horizon_ticks": 2500,
+    "response_delta_ticks": 500,
+    "threshold_ticks": 500,
+    "tick_unit": "ms",
+    "trigger_time_ticks": 1000
+  },
+  "comparison_kind": "FAILED_VERDICT_MISMATCH",
+  "comparison_status": "FAILED_VERDICT_MISMATCH",
+  "expected": {
+    "no_epsilon_policy": "No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+    "reference_oracle_complete_word_verdict": "POSITIVE",
+    "reference_oracle_reason": "Closed eventual lower bound and open pre-threshold prohibition make the exact threshold legal.",
+    "tamonitor_infinite_prefix_verdict": "INCONCLUSIVE",
+    "tamonitor_prefix_reason": "An outer unbounded G property cannot be proved positive from this finite prefix; a missing response can still occur in an extension."
+  },
+  "monitor_trace": {
+    "bytes": 156,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/monitor_trace.csv",
+    "sha256": "daba4385559bf41a7753180e1f31b4431ab3553fe713f787454500d93816f4b6"
+  },
+  "monitor_trace_time_encoding": {
+    "conversion": "identity; each monitor time equals the corresponding JSON event absolute time",
+    "kind": "ABSOLUTE_GLOBAL_CLOCK_TICKS",
+    "source_trace_kind": "ABSOLUTE_SYNTHETIC_CLOCK_TICKS",
+    "unit": "ms"
+  },
+  "oracle": {
+    "completed_finite_word": true,
+    "identity": "TAFuzz deterministic pointwise finite-word reference oracle/1.0",
+    "response_count": 1,
+    "trigger_count": 1,
+    "verdict": "POSITIVE"
+  },
+  "tamonitor": {
+    "command_id": "PX4-MC-RCLOSS-001:trace:boundary_exact_legal",
+    "error_excerpt": null,
+    "exit_code": 0,
+    "metadata": {
+      "bytes": 1363,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor/metadata.json",
+      "sha256": "c2af6a04742f2d4f18d523c8317b3679c121c8fd72777da47727dd39375c0c09"
+    },
+    "runtime_classification_reason": "TAMonitor completed and emitted metadata.",
+    "status": "EXECUTED",
+    "stderr": {
+      "bytes": 0,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor.stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 975,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor.stdout.txt",
+      "sha256": "73a40164c7d4766a826052fc0fe90c3de4eb0b9cd7dac79d08b87abc0ea0b840"
+    },
+    "steps": {
+      "bytes": 398,
+      "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/tamonitor/steps.csv",
+      "sha256": "f8e207e871e9f0caed8511000487f20de196a963532dec563c55540653ecdcf8"
+    },
+    "terminal_step": {
+      "absolute_time_ticks": 2500,
+      "monitor_advanced": false,
+      "negative_states": 3,
+      "positive_states": 0,
+      "step": 5,
+      "verdict": "NEGATIVE"
+    },
+    "termination_signal": null,
+    "timed_out": false,
+    "verdict": "NEGATIVE"
+  },
+  "trace": {
+    "bytes": 2707,
+    "path": "benchmark/extraction_runs/milestone7/monitor_validation/properties/PX4-MC-RCLOSS-001/traces/boundary_exact_legal/trace.json",
+    "sha256": "5ff601a8110dee0f06bc7c8db65b0b305f39a681abc765464cc46d833f35560c"
+  },
+  "trace_id": "PX4-MC-RCLOSS-001--boundary_exact_legal"
+}

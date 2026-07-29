@@ -1,0 +1,81 @@
+{
+  "clock_domain": "AUTOPILOT_MONOTONIC_BOOT",
+  "dropped_event_count": 0,
+  "epoch": "synthetic_zero_integer_milliseconds",
+  "events": [
+    {
+      "correlation_id": "ARD-SHARED-BATT-001--vacuous_trigger_control",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-SHARED-BATT-001",
+      "seq": 0,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 0,
+      "values": {
+        "battery_failsafe_event": false,
+        "low_voltage_start": false,
+        "voltage_threshold_enabled": false
+      }
+    },
+    {
+      "correlation_id": "ARD-SHARED-BATT-001--vacuous_trigger_control",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-SHARED-BATT-001",
+      "seq": 1,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 1000,
+      "values": {
+        "battery_failsafe_event": false,
+        "low_voltage_start": false,
+        "voltage_threshold_enabled": true
+      }
+    },
+    {
+      "correlation_id": "ARD-SHARED-BATT-001--vacuous_trigger_control",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-SHARED-BATT-001",
+      "seq": 2,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 10999,
+      "values": {
+        "battery_failsafe_event": true,
+        "low_voltage_start": false,
+        "voltage_threshold_enabled": true
+      }
+    },
+    {
+      "correlation_id": "ARD-SHARED-BATT-001--vacuous_trigger_control",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-SHARED-BATT-001",
+      "seq": 3,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 11000,
+      "values": {
+        "battery_failsafe_event": false,
+        "low_voltage_start": false,
+        "voltage_threshold_enabled": true
+      }
+    },
+    {
+      "correlation_id": "ARD-SHARED-BATT-001--vacuous_trigger_control",
+      "event_id": "synthetic_ap_valuation",
+      "fresh": true,
+      "scope_id": "ARD-SHARED-BATT-001",
+      "seq": 4,
+      "source": "SYNTHETIC_MONITOR_VALIDATION_NOT_FIRMWARE_TRACE",
+      "time": 12000,
+      "values": {
+        "battery_failsafe_event": false,
+        "low_voltage_start": false,
+        "voltage_threshold_enabled": true
+      }
+    }
+  ],
+  "notes": "Control trace disables the trigger while retaining the early response; it is paired with the non-vacuous counterexample. No epsilon or tolerance is introduced. Source seconds are rescaled exactly to integer milliseconds. T-1 and T+1 are distinct synthetic clock ticks used only to exercise open/closed endpoints; they do not move a property boundary.",
+  "property_id": "ARD-SHARED-BATT-001",
+  "schema_version": "1.0",
+  "trace_id": "ARD-SHARED-BATT-001--vacuous_trigger_control"
+}

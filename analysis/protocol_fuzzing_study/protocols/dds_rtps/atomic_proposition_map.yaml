@@ -1,0 +1,696 @@
+{
+  "protocol": "DDS/RTPS",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "reliable_write_resource_wait_started_default": {
+      "definition": "A RELIABLE DataWriter with max_blocking_time=100 ms reaches DataWriterHistory::prepare_change and is about to wait_for_acknowledgement because resource/history space is unavailable.",
+      "properties": [
+        "DDS-WRITE-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "DDS-WRITE-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A RELIABLE DataWriter with max_blocking_time=100 ms reaches DataWriterHistory::prepare_change and is about to wait_for_acknowledgement because resource/history space is unavailable.",
+          "instrumentation_timing": "Emit trigger immediately before wait_for_acknowledgement at lines 230-234 after confirming the 100 ms QoS/deadline snapshot. Emit the correlated API return at DataWriterImpl; serialization/precondition time before the resource wait is not mislabeled as waiting time.",
+          "atomic_propositions": [
+            "reliable_write_resource_wait_started_default"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/fastdds/publisher/DataWriterHistory.cpp",
+          "symbol": "DataWriterHistory::prepare_change",
+          "lines": "148-234",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.cpp#L148-L234",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "DDS-WRITE-01",
+          "mapping": "auxiliary:1",
+          "role": "absolute max-blocking deadline and API return",
+          "event_predicate": "A RELIABLE DataWriter with max_blocking_time=100 ms reaches DataWriterHistory::prepare_change and is about to wait_for_acknowledgement because resource/history space is unavailable.",
+          "instrumentation_timing": "Emit trigger immediately before wait_for_acknowledgement at lines 230-234 after confirming the 100 ms QoS/deadline snapshot. Emit the correlated API return at DataWriterImpl; serialization/precondition time before the resource wait is not mislabeled as waiting time.",
+          "atomic_propositions": [
+            "reliable_write_resource_wait_started_default",
+            "write_returned_from_blocking"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/fastdds/publisher/DataWriterImpl.cpp",
+          "symbol": "DataWriterImpl::perform_create_new_change",
+          "lines": "1003-1107",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterImpl.cpp#L1003-L1107",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "write_returned_from_blocking": {
+      "definition": "The correlated write returns OK, TIMEOUT, or the explicitly permitted OUT_OF_RESOURCES result.",
+      "properties": [
+        "DDS-WRITE-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "DDS-WRITE-01",
+          "mapping": "auxiliary:1",
+          "role": "absolute max-blocking deadline and API return",
+          "event_predicate": "The correlated write returns OK, TIMEOUT, or the explicitly permitted OUT_OF_RESOURCES result.",
+          "instrumentation_timing": "Emit trigger immediately before wait_for_acknowledgement at lines 230-234 after confirming the 100 ms QoS/deadline snapshot. Emit the correlated API return at DataWriterImpl; serialization/precondition time before the resource wait is not mislabeled as waiting time.",
+          "atomic_propositions": [
+            "reliable_write_resource_wait_started_default",
+            "write_returned_from_blocking"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/fastdds/publisher/DataWriterImpl.cpp",
+          "symbol": "DataWriterImpl::perform_create_new_change",
+          "lines": "1003-1107",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterImpl.cpp#L1003-L1107",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "DDS-WRITE-01",
+          "mapping": "auxiliary:2",
+          "role": "templated history caller return",
+          "event_predicate": "The correlated write returns OK, TIMEOUT, or the explicitly permitted OUT_OF_RESOURCES result.",
+          "instrumentation_timing": "Emit trigger immediately before wait_for_acknowledgement at lines 230-234 after confirming the 100 ms QoS/deadline snapshot. Emit the correlated API return at DataWriterImpl; serialization/precondition time before the resource wait is not mislabeled as waiting time.",
+          "atomic_propositions": [
+            "write_returned_from_blocking"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/fastdds/publisher/DataWriterHistory.hpp",
+          "symbol": "add_pub_change_with_commit_hook",
+          "lines": "142-170",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/fastdds/publisher/DataWriterHistory.hpp#L142-L170",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "periodic_spdp_generation_started_30000": {
+      "definition": "A steady-state non-directed SPDP announcement is sent and the next periodic generation is armed with resendPeriod=30 s.",
+      "properties": [
+        "RTPS-DISC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A steady-state non-directed SPDP announcement is sent and the next periodic generation is armed with resendPeriod=30 s.",
+          "instrumentation_timing": "After startup announcements are exhausted and resendPeriod=30 s is verified, each observed announceParticipantState(false) closes the old generation and arms a new one. Stamp an observed next send with the stored logical deadline; retain actual callback time separately.",
+          "atomic_propositions": [
+            "periodic_spdp_generation_started_30000"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::set_next_announcement_interval",
+          "lines": "1534-1546",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L1534-L1546",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "next_periodic_spdp_announcement_sent": {
+      "definition": "The next steady-state non-directed periodic SPDP announcement is actually handed to announceParticipantState(false); logical deadline and callback/send time are retained.",
+      "properties": [
+        "RTPS-DISC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-01",
+          "mapping": "auxiliary:1",
+          "role": "periodic SPDP announcement action",
+          "event_predicate": "The next steady-state non-directed periodic SPDP announcement is actually handed to announceParticipantState(false); logical deadline and callback/send time are retained.",
+          "instrumentation_timing": "After startup announcements are exhausted and resendPeriod=30 s is verified, each observed announceParticipantState(false) closes the old generation and arms a new one. Stamp an observed next send with the stored logical deadline; retain actual callback time separately.",
+          "atomic_propositions": [
+            "next_periodic_spdp_announcement_sent"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::announceParticipantState",
+          "lines": "576-692",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L576-L692",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "spdp_period_generation_superseded": {
+      "definition": "A configuration/reset operation replaces the scheduled periodic generation before its deadline.",
+      "properties": [
+        "RTPS-DISC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-01",
+          "mapping": "auxiliary:2",
+          "role": "periodic announcement generation reset",
+          "event_predicate": "A configuration/reset operation replaces the scheduled periodic generation before its deadline.",
+          "instrumentation_timing": "After startup announcements are exhausted and resendPeriod=30 s is verified, each observed announceParticipantState(false) closes the old generation and arms a new one. Stamp an observed next send with the stored logical deadline; retain actual callback time separately.",
+          "atomic_propositions": [
+            "spdp_period_generation_superseded"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::resetParticipantAnnouncement",
+          "lines": "702-708",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L702-L708",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "local_participant_stopped": {
+      "definition": "The local DomainParticipant is disabled/deleted before the next period.",
+      "properties": [
+        "RTPS-DISC-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-01",
+          "mapping": "auxiliary:3",
+          "role": "participant stop and timer cancellation",
+          "event_predicate": "The local DomainParticipant is disabled/deleted before the next period.",
+          "instrumentation_timing": "After startup announcements are exhausted and resendPeriod=30 s is verified, each observed announceParticipantState(false) closes the old generation and arms a new one. Stamp an observed next send with the stored logical deadline; retain actual callback time separately.",
+          "atomic_propositions": [
+            "local_participant_stopped"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/builtin/discovery/participant/PDP.cpp",
+          "symbol": "PDP::stopParticipantAnnouncement / PDP::disable",
+          "lines": "558-574;694-700",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/builtin/discovery/participant/PDP.cpp#L558-L574",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "remote_participant_default_lease_started": {
+      "definition": "A valid SPDP sample without PID_PARTICIPANT_LEASE_DURATION creates/renews an independent, non-privileged-dependent remote participant using 100 s.",
+      "properties": [
+        "RTPS-DISC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-02",
+          "mapping": "auxiliary:1",
+          "role": "default lease creation and SPDP refresh",
+          "event_predicate": "A valid SPDP sample without PID_PARTICIPANT_LEASE_DURATION creates/renews an independent, non-privileged-dependent remote participant using 100 s.",
+          "instrumentation_timing": "Emit start only after the omitted PID is defaulted to 100 s and privileged/dependency postponement is excluded. A refresh/cancel closes this word. Emit lease-removal cause immediately before ddsi_delete_proxy_participant_by_guid; do not require a callback at exactly 100 s.",
+          "atomic_propositions": [
+            "remote_participant_default_lease_started",
+            "remote_spdp_refresh_supersedes_lease"
+          ],
+          "repository": "eclipse-cyclonedds/cyclonedds",
+          "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+          "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+          "symbol": "handle_spdp_alive",
+          "lines": "723-981",
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L723-L981",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTPS-DISC-02",
+          "mapping": "auxiliary:3",
+          "role": "privileged participant lease exception",
+          "event_predicate": "A valid SPDP sample without PID_PARTICIPANT_LEASE_DURATION creates/renews an independent, non-privileged-dependent remote participant using 100 s.",
+          "instrumentation_timing": "Emit start only after the omitted PID is defaulted to 100 s and privileged/dependency postponement is excluded. A refresh/cancel closes this word. Emit lease-removal cause immediately before ddsi_delete_proxy_participant_by_guid; do not require a callback at exactly 100 s.",
+          "atomic_propositions": [
+            "remote_participant_default_lease_started"
+          ],
+          "repository": "eclipse-cyclonedds/cyclonedds",
+          "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+          "path": "src/core/ddsi/src/q_lease.c",
+          "symbol": "check_and_handle_lease_expiration",
+          "lines": "247-281",
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L247-L281",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "remote_participant_removed_due_to_lease": {
+      "definition": "Lease expiration, rather than explicit disposal or another cause, invokes deletion/reconfiguration for that proxy participant.",
+      "properties": [
+        "RTPS-DISC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Lease expiration, rather than explicit disposal or another cause, invokes deletion/reconfiguration for that proxy participant.",
+          "instrumentation_timing": "Emit start only after the omitted PID is defaulted to 100 s and privileged/dependency postponement is excluded. A refresh/cancel closes this word. Emit lease-removal cause immediately before ddsi_delete_proxy_participant_by_guid; do not require a callback at exactly 100 s.",
+          "atomic_propositions": [
+            "remote_participant_removed_due_to_lease"
+          ],
+          "repository": "eclipse-cyclonedds/cyclonedds",
+          "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+          "path": "src/core/ddsi/src/q_lease.c",
+          "symbol": "check_and_handle_lease_expiration",
+          "lines": "218-292",
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_lease.c#L218-L292",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "remote_spdp_refresh_supersedes_lease": {
+      "definition": "A newer valid SPDP sample closes this lease generation and starts a separately projected 100 s generation.",
+      "properties": [
+        "RTPS-DISC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-02",
+          "mapping": "auxiliary:1",
+          "role": "default lease creation and SPDP refresh",
+          "event_predicate": "A newer valid SPDP sample closes this lease generation and starts a separately projected 100 s generation.",
+          "instrumentation_timing": "Emit start only after the omitted PID is defaulted to 100 s and privileged/dependency postponement is excluded. A refresh/cancel closes this word. Emit lease-removal cause immediately before ddsi_delete_proxy_participant_by_guid; do not require a callback at exactly 100 s.",
+          "atomic_propositions": [
+            "remote_participant_default_lease_started",
+            "remote_spdp_refresh_supersedes_lease"
+          ],
+          "repository": "eclipse-cyclonedds/cyclonedds",
+          "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+          "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+          "symbol": "handle_spdp_alive",
+          "lines": "723-981",
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L723-L981",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "remote_lease_generation_cancelled": {
+      "definition": "A correlated SPDP dispose/unregister reaches handle_spdp_dead and deletes the proxy participant before lease expiry; domain shutdown is recorded only through its corresponding proxy-deletion lifecycle.",
+      "properties": [
+        "RTPS-DISC-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-DISC-02",
+          "mapping": "auxiliary:2",
+          "role": "explicit SPDP dispose cancellation",
+          "event_predicate": "A correlated SPDP dispose/unregister reaches handle_spdp_dead and deletes the proxy participant before lease expiry; domain shutdown is recorded only through its corresponding proxy-deletion lifecycle.",
+          "instrumentation_timing": "Emit start only after the omitted PID is defaulted to 100 s and privileged/dependency postponement is excluded. A refresh/cancel closes this word. Emit lease-removal cause immediately before ddsi_delete_proxy_participant_by_guid; do not require a callback at exactly 100 s.",
+          "atomic_propositions": [
+            "remote_lease_generation_cancelled"
+          ],
+          "repository": "eclipse-cyclonedds/cyclonedds",
+          "commit": "2cdd114cbd18340c606573b4cc8dc20cc161ec5a",
+          "path": "src/core/ddsi/src/q_ddsi_discovery.c",
+          "symbol": "handle_spdp_dead",
+          "lines": "638-671",
+          "url": "https://github.com/eclipse-cyclonedds/cyclonedds/blob/2cdd114cbd18340c606573b4cc8dc20cc161ec5a/src/core/ddsi/src/q_ddsi_discovery.c#L638-L671",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "writer_nack_timer_generation_started_200": {
+      "definition": "A fresh ACKNACK makes the writer-wide pending-reader set non-empty and restart_timer arms nackResponseDelay=200 ms.",
+      "properties": [
+        "RTPS-REL-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A fresh ACKNACK makes the writer-wide pending-reader set non-empty and restart_timer arms nackResponseDelay=200 ms.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "writer_nack_timer_generation_started_200",
+            "nack_response_generation_superseded",
+            "rtps_pending_reader_set_empty"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::process_acknack",
+          "lines": "1921-1960",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1921-L1960",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "nack_response_action_observed": {
+      "definition": "The corresponding TimedEvent callback is observed and perform_nack_response begins; the event is stamped with the stored logical deadline and also records actual callback time.",
+      "properties": [
+        "RTPS-REL-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "auxiliary:1",
+          "role": "writer nack-response callback action",
+          "event_predicate": "The corresponding TimedEvent callback is observed and perform_nack_response begins; the event is stamped with the stored logical deadline and also records actual callback time.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "nack_response_action_observed"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::perform_nack_response",
+          "lines": "1880-1900",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1880-L1900",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "auxiliary:2",
+          "role": "TimedEvent callback binding",
+          "event_predicate": "The corresponding TimedEvent callback is observed and perform_nack_response begins; the event is stamped with the stored logical deadline and also records actual callback time.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "nack_response_action_observed"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::init",
+          "lines": "225-232",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L225-L232",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "nack_response_generation_superseded": {
+      "definition": "A newer qualifying ACKNACK restarts the same writer-wide timer; it closes this generation and starts a separately projected generation.",
+      "properties": [
+        "RTPS-REL-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A newer qualifying ACKNACK restarts the same writer-wide timer; it closes this generation and starts a separately projected generation.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "writer_nack_timer_generation_started_200",
+            "nack_response_generation_superseded",
+            "rtps_pending_reader_set_empty"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::process_acknack",
+          "lines": "1921-1960",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1921-L1960",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "rtps_pending_reader_set_empty": {
+      "definition": "All requested repairs disappear or relevant readers are unmatched before the deadline.",
+      "properties": [
+        "RTPS-REL-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "All requested repairs disappear or relevant readers are unmatched before the deadline.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "writer_nack_timer_generation_started_200",
+            "nack_response_generation_superseded",
+            "rtps_pending_reader_set_empty"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::process_acknack",
+          "lines": "1921-1960",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1921-L1960",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "auxiliary:3",
+          "role": "reader unmatch can empty pending-reader set",
+          "event_predicate": "All requested repairs disappear or relevant readers are unmatched before the deadline.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "rtps_pending_reader_set_empty"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::matched_reader_remove",
+          "lines": "1211-1302",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L1211-L1302",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "rtps_writer_stopped": {
+      "definition": "The writer is disabled/deleted before the deadline.",
+      "properties": [
+        "RTPS-REL-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-01",
+          "mapping": "auxiliary:4",
+          "role": "writer removal stops timer and reader proxies",
+          "event_predicate": "The writer is disabled/deleted before the deadline.",
+          "instrumentation_timing": "Require harness WriterTimes.nack_response_delay=200 ms. Emit trigger at restart_timer; a later restart first emits superseded. Emit the action only if the callback is observed, stamp it with the stored logical deadline, and retain actual callback time for overhead/jitter analysis.",
+          "atomic_propositions": [
+            "rtps_writer_stopped"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/writer/StatefulWriter.cpp",
+          "symbol": "StatefulWriter::local_actions_on_writer_removed",
+          "lines": "256-315",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/writer/StatefulWriter.cpp#L256-L315",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "heartbeat_response_generation_started_500": {
+      "definition": "A fresh HEARTBEAT enters must_send_ack and restart_timer arms this WriterProxy generation with heartbeatResponseDelay=500 ms.",
+      "properties": [
+        "RTPS-REL-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A fresh HEARTBEAT enters must_send_ack and restart_timer arms this WriterProxy generation with heartbeatResponseDelay=500 ms.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "heartbeat_response_generation_started_500",
+            "heartbeat_response_generation_superseded"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::process_heartbeat",
+          "lines": "550-615",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L550-L615",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "heartbeat_acknack_sent": {
+      "definition": "The heartbeat-response callback is observed handing the correlated ACKNACK to the RTPS send path; logical deadline and actual callback/send time are both retained.",
+      "properties": [
+        "RTPS-REL-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "auxiliary:1",
+          "role": "heartbeat-response ACKNACK handoff",
+          "event_predicate": "The heartbeat-response callback is observed handing the correlated ACKNACK to the RTPS send path; logical deadline and actual callback/send time are both retained.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "heartbeat_acknack_sent"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::perform_heartbeat_response",
+          "lines": "535-548",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L535-L548",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "heartbeat_response_generation_superseded": {
+      "definition": "A newer qualifying HEARTBEAT restarts/coalesces the WriterProxy timer and closes this generation before starting another projected word.",
+      "properties": [
+        "RTPS-REL-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A newer qualifying HEARTBEAT restarts/coalesces the WriterProxy timer and closes this generation before starting another projected word.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "heartbeat_response_generation_started_500",
+            "heartbeat_response_generation_superseded"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::process_heartbeat",
+          "lines": "550-615",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L550-L615",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "rtps_writer_unmatched": {
+      "definition": "The WriterProxy is removed before response and discharges the window.",
+      "properties": [
+        "RTPS-REL-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "auxiliary:2",
+          "role": "remote writer unmatch",
+          "event_predicate": "The WriterProxy is removed before response and discharges the window.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "rtps_writer_unmatched"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/StatefulReader.cpp",
+          "symbol": "StatefulReader::matched_writer_remove",
+          "lines": "381-482",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/StatefulReader.cpp#L381-L482",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "auxiliary:3",
+          "role": "WriterProxy timer cancellation",
+          "event_predicate": "The WriterProxy is removed before response and discharges the window.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "rtps_writer_unmatched",
+            "rtps_reader_stopped"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::stop",
+          "lines": "170-187",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L170-L187",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "rtps_reader_stopped": {
+      "definition": "The local reader is disabled/deleted before response.",
+      "properties": [
+        "RTPS-REL-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "auxiliary:3",
+          "role": "WriterProxy timer cancellation",
+          "event_predicate": "The local reader is disabled/deleted before response.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "rtps_writer_unmatched",
+            "rtps_reader_stopped"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/WriterProxy.cpp",
+          "symbol": "WriterProxy::stop",
+          "lines": "170-187",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/WriterProxy.cpp#L170-L187",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "RTPS-REL-02",
+          "mapping": "auxiliary:4",
+          "role": "local reader removal lifecycle",
+          "event_predicate": "The local reader is disabled/deleted before response.",
+          "instrumentation_timing": "Set ReaderTimes.heartbeat_response_delay=500 ms; emit trigger at restart_timer. A later restart first emits superseded. Emit ACKNACK only after send_acknack is called, stamp with the logical deadline, and retain callback/send time separately.",
+          "atomic_propositions": [
+            "rtps_reader_stopped"
+          ],
+          "repository": "eProsima/Fast-DDS",
+          "commit": "94940169442298e2736af79720ef05d89a1b2a7d",
+          "path": "src/cpp/rtps/reader/BaseReader.cpp",
+          "symbol": "BaseReader::local_actions_on_reader_removed",
+          "lines": "109-112",
+          "url": "https://github.com/eProsima/Fast-DDS/blob/94940169442298e2736af79720ef05d89a1b2a7d/src/cpp/rtps/reader/BaseReader.cpp#L109-L112",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

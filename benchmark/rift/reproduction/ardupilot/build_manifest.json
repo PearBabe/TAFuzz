@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-07-18T06:44:55+08:00",
+  "result": {
+    "status": "BUILD_BASELINE_SUCCESS",
+    "source_modified": false,
+    "clang18_configure": "PASS",
+    "clang18_copter_build": "PASS",
+    "clang18_binary_help_smoke": "PASS",
+    "ap_binding_analysis": "NOT_RUN",
+    "fuzz_experiment": "NOT_RUN",
+    "sitl_scenario": "NOT_RUN"
+  },
+  "source": {
+    "repository": "https://github.com/ArduPilot/ardupilot.git",
+    "local_path": "/home/lqq/project/TAFuzz/baseline/ardupilot",
+    "commit": "8f2e5db2efd69e4753b0bacb4d87fbe51566ba6e",
+    "tree": "0233e86a885e339242cdae2e7510bf12eae1502d",
+    "commit_date": "2026-07-17T21:35:56+10:00",
+    "commit_subject": ".github: test_location_ratchet to ubuntu-slim",
+    "preexisting_status": " m modules/CrashDebug",
+    "post_build_status": " m modules/CrashDebug",
+    "crashdebug_gitlink": "599965086437137ec0fe66e185611f43f335f889",
+    "crashdebug_checkout": "599965086437137ec0fe66e185611f43f335f889",
+    "standard_waf_lock_sha256_before": "b28422dd00fae491384763e2543dab4f9c342aac7554b843b6e8b50d9f9ee9d4",
+    "standard_waf_lock_sha256_after": "b28422dd00fae491384763e2543dab4f9c342aac7554b843b6e8b50d9f9ee9d4",
+    "evidence": [
+      "raw/source-freeze.txt",
+      "raw/source-preservation-configure.txt",
+      "raw/source-preservation-build.txt"
+    ]
+  },
+  "toolchains": {
+    "clang": {
+      "cc": "/usr/bin/clang-18",
+      "cxx": "/usr/bin/clang++-18",
+      "version": "18.1.8",
+      "resolved_binary_sha256": "18d64d8feea51be92cb5e48c7127cd4e904c85b3c33d13e3b557a73b897ce4a8"
+    },
+    "llvm_config": {
+      "path": "/usr/bin/llvm-config-18",
+      "version": "18.1.8",
+      "resolved_binary_sha256": "7813847b2200790ad4a85bcc0d0c4c1a2572928e89ce6df2f77060b69b929422"
+    },
+    "gcc_observed_in_existing_database": {
+      "gcc_version": "11.4.0",
+      "gxx_version": "11.4.0"
+    },
+    "python": "3.12.7",
+    "waf_sha256": "04599ab5a8dc5072c38c58a34148e066c8ef970dc9339ceb6b08b35555559a5d",
+    "waf_submodule_commit": "35eadbb64e2052099a853b571e507c33032b392c"
+  },
+  "existing_gcc_compile_database": {
+    "provenance": "PREEXISTING_OBSERVED_NOT_REGENERATED_BY_THIS_TASK",
+    "original_path": "baseline/ardupilot/build/sitl/compile_commands.json",
+    "snapshot_path": "gcc_existing_compile_commands.json.gz",
+    "raw_sha256": "57c2097fbe9dc7fa60c143a2ff2552d926a7cc4de2610db0bda09cf25cca6c60",
+    "snapshot_sha256": "cd97e25e7e63e4b7192db7ee64589ab06023d2810ccd619580cc3d51e9712b2d",
+    "raw_size_bytes": 4619645,
+    "entries": 1543,
+    "arguments_entries": 1543,
+    "unique_files": 1543,
+    "duplicate_entries": 0,
+    "missing_files_at_observation": 0,
+    "missing_directories_at_observation": 0,
+    "compilers": {
+      "/usr/bin/gcc": 333,
+      "/usr/bin/g++": 1210
+    },
+    "languages": {
+      "c": 333,
+      "cpp": 1210
+    },
+    "scope_note": "The database is cumulative and contains generated sources plus ArduCopter, ArduPlane, and Rover entries; its 1543 entries must not be compared directly with the fresh Copter-only Clang database."
+  },
+  "clang18_isolated_build": {
+    "output_directory": "/tmp/rift-ardupilot-clang/build",
+    "isolation": {
+      "unique_waf_lock": ".lock-waf_rift_clang_build",
+      "no_lock_in_top": true,
+      "no_lock_in_run": true,
+      "vscode_rewrite_disabled": true,
+      "jobs": 8
+    },
+    "configure": {
+      "exit_code": 0,
+      "waf_elapsed_seconds": 2.36,
+      "timed_reference_elapsed_seconds": 2.81,
+      "gnu_time_max_rss_kib": 100572
+    },
+    "build": {
+      "exit_code": 0,
+      "waf_tasks": 1350,
+      "waf_elapsed_seconds": 122.449,
+      "timed_reference_elapsed_seconds": 126.42,
+      "gnu_time_max_rss_kib": 181948,
+      "rss_note": "GNU time reports the maximum resident set size observed for a process in the timed command, not aggregate RSS across eight concurrent compiler processes.",
+      "diagnostic_warning_lines": 31,
+      "fatal_error_lines": 0
+    },
+    "compile_database": {
+      "original_path": "/tmp/rift-ardupilot-clang/build/sitl/compile_commands.json",
+      "snapshot_path": "clang18_compile_commands.json.gz",
+      "raw_sha256": "e3bde40c679fb01db8b16b22f75e225c50804fcf8ddf9b05b132fc159e0d9083",
+      "snapshot_sha256": "134e1dc56a9789e5e38c73c8c118283b172692e98a3f72d728c97db42723236a",
+      "raw_size_bytes": 4735810,
+      "entries": 1336,
+      "arguments_entries": 1336,
+      "unique_files": 1336,
+      "duplicate_entries": 0,
+      "missing_files_at_observation": 0,
+      "missing_directories_at_observation": 0,
+      "absolute_file_fields": 1159,
+      "compilers": {
+        "/usr/bin/clang-18": 262,
+        "/usr/bin/clang++-18": 1074
+      },
+      "languages": {
+        "c": 262,
+        "cpp": 1074
+      },
+      "scope_note": "Fresh Copter-only output. It includes 1159 source paths shared with the observed GCC database and 177 generated files under the isolated build root."
+    },
+    "binary": {
+      "path": "/tmp/rift-ardupilot-clang/build/sitl/bin/arducopter",
+      "size_bytes": 5855128,
+      "sha256": "ad040e179db3acfb21cec966d5fb2a75b026b746c0cc6e50c0cb50df654ac4f4",
+      "elf_build_id": "2d53ff404a0fd9371861267571bb1258a27a0129",
+      "format": "ELF 64-bit LSB PIE x86-64, dynamically linked, not stripped",
+      "help_smoke_exit_code": 0
+    },
+    "generated_configuration": {
+      "ap_config_sha256": "1af88620a269dc00ca9a83b7d789b1aa20817b674cc20f5be2831a6deead0226",
+      "hwdef_sha256": "a5dbc84f4efebe139eb29acc0e6bdcd56c656e053ed57d5bf91ac3c1a9793107"
+    }
+  },
+  "comparison_boundary": {
+    "this_is": "A frozen-source build and compile-database baseline proving that ArduCopter SITL builds with Clang 18 in an isolated output directory.",
+    "this_is_not": [
+      "an AP binding result",
+      "an influence-cone result",
+      "a RIFT precision or performance result",
+      "a GCS failsafe SITL scenario",
+      "a fuzz campaign"
+    ]
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tafuzz.dev/rift/schema/typed-value-transfers/1.0.0",
+  "title": "RIFT property-independent typed value-transfer sidecars",
+  "description": "A property-independent, hash-closed expression DAG for semantic or contextual C/C++ value transformations. Graph Data edges alone carry no identity semantics.",
+  "oneOf": [
+    {"$ref": "#/definitions/semantic_sidecar"},
+    {"$ref": "#/definitions/contextual_sidecar"}
+  ],
+  "definitions": {
+    "nullable_sha256": {
+      "oneOf": [
+        {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        {"type": "null"}
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_expression_nodes", "maximum_transfers",
+        "maximum_expression_operands"
+      ],
+      "properties": {
+        "maximum_expression_nodes": {"type": "integer", "minimum": 1},
+        "maximum_transfers": {"type": "integer", "minimum": 1},
+        "maximum_expression_operands": {"type": "integer", "minimum": 1}
+      }
+    },
+    "symbol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domain", "symbol_id", "value_type"],
+      "properties": {
+        "domain": {
+          "enum": [
+            "semantic_node", "contextual_node",
+            "external_action_payload", "unknown"
+          ]
+        },
+        "symbol_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "value_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"}
+      }
+    },
+    "literal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "canonical_value"],
+      "properties": {
+        "kind": {
+          "enum": [
+            "boolean", "integer", "floating", "enumeration",
+            "bit_vector", "unknown"
+          ]
+        },
+        "canonical_value": {"type": "string"}
+      }
+    },
+    "expression": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expression_id", "kind", "value_type", "input", "literal",
+        "cast_operation", "compare_operation", "boolean_operation",
+        "definedness_operation", "operand_expression_ids",
+        "guard_expression_ids", "predecessor_ids",
+        "affine_coefficients", "affine_offset", "uncertainty_reasons"
+      ],
+      "properties": {
+        "expression_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "kind": {
+          "enum": [
+            "input", "literal", "identity", "cast", "affine",
+            "compare", "boolean", "select", "phi", "parse", "load",
+            "store", "call_arg", "return", "definedness", "unknown"
+          ]
+        },
+        "value_type": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/value_type"},
+        "input": {
+          "oneOf": [{"$ref": "#/definitions/symbol"}, {"type": "null"}]
+        },
+        "literal": {
+          "oneOf": [{"$ref": "#/definitions/literal"}, {"type": "null"}]
+        },
+        "cast_operation": {
+          "type": ["string", "null"],
+          "enum": [
+            "no_op", "bool_to_int", "int_to_bool", "sign_extend",
+            "zero_extend", "truncate_modulo", "unknown", null
+          ]
+        },
+        "compare_operation": {
+          "type": ["string", "null"],
+          "enum": ["eq", "ne", "lt", "le", "gt", "ge", null]
+        },
+        "boolean_operation": {
+          "type": ["string", "null"],
+          "enum": ["not", "and", "or", "xor", null]
+        },
+        "definedness_operation": {
+          "type": ["string", "null"],
+          "enum": [
+            "signed_add_no_overflow", "signed_subtract_no_overflow",
+            "signed_multiply_no_overflow", "signed_negate_no_overflow",
+            "short_circuit_and", "short_circuit_or",
+            "select_chosen_arm", "unknown", null
+          ]
+        },
+        "operand_expression_ids": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "guard_expression_ids": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "predecessor_ids": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "affine_coefficients": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^-?(0|[1-9][0-9]*)$"}
+        },
+        "affine_offset": {
+          "type": ["string", "null"],
+          "pattern": "^-?(0|[1-9][0-9]*)$"
+        },
+        "uncertainty_reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"kind": {"const": "input"}}},
+          "then": {
+            "properties": {
+              "input": {"$ref": "#/definitions/symbol"},
+              "operand_expression_ids": {"maxItems": 0}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"kind": {"const": "literal"}}},
+          "then": {
+            "properties": {
+              "literal": {"$ref": "#/definitions/literal"},
+              "operand_expression_ids": {"maxItems": 0}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"kind": {"const": "affine"}}},
+          "then": {
+            "properties": {
+              "operand_expression_ids": {"minItems": 1},
+              "affine_coefficients": {"minItems": 1},
+              "affine_offset": {"type": "string"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"kind": {"const": "unknown"}}},
+          "then": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        }
+      ]
+    },
+    "transfer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transfer_id", "program_point_id", "output_domain",
+        "input_node_ids", "output_node_id", "supporting_edge_ids",
+        "semantic_relation_ids", "value_expression_id", "definedness",
+        "defined_when_expression_id", "path_condition",
+        "path_condition_expression_id", "soundness", "certainty",
+        "callsite_id", "call_argument_index", "evidence",
+        "uncertainty_reasons"
+      ],
+      "properties": {
+        "transfer_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "program_point_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "output_domain": {
+          "enum": [
+            "semantic_node", "contextual_node", "call_argument_slot",
+            "unknown"
+          ]
+        },
+        "input_node_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "output_node_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "supporting_edge_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "semantic_relation_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}
+        },
+        "value_expression_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "definedness": {"enum": ["total", "conditional", "unknown"]},
+        "defined_when_expression_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "path_condition": {
+          "enum": ["unconditional", "conditional", "unknown"]
+        },
+        "path_condition_expression_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "soundness": {"enum": ["exact", "conservative", "unknown"]},
+        "certainty": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/certainty"},
+        "callsite_id": {
+          "oneOf": [
+            {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+            {"type": "null"}
+          ]
+        },
+        "call_argument_index": {"type": ["integer", "null"], "minimum": 0},
+        "evidence": {
+          "type": "array",
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/evidence"}
+        },
+        "uncertainty_reasons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/nonempty_string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"definedness": {"const": "conditional"}}},
+          "then": {"properties": {"defined_when_expression_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}}},
+          "else": {"properties": {"defined_when_expression_id": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"path_condition": {"const": "conditional"}}},
+          "then": {"properties": {"path_condition_expression_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"}}},
+          "else": {"properties": {"path_condition_expression_id": {"type": "null"}}}
+        },
+        {
+          "if": {"properties": {"soundness": {"const": "exact"}}},
+          "then": {
+            "properties": {
+              "certainty": {"const": "must"},
+              "uncertainty_reasons": {"maxItems": 0}
+            }
+          },
+          "else": {"properties": {"uncertainty_reasons": {"minItems": 1}}}
+        },
+        {
+          "if": {"properties": {"output_domain": {"const": "call_argument_slot"}}},
+          "then": {
+            "properties": {
+              "callsite_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+              "call_argument_index": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      ]
+    },
+    "common_properties": {
+      "type": "object",
+      "properties": {
+        "schema_version": {"const": "1.0.0"},
+        "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "property_independent": {"const": true},
+        "candidate_accounting_complete": {"type": "boolean"},
+        "resource_limit_hit": {"type": "boolean"},
+        "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+        "limits": {"$ref": "#/definitions/limits"},
+        "observed_expression_nodes": {"type": "integer", "minimum": 0},
+        "observed_transfers": {"type": "integer", "minimum": 0},
+        "expressions": {"type": "array", "items": {"$ref": "#/definitions/expression"}},
+        "transfers": {"type": "array", "items": {"$ref": "#/definitions/transfer"}},
+        "coverage_gaps": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}},
+        "diagnostics": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "semantic_sidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sidecar_kind", "schema_version", "artifact_id",
+        "semantic_index_artifact_id", "semantic_index_sha256",
+        "physical_digest_binding_complete", "property_independent",
+        "candidate_accounting_complete", "resource_limit_hit", "status",
+        "limits", "observed_expression_nodes", "observed_transfers",
+        "expressions", "transfers", "coverage_gaps", "diagnostics"
+      ],
+      "properties": {
+        "sidecar_kind": {"const": "semantic"},
+        "schema_version": {"const": "1.0.0"},
+        "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_index_artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_index_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "physical_digest_binding_complete": {"const": true},
+        "property_independent": {"const": true},
+        "candidate_accounting_complete": {"type": "boolean"},
+        "resource_limit_hit": {"type": "boolean"},
+        "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+        "limits": {"$ref": "#/definitions/limits"},
+        "observed_expression_nodes": {"type": "integer", "minimum": 0},
+        "observed_transfers": {"type": "integer", "minimum": 0},
+        "expressions": {"type": "array", "items": {"$ref": "#/definitions/expression"}},
+        "transfers": {"type": "array", "items": {"$ref": "#/definitions/transfer"}},
+        "coverage_gaps": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}},
+        "diagnostics": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "contextual_sidecar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sidecar_kind", "schema_version", "artifact_id",
+        "semantic_value_transfer_artifact_id", "semantic_index_sha256",
+        "graph_artifact_id", "semantic_value_transfers_sha256",
+        "graph_sha256", "physical_digest_binding_complete",
+        "property_independent", "candidate_accounting_complete",
+        "resource_limit_hit", "status", "limits",
+        "observed_expression_nodes", "observed_transfers", "expressions",
+        "transfers", "coverage_gaps", "diagnostics"
+      ],
+      "properties": {
+        "sidecar_kind": {"const": "contextual"},
+        "schema_version": {"const": "1.0.0"},
+        "artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_value_transfer_artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_index_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "graph_artifact_id": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/stable_id"},
+        "semantic_value_transfers_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "graph_sha256": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/sha256"},
+        "physical_digest_binding_complete": {"const": true},
+        "property_independent": {"const": true},
+        "candidate_accounting_complete": {"type": "boolean"},
+        "resource_limit_hit": {"type": "boolean"},
+        "status": {"enum": ["COMPLETE", "CONSERVATIVE_INCOMPLETE", "FAILED"]},
+        "limits": {"$ref": "#/definitions/limits"},
+        "observed_expression_nodes": {"type": "integer", "minimum": 0},
+        "observed_transfers": {"type": "integer", "minimum": 0},
+        "expressions": {"type": "array", "items": {"$ref": "#/definitions/expression"}},
+        "transfers": {"type": "array", "items": {"$ref": "#/definitions/transfer"}},
+        "coverage_gaps": {"type": "array", "items": {"$ref": "https://tafuzz.dev/rift/schema/common/1.0.0#/definitions/unsupported_construct"}},
+        "diagnostics": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

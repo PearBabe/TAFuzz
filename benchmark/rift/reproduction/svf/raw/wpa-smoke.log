@@ -1,0 +1,235 @@
+sh: 1: npm: not found
+sh: 1: npm: not found
+
+*********General Stats***************
+################ (program : alias_valueflow_smoke.bc)###############
+AddrsNum            18
+BBWith2Succ         0
+BBWith3Succ         0
+CallsNum            3
+ConstArrayObj       0
+ConstStructObj      0
+ConstantObj         0
+CopysNum            2
+FIObjNum            7
+FSObjNum            9
+FunctionObjs        6
+GepsNum             0
+GlobalObjs          2
+HeapObjs            1
+IndCallSites        0
+LoadsNum            10
+MaxStructSize       0
+NonPtrObj           11
+ReturnsNum          1
+StackObjs           7
+StoresNum           10
+TotalCallSite       4
+TotalFieldObjects   0
+TotalObjects        17
+TotalPTASVFStmts    36
+TotalPointers       70
+TotalSVFStmts       48
+VarArrayObj         0
+VarStructObj        0
+----------------Time and memory stats--------------------
+LLVMIRTime          0.005
+SVFIRTime           0.001
+SymbolTableTime     0
+#######################################################
+
+*********PTACallGraph Stats (Andersen analysis)***************
+################ (program : alias_valueflow_smoke.bc)###############
+----------------Numbers stats----------------------------
+CalRetPairInCycle   0
+MaxNodeInCycle      0
+NodeInCycle         0
+TotalCycle          0
+TotalEdge           4
+TotalNode           6
+#######################################################
+
+*********Andersen Pointer Analysis Stats***************
+################ (program : alias_valueflow_smoke.bc)###############
+----------------Time and memory stats--------------------
+AvgIn/OutAddrEdge   0.375
+AvgIn/OutCopyEdge   0.375
+AvgIn/OutEdge       1.02083
+AvgIn/OutLoadEdge   0.166667
+AvgIn/OutStoreEdge  0.104167
+AvgPtsSetSize       0.402299
+AvgTopLvlPtsSize    0.964286
+CollapseTime        0
+CopyGepTime         0
+LoadStoreTime       0
+MemoryUsageVmrss    608
+MemoryUsageVmsize   0
+SCCDetectTime       0
+SCCMergeTime        0
+TotalTime           0
+UpdateCGTime        0
+----------------Numbers stats----------------------------
+AddrProcessed       18
+CopyProcessed       17
+DummyFieldPtrs      0
+FieldObjs           0
+GepProcessed        0
+IndCallSites        0
+IndEdgeSolved       0
+LoadProcessed       8
+LocalVarInRecur     0
+MaxInAddrEdge       1
+MaxInCopyEdge       1
+MaxInLoadEdge       1
+MaxInStoreEdge      1
+MaxNodesInSCC       0
+MaxOutAddrEdge      3
+MaxOutCopyEdge      3
+MaxOutLoadEdge      3
+MaxOutStoreEdge     1
+MaxPtsSetSize       1
+MemObjects          17
+NodesInCycles       0
+NullPointer         0
+NumOfAddrs          18
+NumOfCGEdge         31
+NumOfCGNode         53
+NumOfCopys          18
+NumOfFieldExpand    0
+NumOfGeps           0
+NumOfLoads          8
+NumOfSCCDetect      2
+NumOfSFRs           0
+NumOfStores         5
+NumOfValidNode      48
+NumOfValidObjNode   16
+Pointers            70
+PointsToBlkPtr      0
+PointsToConstPtr    0
+SolveIterations     2
+StoreProcessed      5
+TotalCycleNum       0
+TotalObjects        17
+TotalPWCCycleNum    0
+TotalPointers       70
+#######################################################
+[AndersenWPA] Checking MAYALIAS
+[1;32m	 SUCCESS :[1;0mMAYALIAS check <id:32, id:33> at (CallICFGNode: { "ln": 31, "cl": 5, "fl": "benchmark/rift/reproduction/svf/cases/alias_valueflow_smoke.c" })
+[AndersenWPA] Checking NOALIAS
+[1;32m	 SUCCESS :[1;0mNOALIAS check <id:37, id:38> at (CallICFGNode: { "ln": 32, "cl": 5, "fl": "benchmark/rift/reproduction/svf/cases/alias_valueflow_smoke.c" })
+
+****Persistent Points-To Cache Statistics: Andersen's analysis bitvector****
+################ (program : alias_valueflow_smoke.bc)###############
+UniquePointsToSets       17
+TotalUnions              35
+PropertyUnions           35
+UniqueUnions             0
+LookupUnions             0
+PreemptiveUnions         0
+TotalComplements         106
+PropertyComplements      106
+UniqueComplements        0
+LookupComplements        0
+PreemptiveComplements    0
+TotalIntersections       13
+PropertyIntersections    13
+UniqueIntersections      0
+LookupIntersections      0
+PreemptiveIntersections  0
+#######################################################
+
+*********Memory SSA Statistics***************
+################ (program : alias_valueflow_smoke.bc)###############
+----------------Time and memory stats--------------------
+AverageRegSize      1
+GenMUCHITime        0
+GenRegionTime       0
+InsertPHITime       0
+SSARenameTime       0
+TotalMSSATime       0
+----------------Numbers stats----------------------------
+BBHasMSSAPhi        0
+CSChiNode           1
+CSHasChi            1
+CSHasMu             1
+CSMuNode            1
+FunEntryChi         9
+FunHasEntryChi      3
+FunHasRetMu         3
+FunRetMu            9
+LoadHasMu           10
+LoadMuNode          10
+MSSAPhi             0
+MaxRegSize          1
+MemRegions          8
+StoreChiNode        8
+StoreHasChi         8
+#######################################################
+
+*********SVFG Statistics***************
+################ (program : alias_valueflow_smoke.bc)###############
+----------------Time and memory stats--------------------
+ATNodeTime          0
+AvgWeight           1
+ConnDirEdgeTime     0
+ConnIndEdgeTime     0
+OptTime             0
+TLNodeTime          0
+TotalTime           0
+----------------Numbers stats----------------------------
+ActualIn            1
+ActualOut           1
+ActualParam         7
+ActualRet           1
+Addr                18
+AvgInDegree         0
+AvgIndInDeg         1
+AvgIndOutDeg        1
+AvgOutDegree        0
+Copy                2
+DirectCallEdge      3
+DirectEdge          44
+DirectRetEdge       1
+FormalIn            9
+FormalOut           9
+FormalParam         3
+FormalRet           2
+Gep                 0
+IndCallEdge         1
+IndRetEdge          1
+IndirectEdge        31
+IndirectEdgeLabels  31
+Load                10
+MSSAPhi             0
+MaxInDegree         3
+MaxIndInDeg         1
+MaxIndOutDeg        4
+MaxOutDegree        4
+PHI                 3
+Store               10
+TotalEdge           75
+TotalNode           78
+#######################################################
+	Command being timed: "../build/bin/wpa -ander -alias-check -svfg -stat alias_valueflow_smoke.bc"
+	User time (seconds): 0.01
+	System time (seconds): 0.01
+	Percent of CPU this job got: 33%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.07
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 55976
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 2737
+	Voluntary context switches: 422
+	Involuntary context switches: 0
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

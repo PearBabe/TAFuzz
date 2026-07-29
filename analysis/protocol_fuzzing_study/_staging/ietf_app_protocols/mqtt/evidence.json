@@ -1,0 +1,134 @@
+{
+  "protocol": "MQTT",
+  "access_date": "2026-07-13",
+  "status": "COMPLETE_WITH_ROOT_REVIEW",
+  "scope": "MQTT 5.0 Keep Alive and retransmission-termination obligations with fixed Mosquitto source mappings",
+  "semantics": "Mathematical MITL uses ordinary G over complete correlated behaviors. MightyPPL validation uses the tool-specific weak finite G* over declared terminal projections; timed words are pointwise with absolute integer milliseconds, flatten construction, and omitted APs=false.",
+  "root_review": {
+    "completed": true,
+    "proposal_count": 3,
+    "default_status": "ROOT_REVIEWED",
+    "eventuality_negative_coverage": ["MQTT-KA-01 late/missing next control packet or close", "MQTT-KA-02 late/missing receive or close"]
+  },
+  "standard": {
+    "title": "MQTT Version 5.0",
+    "version": "OASIS Standard 07 March 2019",
+    "html_url": "https://docs.oasis-open.org/mqtt/mqtt/v5.0/mqtt-v5.0.html",
+    "local_html_artifact": "/tmp/tafuzz_ietf_refs/mqtt-v5.html",
+    "html_sha256": "ad8a260a846c2b00af40c93867ef4dedd4d7e937b24f67083ef31c6d8864bce5",
+    "local_text_artifact": "/tmp/tafuzz_ietf_refs/mqtt-v5.txt",
+    "text_sha256": "2d7771eb903cab11ed60a24f1263d3aa7b8573f4b755e846a265032e15a45b05",
+    "sections_reviewed": ["3.1.2.10", "3.2.2.3.14", "3.12", "4.1", "4.4", "4.6", "4.7"],
+    "short_excerpt_limit": "all admitted excerpts contain at most 20 whitespace-delimited English words"
+  },
+  "implementation": {
+    "repository": "eclipse-mosquitto/mosquitto",
+    "version": "v2.0.21",
+    "commit": "672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+    "tree_url": "https://github.com/eclipse-mosquitto/mosquitto/tree/672ae3e57f8b4e086f6ce2dec836734cc38258c3",
+    "local_checkout": "/tmp/tafuzz_ietf_sources/mosquitto",
+    "head_verified": true,
+    "checkout_clean": true,
+    "selection": "mature maintained MQTT broker and client implementation used only for fixed source-level observability mappings",
+    "files": [
+      {
+        "path": "client/client_shared.c",
+        "sha256": "66591e42f5e9e70c9f5da9da7e40ded9224ff9ae1498c6f01335adabb975e990",
+        "symbols": ["init_config"],
+        "line_ranges": ["186-192"]
+      },
+      {
+        "path": "lib/mosquitto.c",
+        "sha256": "ecfc880c7cbf49bcdf6b8ee1ee9b7490a8457ba0fcb1379fcfb8406239b36367",
+        "symbols": ["mosquitto_new"],
+        "line_ranges": ["156-160"]
+      },
+      {
+        "path": "lib/packet_mosq.c",
+        "sha256": "1225e3e4b6ce097172db6300c910e4fa6595d6342166ed8146f259bd539354c8",
+        "symbols": ["packet__write"],
+        "line_ranges": ["328-348"]
+      },
+      {
+        "path": "lib/util_mosq.c",
+        "sha256": "7681998e02086ff4d66fead15667e9047c80ff8d0c45d30eacc5129482b07f77",
+        "symbols": ["mosquitto__check_keepalive"],
+        "line_ranges": ["62-104"]
+      },
+      {
+        "path": "lib/send_mosq.c",
+        "sha256": "d25f631efef4742cc2d71ea21ad49c3b4a3168b8c687a7d8e34e5497fa46b072",
+        "symbols": ["send__pingreq"],
+        "line_ranges": ["44-57"]
+      },
+      {
+        "path": "src/handle_connect.c",
+        "sha256": "6c6526bdf1075e17446a480bf9d063be3409fa4ee75dc91fcd84d075bb01e580",
+        "symbols": ["connect__on_authorised", "handle__connect"],
+        "line_ranges": ["269-279", "580-588"]
+      },
+      {
+        "path": "src/keepalive.c",
+        "sha256": "dbc885e34d6ce2b297b546259471e238987d8912902de2e6853d8d63c4485787",
+        "symbols": ["calc_index", "keepalive__check", "keepalive__update"],
+        "line_ranges": ["67-70", "127-144", "199-205"]
+      },
+      {
+        "path": "lib/handle_pubrec.c",
+        "sha256": "6f6b0f2e2caa0d053232c4967700189fed7969132ff219fc44722505349310b6",
+        "symbols": ["handle__pubrec"],
+        "line_ranges": ["93-125"]
+      },
+      {
+        "path": "lib/handle_pubackcomp.c",
+        "sha256": "b602279f511671b9e0c10aa73d4ef106ba76d0b545c525a12e7192c5608d0eda",
+        "symbols": ["handle__pubackcomp"],
+        "line_ranges": ["121-138"]
+      }
+    ]
+  },
+  "proposal_evidence": [
+    {
+      "proposal_id": "MQTT-KA-01",
+      "standard_locator": "MQTT 5.0 Section 3.1.2.10, requirement MQTT-3.1.2-20; extracted text lines 5515-5521",
+      "source_locators": [
+        "client/client_shared.c:186-192 init_config default Keep Alive 60",
+        "lib/packet_mosq.c:328-348 packet completion and next_msg_out refresh",
+        "lib/util_mosq.c:62-104 mosquitto__check_keepalive",
+        "lib/send_mosq.c:44-57 send__pingreq"
+      ],
+      "value_derivation": "fixed command-line client profile Keep Alive=60 seconds = 60000 ms; the standard itself supplies no universal default"
+    },
+    {
+      "proposal_id": "MQTT-KA-02",
+      "standard_locator": "MQTT 5.0 Section 3.1.2.10, requirement MQTT-3.1.2-22; extracted text lines 5537-5540",
+      "source_locators": [
+        "src/handle_connect.c:580-588 reads client Keep Alive",
+        "src/handle_connect.c:269-279 applies optional Server Keep Alive override",
+        "src/keepalive.c:67-70 calc_index uses keepalive*3/2",
+        "src/keepalive.c:127-144 closes expired connections",
+        "src/keepalive.c:199-205 refreshes last_msg_in"
+      ],
+      "value_derivation": "1.5 * 60 seconds = 90 seconds = 90000 ms in the explicitly fixed effective-Keep-Alive profile"
+    },
+    {
+      "proposal_id": "MQTT-RTX-01",
+      "standard_locator": "MQTT 5.0 Section 4.4, requirement MQTT-4.4.0-2; extracted text lines 15536-15540",
+      "source_locators": [
+        "lib/handle_pubrec.c:93-125 deletes QoS 2 state for Reason Code >=0x80",
+        "lib/handle_pubackcomp.c:121-138 deletes matching PUBACK/PUBCOMP state"
+      ],
+      "value_derivation": "unbounded post-acknowledgement safety obligation over the remaining stored-message-generation projection"
+    }
+  ],
+  "formula_validation": {
+    "validator": "/home/lqq/project/TAFuzz/tool/MightyPPL/build/TAMonitor",
+    "command_profile": "--word finite --build-mode flatten; each trace checked once with --state symbolic and once with --state concrete",
+    "persistent_validation_artifacts": false,
+    "results": [
+      {"id": "MQTT-KA-01", "build": "PASS", "positive_symbolic": "POSITIVE", "negative_symbolic": "NEGATIVE", "positive_concrete": "POSITIVE", "negative_concrete": "NEGATIVE", "negative_case": "late_or_missing_eventuality", "additional_negative_results": {"late_or_missing_next_control_packet": {"symbolic": "NEGATIVE", "concrete": "NEGATIVE"}}},
+      {"id": "MQTT-KA-02", "build": "PASS", "positive_symbolic": "POSITIVE", "negative_symbolic": "NEGATIVE", "positive_concrete": "POSITIVE", "negative_concrete": "NEGATIVE", "negative_case": "late_or_missing_eventuality", "additional_negative_results": {"late_or_missing_receive_or_close": {"symbolic": "NEGATIVE", "concrete": "NEGATIVE"}}},
+      {"id": "MQTT-RTX-01", "build": "PASS", "positive_symbolic": "POSITIVE", "negative_symbolic": "NEGATIVE", "positive_concrete": "POSITIVE", "negative_concrete": "NEGATIVE"}
+    ]
+  }
+}

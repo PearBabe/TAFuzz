@@ -1,0 +1,733 @@
+{
+  "protocol": "TCP",
+  "time_unit": "integer_millisecond",
+  "missing_ap_value": false,
+  "correlation_before_projection": true,
+  "one_obligation_generation_per_monitor": true,
+  "atomic_propositions": {
+    "tcp_delayed_ack_obligation_started": {
+      "definition": "A processed segment requires ACK and enters the delayed-ACK rather than immediate-ACK branch.",
+      "properties": [
+        "TCP-ACK-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ACK-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A processed segment requires ACK and enters the delayed-ACK rather than immediate-ACK branch.",
+          "instrumentation_timing": "Emit the trigger immediately before sk_reset_timer; emit ACK after tcp_send_ack/output using the same socket cookie.",
+          "atomic_propositions": [
+            "tcp_delayed_ack_obligation_started"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_send_delayed_ack",
+          "lines": "4409-4463",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4409-L4463",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_ack_sent": {
+      "definition": "An ACK covering the correlated receive sequence is handed to IP output.",
+      "properties": [
+        "TCP-ACK-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ACK-01",
+          "mapping": "auxiliary:1",
+          "role": "pure ACK construction and transmission handoff",
+          "event_predicate": "An ACK covering the correlated receive sequence is handed to IP output.",
+          "instrumentation_timing": "Emit the trigger immediately before sk_reset_timer; emit ACK after tcp_send_ack/output using the same socket cookie.",
+          "atomic_propositions": [
+            "tcp_ack_sent"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "__tcp_send_ack",
+          "lines": "4466-4506",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4466-L4506",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_default_keepalive_enabled_on_idle_connection": {
+      "definition": "SO_KEEPALIVE becomes active with no per-socket keepidle override and no outstanding data.",
+      "properties": [
+        "TCP-KA-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-KA-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "SO_KEEPALIVE becomes active with no per-socket keepidle override and no outstanding data.",
+          "instrumentation_timing": "Record enablement after tcp_set_keepalive arms the timer; emit probe only after tcp_write_wakeup succeeds.",
+          "atomic_propositions": [
+            "tcp_default_keepalive_enabled_on_idle_connection"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "TCP_KEEPALIVE_TIME",
+          "lines": "175-180",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L175-L180",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "TCP-KA-01",
+          "mapping": "auxiliary:1",
+          "role": "SO_KEEPALIVE enable and default timer arm",
+          "event_predicate": "SO_KEEPALIVE becomes active with no per-socket keepidle override and no outstanding data.",
+          "instrumentation_timing": "Record enablement after tcp_set_keepalive arms the timer; emit probe only after tcp_write_wakeup succeeds.",
+          "atomic_propositions": [
+            "tcp_default_keepalive_enabled_on_idle_connection"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_set_keepalive",
+          "lines": "768-777",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L768-L777",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_keepalive_probe_sent": {
+      "definition": "tcp_write_wakeup emits a keep-alive probe for the correlated socket.",
+      "properties": [
+        "TCP-KA-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-KA-01",
+          "mapping": "auxiliary:2",
+          "role": "keep-alive expiry and probe send attempt",
+          "event_predicate": "tcp_write_wakeup emits a keep-alive probe for the correlated socket.",
+          "instrumentation_timing": "Record enablement after tcp_set_keepalive arms the timer; emit probe only after tcp_write_wakeup succeeds.",
+          "atomic_propositions": [
+            "tcp_keepalive_probe_sent"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_keepalive_timer",
+          "lines": "779-866",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L779-L866",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_data_r2_episode_started": {
+      "definition": "First retransmission timestamp is established for data in an established connection using default R2 policy.",
+      "properties": [
+        "TCP-R2-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-R2-01",
+          "mapping": "auxiliary:1",
+          "role": "first attempted data retransmission timestamp",
+          "event_predicate": "First retransmission timestamp is established for data in an established connection using default R2 policy.",
+          "instrumentation_timing": "Emit start when retrans_stamp is first set; emit expiry immediately before tcp_write_err with state outside SYN_SENT/SYN_RECV and expired=true.",
+          "atomic_propositions": [
+            "tcp_data_r2_episode_started"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_retransmit_skb",
+          "lines": "3695-3717",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L3695-L3717",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_closed_by_data_r2_expiry": {
+      "definition": "tcp_write_timeout reports expired and tcp_write_err closes specifically because the data R2 threshold is reached.",
+      "properties": [
+        "TCP-R2-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-R2-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "tcp_write_timeout reports expired and tcp_write_err closes specifically because the data R2 threshold is reached.",
+          "instrumentation_timing": "Emit start when retrans_stamp is first set; emit expiry immediately before tcp_write_err with state outside SYN_SENT/SYN_RECV and expired=true.",
+          "atomic_propositions": [
+            "tcp_closed_by_data_r2_expiry"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timeout",
+          "lines": "242-305",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L242-L305",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_initial_rto_armed_1000ms_profile": {
+      "definition": "ICSK_TIME_RETRANS is actually armed with a 1000 ms absolute deadline and fallback/override branches are false.",
+      "properties": [
+        "TCP-RTO-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-RTO-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "ICSK_TIME_RETRANS is actually armed with a 1000 ms absolute deadline and fallback/override branches are false.",
+          "instrumentation_timing": "Emit trigger from the timer-arm hook with deadline and generation; emit deadline independently of callback dispatch; emit superseded only when that generation is cancelled/rearmed.",
+          "atomic_propositions": [
+            "tcp_initial_rto_armed_1000ms_profile"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "TCP_TIMEOUT_INIT",
+          "lines": "160-173",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L160-L173",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "TCP-RTO-01",
+          "mapping": "auxiliary:1",
+          "role": "initial RTO timer arm after active-open send",
+          "event_predicate": "ICSK_TIME_RETRANS is actually armed with a 1000 ms absolute deadline and fallback/override branches are false.",
+          "instrumentation_timing": "Emit trigger from the timer-arm hook with deadline and generation; emit deadline independently of callback dispatch; emit superseded only when that generation is cancelled/rearmed.",
+          "atomic_propositions": [
+            "tcp_initial_rto_armed_1000ms_profile"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_connect",
+          "lines": "4393-4398",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4393-L4398",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_initial_rto_deadline_reached": {
+      "definition": "The absolute deadline of that exact retransmission-timer generation is reached.",
+      "properties": [
+        "TCP-RTO-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-RTO-01",
+          "mapping": "auxiliary:2",
+          "role": "retransmission timer deadline dispatch",
+          "event_predicate": "The absolute deadline of that exact retransmission-timer generation is reached.",
+          "instrumentation_timing": "Emit trigger from the timer-arm hook with deadline and generation; emit deadline independently of callback dispatch; emit superseded only when that generation is cancelled/rearmed.",
+          "atomic_propositions": [
+            "tcp_initial_rto_deadline_reached"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timer_handler",
+          "lines": "695-728",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_initial_rto_superseded": {
+      "definition": "A correlated ACK, loss-state change, or explicit timer restart/cancel replaces that exact timer generation.",
+      "properties": [
+        "TCP-RTO-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-RTO-01",
+          "mapping": "auxiliary:3",
+          "role": "ACK-driven retransmission timer cancellation or replacement",
+          "event_predicate": "A correlated ACK, loss-state change, or explicit timer restart/cancel replaces that exact timer generation.",
+          "instrumentation_timing": "Emit trigger from the timer-arm hook with deadline and generation; emit deadline independently of callback dispatch; emit superseded only when that generation is cancelled/rearmed.",
+          "atomic_propositions": [
+            "tcp_initial_rto_superseded"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_input.c",
+          "symbol": "tcp_rearm_rto",
+          "lines": "3524-3550",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_second_rto_armed_2000ms_normal_backoff": {
+      "definition": "The normal non-linear, non-thin-stream branch doubles 1000 ms to 2000 ms and arms a new timer generation.",
+      "properties": [
+        "TCP-RTO-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-RTO-03",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "The normal non-linear, non-thin-stream branch doubles 1000 ms to 2000 ms and arms a new timer generation.",
+          "instrumentation_timing": "After icsk_rto is doubled and tcp_reset_xmit_timer succeeds, emit the trigger with old/new RTO fields.",
+          "atomic_propositions": [
+            "tcp_second_rto_armed_2000ms_normal_backoff"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_retransmit_timer",
+          "lines": "657-685",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L657-L685",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_second_rto_deadline_reached": {
+      "definition": "The absolute deadline of that exact 2000 ms generation is reached.",
+      "properties": [
+        "TCP-RTO-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-RTO-03",
+          "mapping": "auxiliary:1",
+          "role": "retransmission timer deadline dispatch",
+          "event_predicate": "The absolute deadline of that exact 2000 ms generation is reached.",
+          "instrumentation_timing": "After icsk_rto is doubled and tcp_reset_xmit_timer succeeds, emit the trigger with old/new RTO fields.",
+          "atomic_propositions": [
+            "tcp_second_rto_deadline_reached"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timer_handler",
+          "lines": "695-728",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_second_rto_superseded": {
+      "definition": "A qualifying ACK or timer restart/cancel replaces that exact generation.",
+      "properties": [
+        "TCP-RTO-03"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-RTO-03",
+          "mapping": "auxiliary:2",
+          "role": "ACK-driven retransmission timer cancellation or replacement",
+          "event_predicate": "A qualifying ACK or timer restart/cancel replaces that exact generation.",
+          "instrumentation_timing": "After icsk_rto is doubled and tcp_reset_xmit_timer succeeds, emit the trigger with old/new RTO fields.",
+          "atomic_propositions": [
+            "tcp_second_rto_superseded"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_input.c",
+          "symbol": "tcp_rearm_rto",
+          "lines": "3524-3550",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3524-L3550",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_active_open_syn_r2_started": {
+      "definition": "Initial SYN is transmitted for an active open under the stack's default SYN-retry policy.",
+      "properties": [
+        "TCP-SYN-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-SYN-01",
+          "mapping": "auxiliary:1",
+          "role": "initial active-open SYN transmission and retransmission timer arm",
+          "event_predicate": "Initial SYN is transmitted for an active open under the stack's default SYN-retry policy.",
+          "instrumentation_timing": "Start at initial SYN output; emit failure immediately before tcp_write_err when SYN_SENT and expired is due to retry_until.",
+          "atomic_propositions": [
+            "tcp_active_open_syn_r2_started"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_connect",
+          "lines": "4360-4398",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4360-L4398",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "TCP-SYN-01",
+          "mapping": "auxiliary:2",
+          "role": "locked Linux SYN retry-policy deviation evidence",
+          "event_predicate": "Initial SYN is transmitted for an active open under the stack's default SYN-retry policy.",
+          "instrumentation_timing": "Start at initial SYN output; emit failure immediately before tcp_write_err when SYN_SENT and expired is due to retry_until.",
+          "atomic_propositions": [
+            "tcp_active_open_syn_r2_started",
+            "tcp_open_failed_by_syn_r2_expiry"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "TCP_SYN_RETRIES",
+          "lines": "124-131",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L124-L131",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_open_failed_by_syn_r2_expiry": {
+      "definition": "tcp_write_timeout closes SYN_SENT specifically because its retransmission R2 threshold expired.",
+      "properties": [
+        "TCP-SYN-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-SYN-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "tcp_write_timeout closes SYN_SENT specifically because its retransmission R2 threshold expired.",
+          "instrumentation_timing": "Start at initial SYN output; emit failure immediately before tcp_write_err when SYN_SENT and expired is due to retry_until.",
+          "atomic_propositions": [
+            "tcp_open_failed_by_syn_r2_expiry"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timeout",
+          "lines": "242-298",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L242-L298",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "TCP-SYN-01",
+          "mapping": "auxiliary:2",
+          "role": "locked Linux SYN retry-policy deviation evidence",
+          "event_predicate": "tcp_write_timeout closes SYN_SENT specifically because its retransmission R2 threshold expired.",
+          "instrumentation_timing": "Start at initial SYN output; emit failure immediately before tcp_write_err when SYN_SENT and expired is due to retry_until.",
+          "atomic_propositions": [
+            "tcp_active_open_syn_r2_started",
+            "tcp_open_failed_by_syn_r2_expiry"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "TCP_SYN_RETRIES",
+          "lines": "124-131",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L124-L131",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_time_wait_entered_linux_profile": {
+      "definition": "A TIME-WAIT bucket is created with Linux TCP_TIMEWAIT_LEN=60 seconds.",
+      "properties": [
+        "TCP-TW-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-TW-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "A TIME-WAIT bucket is created with Linux TCP_TIMEWAIT_LEN=60 seconds.",
+          "instrumentation_timing": "Emit entry at tcp_time_wait creation and destruction immediately before inet_twsk_kill/deschedule.",
+          "atomic_propositions": [
+            "tcp_time_wait_entered_linux_profile"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "TCP_TIMEWAIT_LEN",
+          "lines": "140-148",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L140-L148",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        },
+        {
+          "property_id": "TCP-TW-01",
+          "mapping": "auxiliary:1",
+          "role": "TIME-WAIT bucket creation and scheduling",
+          "event_predicate": "A TIME-WAIT bucket is created with Linux TCP_TIMEWAIT_LEN=60 seconds.",
+          "instrumentation_timing": "Emit entry at tcp_time_wait creation and destruction immediately before inet_twsk_kill/deschedule.",
+          "atomic_propositions": [
+            "tcp_time_wait_entered_linux_profile"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_minisocks.c",
+          "symbol": "tcp_time_wait",
+          "lines": "326-394",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L326-L394",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_time_wait_state_destroyed": {
+      "definition": "The bucket is removed by the ordinary TIME-WAIT expiry path.",
+      "properties": [
+        "TCP-TW-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-TW-01",
+          "mapping": "auxiliary:2",
+          "role": "ordinary TIME-WAIT expiry destruction",
+          "event_predicate": "The bucket is removed by the ordinary TIME-WAIT expiry path.",
+          "instrumentation_timing": "Emit entry at tcp_time_wait creation and destruction immediately before inet_twsk_kill/deschedule.",
+          "atomic_propositions": [
+            "tcp_time_wait_state_destroyed"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/inet_timewait_sock.c",
+          "symbol": "tw_timer_handler",
+          "lines": "161-166",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/inet_timewait_sock.c#L161-L166",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_valid_timewait_reopen_or_admin_cleanup": {
+      "definition": "Guarded RFC reopen/reuse or explicit administrative cleanup causes early removal and is classified separately.",
+      "properties": [
+        "TCP-TW-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-TW-01",
+          "mapping": "auxiliary:3",
+          "role": "guarded direct reopen and exceptional early removal classification",
+          "event_predicate": "Guarded RFC reopen/reuse or explicit administrative cleanup causes early removal and is classified separately.",
+          "instrumentation_timing": "Emit entry at tcp_time_wait creation and destruction immediately before inet_twsk_kill/deschedule.",
+          "atomic_propositions": [
+            "tcp_valid_timewait_reopen_or_admin_cleanup"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_minisocks.c",
+          "symbol": "tcp_timewait_state_process",
+          "lines": "186-261",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_minisocks.c#L186-L261",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_probe0_timer_armed_1000ms": {
+      "definition": "ICSK_TIME_PROBE0 is actually armed at a 1000 ms deadline for one zero-window generation.",
+      "properties": [
+        "TCP-ZWP-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ZWP-01",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "ICSK_TIME_PROBE0 is actually armed at a 1000 ms deadline for one zero-window generation.",
+          "instrumentation_timing": "Record the zero-window trigger when ICSK_TIME_PROBE0 is armed; record the probe at tcp_send_probe0/tcp_write_wakeup success.",
+          "atomic_propositions": [
+            "tcp_probe0_timer_armed_1000ms"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "include/net/tcp.h",
+          "symbol": "tcp_check_probe_timer",
+          "lines": "1640-1667",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/include/net/tcp.h#L1640-L1667",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_probe0_deadline_or_attempt": {
+      "definition": "That generation reaches its deadline and enters the probe-attempt path, independent of local send success.",
+      "properties": [
+        "TCP-ZWP-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ZWP-01",
+          "mapping": "auxiliary:1",
+          "role": "PROBE0 deadline dispatch and attempt entry",
+          "event_predicate": "That generation reaches its deadline and enters the probe-attempt path, independent of local send success.",
+          "instrumentation_timing": "Record the zero-window trigger when ICSK_TIME_PROBE0 is armed; record the probe at tcp_send_probe0/tcp_write_wakeup success.",
+          "atomic_propositions": [
+            "tcp_probe0_deadline_or_attempt"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_timer.c",
+          "symbol": "tcp_write_timer_handler",
+          "lines": "695-728",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_timer.c#L695-L728",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_probe0_superseded": {
+      "definition": "Window-open, user-timeout, connection termination, or explicit timer replacement cancels that generation.",
+      "properties": [
+        "TCP-ZWP-01"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ZWP-01",
+          "mapping": "auxiliary:2",
+          "role": "window-open clear or probe-timer rearm",
+          "event_predicate": "Window-open, user-timeout, connection termination, or explicit timer replacement cancels that generation.",
+          "instrumentation_timing": "Record the zero-window trigger when ICSK_TIME_PROBE0 is armed; record the probe at tcp_send_probe0/tcp_write_wakeup success.",
+          "atomic_propositions": [
+            "tcp_probe0_superseded"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_input.c",
+          "symbol": "tcp_ack_probe",
+          "lines": "3807-3828",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_input.c#L3807-L3828",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_probe0_backoff_armed_2000ms": {
+      "definition": "Normal zero-window backoff increments and arms the next timer generation at 2000 ms.",
+      "properties": [
+        "TCP-ZWP-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ZWP-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Normal zero-window backoff increments and arms the next timer generation at 2000 ms.",
+          "instrumentation_timing": "After icsk_backoff increments and tcp_probe0_when computes the next timer, record old/new interval and probe generation.",
+          "atomic_propositions": [
+            "tcp_probe0_backoff_armed_2000ms",
+            "tcp_probe0_second_deadline_or_attempt",
+            "tcp_probe0_second_superseded"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_send_probe0",
+          "lines": "4601-4635",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4601-L4635",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_probe0_second_deadline_or_attempt": {
+      "definition": "That exact generation reaches deadline and enters its send-attempt path.",
+      "properties": [
+        "TCP-ZWP-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ZWP-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "That exact generation reaches deadline and enters its send-attempt path.",
+          "instrumentation_timing": "After icsk_backoff increments and tcp_probe0_when computes the next timer, record old/new interval and probe generation.",
+          "atomic_propositions": [
+            "tcp_probe0_backoff_armed_2000ms",
+            "tcp_probe0_second_deadline_or_attempt",
+            "tcp_probe0_second_superseded"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_send_probe0",
+          "lines": "4601-4635",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4601-L4635",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    },
+    "tcp_probe0_second_superseded": {
+      "definition": "Window-open, local-resource reschedule, user-timeout, termination, or explicit rearm replaces the generation.",
+      "properties": [
+        "TCP-ZWP-02"
+      ],
+      "source_mappings": [
+        {
+          "property_id": "TCP-ZWP-02",
+          "mapping": "primary",
+          "role": "primary property hook",
+          "event_predicate": "Window-open, local-resource reschedule, user-timeout, termination, or explicit rearm replaces the generation.",
+          "instrumentation_timing": "After icsk_backoff increments and tcp_probe0_when computes the next timer, record old/new interval and probe generation.",
+          "atomic_propositions": [
+            "tcp_probe0_backoff_armed_2000ms",
+            "tcp_probe0_second_deadline_or_attempt",
+            "tcp_probe0_second_superseded"
+          ],
+          "repository": "torvalds/linux",
+          "commit": "f4fb100039e96211609dfc44fb24b9e4a8a0f2f9",
+          "path": "net/ipv4/tcp_output.c",
+          "symbol": "tcp_send_probe0",
+          "lines": "4601-4635",
+          "url": "https://github.com/torvalds/linux/blob/f4fb100039e96211609dfc44fb24b9e4a8a0f2f9/net/ipv4/tcp_output.c#L4601-L4635",
+          "source_file_verified": true,
+          "source_line_verified": true,
+          "source_symbol_verified": true
+        }
+      ]
+    }
+  }
+}

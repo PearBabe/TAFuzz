@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "recorded_at": "2026-07-18T06:34:18+08:00",
+  "artifact": {
+    "name": "Fast Graph Simplification for Path-Sensitive Typestate Analysis through Tempo-Spatial Multi-Point Slicing",
+    "short_name": "FGS",
+    "venue": "FSE 2024",
+    "paper_doi": "10.1145/3643749",
+    "paper_url": "https://yuleisui.github.io/publications/fse24a.pdf",
+    "artifact_doi": "10.5281/zenodo.12770067",
+    "artifact_url": "https://zenodo.org/records/12770067",
+    "zenodo_concept_doi": "10.5281/zenodo.8382122",
+    "zenodo_record_id": 12770067,
+    "official_image_reference": "docker.io/rmrepo/fgs:latest",
+    "official_image_digest": null,
+    "official_source_commit": null
+  },
+  "downloaded_files": [
+    {
+      "path": "../../external/fgs/README.pdf",
+      "source": "https://zenodo.org/api/records/12770067/files/README.pdf/content",
+      "size_bytes": 374218,
+      "zenodo_md5": "d8215b6bdd9fb6ad3c9862ff0f4e9dac",
+      "sha256": "bcb3f26337e3cb265f00041ef991dd0beec3d08f3275c9c01f9735c25656823a"
+    },
+    {
+      "path": "../../external/fgs/zenodo-record-12770067.json",
+      "source": "https://zenodo.org/api/records/12770067",
+      "size_bytes": 4588,
+      "sha256": "533ebaf6ec5e08d7ed2b5a106987bf39265f90569fcfbe3fda5a81d1017b0d32",
+      "note": "API metadata is a dated snapshot and includes mutable view/download statistics."
+    },
+    {
+      "path": "../../external/fgs/fse24a.pdf",
+      "source": "https://yuleisui.github.io/publications/fse24a.pdf",
+      "size_bytes": 1060212,
+      "sha256": "c6b40cac82794586edfa1d87b395075acc0c7733d6243116f01ab3091dff3e18"
+    }
+  ],
+  "official_execution_contract": {
+    "container_setup": [
+      "docker pull rmrepo/fgs:latest",
+      "docker run -dit --name FGS rmrepo/fgs bash",
+      "docker exec -it FGS bash"
+    ],
+    "smoke_working_directory": "/root/Reproduce",
+    "smoke_command": "./fgs test.ll",
+    "smoke_expected_observation": "A use-after-free bug message at the end of stdout.",
+    "custom_input_command": "/root/Reproduce/fgs BITCODE_PATH",
+    "documented_source_directory": "/root/FGS/src",
+    "paper_environment": {
+      "os": "Ubuntu 18.04",
+      "cpu": "eight-core 2.60 GHz Intel Xeon",
+      "memory_gib": 128,
+      "llvm": "14.0.0"
+    }
+  },
+  "local_environment": {
+    "os": "Ubuntu 22.04.5 LTS under WSL2",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "logical_cpus": 32,
+    "memory_bytes": 16292474880,
+    "swap_bytes": 4294967296,
+    "clang": "18.1.8",
+    "llvm_config": "18.1.8",
+    "cmake": "3.22.1",
+    "registry_client": "crane 0.21.7",
+    "resource_limit_memory_gib": 12,
+    "resource_limit_wall_hours": 24
+  },
+  "attempts": [
+    {
+      "step": "download_zenodo_record",
+      "status": "PASS",
+      "evidence": "raw/zenodo-files.json",
+      "observation": "The current public record contains exactly one user file: README.pdf."
+    },
+    {
+      "step": "inspect_zenodo_version_history",
+      "status": "PASS",
+      "evidence": "raw/zenodo-versions.json",
+      "observation": "The four older versions expose no files; three are restricted and the newest older version redirects to record 12770067."
+    },
+    {
+      "step": "resolve_official_image_with_registry_client",
+      "status": "FAIL_UPSTREAM",
+      "exit_code": 1,
+      "evidence": "raw/crane-digest.stderr",
+      "observation": "The registry rejected both HEAD and GET for rmrepo/fgs:latest as UNAUTHORIZED."
+    },
+    {
+      "step": "query_docker_hub_repository_api",
+      "status": "FAIL_UPSTREAM",
+      "http_status": 404,
+      "evidence": [
+        "raw/dockerhub-repository.headers",
+        "raw/dockerhub-repository.json"
+      ],
+      "observation": "Docker Hub reports object not found for rmrepo/fgs."
+    },
+    {
+      "step": "query_registry_with_anonymous_pull_token",
+      "status": "FAIL_UPSTREAM",
+      "http_status": 401,
+      "evidence": "raw/registry-anonymous-manifest.txt",
+      "observation": "The token endpoint responded, but the manifest request remained unauthorized."
+    },
+    {
+      "step": "inspect_current_svf_master_for_promised_merge",
+      "status": "NOT_FOUND",
+      "evidence": "raw/svf-master-search.txt",
+      "observation": "At SVF master ef219315275384b545aae338ed95e5c2b202d814, no FGS, PSTA, tempo-spatial, or multi-point-slicing path was present."
+    },
+    {
+      "step": "connect_to_local_docker_engine",
+      "status": "LOCAL_ENGINE_UNAVAILABLE",
+      "exit_code": 1,
+      "evidence": [
+        "raw/docker-desktop-version.stdout",
+        "raw/docker-desktop-version.stderr"
+      ],
+      "observation": "Docker Desktop's Linux engine was not running. This is not the primary blocker because direct registry queries also failed."
+    },
+    {
+      "step": "run_official_smoke_test",
+      "status": "NOT_RUN_UPSTREAM_ARTIFACT_UNAVAILABLE"
+    },
+    {
+      "step": "run_nist_846_benchmark",
+      "status": "NOT_RUN_UPSTREAM_ARTIFACT_UNAVAILABLE"
+    }
+  ],
+  "result": {
+    "status": "BLOCKED_UPSTREAM_ARTIFACT_UNAVAILABLE",
+    "artifact_reproduced": false,
+    "smoke_reproduced": false,
+    "nist_reproduced": false,
+    "implementation_recreated": false,
+    "claim_boundary": "No FGS runtime, precision, graph-reduction, speed, or memory result was reproduced."
+  }
+}
