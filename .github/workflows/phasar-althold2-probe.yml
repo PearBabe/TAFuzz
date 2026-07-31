@@ -11,32 +11,35 @@ on:
 
 permissions:
   contents: read
-  packages: read
 
 jobs:
   probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Check out probe branch
         uses: actions/checkout@v4
 
-      - name: Authenticate to GitHub Container Registry
+      - name: Build fixed PhASAR revision from official Dockerfile
         shell: bash
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          set -euxo pipefail
+          git clone https://github.com/secure-software-engineering/phasar.git /tmp/phasar
+          git -C /tmp/phasar checkout 7554611245e49bb88b5ce9dbc46f83e115e4e87f
+          git -C /tmp/phasar submodule update --init
+          DOCKER_BUILDKIT=1 BUILDKIT_CONTEXT_KEEP_GIT_DIR=1 \
+            docker build --build-arg RUN_TESTS=OFF -t local/phasar:755461 /tmp/phasar
 
-      - name: Run PhASAR in official development image
+      - name: Run PhASAR probe
         shell: bash
         run: |
           set -euxo pipefail
           mkdir -p experiments/phasar_althold2_probe/out
-          docker pull ghcr.io/secure-software-engineering/phasar:development
           docker run --rm \
             --entrypoint /bin/bash \
             -v "$PWD:/work" \
             -w /work \
-            ghcr.io/secure-software-engineering/phasar:development \
+            local/phasar:755461 \
             -lc '
               set -uo pipefail
               phasar-cli --version 2>&1 | tee experiments/phasar_althold2_probe/out/version.log
@@ -59,9 +62,10 @@ jobs:
             '
 
       - name: Upload probe evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: phasar-althold2-probe-evidence
           path: experiments/phasar_althold2_probe/out/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
