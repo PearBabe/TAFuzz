@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   probe:
     runs-on: ubuntu-24.04
@@ -16,6 +20,11 @@ jobs:
     steps:
       - name: Check out probe branch
         uses: actions/checkout@v4
+
+      - name: Authenticate to GitHub Container Registry
+        shell: bash
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Run PhASAR in official development image
         shell: bash
