@@ -26,6 +26,8 @@ jobs:
 
       - name: Build and install PhASAR
         run: |
+          export CC=clang-16
+          export CXX=clang++-16
           cmake -S phasar -B /tmp/phasar-build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_INSTALL_PREFIX=/tmp/phasar-install \
@@ -123,6 +125,8 @@ jobs:
 
       - name: Compile LLVM IR and analysis tool
         run: |
+          export CC=clang-16
+          export CXX=clang++-16
           clang++-16 -std=c++20 -O0 -g -fno-discard-value-names \
             -S -emit-llvm /tmp/phasar-eval/target.cpp \
             -o /tmp/phasar-eval/target.ll
