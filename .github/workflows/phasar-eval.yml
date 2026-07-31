@@ -9,14 +9,34 @@ on:
 jobs:
   run-phasar:
     runs-on: ubuntu-24.04
-    container:
-      image: ghcr.io/secure-software-engineering/phasar:development
+    timeout-minutes: 45
     steps:
-      - name: Show versions
+      - name: Checkout PhASAR
+        uses: actions/checkout@v4
+        with:
+          repository: secure-software-engineering/phasar
+          ref: development
+          submodules: true
+          path: phasar
+
+      - name: Install LLVM and build dependencies
         run: |
-          phasar-cli --version
-          clang++-20 --version | head -1
-          cmake --version | head -1
+          cd phasar
+          ./utils/InstallAptDependencies.sh --noninteractive --llvm-version=16
+
+      - name: Build and install PhASAR
+        run: |
+          cmake -S phasar -B /tmp/phasar-build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=/tmp/phasar-install \
+            -DLLVM_ROOT=/usr/lib/llvm-16 \
+            -DPHASAR_BUILD_UNITTESTS=OFF \
+            -DPHASAR_BUILD_IR=OFF \
+            -DPHASAR_BUILD_DOC=OFF \
+            -DPHASAR_USE_Z3=OFF
+          cmake --build /tmp/phasar-build -j2
+          cmake --install /tmp/phasar-build
+          /tmp/phasar-install/bin/phasar-cli --version
 
       - name: Create target program and analysis driver
         run: |
@@ -103,11 +123,12 @@ jobs:
 
       - name: Compile LLVM IR and analysis tool
         run: |
-          clang++-20 -std=c++20 -O0 -g -fno-discard-value-names \
+          clang++-16 -std=c++20 -O0 -g -fno-discard-value-names \
             -S -emit-llvm /tmp/phasar-eval/target.cpp \
             -o /tmp/phasar-eval/target.ll
           cmake -S /tmp/phasar-eval -B /tmp/phasar-eval/build -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH=/tmp/phasar-install
           cmake --build /tmp/phasar-eval/build -j2
 
       - name: Run PhASAR taint analysis
