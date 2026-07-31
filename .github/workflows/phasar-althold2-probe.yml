@@ -1,0 +1,71 @@
+name: PhASAR ALT_HOLD2 Probe
+
+on:
+  push:
+    branches:
+      - experiment/phasar-althold2-probe-20260731
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Check out probe branch
+        uses: actions/checkout@v4
+
+      - name: Build fixed PhASAR revision from official Dockerfile
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git clone https://github.com/secure-software-engineering/phasar.git /tmp/phasar
+          git -C /tmp/phasar checkout 7554611245e49bb88b5ce9dbc46f83e115e4e87f
+          git -C /tmp/phasar submodule update --init
+          DOCKER_BUILDKIT=1 BUILDKIT_CONTEXT_KEEP_GIT_DIR=1 \
+            docker build --build-arg RUN_TESTS=OFF -t local/phasar:755461 /tmp/phasar
+
+      - name: Run PhASAR probe
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p experiments/phasar_althold2_probe/out
+          docker run --rm \
+            --entrypoint /bin/bash \
+            -v "$PWD:/work" \
+            -w /work \
+            local/phasar:755461 \
+            -lc '
+              set -euo pipefail
+              phasar-cli --version 2>&1 | tee experiments/phasar_althold2_probe/out/version.log
+              phasar-cli --help 2>&1 | tee experiments/phasar_althold2_probe/out/help.log >/dev/null
+              clang-16 -std=c++20 -O0 -g -Xclang -disable-O0-optnone \
+                -S -emit-llvm \
+                experiments/phasar_althold2_probe/althold2_probe.cpp \
+                -o experiments/phasar_althold2_probe/out/althold2_probe.ll
+              set +e
+              phasar-cli \
+                -m experiments/phasar_althold2_probe/out/althold2_probe.ll \
+                -D ifds-taint \
+                --emit-raw-results \
+                > experiments/phasar_althold2_probe/out/ifds-taint.log 2>&1
+              rc=$?
+              set -e
+              echo "$rc" > experiments/phasar_althold2_probe/out/ifds-taint.exit
+              cat experiments/phasar_althold2_probe/out/ifds-taint.log
+              test "$rc" -eq 0
+            '
+
+      - name: Upload probe evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phasar-althold2-probe-evidence
+          path: experiments/phasar_althold2_probe/out/
+          if-no-files-found: warn
+          retention-days: 14
