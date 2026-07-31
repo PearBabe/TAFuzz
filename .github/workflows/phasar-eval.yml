@@ -1,0 +1,118 @@
+name: PhASAR Evaluation
+
+on:
+  push:
+    branches: ["tmp/phasar-eval-20260730"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-phasar:
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/secure-software-engineering/phasar:development
+    steps:
+      - name: Show versions
+        run: |
+          phasar-cli --version
+          clang++-20 --version | head -1
+          cmake --version | head -1
+
+      - name: Create target program and analysis driver
+        run: |
+          mkdir -p /tmp/phasar-eval
+          cat > /tmp/phasar-eval/target.cpp <<'CPP'
+          #include <cstddef>
+
+          size_t source([[clang::annotate("psr.source")]] char *buffer,
+                        size_t size) {
+            for (size_t i = 0; i < size; ++i) {
+              buffer[i] = static_cast<char>(i);
+            }
+            return size;
+          }
+
+          void sink([[clang::annotate("psr.sink")]] const char *buffer,
+                    size_t size) {
+            (void)buffer;
+            (void)size;
+          }
+
+          void decode_command(char *out, size_t n) {
+            source(out, n);
+          }
+
+          void update_controller(const char *command, size_t n) {
+            sink(command, n);
+          }
+
+          int main() {
+            char mavlink_command[16] = {};
+            decode_command(mavlink_command, sizeof(mavlink_command));
+            update_controller(mavlink_command, sizeof(mavlink_command));
+            return 0;
+          }
+          CPP
+
+          cat > /tmp/phasar-eval/analyze.cpp <<'CPP'
+          #include "phasar/DataFlow.h"
+          #include "phasar/PhasarLLVM/DB.h"
+          #include "phasar/PhasarLLVM/DataFlow.h"
+          #include "phasar/PhasarLLVM/Pointer.h"
+          #include "phasar/PhasarLLVM/TaintConfig.h"
+
+          int main(int argc, char **argv) {
+            if (argc != 2) {
+              llvm::errs() << "usage: analyze <target.ll>\n";
+              return 2;
+            }
+
+            psr::LLVMProjectIRDB irdb(argv[1]);
+            if (!irdb) {
+              return 3;
+            }
+
+            psr::LLVMAliasSet aliases(&irdb);
+            psr::LLVMTaintConfig config(irdb);
+            psr::IFDSTaintAnalysis problem(&irdb, &aliases, &config, {"main"},
+                                           false);
+            psr::LLVMBasedICFG icfg(&irdb, psr::CallGraphAnalysisType::OTF,
+                                    {"main"}, nullptr, &aliases);
+            psr::solveIFDSProblem(problem, icfg);
+
+            llvm::outs() << "LEAK_COUNT=" << problem.Leaks.size() << "\n";
+            for (const auto &[inst, facts] : problem.Leaks) {
+              llvm::outs() << "LEAK_AT=" << psr::llvmIRToString(inst) << "\n";
+              for (const auto *fact : facts) {
+                llvm::outs() << "FACT=" << psr::llvmIRToShortString(fact)
+                             << "\n";
+              }
+            }
+            return problem.Leaks.empty() ? 4 : 0;
+          }
+          CPP
+
+          cat > /tmp/phasar-eval/CMakeLists.txt <<'CMAKE'
+          cmake_minimum_required(VERSION 3.20)
+          project(phasar_eval LANGUAGES CXX)
+          set(CMAKE_CXX_STANDARD 20)
+          find_package(phasar REQUIRED CONFIG)
+          add_executable(analyze analyze.cpp)
+          target_link_libraries(analyze PRIVATE phasar::phasar)
+          CMAKE
+
+      - name: Compile LLVM IR and analysis tool
+        run: |
+          clang++-20 -std=c++20 -O0 -g -fno-discard-value-names \
+            -S -emit-llvm /tmp/phasar-eval/target.cpp \
+            -o /tmp/phasar-eval/target.ll
+          cmake -S /tmp/phasar-eval -B /tmp/phasar-eval/build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/phasar-eval/build -j2
+
+      - name: Run PhASAR taint analysis
+        run: |
+          /tmp/phasar-eval/build/analyze /tmp/phasar-eval/target.ll \
+            | tee /tmp/phasar-eval/result.txt
+          grep -E '^LEAK_COUNT=[1-9][0-9]*$' /tmp/phasar-eval/result.txt
+          grep -E '^LEAK_AT=' /tmp/phasar-eval/result.txt
