@@ -41,10 +41,10 @@ jobs:
             -w /work \
             local/phasar:755461 \
             -lc '
-              set -uo pipefail
+              set -euo pipefail
               phasar-cli --version 2>&1 | tee experiments/phasar_althold2_probe/out/version.log
               phasar-cli --help 2>&1 | tee experiments/phasar_althold2_probe/out/help.log >/dev/null
-              clang-20 -std=c++20 -O0 -g -Xclang -disable-O0-optnone \
+              clang-16 -std=c++20 -O0 -g -Xclang -disable-O0-optnone \
                 -S -emit-llvm \
                 experiments/phasar_althold2_probe/althold2_probe.cpp \
                 -o experiments/phasar_althold2_probe/out/althold2_probe.ll
@@ -58,7 +58,7 @@ jobs:
               set -e
               echo "$rc" > experiments/phasar_althold2_probe/out/ifds-taint.exit
               cat experiments/phasar_althold2_probe/out/ifds-taint.log
-              exit 0
+              test "$rc" -eq 0
             '
 
       - name: Upload probe evidence
