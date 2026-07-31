@@ -1,0 +1,55 @@
+name: PhASAR ALT_HOLD2 Probe
+
+on:
+  push:
+    branches:
+      - experiment/phasar-althold2-probe-20260731
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out probe branch
+        uses: actions/checkout@v4
+
+      - name: Run PhASAR in official development image
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p experiments/phasar_althold2_probe/out
+          docker pull ghcr.io/secure-software-engineering/phasar:development
+          docker run --rm \
+            --entrypoint /bin/bash \
+            -v "$PWD:/work" \
+            -w /work \
+            ghcr.io/secure-software-engineering/phasar:development \
+            -lc '
+              set -uo pipefail
+              phasar-cli --version 2>&1 | tee experiments/phasar_althold2_probe/out/version.log
+              phasar-cli --help 2>&1 | tee experiments/phasar_althold2_probe/out/help.log >/dev/null
+              clang-20 -std=c++20 -O0 -g -Xclang -disable-O0-optnone \
+                -S -emit-llvm \
+                experiments/phasar_althold2_probe/althold2_probe.cpp \
+                -o experiments/phasar_althold2_probe/out/althold2_probe.ll
+              set +e
+              phasar-cli \
+                -m experiments/phasar_althold2_probe/out/althold2_probe.ll \
+                -D ifds-taint \
+                --emit-raw-results \
+                > experiments/phasar_althold2_probe/out/ifds-taint.log 2>&1
+              rc=$?
+              set -e
+              echo "$rc" > experiments/phasar_althold2_probe/out/ifds-taint.exit
+              cat experiments/phasar_althold2_probe/out/ifds-taint.log
+              exit 0
+            '
+
+      - name: Upload probe evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: phasar-althold2-probe-evidence
+          path: experiments/phasar_althold2_probe/out/
+          if-no-files-found: error
+          retention-days: 14
