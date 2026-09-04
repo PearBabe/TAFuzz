@@ -1,0 +1,40 @@
+name: Export frozen ArduPilot source
+
+on:
+  push:
+    branches:
+      - experiment/iadg-lite-20260904
+    paths:
+      - '.github/workflows/export-ardupilot-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch source
+        shell: bash
+        run: |
+          set -euo pipefail
+          commit=ff37fde6f13c02fb5ae32abdd07ff4f4e132cb76
+          git init /tmp/ardupilot
+          git -C /tmp/ardupilot remote add origin https://github.com/ArduPilot/ardupilot.git
+          git -C /tmp/ardupilot sparse-checkout init --cone
+          git -C /tmp/ardupilot sparse-checkout set ArduCopter libraries
+          git -C /tmp/ardupilot fetch --depth=1 origin "$commit"
+          git -C /tmp/ardupilot checkout --detach FETCH_HEAD
+          test "$(git -C /tmp/ardupilot rev-parse HEAD)" = "$commit"
+          tar -C /tmp/ardupilot -czf /tmp/ardupilot-ff37-source.tar.gz ArduCopter libraries
+          sha256sum /tmp/ardupilot-ff37-source.tar.gz | tee /tmp/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ardupilot-ff37-source
+          path: |
+            /tmp/ardupilot-ff37-source.tar.gz
+            /tmp/SHA256SUMS
+          retention-days: 7
