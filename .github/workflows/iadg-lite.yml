@@ -1,0 +1,186 @@
+name: IADG-Lite real ArduPilot experiment
+
+on:
+  push:
+    branches:
+      - experiment/iadg-lite-20260904
+    paths:
+      - 'experiments/iadg_lite/**'
+      - '.github/workflows/iadg-lite.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      ARDUPILOT_COMMIT: ff37fde6f13c02fb5ae32abdd07ff4f4e132cb76
+      PGFUZZ_COMMIT: 7eaebf21116087249b8329d4ba7337a24a34ecb9
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reconstruct analyzer and frozen input manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d experiments/iadg_lite/iadg_lite.py.gz.b64 | gzip -dc > experiments/iadg_lite/iadg_lite.py
+          cat experiments/iadg_lite/data/input_manifest.csv.gz.b64.part-* > experiments/iadg_lite/data/input_manifest.csv.gz.b64
+          echo 'bd21bd2324095e26d72b0f0990191093eae5ccf8cb046b5eb9b5b95072e1693a  experiments/iadg_lite/data/input_manifest.csv.gz.b64' | sha256sum -c -
+          python3 -m py_compile experiments/iadg_lite/iadg_lite.py
+
+      - name: Fetch the real ArduPilot source at the frozen commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init /tmp/ardupilot
+          git -C /tmp/ardupilot remote add origin https://github.com/ArduPilot/ardupilot.git
+          git -C /tmp/ardupilot sparse-checkout init --cone
+          git -C /tmp/ardupilot sparse-checkout set ArduCopter libraries
+          git -C /tmp/ardupilot fetch --depth=1 origin "$ARDUPILOT_COMMIT"
+          git -C /tmp/ardupilot checkout --detach FETCH_HEAD
+          test "$(git -C /tmp/ardupilot rev-parse HEAD)" = "$ARDUPILOT_COMMIT"
+
+      - name: Fetch PGFuzz A.ALT_HOLD2 reference input sets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pgfuzz-althold2
+          base="https://raw.githubusercontent.com/purseclab/PGFuzz/${PGFUZZ_COMMIT}/ArduPilot/policies/A.ALT_HOLD2"
+          curl --fail --location --retry 3 "$base/parameters.txt" -o /tmp/pgfuzz-althold2/parameters.txt
+          curl --fail --location --retry 3 "$base/envs.txt" -o /tmp/pgfuzz-althold2/envs.txt
+          curl --fail --location --retry 3 "$base/cmds.txt" -o /tmp/pgfuzz-althold2/cmds.txt
+
+      - name: Direct-function baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p experiments/iadg_lite/out/direct
+          /usr/bin/time -v -o experiments/iadg_lite/out/direct/time.txt \
+            python3 experiments/iadg_lite/iadg_lite.py \
+              --source /tmp/ardupilot \
+              --manifest experiments/iadg_lite/data/input_manifest.csv.gz.b64 \
+              --pgfuzz-dir /tmp/pgfuzz-althold2 \
+              --out experiments/iadg_lite/out/direct \
+              --include-root ArduCopter \
+              --include-root libraries \
+              --call-hops 0 \
+              --field-hop-from 99 \
+              --max-functions-per-input 300 \
+              --progress \
+            2>&1 | tee experiments/iadg_lite/out/direct/console.log
+
+      - name: IADG-Lite with three call hops and one shared-field bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p experiments/iadg_lite/out/call3
+          /usr/bin/time -v -o experiments/iadg_lite/out/call3/time.txt \
+            python3 experiments/iadg_lite/iadg_lite.py \
+              --source /tmp/ardupilot \
+              --manifest experiments/iadg_lite/data/input_manifest.csv.gz.b64 \
+              --pgfuzz-dir /tmp/pgfuzz-althold2 \
+              --out experiments/iadg_lite/out/call3 \
+              --include-root ArduCopter \
+              --include-root libraries \
+              --call-hops 3 \
+              --field-hop-from 1 \
+              --max-functions-per-input 300 \
+              --progress \
+            2>&1 | tee experiments/iadg_lite/out/call3/console.log
+
+      - name: Produce cross-run evidence summary
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import csv, json
+          from collections import Counter, defaultdict
+          from pathlib import Path
+
+          root = Path('experiments/iadg_lite/out')
+          result = {'runs': {}, 'delta': {}, 'sentinels': {}}
+          relation_sets = {}
+          for run in ('direct', 'call3'):
+              p = root / run
+              if not (p / 'summary.json').exists():
+                  result['runs'][run] = {'status': 'missing'}
+                  continue
+              summary = json.loads((p / 'summary.json').read_text())
+              rows = list(csv.DictReader((p / 'input_state_relations.csv').open()))
+              rels = {(r['input_name'], r['input_class'], r['state']) for r in rows}
+              relation_sets[run] = rels
+              state_inputs = defaultdict(set)
+              tier_counts = Counter()
+              for r in rows:
+                  state_inputs[r['state']].add(r['input_name'])
+                  tier_counts[r['evidence_tier']] += 1
+              alt = json.loads((p / 'althold2_comparison.json').read_text())
+              result['runs'][run] = {
+                  'status': 'ok',
+                  'summary': summary,
+                  'unique_relations': len(rels),
+                  'state_input_counts': {k: len(v) for k, v in sorted(state_inputs.items())},
+                  'evidence_tiers': dict(tier_counts),
+                  'althold2': {k: {
+                      'ours_count': v['ours_count'],
+                      'pg_normalized_count': v['pg_normalized_count'],
+                      'intersection_count': v['intersection_count'],
+                      'ours_only_count': v['ours_only_count'],
+                      'pg_only_count': v['pg_only_count'],
+                      'jaccard': v['jaccard'],
+                      'candidate_reduction': v['candidate_reduction'],
+                  } for k, v in alt['classes'].items()},
+              }
+          if {'direct', 'call3'} <= relation_sets.keys():
+              a, b = relation_sets['direct'], relation_sets['call3']
+              result['delta'] = {
+                  'new_relations_from_bounded_interprocedural_expansion': len(b - a),
+                  'relations_lost': len(a - b),
+                  'new_by_state': dict(Counter(state for _, _, state in b - a)),
+              }
+          sentinels = [
+              'ATC_RAT_RLL_FF', 'ATC_RATE_R_MAX', 'GPS1_POS_Z',
+              'RC3_THROTTLE', 'SIM_WIND_SPD', 'SIM_BARO_RND',
+              'MAV_CMD_DO_SET_MODE', 'MAV_CMD_NAV_LAND'
+          ]
+          for name in sentinels:
+              result['sentinels'][name] = {}
+              for run, rels in relation_sets.items():
+                  result['sentinels'][name][run] = sorted({s for n, _, s in rels if n == name})
+          (root / 'cross_run_summary.json').write_text(json.dumps(result, ensure_ascii=False, indent=2))
+          lines = ['# IADG-Lite real-source cross-run summary', '']
+          for run, data in result['runs'].items():
+              lines += [f'## {run}', '']
+              if data.get('status') != 'ok':
+                  lines += ['- missing result', '']
+                  continue
+              s = data['summary']
+              lines += [
+                  f"- inputs: {s['inputs']}",
+                  f"- scanned files: {s['index']['files']}",
+                  f"- functions: {s['index']['functions']}",
+                  f"- unique input-state relations: {data['unique_relations']}",
+                  f"- elapsed seconds: {s['elapsed_seconds']}",
+                  f"- peak RSS MiB: {s['peak_rss_mib']}",
+                  f"- binding statuses: {s['binding_statuses']}", '',
+              ]
+          lines += ['## Bounded interprocedural delta', '', f"- {result.get('delta', {})}", '', '## Sentinels', '']
+          for n, d in result['sentinels'].items():
+              lines.append(f'- {n}: {d}')
+          (root / 'cross_run_summary.md').write_text('\n'.join(lines) + '\n')
+          if result.get('runs', {}).get('call3', {}).get('summary', {}).get('inputs') != 1475:
+              raise SystemExit('call3 did not process all 1475 frozen inputs')
+          PY
+
+      - name: Upload complete experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: iadg-lite-real-ardupilot-${{ github.run_id }}
+          path: |
+            experiments/iadg_lite/out
+            experiments/iadg_lite/README.md
+          retention-days: 30
