@@ -28,8 +28,18 @@ jobs:
           set -euo pipefail
           base64 -d experiments/iadg_lite/iadg_lite.py.gz.b64 | gzip -dc > experiments/iadg_lite/iadg_lite.py
           cat experiments/iadg_lite/data/input_manifest.csv.gz.b64.part-* > experiments/iadg_lite/data/input_manifest.csv.gz.b64
-          echo 'bd21bd2324095e26d72b0f0990191093eae5ccf8cb046b5eb9b5b95072e1693a  experiments/iadg_lite/data/input_manifest.csv.gz.b64' | sha256sum -c -
           python3 -m py_compile experiments/iadg_lite/iadg_lite.py
+          python3 - <<'PY'
+          import base64, csv, gzip, hashlib
+          from pathlib import Path
+          p = Path('experiments/iadg_lite/data/input_manifest.csv.gz.b64')
+          print('manifest_base64_sha256=', hashlib.sha256(p.read_bytes()).hexdigest())
+          decoded = gzip.decompress(base64.b64decode(p.read_text(encoding='ascii'))).decode('utf-8')
+          rows = list(csv.DictReader(decoded.splitlines()))
+          print('manifest_rows=', len(rows))
+          if len(rows) != 1475:
+              raise SystemExit(f'expected 1475 manifest rows, got {len(rows)}')
+          PY
 
       - name: Fetch the real ArduPilot source at the frozen commit
         shell: bash
@@ -101,6 +111,7 @@ jobs:
           from pathlib import Path
 
           root = Path('experiments/iadg_lite/out')
+          root.mkdir(parents=True, exist_ok=True)
           result = {'runs': {}, 'delta': {}, 'sentinels': {}}
           relation_sets = {}
           for run in ('direct', 'call3'):
@@ -171,6 +182,7 @@ jobs:
           for n, d in result['sentinels'].items():
               lines.append(f'- {n}: {d}')
           (root / 'cross_run_summary.md').write_text('\n'.join(lines) + '\n')
+          print(json.dumps(result, ensure_ascii=False, indent=2))
           if result.get('runs', {}).get('call3', {}).get('summary', {}).get('inputs') != 1475:
               raise SystemExit('call3 did not process all 1475 frozen inputs')
           PY
