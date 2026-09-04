@@ -1,4 +1,4 @@
-name: IADG-Lite real ArduPilot experiment
+name: FC-ADG real ArduPilot experiment
 
 on:
   push:
@@ -9,40 +9,40 @@ on:
       - '.github/workflows/iadg-lite.yml'
   workflow_dispatch:
 
+concurrency:
+  group: fc-adg-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   analyze:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 45
     env:
       ARDUPILOT_COMMIT: ff37fde6f13c02fb5ae32abdd07ff4f4e132cb76
       PGFUZZ_COMMIT: 7eaebf21116087249b8329d4ba7337a24a34ecb9
     steps:
       - uses: actions/checkout@v4
 
-      - name: Reconstruct analyzer and frozen input manifest
+      - name: Reconstruct concise analyzer and 1475-input manifest
         shell: bash
         run: |
           set -euo pipefail
-          base64 -d experiments/iadg_lite/iadg_lite.py.gz.b64 | gzip -dc > experiments/iadg_lite/iadg_lite.py
+          base64 -d experiments/iadg_lite/fcadg_lite.py.gz.b64 | gzip -dc > experiments/iadg_lite/fcadg_lite.py
           cat experiments/iadg_lite/data/tiny.part-* > experiments/iadg_lite/data/input_manifest.csv.gz.b64
-          python3 -m py_compile experiments/iadg_lite/iadg_lite.py
+          python3 -m py_compile experiments/iadg_lite/fcadg_lite.py
           python3 - <<'PY'
-          import base64, csv, gzip, hashlib
+          import base64, csv, gzip
           from pathlib import Path
-          p = Path('experiments/iadg_lite/data/input_manifest.csv.gz.b64')
-          print('manifest_base64_sha256=', hashlib.sha256(p.read_bytes()).hexdigest())
-          decoded = gzip.decompress(base64.b64decode(p.read_text(encoding='ascii'))).decode('utf-8')
-          rows = list(csv.DictReader(decoded.splitlines()))
-          print('manifest_rows=', len(rows))
-          print('manifest_columns=', list(rows[0]) if rows else [])
-          if len(rows) != 1475:
-              raise SystemExit(f'expected 1475 manifest rows, got {len(rows)}')
+          p=Path('experiments/iadg_lite/data/input_manifest.csv.gz.b64')
+          rows=list(csv.DictReader(gzip.decompress(base64.b64decode(p.read_text())).decode().splitlines()))
+          print('manifest_rows=',len(rows),'columns=',list(rows[0]))
+          if len(rows)!=1475: raise SystemExit(f'expected 1475, got {len(rows)}')
           PY
 
-      - name: Fetch the real ArduPilot source at the frozen commit
+      - name: Fetch frozen real ArduPilot source
         shell: bash
         run: |
           set -euo pipefail
@@ -54,145 +54,51 @@ jobs:
           git -C /tmp/ardupilot checkout --detach FETCH_HEAD
           test "$(git -C /tmp/ardupilot rev-parse HEAD)" = "$ARDUPILOT_COMMIT"
 
-      - name: Fetch PGFuzz A.ALT_HOLD2 reference input sets
+      - name: Fetch PGFuzz A.ALT_HOLD2 reference sets
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p /tmp/pgfuzz-althold2
           base="https://raw.githubusercontent.com/purseclab/PGFuzz/${PGFUZZ_COMMIT}/ArduPilot/policies/A.ALT_HOLD2"
-          curl --fail --location --retry 3 "$base/parameters.txt" -o /tmp/pgfuzz-althold2/parameters.txt
-          curl --fail --location --retry 3 "$base/envs.txt" -o /tmp/pgfuzz-althold2/envs.txt
-          curl --fail --location --retry 3 "$base/cmds.txt" -o /tmp/pgfuzz-althold2/cmds.txt
+          for f in parameters.txt envs.txt cmds.txt; do curl -fL --retry 3 "$base/$f" -o "/tmp/pgfuzz-althold2/$f"; done
 
-      - name: Direct-function baseline
+      - name: Build one source index and run hop-0 versus hop-2
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p experiments/iadg_lite/out/direct
-          /usr/bin/time -v -o experiments/iadg_lite/out/direct/time.txt \
-            python3 experiments/iadg_lite/iadg_lite.py \
+          mkdir -p experiments/iadg_lite/out
+          /usr/bin/time -v -o experiments/iadg_lite/out/time.txt \
+            python3 experiments/iadg_lite/fcadg_lite.py \
               --source /tmp/ardupilot \
               --manifest experiments/iadg_lite/data/input_manifest.csv.gz.b64 \
               --pgfuzz-dir /tmp/pgfuzz-althold2 \
-              --out experiments/iadg_lite/out/direct \
+              --out experiments/iadg_lite/out \
               --include-root ArduCopter \
               --include-root libraries \
-              --call-hops 0 \
-              --field-hop-from -1 \
-              --max-functions-per-input 300 \
+              --hops 0,2 \
               --progress \
-            2>&1 | tee experiments/iadg_lite/out/direct/console.log
+            2>&1 | tee experiments/iadg_lite/out/console.log
 
-      - name: IADG-Lite with three call hops and one shared-field bridge
+      - name: Verify outputs
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p experiments/iadg_lite/out/call3
-          /usr/bin/time -v -o experiments/iadg_lite/out/call3/time.txt \
-            python3 experiments/iadg_lite/iadg_lite.py \
-              --source /tmp/ardupilot \
-              --manifest experiments/iadg_lite/data/input_manifest.csv.gz.b64 \
-              --pgfuzz-dir /tmp/pgfuzz-althold2 \
-              --out experiments/iadg_lite/out/call3 \
-              --include-root ArduCopter \
-              --include-root libraries \
-              --call-hops 3 \
-              --field-hop-from 1 \
-              --max-functions-per-input 300 \
-              --progress \
-            2>&1 | tee experiments/iadg_lite/out/call3/console.log
-
-      - name: Produce cross-run evidence summary
-        if: always()
-        shell: bash
-        run: |
+          test -s experiments/iadg_lite/out/summary.json
+          test -s experiments/iadg_lite/out/hop0/input_state_relations.csv
+          test -s experiments/iadg_lite/out/hop2/input_state_relations.csv
           python3 - <<'PY'
-          import csv, json
-          from collections import Counter, defaultdict
-          from pathlib import Path
-
-          root = Path('experiments/iadg_lite/out')
-          root.mkdir(parents=True, exist_ok=True)
-          result = {'runs': {}, 'delta': {}, 'sentinels': {}}
-          relation_sets = {}
-          for run in ('direct', 'call3'):
-              p = root / run
-              if not (p / 'summary.json').exists():
-                  result['runs'][run] = {'status': 'missing'}
-                  continue
-              summary = json.loads((p / 'summary.json').read_text())
-              rows = list(csv.DictReader((p / 'input_state_relations.csv').open()))
-              rels = {(r['input_name'], r['input_class'], r['state']) for r in rows}
-              relation_sets[run] = rels
-              state_inputs = defaultdict(set)
-              tier_counts = Counter()
-              for r in rows:
-                  state_inputs[r['state']].add(r['input_name'])
-                  tier_counts[r['evidence_tier']] += 1
-              alt = json.loads((p / 'althold2_comparison.json').read_text())
-              result['runs'][run] = {
-                  'status': 'ok',
-                  'summary': summary,
-                  'unique_relations': len(rels),
-                  'state_input_counts': {k: len(v) for k, v in sorted(state_inputs.items())},
-                  'evidence_tiers': dict(tier_counts),
-                  'althold2': {k: {
-                      'ours_count': v['ours_count'],
-                      'pg_normalized_count': v['pg_normalized_count'],
-                      'intersection_count': v['intersection_count'],
-                      'ours_only_count': v['ours_only_count'],
-                      'pg_only_count': v['pg_only_count'],
-                      'jaccard': v['jaccard'],
-                      'candidate_reduction': v['candidate_reduction'],
-                  } for k, v in alt['classes'].items()},
-              }
-          if {'direct', 'call3'} <= relation_sets.keys():
-              a, b = relation_sets['direct'], relation_sets['call3']
-              result['delta'] = {
-                  'new_relations_from_bounded_interprocedural_expansion': len(b - a),
-                  'relations_lost': len(a - b),
-                  'new_by_state': dict(Counter(state for _, _, state in b - a)),
-              }
-          sentinels = [
-              'ATC_RAT_RLL_FF', 'ATC_RATE_R_MAX', 'GPS1_POS_Z',
-              'RC3_THROTTLE', 'SIM_WIND_SPD', 'SIM_BARO_RND',
-              'MAV_CMD_DO_SET_MODE', 'MAV_CMD_NAV_LAND'
-          ]
-          for name in sentinels:
-              result['sentinels'][name] = {}
-              for run, rels in relation_sets.items():
-                  result['sentinels'][name][run] = sorted({s for n, _, s in rels if n == name})
-          (root / 'cross_run_summary.json').write_text(json.dumps(result, ensure_ascii=False, indent=2))
-          lines = ['# IADG-Lite real-source cross-run summary', '']
-          for run, data in result['runs'].items():
-              lines += [f'## {run}', '']
-              if data.get('status') != 'ok':
-                  lines += ['- missing result', '']
-                  continue
-              s = data['summary']
-              lines += [
-                  f"- inputs: {s['inputs']}",
-                  f"- scanned files: {s['index']['files']}",
-                  f"- functions: {s['index']['functions']}",
-                  f"- unique input-state relations: {data['unique_relations']}",
-                  f"- elapsed seconds: {s['elapsed_seconds']}",
-                  f"- peak RSS MiB: {s['peak_rss_mib']}",
-                  f"- binding statuses: {s['binding_statuses']}", '',
-              ]
-          lines += ['## Bounded interprocedural delta', '', f"- {result.get('delta', {})}", '', '## Sentinels', '']
-          for n, d in result['sentinels'].items():
-              lines.append(f'- {n}: {d}')
-          (root / 'cross_run_summary.md').write_text('\n'.join(lines) + '\n')
-          print(json.dumps(result, ensure_ascii=False, indent=2))
-          if result.get('runs', {}).get('call3', {}).get('summary', {}).get('inputs') != 1475:
-              raise SystemExit('call3 did not process all 1475 frozen inputs')
+          import json
+          p='experiments/iadg_lite/out/summary.json'
+          x=json.load(open(p))
+          print(json.dumps(x,indent=2))
+          assert x['inputs']==1475
           PY
 
       - name: Upload complete experiment evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: iadg-lite-real-ardupilot-${{ github.run_id }}
+          name: fc-adg-real-ardupilot-${{ github.run_id }}
           path: |
             experiments/iadg_lite/out
             experiments/iadg_lite/README.md
